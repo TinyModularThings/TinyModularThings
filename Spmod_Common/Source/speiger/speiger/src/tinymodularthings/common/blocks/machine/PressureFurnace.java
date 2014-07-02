@@ -779,9 +779,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 				var2.appendTag(var4);
 			}
 		}
-		nbt.setInteger("SDim", worldObj.provider.dimensionId);
-		StructureStorage.instance.writeStructureDataToNBT(getPosition(), nbt);
-		
+	
 		nbt.setTag("Items", var2);
 		nbt.setBoolean("Valid", valid);
 		nbt.setInteger("Fuel", fuel);
@@ -813,10 +811,6 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		heat = nbt.getInteger("Heat");
 		progress = nbt.getInteger("Progress");
 		paused = nbt.getBoolean("Paused");
-		int dim = nbt.getInteger("SDim");
-		BlockPosition pos = getPosition();
-		pos.worldID = DimensionManager.getWorld(dim);
-		StructureStorage.instance.readStructureDataFromNBT(pos, nbt);
 	}
 	
 	@Override

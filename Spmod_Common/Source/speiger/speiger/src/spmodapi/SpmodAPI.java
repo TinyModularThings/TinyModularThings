@@ -18,10 +18,10 @@ import speiger.src.spmodapi.common.core.Registry;
 import speiger.src.spmodapi.common.core.SpmodAPICore;
 import speiger.src.spmodapi.common.handler.SpmodPacketHandler;
 import speiger.src.spmodapi.common.modHelper.ModHelperLoader;
-import speiger.src.spmodapi.common.util.ForgeRegister;
+import speiger.src.spmodapi.common.util.data.StructureStorage;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 import speiger.src.spmodapi.common.world.WorldLoader;
-import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -30,6 +30,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
+import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
@@ -83,6 +84,13 @@ public class SpmodAPI implements SpmodMod
 	public void onServerStarted(FMLServerStartingEvent evt)
 	{
 		CommandRegistry.getInstance().registerComands(evt);
+		StructureStorage.instance.readStructureDataFromNBT(evt.getServer());
+	}
+	
+	@EventHandler
+	public void onServerStopped(FMLServerStoppedEvent evt)
+	{
+		StructureStorage.instance.writeStructureDataToNBT(FMLCommonHandler.instance().getMinecraftServerInstance());
 	}
 	
 	@Override
