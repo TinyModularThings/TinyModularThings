@@ -68,6 +68,10 @@ public class ItemInterfaceBlock extends TinyItem
 	
 	public static ItemStack addBlockToInterface(ItemStack par1, BlockStack stack)
 	{
+		if(!par1.hasTagCompound())
+		{
+			par1.setTagInfo("Interface", new NBTTagCompound());
+		}
 		NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Interface");
 		nbt.setInteger("ID", stack.getBlockID());
 		nbt.setInteger("Meta", stack.getMeta());

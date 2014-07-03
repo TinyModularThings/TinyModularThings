@@ -65,7 +65,9 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 	public ArrayList<ItemStack> onDrop(int fortune)
 	{
 		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
-		drops.add(pickBlock(null));
+		ItemStack stack = new ItemStack(TinyItems.interfaceBlock, 1, 2);
+		ItemInterfaceBlock.addBlockToInterface(stack, new BlockStack(blockID, metadata));
+		drops.add(stack);
 		return drops;
 	}
 	

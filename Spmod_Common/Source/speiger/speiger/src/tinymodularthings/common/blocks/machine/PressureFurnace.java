@@ -550,9 +550,11 @@ public class PressureFurnace extends TileFacing implements IInventory,
 					
 					if (StructureStorage.instance.isRegisteredToMe(here, end))
 					{
+						FMLLog.getLogger().info("Test1");
 						StructureStorage.instance.removePosition(end);
 						if (end.doesBlockExsist() && end.hasTileEntity() && end.getTileEntity() instanceof IAcceptor)
 						{
+							FMLLog.getLogger().info("Test2");
 							IAcceptor acept = (IAcceptor) end.getTileEntity();
 							acept.targetLeave(this);
 						}
@@ -946,6 +948,17 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	}
 	
 	@Override
+	public boolean removeAcceptor(IAcceptor par1)
+	{
+		if(interfaces > 0)
+		{
+			interfaces--;
+			return true;
+		}
+		return false;
+	}
+	
+	@Override
 	public LinkedList<ITrigger> getTriggers()
 	{
 		LinkedList<ITrigger> trigger = new LinkedList<ITrigger>();
@@ -974,4 +987,6 @@ public class PressureFurnace extends TileFacing implements IInventory,
 			TinyModularThings.log.print("Error with BC Gate Actions");
 		}
 	}
+
+	
 }

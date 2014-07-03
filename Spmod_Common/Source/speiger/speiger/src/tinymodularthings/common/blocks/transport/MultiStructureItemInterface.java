@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -81,14 +82,6 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 		return stack;
 	}
 
-	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
-	{
-		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
-		drops.add(pickBlock(null));
-		return drops;
-	}
-
 	public boolean hasTarget()
 	{
 		return target != null;
@@ -122,6 +115,21 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 		
 	}
 	
+	
+	
+	@Override
+	public void onBreaking()
+	{
+		this.removeInventory();
+		ItemStack stack = ItemInterfaceBlock.addBlockToInterface(new ItemStack(TinyItems.interfaceBlock, 1, 0), this.getBlock());
+		EntityItem item = new EntityItem(worldObj, xCoord, yCoord, zCoord, stack);
+		worldObj.spawnEntityInWorld(item);
+	}
+
+
+
+
+
 	public void updateInventory()
 	{
 		if ((x == 0 && y == 0 && z == 0) || !doesExsist() || (doesExsist() && target == null))
@@ -143,11 +151,16 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	
 	private void removeInventory()
 	{
+		if(target != null)
+		{
+			((InterfaceAcceptor)target).removeAcceptor(this);
+		}
 		target = null;
 		x = 0;
 		y = 0;
 		z = 0;
 		choosenSlot = 0;
+		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 	}
 	
 	public void findInventory()

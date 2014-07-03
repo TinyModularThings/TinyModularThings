@@ -55,9 +55,12 @@ public class BlockMachine extends BlockContainer
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
-		int meta = world.getBlockMetadata(x, y, z);
-		int id = world.getBlockId(x, y, z);
-		return new ItemStack(id, 1, meta);
+		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		if(tile != null && tile instanceof AdvTile)
+		{
+			return ((AdvTile)tile).pickBlock(target);
+		}
+		return new ItemStack(world.getBlockId(x, y, z), 1, world.getBlockMetadata(x, y, z));
 	}
 
 

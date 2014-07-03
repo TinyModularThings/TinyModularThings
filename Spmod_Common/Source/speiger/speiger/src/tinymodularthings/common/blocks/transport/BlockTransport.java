@@ -178,7 +178,7 @@ public class BlockTransport extends BlockContainer
 	}
 	
 	@Override
-	public int quantityDropped(int meta, int fortune, Random random)
+	public int quantityDropped(Random random)
 	{
 		return 0;
 	}
@@ -232,14 +232,13 @@ public class BlockTransport extends BlockContainer
 		return texture[meta];
 	}
 	
-	
-	
+
 	@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
 	{
 		ArrayList<ItemStack> drop = new ArrayList<ItemStack>();
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if(tile != null && tile instanceof AdvTile && ((AdvTile)tile).onDrop(fortune) != null)
+		if(tile != null && tile instanceof AdvTile)
 		{
 			drop.addAll(((AdvTile)tile).onDrop(fortune));
 		}
@@ -254,5 +253,18 @@ public class BlockTransport extends BlockContainer
 		texture[1] = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":transport/FluidTransport");
 		texture[2] = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":transport/EnergyTransport");
 	}
+
+	@Override
+	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+	{
+		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+		if(tile != null && tile instanceof AdvTile)
+		{
+			((AdvTile)tile).onBreaking();
+		}
+		super.breakBlock(par1World, par2, par3, par4, par5, par6);
+	}
+	
+	
 	
 }

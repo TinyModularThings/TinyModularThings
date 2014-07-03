@@ -9,4 +9,6 @@ public interface InterfaceAcceptor
 	boolean acceptEnergy(IAcceptor par1);
 	
 	boolean addAcceptor(IAcceptor par1);
+	
+	boolean removeAcceptor(IAcceptor par1);
 }

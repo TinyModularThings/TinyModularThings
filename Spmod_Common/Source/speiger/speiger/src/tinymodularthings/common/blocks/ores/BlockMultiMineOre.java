@@ -122,7 +122,7 @@ public abstract class BlockMultiMineOre extends Block implements IMultimineOre
 	@Override
 	public boolean isOpaqueCube()
 	{
-		return false;
+		return true;
 	}
 	
 	@Override

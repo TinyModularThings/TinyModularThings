@@ -35,6 +35,7 @@ import speiger.src.api.hopper.HopperRegistry.HopperEffect.EffectType;
 import speiger.src.api.hopper.HopperUpgrade;
 import speiger.src.api.hopper.IHopper;
 import speiger.src.api.hopper.IHopperInventory;
+import speiger.src.api.inventory.IFilteredInventory;
 import speiger.src.api.inventory.IOwner;
 import speiger.src.api.inventory.TankSlot;
 import speiger.src.api.pipes.IAdvancedPipeProvider;
@@ -54,7 +55,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, ISidedInventory, IPowerReceptor, IHopperInventory, IAdvancedPipeProvider
+public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, ISidedInventory, IPowerReceptor, IHopperInventory, IAdvancedPipeProvider, IFilteredInventory
 {
 	public HopperType type;
 	public boolean redstone;
@@ -1051,5 +1052,17 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	public int getFilterSize()
 	{
 		return this.getFilter().length;
+	}
+
+	@Override
+	public ItemStack getFilteredItem(int slotID)
+	{
+		return filter[slotID];
+	}
+
+	@Override
+	public void setFilteredItem(int slotID, ItemStack par1)
+	{
+		filter[slotID] = par1;
 	}
 }

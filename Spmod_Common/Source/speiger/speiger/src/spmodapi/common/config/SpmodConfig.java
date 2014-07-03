@@ -26,6 +26,7 @@ public class SpmodConfig implements IConfigHelper
 	public static boolean playSounds = true;
 	public static boolean loadTiles = true;
 	public static int[] ticks = new int[0];
+	public static int savingDelay = 24000;
 	
 	public static ConfigBlock blockIDs;
 	public static ConfigItem itemIDs;
@@ -72,7 +73,8 @@ public class SpmodConfig implements IConfigHelper
 				ticks[i] = Integer.parseInt(result[i]);
 			}
 			
-			
+			Property sDelay = config.get(general, "Structure Storage Backup Delay", 24000, String.format("%s%n%s%n%s%n%s", "This delay says how long the game waits until he make a backup.", "This is required to save all Multistructures", "To prevent that on game/Server Crash that all structure data get lost.", "This is required to let the Multistructure interface be work when the game restarts"));
+			savingDelay = Integer.parseInt(sDelay.getString());
 			
 			SpmodAPI.log.print("Load Utils");
 			APIUtilsConfig.register();
