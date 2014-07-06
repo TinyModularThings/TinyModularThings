@@ -28,10 +28,10 @@ public interface ISpmodCommand
 	 * @ISubCommand == null when this is not a subcommand.
 	 * @arguments. Every agrument that come from the Textfield. (like the chat in normal) is only a empty String Array when guiAdding is true.
 	 */
-	public boolean isCommandRunnable(ICommandSender par1, boolean guiAdding, ISubCommand sub, String[] arguments);
+	public boolean isCommandRunnable(ICommandSender par1, boolean guiAdding, ISubCommand sub, String[] arg);
 	
 	/**
 	 * This is the function that will run the command. 
 	 */
-	public void runCommand(ICommandSender par1, ISubCommand sub, String[] arguments);
+	public void runCommand(ICommandSender par1, ISubCommand sub, String[] arg);
 }

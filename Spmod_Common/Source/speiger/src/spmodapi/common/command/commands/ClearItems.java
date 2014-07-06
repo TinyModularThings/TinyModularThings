@@ -39,10 +39,11 @@ public class ClearItems implements ISpmodCommand
 	@Override
 	public boolean isCommandRunnable(ICommandSender par1, boolean guiAdding, ISubCommand sub, String[] arg)
 	{
-		if(sub == null )
+		if(sub == null && guiAdding)
 		{
 			return true;
 		}
+		
 		if(sub != null)
 		{
 			if(sub.getSubCommandName().equalsIgnoreCase("All"))
@@ -91,7 +92,7 @@ public class ClearItems implements ISpmodCommand
 			{
 				if(en != null && en instanceof EntityItem)
 				{
-					entities.remove(en);
+					en.setDead();
 				}
 			}
 		}
@@ -115,7 +116,7 @@ public class ClearItems implements ISpmodCommand
 				{
 					if(item != null)
 					{
-						par1.getEntityWorld().loadedEntityList.remove(item);
+						item.setDead();
 					}
 				}
 			}
@@ -127,7 +128,7 @@ public class ClearItems implements ISpmodCommand
 				{
 					if(item != null)
 					{
-						par1.getEntityWorld().loadedEntityList.remove(item);
+						item.setDead();
 					}
 				}
 			}

@@ -104,24 +104,21 @@ public class GuiCommands extends GuiInventoryCore
 				subCommands[3] = com.get(id+3);
 			}
 		}
-		else
+		if(id < pCommand.size())
 		{
-			if(id < pCommand.size())
-			{
-				commands[0] = pCommand.get(id);
-			}
-			if(id+1 < pCommand.size())
-			{
-				commands[1] = pCommand.get(id+1);
-			}
-			if(id+2 < pCommand.size())
-			{
-				commands[2] = pCommand.get(id+2);
-			}
-			if(id+3 < pCommand.size())
-			{
-				commands[3] = pCommand.get(id+3);
-			}
+			commands[0] = pCommand.get(id);
+		}
+		if(id+1 < pCommand.size())
+		{
+			commands[1] = pCommand.get(id+1);
+		}
+		if(id+2 < pCommand.size())
+		{
+			commands[2] = pCommand.get(id+2);
+		}
+		if(id+3 < pCommand.size())
+		{
+			commands[3] = pCommand.get(id+3);
 		}
 		
 		
@@ -244,14 +241,14 @@ public class GuiCommands extends GuiInventoryCore
 		{
 			if(this.subCommand == null)
 			{
-				if(this.totalID+1*4 < this.pCommand.size())
+				if((this.totalID+1)*4 < this.pCommand.size())
 				{
 					totalID++;
 				}
 			}
 			else
 			{
-				if(totalID+1*4 < this.sub.get(subCommand).size())
+				if((totalID+1)*4 < this.sub.get(subCommand).size())
 				{
 					totalID++;
 				}
@@ -295,7 +292,7 @@ public class GuiCommands extends GuiInventoryCore
 			ModularPacket packet = new ModularPacket(SpmodAPI.instance, PacketType.Custom, "Command.Reciver");
 			packet.InjectNumber(sender.worldObj.provider.dimensionId);
 			packet.injetString(sender.username);
-			packet.InjectNumbers(this.subCommand == null ? (byte)0 : (byte)1, (byte)this.choosenCom, (byte)this.choosenSubCom);
+			packet.InjectNumbers(this.subCommand == null ? (byte)0 : (byte)1, (int)pCommand.indexOf(commands[this.choosenCom]), subCommand == null ? (int)0 : (int)sub.get(subCommand).indexOf(subCommands[this.choosenSubCom]));
 			packet.InjectNumber((Integer)length);
 			packet.InjectStrings(string);
 			PacketDispatcher.sendPacketToServer(packet.finishPacket());
@@ -311,12 +308,12 @@ public class GuiCommands extends GuiInventoryCore
 				if(!com.getSubCommands().isEmpty())
 				{
 					this.subCommand = com;
-					this.choosenCom = button+total;
+					this.choosenCom = button;
 					totalID = 0;
 				}
 				else
 				{
-					this.choosenCom = button+total;
+					this.choosenCom = button;
 					this.subCommand = null;
 					totalID = 0;
 					this.lastStep = true;
@@ -324,7 +321,7 @@ public class GuiCommands extends GuiInventoryCore
 			}
 			else
 			{
-				this.choosenSubCom = total+button;
+				this.choosenSubCom = button;
 				this.lastStep = true;
 				totalID = 0;
 			}

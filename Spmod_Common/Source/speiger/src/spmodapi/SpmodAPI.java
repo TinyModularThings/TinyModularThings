@@ -78,13 +78,13 @@ public class SpmodAPI implements SpmodMod
 		WorldLoader.getInstance().registerOres();
 		SpmodWorldGen.getWorldGen().init(SpmodConfig.getInstance());
 		ModHelperLoader.loadModAdditions();
+		CommandRegistry.init();
 	}
 	
 	@EventHandler
 	public void onServerStarted(FMLServerStartingEvent evt)
 	{
 		StructureStorage.instance.readStructureDataFromNBT(evt.getServer());
-		CommandRegistry.init();
 	}
 	
 	@EventHandler

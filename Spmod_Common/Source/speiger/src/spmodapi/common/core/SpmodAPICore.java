@@ -39,7 +39,6 @@ public class SpmodAPICore implements IGuiHandler
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		FMLLog.getLogger().info("Test: "+ID);
 		if(ID == EnumGuiIDs.WorkBench.getID())
 		{
 			return new InventoryCrafter(player.inventory, world, x, y, z);

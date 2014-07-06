@@ -22,13 +22,19 @@ import cpw.mods.fml.relauncher.Side;
 
 public class SpmodPacketHandler implements IPacketHandler
 {
-	
+	private static boolean packets = false;
 	@Override
 	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
 	{
 		Side side = FMLCommonHandler.instance().getEffectiveSide();
 		if (packet.channel.equalsIgnoreCase("Spmod"))
 		{
+			if(!packets)
+			{
+				packets = true;
+				return;
+			}
+			packets = false;
 			if (side == Side.CLIENT)
 			{
 				handleClient(packet);

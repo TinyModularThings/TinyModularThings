@@ -26,8 +26,8 @@ public class CommandExecuter implements IPacketReciver
 				if(player != null)
 				{
 					boolean sub = par1.readByte() == 1;
-					int commandID = par1.readByte();
-					int subCommandID = par1.readByte();
+					int commandID = par1.readInt();
+					int subCommandID = par1.readInt();
 					String[] text = new String[par1.readInt()];
 					for(int i = 0;i<text.length;i++)
 					{
@@ -44,7 +44,7 @@ public class CommandExecuter implements IPacketReciver
 						if(list != null && !list.isEmpty())
 						{
 							ISpmodCommand com = list.get(commandID);
-							ArrayList<ISubCommand> subCom = com.getSubCommands();
+							ArrayList<ISubCommand> subCom = CommandRegistry.getInstance().getSubCommands(player, com);
 							if(!subCom.isEmpty())
 							{
 								if(com.isCommandRunnable(player, false, subCom.get(subCommandID), text))
