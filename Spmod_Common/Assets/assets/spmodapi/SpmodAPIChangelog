@@ -1,0 +1,10 @@
+SpmodAPI Changelog:
+
+Version 2.0.1:
+    -Moved Language thing into the API.
+    -Added SpmodMod which allow people to use My API (only made for language)
+
+Version 2.0.0:
+   -Created base files for the rewriting of the mod.
+   -Added Retrogen for SpmodAPI & co.
+   -Added Clear Items command (Clear all Entity Items)
