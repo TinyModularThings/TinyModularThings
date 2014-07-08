@@ -1,9 +1,11 @@
 package speiger.src.spmodapi.common.command;
 
+import java.util.List;
+
 public interface ISubCommand
 {
 	public String getSubCommandName();
 	
-	public String getSubCommandDescription();
+	public List<String> getSubCommandDescription();
 	
 }

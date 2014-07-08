@@ -2,6 +2,7 @@ package speiger.src.spmodapi.client.gui.commands;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
@@ -37,6 +38,8 @@ public class GuiCommands extends GuiInventoryCore
 	int choosenCom = -1;
 	int choosenSubCom = -1;
 	boolean lastStep = false;
+	int timer = 0;
+	boolean activeInfo = false;
 	
 	public GuiCommands(InventoryPlayer par1)
 	{
@@ -72,7 +75,7 @@ public class GuiCommands extends GuiInventoryCore
 
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
-		text = new GuiTextField(this.fontRenderer, 1-85+k, 40+l, 140, 20);
+		text = new GuiTextField(this.fontRenderer, 1-85+k, 25+l, 140, 20);
 		
 		this.reloadCommands();
 	}
@@ -152,12 +155,43 @@ public class GuiCommands extends GuiInventoryCore
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
         this.fontRenderer.drawString("ID: "+this.totalID, 10, 10, 4210752);
+        
+        
         this.buttonList.clear();
 
         if(this.lastStep)
         {
         	this.buttonList.add(new GuiButton(7, 120+k, 108+l, 50, 20, "Run"));
         	this.buttonList.add(new GuiButton(2, 30+k, 108+l, 50, 20, "Back"));
+        
+        	List<String> text = new ArrayList<String>();
+        	
+        	if(subCommand != null)
+        	{
+        		text.addAll(subCommands[this.choosenSubCom].getSubCommandDescription());
+        	}
+        	else
+        	{
+        		text.addAll(commands[this.choosenCom].getCommandUsage());
+        	}
+        	
+        	if(!text.isEmpty())
+        	{
+        		buttonList.add(new GuiButton(8, 30+k, 70+l, 50, 20, "Info"));
+        		if(this.activeInfo && this.timer > 0)
+        		{
+        			timer--;
+        			if(isInRange(par1-k, par2-l))
+        			{
+        				this.drawHoveringText(text, par1-k, par2-l, this.fontRenderer);
+        			}
+        		}
+        		else if(activeInfo && timer == 0)
+        		{
+        			activeInfo = false;
+        		}
+        	}
+        
         }
         else
         {
@@ -216,6 +250,7 @@ public class GuiCommands extends GuiInventoryCore
         text.setCanLoseFocus(lastStep);
         
     }
+
 
 	private static final ResourceLocation furnaceGuiTextures = new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/gui/commands/CommandsGui.png");
 	
@@ -281,6 +316,11 @@ public class GuiCommands extends GuiInventoryCore
 			}
 			text.setText("");
 		}
+		else if(id == 8)
+		{
+			this.activeInfo = true;
+			this.timer = 1000;
+		}
 		else if(id == 7)
 		{
 			String[] string = text.getText().split(" ");
@@ -309,13 +349,11 @@ public class GuiCommands extends GuiInventoryCore
 				{
 					this.subCommand = com;
 					this.choosenCom = button;
-					totalID = 0;
 				}
 				else
 				{
 					this.choosenCom = button;
 					this.subCommand = null;
-					totalID = 0;
 					this.lastStep = true;
 				}
 			}
@@ -323,13 +361,20 @@ public class GuiCommands extends GuiInventoryCore
 			{
 				this.choosenSubCom = button;
 				this.lastStep = true;
-				totalID = 0;
 			}
 		}
 		
 		reloadCommands();
 	}
 	
-	
+	public boolean isInRange(int i, int j)
+	{
+		if(i >= 30 && i<= 79 && j>= 70 && j<=89)
+		{
+			return true;
+		}
+		return false;
+	}
+
 	
 }

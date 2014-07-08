@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.command.ICommandSender;
 import speiger.src.api.packets.SpmodPacketHelper;
+import speiger.src.spmodapi.common.command.commands.ButcherCommand;
 import speiger.src.spmodapi.common.command.commands.ClearItems;
 import speiger.src.spmodapi.common.command.commands.TimerCommand;
 
@@ -58,6 +59,7 @@ public class CommandRegistry
 		CommandRegistry reg = getInstance();
 		reg.registerCommand(new ClearItems());
 		reg.registerCommand(new TimerCommand());
+		reg.registerCommand(new ButcherCommand());
 	}
 	
 }

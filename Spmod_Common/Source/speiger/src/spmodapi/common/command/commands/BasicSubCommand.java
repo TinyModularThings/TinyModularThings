@@ -1,13 +1,16 @@
 package speiger.src.spmodapi.common.command.commands;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import speiger.src.spmodapi.common.command.ISubCommand;
 
 public class BasicSubCommand implements ISubCommand
 {
 	private String par2;
-	private String par3;
+	private String[] par3;
 	
-	public BasicSubCommand(String name, String desc)
+	public BasicSubCommand(String name, String... desc)
 	{
 		par2 = name;
 		par3 = desc;
@@ -20,9 +23,14 @@ public class BasicSubCommand implements ISubCommand
 	}
 	
 	@Override
-	public String getSubCommandDescription()
+	public List<String> getSubCommandDescription()
 	{
-		return par3;
+		ArrayList<String> text = new ArrayList<String>();
+		for(String par1 : par3)
+		{
+			text.add(par1);
+		}
+		return text;
 	}
 	
 }

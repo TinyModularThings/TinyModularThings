@@ -1,6 +1,8 @@
 package speiger.src.spmodapi.common.command.commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,20 +21,20 @@ public class TimerCommand implements ISpmodCommand
 	}
 	
 	@Override
-	public String getCommandUsage()
+	public List<String> getCommandUsage()
 	{
-		return "Timers";
+		return Arrays.asList("Timers");
 	}
 	
 	@Override
 	public ArrayList<ISubCommand> getSubCommands()
 	{
 		ArrayList<ISubCommand> com = new ArrayList<ISubCommand>();
-		com.add(new BasicSubCommand("set", "Set Time"));
+		com.add(new BasicSubCommand("set", "Set Time", "<Sek, Min, Hour>", "<Total Ticks>"));
 		com.add(new BasicSubCommand("Stop", "Stop Timer"));
 		com.add(new BasicSubCommand("check", "Check Current Time"));
-		com.add(new BasicSubCommand("add", "Add time to the Counter"));
-		com.add(new BasicSubCommand("remove Time", "Removing time from counter"));
+		com.add(new BasicSubCommand("add", "Add time to the Counter", "<Sek, Min, Hour>", "<Total Ticks>"));
+		com.add(new BasicSubCommand("remove Time", "Removing time from counter", "<Sek, Min, Hour>", "<Total Ticks>"));
 		return com;
 	}
 	

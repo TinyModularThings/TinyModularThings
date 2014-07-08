@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.common.command.commands;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.command.ICommandSender;
@@ -22,9 +23,9 @@ public class ClearItems implements ISpmodCommand
 	}
 	
 	@Override
-	public String getCommandUsage()
+	public List<String> getCommandUsage()
 	{
-		return "Clears All Items";
+		return Arrays.asList("Clears All Items");
 	}
 	
 	@Override
@@ -32,7 +33,7 @@ public class ClearItems implements ISpmodCommand
 	{
 		ArrayList<ISubCommand> list = new ArrayList<ISubCommand>();
 		list.add(new BasicSubCommand("All", "Clear All Entity Items"));
-		list.add(new BasicSubCommand("Around", "Clear Entities Around me"));
+		list.add(new BasicSubCommand("Around", "Clear Entities Around me", "Possible Text: Range (Any Full Number)"));
 		return list;
 	}
 	

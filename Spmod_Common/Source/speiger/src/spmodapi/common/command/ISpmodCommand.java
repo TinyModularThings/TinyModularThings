@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.common.command;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.command.ICommandSender;
 
@@ -15,7 +16,7 @@ public interface ISpmodCommand
 	/**
 	 * @return the command discription
 	 */
-	public String getCommandUsage();
+	public List<String> getCommandUsage();
 	
 	/**
 	 * @return The subCommands List.
