@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
+import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.packets.IPacketReciver;
 import speiger.src.spmodapi.SpmodAPI;
-import cpw.mods.fml.common.FMLLog;
 
 public class CommandExecuter implements IPacketReciver
 {
@@ -34,6 +34,7 @@ public class CommandExecuter implements IPacketReciver
 						text[i] = par1.readUTF();
 					}
 					
+					
 					if(sub)
 					{
 						ArrayList<ISpmodCommand> list = new ArrayList<ISpmodCommand>();
@@ -50,6 +51,11 @@ public class CommandExecuter implements IPacketReciver
 								if(com.isCommandRunnable(player, false, subCom.get(subCommandID), text))
 								{
 									com.runCommand(player, subCom.get(subCommandID), text);
+									return;
+								}
+								else
+								{
+									player.sendChatToPlayer(LanguageRegister.createChatMessage("Wrong Arguments. Check the info for right arguments"));
 									return;
 								}
 							}

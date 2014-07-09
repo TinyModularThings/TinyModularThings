@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cpw.mods.fml.common.FMLLog;
+
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
@@ -84,6 +86,7 @@ public class TimerCommand implements ISpmodCommand
 			}
 			else if(key.equalsIgnoreCase("remove Time"))
 			{
+				
 				if(guiAdding)
 				{
 					return true;
@@ -105,6 +108,7 @@ public class TimerCommand implements ISpmodCommand
 			EntityPlayer player = par1.getEntityWorld().getPlayerEntityByName(par1.getCommandSenderName());
 			NBTTagCompound nbt = player.getEntityData();
 			String key = sub.getSubCommandName();
+			
 			if(key.equalsIgnoreCase("check"))
 			{
 				int totalTime = 0;
@@ -190,7 +194,7 @@ public class TimerCommand implements ISpmodCommand
 					}
 					else
 					{
-						
+						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Never Used a Timer"));
 					}
 				}
 				else

@@ -22,7 +22,6 @@ import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class GuiCommands extends GuiInventoryCore
@@ -35,6 +34,7 @@ public class GuiCommands extends GuiInventoryCore
 	ISubCommand[] subCommands = new ISubCommand[4];
 	GuiTextField text;
 	int totalID = 0;
+	int totalSub = 0;
 	int choosenCom = -1;
 	int choosenSubCom = -1;
 	boolean lastStep = false;
@@ -82,31 +82,33 @@ public class GuiCommands extends GuiInventoryCore
 	
 	public void reloadCommands()
 	{
-		int id = totalID * 4;
+		
+		int sub = this.totalSub*4;
 		this.commands = new ISpmodCommand[4];
 		this.subCommands = new ISubCommand[4];
 
 		if(subCommand != null)
 		{
 			ArrayList<ISubCommand> com = this.sub.get(subCommand);
-			if(id < com.size())
+			if(sub < com.size())
 			{
 				
-				subCommands[0] = com.get(id);
+				subCommands[0] = com.get(sub);
 			}
-			if(id+1 < com.size())
+			if(sub+1 < com.size())
 			{
-				subCommands[1] = com.get(id+1);
+				subCommands[1] = com.get(sub+1);
 			}
-			if(id+2 < com.size())
+			if(sub+2 < com.size())
 			{
-				subCommands[2] = com.get(id+2);
+				subCommands[2] = com.get(sub+2);
 			}
-			if(id+3 < com.size())
+			if(sub+3 < com.size())
 			{
-				subCommands[3] = com.get(id+3);
+				subCommands[3] = com.get(sub+3);
 			}
 		}
+		int id = totalID * 4;
 		if(id < pCommand.size())
 		{
 			commands[0] = pCommand.get(id);
@@ -148,13 +150,13 @@ public class GuiCommands extends GuiInventoryCore
 
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        String s = "Test";
+        String s = "Command Gui";
         this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
         this.fontRenderer.drawString(I18n.getString("container.inventory"), 25, this.ySize - 96 + 2, 4210752);
     
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
-        this.fontRenderer.drawString("ID: "+this.totalID, 10, 10, 4210752);
+//        this.fontRenderer.drawString("ID: "+this.totalID, 10, 10, 4210752);
         
         
         this.buttonList.clear();
@@ -272,6 +274,7 @@ public class GuiCommands extends GuiInventoryCore
 	protected void actionPerformed(GuiButton par1)
 	{
 		int id = par1.id;
+		
 		if(id == 0)
 		{
 			if(this.subCommand == null)
@@ -283,17 +286,27 @@ public class GuiCommands extends GuiInventoryCore
 			}
 			else
 			{
-				if((totalID+1)*4 < this.sub.get(subCommand).size())
+				if((totalSub+1)*4 < this.sub.get(subCommand).size())
 				{
-					totalID++;
+					totalSub++;
 				}
 			}
 		}
 		else if(id == 1)
 		{
-			if(this.totalID > 0)
+			if(subCommand == null)
 			{
-				this.totalID--;
+				if(this.totalID > 0)
+				{
+					this.totalID--;
+				}
+			}
+			else
+			{
+				if(this.totalSub > 0)
+				{
+					totalSub--;
+				}
 			}
 		}
 		else if(id == 2)
@@ -304,6 +317,7 @@ public class GuiCommands extends GuiInventoryCore
 				this.choosenCom = -1;
 				this.choosenSubCom = -1;
 				this.totalID = 0;
+				this.totalSub = 0;
 				this.lastStep = false;
 			}
 			else
@@ -311,6 +325,7 @@ public class GuiCommands extends GuiInventoryCore
 				this.choosenCom = -1;
 				this.choosenSubCom = -1;
 				this.totalID = 0;
+				this.totalSub = 0;
 				this.lastStep = false;
 				
 			}
