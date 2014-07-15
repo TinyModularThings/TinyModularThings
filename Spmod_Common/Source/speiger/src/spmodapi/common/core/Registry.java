@@ -15,6 +15,7 @@ import speiger.src.spmodapi.common.handler.ChatHandler;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.recipes.SpmodRecipeRegistry;
+import speiger.src.spmodapi.common.tile.MobMachineLoader;
 import speiger.src.spmodapi.common.util.ForgeRegister;
 import buildcraft.BuildCraftCore;
 import cpw.mods.fml.common.FMLCommonHandler;

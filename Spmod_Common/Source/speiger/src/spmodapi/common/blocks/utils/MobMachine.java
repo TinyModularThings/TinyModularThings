@@ -22,12 +22,14 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.Icon;
+import net.minecraftforge.common.DimensionManager;
 import speiger.src.api.inventory.InventorySorter;
 import speiger.src.api.items.IEssens;
 import speiger.src.api.items.IExpBottle;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
+import speiger.src.spmodapi.common.tile.MobMachineLoader;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -45,7 +47,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	public static HashMap<Integer, String> names = new HashMap<Integer, String>();
 	public static HashMap<Integer, List<Integer>> activators = new HashMap<Integer, List<Integer>>();
 	public static int totalTicks = 6000;
-	
+	public static boolean init = false;
 	
 	//None Static variables
 	public int type = 0;
@@ -258,6 +260,12 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	{
 		if(!worldObj.isRemote)
 		{
+			if(!init)
+			{
+				init = true;
+				MobMachineLoader.onWorldLoadInit(DimensionManager.getWorld(0));
+			}
+			
 			if(isValid())
 			{
 				if(canWork())
