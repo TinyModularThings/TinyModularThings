@@ -1,5 +1,10 @@
 package speiger.src.spmodapi.common.enums;
 
+import cpw.mods.fml.common.FMLLog;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.oredict.OreDictionary;
+
+
 public enum EnumColor
 {
 	
@@ -34,6 +39,20 @@ public enum EnumColor
 		hex = Hex;
 		name = Name;
 	}
+	
+	public static EnumColor getColorFromWool(int id)
+	{
+		for(EnumColor value : values())
+		{
+			if(value.wool == id)
+			{
+				return value;
+			}
+		}
+		return Nothing;
+	}
+
+	
 	
 	public String getName()
 	{

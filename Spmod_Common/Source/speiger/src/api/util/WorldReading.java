@@ -6,11 +6,13 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.energy.IEnergyProvider;
+import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.BlockPosition;
 import buildcraft.api.power.IPowerReceptor;
 
@@ -162,5 +164,20 @@ public class WorldReading
 		}
 		
 		return tile;
+	}
+
+	public static AdvTile getAdvTile(IBlockAccess par1, int par2, int par3, int par4)
+	{
+		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
+		if(tile == null)
+		{
+			return null;
+		}
+		if(!(tile instanceof AdvTile))
+		{
+			return null;
+		}
+		
+		return (AdvTile)tile;
 	}
 }

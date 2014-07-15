@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.common.tile;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.logging.Logger;
 
 import net.minecraft.block.Block;
@@ -29,6 +30,10 @@ import cpw.mods.fml.relauncher.SideOnly;
 public abstract class AdvTile extends TileEntity
 {
 	 
+	public void loadInformation(List par1)
+	{
+		
+	}
 	
 	public StepSound getStepSound()
 	{
@@ -280,7 +285,7 @@ public abstract class AdvTile extends TileEntity
 	
 	public void onAdvPlacing(int rotation, int facing)
 	{
-		
+		this.onPlaced(facing);
 	}
 	
 	public void setupUser(EntityPlayer player)

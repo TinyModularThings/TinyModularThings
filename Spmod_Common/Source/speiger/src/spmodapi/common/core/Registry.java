@@ -39,6 +39,7 @@ public class Registry
 		SpmodRecipeRegistry.loadRecipes();
 		EntityRegistry.registerModEntity(EntityOverridenEnderman.class, "newEndermann", 1, SpmodAPI.instance, 256, 3, true);
 		MinecraftForge.EVENT_BUS.register(ChatHandler.getInstance());
+		MobMachineLoader.initMobMachines();
 	}
 	
 	void registerText()

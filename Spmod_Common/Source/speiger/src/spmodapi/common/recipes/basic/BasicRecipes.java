@@ -3,12 +3,16 @@ package speiger.src.spmodapi.common.recipes.basic;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
+import speiger.src.spmodapi.common.recipes.advanced.ColorCardCleaning;
+import speiger.src.spmodapi.common.recipes.advanced.ColorCardRecipe;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 
 public class BasicRecipes
@@ -40,7 +44,11 @@ public class BasicRecipes
 		pp.addFurnaceRecipe(ItemGear.getGearFromType(GearType.Cobblestone), ItemGear.getGearFromType(GearType.Stone), 0.35F);
 		
 		pp.addRecipe(new ShapedOreRecipe(new ItemStack(APIItems.colorCard, 8), "XYX", "CVD", "XBX", 'X', "plankWood", 'V', "stickWood", 'Y', "dyeWhite", 'C', "dyeGreen", 'D', "dyeBlue", 'B', "dyeRed"));
-	
+		pp.addRecipe(new ColorCardRecipe());
+		for(FluidContainerData data : PathProxy.getDataFromFluid(FluidRegistry.WATER))
+		{
+			pp.addRecipe(new ColorCardCleaning(data.filledContainer));
+		}
 		pp.addRecipe(new ItemStack(APIBlocks.blockUtils, 1, 3), new Object[]{"XYX", "CVC", "XYX", 'X', Block.glass, 'C', Block.ice, 'V', Item.porkRaw, 'Y', new ItemStack(Item.dyePowder, 1, EnumColor.BLACK.getAsDye())});
 	}
 }

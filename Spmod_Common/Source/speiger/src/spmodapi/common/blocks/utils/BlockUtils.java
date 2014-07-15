@@ -11,7 +11,6 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITaskEntry;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityEnderman;
@@ -23,8 +22,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.api.util.WorldReading;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.render.utils.RenderUtilsBlock;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
@@ -152,40 +153,40 @@ public class BlockUtils extends BlockContainer
 	@Override
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5, ItemStack par6ItemStack)
 	{
-		int direction = 2;
-		int facing = MathHelper.floor_double(par5.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
+		int facing = 0;
+		int rotation = 0;
+		int var7 = MathHelper.floor_double(par5.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
 		int var8 = Math.round(par5.rotationPitch);
 		if (var8 > 57)
 		{
-			direction = ForgeDirection.UP.ordinal();
+			rotation = ForgeDirection.UP.ordinal();
 		}
 		else if (var8 < -57)
 		{
-			direction = ForgeDirection.DOWN.ordinal();
+			rotation = ForgeDirection.DOWN.ordinal();
 		}
-		else
+
+		if (var7 == 0)
 		{
-			if (facing == 0)
-			{
-				direction = ForgeDirection.NORTH.ordinal();
-			}
-			else if (facing == 1)
-			{
-				direction = ForgeDirection.EAST.ordinal();
-			}
-			else if (facing == 2)
-			{
-				direction = ForgeDirection.SOUTH.ordinal();
-			}
-			else if (facing == 3)
-			{
-				direction = ForgeDirection.WEST.ordinal();
-			}
+			facing = ForgeDirection.NORTH.ordinal();
 		}
+		else if (var7 == 1)
+		{
+			facing = ForgeDirection.EAST.ordinal();
+		}
+		else if (var7 == 2)
+		{
+			facing = ForgeDirection.SOUTH.ordinal();
+		}
+		else if (var7 == 3)
+		{
+			facing = ForgeDirection.WEST.ordinal();
+		}
+		
 		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
 		if (tile != null && tile instanceof AdvTile)
 		{
-			((AdvTile)tile).onPlaced(facing);
+			((AdvTile)tile).onAdvPlacing(rotation, facing);
 		}
 	}
 
@@ -231,6 +232,27 @@ public class BlockUtils extends BlockContainer
 		}
 	}
 	
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
+	{
+		int meta = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
+		Icon[] texture = textures.get(meta);
+		AdvTile tile = WorldReading.getAdvTile(par1iBlockAccess, par2, par3, par4);
+		switch(meta)
+		{
+			case 0: return par5 < 2 ? texture[0] : texture[1];
+			case 1:
+			case 2: return tile.getIconFromSideAndMetadata(par5, 1);
+			case 3: return Block.glass.getBlockTextureFromSide(0);
+			default: return null;
+		}
+	}
+
+
+
 	HashMap<Integer, Icon[]> textures = new HashMap<Integer, Icon[]>();
 	
 	@Override

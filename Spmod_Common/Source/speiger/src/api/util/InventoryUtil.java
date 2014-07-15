@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.entity.item.EntityItem;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -263,6 +264,13 @@ public class InventoryUtil
 			}
 			inv.remove(i);
 		}
+	}
+
+	public static void dropItem(EntityPlayer player, ItemStack item)
+	{
+		EntityItem drop = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, item);
+		player.capturedDrops.add(drop);
+		player.worldObj.spawnEntityInWorld(drop);
 	}
 	
 }

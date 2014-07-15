@@ -29,7 +29,6 @@ import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.tile.TileFacing;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -43,6 +42,8 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	public static HashMap<Integer, Boolean> needExp = new HashMap<Integer, Boolean>();
 	public static HashMap<Integer, Integer> neededExp = new HashMap<Integer, Integer>();
 	public static HashMap<Integer, String[]> texture = new HashMap<Integer, String[]>();
+	public static HashMap<Integer, String> names = new HashMap<Integer, String>();
+	public static HashMap<Integer, List<Integer>> activators = new HashMap<Integer, List<Integer>>();
 	public static int totalTicks = 6000;
 	
 	
@@ -72,6 +73,33 @@ public class MobMachine extends TileFacing implements ISidedInventory
 		texture.put(ID, textur);
 	}
 	
+	public static void setName(int id, String name)
+	{
+		names.put(Integer.valueOf(id), name);
+	}
+	
+	public static String getName(int id)
+	{
+		return names.get(Integer.valueOf(id));
+	}
+	
+	public static void addActivators(int id, ItemStack...par1)
+	{
+		for(ItemStack cu : par1)
+		{
+			if(cu != null)
+			{
+				addActivator(id, cu);
+			}
+		}
+	}
+	
+	public static void addActivator(int id, ItemStack par1)
+	{
+		List<Integer> item = Arrays.asList(par1.itemID, par1.getItemDamage());
+		activators.put(id, item);
+	}
+
 	public static void addFood(int id, ItemStack par1, int foodValue)
 	{
 		HashMap<List<Integer>, Integer> list = foodList.get(Integer.valueOf(id));
@@ -139,13 +167,13 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	{
 		if(renderPass == 0)
 		{
-			if(side == 4)
+			if(side == 5)
 			{
-				return textures[type][1];
+				return textures[0][1];
 			}
-			return textures[type][0];
+			return textures[0][0];
 		}
-		if(side == 2)
+		if(side == this.getFacing())
 		{
 			return textures[type][1];
 		}
@@ -172,6 +200,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 		{
 			total = Math.max(id, total);
 		}
+		total++;
 		return total;
 	}
 
@@ -529,6 +558,10 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1)
 	{
+		if(!this.isValid())
+		{
+			return new int[0];
+		}
 		return new int[]{0,1,2,3,4,5,6,7,8};
 	}
 
@@ -555,8 +588,10 @@ public class MobMachine extends TileFacing implements ISidedInventory
 		return false;
 	}
 
+	
+
 	@Override
-	public void onPlaced(int facing)
+	public void onAdvPlacing(int rotation, int facing)
 	{
 		this.setFacing(facing);
 	}
