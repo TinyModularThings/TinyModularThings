@@ -22,14 +22,13 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.Icon;
-import net.minecraftforge.common.DimensionManager;
 import speiger.src.api.inventory.InventorySorter;
 import speiger.src.api.items.IEssens;
 import speiger.src.api.items.IExpBottle;
+import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
-import speiger.src.spmodapi.common.tile.MobMachineLoader;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -45,9 +44,8 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	public static HashMap<Integer, Integer> neededExp = new HashMap<Integer, Integer>();
 	public static HashMap<Integer, String[]> texture = new HashMap<Integer, String[]>();
 	public static HashMap<Integer, String> names = new HashMap<Integer, String>();
-	public static HashMap<Integer, List<Integer>> activators = new HashMap<Integer, List<Integer>>();
+	public static HashMap<List<Integer>, Integer> activators = new HashMap<List<Integer>, Integer>();
 	public static int totalTicks = 6000;
-	public static boolean init = false;
 	
 	//None Static variables
 	public int type = 0;
@@ -99,7 +97,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	public static void addActivator(int id, ItemStack par1)
 	{
 		List<Integer> item = Arrays.asList(par1.itemID, par1.getItemDamage());
-		activators.put(id, item);
+		activators.put(item, id);
 	}
 
 	public static void addFood(int id, ItemStack par1, int foodValue)
@@ -260,20 +258,17 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	{
 		if(!worldObj.isRemote)
 		{
-			if(!init)
-			{
-				init = true;
-				MobMachineLoader.onWorldLoadInit(DimensionManager.getWorld(0));
-			}
 			
 			if(isValid())
 			{
+				
 				if(canWork())
 				{
 					if(worldObj.getWorldTime() % 20 == 0)
 					{
 						food--;
 					}
+					
 					lifeEssens--;
 					eP++;
 					cP++;
@@ -300,11 +295,8 @@ public class MobMachine extends TileFacing implements ISidedInventory
 						this.handleDrops(DropType.Legendary);
 					}
 				}
-				else
-				{
-					tryRefuelFood();
-					tryRefuelLifeEssens();
-				}
+				tryRefuelFood();
+				tryRefuelLifeEssens();
 				tryHandleExp();
 				this.sortInventory();
 				emptyArray();
@@ -322,15 +314,16 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	public void tryHandleExp()
 	{
 		boolean needExp = this.needExp.get(Integer.valueOf(type));
+		
 		if(needExp)
 		{
 			if(Exp < 100)
 			{
 				int needed = 500 - Exp;
-				if(inv[10] != null && inv[10].getItem() instanceof IExpBottle)
+				if(inv[11] != null && inv[11].getItem() instanceof IExpBottle)
 				{
-					IExpBottle exp = (IExpBottle) inv[10].getItem();
-					Exp+= exp.discharge(inv[10], needed);
+					IExpBottle exp = (IExpBottle) inv[11].getItem();
+					Exp+= exp.discharge(inv[11], needed);
 				}
 			}
 		}
@@ -364,13 +357,13 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	{
 		if(lifeEssens < 100)
 		{
-			if(inv[11] != null && inv[11].getItem() instanceof IEssens)
+			if(inv[10] != null && inv[10].getItem() instanceof IEssens)
 			{
-				IEssens es = (IEssens) inv[11].getItem();
-				if(es != null && !es.isEssensEmpty(inv[11]))
+				IEssens es = (IEssens) inv[10].getItem();
+				if(es != null && !es.isEssensEmpty(inv[10]))
 				{
-					lifeEssens+= es.getEssensValue(inv[11]);
-					es.drainEssens(inv[11], 1);
+					lifeEssens+= es.getEssensValue(inv[10]);
+					es.drainEssens(inv[10], 1);
 				}
 			}
 		}
@@ -398,7 +391,13 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	
 	public void handleDrops(DropType types)
 	{
-		 List<ItemStack> drop = this.allDrops.get(Integer.valueOf(type)).get(types);
+		 HashMap<DropType, List<ItemStack>> dropTypes = this.allDrops.get(Integer.valueOf(type));
+		 List<ItemStack> drop = null;
+		 if(dropTypes != null && dropTypes.get(types) != null)
+		 {
+			 drop = dropTypes.get(types);
+		 }
+		 
 		 if(drop == null || drop.isEmpty())
 		 {
 			 switch(types)
@@ -431,6 +430,10 @@ public class MobMachine extends TileFacing implements ISidedInventory
 
 	public boolean canWork()
 	{
+		if(lifeEssens == 0)
+		{
+			lifeEssens = 1000;
+		}
 		if(isValid())
 		{
 			return food > 0 && needExp.get(Integer.valueOf(type)) ? Exp > 0 : Exp >= 0 && lifeEssens > 0;
@@ -590,8 +593,36 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	{
 		if(!worldObj.isRemote)
 		{
-			par1.openGui(SpmodAPI.instance, EnumGuiIDs.Tiles.getID(), worldObj, xCoord, yCoord, zCoord);
-			return true;
+			if(this.isValid())
+			{
+				par1.openGui(SpmodAPI.instance, EnumGuiIDs.Tiles.getID(), worldObj, xCoord, yCoord, zCoord);
+				return true;
+			}
+			else
+			{
+				ItemStack current = par1.getCurrentEquippedItem();
+				if(current != null)
+				{
+					List<Integer> key = Arrays.asList(current.itemID, current.getItemDamage());
+					if(activators.containsKey(key))
+					{
+						this.type = activators.get(key);
+						current.stackSize--;
+						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Initizialized MobMachine to: "+this.names.get(type)));
+						this.updateBlock();
+						PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
+						return true;
+					}
+					else
+					{
+						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Not a valid init Item/Block"));
+					}
+				}
+				else
+				{
+					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Need to be Initizialized"));
+				}
+			}
 		}
 		return false;
 	}

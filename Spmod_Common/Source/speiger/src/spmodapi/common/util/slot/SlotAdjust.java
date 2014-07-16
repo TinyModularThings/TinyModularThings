@@ -1,5 +1,8 @@
 package speiger.src.spmodapi.common.util.slot;
 
+import java.lang.reflect.Type;
+
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
@@ -19,13 +22,19 @@ public class SlotAdjust extends Slot
 		if(par1 != null && par1.getItem() != null)
 		{
 			Item item = par1.getItem();
+			
 			for(Class cu : clz)
 			{
-				if(item.getClass().isInstance(cu))
+				for(Class inter : item.getClass().getInterfaces())
 				{
-					return true;
+					if(cu.getSimpleName().equalsIgnoreCase(inter.getSimpleName()))
+					{
+						return true;
+					}
 				}
+				
 			}
+			
 		}
 		return false;
 	}

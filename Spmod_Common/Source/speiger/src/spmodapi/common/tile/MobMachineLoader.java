@@ -1,11 +1,9 @@
 package speiger.src.spmodapi.common.tile;
 
-import java.util.ArrayList;
-
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.api.items.ItemCollection;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine.DropType;
@@ -24,7 +22,8 @@ public class MobMachineLoader
 		MobMachine.setName(1, "Pig");
 		MobMachine.addActivators(1, new ItemStack(Item.porkRaw), new ItemStack(Item.porkCooked));
 		MobMachine.addFood(1, new ItemStack[]{new ItemStack(Item.carrot), new ItemStack(APIItems.hemp)}, new int[]{500, 50});
-		MobMachine.addDrops(1, DropType.Common, new ItemStack(Item.porkRaw));
+		MobMachine.addDrops(1, DropType.Common, new ItemStack(Item.porkRaw), new ItemStack(Item.porkCooked));
+		MobMachine.addDrops(1, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 90));
 		
 		//Sheep
 		MobMachine.createMob(2, true, 20, getMobMachineTextures("Sheep"));
@@ -33,22 +32,36 @@ public class MobMachineLoader
 		MobMachine.addFood(2, new ItemStack[]{new ItemStack(Item.wheat), new ItemStack(APIItems.hemp)}, new int[]{500, 50});
 		MobMachine.addDrops(2, DropType.Common, ItemCollection.getAllWool());
 		MobMachine.addDrops(2, DropType.Rare, ItemCollection.getAllDye());
+		MobMachine.addDrops(2, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 91));
 		
 		//Chicken
 		MobMachine.createMob(3, true, 5, getMobMachineTextures("Chicken"));
 		MobMachine.setName(3, "Chicken");
+		MobMachine.addActivators(3, new ItemStack(Item.egg), new ItemStack(Item.chickenRaw), new ItemStack(Item.chickenCooked));
 		MobMachine.addFood(3, new ItemStack[]{new ItemStack(Item.seeds), new ItemStack(APIItems.hempSeed)}, new int[]{500});
+		MobMachine.addDrops(3, DropType.Common, new ItemStack(Item.egg), new ItemStack(Item.feather), new ItemStack(Item.chickenRaw), new ItemStack(Item.chickenCooked));
+		MobMachine.addDrops(3, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 93));
 		
 		//Cow
 		MobMachine.createMob(4, true, 15, getMobMachineTextures("Cow"));
-		
+		MobMachine.setName(4, "Cow");
+		MobMachine.addActivators(4, new ItemStack(Item.leather), new ItemStack(Item.beefRaw), new ItemStack(Item.beefCooked));
+		MobMachine.addFood(4, new ItemStack[]{new ItemStack(Item.wheat), new ItemStack(APIItems.hemp)}, new int[]{500, 50});
+		MobMachine.addDrops(4, DropType.Common, new ItemStack(Item.leather), new ItemStack(Item.beefRaw), new ItemStack(Item.beefCooked));
+		MobMachine.addDrops(4, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 92));
 		
 		//Mooshrooms
 		MobMachine.createMob(5, true, 25, getMobMachineTextures("Mooshroom"));
-		
+		MobMachine.addActivators(5, new ItemStack(Block.mushroomBrown), new ItemStack(Block.mushroomRed), new ItemStack(Item.bowlSoup));
+		MobMachine.addFood(5, new ItemStack[]{new ItemStack(Item.wheat), new ItemStack(APIItems.hemp)}, new int[]{500, 50});
+		MobMachine.addDrops(5, DropType.Common, new ItemStack(Item.leather), new ItemStack(Item.beefRaw), new ItemStack(Item.beefCooked), new ItemStack(Block.mushroomRed), new ItemStack(Block.mushroomBrown));
+		MobMachine.addDrops(5, DropType.Rare, new ItemStack(Item.bowlSoup), new ItemStack(Block.mushroomCapBrown), new ItemStack(Block.mushroomCapRed));
+		MobMachine.addDrops(5, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 96));
 		
 		//Squid
 		MobMachine.createMob(6, true, 7, getMobMachineTextures("Squid"));
+		MobMachine.setName(6, "Squid");
+		MobMachine.addActivators(6, OreDictionary.getOres("dyeBlack").toArray(new ItemStack[OreDictionary.getOres("dyeBlack").size()]));
 		
 		//Zombie
 		MobMachine.createMob(7, false, 5, getMobMachineTextures("Zombey"));
@@ -100,21 +113,5 @@ public class MobMachineLoader
 		tex[1] = SpmodAPILib.ModID.toLowerCase()+":mobmachine/MobMachine_"+name+"_Front";
 		return tex;
 	}
-
-
-	public static void onWorldLoadInit(World world)
-	{
-		ArrayList<ItemStack> stack = new ArrayList<ItemStack>();
-		for(int i = 0;i<Short.MAX_VALUE;i++)
-		{
-			ItemStack stacks = ForgeHooks.getGrassSeed(world);
-			if(stacks != null && !stack.contains(stack))
-			{
-				stack.add(stacks);
-			}
-		}
-		MobMachine.addFood(3, stack.toArray(new ItemStack[stack.size()]), new int[]{500});
-		
-		
-	}
+	
 }
