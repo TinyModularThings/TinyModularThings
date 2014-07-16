@@ -22,7 +22,6 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.Icon;
-import speiger.src.api.inventory.InventorySorter;
 import speiger.src.api.items.IEssens;
 import speiger.src.api.items.IExpBottle;
 import speiger.src.api.language.LanguageRegister;
@@ -30,6 +29,7 @@ import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.tile.TileFacing;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -136,15 +136,21 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	public static void addDrops(int id, DropType type, ItemStack drop)
 	{
 		HashMap<DropType, List<ItemStack>> droplist = allDrops.get(Integer.valueOf(id));
+		boolean flag = false;
 		if(droplist == null)
 		{
 			droplist = new HashMap<DropType, List<ItemStack>>();
+			flag = true;
 		}
 		if(droplist.get(type) == null)
 		{
 			droplist.put(type, new ArrayList<ItemStack>());
 		}
 		droplist.get(type).add(drop);
+		if(flag)
+		{
+			allDrops.put(Integer.valueOf(id), droplist);
+		}
 	}
 	
 	public static void addDrops(int id, DropType type, ItemStack...drop)
@@ -221,17 +227,16 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	
 	public void sortInventory()
 	{
-		ItemStack[] dropSorts = new ItemStack[9];
-		for(int i = 0;i<dropSorts.length;i++)
+		if(!worldObj.isRemote && worldObj.getWorldTime() % 10 == 0)
 		{
-			dropSorts[i] = inv[i];
-		}
-		InventorySorter sorter = new InventorySorter(dropSorts);
-		sorter.sortEverythingUp(true);
-		dropSorts = sorter.finishSorting();
-		for(int i = 0;i<dropSorts.length;i++)
-		{
-			inv[i] = dropSorts[i];
+			this.transferItem(0, 8, true);
+			this.transferItem(0, 7, true);
+			this.transferItem(0, 6, true);
+			this.transferItem(0, 5, true);
+			this.transferItem(0, 4, true);
+			this.transferItem(0, 3, true);
+			this.transferItem(0, 2, true);
+			this.transferItem(0, 1, true);
 		}
 	}
 
@@ -258,7 +263,6 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	{
 		if(!worldObj.isRemote)
 		{
-			
 			if(isValid())
 			{
 				
@@ -298,8 +302,12 @@ public class MobMachine extends TileFacing implements ISidedInventory
 				tryRefuelFood();
 				tryRefuelLifeEssens();
 				tryHandleExp();
-				this.sortInventory();
 				emptyArray();
+				if(worldObj.getWorldTime() % 10 == 0)
+				{
+					this.sortInventory();
+				}
+				
 			}
 			
 			if(worldObj.getWorldTime() % 10 == 0)
@@ -373,7 +381,12 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	{
 		if(inv[0] == null && !drops.isEmpty())
 		{
-			inv[0] = drops.removeFirst().copy();
+			if(!worldObj.isRemote)
+			{
+				ItemStack stack = drops.removeFirst();
+				this.inv[0] = stack.copy();
+				return;
+			}
 		}
 	}
 	
@@ -398,27 +411,29 @@ public class MobMachine extends TileFacing implements ISidedInventory
 			 drop = dropTypes.get(types);
 		 }
 		 
+		 
 		 if(drop == null || drop.isEmpty())
 		 {
 			 switch(types)
 			 {
 				case Common:
-					rP+= totalTicks/4;
-					lP+= totalTicks/8;
-					break;
-				case Rare:
-					cP+= totalTicks/4;
+					rP+= totalTicks/2;
 					lP+= totalTicks/4;
 					break;
+				case Rare:
+					cP+= totalTicks;
+					lP+= totalTicks/2;
+					break;
 				case Legendary:
-					cP+= totalTicks/2;
-					rP+= totalTicks/4;
+					cP+= totalTicks*2;
+					rP+= totalTicks/2;
 					break;
 			 }
 		 }
 		 else
 		 {
-			 drops.add(drop.get(worldObj.rand.nextInt(drop.size())));
+			 ItemStack stack = drop.get(worldObj.rand.nextInt(drop.size()));
+			 drops.add(stack);
 		 }
 	}
 	
@@ -436,7 +451,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 		}
 		if(isValid())
 		{
-			return food > 0 && needExp.get(Integer.valueOf(type)) ? Exp > 0 : Exp >= 0 && lifeEssens > 0;
+			return food > 0 && (needExp.get(Integer.valueOf(type)) ? Exp > 0 : Exp >= 0) && lifeEssens > 0;
 		}
 		return false;
 	}
@@ -706,7 +721,31 @@ public class MobMachine extends TileFacing implements ISidedInventory
         nbt.setInteger("Type", type);
 	}
 	
-	
+	public void transferItem(int slot0, int slot1, boolean nbt)
+	{
+		if(inv[slot0] != null)
+		{
+			if(inv[slot1] == null)
+			{
+				inv[slot1] = inv[slot0].copy();
+				inv[slot0] = null;
+			}
+			else if(inv[slot1] != null && inv[slot1].isItemEqual(inv[slot0]) && (!nbt || (nbt && ItemStack.areItemStackTagsEqual(inv[slot0], inv[slot1]))))
+			{
+				if(inv[slot1].stackSize + inv[slot0].stackSize <= inv[slot1].getMaxStackSize())
+				{
+					inv[slot1].stackSize += inv[slot0].stackSize;
+					inv[slot0] = null;
+				}
+				else
+				{
+					int stacksize = (inv[slot1].stackSize + inv[slot0].stackSize) - 64;
+					inv[slot1].stackSize = 64;
+					inv[slot0].stackSize = stacksize;
+				}
+			}
+		}
+	}
 	
 	
 }
