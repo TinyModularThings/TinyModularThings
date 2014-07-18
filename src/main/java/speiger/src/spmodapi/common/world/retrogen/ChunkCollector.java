@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.ChunkDataEvent;
 import speiger.src.api.world.ISpmodWorldGen;
 import speiger.src.spmodapi.common.config.SpmodConfig;
@@ -24,7 +24,7 @@ public class ChunkCollector
 		return collect;
 	}
 	
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onChunkSave(ChunkDataEvent.Save par1)
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
@@ -36,7 +36,7 @@ public class ChunkCollector
 		par1.getData().setTag("SpmodAPIRetroGen", nbt);
 	}
 	
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onChunkLoad(ChunkDataEvent.Load par1)
 	{
 		int dim = par1.world.provider.dimensionId;

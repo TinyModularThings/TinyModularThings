@@ -12,7 +12,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.ChatMessageComponent;
+import net.minecraft.util.ChatComponentText;
 import net.minecraftforge.fluids.Fluid;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.items.DisplayItem;
@@ -30,9 +30,9 @@ public class LanguageRegister
 {
 	private static HashMap<SpmodMod, ArrayList<String>> strings = new HashMap<SpmodMod, ArrayList<String>>();
 	
-	public static ChatMessageComponent createChatMessage(String text)
+	public static ChatComponentText createChatMessage(String text)
 	{
-		return new ChatMessageComponent().addText(text);
+		return new ChatComponentText(text);
 	}
 	
 	/**

@@ -2,7 +2,9 @@ package speiger.src.spmodapi.common.blocks.hemp;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.blocks.BlockStack;
@@ -24,7 +26,7 @@ public class ItemBlockHempDekoBase extends ItemBlock implements LanguageItem
 		"hemp.base.nice",
 		"hemp.brick.nice"
 	};
-	public ItemBlockHempDekoBase(int par1)
+	public ItemBlockHempDekoBase(Block par1)
 	{
 		super(par1);
 		this.setHasSubtypes(true);
@@ -37,7 +39,7 @@ public class ItemBlockHempDekoBase extends ItemBlock implements LanguageItem
 	}
 
 	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
+	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
 		return getDisplayName(par1ItemStack, SpmodAPI.instance);
 	}
@@ -49,7 +51,7 @@ public class ItemBlockHempDekoBase extends ItemBlock implements LanguageItem
 	}
 
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{
 		if(!SpmodModRegistry.areModsEqual(par0, SpmodAPI.instance))
 		{
@@ -57,7 +59,7 @@ public class ItemBlockHempDekoBase extends ItemBlock implements LanguageItem
 		}
 		for(int i = 0;i<names.length;i++)
 		{
-			ItemStack par1 = new ItemStack(id, 1, i);
+			ItemStack par1 = new ItemStack(item, 1, i);
 			LanguageRegister.getLanguageName(new BlockStack(par1), names[par1.getItemDamage()], par0);
 		}
 		LanguageRegister.getLanguageName(new InfoStack(), "monster.spawn.not", par0);

@@ -119,7 +119,7 @@ public class StackHelper
 			{
 				for (ItemStack itemstack : OreDictionary.getOres(idBase))
 				{
-					if (comparison.itemID == itemstack.itemID && (itemstack.getItemDamage() == OreDictionary.WILDCARD_VALUE || comparison.getItemDamage() == itemstack.getItemDamage()))
+					if (comparison == itemstack && (itemstack.getItemDamage() == OreDictionary.WILDCARD_VALUE || comparison.getItemDamage() == itemstack.getItemDamage()))
 					{
 						return true;
 					}
@@ -163,7 +163,7 @@ public class StackHelper
 		{
 			return false;
 		}
-		if (a.itemID != b.itemID)
+		if (a != b)
 		{
 			return false;
 		}

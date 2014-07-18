@@ -2,7 +2,9 @@ package speiger.src.spmodapi.common.blocks.utils;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -18,7 +20,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemBlockUtils extends ItemBlock implements LanguageItem
 {
 	String[] names = new String[]{"cobble.workbench", "exp.storage", "mob.machine", "entity.lurer"};
-	public ItemBlockUtils(int par1)
+	public ItemBlockUtils(Block par1)
 	{
 		super(par1);
 		this.setHasSubtypes(true);
@@ -35,13 +37,13 @@ public class ItemBlockUtils extends ItemBlock implements LanguageItem
 
 
 	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
+	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
 		return getDisplayName(par1ItemStack, SpmodAPI.instance);
 	}
 
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{
 		if(!SpmodModRegistry.areModsEqual(par0, SpmodAPI.instance))
 		{
@@ -49,7 +51,7 @@ public class ItemBlockUtils extends ItemBlock implements LanguageItem
 		}
 		for(int i = 0;i<names.length;i++)
 		{
-			LanguageRegister.getLanguageName(new BlockStack(id, i), names[i], par0);
+			LanguageRegister.getLanguageName(new BlockStack(item, i), names[i], par0);
 		}
 	}
 	

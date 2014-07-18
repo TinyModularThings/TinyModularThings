@@ -14,15 +14,15 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import cpw.mods.fml.common.FMLLog;
-
+import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import net.minecraft.nbt.CompressedStreamTools;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.Event.Result;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import speiger.src.spmodapi.SpmodAPI;
@@ -90,7 +90,7 @@ public class StructureStorage
 	
 	
 	
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onClickBlock(PlayerInteractEvent evt)
 	{
 		if (!evt.entity.worldObj.isRemote && evt.action == Action.RIGHT_CLICK_BLOCK && evt.entityPlayer.getCurrentEquippedItem() == null)
@@ -173,13 +173,13 @@ public class StructureStorage
 			{
 				DataInputStream stream = new DataInputStream(new BufferedInputStream(new FileInputStream(file)));
 				
-				NBTTagCompound nbt = (NBTTagCompound) NBTBase.readNamedTag(stream);
+				NBTTagCompound nbt = CompressedStreamTools.read(stream);
 				
-				NBTTagList list = nbt.getTagList("Structures");
+				NBTTagList list = nbt.getTagList("Structures", 10 /* COMPOUND */);
 				
 				for(int i = 0;i<list.tagCount();i++)
 				{
-					NBTTagCompound tag = (NBTTagCompound) list.tagAt(i);
+					NBTTagCompound tag = list.getCompoundTagAt(i);
 					int[] key = tag.getIntArray("Key");
 					int[] value = tag.getIntArray("Value");
 					
@@ -266,7 +266,7 @@ public class StructureStorage
 				NBTTagCompound nbt = new NBTTagCompound();
 				nbt.setTag("Structures", tags);
 				
-				NBTBase.writeNamedTag(nbt, stream);
+				CompressedStreamTools.write(nbt, stream);
 				
 				stream.close();
 				SpmodAPI.instance.log.print("Finished Saving Data");

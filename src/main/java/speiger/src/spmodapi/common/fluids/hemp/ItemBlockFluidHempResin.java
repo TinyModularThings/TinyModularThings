@@ -1,5 +1,6 @@
 package speiger.src.spmodapi.common.fluids.hemp;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
@@ -7,7 +8,7 @@ import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 public class ItemBlockFluidHempResin extends ItemBlock
 {
 
-	public ItemBlockFluidHempResin(int par1)
+	public ItemBlockFluidHempResin(Block par1)
 	{
 		super(par1);
 	}
@@ -19,9 +20,9 @@ public class ItemBlockFluidHempResin extends ItemBlock
 	}
 
 	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
+	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
-		return APIItems.hempResin.getItemDisplayName(new ItemStack(APIItems.hempResin));
+		return APIItems.hempResin.getItemStackDisplayName(new ItemStack(APIItems.hempResin));
 	}
 	
 	

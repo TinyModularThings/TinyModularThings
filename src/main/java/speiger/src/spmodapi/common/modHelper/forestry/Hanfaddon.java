@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.common.modHelper.forestry;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import speiger.src.spmodapi.common.blocks.hemp.BlockHempCrop;
@@ -15,7 +16,7 @@ public class Hanfaddon implements IFarmable
 	@Override
 	public boolean isGermling(ItemStack germling)
 	{
-		if (germling != null && germling.itemID == APIItems.hempSeed.itemID)
+		if (germling != null && germling.getItem() == APIItems.hempSeed)
 		{
 			return true;
 		}
@@ -25,7 +26,7 @@ public class Hanfaddon implements IFarmable
 	@Override
 	public boolean isSaplingAt(World world, int x, int y, int z)
 	{
-		if (world.getBlockId(x, y, z) == APIBlocks.hempCrop.blockID && world.getBlockMetadata(x, y, z) >= 7)
+		if (world.getBlock(x, y, z) == APIBlocks.hempCrop && world.getBlockMetadata(x, y, z) >= 7)
 		{
 			return true;
 		}
@@ -35,13 +36,13 @@ public class Hanfaddon implements IFarmable
 	@Override
 	public ICrop getCropAt(World world, int x, int y, int z)
 	{
-		if (world.getBlockId(x, y, z) == APIBlocks.hempCrop.blockID && world.getBlockMetadata(x, y, z) >= 7)
+		if (world.getBlock(x, y, z) == APIBlocks.hempCrop && world.getBlockMetadata(x, y, z) >= 7)
 		{
-			Block block = Block.blocksList[world.getBlockId(x, y, z)];
+			Block block = world.getBlock(x, y, z);
 			if (block != null && block instanceof BlockHempCrop)
 			{
 				BlockHempCrop end = (BlockHempCrop) block;
-				world.setBlock(x, y, z, 0);
+				world.setBlock(x, y, z, Blocks.air);
 				return end;
 			}
 		}
@@ -53,7 +54,7 @@ public class Hanfaddon implements IFarmable
 	{
 		if (itemstack != null)
 		{
-			if (itemstack.itemID == APIItems.hempSeed.itemID)
+			if (itemstack.getItem() == APIItems.hempSeed)
 			{
 				return true;
 			}
@@ -64,9 +65,9 @@ public class Hanfaddon implements IFarmable
 	@Override
 	public boolean plantSaplingAt(ItemStack germling, World world, int x, int y, int z)
 	{
-		if (germling.itemID == APIItems.hempSeed.itemID)
+		if (germling.getItem() == APIItems.hempSeed)
 		{
-			if (world.setBlock(x, y, z, APIBlocks.hempCrop.blockID))
+			if (world.setBlock(x, y, z, APIBlocks.hempCrop))
 			{
 				return true;
 			}

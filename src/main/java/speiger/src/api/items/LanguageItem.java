@@ -1,5 +1,6 @@
 package speiger.src.api.items;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.util.SpmodMod;
 
@@ -21,10 +22,10 @@ public interface LanguageItem
 	 * This function is only called to collect everything. Every mod has todo it
 	 * himself.
 	 * 
-	 * @param id
-	 *            Item/BlockID
+	 * @param item
+	 *            The item to register
 	 * @param par0
 	 *            Mod which want to request that
 	 */
-	void registerItems(int id, SpmodMod par0);
+	void registerItems(Item item, SpmodMod par0);
 }

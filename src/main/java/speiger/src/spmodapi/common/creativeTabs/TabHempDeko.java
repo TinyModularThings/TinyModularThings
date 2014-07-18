@@ -6,7 +6,7 @@ import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
+import net.minecraft.item.Item;
 
 public class TabHempDeko extends CreativeTabs
 {
@@ -31,11 +31,8 @@ public class TabHempDeko extends CreativeTabs
 	}
 
 	@Override
-	public ItemStack getIconItemStack()
+	public Item getTabIconItem()
 	{
-		return new ItemStack(APIBlocks.hempBlock);
+		return Item.getItemFromBlock(APIBlocks.hempBlock);
 	}
-	
-	
-	
 }

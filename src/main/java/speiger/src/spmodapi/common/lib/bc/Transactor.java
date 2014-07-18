@@ -3,7 +3,7 @@ package speiger.src.spmodapi.common.lib.bc;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import buildcraft.api.inventory.ISpecialInventory;
 
 public abstract class Transactor implements ITransactor

@@ -26,64 +26,77 @@ public class CopiedIInventory implements IInventory
 		this.inventory = ((ItemStack[]) par1.clone());
 	}
 	
+	@Override
 	public int getSizeInventory()
 	{
 		return this.inventory.length;
 	}
 	
+	@Override
 	public ItemStack getStackInSlot(int i)
 	{
 		return this.inventory[i];
 	}
 	
+	@Override
 	public ItemStack decrStackSize(int i, int j)
 	{
 		return null;
 	}
 	
+	@Override
 	public ItemStack getStackInSlotOnClosing(int i)
 	{
 		return this.inventory[i];
 	}
 	
+	@Override
 	public void setInventorySlotContents(int i, ItemStack itemstack)
 	{
 	}
 	
-	public String getInvName()
+	@Override
+	public String getInventoryName()
 	{
 		return "Copied Inventory";
 	}
 	
-	public boolean isInvNameLocalized()
-	{
-		return false;
-	}
-	
+	@Override
 	public int getInventoryStackLimit()
 	{
 		return 0;
 	}
 	
-	public void onInventoryChanged()
+	@Override
+	public void markDirty()
 	{
 	}
 	
+	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
 		return false;
 	}
 	
-	public void openChest()
+	@Override
+	public void openInventory()
 	{
 	}
 	
-	public void closeChest()
+	@Override
+	public void closeInventory()
 	{
 	}
 	
+	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
 		return false;
+	}
+
+	@Override
+	public boolean hasCustomInventoryName()
+	{
+		return true;
 	}
 }

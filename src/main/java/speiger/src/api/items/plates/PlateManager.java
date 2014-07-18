@@ -70,7 +70,7 @@ public class PlateManager
 		public ItemStack getStackWithIdentity()
 		{
 			ItemStack stack = new ItemStack(item, 1, metadata);
-			NBTTagString text = new NBTTagString("Identity", this.identity);
+			NBTTagString text = new NBTTagString(this.identity);
 			stack.setTagInfo("Identity", text);
 			return stack;
 		}
@@ -78,7 +78,7 @@ public class PlateManager
 		public ItemStack getStackWithIdentity(int qty)
 		{
 			ItemStack stack = new ItemStack(item, qty, metadata);
-			NBTTagString text = new NBTTagString("Identity", this.identity);
+			NBTTagString text = new NBTTagString(this.identity);
 			stack.setTagInfo("Identity", text);
 			return stack;
 		}

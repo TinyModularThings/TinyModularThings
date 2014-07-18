@@ -2,13 +2,11 @@ package speiger.src.spmodapi.common.config;
 
 import java.io.File;
 
-import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.Property;
+import net.minecraftforge.common.config.Configuration;
+import net.minecraftforge.common.config.Property;
 import speiger.src.api.util.config.ConfigBoolean;
 import speiger.src.api.util.config.IConfigHelper;
 import speiger.src.spmodapi.SpmodAPI;
-import speiger.src.spmodapi.common.config.configType.ConfigBlock;
-import speiger.src.spmodapi.common.config.configType.ConfigItem;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 
 public class SpmodConfig implements IConfigHelper
@@ -28,10 +26,7 @@ public class SpmodConfig implements IConfigHelper
 	public static boolean MobMachineEggs = true;
 	public static int[] ticks = new int[0];
 	public static int savingDelay = 24000;
-	
-	public static ConfigBlock blockIDs;
-	public static ConfigItem itemIDs;
-	
+
 	private static SpmodConfig init = new SpmodConfig();
 	
 	public static SpmodConfig getInstance()
@@ -58,10 +53,7 @@ public class SpmodConfig implements IConfigHelper
 			playSounds = getBoolean(general, "Play Sounds", true).setComment("Dissable all Sounds in my Mods").getResult(config);
 			loadTiles = getBoolean(general, "LoadTileEntites", true).setComment("If you get crashes with my Blocks then just set this to false and load the game. My Block are frozen and do nothing in this time").getResult(config);
 			MobMachineEggs = getBoolean(general, "MobMachine Spawn Eggs", true).setComment("Enable that MobMachine drops Spawneggs").getResult(config);
-			
-			blockIDs = new ConfigBlock(ConfigBlock.getConfig(config, blocks, 950));
-			itemIDs = new ConfigItem(ConfigItem.getConfig(config, items, 15000));
-			
+
 			Property tick = config.get(general, "Round Roubin Speed", "1:2:5:10:20:50", "Every number will be math as number * 5 ticks and please write it as the default with a : ");
 			String[] result = tick.getString().split(":");
 			ticks = new int[result.length];
@@ -83,11 +75,7 @@ public class SpmodConfig implements IConfigHelper
 			SpmodAPI.log.print("Items Loaded");
 			SpmodAPI.log.print("Register WorldGen");
 			SpmodWorldGen.getWorldGen().init(this);
-			SpmodAPI.log.print("WorldGen Registered");
-			
-			blockIDs.setEnd(config, blocks.toLowerCase());
-			itemIDs.setEnd(config, items.toLowerCase());
-			
+			SpmodAPI.log.print("WorldGen Registered");			
 		}
 		catch (Exception e)
 		{

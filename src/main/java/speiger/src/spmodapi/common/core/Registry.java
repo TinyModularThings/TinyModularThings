@@ -1,8 +1,10 @@
 package speiger.src.spmodapi.common.core;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.biome.BiomeGenBase;
+import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 import speiger.src.api.items.InfoStack;
@@ -19,7 +21,9 @@ import speiger.src.spmodapi.common.tile.MobMachineLoader;
 import speiger.src.spmodapi.common.util.ForgeRegister;
 import buildcraft.BuildCraftCore;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class Registry
@@ -34,13 +38,24 @@ public class Registry
 	public static void registerStuff()
 	{
 		MinecraftForge.addGrassSeed(new ItemStack(APIItems.hempSeed, 1), 5);
-		MinecraftForge.addGrassPlant(APIBlocks.blueFlower, 0, 10);
+		addGrassPlant(APIBlocks.blueFlower, 0, 10, BiomeDictionary.Type.PLAINS, BiomeDictionary.Type.FOREST);
 		instance.registerText();
 		instance.initOres();
 		SpmodRecipeRegistry.loadRecipes();
 		EntityRegistry.registerModEntity(EntityOverridenEnderman.class, "newEndermann", 1, SpmodAPI.instance, 256, 3, true);
 		MinecraftForge.EVENT_BUS.register(ChatHandler.getInstance());
 		MobMachineLoader.initMobMachines();
+	}
+
+	private static void addGrassPlant(Block plant, int metadata, int weight, BiomeDictionary.Type... biomeTypes)
+	{
+		for (BiomeDictionary.Type biomes : biomeTypes)
+		{
+			for (BiomeGenBase biome : BiomeDictionary.getBiomesForType(biomes))
+			{
+				biome.addFlower(plant, metadata, weight);
+			}
+		}
 	}
 	
 	void registerText()
@@ -73,7 +88,7 @@ public class Registry
 	}
 	
 	
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onOreRegister(OreRegisterEvent par0)
 	{
 		if(par0.Name.equalsIgnoreCase("gearStone"))
@@ -81,7 +96,7 @@ public class Registry
 			
 			try
 			{
-				if(par0.Ore.itemID == BuildCraftCore.stoneGearItem.itemID)
+				if(par0.Ore.getItem() == BuildCraftCore.stoneGearItem)
 				{
 					OreDictionary.getOres(par0.Name).remove(par0.Ore);
 				}

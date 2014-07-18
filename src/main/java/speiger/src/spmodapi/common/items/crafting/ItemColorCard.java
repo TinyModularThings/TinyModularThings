@@ -3,8 +3,10 @@ package speiger.src.spmodapi.common.items.crafting;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -24,9 +26,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemColorCard extends SpmodItem
 {
 	
-	public ItemColorCard(int par1)
+	public ItemColorCard()
 	{
-		super(par1);
 		this.setCreativeTab(APIUtils.tabCrafing);
 		this.setHasSubtypes(true);
         OreDictionary.registerOre("dyeBlack", new ItemStack(this, 1, 16));
@@ -48,13 +49,13 @@ public class ItemColorCard extends SpmodItem
 	}
 
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{
 		if(!SpmodModRegistry.areModsEqual(par0, getMod()))
 		{
 			return;
 		}
-		LanguageRegister.getLanguageName(new DisplayItem(id), "color.card", par0);
+		LanguageRegister.getLanguageName(new DisplayItem(item), "color.card", par0);
 	}
 	
 	
@@ -86,7 +87,7 @@ public class ItemColorCard extends SpmodItem
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IIconRegister par1IconRegister)
 	{
 		this.itemIcon = par1IconRegister.registerIcon(getModID()+":crafting/colorCard");
 	}
@@ -97,11 +98,11 @@ public class ItemColorCard extends SpmodItem
 		if(!par2.isRemote)
 		{
 			MovingObjectPosition target = this.getMovingObjectPositionFromPlayer(par2, par3, true);
-			if(target != null && target.typeOfHit == target.typeOfHit.TILE)
+			if(target != null && target.typeOfHit == target.typeOfHit.ENTITY)
 			{
-				int id = par2.getBlockId(target.blockX, target.blockY, target.blockZ);
+				Block block = par2.getBlock(target.blockX, target.blockY, target.blockZ);
 				int meta = par2.getBlockMetadata(target.blockX, target.blockY, target.blockZ);
-				if(id == Block.cloth.blockID)
+				if(block == Blocks.wool)
 				{
 					if(par1.getItemDamage() == 0)
 					{

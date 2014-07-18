@@ -3,10 +3,13 @@ package speiger.src.spmodapi.common.items.hemp;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import speiger.src.api.items.DisplayItem;
@@ -24,20 +27,20 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemHempSeed extends ItemSeeds implements LanguageItem
 {
-	public ItemHempSeed(int par1)
+	public ItemHempSeed()
 	{
-		super(par1, APIBlocks.hempCrop.blockID, Block.tilledField.blockID);
+		super(APIBlocks.hempCrop, Blocks.farmland);
 		this.setCreativeTab(APIUtils.tabHemp);
 	}
 	
 	@Override
-	public EnumPlantType getPlantType(World world, int x, int y, int z)
+	public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z)
 	{
 		return EnumPlantType.Crop;
 	}
 	
 	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
+	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
 		return getDisplayName(par1ItemStack, SpmodAPI.instance);
 	}
@@ -49,7 +52,7 @@ public class ItemHempSeed extends ItemSeeds implements LanguageItem
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{
 		if (!SpmodModRegistry.areModsEqual(par0, SpmodAPI.instance))
 		{
@@ -57,12 +60,12 @@ public class ItemHempSeed extends ItemSeeds implements LanguageItem
 		}
 		LanguageRegister.getLanguageName(new InfoStack(), "like.mfr", SpmodAPI.instance);
 		LanguageRegister.getLanguageName(new InfoStack(), "prefer.forestry", SpmodAPI.instance);
-		LanguageRegister.getLanguageName(new DisplayItem(id), "hemp.seed", par0);
+		LanguageRegister.getLanguageName(new DisplayItem(item), "hemp.seed", par0);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IIconRegister par1IconRegister)
 	{
 		itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID + ":hemp/HempSeeds");
 	}

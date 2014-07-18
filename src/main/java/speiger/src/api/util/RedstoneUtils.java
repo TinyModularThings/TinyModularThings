@@ -2,14 +2,14 @@ package speiger.src.api.util;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public class RedstoneUtils
 {
 	
 	public static boolean isBlockGettingPoweredFromSpecialSide(TileEntity tile, int facing)
 	{
-		return isBlockGettingPoweredFromSpecailSide(tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord, facing);
+		return isBlockGettingPoweredFromSpecailSide(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord, facing);
 	}
 	
 	public static boolean isBlockGettingPoweredFromSpecailSide(World par0, int par1, int par2, int par3, int facing)
@@ -29,7 +29,7 @@ public class RedstoneUtils
 	
 	public static boolean isBlockGettingPowered(TileEntity tile)
 	{
-		return isBlockGettingPowered(tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord);
+		return isBlockGettingPowered(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord);
 	}
 	
 	public static boolean isBlockGettingPowered(World world, int x, int y, int z)

@@ -1,7 +1,7 @@
 package speiger.src.spmodapi.common.lib.bc;
 
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public interface ITransactor
 {

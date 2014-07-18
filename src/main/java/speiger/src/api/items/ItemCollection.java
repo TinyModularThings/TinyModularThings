@@ -1,7 +1,7 @@
 package speiger.src.api.items;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 
 public class ItemCollection
@@ -9,44 +9,44 @@ public class ItemCollection
 	public static ItemStack[] getAllWool()
 	{
 		return new ItemStack[]{
-			new ItemStack(Block.cloth, 1, 0), 
-			new ItemStack(Block.cloth, 1, 1), 
-			new ItemStack(Block.cloth, 1, 2), 
-			new ItemStack(Block.cloth, 1, 3), 
-			new ItemStack(Block.cloth, 1, 4),
-			new ItemStack(Block.cloth, 1, 5),
-			new ItemStack(Block.cloth, 1, 6),
-			new ItemStack(Block.cloth, 1, 7),
-			new ItemStack(Block.cloth, 1, 8),
-			new ItemStack(Block.cloth, 1, 9),
-			new ItemStack(Block.cloth, 1, 10),
-			new ItemStack(Block.cloth, 1, 11),
-			new ItemStack(Block.cloth, 1, 12),
-			new ItemStack(Block.cloth, 1, 13),
-			new ItemStack(Block.cloth, 1, 14),
-			new ItemStack(Block.cloth, 1, 15)
+			new ItemStack(Blocks.wool, 1, 0), 
+			new ItemStack(Blocks.wool, 1, 1), 
+			new ItemStack(Blocks.wool, 1, 2), 
+			new ItemStack(Blocks.wool, 1, 3), 
+			new ItemStack(Blocks.wool, 1, 4),
+			new ItemStack(Blocks.wool, 1, 5),
+			new ItemStack(Blocks.wool, 1, 6),
+			new ItemStack(Blocks.wool, 1, 7),
+			new ItemStack(Blocks.wool, 1, 8),
+			new ItemStack(Blocks.wool, 1, 9),
+			new ItemStack(Blocks.wool, 1, 10),
+			new ItemStack(Blocks.wool, 1, 11),
+			new ItemStack(Blocks.wool, 1, 12),
+			new ItemStack(Blocks.wool, 1, 13),
+			new ItemStack(Blocks.wool, 1, 14),
+			new ItemStack(Blocks.wool, 1, 15)
 		};
 	}
 	
 	public static ItemStack[] getAllDye()
 	{
 		return new ItemStack[]{
-				new ItemStack(Item.dyePowder, 1, 0), 
-				new ItemStack(Item.dyePowder, 1, 1), 
-				new ItemStack(Item.dyePowder, 1, 2), 
-				new ItemStack(Item.dyePowder, 1, 3), 
-				new ItemStack(Item.dyePowder, 1, 4),
-				new ItemStack(Item.dyePowder, 1, 5),
-				new ItemStack(Item.dyePowder, 1, 6),
-				new ItemStack(Item.dyePowder, 1, 7),
-				new ItemStack(Item.dyePowder, 1, 8),
-				new ItemStack(Item.dyePowder, 1, 9),
-				new ItemStack(Item.dyePowder, 1, 10),
-				new ItemStack(Item.dyePowder, 1, 11),
-				new ItemStack(Item.dyePowder, 1, 12),
-				new ItemStack(Item.dyePowder, 1, 13),
-				new ItemStack(Item.dyePowder, 1, 14),
-				new ItemStack(Item.dyePowder, 1, 15)
+				new ItemStack(Items.dye, 1, 0), 
+				new ItemStack(Items.dye, 1, 1), 
+				new ItemStack(Items.dye, 1, 2), 
+				new ItemStack(Items.dye, 1, 3), 
+				new ItemStack(Items.dye, 1, 4),
+				new ItemStack(Items.dye, 1, 5),
+				new ItemStack(Items.dye, 1, 6),
+				new ItemStack(Items.dye, 1, 7),
+				new ItemStack(Items.dye, 1, 8),
+				new ItemStack(Items.dye, 1, 9),
+				new ItemStack(Items.dye, 1, 10),
+				new ItemStack(Items.dye, 1, 11),
+				new ItemStack(Items.dye, 1, 12),
+				new ItemStack(Items.dye, 1, 13),
+				new ItemStack(Items.dye, 1, 14),
+				new ItemStack(Items.dye, 1, 15)
 			};
 	}
 }

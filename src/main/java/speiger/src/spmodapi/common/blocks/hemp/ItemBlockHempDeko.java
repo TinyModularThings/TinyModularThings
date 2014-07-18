@@ -2,7 +2,9 @@ package speiger.src.spmodapi.common.blocks.hemp;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.blocks.BlockStack;
@@ -22,7 +24,7 @@ public class ItemBlockHempDeko extends ItemBlock implements LanguageItem
 	
 	public String[] colorsnames = new String[] { "Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "Light Gray", "Gray", "Pink", "Lime", "Yellow", "Light Blue", "Magenta", "Orange", "White" };
 	
-	public ItemBlockHempDeko(int par1)
+	public ItemBlockHempDeko(Block par1)
 	{
 		super(par1);
 		setHasSubtypes(true);
@@ -40,7 +42,7 @@ public class ItemBlockHempDeko extends ItemBlock implements LanguageItem
 	}
 	
 	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
+	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
 		return getDisplayName(par1ItemStack, SpmodAPI.instance);
 	}
@@ -53,17 +55,17 @@ public class ItemBlockHempDeko extends ItemBlock implements LanguageItem
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{
 		if (!SpmodModRegistry.areModsEqual(par0, SpmodAPI.instance))
 		{
 			return;
 		}
 		
-		HempBlockInformation infos = getHempInfo(new BlockStack(id));
+		HempBlockInformation infos = getHempInfo(new BlockStack(item));
 		for (int i = 0; i < colorsnames.length; i++)
 		{
-			LanguageRegister.getLanguageName(new BlockStack(id, i), "hemp." + infos.getName(), par0);
+			LanguageRegister.getLanguageName(new BlockStack(item, i), "hemp." + infos.getName(), par0);
 		}
 		LanguageRegister.getLanguageName(new InfoStack(), "monster.spawn.not", par0);
 	}

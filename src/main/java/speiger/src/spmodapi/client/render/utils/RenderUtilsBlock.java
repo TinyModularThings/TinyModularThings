@@ -2,7 +2,7 @@ package speiger.src.spmodapi.client.render.utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -10,7 +10,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 public class RenderUtilsBlock implements ISimpleBlockRenderingHandler
 {
 	public static int renderID = RenderingRegistry.getNextAvailableRenderId();
-	public static Icon pork;
+	public static IIcon pork;
 	
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
@@ -33,7 +33,7 @@ public class RenderUtilsBlock implements ISimpleBlockRenderingHandler
 	}
 	
 	@Override
-	public boolean shouldRender3DInInventory()
+	public boolean shouldRender3DInInventory(int modelId)
 	{
 		return false;
 	}

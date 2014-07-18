@@ -1,5 +1,7 @@
 package speiger.src.spmodapi.common.blocks.hemp;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.blocks.BlockStack;
@@ -12,7 +14,7 @@ import speiger.src.spmodapi.SpmodAPI;
 public class ItemBlockHempStraw extends ItemBlock implements LanguageItem
 {
 	
-	public ItemBlockHempStraw(int par1)
+	public ItemBlockHempStraw(Block par1)
 	{
 		super(par1);
 		setHasSubtypes(true);
@@ -25,7 +27,7 @@ public class ItemBlockHempStraw extends ItemBlock implements LanguageItem
 	}
 	
 	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
+	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
 		return getDisplayName(par1ItemStack, SpmodAPI.instance);
 	}
@@ -37,13 +39,13 @@ public class ItemBlockHempStraw extends ItemBlock implements LanguageItem
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{
 		if (!SpmodModRegistry.areModsEqual(par0, SpmodAPI.instance))
 		{
 			return;
 		}
-		LanguageRegister.getLanguageName(new BlockStack(id), "hemp.straw", par0);
+		LanguageRegister.getLanguageName(new BlockStack(item), "hemp.straw", par0);
 	}
 	
 }

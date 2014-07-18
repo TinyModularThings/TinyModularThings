@@ -2,10 +2,11 @@ package speiger.src.spmodapi.common.items.crafting;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.api.items.DisplayItem;
 import speiger.src.api.language.LanguageRegister;
@@ -21,9 +22,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemGear extends SpmodItem
 {
 	
-	public ItemGear(int id)
+	public ItemGear()
 	{
-		super(id);
 		this.setHasSubtypes(true);
 		this.setCreativeTab(APIUtils.tabCrafing);
 	}
@@ -32,7 +32,7 @@ public class ItemGear extends SpmodItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for(GearType type : GearType.values())
 		{
@@ -43,7 +43,7 @@ public class ItemGear extends SpmodItem
 
 
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{
 		if(!SpmodModRegistry.areModsEqual(par0, getMod()))
 		{
@@ -51,22 +51,22 @@ public class ItemGear extends SpmodItem
 		}
 		for(int i = 0;i<textures.length;i++)
 		{
-			LanguageRegister.getLanguageName(new DisplayItem(id), "gear."+GearType.values()[i].getName(), par0);
+			LanguageRegister.getLanguageName(new DisplayItem(item), "gear."+GearType.values()[i].getName(), par0);
 		}
 	}
 	
 	@Override
 	public String getDisplayName(ItemStack par1, SpmodMod par0)
 	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "gear."+GearType.values()[par1.getItemDamage()].getName(), par0);
+		return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), "gear."+GearType.values()[par1.getItemDamage()].getName(), par0);
 	}
 	
-	Icon[] textures = new Icon[GearType.values().length];
+	IIcon[] textures = new IIcon[GearType.values().length];
 	
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IIconRegister par1IconRegister)
 	{
 		for(int i = 0;i<textures.length;i++)
 		{
@@ -88,7 +88,7 @@ public class ItemGear extends SpmodItem
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int par1)
+	public IIcon getIconFromDamage(int par1)
 	{
 		return textures[par1];
 	}

@@ -8,6 +8,7 @@ import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 
 public class TabCrafting extends CreativeTabs
@@ -34,8 +35,8 @@ public class TabCrafting extends CreativeTabs
 	}
 	
 	@Override
-	public ItemStack getIconItemStack()
+	public Item getTabIconItem()
 	{
-		return ItemGear.getGearFromType(GearType.Redstone);
+		return ItemGear.getGearFromType(GearType.Redstone).getItem();
 	}
 }

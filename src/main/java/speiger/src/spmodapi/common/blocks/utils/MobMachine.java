@@ -1,7 +1,6 @@
 package speiger.src.spmodapi.common.blocks.utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -9,19 +8,19 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
-import net.minecraft.util.Icon;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.IIcon;
 import speiger.src.api.items.IEssens;
 import speiger.src.api.items.IExpBottle;
 import speiger.src.api.language.LanguageRegister;
@@ -29,22 +28,21 @@ import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.tile.TileFacing;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class MobMachine extends TileFacing implements ISidedInventory
 {
 	//Static variables
-	public static Icon[][] textures;
+	public static IIcon[][] textures;
 	public static HashMap<Integer, HashMap<DropType, List<ItemStack>>> allDrops = new HashMap<Integer, HashMap<DropType, List<ItemStack>>>();
-	public static HashMap<Integer, HashMap<List<Integer>, Integer>> foodList = new HashMap<Integer, HashMap<List<Integer>, Integer>>();
+	public static HashMap<Integer, HashMap<ItemStack, Integer>> foodList = new HashMap<Integer, HashMap<ItemStack, Integer>>();
 	public static HashMap<Integer, Boolean> needExp = new HashMap<Integer, Boolean>();
 	public static HashMap<Integer, Integer> neededExp = new HashMap<Integer, Integer>();
 	public static HashMap<Integer, String[]> texture = new HashMap<Integer, String[]>();
 	public static HashMap<Integer, String> names = new HashMap<Integer, String>();
-	public static HashMap<List<Integer>, Integer> activators = new HashMap<List<Integer>, Integer>();
+	public static HashMap<ItemStack, Integer> activators = new HashMap<ItemStack, Integer>();
 	public static int totalTicks = 6000;
 	
 	//None Static variables
@@ -96,18 +94,17 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	
 	public static void addActivator(int id, ItemStack par1)
 	{
-		List<Integer> item = Arrays.asList(par1.itemID, par1.getItemDamage());
-		activators.put(item, id);
+		activators.put(par1, id);
 	}
 
 	public static void addFood(int id, ItemStack par1, int foodValue)
 	{
-		HashMap<List<Integer>, Integer> list = foodList.get(Integer.valueOf(id));
+		HashMap<ItemStack, Integer> list = foodList.get(Integer.valueOf(id));
 		if(list == null)
 		{
-			list = new HashMap<List<Integer>, Integer>();
+			list = new HashMap<ItemStack, Integer>();
 		}
-		list.put(Arrays.asList(par1.itemID, par1.getItemDamage()), Integer.valueOf(foodValue));
+		list.put(par1, Integer.valueOf(foodValue));
 		foodList.put(Integer.valueOf(id), list);
 	}
 	
@@ -169,7 +166,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	}
 
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		if(renderPass == 0)
 		{
@@ -189,9 +186,9 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	
 	
 	@Override
-	public void registerIcon(IconRegister par1)
+	public void registerIcon(IIconRegister par1)
 	{
-		textures = new Icon[getBiggestNumber(texture.keySet())][2];
+		textures = new IIcon[getBiggestNumber(texture.keySet())][2];
 		for(Entry<Integer, String[]> par2 : texture.entrySet())
 		{
 			textures[par2.getKey()][0] = par1.registerIcon(par2.getValue()[0]);
@@ -245,13 +242,13 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
 	}
 
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 	{
-		this.readFromNBT(pkt.data);
+		this.readFromNBT(pkt.func_148857_g());
 	}
 	
 	
@@ -263,6 +260,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	{
 		if(!worldObj.isRemote)
 		{
+			
 			if(isValid())
 			{
 				
@@ -307,13 +305,12 @@ public class MobMachine extends TileFacing implements ISidedInventory
 				{
 					this.sortInventory();
 				}
-				
 			}
 			
 			if(worldObj.getWorldTime() % 10 == 0)
 			{
 				this.updateBlock();
-				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
+				FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendToAllNear(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 			}
 		}
 		
@@ -340,7 +337,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 			if(Exp > 100)
 			{
 				Exp -=100;
-				drops.add(new ItemStack(Item.expBottle));
+				drops.add(new ItemStack(Items.experience_bottle));
 			}
 		}
 	}
@@ -351,7 +348,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 		{
 			if(isValidFood())
 			{
-				food += this.foodList.get(type).get(Arrays.asList(inv[9].itemID, inv[9].getItemDamage()));
+				food += this.foodList.get(type).get(inv[9]);
 				this.inv[9].stackSize--;
 				if(inv[9].stackSize <= 0)
 				{
@@ -460,7 +457,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	{
 		if(isValid() && inv[9] != null)
 		{
-			return this.foodList.get(Integer.valueOf(type)).get(Arrays.asList(inv[9].itemID, inv[9].getItemDamage())) > 0;
+			return this.foodList.get(Integer.valueOf(type)).get(inv[9]) > 0;
 		}
 		return false;
 	}
@@ -542,15 +539,15 @@ public class MobMachine extends TileFacing implements ISidedInventory
     }
 
 	@Override
-	public String getInvName()
+	public String getInventoryName()
 	{
 		return "MobMachine";
 	}
 
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
@@ -566,12 +563,12 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	}
 
 	@Override
-	public void openChest()
+	public void openInventory()
 	{	
 	}
 
 	@Override
-	public void closeChest()
+	public void closeInventory()
 	{	
 	}
 
@@ -618,26 +615,25 @@ public class MobMachine extends TileFacing implements ISidedInventory
 				ItemStack current = par1.getCurrentEquippedItem();
 				if(current != null)
 				{
-					List<Integer> key = Arrays.asList(current.itemID, current.getItemDamage());
-					if(activators.containsKey(key))
+					if(activators.containsKey(current))
 					{
-						this.type = activators.get(key);
+						this.type = activators.get(current);
 						current.stackSize--;
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Initizialized MobMachine to: "+this.names.get(type)));
+						par1.addChatMessage(LanguageRegister.createChatMessage("Initizialized MobMachine to: "+this.names.get(type)));
 						this.updateBlock();
-						this.worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
-						this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, getBlockType().blockID);
-						PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 40, worldObj.provider.dimensionId, getDescriptionPacket());
+						this.worldObj.markBlockRangeForRenderUpdate(xCoord - 1, yCoord - 1, zCoord - 1, xCoord + 1, yCoord + 1, zCoord + 1);
+						this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, getBlockType());
+						FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendToAllNear(xCoord, yCoord, zCoord, 40, worldObj.provider.dimensionId, getDescriptionPacket());
 						return true;
 					}
 					else
 					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Not a valid init Item/Block"));
+						par1.addChatMessage(LanguageRegister.createChatMessage("Not a valid init Item/Block"));
 					}
 				}
 				else
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Need to be Initizialized"));
+					par1.addChatMessage(LanguageRegister.createChatMessage("Need to be Initizialized"));
 				}
 			}
 		}
@@ -675,11 +671,11 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-        NBTTagList nbttaglist = nbt.getTagList("Items");
+        NBTTagList nbttaglist = nbt.getTagList("Items", 10 /* COMPOUND */);
         this.inv = new ItemStack[this.getSizeInventory()];
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
+            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             byte b0 = nbttagcompound1.getByte("Slot");
 
             if (b0 >= 0 && b0 < this.inv.length)
@@ -722,7 +718,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
         nbt.setInteger("Life", lifeEssens);
         nbt.setInteger("Type", type);
 	}
-	
+
 	public void transferItem(int slot0, int slot1, boolean nbt)
 	{
 		if(inv[slot0] != null)
@@ -748,6 +744,4 @@ public class MobMachine extends TileFacing implements ISidedInventory
 			}
 		}
 	}
-	
-	
 }

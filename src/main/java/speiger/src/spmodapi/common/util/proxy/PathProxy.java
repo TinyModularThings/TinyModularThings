@@ -18,7 +18,7 @@ public class PathProxy
 {
 	public static void addFurnaceRecipe(ItemStack input, ItemStack output, float exp)
 	{
-		FurnaceRecipes.smelting().addSmelting(input.itemID, input.getItemDamage(), output, exp);
+		FurnaceRecipes.smelting().func_151394_a(input, output, exp);
 	}
 	
 	public static void addPressureRecipes(ItemStack input, ItemStack input2, ItemStack combiner, ItemStack output, boolean stacksize, boolean useCombiner)
@@ -85,5 +85,4 @@ public class PathProxy
 		}
 		return stack.toArray(new ItemStack[stack.size()]);
 	}
-	
 }

@@ -7,11 +7,12 @@ import java.util.List;
 
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.SpmodAPI;
@@ -89,7 +90,7 @@ public class HempCrop extends CropCard
 	@Override
 	public boolean rightclick(ICropTile crop, EntityPlayer player)
 	{
-		if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().itemID == Item.dyePowder.itemID && player.getCurrentEquippedItem().getItemDamage() == 0)
+		if (player.getCurrentEquippedItem() != null && player.getCurrentEquippedItem().getItem() == Items.dye && player.getCurrentEquippedItem().getItemDamage() == 0)
 		{
 			crop.setSize((byte) Math.min(crop.getSize() + 1, 7));
 		}
@@ -133,7 +134,7 @@ public class HempCrop extends CropCard
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getSprite(ICropTile crop)
+	public IIcon getSprite(ICropTile crop)
 	{
 		return APIBlocks.hempCrop.getIcon(0, crop.getSize());
 	}

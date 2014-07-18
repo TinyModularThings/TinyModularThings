@@ -36,7 +36,7 @@ public class BlueFlowerGen implements ISpmodWorldGen
 			int x = chunkX * 16 + rand.nextInt(16) + 8;
 			int y = rand.nextInt(128);
 			int z = chunkZ * 16 + rand.nextInt(16) + 8;
-			new WorldGenFlowers(APIBlocks.blueFlower.blockID).generate(world, rand, x, y, z);
+			new WorldGenFlowers(APIBlocks.blueFlower).generate(world, rand, x, y, z);
 		}
 	}
 	

@@ -2,12 +2,14 @@ package speiger.src.spmodapi.common.items.exp;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.util.Icon;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import speiger.src.api.items.DisplayStack;
 import speiger.src.api.items.IExpBottle;
@@ -23,9 +25,8 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 {
 	String[] exp = new String[]{"small", "medium", "big", "huge", "transdimensional"};
 	static int[] exps = new int[]{100, 1000, 10000, 100000, 1000000};
-	public ExpBottle(int par1)
+	public ExpBottle()
 	{
-		super(par1);
 		this.setHasSubtypes(true);
 		this.setMaxDamage(100);
 		this.setNoRepair();
@@ -34,7 +35,7 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 	}
 
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{	
 		if(SpmodModRegistry.areModsEqual(par0, getMod()))
 		{
@@ -42,7 +43,7 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 		}
 		for(int i = 0;i<exp.length;i++)
 		{
-			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, 0)), "exp.bottle."+exp[i], par0);
+			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(item, 1, 0)), "exp.bottle."+exp[i], par0);
 		}
 	}
 	
@@ -53,7 +54,7 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 	{
 		if(par1.getTagCompound() == null)
 		{
-			par1 = this.getExpBottle(par1.itemID, 0, false, false);
+			par1 = this.getExpBottle(par1.getItem(), 0, false, false);
 		}
 		NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Exp");
 		return LanguageRegister.getLanguageName(new DisplayStack(par1), "exp.bottle."+exp[nbt.getInteger("ID")], Start);
@@ -61,24 +62,24 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 	}
 
 	@Override
-	public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+	public IIcon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
 	{
 		NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Exp");
 		return icons[nbt.getInteger("ID")];
 	}
 
 	@Override
-	public Icon getIcon(ItemStack stack, int pass)
+	public IIcon getIcon(ItemStack stack, int pass)
 	{
 		NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Exp");
 		return icons[nbt.getInteger("ID")];
 	}
 	
-	Icon[] icons = new Icon[5];
+	IIcon[] icons = new IIcon[5];
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerIcons(IIconRegister par1)
 	{
 		for(int i = 0;i<icons.length;i++)
 		{
@@ -111,12 +112,12 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 					}
 					else
 					{
-						par3.addChatMessage("Exp Bottle is Full");
+						par3.addChatComponentMessage(new ChatComponentText("Exp Bottle is Full"));
 					}
 				}
 				else
 				{
-					par3.addChatMessage("You need at least 1 Exp level");
+					par3.addChatMessage(new ChatComponentText("You need at least 1 Exp level"));
 				}
 			}
 			else
@@ -178,9 +179,9 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 		return nbt.getInteger("Cu");
 	}
 	
-	public static ItemStack getExpBottle(int id, int type, boolean doubles, boolean full)
+	public static ItemStack getExpBottle(Item parItem, int type, boolean doubles, boolean full)
 	{
-		ItemStack item = new ItemStack(id, 1, full ? 1 : 100);
+		ItemStack item = new ItemStack(parItem, 1, full ? 1 : 100);
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setInteger("ID", type);
 		nbt.setInteger("Max", doubles ? exps[type]*2 : exps[type]);
@@ -194,7 +195,7 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3)
 	{
 		for(int i = 0;i<exp.length;i++)
 		{

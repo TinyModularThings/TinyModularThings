@@ -2,15 +2,16 @@ package speiger.src.spmodapi.common.items.armor;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
-import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.entity.ai.attributes.AttributeModifier;
+import net.minecraft.entity.ai.attributes.IAttribute;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemArmor;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -37,9 +38,9 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 	
 	int type;
 	
-	public HempArmor(int par1, int par4)
+	public HempArmor(int par4)
 	{
-		super(par1, APIUtils.hempArmor, SpmodAPI.core.getArmorTypeFromName("hemp"), par4);
+		super(APIUtils.hempArmor, SpmodAPI.core.getArmorTypeFromName("hemp"), par4);
 		setMaxDamage(500);
 		setCreativeTab(APIUtils.tabHemp);
 		APIUtils.hempArmor.customCraftingMaterial = APIItems.hemp;
@@ -47,7 +48,7 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 	}
 	
 	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
+	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
 		return getDisplayName(par1ItemStack, SpmodAPI.instance);
 	}
@@ -64,7 +65,7 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IIconRegister par1IconRegister)
 	{
 		itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/hemp_" + getNameFromType());
 	}
@@ -109,7 +110,7 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 	}
 	
 	@Override
-	public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack item)
+	public void onArmorTick(World world, EntityPlayer player, ItemStack item)
 	{
 		if (world.isRemote)
 		{
@@ -137,7 +138,7 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 			NBTTagList ench = item.getEnchantmentTagList();
 			if (ench != null)
 			{
-				nbt.removeTag(ench.getName());
+				nbt.removeTag("ench");
 			}
 			
 			if (player.isBurning() && !nbt.getBoolean("Burn"))
@@ -165,18 +166,18 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 			
 			nbt.setTag("AttributeModifiers", buildTributeFromItem(item, getArmorSize(player), player));
 			
-			if (item.itemID == APIItems.hempHelmet.itemID && item.getItemDamage() < 430 && !world.isRemote)
+			if (item.getItem() == APIItems.hempHelmet && item.getItemDamage() < 430 && !world.isRemote)
 			{
 				if (player.getCurrentArmor(0) != null && player.getCurrentArmor(1) != null && player.getCurrentArmor(2) != null && player.getCurrentArmor(3) != null)
 				{
 					
-					if (player.getCurrentArmor(0).itemID == APIItems.hempBoots.itemID && player.getCurrentArmor(1).itemID == APIItems.hempLeggings.itemID && player.getCurrentArmor(2).itemID == APIItems.hempChestPlate.itemID && player.getCurrentArmor(3).itemID == APIItems.hempHelmet.itemID)
+					if (player.getCurrentArmor(0).getItem() == APIItems.hempBoots && player.getCurrentArmor(1).getItem() == APIItems.hempLeggings && player.getCurrentArmor(2).getItem() == APIItems.hempChestPlate && player.getCurrentArmor(3).getItem() == APIItems.hempHelmet)
 					{
 						player.addPotionEffect(new PotionEffect(Potion.digSpeed.id, 80));
-						List<EntityAnimal> entitys = world.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getAABBPool().getAABB(player.posX, player.posY, player.posZ, player.posX, player.posY + 1, player.posZ).expand(30, 10, 30));
+						List<EntityAnimal> entitys = world.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getBoundingBox(player.posX, player.posY, player.posZ, player.posX, player.posY + 1, player.posZ).expand(30, 10, 30));
 						for (EntityAnimal live : entitys)
 						{
-							if (!live.isChild() && live.inLove == 0 && live.getAge() == 0)
+							if (!live.isChild() && !live.isInLove() && live.getAge() == 0)
 							{
 								live.getNavigator().tryMoveToEntityLiving(player, 1D);
 								if (live.getDistanceSqToEntity(player) < 1.5D)
@@ -196,22 +197,22 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 	{
 		int size = 0;
 		ItemStack armor = player.getCurrentArmor(0);
-		if (armor != null && armor.itemID == APIItems.hempBoots.itemID)
+		if (armor != null && armor.getItem() == APIItems.hempBoots)
 		{
 			size++;
 		}
 		armor = player.getCurrentArmor(1);
-		if (armor != null && armor.itemID == APIItems.hempLeggings.itemID)
+		if (armor != null && armor.getItem() == APIItems.hempLeggings)
 		{
 			size++;
 		}
 		armor = player.getCurrentArmor(2);
-		if (armor != null && armor.itemID == APIItems.hempChestPlate.itemID)
+		if (armor != null && armor.getItem() == APIItems.hempChestPlate)
 		{
 			size++;
 		}
 		armor = player.getCurrentArmor(3);
-		if (armor != null && armor.itemID == APIItems.hempHelmet.itemID)
+		if (armor != null && armor.getItem() == APIItems.hempHelmet)
 		{
 			size++;
 		}
@@ -222,7 +223,7 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 	{
 		NBTTagList list = new NBTTagList();
 		
-		Attribute boost = null;
+		IAttribute boost = null;
 		double strenght = 0D;
 		int damage = par1.getItemDamage();
 		
@@ -308,7 +309,7 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 				NBTTagList ench = par1.getEnchantmentTagList();
 				if (ench != null)
 				{
-					nbt.removeTag(ench.getName());
+					nbt.removeTag("ench");
 				}
 				
 				setStandart(nbt);
@@ -337,7 +338,7 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 	
 	void setStandart(NBTTagCompound nbt)
 	{
-		Attribute atribute = null;
+		IAttribute atribute = null;
 		double strenght = 0;
 		
 		switch (type)
@@ -382,8 +383,8 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 		}
 		if (potion != null)
 		{
-			potion.duration += 200;
-			if (potion.duration > 2000 && potion.getAmplifier() < 2)
+			addDurationToPotionEffect(potion, 200);
+			if (potion.getDuration() > 2000 && potion.getAmplifier() < 2)
 			{
 				potion = new PotionEffect(potion.getPotionID(), potion.getDuration() / 20, potion.getAmplifier() + 1);
 			}
@@ -398,13 +399,24 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 		}
 		if (potion != null)
 		{
-			potion.duration += 160;
-			if (potion.duration > 1600 && potion.getAmplifier() < 2)
+			addDurationToPotionEffect(potion, 160);
+			if (potion.getDuration() > 1600 && potion.getAmplifier() < 2)
 			{
 				potion = new PotionEffect(potion.getPotionID(), potion.getDuration() / 16, potion.getAmplifier() + 1);
 			}
 		}
 		player.addPotionEffect(potion);
+	}
+
+	private void addDurationToPotionEffect(PotionEffect effect, int extraDuration)
+	{
+		// Not a very good way of adding duration
+		if (extraDuration < 1)
+		{
+			throw new IllegalArgumentException("Cannot add a number < 1");
+		}
+		PotionEffect combiner = new PotionEffect(effect.getPotionID(), effect.getDuration() + extraDuration, effect.getAmplifier(), effect.getIsAmbient());
+		effect.combine(combiner);
 	}
 	
 	@Override
@@ -413,20 +425,20 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 		switch (type)
 		{
 			case 3:
-				return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "hemp.armor.Boots", par0);
+				return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), "hemp.armor.Boots", par0);
 			case 2:
-				return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "hemp.armor.Leggings", par0);
+				return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), "hemp.armor.Leggings", par0);
 			case 1:
-				return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "hemp.armor.Plate", par0);
+				return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), "hemp.armor.Plate", par0);
 			case 0:
-				return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "hemp.armor.Helmet", par0);
+				return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), "hemp.armor.Helmet", par0);
 			default:
 				return null;
 		}
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{
 		// TODO Auto-generated method stub
 		

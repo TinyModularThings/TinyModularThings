@@ -11,7 +11,7 @@ buildscript {
         }
     }
     dependencies {
-        classpath 'net.minecraftforge.gradle:ForgeGradle:1.0-SNAPSHOT'
+        classpath 'net.minecraftforge.gradle:ForgeGradle:1.2-SNAPSHOT'
     }
 }
 
@@ -21,31 +21,31 @@ repositories {
         url "http://chickenbones.net/maven/"
     }
 }
-
 apply plugin: 'forge'
 
 def api_version = "2.0.1"
 def tmt_version = "2.0.5"
-
 version = tmt_version
-
 group= "speiger.src.tinymodularthings" // http://maven.apache.org/guides/mini/guide-naming-conventions.html
 archivesBaseName = "TinyModularThings"
 
 minecraft {
-    version = "1.6.4-9.11.1.964"
+    version = "1.7.10-10.13.0.1180"
     assetDir = "eclipse/assets"
 }
 
+
 dependencies {
-    compile 'codechicken:CodeChickenCore:1.6.4-0.9.0.9:dev'
-    compile 'codechicken:NotEnoughItems:1.6.4-1.6.1.9:dev'
+    compile 'codechicken:CodeChickenCore:1.7.10-1.0.2.9:dev'
+    compile 'codechicken:NotEnoughItems:1.7.10-1.0.2.15:dev'
+    compile 'com.mod-buildcraft:buildcraft:6.0.17:dev'
     // In ./libs folder:
-    // buildcraft-A-1.6.4-4.2.2.jar
-    // forestry-A-2.3.0.1_dev.jar
-    // industrialcraft-2-dev-deobf_2.0.397-experimental.jar
-    // MFR-API-2.7.8-483.zip
-    // Railcraft_1.6.4-8.4.0.0.jar
+    // forestry_1.7.10-2.4.2.30-dev.jar
+    // industrialcraft-2-2.2.517-experimental-dev.jar
+    // MineFactoryReloaded-API-[1.7.2]2.8.0B2-509.zip
+    //     \ -- You will need to compile to get eclipse to recognize it,
+    //          or use MineFactoryReloaded-[1.7.2]2.8.0B2-dev-509.jar in eclipse
+    // Railcraft_1.7.2-9.1.0.0.jar
 }
 
 processResources
@@ -75,5 +75,4 @@ task updateVersion(type: Copy) {
     into 'build/sources/java'
     expand 'api_version':api_version, 'tmt_version':tmt_version
 }
-
 compileJava.dependsOn updateVersion

@@ -1,5 +1,6 @@
 package speiger.src.spmodapi.client.core;
 
+import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 import speiger.src.spmodapi.client.render.deko.ItemRendererLamp;
 import speiger.src.spmodapi.client.render.deko.RenderLamp;
@@ -20,11 +21,11 @@ public class SpmodAPIClient extends SpmodAPICore
 		ForgeRegister.regsiterClient();
 		//Deko
 		ClientRegistry.bindTileEntitySpecialRenderer(TileLamp.class, new RenderLamp());
-		MinecraftForgeClient.registerItemRenderer(APIBlocks.hempLamp.blockID, new ItemRendererLamp());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(APIBlocks.hempLamp), new ItemRendererLamp());
 		
 		//Utils
 		RenderingRegistry.registerBlockHandler(RenderUtilsBlock.renderID, new RenderUtilsBlock());
-		MinecraftForgeClient.registerItemRenderer(APIBlocks.blockUtils.blockID, new ItemRendererUtilsBlock());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(APIBlocks.blockUtils), new ItemRendererUtilsBlock());
 	}
 	
 	@Override

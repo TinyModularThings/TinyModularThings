@@ -1,8 +1,8 @@
 package speiger.src.spmodapi.common.fluids.hemp;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
@@ -10,7 +10,7 @@ import speiger.src.spmodapi.common.lib.SpmodAPILib;
 
 public class FluidHempResin extends Fluid
 {
-	Icon itemIcon;
+	IIcon itemIcon;
 	public FluidHempResin()
 	{
 		super("hemp.resin");
@@ -19,13 +19,13 @@ public class FluidHempResin extends Fluid
 	}
 
 	@Override
-	public Icon getStillIcon()
+	public IIcon getStillIcon()
 	{
 		return itemIcon;
 	}
 
 	@Override
-	public Icon getFlowingIcon()
+	public IIcon getFlowingIcon()
 	{
 		return itemIcon;
 	}
@@ -33,10 +33,10 @@ public class FluidHempResin extends Fluid
 	@Override
 	public String getLocalizedName()
 	{
-		return APIItems.hempResin.getItemDisplayName(new ItemStack(APIItems.hempResin));
+		return APIItems.hempResin.getItemStackDisplayName(new ItemStack(APIItems.hempResin));
 	}
 
-	public void registerIcon(IconRegister par1)
+	public void registerIcon(IIconRegister par1)
 	{
 		this.itemIcon = par1.registerIcon(SpmodAPILib.ModID.toLowerCase()+":hemp/hemp.resin");
 	}

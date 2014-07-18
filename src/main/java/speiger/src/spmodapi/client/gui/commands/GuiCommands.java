@@ -22,7 +22,7 @@ import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 public class GuiCommands extends GuiInventoryCore
 {
@@ -75,7 +75,7 @@ public class GuiCommands extends GuiInventoryCore
 
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
-		text = new GuiTextField(this.fontRenderer, 1-85+k, 25+l, 140, 20);
+		text = new GuiTextField(this.fontRendererObj, 1-85+k, 25+l, 140, 20);
 		
 		this.reloadCommands();
 	}
@@ -151,12 +151,12 @@ public class GuiCommands extends GuiInventoryCore
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
         String s = "Command Gui";
-        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
-        this.fontRenderer.drawString(I18n.getString("container.inventory"), 25, this.ySize - 96 + 2, 4210752);
+        this.fontRendererObj.drawString(s, this.xSize / 2 - this.fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.format("container.inventory"), 25, this.ySize - 96 + 2, 4210752);
     
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
-//        this.fontRenderer.drawString("ID: "+this.totalID, 10, 10, 4210752);
+//        this.fontRendererObj.drawString("ID: "+this.totalID, 10, 10, 4210752);
         
         
         this.buttonList.clear();
@@ -185,7 +185,7 @@ public class GuiCommands extends GuiInventoryCore
         			timer--;
         			if(isInRange(par1-k, par2-l))
         			{
-        				this.drawHoveringText(text, par1-k, par2-l, this.fontRenderer);
+        				this.drawHoveringText(text, par1-k, par2-l, this.fontRendererObj);
         			}
         		}
         		else if(activeInfo && timer == 0)
@@ -346,11 +346,11 @@ public class GuiCommands extends GuiInventoryCore
 			}
 			ModularPacket packet = new ModularPacket(SpmodAPI.instance, PacketType.Custom, "Command.Reciver");
 			packet.InjectNumber(sender.worldObj.provider.dimensionId);
-			packet.injetString(sender.username);
+			packet.injetString(sender.getCommandSenderName());
 			packet.InjectNumbers(this.subCommand == null ? (byte)0 : (byte)1, (int)pCommand.indexOf(commands[this.choosenCom]), subCommand == null ? (int)0 : (int)sub.get(subCommand).indexOf(subCommands[this.choosenSubCom]));
 			packet.InjectNumber((Integer)length);
 			packet.InjectStrings(string);
-			PacketDispatcher.sendPacketToServer(packet.finishPacket());
+			SpmodAPI.netChannel.sendToServer(packet.finishPacket());
 			super.keyTyped('0', 1);
 		}
 		else

@@ -45,7 +45,7 @@ public class SpmodAPICore implements IGuiHandler
 		}
 		else if(ID == EnumGuiIDs.Tiles.getID())
 		{
-			TileEntity tile = world.getBlockTileEntity(x, y, z);
+			TileEntity tile = world.getTileEntity(x, y, z);
 			if(tile != null && tile instanceof AdvTile)
 			{
 				return ((AdvTile)tile).getInventory(player.inventory);
@@ -78,7 +78,7 @@ public class SpmodAPICore implements IGuiHandler
 		}
 		else if(ID == EnumGuiIDs.Tiles.getID())
 		{
-			TileEntity tile = world.getBlockTileEntity(x, y, z);
+			TileEntity tile = world.getTileEntity(x, y, z);
 			if(tile != null && tile instanceof AdvTile)
 			{
 				return ((AdvTile)tile).getGui(player.inventory);

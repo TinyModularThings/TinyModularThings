@@ -1,7 +1,7 @@
 package speiger.src.api.pipes;
 
 import net.minecraft.world.IBlockAccess;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public interface IBasicPipeProvider
 {

@@ -10,10 +10,4 @@ public class DisplayItem
 	{
 		this.par1 = par1;
 	}
-	
-	public DisplayItem(int id)
-	{
-		this(Item.itemsList[id]);
-	}
-	
 }

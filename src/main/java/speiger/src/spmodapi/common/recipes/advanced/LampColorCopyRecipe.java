@@ -20,7 +20,7 @@ public class LampColorCopyRecipe extends ShapedRecipes
 	{
 		ItemStack end = item.copy();
 		end.stackSize = 5;
-		end.setTagInfo("Recipe", new NBTTagByte("Recipe", (byte)1));
+		end.setTagInfo("Recipe", new NBTTagByte((byte)1));
 		return end;
 	}
 

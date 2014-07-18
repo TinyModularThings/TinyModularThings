@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -19,7 +20,7 @@ public class InventoryUtil
 	// My Version of a ItemStack Check. Not the best but it is working
 	public static boolean isItemEqual(ItemStack par1, ItemStack par2)
 	{
-		if (par1.itemID == par2.itemID)
+		if (par1 == par2)
 		{
 			if ((par1.getItemDamage() == par2.getItemDamage()) || (par1.getItemDamage() == OreDictionary.WILDCARD_VALUE || par2.getItemDamage() == OreDictionary.WILDCARD_VALUE) || (par1.getItemDamage() == -1 || par2.getItemDamage() == -1))
 			{
@@ -29,13 +30,13 @@ public class InventoryUtil
 		return false;
 	}
 	
-	public static ItemStack getItemFromInventory(IInventory inv, int itemID)
+	public static ItemStack getItemFromInventory(IInventory inv, Item item)
 	{
 		ItemStack stack = null;
 		for (int i = 0; i < inv.getSizeInventory(); i++)
 		{
 			ItemStack cu = inv.getStackInSlot(i);
-			if (cu != null && cu.itemID == itemID)
+			if (cu != null && cu.getItem() == item)
 			{
 				stack = cu;
 				break;
@@ -151,7 +152,7 @@ public class InventoryUtil
 	public static void dropInventory(World world, int x, int y, int z)
 	{
 		Random rand = new Random();
-		TileEntity tileEntity = world.getBlockTileEntity(x, y, z);
+		TileEntity tileEntity = world.getTileEntity(x, y, z);
 		
 		if (!(tileEntity instanceof IInventory))
 		{
@@ -171,7 +172,7 @@ public class InventoryUtil
 				float dY = rand.nextFloat() * 0.8F + 0.1F;
 				float dZ = rand.nextFloat() * 0.8F + 0.1F;
 				
-				EntityItem entityItem = new EntityItem(world, x + dX, y + dY, z + dZ, new ItemStack(itemStack.itemID, itemStack.stackSize, itemStack.getItemDamage()));
+				EntityItem entityItem = new EntityItem(world, x + dX, y + dY, z + dZ, new ItemStack(itemStack.getItem(), itemStack.stackSize, itemStack.getItemDamage()));
 				
 				if (itemStack.hasTagCompound())
 				{
@@ -210,7 +211,7 @@ public class InventoryUtil
 					}
 					
 					itemstack.stackSize -= j;
-					ItemStack stack = new ItemStack(itemstack.itemID, j, itemstack.getItemDamage());
+					ItemStack stack = new ItemStack(itemstack.getItem(), j, itemstack.getItemDamage());
 					if (itemstack.hasTagCompound())
 					{
 						stack.setTagCompound(stack.getTagCompound());
@@ -248,7 +249,7 @@ public class InventoryUtil
 					}
 					
 					itemstack.stackSize -= j;
-					ItemStack stack = new ItemStack(itemstack.itemID, j, itemstack.getItemDamage());
+					ItemStack stack = new ItemStack(itemstack.getItem(), j, itemstack.getItemDamage());
 					if (itemstack.hasTagCompound())
 					{
 						stack.setTagCompound(stack.getTagCompound());

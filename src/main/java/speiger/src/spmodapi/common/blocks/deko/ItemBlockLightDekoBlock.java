@@ -5,13 +5,15 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.items.DisplayStack;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.items.LanguageItem;
@@ -28,7 +30,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemBlockLightDekoBlock extends ItemBlock implements LanguageItem
 {
 
-	public ItemBlockLightDekoBlock(int par1)
+	public ItemBlockLightDekoBlock(Block par1)
 	{
 		super(par1);
 		this.setHasSubtypes(true);
@@ -41,7 +43,7 @@ public class ItemBlockLightDekoBlock extends ItemBlock implements LanguageItem
 	}
 
 	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
+	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
 		return getDisplayName(par1ItemStack, SpmodAPI.instance);
 	}
@@ -62,16 +64,16 @@ public class ItemBlockLightDekoBlock extends ItemBlock implements LanguageItem
 		{
 			int count = 0;
 			String text = LanguageRegister.getLanguageName(new InfoStack(), "stored.color", SpmodAPI.instance)+": ";
-			if(par1.hasTagCompound() && par1.getTagCompound().hasKey("Colors") && par1.getTagCompound().getTagList("Colors").tagCount() > 0)
+			if(par1.hasTagCompound() && par1.getTagCompound().hasKey("Colors") && par1.getTagCompound().getTagList("Colors", 3).tagCount() > 0)
 			{
 				ArrayList<EnumColor> collors = new ArrayList<EnumColor>();
-				NBTTagList list = par1.getTagCompound().getTagList("Colors");
-				for(int i = 0;i<list.tagCount();i++)
+				// Not backward compatible. See note in TileLamp
+				int[] list = par1.getTagCompound().getIntArray("Colors");
+				for(int i = 0;i<list.length;i++)
 				{
-					NBTTagInt colors = (NBTTagInt) list.tagAt(i);
-					if(!collors.contains(EnumColor.values()[colors.data]))
+					if(!collors.contains(EnumColor.values()[list[i]]))
 					{
-						collors.add(EnumColor.values()[colors.data]);
+						collors.add(EnumColor.values()[list[i]]);
 					}
 					
 				}
@@ -122,7 +124,7 @@ public class ItemBlockLightDekoBlock extends ItemBlock implements LanguageItem
 	}
 
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{
 		if(!SpmodModRegistry.areModsEqual(par0, SpmodAPI.instance))
 		{
@@ -134,23 +136,23 @@ public class ItemBlockLightDekoBlock extends ItemBlock implements LanguageItem
 		{
 			for(int i = 0;i<16;i++)
 			{
-				LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, i)), "lamp."+type.getName()+"."+EnumColor.values()[i].getName(), par0);
+				LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(item, 1, i)), "lamp."+type.getName()+"."+EnumColor.values()[i].getName(), par0);
 			}
-			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, 16)), "lamp."+type.getName()+".mixed", par0);
-			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, 17)), "lamp."+type.getName()+".all", par0);
+			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(item, 1, 16)), "lamp."+type.getName()+".mixed", par0);
+			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(item, 1, 17)), "lamp."+type.getName()+".all", par0);
 		}
 	}
 	
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
-        int i1 = par3World.getBlockId(par4, par5, par6);
+        Block block = par3World.getBlock(par4, par5, par6);
 
-        if (i1 == Block.snow.blockID && (par3World.getBlockMetadata(par4, par5, par6) & 7) < 1)
+        if (block == Blocks.snow && (par3World.getBlockMetadata(par4, par5, par6) & 7) < 1)
         {
             par7 = 1;
         }
-        else if (i1 != Block.vine.blockID && i1 != Block.tallGrass.blockID && i1 != Block.deadBush.blockID
-                && (Block.blocksList[i1] == null || !Block.blocksList[i1].isBlockReplaceable(par3World, par4, par5, par6)))
+        else if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush
+                && (block == null || !block.isReplaceable(par3World, par4, par5, par6)))
         {
             if (par7 == 0)
             {
@@ -191,13 +193,13 @@ public class ItemBlockLightDekoBlock extends ItemBlock implements LanguageItem
         {
             return false;
         }
-        else if (par5 == 255 && Block.blocksList[this.getBlockID()].blockMaterial.isSolid())
+        else if (par5 == 255 && field_150939_a.getMaterial().isSolid())
         {
             return false;
         }
-        else if (par3World.setBlock(par4, par5, par6, getBlockID()))
+        else if (par3World.setBlock(par4, par5, par6, field_150939_a))
         {
-        	TileEntity tile = par3World.getBlockTileEntity(par4, par5, par6);
+        	TileEntity tile = par3World.getTileEntity(par4, par5, par6);
         	if(tile != null && tile instanceof TileLamp)
         	{
         		TileLamp lamp = (TileLamp) tile;
@@ -216,12 +218,13 @@ public class ItemBlockLightDekoBlock extends ItemBlock implements LanguageItem
         		if(color == 16)
         		{
         			lamp.setNoneColored();
-        			if(par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("Colors") && par1ItemStack.getTagCompound().getTagList("Colors").tagCount() > 0)
+					// Not backward compatible. See note in TileLamp
+        			if(par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("Colors") && par1ItemStack.getTagCompound().getIntArray("Colors").length > 0)
         			{
-            			NBTTagList list = par1ItemStack.getTagCompound().getTagList("Colors");
-            			for(int i = 0;i<list.tagCount();i++)
+            			int[] list = par1ItemStack.getTagCompound().getIntArray("Colors");
+            			for(int i = 0;i<list.length;i++)
             			{
-            				lamp.addColor(EnumColor.values()[((NBTTagInt)list.tagAt(i)).data]);
+            				lamp.addColor(EnumColor.values()[list[i]]);
             			}
         			}
         		}

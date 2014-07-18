@@ -4,24 +4,22 @@ import java.util.EnumSet;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.TickType;
+import net.minecraft.util.ChatComponentText;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
 
-public class CountdownTick implements ITickHandler
+public class CountdownTick
 {
-	
-	@Override
-	public void tickStart(EnumSet<TickType> type, Object... tickData)
+	@SubscribeEvent
+	public void tickEnd(TickEvent.PlayerTickEvent event)
 	{
-		
-	}
-	
-	@Override
-	public void tickEnd(EnumSet<TickType> type, Object... tickData)
-	{
-		EntityPlayer player = (EntityPlayer) tickData[0];
-		
-		NBTTagCompound playerNBT = player.getEntityData();
+		if (event.side != Side.SERVER || event.phase != TickEvent.Phase.END)
+		{
+			return;
+		}
+
+		NBTTagCompound playerNBT = event.player.getEntityData();
 		
 		if (playerNBT.hasKey("SpmodAPIData"))
 		{
@@ -33,7 +31,7 @@ public class CountdownTick implements ITickHandler
 				nbt.setInteger("CountdownTime", time);
 				if (time <= 0)
 				{
-					player.addChatMessage("Countdown is over");
+					event.player.addChatMessage(new ChatComponentText("Countdown is over"));
 					
 					if (time <= -50)
 					{
@@ -47,17 +45,4 @@ public class CountdownTick implements ITickHandler
 		TickHelper.getInstance().tick();
 		
 	}
-	
-	@Override
-	public EnumSet<TickType> ticks()
-	{
-		return EnumSet.of(TickType.PLAYER);
-	}
-	
-	@Override
-	public String getLabel()
-	{
-		return "Countdown TickHandler";
-	}
-	
 }

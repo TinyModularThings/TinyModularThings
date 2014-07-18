@@ -1,6 +1,6 @@
 package speiger.src.api.energy;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 
 public interface IEnergyProvider
 {

@@ -58,7 +58,7 @@ public class TankSlot
 			{
 				if (tank.getFluid().getFluid().canBePlacedInWorld())
 				{
-					return new BlockStack(tank.getFluid().getFluid().getBlockID()).getBlockDisplayName();
+					return new BlockStack(tank.getFluid().getFluid().getBlock()).getBlockDisplayName();
 				}
 				else
 				{

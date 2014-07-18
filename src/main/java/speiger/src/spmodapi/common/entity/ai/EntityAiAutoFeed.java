@@ -28,7 +28,7 @@ public class EntityAiAutoFeed extends EntityAIBase
 		{
 			if(owner != null && !owner.isInLove() && owner.getGrowingAge() == 0)
 			{
-				List<EntityItem> items = owner.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getAABBPool().getAABB(owner.posX, owner.posY, owner.posZ, owner.posX+1, owner.posY+1, owner.posZ+1).expand(10, 4, 10));
+				List<EntityItem> items = owner.worldObj.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(owner.posX, owner.posY, owner.posZ, owner.posX+1, owner.posY+1, owner.posZ+1).expand(10, 4, 10));
 				EntityItem item = getBreedItem(items);
 				if(item != null && owner.getEntitySenses().canSee(item))
 				{
@@ -81,11 +81,11 @@ public class EntityAiAutoFeed extends EntityAIBase
 			owner.getNavigator().tryMoveToEntityLiving(target, 1.2D);
 			if(owner.getDistanceSqToEntity(target) < 0.8D)
 			{
-				EntityItem item = (EntityItem) owner.worldObj.getEntityByID(target.entityId);
+				EntityItem item = (EntityItem) owner.worldObj.getEntityByID(target.getEntityId());
 				if(item != null && item.getEntityItem() != null && item.getEntityItem().stackSize > 0)
 				{
 					item.getEntityItem().stackSize--;
-					owner.func_110196_bT();
+					owner.func_146082_f(null);
 					this.resetTask();
 				}
 				

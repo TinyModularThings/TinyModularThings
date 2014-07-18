@@ -6,10 +6,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockCrops;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import powercrystals.minefactoryreloaded.api.FertilizerType;
@@ -17,6 +20,7 @@ import powercrystals.minefactoryreloaded.api.HarvestType;
 import powercrystals.minefactoryreloaded.api.IFactoryFertilizable;
 import powercrystals.minefactoryreloaded.api.IFactoryHarvestable;
 import powercrystals.minefactoryreloaded.api.IFactoryPlantable;
+import powercrystals.minefactoryreloaded.api.ReplacementBlock;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import cpw.mods.fml.relauncher.Side;
@@ -26,43 +30,45 @@ import forestry.api.farming.ICrop;
 public class BlockHempCrop extends BlockCrops implements ICrop,
 		IFactoryHarvestable, IFactoryFertilizable, IFactoryPlantable
 {
-	public BlockHempCrop(int par1)
-	{
-		super(par1);
-	}
 	
-	Icon[] textures = new Icon[8];
+	IIcon[] textures = new IIcon[8];
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		return textures[par2];
 	}
 	
 	@Override
-	public int getSeedItem()
+	public Item getSeed()
 	{
-		return APIItems.hempSeed.itemID;
+		return APIItems.hempSeed;
+	}
+
+	@Override
+	public Item func_149866_i()
+	{
+		return getSeed();
 	}
 	
 	@Override
-	public int getCropItem()
+	public Item func_149865_P()
 	{
-		return APIItems.hemp.itemID;
+		return APIItems.hemp;
 	}
 	
 	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
 	{
-		ArrayList<ItemStack> list = super.getBlockDropped(world, x, y, z, metadata, fortune);
+		ArrayList<ItemStack> list = super.getDrops(world, x, y, z, metadata, fortune);
 		if (metadata >= 7)
 		{
 			for (int n = 0; n < 3 + fortune; n++)
 			{
 				if (world.rand.nextInt(10) <= metadata)
 				{
-					list.add(new ItemStack(getCropItem(), 1, 0));
+					list.add(new ItemStack(func_149865_P(), 1, 0));
 				}
 			}
 		}
@@ -71,7 +77,7 @@ public class BlockHempCrop extends BlockCrops implements ICrop,
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerBlockIcons(IIconRegister par1)
 	{
 		for (int i = 1; i < 9; i++)
 		{
@@ -80,7 +86,7 @@ public class BlockHempCrop extends BlockCrops implements ICrop,
 	}
 	
 	@Override
-	public EnumPlantType getPlantType(World world, int x, int y, int z)
+	public EnumPlantType getPlantType(IBlockAccess world, int x, int y, int z)
 	{
 		return EnumPlantType.Crop;
 	}
@@ -90,15 +96,15 @@ public class BlockHempCrop extends BlockCrops implements ICrop,
 	{
 		Random rand = new Random();
 		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
-		drops.add(new ItemStack(getCropItem(), rand.nextInt(4), 0));
-		drops.add(new ItemStack(getSeedItem(), rand.nextInt(3) + 1, 0));
+		drops.add(new ItemStack(func_149865_P(), rand.nextInt(4), 0));
+		drops.add(new ItemStack(getSeed(), rand.nextInt(3) + 1, 0));
 		return drops;
 	}
 	
 	@Override
-	public int getPlantId()
+	public Block getPlant()
 	{
-		return blockID;
+		return this;
 	}
 	
 	@Override
@@ -146,15 +152,9 @@ public class BlockHempCrop extends BlockCrops implements ICrop,
 	public void postHarvest(World world, int x, int y, int z)
 	{
 	}
-	
+
 	@Override
-	public int getFertilizableBlockId()
-	{
-		return blockID;
-	}
-	
-	@Override
-	public boolean canFertilizeBlock(World world, int x, int y, int z, FertilizerType type)
+	public boolean canFertilize(World world, int x, int y, int z, FertilizerType type)
 	{
 		if (type == FertilizerType.GrowPlant)
 		{
@@ -177,23 +177,18 @@ public class BlockHempCrop extends BlockCrops implements ICrop,
 		}
 		return false;
 	}
-	
+
 	@Override
-	public int getSeedId()
+	public boolean canBePlanted(ItemStack stack)
 	{
-		return APIItems.hempSeed.itemID;
+		// TODO Check implementation
+		return true;
 	}
-	
+
 	@Override
-	public int getPlantedBlockId(World world, int x, int y, int z, ItemStack stack)
+	public ReplacementBlock getPlantedBlock(World world, int x, int y, int z, ItemStack stack)
 	{
-		return blockID;
-	}
-	
-	@Override
-	public int getPlantedBlockMetadata(World world, int x, int y, int z, ItemStack stack)
-	{
-		return 0;
+		return new ReplacementBlock(this);
 	}
 	
 	@Override
@@ -211,5 +206,4 @@ public class BlockHempCrop extends BlockCrops implements ICrop,
 	public void postPlant(World world, int x, int y, int z, ItemStack stack)
 	{
 	}
-	
 }

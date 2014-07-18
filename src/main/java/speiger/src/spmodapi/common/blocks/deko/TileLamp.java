@@ -4,19 +4,21 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagInt;
+import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.util.RedstoneUtils;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
@@ -30,8 +32,8 @@ import buildcraft.BuildCraftCore;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionReceptor;
 import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class TileLamp extends TileFacing implements IActionReceptor
 {
@@ -57,7 +59,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	}
 	
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		return null;
 	}
@@ -104,7 +106,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		if(isActive != power)
 		{
 			isActive = power;
-			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
+			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendToAllNear(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 			this.updateBlock();
 			this.updateLight();
 		}
@@ -116,7 +118,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		if(power != powered)
 		{
 			this.power = powered;
-			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
+			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendToAllNear(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 			this.updateBlock();
 			this.updateLight();
 		}
@@ -151,7 +153,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 					this.updateBlock();
 					((IToolWrench)current.getItem()).wrenchUsed(par1, xCoord, yCoord, zCoord);
 				}
-				else if(current.itemID == Item.dyePowder.itemID)
+				else if(current.getItem() == Items.dye)
 				{
 					int meta = current.getItemDamage();
 					if(this.noneColored)
@@ -189,7 +191,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		if(change)
 		{
 			updateBlock();
-			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 30, this.worldObj.provider.dimensionId, getDescriptionPacket());
+			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendToAllNear(xCoord, yCoord, zCoord, 30, this.worldObj.provider.dimensionId, getDescriptionPacket());
 		}
 	}
 	
@@ -270,7 +272,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 			NBTTagList list = new NBTTagList();
 			for(EnumColor color : this.validColors)
 			{
-				NBTTagInt cuColor = new NBTTagInt("Color", color.ordinal());
+				NBTTagInt cuColor = new NBTTagInt(color.ordinal());
 				list.appendTag(cuColor);
 			}
 			drop.setTagInfo("Colors", list);
@@ -289,7 +291,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 			NBTTagList list = new NBTTagList();
 			for(EnumColor color : this.validColors)
 			{
-				NBTTagInt cuColor = new NBTTagInt("Color", color.ordinal());
+				NBTTagInt cuColor = new NBTTagInt(color.ordinal());
 				list.appendTag(cuColor);
 			}
 			drop.setTagInfo("Colors", list);
@@ -303,13 +305,13 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
 	}
 
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 	{
-		this.readFromNBT(pkt.data);
+		this.readFromNBT(pkt.func_148857_g());
 	}
 
 	@Override
@@ -324,17 +326,20 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		lampType = EnumLampType.values()[nbt.getInteger("Type")];
 		meta = nbt.getInteger("Meta");
 		color = nbt.getInteger("Color");
-		NBTTagList round = nbt.getTagList("Round");
-		for(int i = 0;i<round.tagCount();i++)
+		// Note: Used to be TAG_LIST{TAG_INT, TAG_INT, ...}
+		//       But you can't do that anymore? So TAG_INT[] instead
+		//       Not backward compatible!
+		int[] round = nbt.getIntArray("Round");
+		for(int i = 0;i<round.length;i++)
 		{
-			NBTTagInt ints = (NBTTagInt) round.tagAt(i);
-			roubinColor.add(EnumColor.values()[ints.data]);
+			int ints = round[i];
+			roubinColor.add(EnumColor.values()[ints]);
 		}
-		NBTTagList valids = nbt.getTagList("Colors");
-		for(int i = 0;i<valids.tagCount();i++)
+		int[] valids = nbt.getIntArray("Colors");
+		for(int i = 0;i<valids.length;i++)
 		{
-			NBTTagInt ints = (NBTTagInt) valids.tagAt(i);
-			this.validColors.add(EnumColor.values()[ints.data]);
+			int ints = valids[i];
+			this.validColors.add(EnumColor.values()[ints]);
 		}
 	}
 
@@ -350,20 +355,19 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		nbt.setInteger("Type", lampType.ordinal());
 		nbt.setInteger("Meta", meta);
 		nbt.setInteger("Color", color);
-		NBTTagList round = new NBTTagList();
-		for(EnumColor color : this.roubinColor)
+		// See note above
+		int[] round = new int[this.roubinColor.size()];
+		for(int i = 0; i < round.length; i++)
 		{
-			NBTTagInt ints = new NBTTagInt("Color", color.ordinal());
-			round.appendTag(ints);
+			round[i] = this.roubinColor.get(i).ordinal();
 		}
-		nbt.setTag("Round", round);
-		NBTTagList valids = new NBTTagList();
-		for(EnumColor color : this.validColors)
+		nbt.setTag("Round", new NBTTagIntArray(round));
+		int[] valids = new int[this.validColors.size()];
+		for(int i = 0; i < valids.length; i++)
 		{
-			NBTTagInt ints = new NBTTagInt("Color", color.ordinal());
-			valids.appendTag(ints);
+			valids[i] = this.validColors.get(i).ordinal();
 		}
-		nbt.setTag("Colors", valids);
+		nbt.setTag("Colors", new NBTTagIntArray(valids));
 	}
 
 
@@ -383,8 +387,8 @@ public class TileLamp extends TileFacing implements IActionReceptor
 							continue;
 						}
 					}
-					TileEntity tile = worldObj.getBlockTileEntity(xCoord+side.offsetX, yCoord+side.offsetY, zCoord+side.offsetZ);
-					if(tile != null && tile instanceof TileLamp && tile.getBlockType().isBlockSolidOnSide(worldObj, tile.xCoord, tile.yCoord, tile.zCoord, side.getOpposite()))
+					TileEntity tile = worldObj.getTileEntity(xCoord+side.offsetX, yCoord+side.offsetY, zCoord+side.offsetZ);
+					if(tile != null && tile instanceof TileLamp && tile.getBlockType().isSideSolid(worldObj, tile.xCoord, tile.yCoord, tile.zCoord, side.getOpposite()))
 					{
 						((TileLamp)tile).changeAndSendColor(colorID);
 					}
@@ -400,7 +404,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 					this.setColor(colorID);
 					for(ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 					{
-						TileEntity tile = worldObj.getBlockTileEntity(xCoord+side.offsetX, yCoord+side.offsetY, zCoord+side.offsetZ);
+						TileEntity tile = worldObj.getTileEntity(xCoord+side.offsetX, yCoord+side.offsetY, zCoord+side.offsetZ);
 						if(lampType == lampType.RP2CAGELAMP)
 						{
 							if(side.ordinal() != this.getFacing())
@@ -409,7 +413,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 							}
 						}
 						
-						if(tile != null && tile instanceof TileLamp && tile.getBlockType().isBlockSolidOnSide(worldObj, tile.xCoord, tile.yCoord, tile.zCoord, side.getOpposite()))
+						if(tile != null && tile instanceof TileLamp && tile.getBlockType().isSideSolid(worldObj, tile.xCoord, tile.yCoord, tile.zCoord, side.getOpposite()))
 						{
 							((TileLamp)tile).changeAndSendColor(colorID);
 						}
@@ -478,7 +482,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		power = par1;
 		for(ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 		{
-			TileEntity tile = worldObj.getBlockTileEntity(xCoord+side.offsetX, yCoord+side.offsetY, zCoord+side.offsetZ);
+			TileEntity tile = worldObj.getTileEntity(xCoord+side.offsetX, yCoord+side.offsetY, zCoord+side.offsetZ);
 			if(lampType == lampType.RP2CAGELAMP)
 			{
 				if(side.ordinal() != this.getFacing())
@@ -486,7 +490,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 					continue;
 				}
 			}
-			if(tile != null && tile instanceof TileLamp && tile.getBlockType().isBlockSolidOnSide(worldObj, tile.xCoord, tile.yCoord, tile.zCoord, side.getOpposite()))
+			if(tile != null && tile instanceof TileLamp && tile.getBlockType().isSideSolid(worldObj, tile.xCoord, tile.yCoord, tile.zCoord, side.getOpposite()))
 			{
 				((TileLamp)tile).changeActiveState(par1);
 			}

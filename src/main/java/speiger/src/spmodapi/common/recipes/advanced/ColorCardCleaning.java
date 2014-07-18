@@ -22,7 +22,7 @@ public class ColorCardCleaning extends ShapelessOreRecipe
 		for(int i = 0;i<var1.getSizeInventory();i++)
 		{
 			ItemStack cu = var1.getStackInSlot(i);
-			if(cu != null && cu.itemID == APIItems.colorCard.itemID)
+			if(cu != null && cu.getItem() == APIItems.colorCard)
 			{
 				input = cu;
 				break;

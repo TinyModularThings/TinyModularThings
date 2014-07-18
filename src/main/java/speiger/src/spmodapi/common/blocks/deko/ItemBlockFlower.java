@@ -1,5 +1,7 @@
 package speiger.src.spmodapi.common.blocks.deko;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.blocks.BlockStack;
@@ -12,7 +14,7 @@ import speiger.src.spmodapi.SpmodAPI;
 public class ItemBlockFlower extends ItemBlock implements LanguageItem
 {
 
-	public ItemBlockFlower(int par1)
+	public ItemBlockFlower(Block par1)
 	{
 		super(par1);
 	}
@@ -26,7 +28,7 @@ public class ItemBlockFlower extends ItemBlock implements LanguageItem
 	
 
 	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
+	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
 		return getDisplayName(par1ItemStack, SpmodAPI.instance);
 	}
@@ -38,14 +40,14 @@ public class ItemBlockFlower extends ItemBlock implements LanguageItem
 	}
 
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{
 		if(!SpmodModRegistry.areModsEqual(par0, SpmodAPI.instance))
 		{
 			return;
 		}
 		
-		LanguageRegister.getLanguageName(new BlockStack(id).getBlock(), "dye.blue", par0);
+		LanguageRegister.getLanguageName(new BlockStack(item).getBlock(), "dye.blue", par0);
 	}
 	
 	

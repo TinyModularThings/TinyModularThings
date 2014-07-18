@@ -2,12 +2,13 @@ package speiger.src.spmodapi.common.tile;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.logging.Logger;
+
+import org.apache.logging.log4j.Logger;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.StepSound;
+import net.minecraft.block.Block.SoundType;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -17,10 +18,10 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.util.BlockPosition;
 import cpw.mods.fml.common.FMLLog;
@@ -35,14 +36,14 @@ public abstract class AdvTile extends TileEntity
 		
 	}
 	
-	public StepSound getStepSound()
+	public SoundType getStepSound()
 	{
 		return getBlockType().stepSound;
 	}
 	
 	public float getBlockHardness()
 	{
-		return getBlockType().blockHardness;
+		return getBlockType().getBlockHardness(worldObj, this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	public int getBlockLightLevel()
@@ -84,7 +85,7 @@ public abstract class AdvTile extends TileEntity
 	
 	public void updateLight()
 	{
-		this.worldObj.updateAllLightTypes(this.xCoord, this.yCoord, this.zCoord);
+		this.worldObj.func_147451_t(this.xCoord, this.yCoord, this.zCoord);
 	}
 	
 	public void onTick()
@@ -240,12 +241,12 @@ public abstract class AdvTile extends TileEntity
 		return false;
 	}
 	
-	public void registerIcon(IconRegister par1)
+	public void registerIcon(IIconRegister par1)
 	{
 		
 	}
 	
-	public abstract Icon getIconFromSideAndMetadata(int side, int renderPass);
+	public abstract IIcon getIconFromSideAndMetadata(int side, int renderPass);
 	
 	public boolean hasContainer()
 	{
@@ -300,7 +301,7 @@ public abstract class AdvTile extends TileEntity
 	
 	public ItemStack pickBlock(MovingObjectPosition target)
 	{
-		return new ItemStack(worldObj.getBlockId(xCoord, yCoord, zCoord), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
+		return new ItemStack(worldObj.getBlock(xCoord, yCoord, zCoord), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
 	}
 	
 	public void onClientTick()

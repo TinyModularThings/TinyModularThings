@@ -9,14 +9,15 @@ import net.minecraft.client.audio.SoundPoolEntry;
 import net.minecraft.client.settings.GameSettings;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
-import net.minecraftforge.event.ForgeSubscribe;
 import paulscode.sound.SoundSystem;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.SpmodConfig;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 /**
+ * TODO FIX THIS!
  * 
  * @author Speiger
  * 
@@ -47,7 +48,7 @@ public class SoundRegistry
 		return instance;
 	}
 	
-	@ForgeSubscribe
+	@SubscribeEvent
 	@SideOnly(Side.CLIENT)
 	public void init(SoundLoadEvent evt)
 	{

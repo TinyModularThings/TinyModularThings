@@ -7,9 +7,9 @@ public class NullPowerLossCalculator extends PerditionCalculator
 {
 	
 	@Override
-	public float applyPerdition(PowerHandler powerHandler, float current, long ticksPassed)
+	public double applyPerdition(PowerHandler powerHandler, double current, long ticksPassed)
 	{
-		float energy = current;
+		double energy = current;
 		if (energy <= 0)
 		{
 			energy = 0;

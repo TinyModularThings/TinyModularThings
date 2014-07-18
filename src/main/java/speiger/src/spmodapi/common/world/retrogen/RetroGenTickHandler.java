@@ -9,10 +9,11 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import speiger.src.api.blocks.AdvancedPosition;
 import speiger.src.api.blocks.BlockStack;
-import cpw.mods.fml.common.ITickHandler;
-import cpw.mods.fml.common.TickType;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.TickEvent;
+import cpw.mods.fml.relauncher.Side;
 
-public class RetroGenTickHandler implements ITickHandler
+public class RetroGenTickHandler
 {
 	
 	private static RetroGenTickHandler ticks = new RetroGenTickHandler();
@@ -24,16 +25,15 @@ public class RetroGenTickHandler implements ITickHandler
 	
 	public HashMap<Integer, ArrayList<ChunkProsition>> chunks = new HashMap<Integer, ArrayList<ChunkProsition>>();
 	
-	@Override
-	public void tickStart(EnumSet<TickType> type, Object... tickData)
+	@SubscribeEvent
+	public void tickEnd(TickEvent.WorldTickEvent event)
 	{
-		
-	}
-	
-	@Override
-	public void tickEnd(EnumSet<TickType> type, Object... tickData)
-	{
-		World world = (World) tickData[0];
+		if (event.side != Side.SERVER || event.phase != TickEvent.Phase.END)
+		{
+			return;
+		}
+
+		World world = event.world;
 		int dim = world.provider.dimensionId;
 		ArrayList<ChunkProsition> chunk = chunks.get(Integer.valueOf(dim));
 		
@@ -51,19 +51,7 @@ public class RetroGenTickHandler implements ITickHandler
 		}
 		
 	}
-	
-	@Override
-	public EnumSet<TickType> ticks()
-	{
-		return EnumSet.of(TickType.WORLD);
-	}
-	
-	@Override
-	public String getLabel()
-	{
-		return "SpmodAPI_Retorgen";
-	}
-	
+
 	public static class OreReplacer
 	{
 		BlockStack block;
@@ -91,7 +79,7 @@ public class RetroGenTickHandler implements ITickHandler
 			}
 			else
 			{
-				return pos.setBlock(block.getBlockID(), block.getMeta());
+				return pos.setBlock(block.getBlock(), block.getMeta());
 			}
 		}
 		

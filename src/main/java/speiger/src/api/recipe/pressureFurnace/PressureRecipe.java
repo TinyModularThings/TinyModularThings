@@ -164,9 +164,9 @@ public class PressureRecipe
 		
 		ItemStack end = input.copy();
 		end.stackSize -= firstInput.stackSize;
-		if (end.stackSize <= 0 && end.getItem().getContainerItemStack(end) != null)
+		if (end.stackSize <= 0 && end.getItem().getContainerItem(end) != null)
 		{
-			end = end.getItem().getContainerItemStack(end);
+			end = end.getItem().getContainerItem(end);
 		}
 		
 		if (end.stackSize <= 0)
@@ -187,9 +187,9 @@ public class PressureRecipe
 		ItemStack end = input.copy();
 		end.stackSize -= secondInput.stackSize;
 		
-		if (end.stackSize <= 0 && end.getItem().getContainerItemStack(end) != null)
+		if (end.stackSize <= 0 && end.getItem().getContainerItem(end) != null)
 		{
-			end = end.getItem().getContainerItemStack(end);
+			end = end.getItem().getContainerItem(end);
 		}
 		
 		if (end.stackSize <= 0)
@@ -210,9 +210,9 @@ public class PressureRecipe
 		ItemStack end = input.copy();
 		end.stackSize -= combiner.stackSize;
 		
-		if (end.stackSize <= 0 && end.getItem().getContainerItemStack(end) != null)
+		if (end.stackSize <= 0 && end.getItem().getContainerItem(end) != null)
 		{
-			end = end.getItem().getContainerItemStack(end);
+			end = end.getItem().getContainerItem(end);
 		}
 		
 		if (end.stackSize <= 0)
@@ -231,9 +231,9 @@ public class PressureRecipe
 		ItemStack end = input.copy();
 		
 		end.stackSize -= size;
-		if (end.stackSize <= 0 && end.getItem().getContainerItemStack(end) != null)
+		if (end.stackSize <= 0 && end.getItem().getContainerItem(end) != null)
 		{
-			end = end.getItem().getContainerItemStack(end);
+			end = end.getItem().getContainerItem(end);
 		}
 		
 		if (end.stackSize <= 0)

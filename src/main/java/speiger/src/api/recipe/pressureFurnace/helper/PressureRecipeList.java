@@ -6,8 +6,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
@@ -26,29 +26,29 @@ public class PressureRecipeList
 	
 	public void addFurnaceRecipes()
 	{
-		Map<List<Integer>, ItemStack> metaList = FurnaceRecipes.smelting().getMetaSmeltingList();
-		Iterator<Entry<List<Integer>, ItemStack>> iter = metaList.entrySet().iterator();
+		Map<ItemStack, ItemStack> smeltingList = FurnaceRecipes.smelting().getSmeltingList();
+		Iterator<Entry<ItemStack, ItemStack>> iter = smeltingList.entrySet().iterator();
 		while (iter.hasNext())
 		{
-			Entry<List<Integer>, ItemStack> cuRecipe = iter.next();
+			Entry<ItemStack, ItemStack> cuRecipe = iter.next();
 			if (cuRecipe != null)
 			{
-				ItemStack input = new ItemStack(cuRecipe.getKey().get(0), 1, cuRecipe.getKey().get(1));
+				ItemStack input = cuRecipe.getKey();
 				PressureRecipe recipe = new PressureRecipe(input, (ItemStack) null, (ItemStack) null, cuRecipe.getValue(), false, false);
 				addRecipe(recipe);
 			}
 		}
 		
-		Map list = FurnaceRecipes.smelting().getSmeltingList();
-		Iterator iter2 = list.entrySet().iterator();
+		Map<ItemStack, ItemStack> list = FurnaceRecipes.smelting().getSmeltingList();
+		Iterator<Entry<ItemStack, ItemStack>> iter2 = list.entrySet().iterator();
 		while (iter2.hasNext())
 		{
-			Entry<Integer, ItemStack> recipe = (Entry<Integer, ItemStack>) iter2.next();
-			ItemStack input = new ItemStack(recipe.getKey(), 1, -1);
+			Entry<ItemStack, ItemStack> recipe = iter2.next();
+			ItemStack input = new ItemStack(recipe.getKey().getItem(), 1, -1);
 			PressureRecipe recipes = new PressureRecipe(input, (ItemStack) null, (ItemStack) null, recipe.getValue(), false, false);
 			addRecipe(recipes);
 		}
-		PressureRecipe recipes = new PressureRecipe(new ItemStack(Block.wood, 1, OreDictionary.WILDCARD_VALUE), (ItemStack) null, (ItemStack) null, new ItemStack(Item.coal, 1, 1), false, false);
+		PressureRecipe recipes = new PressureRecipe(new ItemStack(Blocks.planks, 1, OreDictionary.WILDCARD_VALUE), (ItemStack) null, (ItemStack) null, new ItemStack(Items.coal, 1, 1), false, false);
 		addRecipe(recipes);
 	}
 	

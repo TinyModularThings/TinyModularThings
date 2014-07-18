@@ -1,6 +1,6 @@
 package speiger.src.spmodapi.common.handler;
 
-import net.minecraftforge.event.ForgeSubscribe;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
@@ -14,7 +14,7 @@ public class ChatHandler
 		return chat;
 	}
 	
-	@ForgeSubscribe
+	@SubscribeEvent
 	public void onChatMessage(ServerChatEvent evt)
 	{
 		if(evt.username.equalsIgnoreCase("Server"))

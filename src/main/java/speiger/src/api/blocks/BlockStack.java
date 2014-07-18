@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 
@@ -30,27 +30,39 @@ public class BlockStack
 	
 	public BlockStack(ItemStack par1)
 	{
-		this(Block.blocksList[par1.itemID], par1.getItemDamage());
+		this(Item.getIdFromItem(par1.getItem()), par1.getItemDamage());
 	}
-	
+
+	public BlockStack(Item item)
+	{
+		this(item, 0);
+	}
+
+	public BlockStack(Item item, int meta)
+	{
+		this(Item.getIdFromItem(item), meta);
+	}
+
 	public BlockStack(Block block)
 	{
 		this(block, 0);
 	}
 	
+	@Deprecated
 	public BlockStack(int id)
 	{
-		this(Block.blocksList[id]);
+		this(id, 0);
 	}
 	
 	public BlockStack(IBlockAccess world, int x, int y, int z)
 	{
-		this(world.getBlockId(x, y, z), world.getBlockMetadata(x, y, z));
+		this(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
 	}
 	
+	@Deprecated
 	public BlockStack(int id, int meta)
 	{
-		this(Block.blocksList[id], meta);
+		this(Block.getBlockById(id), meta);
 	}
 	
 	public BlockStack(BlockStack block)
@@ -60,7 +72,7 @@ public class BlockStack
 	
 	public BlockStack(ItemBlock par1)
 	{
-		this(par1.getBlockID());
+		this(Block.getBlockFromItem(par1));
 	}
 	
 	public BlockStack(Block block, int metadata)
@@ -68,7 +80,7 @@ public class BlockStack
 		blocks = block;
 		meta = metadata;
 	}
-	
+
 	public ItemStack asItemStack()
 	{
 		return new ItemStack(blocks, 1, meta);
@@ -78,22 +90,13 @@ public class BlockStack
 	{
 		return blocks;
 	}
-	
-	public int getBlockID()
-	{
-		if (blocks == null)
-		{
-			return 0;
-		}
-		return blocks.blockID;
-	}
-	
+
 	public int getMeta()
 	{
 		return meta;
 	}
 	
-	public Icon getTexture(int side)
+	public IIcon getTexture(int side)
 	{
 		return blocks.getIcon(side, meta);
 	}
@@ -106,7 +109,7 @@ public class BlockStack
 		}
 		ItemStack stack = new ItemStack(blocks, 1, meta);
 		Item item = stack.getItem();
-		return item.getItemDisplayName(stack);
+		return item.getItemStackDisplayName(stack);
 	}
 	
 	public String getHiddenName()
@@ -130,7 +133,7 @@ public class BlockStack
 	
 	public boolean placeBlock(World world, int x, int y, int z)
 	{
-		return world.setBlock(x, y, z, blocks.blockID, meta, 3);
+		return world.setBlock(x, y, z, blocks, meta, 3);
 	}
 	
 }

@@ -1,10 +1,10 @@
 package speiger.src.api.packets;
 
-import java.io.DataInput;
+import io.netty.buffer.ByteBuf;
 
 public interface IPacketReciver
 {
-	void recivePacket(DataInput par1);
+	void recivePacket(ByteBuf par1);
 	
 	//For Registration. Only needed for None TileEntities! TileEntities can say NULL!
 	public String identifier();

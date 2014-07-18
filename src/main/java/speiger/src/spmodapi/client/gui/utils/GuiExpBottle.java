@@ -24,10 +24,10 @@ public class GuiExpBottle extends GuiInventoryCore
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		String string = LanguageRegister.getLanguageName(this, "exp.storage", getSpmodCore());
-		fontRenderer.drawString(string, xSize / 2 - fontRenderer.getStringWidth(string) / 2, 6, 4210752);
-		fontRenderer.drawString(I18n.getString("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		fontRendererObj.drawString(string, xSize / 2 - fontRendererObj.getStringWidth(string) / 2, 6, 4210752);
+		fontRendererObj.drawString(I18n.format("container.inventory"), 8, ySize - 96 + 2, 4210752);
 		String name = LanguageRegister.getLanguageName(this, "exp.stored", getSpmodCore());
-		fontRenderer.drawString(name+": "+exp.exp, 45, ySize - 110 + 2, 4210752);
+		fontRendererObj.drawString(name+": "+exp.exp, 45, ySize - 110 + 2, 4210752);
 	}
 
 	

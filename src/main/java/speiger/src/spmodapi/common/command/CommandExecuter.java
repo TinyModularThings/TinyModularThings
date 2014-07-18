@@ -1,8 +1,11 @@
 package speiger.src.spmodapi.common.command;
 
+import io.netty.buffer.ByteBuf;
+
 import java.io.DataInput;
 import java.util.ArrayList;
 
+import cpw.mods.fml.common.network.ByteBufUtils;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -14,7 +17,7 @@ public class CommandExecuter implements IPacketReciver
 {
 
 	@Override
-	public void recivePacket(DataInput par1)
+	public void recivePacket(ByteBuf par1)
 	{
 		CommandRegistry reg = CommandRegistry.getInstance();
 		try
@@ -22,7 +25,7 @@ public class CommandExecuter implements IPacketReciver
 			World world = DimensionManager.getWorld(par1.readInt());
 			if(world != null && !world.isRemote)
 			{
-				EntityPlayer player = world.getPlayerEntityByName(par1.readUTF());
+				EntityPlayer player = world.getPlayerEntityByName(ByteBufUtils.readUTF8String(par1));
 				if(player != null)
 				{
 					boolean sub = par1.readByte() == 1;
@@ -31,7 +34,7 @@ public class CommandExecuter implements IPacketReciver
 					String[] text = new String[par1.readInt()];
 					for(int i = 0;i<text.length;i++)
 					{
-						text[i] = par1.readUTF();
+						text[i] = ByteBufUtils.readUTF8String(par1);
 					}
 					
 					
@@ -55,7 +58,7 @@ public class CommandExecuter implements IPacketReciver
 								}
 								else
 								{
-									player.sendChatToPlayer(LanguageRegister.createChatMessage("Wrong Arguments. Check the info for right arguments"));
+									player.addChatMessage(LanguageRegister.createChatMessage("Wrong Arguments. Check the info for right arguments"));
 									return;
 								}
 							}

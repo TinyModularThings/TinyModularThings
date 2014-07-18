@@ -1,11 +1,7 @@
 package speiger.src.spmodapi.common.recipes.advanced;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -18,103 +14,108 @@ import speiger.src.api.util.InventoryUtil;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
-import cpw.mods.fml.common.ICraftingHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
-public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHandler
+public class ColorCardRecipe extends ShapelessOreRecipe
 {
-	public HashMap<List<Integer>, EnumColor> colors = new HashMap<List<Integer>, EnumColor>();
+	public HashMap<ItemStack, EnumColor> colors = new HashMap<ItemStack, EnumColor>();
 	public ColorCardRecipe()
 	{
 		super(new ItemStack(APIItems.colorCard, 1, 0), new ItemStack(APIItems.colorCard, 1, 0));
 		ArrayList<ItemStack> total = new ArrayList<ItemStack>();
 		ArrayList<ItemStack> list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeRed").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.RED);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeBlack").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.BLACK);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeGreen").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.GREEN);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeBrown").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.BROWN);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeBlue").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.BLUE);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyePurple").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.PURPLE);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeCyan").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.CYAN);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeLightGray").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.LIGHTGRAY);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeGray").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.GRAY);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyePink").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.PINK);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeLime").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.LIME);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeYellow").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.YELLOW);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeLightBlue").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.LIGHTBLUE);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeMagenta").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.MAGENTA);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeOrange").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.ORANGE);
 		total.addAll(list);
 		list = (ArrayList<ItemStack>) OreDictionary.getOres("dyeWhite").clone();
-		removeCard(list);
+		list = removeCard(list);
 		this.addColors(list, EnumColor.WHITE);
 		total.addAll(list);
 		this.getInput().add(total);
-		GameRegistry.registerCraftingHandler(this);
+		FMLCommonHandler.instance().bus().register(this);
 	}
 	
 	
-	public void removeCard(ArrayList<ItemStack> list)
+	public ArrayList<ItemStack> removeCard(ArrayList<ItemStack> list)
 	{
+		// Because ore dictionary list is unmodifiable
+		ArrayList<ItemStack> newList = new ArrayList<ItemStack>();
+		newList.addAll(list);
 		ArrayList<ItemStack> remove = new ArrayList<ItemStack>();
 		for(ItemStack stack : list)
 		{
-			if(stack != null && stack.itemID == APIItems.colorCard.itemID)
+			if(stack != null && stack.getItem() == APIItems.colorCard)
 			{
 				remove.add(stack);
 			}
 		}
-		list.removeAll(remove);
+		newList.removeAll(remove);
+		return newList;
 	}
 	
 	public void addColors(ArrayList<ItemStack> par1, EnumColor par2)
 	{
 		for(ItemStack item : par1)
 		{
-			colors.put(Arrays.asList(item.itemID, item.getItemDamage()), par2);
+			colors.put(item, par2);
 		}
 	}
 
@@ -132,7 +133,7 @@ public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHand
 			ItemStack item = par1.getStackInSlot(i);
 			if(item != null)
 			{
-				if(item.itemID != APIItems.colorCard.itemID)
+				if(item.getItem() != APIItems.colorCard)
 				{
 					input = item;
 				}
@@ -148,7 +149,7 @@ public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHand
 		{
 			return null;
 		}
-		output.setItemDamage(colors.get(Arrays.asList(input.itemID, input.getItemDamage())).getAsWool()+1);		
+		output.setItemDamage(colors.get(input).getAsWool()+1);		
 		output.stackSize = card.stackSize;
 		
 		return output;
@@ -167,11 +168,12 @@ public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHand
 
 	
 	
-	@Override
-	public void onCrafting(EntityPlayer player, ItemStack item, IInventory inv)
+	@SubscribeEvent
+	public void onCrafting(ItemCraftedEvent event)
 	{
-		if(!player.worldObj.isRemote)
+		if(!event.player.worldObj.isRemote)
 		{
+			IInventory inv = event.craftMatrix;
 			int l = 0;
 			for(int i = 0;i<inv.getSizeInventory();i++)
 			{
@@ -181,7 +183,7 @@ public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHand
 					l++;
 				}
 			}
-			if(item.itemID != APIItems.colorCard.itemID || l != 2)
+			if(event.crafting.getItem() != APIItems.colorCard || l != 2)
 			{
 				return;
 			}
@@ -190,7 +192,7 @@ public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHand
 				ItemStack stack = inv.getStackInSlot(i);
 				if(stack != null)
 				{
-					if(stack.itemID == APIItems.colorCard.itemID)
+					if(stack.getItem() == APIItems.colorCard)
 					{
 						inv.setInventorySlotContents(i, null);
 					}
@@ -207,7 +209,7 @@ public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHand
 						ItemStack cop = stack;
 						if(!stop)
 						{
-							InventoryUtil.dropItem(player, cop);
+							InventoryUtil.dropItem(event.player, cop);
 							inv.setInventorySlotContents(i, null);
 						}
 					}
@@ -215,14 +217,4 @@ public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHand
 			}
 		}
 	}
-
-
-	@Override
-	public void onSmelting(EntityPlayer player, ItemStack item)
-	{
-		
-	}
-	
-	
-	
 }

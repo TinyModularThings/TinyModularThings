@@ -16,7 +16,7 @@ import speiger.src.spmodapi.common.command.CommandRegistry;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.core.Registry;
 import speiger.src.spmodapi.common.core.SpmodAPICore;
-import speiger.src.spmodapi.common.handler.SpmodPacketHandler;
+import speiger.src.spmodapi.common.handler.SpmodPacket;
 import speiger.src.spmodapi.common.modHelper.ModHelperLoader;
 import speiger.src.spmodapi.common.util.data.StructureStorage;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
@@ -31,8 +31,9 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
-import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
+import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
+import cpw.mods.fml.relauncher.Side;
 
 /**
  * 
@@ -40,7 +41,6 @@ import cpw.mods.fml.common.network.NetworkRegistry;
  * 
  */
 @Mod(modid = ModID, name = Name, version = Version, useMetadata = true)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = "Spmod", packetHandler = SpmodPacketHandler.class)
 public class SpmodAPI implements SpmodMod
 {
 	@SidedProxy(clientSide = Client, serverSide = Core)
@@ -50,6 +50,8 @@ public class SpmodAPI implements SpmodMod
 	public static SpmodAPI instance;
 	
 	public static LogProxy log;
+
+	public static SimpleNetworkWrapper netChannel;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt)
@@ -59,9 +61,12 @@ public class SpmodAPI implements SpmodMod
 		LanguageLoader language = new LanguageLoader(this);
 		language.registerAllAviableLanguages();
 		SpmodConfig.getInstance().loadSpmodCondig(new File(evt.getModConfigurationDirectory().getAbsolutePath() + "/Spmod/SpmodAPIBeta.cfg"));
-		NetworkRegistry.instance().registerChannel(new SpmodPacketHandler(), "Spmod");
+		netChannel = NetworkRegistry.INSTANCE.newSimpleChannel("Spmod");
+		// Probably not the way to do it
+		netChannel.registerMessage(SpmodPacket.SpmodPacketHandler.class, SpmodPacket.class, 0, Side.CLIENT);
+		netChannel.registerMessage(SpmodPacket.SpmodPacketHandler.class, SpmodPacket.class, 1, Side.SERVER);
 		instance = this;
-		NetworkRegistry.instance().registerGuiHandler(instance, core);
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, core);
 
 	}
 	

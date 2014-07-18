@@ -3,10 +3,11 @@ package speiger.src.spmodapi.common.util;
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.blocks.BlockStack;
 
 public class BlockPosition
@@ -61,7 +62,7 @@ public class BlockPosition
 	
 	public boolean doesBlockExsist()
 	{
-		return getBlockID() > 0;
+		return getBlock() != null;
 	}
 	
 	public int getBlockMetadata()
@@ -69,20 +70,20 @@ public class BlockPosition
 		return getWorld().getBlockMetadata(xCoord, yCoord, zCoord);
 	}
 	
-	public int getBlockID()
+	public Block getBlock()
 	{
-		return getWorld().getBlockId(xCoord, yCoord, zCoord);
+		return getWorld().getBlock(xCoord, yCoord, zCoord);
 	}
 	
 	public boolean isThisBlock(BlockStack block, boolean meta)
 	{
 		if (meta)
 		{
-			return getBlockID() == block.getBlockID() && getBlockMetadata() == block.getMeta();
+			return getBlock() == block.getBlock() && getBlockMetadata() == block.getMeta();
 		}
 		else
 		{
-			return getBlockID() == block.getBlockID();
+			return getBlock() == block.getBlock();
 		}
 	}
 	
@@ -113,7 +114,7 @@ public class BlockPosition
 	
 	public TileEntity getTileEntity()
 	{
-		return getWorld().getBlockTileEntity(xCoord, yCoord, zCoord);
+		return getWorld().getTileEntity(xCoord, yCoord, zCoord);
 	}
 	
 	public World getWorld()

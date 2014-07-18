@@ -2,13 +2,14 @@ package speiger.src.api.util;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.energy.IEnergyProvider;
@@ -20,59 +21,59 @@ public class WorldReading
 {
 	public static boolean hasTileEntity(World world, int x, int y, int z)
 	{
-		return world.getBlockTileEntity(x, y, z) != null;
+		return world.getTileEntity(x, y, z) != null;
 	}
 	
 	public static boolean hasInventory(World world, int x, int y, int z)
 	{
-		return hasTileEntity(world, x, y, z) && world.getBlockTileEntity(x, y, z) instanceof IInventory;
+		return hasTileEntity(world, x, y, z) && world.getTileEntity(x, y, z) instanceof IInventory;
 	}
 	
 	public static boolean hasTank(World world, int x, int y, int z)
 	{
-		return hasTileEntity(world, x, y, z) && world.getBlockTileEntity(x, y, z) instanceof IFluidHandler;
+		return hasTileEntity(world, x, y, z) && world.getTileEntity(x, y, z) instanceof IFluidHandler;
 	}
 	
 	public static boolean hasPowerProvider(World world, int x, int y, int z)
 	{
-		return hasTileEntity(world, x, y, z) && (world.getBlockTileEntity(x, y, z) instanceof IEnergyProvider || world.getBlockTileEntity(x, y, z) instanceof IPowerReceptor);
+		return hasTileEntity(world, x, y, z) && (world.getTileEntity(x, y, z) instanceof IEnergyProvider || world.getTileEntity(x, y, z) instanceof IPowerReceptor);
 	}
 	
 	public static IInventory getInventory(World world, int x, int y, int z)
 	{
-		return ((IInventory) world.getBlockTileEntity(x, y, z));
+		return ((IInventory) world.getTileEntity(x, y, z));
 	}
 	
 	public static IFluidHandler getFluidTank(World world, int x, int y, int z)
 	{
-		return ((IFluidHandler) world.getBlockTileEntity(x, y, z));
+		return ((IFluidHandler) world.getTileEntity(x, y, z));
 	}
 	
-	public static int getBlockId(World par0, int par1, int par2, int par3, int side)
+	public static Block getBlock(World par0, int par1, int par2, int par3, int side)
 	{
 		if (side == 0)
 		{
-			return par0.getBlockId(par1, par2 - 1, par3);
+			return par0.getBlock(par1, par2 - 1, par3);
 		}
 		else if (side == 1)
 		{
-			return par0.getBlockId(par1, par2 + 1, par3);
+			return par0.getBlock(par1, par2 + 1, par3);
 		}
 		else if (side == 2)
 		{
-			return par0.getBlockId(par1, par2, par3 - 1);
+			return par0.getBlock(par1, par2, par3 - 1);
 		}
 		else if (side == 3)
 		{
-			return par0.getBlockId(par1, par2, par3 + 1);
+			return par0.getBlock(par1, par2, par3 + 1);
 		}
 		else if (side == 4)
 		{
-			return par0.getBlockId(par1 - 1, par2, par3);
+			return par0.getBlock(par1 - 1, par2, par3);
 		}
 		else
 		{
-			return par0.getBlockId(par1 + 1, par2, par3);
+			return par0.getBlock(par1 + 1, par2, par3);
 		}
 	}
 	
@@ -80,27 +81,27 @@ public class WorldReading
 	{
 		if (side == 0)
 		{
-			return par0.getBlockTileEntity(par1, par2 - 1, par3);
+			return par0.getTileEntity(par1, par2 - 1, par3);
 		}
 		else if (side == 1)
 		{
-			return par0.getBlockTileEntity(par1, par2 + 1, par3);
+			return par0.getTileEntity(par1, par2 + 1, par3);
 		}
 		else if (side == 2)
 		{
-			return par0.getBlockTileEntity(par1, par2, par3 - 1);
+			return par0.getTileEntity(par1, par2, par3 - 1);
 		}
 		else if (side == 3)
 		{
-			return par0.getBlockTileEntity(par1, par2, par3 + 1);
+			return par0.getTileEntity(par1, par2, par3 + 1);
 		}
 		else if (side == 4)
 		{
-			return par0.getBlockTileEntity(par1 - 1, par2, par3);
+			return par0.getTileEntity(par1 - 1, par2, par3);
 		}
 		else
 		{
-			return par0.getBlockTileEntity(par1 + 1, par2, par3);
+			return par0.getTileEntity(par1 + 1, par2, par3);
 		}
 	}
 	
@@ -139,7 +140,7 @@ public class WorldReading
 		return direction;
 	}
 	
-	public static ArrayList<TileEntity> getTileWithAABB(int xCoord, int yCoord, int zCoord, World world, int range, int blockID, int meta)
+	public static ArrayList<TileEntity> getTileWithAABB(int xCoord, int yCoord, int zCoord, World world, int range, Block block, int meta)
 	{
 		ArrayList<TileEntity> tile = new ArrayList<TileEntity>();
 		int minX = xCoord - range;
@@ -155,7 +156,7 @@ public class WorldReading
 				for(int z = minZ;z<maxZ;z++)
 				{
 					BlockPosition pos = new BlockPosition(world, x, y, z);
-					if(pos.doesBlockExsist() && pos.isThisBlock(new BlockStack(blockID, meta), true) && pos.hasTileEntity())
+					if(pos.doesBlockExsist() && pos.isThisBlock(new BlockStack(block, meta), true) && pos.hasTileEntity())
 					{
 						tile.add(pos.getTileEntity());
 					}
@@ -168,7 +169,7 @@ public class WorldReading
 
 	public static AdvTile getAdvTile(IBlockAccess par1, int par2, int par3, int par4)
 	{
-		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1.getTileEntity(par2, par3, par4);
 		if(tile == null)
 		{
 			return null;

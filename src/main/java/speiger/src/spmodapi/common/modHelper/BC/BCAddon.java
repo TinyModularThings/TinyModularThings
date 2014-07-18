@@ -1,12 +1,12 @@
 package speiger.src.spmodapi.common.modHelper.BC;
 
+import cpw.mods.fml.common.event.FMLInterModComms;
 import net.minecraft.item.ItemStack;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import buildcraft.api.gates.ActionManager;
 import buildcraft.api.gates.IAction;
-import buildcraft.api.transport.FacadeManager;
 
 public class BCAddon
 {
@@ -24,14 +24,14 @@ public class BCAddon
 	{
 		for (int i = 0; i < 16; i++)
 		{
-			FacadeManager.addFacade(new ItemStack(APIBlocks.hempBlock, 1, i));
-			FacadeManager.addFacade(new ItemStack(APIBlocks.hempBrick, 1, i));
-			FacadeManager.addFacade(new ItemStack(APIBlocks.hempBlockPlated, 1, i));
-			FacadeManager.addFacade(new ItemStack(APIBlocks.hempBrickPlated, 1, i));
-			FacadeManager.addFacade(new ItemStack(APIBlocks.savedHempBlock, 1, i));
-			FacadeManager.addFacade(new ItemStack(APIBlocks.savedHempBrick, 1, i));
-			FacadeManager.addFacade(new ItemStack(APIBlocks.savedHempBlockPlated, 1, i));
-			FacadeManager.addFacade(new ItemStack(APIBlocks.savedHempBrickPlated, 1, i));
+			addFacade(new ItemStack(APIBlocks.hempBlock, 1, i));
+			addFacade(new ItemStack(APIBlocks.hempBrick, 1, i));
+			addFacade(new ItemStack(APIBlocks.hempBlockPlated, 1, i));
+			addFacade(new ItemStack(APIBlocks.hempBrickPlated, 1, i));
+			addFacade(new ItemStack(APIBlocks.savedHempBlock, 1, i));
+			addFacade(new ItemStack(APIBlocks.savedHempBrick, 1, i));
+			addFacade(new ItemStack(APIBlocks.savedHempBlockPlated, 1, i));
+			addFacade(new ItemStack(APIBlocks.savedHempBrickPlated, 1, i));
 		}
 		
 		int ticks = SpmodConfig.ticks.length;
@@ -63,5 +63,10 @@ public class BCAddon
 		}
 		
 		ActionManager.registerActionProvider(new SpmodActionHelper());
+	}
+
+	private static void addFacade(ItemStack facadeStack)
+	{
+		FMLInterModComms.sendMessage("BuildCraft|Transport", "add-facade", facadeStack);
 	}
 }

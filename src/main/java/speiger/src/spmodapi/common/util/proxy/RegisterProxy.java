@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TileIconMaker;
-import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RegisterProxy
@@ -21,7 +20,7 @@ public class RegisterProxy
 	
 	public static void RegisterItem(String modID, Item par1)
 	{
-		GameRegistry.registerItem(par1, par1.getItemDisplayName(new ItemStack(par1)), modID);
+		GameRegistry.registerItem(par1, par1.getItemStackDisplayName(new ItemStack(par1)), modID);
 		
 	}
 	

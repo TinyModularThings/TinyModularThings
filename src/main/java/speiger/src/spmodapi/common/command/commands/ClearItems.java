@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import com.mojang.authlib.GameProfile;
+
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -49,7 +51,8 @@ public class ClearItems implements ISpmodCommand
 		{
 			if(sub.getSubCommandName().equalsIgnoreCase("All"))
 			{
-				if(MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).isPlayerOpped(par1.getCommandSenderName()))
+				// TODO is GameProfile correct?
+				if(MinecraftServer.getServer().getConfigurationManager().func_152596_g(new GameProfile(null, par1.getCommandSenderName())))
 				{
 					return true;
 				}
@@ -60,7 +63,7 @@ public class ClearItems implements ISpmodCommand
 				if(arg.length == 1)
 				{
 					Integer in = Integer.parseInt(arg[0]);
-					if(in != null && in.intValue() > 50 && !MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).isPlayerOpped(par1.getCommandSenderName()))
+					if(in != null && in.intValue() > 50 && !MinecraftServer.getServer().getConfigurationManager().func_152596_g(new GameProfile(null, par1.getCommandSenderName())))
 					{
 						return false;
 					}
@@ -76,18 +79,19 @@ public class ClearItems implements ISpmodCommand
 	{
 		if(sub == null)
 		{
-			par1.sendChatToPlayer(LanguageRegister.createChatMessage("Could not delete items"));
+			par1.addChatMessage(LanguageRegister.createChatMessage("Could not delete items"));
 			return;
 		}
 		
 		if(sub.getSubCommandName().equalsIgnoreCase("All"))
 		{
-			if(!MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).isPlayerOpped(par1.getCommandSenderName()))
+			// TODO is GameProfile correct?
+			if(!MinecraftServer.getServer().getConfigurationManager().func_152596_g(new GameProfile(null, par1.getCommandSenderName())))
 			{
-				par1.sendChatToPlayer(LanguageRegister.createChatMessage("You are not allowed to use this command"));
+				par1.addChatMessage(LanguageRegister.createChatMessage("You are not allowed to use this command"));
 				return;
 			}
-			par1.sendChatToPlayer(LanguageRegister.createChatMessage("Clearing All Entity Items in "+par1.getEntityWorld().provider.getDimensionName()));
+			par1.addChatMessage(LanguageRegister.createChatMessage("Clearing All Entity Items in "+par1.getEntityWorld().provider.getDimensionName()));
 			List<Entity> entities = par1.getEntityWorld().loadedEntityList;
 			for(Entity en : entities)
 			{
@@ -102,17 +106,17 @@ public class ClearItems implements ISpmodCommand
 			if(arg.length == 1)
 			{
 				Integer in = Integer.parseInt(arg[0]);
-				if(in != null && in.intValue() > 50 && !MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).isPlayerOpped(par1.getCommandSenderName()))
+				if(in != null && in.intValue() > 50 && !MinecraftServer.getServer().getConfigurationManager().func_152596_g(new GameProfile(null, par1.getCommandSenderName())))
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("You are not allowed to clearing items in a that big Range"));
+					par1.addChatMessage(LanguageRegister.createChatMessage("You are not allowed to clearing items in a that big Range"));
 					return;
 				}
 				if(in == null)
 				{
 					in = 10;
 				}
-				par1.sendChatToPlayer(LanguageRegister.createChatMessage("Removing Entities in a "+in+" Blocks Radius"));
-				List<EntityItem> items = par1.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getAABBPool().getAABB(par1.getPlayerCoordinates().posX, par1.getPlayerCoordinates().posY, par1.getPlayerCoordinates().posZ, par1.getPlayerCoordinates().posX, par1.getPlayerCoordinates().posY, par1.getPlayerCoordinates().posZ).expand(in, in, in));
+				par1.addChatMessage(LanguageRegister.createChatMessage("Removing Entities in a "+in+" Blocks Radius"));
+				List<EntityItem> items = par1.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(par1.getPlayerCoordinates().posX, par1.getPlayerCoordinates().posY, par1.getPlayerCoordinates().posZ, par1.getPlayerCoordinates().posX, par1.getPlayerCoordinates().posY, par1.getPlayerCoordinates().posZ).expand(in, in, in));
 				for(EntityItem item : items)
 				{
 					if(item != null)
@@ -123,8 +127,8 @@ public class ClearItems implements ISpmodCommand
 			}
 			else
 			{
-				par1.sendChatToPlayer(LanguageRegister.createChatMessage("Removing Entities in a 10 Blocks Radius"));
-				List<EntityItem> items = par1.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getAABBPool().getAABB(par1.getPlayerCoordinates().posX, par1.getPlayerCoordinates().posY, par1.getPlayerCoordinates().posZ, par1.getPlayerCoordinates().posX, par1.getPlayerCoordinates().posY, par1.getPlayerCoordinates().posZ).expand(10, 10, 10));
+				par1.addChatMessage(LanguageRegister.createChatMessage("Removing Entities in a 10 Blocks Radius"));
+				List<EntityItem> items = par1.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getBoundingBox(par1.getPlayerCoordinates().posX, par1.getPlayerCoordinates().posY, par1.getPlayerCoordinates().posZ, par1.getPlayerCoordinates().posX, par1.getPlayerCoordinates().posY, par1.getPlayerCoordinates().posZ).expand(10, 10, 10));
 				for(EntityItem item : items)
 				{
 					if(item != null)

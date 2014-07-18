@@ -11,7 +11,7 @@ public class ActionAdvLoop extends ActionMachineControl
 	int tickRate;
 	public ActionAdvLoop(boolean all, int tickRate)
 	{
-		super(0, Mode.Loop);
+		super(Mode.Loop);
 		this.all = all;
 		this.tickRate = tickRate;
 	}

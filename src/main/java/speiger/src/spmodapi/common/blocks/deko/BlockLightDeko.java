@@ -10,14 +10,16 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.spmodapi.common.blocks.deko.TileLamp.EnumLampType;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumColor;
@@ -38,16 +40,16 @@ public class BlockLightDeko extends BlockContainer
 			{0.265D, 0.125D, 0.125D, 1D, 0.875D, 0.875D}
 	};
 	
-	public BlockLightDeko(int par1)
+	public BlockLightDeko()
 	{
-		super(par1, Material.glass);
+		super(Material.glass);
 		setCreativeTab(APIUtils.tabHempDeko);
 		this.setHardness(4.0F);
 		this.setResistance(4.0F);
 	}
 
 	@Override
-	public TileEntity createNewTileEntity(World world)
+	public TileEntity createNewTileEntity(World world, int metadata)
 	{
 		return new TileLamp();
 	}
@@ -66,7 +68,7 @@ public class BlockLightDeko extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
 	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 		if(tile != null && tile instanceof TileLamp && ((TileLamp)tile).getType() != null)
 		{
 			TileLamp lamp = (TileLamp) tile;
@@ -74,11 +76,11 @@ public class BlockLightDeko extends BlockContainer
 			int facing = lamp.getFacing();
 			switch(type)
 			{
-				case FULL: return AxisAlignedBB.getAABBPool().getAABB(par2, par3, par4, par2+1, par3+1, par4+1);
+				case FULL: return AxisAlignedBB.getBoundingBox(par2, par3, par4, par2+1, par3+1, par4+1);
 				case RP2CAGELAMP:
 
 					double[] array = sizes[facing];
-					return AxisAlignedBB.getAABBPool().getAABB(par2+array[0], par3+array[1], par4+array[2], par2+array[3], par3+array[4], par4+array[5]);
+					return AxisAlignedBB.getBoundingBox(par2+array[0], par3+array[1], par4+array[2], par2+array[3], par3+array[4], par4+array[5]);
 				default:
 					break;
 			}
@@ -89,7 +91,7 @@ public class BlockLightDeko extends BlockContainer
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
 	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 		if(tile != null && tile instanceof TileLamp && ((TileLamp)tile).getType() != null)
 		{
 			TileLamp lamp = (TileLamp) tile;
@@ -98,10 +100,10 @@ public class BlockLightDeko extends BlockContainer
 			
 			switch(type)
 			{
-				case FULL: return AxisAlignedBB.getAABBPool().getAABB(par2, par3, par4, par2+1, par3+1, par4+1);
+				case FULL: return AxisAlignedBB.getBoundingBox(par2, par3, par4, par2+1, par3+1, par4+1);
 				case RP2CAGELAMP:
 					double[] array = sizes[facing];
-					return AxisAlignedBB.getAABBPool().getAABB(par2+array[0], par3+array[1], par4+array[2], par2+array[3], par3+array[4], par4+array[5]);
+					return AxisAlignedBB.getBoundingBox(par2+array[0], par3+array[1], par4+array[2], par2+array[3], par3+array[4], par4+array[5]);
 				default:
 					break;
 			}
@@ -118,7 +120,7 @@ public class BlockLightDeko extends BlockContainer
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4)
 	{
-		TileEntity tile = par1iBlockAccess.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1iBlockAccess.getTileEntity(par2, par3, par4);
 		if(tile != null && tile instanceof TileLamp)
 		{
 			TileLamp lamp = (TileLamp) tile;
@@ -167,9 +169,9 @@ public class BlockLightDeko extends BlockContainer
 	
 
 	@Override
-	public int idDropped(int par1, Random par2Random, int par3)
+	public Item getItemDropped(int par1, Random par2Random, int par3)
 	{
-		return 0;
+		return null;
 	}
 
 	@Override
@@ -179,14 +181,14 @@ public class BlockLightDeko extends BlockContainer
 	}
 
 	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile != null && tile instanceof TileLamp)
 		{
 			return ((TileLamp)tile).onDrop(fortune);
 		}
-		return super.getBlockDropped(world, x, y, z, metadata, fortune);
+		return super.getDrops(world, x, y, z, metadata, fortune);
 	}
 
 	@Override
@@ -198,7 +200,7 @@ public class BlockLightDeko extends BlockContainer
 	@Override
 	public int getLightValue(IBlockAccess world, int x, int y, int z)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile != null && tile instanceof TileLamp)
 		{
 			TileLamp lamp = (TileLamp) tile;
@@ -213,15 +215,15 @@ public class BlockLightDeko extends BlockContainer
 	
 	
 	@Override
-	public boolean shouldCheckWeakPower(World world, int x, int y, int z, int side)
+	public boolean shouldCheckWeakPower(IBlockAccess world, int x, int y, int z, int side)
 	{
 		return super.shouldCheckWeakPower(world, x, y, z, side);
 	}
 
 	@Override
-	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side)
+	public boolean isSideSolid(IBlockAccess world, int x, int y, int z, ForgeDirection side)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile != null && tile instanceof TileLamp)
 		{
 			TileLamp lamp = (TileLamp) tile;
@@ -238,13 +240,13 @@ public class BlockLightDeko extends BlockContainer
 				}
 			}
 		}
-		return super.isBlockSolidOnSide(world, x, y, z, side);
+		return super.isSideSolid(world, x, y, z, side);
 	}
 
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile != null && tile instanceof AdvTile)
 		{
 			return ((AdvTile)tile).pickBlock(target);
@@ -260,9 +262,9 @@ public class BlockLightDeko extends BlockContainer
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
-		return Block.leaves.getIcon(0, 0);
+		return Blocks.leaves.getIcon(0, 0);
 	}
 
 	@Override
@@ -279,7 +281,7 @@ public class BlockLightDeko extends BlockContainer
 	{
 		if(!par1World.isRemote)
 		{
-			TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+			TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 			if(tile != null && tile instanceof AdvTile)
 			{
 				return ((AdvTile)tile).onActivated(par5EntityPlayer);
@@ -292,7 +294,7 @@ public class BlockLightDeko extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public int colorMultiplier(IBlockAccess par1iBlockAccess, int par2, int par3, int par4)
 	{
-		TileEntity tile = par1iBlockAccess.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1iBlockAccess.getTileEntity(par2, par3, par4);
 		if(tile != null && tile instanceof TileLamp)
 		{
 			SpmodColor color = ((TileLamp)tile).getFullColor();
@@ -307,7 +309,7 @@ public class BlockLightDeko extends BlockContainer
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for(int i = 0;i<72;i++)
 		{

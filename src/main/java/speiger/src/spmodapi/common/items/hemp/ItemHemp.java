@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.common.items.hemp;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.items.DisplayItem;
 import speiger.src.api.language.LanguageRegister;
@@ -16,21 +17,20 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemHemp extends SpmodItem
 {
 	
-	public ItemHemp(int par1)
+	public ItemHemp()
 	{
-		super(par1);
 		this.setCreativeTab(APIUtils.tabHemp);
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{
 		if (!SpmodModRegistry.areModsEqual(par0, SpmodAPI.instance))
 		{
 			return;
 		}
 		
-		LanguageRegister.getLanguageName(new DisplayItem(id), "hemp", par0);
+		LanguageRegister.getLanguageName(new DisplayItem(item), "hemp", par0);
 	}
 	
 	@Override
@@ -41,7 +41,7 @@ public class ItemHemp extends SpmodItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IIconRegister par1IconRegister)
 	{
 		itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/hempDrop");
 	}

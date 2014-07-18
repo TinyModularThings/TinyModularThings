@@ -1,6 +1,6 @@
 package speiger.src.spmodapi.common.config;
 
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import speiger.src.api.items.DisplayStack;
@@ -29,65 +29,51 @@ public class APIItemsConfig
 	
 	public static void loadItems()
 	{
-		Item.enderPearl.setMaxStackSize(64);
-		Item.egg.setMaxStackSize(64);
+		Items.ender_pearl.setMaxStackSize(64);
+		Items.egg.setMaxStackSize(64);
 		
-		items.hempSeed = new ItemHempSeed(config.itemIDs.getCurrentID());
+		items.hempSeed = new ItemHempSeed();
 		RegisterProxy.RegisterItem(items.hempSeed);
-		config.itemIDs.updateToNextID();
-		
-		items.hemp = new ItemHemp(config.itemIDs.getCurrentID());
+
+		items.hemp = new ItemHemp();
 		RegisterProxy.RegisterItem(items.hemp);
-		config.itemIDs.updateToNextID();
-		
-		items.hempBoots = new HempArmor(config.itemIDs.getCurrentID(), 3);
+
+		items.hempBoots = new HempArmor(3);
 		RegisterProxy.RegisterItem(items.hempBoots);
-		config.itemIDs.updateToNextID();
-		
-		items.hempLeggings = new HempArmor(config.itemIDs.getCurrentID(), 2);
+
+		items.hempLeggings = new HempArmor(2);
 		RegisterProxy.RegisterItem(items.hempLeggings);
-		config.itemIDs.updateToNextID();
-		
-		items.hempChestPlate = new HempArmor(config.itemIDs.getCurrentID(), 1);
+
+		items.hempChestPlate = new HempArmor(1);
 		RegisterProxy.RegisterItem(items.hempChestPlate);
-		config.itemIDs.updateToNextID();
-		
-		items.hempHelmet = new HempArmor(config.itemIDs.getCurrentID(), 0);
+
+		items.hempHelmet = new HempArmor(0);
 		RegisterProxy.RegisterItem(items.hempHelmet);
-		config.itemIDs.updateToNextID();
-		
-		items.compressedHemp = new ItemCompressedHemp(config.itemIDs.getCurrentID());
+
+		items.compressedHemp = new ItemCompressedHemp();
 		RegisterProxy.RegisterItem(items.compressedHemp);
-		config.itemIDs.updateToNextID();
-		
-		items.hempResin = new ItemHempResin(config.itemIDs.getCurrentID());
+
+		items.hempResin = new ItemHempResin();
 		RegisterProxy.RegisterItem(items.hempResin);
-		config.itemIDs.updateToNextID();
-		
-		items.gears = new ItemGear(config.itemIDs.getCurrentID());
+
+		items.gears = new ItemGear();
 		RegisterProxy.RegisterItem(items.gears);
-		config.itemIDs.updateToNextID();
-		
-		items.blueDye = new ItemBlueDye(config.itemIDs.getCurrentID());
+
+		items.blueDye = new ItemBlueDye();
 		RegisterProxy.RegisterItem(items.blueDye);
-		config.itemIDs.updateToNextID();
-		
-		items.multiPlate = new ItemMultiPlate(config.itemIDs.getCurrentID());
+
+		items.multiPlate = new ItemMultiPlate();
 		RegisterProxy.RegisterItem(items.multiPlate);
-		config.itemIDs.updateToNextID();
-		
-		items.colorCard = new ItemColorCard(config.itemIDs.getCurrentID());
+
+		items.colorCard = new ItemColorCard();
 		RegisterProxy.RegisterItem(items.colorCard);
-		config.itemIDs.updateToNextID();
-		
-		items.hempResinBucket = new ItemHempBucket(config.itemIDs.getCurrentID());
+
+		items.hempResinBucket = new ItemHempBucket();
 		RegisterProxy.RegisterItem(items.hempResinBucket);
-		config.itemIDs.updateToNextID();
-		
-		items.expBottles = new ExpBottle(config.itemIDs.getCurrentID());
+
+		items.expBottles = new ExpBottle();
 		RegisterProxy.RegisterItem(items.expBottles);
-		config.itemIDs.updateToNextID();
-		
+
 		initHempPlates();
 	}
 	

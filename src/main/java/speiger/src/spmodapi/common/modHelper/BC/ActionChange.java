@@ -1,7 +1,7 @@
 package speiger.src.spmodapi.common.modHelper.BC;
 
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.util.Icon;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.SpmodAPI;
@@ -18,14 +18,7 @@ public class ActionChange implements IAction
 	{
 		this.on = on;
 	}
-	
-	
-	@Override
-	public int getLegacyId()
-	{
-		return 0;
-	}
-	
+
 	@Override
 	public String getUniqueTag()
 	{
@@ -38,7 +31,7 @@ public class ActionChange implements IAction
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon()
+	public IIcon getIcon()
 	{
 		if(on)
 		{
@@ -49,7 +42,7 @@ public class ActionChange implements IAction
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerIcons(IIconRegister iconRegister)
 	{		
 	}
 	
@@ -74,5 +67,10 @@ public class ActionChange implements IAction
 	{
 		return on;
 	}
-	
+
+	@Override
+	public IAction rotateLeft()
+	{
+		return this;
+	}
 }

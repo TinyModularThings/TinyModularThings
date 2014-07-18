@@ -16,6 +16,8 @@ import net.minecraft.world.World;
 
 import org.apache.commons.lang3.StringUtils;
 
+import com.mojang.authlib.GameProfile;
+
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
@@ -57,7 +59,8 @@ public class ButcherCommand implements ISpmodCommand
 			String name = sub.getSubCommandName();
 			if(name.equalsIgnoreCase("Everything"))
 			{
-				return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(par1.getCommandSenderName());
+				// TODO is GameProfile correct?
+				return MinecraftServer.getServer().getConfigurationManager().func_152596_g(new GameProfile(null, par1.getCommandSenderName()));
 			}
 			else if(name.equalsIgnoreCase("Custom"))
 			{
@@ -162,7 +165,7 @@ public class ButcherCommand implements ISpmodCommand
 							}
 						}
 					}
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Killed: "+killed+" Entities"));
+					par1.addChatMessage(LanguageRegister.createChatMessage("Killed: "+killed+" Entities"));
 				}
 			}
 		
@@ -186,7 +189,7 @@ public class ButcherCommand implements ISpmodCommand
 		}
 		else
 		{
-			List<Entity> entities = world.getEntitiesWithinAABB(entity, AxisAlignedBB.getAABBPool().getAABB(chunk.posX-range, chunk.posY-range, chunk.posZ-range, chunk.posX+range, chunk.posY+range, chunk.posZ+range));
+			List<Entity> entities = world.getEntitiesWithinAABB(entity, AxisAlignedBB.getBoundingBox(chunk.posX-range, chunk.posY-range, chunk.posZ-range, chunk.posX+range, chunk.posY+range, chunk.posZ+range));
 			for(Entity en : entities)
 			{
 				en.setDead();

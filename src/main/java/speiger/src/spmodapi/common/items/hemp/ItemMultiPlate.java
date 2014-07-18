@@ -3,14 +3,16 @@ package speiger.src.spmodapi.common.items.hemp;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.items.plates.PlateInterface;
 import speiger.src.api.items.plates.PlateManager;
 import speiger.src.api.util.SpmodMod;
@@ -27,9 +29,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemMultiPlate extends SpmodItem
 {
 	
-	public ItemMultiPlate(int par1)
+	public ItemMultiPlate()
 	{
-		super(par1);
 		this.setHasSubtypes(true);
 		this.setCreativeTab(APIUtils.tabHempDeko);
 		PlateManager.plates = new PlateHandler();
@@ -39,7 +40,7 @@ public class ItemMultiPlate extends SpmodItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int par1)
+	public IIcon getIconFromDamage(int par1)
 	{
 		if(par1 >= textures.length)
 		{
@@ -50,15 +51,15 @@ public class ItemMultiPlate extends SpmodItem
 
 
 
-	Icon[] textures = new Icon[0];
+	IIcon[] textures = new IIcon[0];
 	
 
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerIcons(IIconRegister par1)
 	{
-		textures = new Icon[PlateManager.plates.getAllIdentifiers().size()];
+		textures = new IIcon[PlateManager.plates.getAllIdentifiers().size()];
 		for(int i = 0;i<textures.length;i++)
 		{
 			textures[i] = par1.registerIcon(PlateManager.plates.getIconFromIdentity(PlateManager.plates.getAllIdentifiers().get(i)));
@@ -69,7 +70,7 @@ public class ItemMultiPlate extends SpmodItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3)
 	{
 		PlateInterface manager = PlateManager.plates;
 		if(manager != null && manager.getAllIdentifiers().size() > 0)
@@ -84,7 +85,7 @@ public class ItemMultiPlate extends SpmodItem
 
 
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{
 		
 	}
@@ -102,14 +103,14 @@ public class ItemMultiPlate extends SpmodItem
 	
     public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
     {
-        int i1 = par3World.getBlockId(par4, par5, par6);
+        Block block = par3World.getBlock(par4, par5, par6);
 
-        if (i1 == Block.snow.blockID && (par3World.getBlockMetadata(par4, par5, par6) & 7) < 1)
+        if (block == Blocks.snow && (par3World.getBlockMetadata(par4, par5, par6) & 7) < 1)
         {
             par7 = 1;
         }
-        else if (i1 != Block.vine.blockID && i1 != Block.tallGrass.blockID && i1 != Block.deadBush.blockID
-                && (Block.blocksList[i1] == null || !Block.blocksList[i1].isBlockReplaceable(par3World, par4, par5, par6)))
+        else if (block != Blocks.vine && block != Blocks.tallgrass && block != Blocks.deadbush
+                && (block == null || !block.isReplaceable(par3World, par4, par5, par6)))
         {
             if (par7 == 0)
             {
@@ -150,15 +151,15 @@ public class ItemMultiPlate extends SpmodItem
         {
             return false;
         }
-        else if (par5 == 255 && Block.blocksList[APIBlocks.multiPlate.blockID].blockMaterial.isSolid())
+        else if (par5 == 255 && APIBlocks.multiPlate.getMaterial().isSolid())
         {
             return false;
         }
         else
         {
-        	if(par3World.setBlock(par4, par5, par6, APIBlocks.multiPlate.blockID))
+        	if(par3World.setBlock(par4, par5, par6, APIBlocks.multiPlate))
         	{
-        		TileEntity tile = par3World.getBlockTileEntity(par4, par5, par6);
+        		TileEntity tile = par3World.getTileEntity(par4, par5, par6);
         		if(tile != null && tile instanceof MultiPlate) 
         		{
         			MultiPlate plate = (MultiPlate) tile;
@@ -171,7 +172,7 @@ public class ItemMultiPlate extends SpmodItem
         				return true;
         			}
         		}
-        		par3World.setBlock(par4, par5, par6, 0);
+        		par3World.setBlock(par4, par5, par6, Blocks.air);
         	}
         }
         return false;

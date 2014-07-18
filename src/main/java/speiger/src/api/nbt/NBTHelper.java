@@ -11,7 +11,7 @@ public class NBTHelper
 		
 		if (end == null)
 		{
-			end = new NBTTagCompound("TinyModularThings");
+			end = new NBTTagCompound();
 		}
 		return end;
 	}
@@ -41,7 +41,7 @@ public class NBTHelper
 	
 	public static void setTinyChestData(NBTTagCompound data, NBTTagCompound nbt)
 	{
-		nbt.setCompoundTag("TinyModularThings", data);
+		nbt.setTag("TinyModularThings", data);
 	}
 	
 }

@@ -9,14 +9,8 @@ import speiger.src.spmodapi.common.lib.SpmodAPILib;
 
 public abstract class SpmodItem extends Item implements LanguageItem
 {
-	
-	public SpmodItem(int par1)
-	{
-		super(par1);
-	}
-	
 	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
+	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
 		return getDisplayName(par1ItemStack, SpmodAPI.instance);
 	}

@@ -3,6 +3,7 @@ package speiger.src.spmodapi.common.world.genHelper;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import speiger.src.api.blocks.BlockStack;
@@ -12,7 +13,7 @@ public class MetaOreGenerator
 {
 	int size;
 	BlockStack ore;
-	int replace = Block.stone.blockID;
+	Block replace = Blocks.stone;
 	boolean callPlaced = false;
 	
 	public MetaOreGenerator(int size, BlockStack ores)
@@ -25,15 +26,10 @@ public class MetaOreGenerator
 	{
 		callPlaced = true;
 	}
-	
+
 	public void setBlockToReplace(Block block)
 	{
-		this.setBlockToReplace(block.blockID);
-	}
-	
-	public void setBlockToReplace(int blockID)
-	{
-		replace = blockID;
+		replace = block;
 	}
 	
 	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
@@ -77,13 +73,13 @@ public class MetaOreGenerator
 							{
 								double d14 = (i3 + 0.5D - d8) / (d10 / 2.0D);
 								
-								Block block = Block.blocksList[par1World.getBlockId(k2, l2, i3)];
-								if (d12 * d12 + d13 * d13 + d14 * d14 < 1.0D && (block != null && block.isGenMineableReplaceable(par1World, k2, l2, i3, replace)))
+								Block block = par1World.getBlock(k2, l2, i3);
+								if (d12 * d12 + d13 * d13 + d14 * d14 < 1.0D && (block != null && block.isReplaceableOreGen(par1World, k2, l2, i3, replace)))
 								{
-									par1World.setBlock(k2, l2, i3, ore.getBlockID(), ore.getMeta(), 2);
-									if (callPlaced && par1World.getBlockId(k2, l2, i3) != 0 && Block.blocksList[par1World.getBlockId(k2, l2, i3)] != null && Block.blocksList[par1World.getBlockId(k2, l2, i3)] instanceof IMultimineOre)
+									par1World.setBlock(k2, l2, i3, ore.getBlock(), ore.getMeta(), 2);
+									if (callPlaced && par1World.getBlock(k2, l2, i3) != Blocks.air && par1World.getBlock(k2, l2, i3) != null && par1World.getBlock(k2, l2, i3) instanceof IMultimineOre)
 									{
-										((IMultimineOre) Block.blocksList[par1World.getBlockId(k2, l2, i3)]).init(par1World, k2, l2, i3);
+										((IMultimineOre) par1World.getBlock(k2, l2, i3)).init(par1World, k2, l2, i3);
 									}
 								}
 							}

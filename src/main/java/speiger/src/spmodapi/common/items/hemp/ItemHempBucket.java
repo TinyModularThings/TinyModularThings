@@ -2,7 +2,8 @@ package speiger.src.spmodapi.common.items.hemp;
 
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.items.DisplayItem;
@@ -18,16 +19,16 @@ import speiger.src.spmodapi.common.lib.SpmodAPILib;
 public class ItemHempBucket extends ItemBucket implements LanguageItem
 {
 
-	public ItemHempBucket(int par1)
+	public ItemHempBucket()
 	{
-		super(par1, APIBlocks.fluidHempResin.blockID);
+		super(APIBlocks.fluidHempResin);
 		this.setCreativeTab(APIUtils.tabHemp);
 	}
 
 	
 	
 	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
+	public String getUnlocalizedName(ItemStack par1ItemStack)
 	{
 		return getDisplayName(par1ItemStack, SpmodAPI.instance);
 	}
@@ -41,21 +42,21 @@ public class ItemHempBucket extends ItemBucket implements LanguageItem
 	}
 
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item item, SpmodMod par0)
 	{
 		if(!SpmodModRegistry.areModsEqual(par0, SpmodAPI.instance))
 		{
 			return;
 		}
 		
-		LanguageRegister.getLanguageName(new DisplayItem(id), "bucket.liquid.hemp", par0);
+		LanguageRegister.getLanguageName(new DisplayItem(item), "bucket.liquid.hemp", par0);
 	}
 
 
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerIcons(IIconRegister par1)
 	{
 		this.itemIcon = par1.registerIcon(SpmodAPILib.ModID.toLowerCase()+":hemp/hemp.resin.bucket");
 	}

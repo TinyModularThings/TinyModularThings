@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagString;
 public class HopperRegistry
 {
 	static HashMap<String, HopperUpgrade> upgrades = new HashMap<String, HopperUpgrade>();
-	static HashMap<List<Integer>, HopperUpgrade> items = new HashMap<List<Integer>, HopperUpgrade>();
+	static HashMap<ItemStack, HopperUpgrade> items = new HashMap<ItemStack, HopperUpgrade>();
 	
 	public static void registerHopperUpgrade(HopperUpgrade par1)
 	{
@@ -22,6 +22,7 @@ public class HopperRegistry
 	
 	public static void registerBasicHopperUpgrade(Item item, int meta, HopperUpgrade par1)
 	{
+		ItemStack itemStack = new ItemStack(item, 1, meta);
 		String name = par1.getNBTName();
 		if(!upgrades.containsKey(name))
 		{
@@ -29,10 +30,9 @@ public class HopperRegistry
 		}
 		if(item != null)
 		{
-			List<Integer> list = Arrays.asList(item.itemID, meta);
-			if(!items.containsKey(list))
+			if(!items.containsKey(itemStack))
 			{
-				items.put(list, par1);
+				items.put(itemStack, par1);
 			}
 		}
 		
@@ -84,8 +84,8 @@ public class HopperRegistry
 	
 	public static void makeGuiProviderForUpgrade(ItemStack open, HopperUpgrade target)
 	{
-		NBTTagString string = new NBTTagString("UpgradeGui", target.getNBTName());
-		open.setTagInfo(string.getName(), string);
+		NBTTagString string = new NBTTagString(target.getNBTName());
+		open.setTagInfo("UpgradeGui", string);
 	}
 	
 	public static void removeGuiProviderFromItem(ItemStack par1)
@@ -138,8 +138,7 @@ public class HopperRegistry
 
 	public static boolean containsHopperUpgrade(ItemStack item)
 	{
-		List<Integer> ids = Arrays.asList(item.itemID, item.getItemDamage());
-		if(items.containsKey(ids))
+		if(items.containsKey(item))
 		{
 			return true;
 		}
@@ -152,10 +151,9 @@ public class HopperRegistry
 	
 	public static HopperUpgrade getUpgradeFromItem(ItemStack item)
 	{
-		List<Integer> ids = Arrays.asList(item.itemID, item.getItemDamage());
-		if(items.containsKey(ids))
+		if(items.containsKey(item))
 		{
-			return items.get(ids);
+			return items.get(item);
 		}
 		else if(item.hasTagCompound() && item.getTagCompound().hasKey("Hopper"))
 		{

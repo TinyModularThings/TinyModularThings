@@ -1,5 +1,6 @@
 package speiger.src.api.blocks;
 
+import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 
@@ -23,7 +24,7 @@ public class AdvancedPosition
 		zCoord = z;
 	}
 	
-	public boolean setBlock(int block, int meta)
+	public boolean setBlock(Block block, int meta)
 	{
 		return DimensionManager.getWorld(dim).setBlock(xCoord, yCoord, zCoord, block, meta, 3);
 	}

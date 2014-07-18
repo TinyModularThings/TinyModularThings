@@ -1,7 +1,7 @@
 package speiger.src.spmodapi.common.modHelper.BC;
 
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.util.Icon;
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.SpmodAPI;
@@ -44,21 +44,15 @@ public class ColorChangeAdv implements IAction
 	}
 
 	@Override
-	public int getLegacyId()
-	{
-		return 0;
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon()
+	public IIcon getIcon()
 	{
 		return BuildCraftTransport.actionPipeColor[color.ordinal()].getIcon();
 	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerIcons(IIconRegister iconRegister)
 	{
 		
 	}
@@ -68,8 +62,10 @@ public class ColorChangeAdv implements IAction
 	{
 		return false;
 	}
-	
-	
-	
-	
+
+	@Override
+	public IAction rotateLeft()
+	{
+		return this;
+	}
 }

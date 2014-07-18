@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
@@ -16,12 +17,13 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.ChatComponentText;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
@@ -40,7 +42,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IExpProvider
 {
-	public static Icon[] textures = new Icon[2];
+	public static IIcon[] textures = new IIcon[2];
 	
 	public ItemStack[] inv = new ItemStack[2];
 	
@@ -49,13 +51,13 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	public Random rand = new Random();
 	
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		return side < 2 ? textures[0] : textures[1];
 	}
 	
 	@Override
-	public void registerIcon(IconRegister par1)
+	public void registerIcon(IIconRegister par1)
 	{
 		textures[1] = par1.registerIcon(SpmodAPILib.ModID.toLowerCase()+":utils/expBench.side");
 		textures[0] = par1.registerIcon(SpmodAPILib.ModID.toLowerCase()+":utils/expBench.top");
@@ -210,7 +212,7 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 					IExpBottle bottle = (IExpBottle) inv[0].getItem();
 					this.addExp(bottle.discharge(inv[0], bottle.getTransferlimit(inv[0])));
 				}
-				else if(inv[0].itemID == Item.expBottle.itemID)
+				else if(inv[0].getItem() == Items.experience_bottle)
 				{
 					int i = 3 + this.worldObj.rand.nextInt(5) + this.worldObj.rand.nextInt(5);
 					this.addExp(i);
@@ -228,11 +230,11 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 					IExpBottle bottle = (IExpBottle) inv[1].getItem();
 					bottle.charge(inv[1], this.requestExp(bottle.getTransferlimit(inv[1]), true));
 				}
-				else if(inv[1].itemID == Item.glassBottle.itemID && inv[1].stackSize == 1)
+				else if(inv[1].getItem() == Items.glass_bottle && inv[1].stackSize == 1)
 				{
 					if(this.requestExp(10, false) == 10)
 					{
-						inv[1] = new ItemStack(Item.expBottle);
+						inv[1] = new ItemStack(Items.experience_bottle);
 						this.removeExp(10);
 					}
 				}
@@ -271,8 +273,8 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	}
 	
 	private void notifyChange() {
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
-		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, getBlockType().blockID);
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
+		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, getBlockType());
 		notifyResize();
 	}
 
@@ -366,15 +368,15 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
     }
     
 	@Override
-	public String getInvName()
+	public String getInventoryName()
 	{
 		return "Exp Storage";
 	}
 	
 	@Override
-	public boolean isInvNameLocalized()
+	public boolean hasCustomInventoryName()
 	{
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -390,13 +392,13 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	}
 	
 	@Override
-	public void openChest()
+	public void openInventory()
 	{
 		
 	}
 	
 	@Override
-	public void closeChest()
+	public void closeInventory()
 	{
 		
 	}
@@ -410,7 +412,7 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 			{
 				return true;
 			}
-			else if(itemstack != null && itemstack.itemID == Item.expBottle.itemID);
+			else if(itemstack != null && itemstack.getItem() == Items.experience_bottle);
 			{
 				return true;
 			}
@@ -423,11 +425,11 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-        NBTTagList nbttaglist = nbt.getTagList("Items");
+        NBTTagList nbttaglist = nbt.getTagList("Items", 10 /* COMPOUND */);
         this.inv = new ItemStack[this.getSizeInventory()];
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
+            NBTTagCompound nbttagcompound1 = nbttaglist.getCompoundTagAt(i);
             byte b0 = nbttagcompound1.getByte("Slot");
 
             if (b0 >= 0 && b0 < this.inv.length)
@@ -464,13 +466,13 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
 	}
 
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 	{
-		readFromNBT(pkt.data);
+		readFromNBT(pkt.func_148857_g());
 	}
 
 	int helper = 0;
@@ -517,9 +519,9 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	@Override
 	public boolean onActivated(EntityPlayer par1)
 	{
-		if(!this.canAbsorbDeath && par1.getCurrentEquippedItem() != null && par1.getCurrentEquippedItem().itemID == Item.diamond.itemID)
+		if(!this.canAbsorbDeath && par1.getCurrentEquippedItem() != null && par1.getCurrentEquippedItem().getItem() == Items.diamond)
 		{
-			par1.addChatMessage("Machine absorbs now from dieing entities exp");
+			par1.addChatMessage(new ChatComponentText("Machine absorbs now from dieing entities exp"));
 			par1.getCurrentEquippedItem().stackSize--;
 			canAbsorbDeath = true;
 		}
@@ -544,7 +546,7 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 			
 			if(this.canAbsorbDeath)
 			{
-				EntityItem item = new EntityItem(worldObj, xCoord, yCoord, zCoord, new ItemStack(Item.diamond));
+				EntityItem item = new EntityItem(worldObj, xCoord, yCoord, zCoord, new ItemStack(Items.diamond));
 				item.delayBeforeCanPickup = 10;
 				worldObj.spawnEntityInWorld(item);
 			}

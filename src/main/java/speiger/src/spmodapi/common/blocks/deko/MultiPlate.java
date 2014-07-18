@@ -1,6 +1,6 @@
 package speiger.src.spmodapi.common.blocks.deko;
 
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import speiger.src.api.items.plates.PlateManager;
 import speiger.src.spmodapi.common.tile.TileFacing;
@@ -15,7 +15,7 @@ public class MultiPlate extends TileFacing
 	}
 	
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		return null;
 	}

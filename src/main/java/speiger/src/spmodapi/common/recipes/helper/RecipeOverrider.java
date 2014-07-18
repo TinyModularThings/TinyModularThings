@@ -291,7 +291,7 @@ public class RecipeOverrider
         {
             return false;
         }
-        return (target.itemID == input.itemID && ((target.getItemDamage() == PathProxy.getRecipeBlankValue() && !strict) || target.getItemDamage() == input.getItemDamage()));
+        return (target.getItem() == input.getItem() && ((target.getItemDamage() == PathProxy.getRecipeBlankValue() && !strict) || target.getItemDamage() == input.getItemDamage()));
     }
 	
 }

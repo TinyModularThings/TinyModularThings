@@ -5,7 +5,7 @@ import java.util.List;
 
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.spmodapi.common.lib.bc.InventoryIterator.IInvSlot;
 
 public class TransactorSimple extends Transactor
@@ -42,7 +42,7 @@ public class TransactorSimple extends Transactor
 		injected = tryPut(stack, filledSlots, injected, doAdd);
 		injected = tryPut(stack, emptySlots, injected, doAdd);
 		
-		inventory.onInventoryChanged();
+		inventory.markDirty();
 		return injected;
 	}
 	

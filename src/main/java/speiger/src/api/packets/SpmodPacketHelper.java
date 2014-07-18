@@ -4,12 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.HashMap;
 
-import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.spmodapi.common.handler.SpmodPacket;
 
 import com.google.common.base.Strings;
 
@@ -45,7 +45,7 @@ public class SpmodPacketHelper
 	
 	public ModularPacket createNBTPacket(TileEntity tile, SpmodMod mod)
 	{
-		return this.createNBTPacket(tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord, mod);
+		return this.createNBTPacket(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord, mod);
 	}
 	
 	public ModularPacket createNBTPacket(int dimID, int x, int y, int z, SpmodMod mod)
@@ -55,7 +55,7 @@ public class SpmodPacketHelper
 	
 	public ModularPacket createNBTPacket(World world, int x, int y, int z, SpmodMod mod)
 	{
-		if (world.getBlockTileEntity(x, y, z) == null || !(world.getBlockTileEntity(x, y, z) instanceof IPacketReciver) || !SpmodModRegistry.isModRegistered(mod))
+		if (world.getTileEntity(x, y, z) == null || !(world.getTileEntity(x, y, z) instanceof IPacketReciver) || !SpmodModRegistry.isModRegistered(mod))
 		{
 			return null;
 		}
@@ -192,9 +192,9 @@ public class SpmodPacketHelper
 			return packet;
 		}
 		
-		public Packet250CustomPayload finishPacket()
+		public SpmodPacket finishPacket()
 		{
-			return new Packet250CustomPayload("Spmod", bytes.toByteArray());
+			return new SpmodPacket(bytes.toByteArray());
 		}
 	}
 	

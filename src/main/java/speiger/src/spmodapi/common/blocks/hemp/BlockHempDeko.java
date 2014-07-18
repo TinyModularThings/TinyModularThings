@@ -5,14 +5,15 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
@@ -23,9 +24,9 @@ public class BlockHempDeko extends Block
 {
 	HempBlockInformation info;
 	
-	public BlockHempDeko(int par1, HempBlockInformation par2)
+	public BlockHempDeko(HempBlockInformation par2)
 	{
-		super(par1, par2.getMaterial());
+		super(par2.getMaterial());
 		info = par2;
 		setCreativeTab(APIUtils.tabHempDeko);
 	}
@@ -35,11 +36,11 @@ public class BlockHempDeko extends Block
 		return info;
 	}
 	
-	Icon[] textures = new Icon[16];
+	IIcon[] textures = new IIcon[16];
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerBlockIcons(IIconRegister par1)
 	{
 		for (int i = 0; i < textures.length; i++)
 		{
@@ -50,13 +51,13 @@ public class BlockHempDeko extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		return textures[par2];
 	}
 	
 	@Override
-	public boolean canCreatureSpawn(EnumCreatureType type, World world, int x, int y, int z)
+	public boolean canCreatureSpawn(EnumCreatureType type, IBlockAccess world, int x, int y, int z)
 	{
 		if (type == EnumCreatureType.monster)
 		{
@@ -66,23 +67,11 @@ public class BlockHempDeko extends Block
 	}
 	
 	@Override
-	public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
+	public int getFlammability(IBlockAccess world, int x, int y, int z, ForgeDirection face)
 	{
 		return info.isHemp() ? 100 : 0;
 	}
-	
-	@Override
-	public int quantityDropped(Random par1Random)
-	{
-		return 1;
-	}
-	
-	@Override
-	public int idDropped(int par1, Random par2Random, int par3)
-	{
-		return blockID;
-	}
-	
+
 	@Override
 	public int damageDropped(int par1)
 	{
@@ -91,7 +80,7 @@ public class BlockHempDeko extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < textures.length; i++)
 		{
@@ -100,13 +89,13 @@ public class BlockHempDeko extends Block
 	}
 	
 	@Override
-	public int getFireSpreadSpeed(World world, int x, int y, int z, int metadata, ForgeDirection face)
+	public int getFireSpreadSpeed(IBlockAccess world, int x, int y, int z, ForgeDirection face)
 	{
 		return info.isHemp() ? 50 : 0;
 	}
 	
 	@Override
-	public boolean isFlammable(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
+	public boolean isFlammable(IBlockAccess world, int x, int y, int z, ForgeDirection face)
 	{
 		return info.isHemp();
 	}
@@ -150,7 +139,7 @@ public class BlockHempDeko extends Block
 		
 		public void registerToForge(Block par1)
 		{
-			MinecraftForge.setBlockHarvestLevel(par1, axe ? "axe" : "pickaxe", 0);
+			par1.setHarvestLevel(axe ? "axe" : "pickaxe", 0);
 			par1.setHardness(4F);
 			par1.setResistance(axe ? 3F : 8F);
 		}

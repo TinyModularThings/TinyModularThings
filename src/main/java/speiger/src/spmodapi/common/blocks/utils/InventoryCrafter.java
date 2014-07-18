@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.blocks.utils;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCraftResult;
 import net.minecraft.inventory.InventoryCrafting;
@@ -79,10 +80,11 @@ public class InventoryCrafter extends AdvContainer
 
                 if (itemstack != null)
                 {
-                    par1EntityPlayer.dropPlayerItem(itemstack);
+                	// Misleading method name, should be dropItemStack or something
+                    par1EntityPlayer.dropPlayerItemWithRandomChoice(itemstack, false);
                 }
             }
-            this.worldObj.setBlock(x, y, z, 0);
+            this.worldObj.setBlock(x, y, z, Blocks.air);
         }
     }
 
