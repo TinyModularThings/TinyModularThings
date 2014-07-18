@@ -625,7 +625,9 @@ public class MobMachine extends TileFacing implements ISidedInventory
 						current.stackSize--;
 						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Initizialized MobMachine to: "+this.names.get(type)));
 						this.updateBlock();
-						PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
+						this.worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+						this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, getBlockType().blockID);
+						PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 40, worldObj.provider.dimensionId, getDescriptionPacket());
 						return true;
 					}
 					else

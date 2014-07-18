@@ -25,6 +25,7 @@ public class SpmodConfig implements IConfigHelper
 	public static boolean retogen = false;
 	public static boolean playSounds = true;
 	public static boolean loadTiles = true;
+	public static boolean MobMachineEggs = true;
 	public static int[] ticks = new int[0];
 	public static int savingDelay = 24000;
 	
@@ -47,7 +48,6 @@ public class SpmodConfig implements IConfigHelper
 			SpmodAPI.log.print("Start Loading Config");
 			
 			logging = getBoolean(general, "Active Log", true).setComment(String.format("%s%n%s", "This Config disable every Log in this Mod", "Also the Crashreport!")).getResult(config);
-			
 			if (!logging)
 			{
 				System.out.println("[SpmodAPI] Disabeling Log. This is the last i am doing which does not come from Forge/FML)");
@@ -55,24 +55,20 @@ public class SpmodConfig implements IConfigHelper
 			}
 			
 			retogen = getBoolean(retro, "Retrogen", false).setComment(String.format("%s%n%s", "Set to true to activate the Retrogen", "Do not forget to set the ores you want to regenerate to true")).getResult(config);
-			
 			playSounds = getBoolean(general, "Play Sounds", true).setComment("Dissable all Sounds in my Mods").getResult(config);
-			
 			loadTiles = getBoolean(general, "LoadTileEntites", true).setComment("If you get crashes with my Blocks then just set this to false and load the game. My Block are frozen and do nothing in this time").getResult(config);
+			MobMachineEggs = getBoolean(general, "MobMachine Spawn Eggs", true).setComment("Enable that MobMachine drops Spawneggs").getResult(config);
 			
 			blockIDs = new ConfigBlock(ConfigBlock.getConfig(config, blocks, 950));
 			itemIDs = new ConfigItem(ConfigItem.getConfig(config, items, 15000));
 			
 			Property tick = config.get(general, "Round Roubin Speed", "1:2:5:10:20:50", "Every number will be math as number * 5 ticks and please write it as the default with a : ");
-			
 			String[] result = tick.getString().split(":");
-			
 			ticks = new int[result.length];
 			for(int i = 0;i<result.length;i++)
 			{
 				ticks[i] = Integer.parseInt(result[i]);
 			}
-			
 			Property sDelay = config.get(general, "Structure Storage Backup Delay", 24000, String.format("%s%n%s%n%s%n%s", "This delay says how long the game waits until he make a backup.", "This is required to save all Multistructures", "To prevent that on game/Server Crash that all structure data get lost.", "This is required to let the Multistructure interface be work when the game restarts"));
 			savingDelay = Integer.parseInt(sDelay.getString());
 			

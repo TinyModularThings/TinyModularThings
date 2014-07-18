@@ -72,4 +72,18 @@ public class PathProxy
 		return result.toArray(new FluidContainerData[result.size()]);
 	}
 	
+	public static ItemStack[] getFluidContainerItems(Fluid par1)
+	{
+		ArrayList<ItemStack> stack = new ArrayList<ItemStack>();
+		FluidContainerData[] fluids = FluidContainerRegistry.getRegisteredFluidContainerData();
+		for(FluidContainerData data : fluids)
+		{
+			if(data.fluid.fluidID == par1.getID())
+			{
+				stack.add(data.filledContainer);
+			}
+		}
+		return stack.toArray(new ItemStack[stack.size()]);
+	}
+	
 }
