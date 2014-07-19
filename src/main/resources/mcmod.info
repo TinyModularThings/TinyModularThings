@@ -12,11 +12,11 @@
   "logoFile": "",
   "screenshots": [],
   "requiredMods": [
-    "Forge",
-    "BuildCraft|Core",
-    "Forestry"
+    "Forge"
   ],
   "dependencies": [
+    "BuildCraft|Core",
+    "Forestry",
     "IC2",
     "MineFactoryReloaded"
   ],
@@ -37,13 +37,13 @@
   "screenshots": [],
   "requiredMods": [
     "Forge",
-    "BuildCraft|Core",
-    "CodeChickenCore",
-    "NotEnoughItems",
-    "Railcraft",
     "SpmodAPI"
   ],
   "dependencies": [
+    "BuildCraft|Core",
+    "CodeChickenCore",
+    "NotEnoughItems",
+    "Railcraft"
   ],
   "dependants": [],
   "useDependencyInformation": "true"
