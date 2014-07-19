@@ -1,7 +1,10 @@
 package speiger.src.spmodapi.common.recipes.advanced;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
@@ -20,7 +23,7 @@ import cpw.mods.fml.common.gameevent.PlayerEvent.ItemCraftedEvent;
 
 public class ColorCardRecipe extends ShapelessOreRecipe
 {
-	public HashMap<ItemStack, EnumColor> colors = new HashMap<ItemStack, EnumColor>();
+	public HashMap<List<Object>, EnumColor> colors = new HashMap<List<Object>, EnumColor>();
 	public ColorCardRecipe()
 	{
 		super(new ItemStack(APIItems.colorCard, 1, 0), new ItemStack(APIItems.colorCard, 1, 0));
@@ -115,7 +118,7 @@ public class ColorCardRecipe extends ShapelessOreRecipe
 	{
 		for(ItemStack item : par1)
 		{
-			colors.put(item, par2);
+			colors.put(Arrays.asList(item.getItem(), item.getItemDamage()), par2);
 		}
 	}
 
@@ -149,7 +152,7 @@ public class ColorCardRecipe extends ShapelessOreRecipe
 		{
 			return null;
 		}
-		output.setItemDamage(colors.get(input).getAsWool()+1);		
+		output.setItemDamage(colors.get(colors.get(Arrays.asList(input.getItem(), input.getItemDamage()))).getAsWool()+1);		
 		output.stackSize = card.stackSize;
 		
 		return output;

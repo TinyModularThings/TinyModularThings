@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.common.blocks.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -37,12 +38,12 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	//Static variables
 	public static IIcon[][] textures;
 	public static HashMap<Integer, HashMap<DropType, List<ItemStack>>> allDrops = new HashMap<Integer, HashMap<DropType, List<ItemStack>>>();
-	public static HashMap<Integer, HashMap<ItemStack, Integer>> foodList = new HashMap<Integer, HashMap<ItemStack, Integer>>();
+	public static HashMap<Integer, HashMap<List<Object>, Integer>> foodList = new HashMap<Integer, HashMap<List<Object>, Integer>>();
 	public static HashMap<Integer, Boolean> needExp = new HashMap<Integer, Boolean>();
 	public static HashMap<Integer, Integer> neededExp = new HashMap<Integer, Integer>();
 	public static HashMap<Integer, String[]> texture = new HashMap<Integer, String[]>();
 	public static HashMap<Integer, String> names = new HashMap<Integer, String>();
-	public static HashMap<ItemStack, Integer> activators = new HashMap<ItemStack, Integer>();
+	public static HashMap<List<Object>, Integer> activators = new HashMap<List<Object>, Integer>();
 	public static int totalTicks = 6000;
 	
 	//None Static variables
@@ -94,17 +95,17 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	
 	public static void addActivator(int id, ItemStack par1)
 	{
-		activators.put(par1, id);
+		activators.put(Arrays.asList(par1.getItem(), par1.getItemDamage()), id);
 	}
 
 	public static void addFood(int id, ItemStack par1, int foodValue)
 	{
-		HashMap<ItemStack, Integer> list = foodList.get(Integer.valueOf(id));
+		HashMap<List<Object>, Integer> list = foodList.get(Integer.valueOf(id));
 		if(list == null)
 		{
-			list = new HashMap<ItemStack, Integer>();
+			list = new HashMap<List<Object>, Integer>();
 		}
-		list.put(par1, Integer.valueOf(foodValue));
+		list.put(Arrays.asList(par1.getItem(), par1.getItemDamage()), Integer.valueOf(foodValue));
 		foodList.put(Integer.valueOf(id), list);
 	}
 	
@@ -348,7 +349,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 		{
 			if(isValidFood())
 			{
-				food += this.foodList.get(type).get(inv[9]);
+				food += this.foodList.get(type).get(Arrays.asList(inv[9], inv[9].getItemDamage()));
 				this.inv[9].stackSize--;
 				if(inv[9].stackSize <= 0)
 				{
@@ -457,7 +458,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	{
 		if(isValid() && inv[9] != null)
 		{
-			return this.foodList.get(Integer.valueOf(type)).get(inv[9]) > 0;
+			return this.foodList.get(Integer.valueOf(type)).get(Arrays.asList(inv[9], inv[9].getItemDamage())) > 0;
 		}
 		return false;
 	}
@@ -615,9 +616,10 @@ public class MobMachine extends TileFacing implements ISidedInventory
 				ItemStack current = par1.getCurrentEquippedItem();
 				if(current != null)
 				{
-					if(activators.containsKey(current))
+					List<Object> key = Arrays.asList(current, current.getItemDamage());
+					if(activators.containsKey(key))
 					{
-						this.type = activators.get(current);
+						this.type = activators.get(key);
 						current.stackSize--;
 						par1.addChatMessage(LanguageRegister.createChatMessage("Initizialized MobMachine to: "+this.names.get(type)));
 						this.updateBlock();

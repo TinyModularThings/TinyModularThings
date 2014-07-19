@@ -2,7 +2,6 @@ package speiger.src.api.recipe.pressureFurnace.helper;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
@@ -33,8 +32,7 @@ public class PressureRecipeList
 			Entry<ItemStack, ItemStack> cuRecipe = iter.next();
 			if (cuRecipe != null)
 			{
-				ItemStack input = cuRecipe.getKey();
-				PressureRecipe recipe = new PressureRecipe(input, (ItemStack) null, (ItemStack) null, cuRecipe.getValue(), false, false);
+				PressureRecipe recipe = new PressureRecipe(cuRecipe.getKey(), (ItemStack) null, (ItemStack) null, cuRecipe.getValue(), false, false);
 				addRecipe(recipe);
 			}
 		}

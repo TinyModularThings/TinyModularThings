@@ -13,7 +13,7 @@ import net.minecraft.nbt.NBTTagString;
 public class HopperRegistry
 {
 	static HashMap<String, HopperUpgrade> upgrades = new HashMap<String, HopperUpgrade>();
-	static HashMap<ItemStack, HopperUpgrade> items = new HashMap<ItemStack, HopperUpgrade>();
+	static HashMap<List<Object>, HopperUpgrade> items = new HashMap<List<Object>, HopperUpgrade>();
 	
 	public static void registerHopperUpgrade(HopperUpgrade par1)
 	{
@@ -22,7 +22,6 @@ public class HopperRegistry
 	
 	public static void registerBasicHopperUpgrade(Item item, int meta, HopperUpgrade par1)
 	{
-		ItemStack itemStack = new ItemStack(item, 1, meta);
 		String name = par1.getNBTName();
 		if(!upgrades.containsKey(name))
 		{
@@ -30,9 +29,10 @@ public class HopperRegistry
 		}
 		if(item != null)
 		{
-			if(!items.containsKey(itemStack))
+			List<Object> list = Arrays.asList(item, meta);
+			if(!items.containsKey(list))
 			{
-				items.put(itemStack, par1);
+				items.put(list, par1);
 			}
 		}
 		
@@ -138,7 +138,8 @@ public class HopperRegistry
 
 	public static boolean containsHopperUpgrade(ItemStack item)
 	{
-		if(items.containsKey(item))
+		List<Object> ids = Arrays.asList(item, item.getItemDamage());
+		if(items.containsKey(ids))
 		{
 			return true;
 		}
@@ -151,9 +152,10 @@ public class HopperRegistry
 	
 	public static HopperUpgrade getUpgradeFromItem(ItemStack item)
 	{
-		if(items.containsKey(item))
+		List<Object> ids = Arrays.asList(item, item.getItemDamage());
+		if(items.containsKey(ids))
 		{
-			return items.get(item);
+			return items.get(ids);
 		}
 		else if(item.hasTagCompound() && item.getTagCompound().hasKey("Hopper"))
 		{

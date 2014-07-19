@@ -60,7 +60,7 @@ public class MobMachineInventory extends AdvContainer
 			}
 			else if (par2 != 9 && par2 != 11 && par2 != 10)
 			{
-				if (tile.foodList.get(Integer.valueOf(tile.type)).get(var5) != null)
+				if (tile.foodList.get(Integer.valueOf(tile.type)).get(Arrays.asList(var5.getItem(), var5.getItemDamage())) != null)
 				{
 					if (!this.mergeItemStack(var5, 9, 10, false))
 					{
