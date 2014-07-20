@@ -102,16 +102,17 @@ public class SoundRegistry
 	 */
 	public void playSound(World world, int x, int y, int z, String name, float volume, float pitch)
 	{
+		
+		if (!SpmodConfig.playSounds)
+		{
+			return;
+		}
+		
 		if (system == null)
 		{
 			system = manager.sndSystem;
 			playSound(world, x, y, z, name, volume, pitch);
 			
-			return;
-		}
-		
-		if (!SpmodConfig.playSounds)
-		{
 			return;
 		}
 		

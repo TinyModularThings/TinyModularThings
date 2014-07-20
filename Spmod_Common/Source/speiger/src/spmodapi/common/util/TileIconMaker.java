@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.item.Item;
 import net.minecraft.util.Icon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -16,7 +15,6 @@ import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.fluids.hemp.FluidHempResin;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.tile.AdvTile;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -48,6 +46,37 @@ public class TileIconMaker
 			allTiles.put(par1, new ArrayList<AdvTile>());
 		}
 		allTiles.get(par1).add(tile);
+	}
+	
+	public AdvTile getTileEntityFromClass(Class<? extends AdvTile> tile)
+	{
+		return this.getTileEntityFromClass(null, tile);
+	}
+	
+	public AdvTile getTileEntityFromClass(Block block, Class<? extends AdvTile> tile)
+	{
+		ArrayList<AdvTile> tiles = new ArrayList<AdvTile>();
+		if(block == null)
+		{
+			for(ArrayList<AdvTile> cuTile : allTiles.values())
+			{
+				tiles.addAll(cuTile);
+			}
+		}
+		else
+		{
+			tiles.addAll(allTiles.get(block));
+		}
+		
+		for(AdvTile list : tiles)
+		{
+			if(list.getClass().getSimpleName().equalsIgnoreCase(tile.getSimpleName()))
+			{
+				return list;
+			}
+		}
+		
+		return null;
 	}
 	
 	/**

@@ -13,6 +13,7 @@ import speiger.src.spmodapi.common.items.armor.HempArmor;
 import speiger.src.spmodapi.common.items.crafting.ItemBlueDye;
 import speiger.src.spmodapi.common.items.crafting.ItemColorCard;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
+import speiger.src.spmodapi.common.items.crafting.ItemMobMachineHelper;
 import speiger.src.spmodapi.common.items.exp.ExpBottle;
 import speiger.src.spmodapi.common.items.hemp.ItemCompressedHemp;
 import speiger.src.spmodapi.common.items.hemp.ItemHemp;
@@ -86,6 +87,10 @@ public class APIItemsConfig
 		
 		items.expBottles = new ExpBottle(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.expBottles);
+		config.itemIDs.updateToNextID();
+		
+		items.mobMachineHelper = new ItemMobMachineHelper(config.itemIDs.getCurrentID());
+		RegisterProxy.RegisterItem(items.mobMachineHelper);
 		config.itemIDs.updateToNextID();
 		
 		initHempPlates();
