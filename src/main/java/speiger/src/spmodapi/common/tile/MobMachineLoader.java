@@ -198,19 +198,74 @@ public class MobMachineLoader
 		
 		//Wither Skelete
 		MobMachine.createMob(15, false, 25, getMobMachineTextures("WitherSkeletor"));
+		MobMachine.setName(15, "Wither Skelete");
+		MobMachine.addActivators(15, new ItemStack(Items.skull), new ItemStack(Items.coal));
+		MobMachine.addFood(15, new ItemStack[]{new ItemStack(Items.feather), new ItemStack(Items.bone), new ItemStack(Items.coal, 1, 1)}, new int[]{1750, 1500, 1000});
+		MobMachine.addDrops(15, DropType.Common, new ItemStack(Items.bone), new ItemStack(Items.arrow), new ItemStack(Items.stone_sword));
+		MobMachine.addDrops(16, DropType.Rare, new ItemStack(Items.coal), new ItemStack(Items.skull, 1, 1));
+		if(SpmodConfig.MobMachineEggs)
+		{
+			MobMachine.addDrops(15, DropType.Legendary, new ItemStack(Items.spawn_egg, 1, 51));
+		}
 		
 		//Endermann
 		MobMachine.createMob(16, false, 32, getMobMachineTextures("Endermann"));
+		MobMachine.setName(16, "Enderman");
+		MobMachine.addActivator(16, new ItemStack(Items.ender_pearl));
+		MobMachine.addFood(16, new ItemStack[]{new ItemStack(Items.porkchop), new ItemStack(Items.cooked_porkchop)}, new int[]{2000, 4000});
+		MobMachine.addDrops(16, DropType.Common, new ItemStack(Items.ender_pearl));
+		MobMachine.addDrops(16, DropType.Rare, new ItemStack(Items.ender_pearl, 2), new ItemStack(Items.ender_eye));
+		if(SpmodConfig.MobMachineEggs)
+		{
+			MobMachine.addDrops(15, DropType.Legendary, new ItemStack(Items.spawn_egg, 1, 58));
+		}
 		
 		//Ender Dragon
 		MobMachine.createMob(17, false, 55, getMobMachineTextures("EnderDragon"));
+		MobMachine.setName(17, "Ender Dragon");
+		MobMachine.addActivator(17, new ItemStack(Items.ender_eye));
+		MobMachine.addFood(17, new ItemStack(Items.ender_pearl), 2000);
+		MobMachine.addDrops(17, DropType.Legendary, new ItemStack(Blocks.dragon_egg));
 		
 		//Wither
 		MobMachine.createMob(18, false, 40, getMobMachineTextures("Wither"));
+		MobMachine.setName(18, "Wither");
+		MobMachine.addActivator(18, new ItemStack(Items.skull, 1, 1));
+		MobMachine.addFood(18, new ItemStack[]{new ItemStack(Items.diamond), new ItemStack(Blocks.dragon_egg)}, new int[]{2500, 10000});
+		MobMachine.addDrops(18, DropType.Legendary, new ItemStack(Items.nether_star));
 		
 		//Blaze
 		MobMachine.createMob(19, false, 15, getMobMachineTextures("Blaze"));
+		MobMachine.setName(19, "Blaze");
+		MobMachine.addActivators(19, new ItemStack(Items.blaze_rod), new ItemStack(Items.blaze_powder));
+		MobMachine.addFood(19, new ItemStack(Items.stick), 1000);
+		MobMachine.addDrops(19, DropType.Common, new ItemStack(Items.blaze_rod));
+		MobMachine.addDrops(19, DropType.Rare, new ItemStack(Items.blaze_rod, 2), new ItemStack(Items.blaze_powder, 4));
+		if(SpmodConfig.MobMachineEggs)
+		{
+			MobMachine.addDrops(19, DropType.Legendary, new ItemStack(Items.spawn_egg, 1, 61));
+		}
 	
+		MobMachine.createMob(20, false, 10, getMobMachineTextures("Slime"));
+		MobMachine.setName(20, "Slime");
+		MobMachine.addActivators(20, new ItemStack(Items.slime_ball), new ItemStack(Items.dye, 1, EnumColor.GREEN.getAsDye()));
+		MobMachine.addFood(20, PathProxy.getFluidContainerItems(FluidRegistry.WATER), new int[]{1000});
+		MobMachine.addFood(20, new ItemStack[]{new ItemStack(Items.dye, 1, EnumColor.GREEN.getAsDye()), new ItemStack(Blocks.brown_mushroom), new ItemStack(Blocks.red_mushroom)}, new int[]{500, 750, 750});
+		MobMachine.addDrops(20, DropType.Common, new ItemStack(Items.slime_ball));
+		if(SpmodConfig.MobMachineEggs)
+		{
+			MobMachine.addDrops(20, DropType.Legendary, new ItemStack(Items.spawn_egg, 1, 55));
+		}
+		MobMachine.createMob(21, false, 20, getMobMachineTextures("MagmaCube"));
+		MobMachine.setName(21, "Magma Cube");
+		MobMachine.addActivator(21, new ItemStack(Items.magma_cream));
+		MobMachine.addFood(21, PathProxy.getFluidContainerItems(FluidRegistry.LAVA), new int[]{2000});
+		MobMachine.addFood(21, new ItemStack(Items.blaze_rod), 8000);
+		MobMachine.addDrops(21, DropType.Common, new ItemStack(Items.magma_cream));
+		if(SpmodConfig.MobMachineEggs)
+		{
+			MobMachine.addDrops(21, DropType.Legendary, new ItemStack(Items.spawn_egg, 1, 62));
+		}
 	
 	}
 	

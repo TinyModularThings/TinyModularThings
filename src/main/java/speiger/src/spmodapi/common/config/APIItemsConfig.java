@@ -13,6 +13,7 @@ import speiger.src.spmodapi.common.items.armor.HempArmor;
 import speiger.src.spmodapi.common.items.crafting.ItemBlueDye;
 import speiger.src.spmodapi.common.items.crafting.ItemColorCard;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
+import speiger.src.spmodapi.common.items.crafting.ItemMobMachineHelper;
 import speiger.src.spmodapi.common.items.exp.ExpBottle;
 import speiger.src.spmodapi.common.items.hemp.ItemCompressedHemp;
 import speiger.src.spmodapi.common.items.hemp.ItemHemp;
@@ -31,7 +32,7 @@ public class APIItemsConfig
 	{
 		Items.ender_pearl.setMaxStackSize(64);
 		Items.egg.setMaxStackSize(64);
-		
+
 		items.hempSeed = new ItemHempSeed();
 		RegisterProxy.RegisterItem(items.hempSeed);
 
@@ -73,6 +74,9 @@ public class APIItemsConfig
 
 		items.expBottles = new ExpBottle();
 		RegisterProxy.RegisterItem(items.expBottles);
+
+		items.mobMachineHelper = new ItemMobMachineHelper();
+		RegisterProxy.RegisterItem(items.mobMachineHelper);
 
 		initHempPlates();
 	}

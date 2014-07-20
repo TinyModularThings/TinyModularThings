@@ -30,4 +30,7 @@ public class APIItems
 	//ExpBottle 
 	public static Item expBottles;
 	
+	//Mob Machine
+	public static Item mobMachineHelper;
+	
 }

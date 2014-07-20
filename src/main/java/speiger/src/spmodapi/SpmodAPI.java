@@ -119,5 +119,6 @@ public class SpmodAPI implements SpmodMod
 	static
 	{
 		Registry.register();
+		
 	}
 }
