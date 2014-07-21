@@ -53,6 +53,7 @@ public class SpmodAPI implements SpmodMod
 
 	public static SimpleNetworkWrapper netChannel;
 	
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt)
 	{
