@@ -1,0 +1,51 @@
+[
+{
+  "modid": "SpmodAPI",
+  "name": "SpmodAPI-Beta",
+  "description": "",
+  "version": "${api_version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Speiger"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "requiredMods": [
+    "Forge"
+  ],
+  "dependencies": [
+    "BuildCraft|Core",
+    "Forestry",
+    "IC2",
+    "MineFactoryReloaded"
+  ],
+  "dependants": [],
+  "useDependencyInformation": "true"
+},
+{
+  "modid": "TinyModularThings",
+  "name": "TinyModularThings",
+  "description": "",
+  "version": "${tmt_version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Speiger"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "requiredMods": [
+    "Forge",
+    "SpmodAPI"
+  ],
+  "dependencies": [
+    "BuildCraft|Core",
+    "CodeChickenCore",
+    "NotEnoughItems",
+    "Railcraft"
+  ],
+  "dependants": [],
+  "useDependencyInformation": "true"
+}
+]
