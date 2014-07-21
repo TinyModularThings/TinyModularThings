@@ -33,4 +33,13 @@ public class APIItems
 	//Mob Machine
 	public static Item mobMachineHelper;
 	
+	//Bone
+	public static Item boneChicken;
+	public static Item bonePig;
+	public static Item boneCow;
+	public static Item boneMooshroom;
+	public static Item boneSheep;
+	public static Item boneHorse;
+	
+	
 }

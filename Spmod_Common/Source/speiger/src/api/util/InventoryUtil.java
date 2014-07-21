@@ -273,4 +273,10 @@ public class InventoryUtil
 		player.worldObj.spawnEntityInWorld(drop);
 	}
 	
+	public static void dropItem(TileEntity tile, ItemStack item)
+	{
+		EntityItem drop = new EntityItem(tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord, item);
+		tile.worldObj.spawnEntityInWorld(drop);
+	}
+	
 }

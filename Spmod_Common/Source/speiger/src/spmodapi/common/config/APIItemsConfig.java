@@ -14,6 +14,7 @@ import speiger.src.spmodapi.common.items.crafting.ItemBlueDye;
 import speiger.src.spmodapi.common.items.crafting.ItemColorCard;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemMobMachineHelper;
+import speiger.src.spmodapi.common.items.crafting.SpmodBone;
 import speiger.src.spmodapi.common.items.exp.ExpBottle;
 import speiger.src.spmodapi.common.items.hemp.ItemCompressedHemp;
 import speiger.src.spmodapi.common.items.hemp.ItemHemp;
@@ -92,6 +93,32 @@ public class APIItemsConfig
 		items.mobMachineHelper = new ItemMobMachineHelper(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.mobMachineHelper);
 		config.itemIDs.updateToNextID();
+		
+		items.boneChicken = new SpmodBone(config.itemIDs.getCurrentID(), 1, "chicken");
+		RegisterProxy.RegisterItem(items.boneChicken);
+		config.itemIDs.updateToNextID();
+		
+		items.boneSheep = new SpmodBone(config.itemIDs.getCurrentID(), 2, "sheep");
+		RegisterProxy.RegisterItem(items.boneSheep);
+		config.itemIDs.updateToNextID();
+		
+		items.bonePig = new SpmodBone(config.itemIDs.getCurrentID(), 4, "pig");
+		RegisterProxy.RegisterItem(items.bonePig);
+		config.itemIDs.updateToNextID();
+		
+		items.boneCow = new SpmodBone(config.itemIDs.getCurrentID(), 5, "cow");
+		RegisterProxy.RegisterItem(items.boneCow);
+		config.itemIDs.updateToNextID();
+		
+		items.boneMooshroom = new SpmodBone(config.itemIDs.getCurrentID(), 5, "mushroom");
+		RegisterProxy.RegisterItem(items.boneMooshroom);
+		config.itemIDs.updateToNextID();
+		
+		items.boneHorse = new SpmodBone(config.itemIDs.getCurrentID(), 6, "horse");
+		RegisterProxy.RegisterItem(items.boneHorse);
+		config.itemIDs.updateToNextID();
+		
+		
 		
 		initHempPlates();
 	}

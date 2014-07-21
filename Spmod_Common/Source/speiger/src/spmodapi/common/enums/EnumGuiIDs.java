@@ -4,7 +4,8 @@ public enum EnumGuiIDs
 {
 	WorkBench(10),
 	Tiles(11),
-	Commands(12);
+	Commands(12),
+	Items(13);
 	
 	int id;
 	

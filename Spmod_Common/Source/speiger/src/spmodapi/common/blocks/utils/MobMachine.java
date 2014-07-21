@@ -25,8 +25,10 @@ import net.minecraft.util.Icon;
 import speiger.src.api.items.IEssens;
 import speiger.src.api.items.IExpBottle;
 import speiger.src.api.language.LanguageRegister;
+import speiger.src.api.util.InventoryUtil;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
+import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import cpw.mods.fml.common.FMLLog;
@@ -630,6 +632,17 @@ public class MobMachine extends TileFacing implements ISidedInventory
 						PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 40, worldObj.provider.dimensionId, getDescriptionPacket());
 						return true;
 					}
+					else if(current.itemID == APIItems.mobMachineHelper.itemID)
+					{
+						type = current.getItemDamage();
+						current.stackSize--;
+						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Initizialized MobMachine to: "+this.names.get(type)));
+						this.updateBlock();
+						this.worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+						this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, getBlockType().blockID);
+						PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 40, worldObj.provider.dimensionId, getDescriptionPacket());
+						return true;
+					}
 					else
 					{
 						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Not a valid init Item/Block"));
@@ -748,6 +761,19 @@ public class MobMachine extends TileFacing implements ISidedInventory
 			}
 		}
 	}
-	
-	
+
+	@Override
+	public void onBreaking()
+	{
+		if(!worldObj.isRemote)
+		{
+			InventoryUtil.dropInventory(worldObj, xCoord, yCoord, zCoord, this);
+			if(this.isValid())
+			{
+				ItemStack item = new ItemStack(APIItems.mobMachineHelper, 1, type);
+				InventoryUtil.dropItem(this, item);
+			}	
+		}
+	}
+
 }

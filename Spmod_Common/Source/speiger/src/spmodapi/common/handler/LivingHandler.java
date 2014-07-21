@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.handler;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.entity.EntityLivingBase;
@@ -10,6 +11,12 @@ import net.minecraft.entity.ai.EntityAITaskEntry;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -33,6 +40,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class LivingHandler
 {
 	public static LivingHandler instance = new LivingHandler();
+	public static Random rand = new Random();
 	
 	@ForgeSubscribe
 	public void onJumping(LivingJumpEvent evt)
@@ -66,21 +74,64 @@ public class LivingHandler
 	public void onDeath(LivingDeathEvent evt)
 	{
 		EntityLivingBase entity = evt.entityLiving;
-		if(entity != null && !entity.worldObj.isRemote && entity instanceof EntityMob)
+		if(entity != null && !entity.worldObj.isRemote)
 		{
-			EntityMob mob = (EntityMob) entity;
-			ArrayList<TileEntity> tiles = WorldReading.getTileWithAABB((int)mob.posX, (int)mob.posY, (int)mob.posZ, mob.worldObj, 10, APIBlocks.blockUtils.blockID, 1);
-			for(TileEntity tile : tiles)
+			if(entity instanceof EntityMob)
 			{
-				if(tile != null && tile instanceof IExpProvider)
+				EntityMob mob = (EntityMob) entity;
+				ArrayList<TileEntity> tiles = WorldReading.getTileWithAABB((int)mob.posX, (int)mob.posY, (int)mob.posZ, mob.worldObj, 10, APIBlocks.blockUtils.blockID, 1);
+				for(TileEntity tile : tiles)
 				{
-					IExpProvider pro = (IExpProvider) tile;
-					if(pro.absorbDeath())
+					if(tile != null && tile instanceof IExpProvider)
 					{
-						pro.addExp(mob.experienceValue);
+						IExpProvider pro = (IExpProvider) tile;
+						if(pro.absorbDeath())
+						{
+							pro.addExp(mob.experienceValue);
+						}
 					}
 				}
 			}
+			if(entity instanceof EntitySheep)
+			{
+				EntitySheep killed = (EntitySheep)entity;
+				killed.dropItem(APIItems.boneSheep.itemID, rand.nextInt(2));
+
+			}
+			
+			if(entity instanceof EntityPig)
+			{
+				EntityPig killed = (EntityPig)entity;
+				killed.dropItem(APIItems.bonePig.itemID, rand.nextInt(3));
+
+			}
+			
+			if(entity instanceof EntityCow)
+			{
+				EntityCow killed = (EntityCow)entity;
+				killed.dropItem(APIItems.boneCow.itemID, rand.nextInt(2));
+
+			}
+			
+			if(entity instanceof EntityMooshroom)
+			{
+				EntityMooshroom killed = (EntityMooshroom)entity;
+				killed.dropItem(APIItems.boneMooshroom.itemID, rand.nextInt(3));
+			}
+			
+			if(entity instanceof EntityChicken)
+			{
+				EntityChicken killed = (EntityChicken)entity;
+				killed.dropItem(APIItems.boneChicken.itemID, 1);
+			}
+			
+			if(entity instanceof EntityHorse)
+			{
+				EntityHorse killed = (EntityHorse)entity;
+				killed.dropItem(APIItems.boneHorse.itemID, rand.nextInt(3));
+
+			}
+			
 		}
 	}
 	

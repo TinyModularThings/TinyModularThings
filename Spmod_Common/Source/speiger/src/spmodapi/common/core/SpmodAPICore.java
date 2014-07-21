@@ -2,8 +2,10 @@ package speiger.src.spmodapi.common.core;
 
 import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import speiger.src.api.items.IItemGui;
 import speiger.src.spmodapi.client.gui.commands.GuiCommands;
 import speiger.src.spmodapi.common.blocks.utils.InventoryCrafter;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
@@ -66,6 +68,18 @@ public class SpmodAPICore implements IGuiHandler
 				return con;
 			}
 		}
+		else if(ID == EnumGuiIDs.Items.getID())
+		{
+			ItemStack stack = player.getCurrentEquippedItem();
+			if (stack != null && stack.getItem() instanceof IItemGui)
+			{
+				IItemGui container = (IItemGui) stack.getItem();
+				if (container.hasContainer(stack))
+				{
+					return container.getContainer(stack);
+				}
+			}
+		}
 		return null;
 	}
 
@@ -87,6 +101,18 @@ public class SpmodAPICore implements IGuiHandler
 		else if(ID == EnumGuiIDs.Commands.getID())
 		{
 			return new GuiCommands(player.inventory);
+		}
+		else if(ID == EnumGuiIDs.Items.getID())
+		{
+			ItemStack stack = player.getCurrentEquippedItem();
+			if (stack != null && stack.getItem() instanceof IItemGui)
+			{
+				IItemGui container = (IItemGui) stack.getItem();
+				if (container.hasGui(stack))
+				{
+					return container.getGui(stack);
+				}
+			}
 		}
 		return null;
 	}

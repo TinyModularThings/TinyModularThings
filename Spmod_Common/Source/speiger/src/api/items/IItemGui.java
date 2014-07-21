@@ -1,4 +1,4 @@
-package speiger.src.tinymodularthings.common.interfaces;
+package speiger.src.api.items;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.inventory.Container;
@@ -11,7 +11,7 @@ public interface IItemGui
 	boolean hasGui(ItemStack par1);
 	
 	@SideOnly(Side.CLIENT)
-	GuiScreen getGui(ItemStack par1);
+	public GuiScreen getGui(ItemStack par1);
 	
 	boolean hasContainer(ItemStack par1);
 	
