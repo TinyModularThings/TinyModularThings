@@ -2,14 +2,13 @@ package speiger.src.spmodapi.common.util;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tuple;
 import net.minecraft.village.MerchantRecipe;
+import cpw.mods.fml.common.FMLLog;
 
 public class VillagerHelper
 {

@@ -2,8 +2,6 @@ package speiger.src.spmodapi.client.gui;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
@@ -94,5 +92,7 @@ public abstract class GuiInventoryCore extends GuiContainer
 			this.drawSlot(slotToDraw.get(i));
 		}
 	}
+	
+
 	
 }

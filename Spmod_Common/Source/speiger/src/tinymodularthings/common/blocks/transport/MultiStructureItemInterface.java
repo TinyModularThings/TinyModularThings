@@ -2,7 +2,6 @@ package speiger.src.tinymodularthings.common.blocks.transport;
 
 import java.io.DataInput;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.item.EntityItem;
@@ -35,7 +34,6 @@ import speiger.src.tinymodularthings.common.plugins.BC.actions.ActionOneSlotChan
 import speiger.src.tinymodularthings.common.plugins.BC.actions.GateChangeToSlot;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionReceptor;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

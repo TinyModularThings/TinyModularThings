@@ -74,7 +74,7 @@ public class TinyModularThingsCore implements IGuiHandler
 				IItemGui container = (IItemGui) stack.getItem();
 				if (container.hasContainer(stack))
 				{
-					return container.getContainer(stack);
+					return container.getContainer(player.inventory, stack);
 				}
 			}
 		}
@@ -133,7 +133,7 @@ public class TinyModularThingsCore implements IGuiHandler
 				IItemGui container = (IItemGui) stack.getItem();
 				if (container.hasGui(stack))
 				{
-					return container.getGui(stack);
+					return container.getGui(player.inventory, stack);
 				}
 			}
 		}

@@ -1,8 +1,5 @@
 package speiger.src.spmodapi.common.enums;
 
-import cpw.mods.fml.common.FMLLog;
-import net.minecraft.item.ItemStack;
-import net.minecraftforge.oredict.OreDictionary;
 
 
 public enum EnumColor

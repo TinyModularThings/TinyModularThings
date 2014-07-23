@@ -2,7 +2,6 @@ package speiger.src.spmodapi.common.config.ModObjects;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.ai.attributes.Attribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraftforge.fluids.Fluid;
 

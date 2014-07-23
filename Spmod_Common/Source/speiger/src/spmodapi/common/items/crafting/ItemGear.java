@@ -6,7 +6,6 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.api.items.DisplayItem;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.SpmodMod;

@@ -3,14 +3,11 @@ package speiger.src.spmodapi.common.modHelper.BC;
 import java.util.Arrays;
 import java.util.LinkedList;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import speiger.src.spmodapi.common.blocks.deko.TileLamp;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import buildcraft.BuildCraftCore;
-import buildcraft.BuildCraftTransport;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionProvider;
 

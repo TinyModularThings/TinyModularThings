@@ -19,7 +19,6 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.inventory.IAcceptor;

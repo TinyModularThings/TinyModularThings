@@ -21,8 +21,8 @@ public class APIItems
 	public static Item gears;
 	public static Item blueDye;
 	public static Item colorCard;
-	
 	public static Item multiPlate;
+	public static Item trades;
 	
 	public static ItemStack[] hempPlates;
 	public static Item hempResinBucket;

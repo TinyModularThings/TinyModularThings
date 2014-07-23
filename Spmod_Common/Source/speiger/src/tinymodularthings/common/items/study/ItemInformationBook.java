@@ -3,6 +3,7 @@ package speiger.src.tinymodularthings.common.items.study;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -64,7 +65,7 @@ public class ItemInformationBook extends TinyItem implements IItemGui
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getGui(ItemStack par1)
+	public GuiScreen getGui(InventoryPlayer par1, ItemStack par2)
 	{
 		return new GuiInformations();
 	}
@@ -76,7 +77,7 @@ public class ItemInformationBook extends TinyItem implements IItemGui
 	}
 	
 	@Override
-	public Container getContainer(ItemStack par1)
+	public Container getContainer(InventoryPlayer par1, ItemStack par2)
 	{
 		return new EmptyContainer();
 	}

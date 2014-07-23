@@ -29,6 +29,25 @@ public class InventoryUtil
 		return false;
 	}
 	
+	public static boolean isItemEqualSave(ItemStack par1, ItemStack par2)
+	{
+		if(par1 != null && par2 != null)
+		{
+			if(par1.itemID == par2.itemID)
+			{
+				if(par1.getItemDamage() == par2.getItemDamage() && par1.stackSize <= par2.stackSize)
+				{
+					return true;
+				}
+			}
+		}
+		else if(par1 == null && par2 == null)
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	public static ItemStack getItemFromInventory(IInventory inv, int itemID)
 	{
 		ItemStack stack = null;

@@ -2,8 +2,6 @@ package speiger.src.tinymodularthings.common.upgrades.hoppers;
 
 import java.util.List;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -22,6 +20,7 @@ import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.utils.HopperType;
+import cpw.mods.fml.common.FMLLog;
 
 public class HopperItemFilter implements HopperUpgrade, IUpgradeGuiProvider
 {

@@ -21,7 +21,6 @@ import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.blocks.deko.TileLamp.EnumLampType;
 import speiger.src.spmodapi.common.enums.EnumColor;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

@@ -5,6 +5,7 @@ import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -15,6 +16,7 @@ import net.minecraft.village.MerchantRecipe;
 import net.minecraft.world.World;
 import speiger.src.api.items.DisplayStack;
 import speiger.src.api.items.IItemGui;
+import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.spmodapi.SpmodAPI;
@@ -23,6 +25,7 @@ import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.items.SpmodItem;
+import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -54,6 +57,13 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 
 	@Override
 	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+		this.itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase()+":crafting/random_Trade");
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
 		for(int i = 0;i<recipeList.size();i++)
@@ -63,13 +73,13 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	}
 
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+	public ItemStack onItemRightClick(ItemStack par1, World par2World, EntityPlayer par3EntityPlayer)
 	{
 		if(!par2World.isRemote)
 		{
 			par3EntityPlayer.openGui(SpmodAPI.instance, EnumGuiIDs.Items.getID(), par2World, 0, 0, 0);
 		}
-		return par1ItemStack;
+		return par1;
 	}
 
 	@Override
@@ -91,8 +101,8 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 		else
 		{
 			par3.add("Trade: x"+recipe.getItemToBuy().stackSize+" "+recipe.getItemToBuy().getDisplayName()+" + x"+recipe.getSecondItemToBuy().stackSize+" "+recipe.getSecondItemToBuy().getDisplayName()+" = x"+recipe.getItemToSell().stackSize+" "+recipe.getItemToSell().getDisplayName());
-
 		}
+		par3.add(LanguageRegister.getLanguageName(new InfoStack(), "trade.size", SpmodAPI.instance)+" "+recipeList.size());
 	}
 
 	@Override

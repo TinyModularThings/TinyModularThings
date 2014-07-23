@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.EnumSet;
 
-import speiger.src.spmodapi.common.items.crafting.ItemRandomTrade;
-
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.village.MerchantRecipe;
+import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.World;
+import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.registry.VillagerRegistry;
@@ -18,6 +18,7 @@ import cpw.mods.fml.common.registry.VillagerRegistry;
 public class CountdownTick implements ITickHandler
 {
 	private static boolean loadedRecipes = false;
+	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{
@@ -35,18 +36,26 @@ public class CountdownTick implements ITickHandler
 			World world = player.worldObj;
 			
 			Collection<Integer> recipes = VillagerRegistry.getRegisteredVillagers();
-			recipes.add(Integer.valueOf(0));
-			recipes.add(Integer.valueOf(1));
-			recipes.add(Integer.valueOf(2));
-			recipes.add(Integer.valueOf(3));
-			recipes.add(Integer.valueOf(4));
-			recipes.add(Integer.valueOf(5));
 			ArrayList<MerchantRecipe> recipe = new ArrayList<MerchantRecipe>();
+			VillagerHelper.loadVillagerRecipes(recipe);
 			for(Integer ints : recipes)
 			{
+				MerchantRecipeList cu = new MerchantRecipeList();
 				EntityVillager villager = new EntityVillager(world, ints.intValue());
-				recipe.addAll(villager.getRecipes(player));
+				cu.addAll(villager.getRecipes(player));
+				VillagerRegistry.manageVillagerTrades(cu, villager, ints.intValue(), world.rand);
+				recipe.addAll(cu);
 			}
+			for(int i = 0;i<6;i++)
+			{
+				MerchantRecipeList cu = new MerchantRecipeList();
+				EntityVillager villager = new EntityVillager(world, i);
+				cu.addAll(villager.getRecipes(player));
+				VillagerRegistry.manageVillagerTrades(cu, villager, i, world.rand);
+				recipe.addAll(cu);
+			}
+			
+			
 			ItemRandomTrade.addRecipes(recipe);
 		}
 		

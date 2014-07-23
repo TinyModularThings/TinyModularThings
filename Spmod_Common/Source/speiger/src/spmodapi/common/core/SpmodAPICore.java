@@ -12,7 +12,6 @@ import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.ForgeRegister;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 /**
@@ -76,7 +75,7 @@ public class SpmodAPICore implements IGuiHandler
 				IItemGui container = (IItemGui) stack.getItem();
 				if (container.hasContainer(stack))
 				{
-					return container.getContainer(stack);
+					return container.getContainer(player.inventory, stack);
 				}
 			}
 		}
@@ -110,7 +109,7 @@ public class SpmodAPICore implements IGuiHandler
 				IItemGui container = (IItemGui) stack.getItem();
 				if (container.hasGui(stack))
 				{
-					return container.getGui(stack);
+					return container.getGui(player.inventory, stack);
 				}
 			}
 		}

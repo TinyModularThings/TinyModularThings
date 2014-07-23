@@ -1,8 +1,5 @@
 package speiger.src.tinymodularthings.common.config;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;

@@ -21,6 +21,7 @@ import speiger.src.spmodapi.common.items.hemp.ItemHemp;
 import speiger.src.spmodapi.common.items.hemp.ItemHempBucket;
 import speiger.src.spmodapi.common.items.hemp.ItemHempSeed;
 import speiger.src.spmodapi.common.items.hemp.ItemMultiPlate;
+import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
 
@@ -118,7 +119,9 @@ public class APIItemsConfig
 		RegisterProxy.RegisterItem(items.boneHorse);
 		config.itemIDs.updateToNextID();
 		
-		
+		items.trades = new ItemRandomTrade(config.itemIDs.getCurrentID());
+		RegisterProxy.RegisterItem(items.trades);
+		config.itemIDs.updateToNextID();
 		
 		initHempPlates();
 	}
