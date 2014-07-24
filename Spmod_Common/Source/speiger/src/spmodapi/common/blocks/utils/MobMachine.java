@@ -31,6 +31,7 @@ import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.tile.TileFacing;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -266,7 +267,6 @@ public class MobMachine extends TileFacing implements ISidedInventory
 		{
 			if(isValid())
 			{
-				
 				if(canWork())
 				{
 					if(worldObj.getWorldTime() % 20 == 0)
@@ -411,7 +411,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 		 {
 			 drop = dropTypes.get(types);
 		 }
-		 
+
 		 
 		 if(drop == null || drop.isEmpty())
 		 {
@@ -449,6 +449,10 @@ public class MobMachine extends TileFacing implements ISidedInventory
 		if(lifeEssens == 0)
 		{
 			lifeEssens = 1000;
+		}
+		if(inv[0] != null)
+		{
+			return false;
 		}
 		if(isValid())
 		{

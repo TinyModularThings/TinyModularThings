@@ -20,6 +20,7 @@ import speiger.src.spmodapi.common.blocks.utils.MobMachine.DropType;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.enums.EnumColor;
+import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 
@@ -37,7 +38,7 @@ public class MobMachineLoader
 		MobMachine.setName(1, "Pig");
 		MobMachine.addActivators(1, new ItemStack(Item.porkRaw), new ItemStack(Item.porkCooked));
 		MobMachine.addFood(1, new ItemStack[]{new ItemStack(Item.carrot), new ItemStack(APIItems.hemp)}, new int[]{500, 50});
-		MobMachine.addDrops(1, DropType.Common, new ItemStack(Item.porkRaw), new ItemStack(Item.porkCooked));
+		MobMachine.addDrops(1, DropType.Common, new ItemStack(Item.porkRaw), new ItemStack(Item.porkCooked), new ItemStack(APIItems.bonePig));
 		if(SpmodConfig.MobMachineEggs)
 		{
 			MobMachine.addDrops(1, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 90));
@@ -49,6 +50,7 @@ public class MobMachineLoader
 		MobMachine.addActivators(2, ItemCollection.getAllWool());
 		MobMachine.addFood(2, new ItemStack[]{new ItemStack(Item.wheat), new ItemStack(APIItems.hemp)}, new int[]{500, 50});
 		MobMachine.addDrops(2, DropType.Common, ItemCollection.getAllWool());
+		MobMachine.addDrops(2, DropType.Common, new ItemStack(APIItems.boneSheep));
 		MobMachine.addDrops(2, DropType.Rare, ItemCollection.getAllDye());
 		if(SpmodConfig.MobMachineEggs)
 		{
@@ -60,7 +62,7 @@ public class MobMachineLoader
 		MobMachine.setName(3, "Chicken");
 		MobMachine.addActivators(3, new ItemStack(Item.egg), new ItemStack(Item.chickenRaw), new ItemStack(Item.chickenCooked));
 		MobMachine.addFood(3, new ItemStack[]{new ItemStack(Item.seeds), new ItemStack(APIItems.hempSeed)}, new int[]{500});
-		MobMachine.addDrops(3, DropType.Common, new ItemStack(Item.egg), new ItemStack(Item.feather), new ItemStack(Item.chickenRaw), new ItemStack(Item.chickenCooked));
+		MobMachine.addDrops(3, DropType.Common, new ItemStack(Item.egg), new ItemStack(Item.feather), new ItemStack(Item.chickenRaw), new ItemStack(Item.chickenCooked), new ItemStack(APIItems.boneChicken));
 		if(SpmodConfig.MobMachineEggs)
 		{
 			MobMachine.addDrops(3, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 93));
@@ -71,7 +73,7 @@ public class MobMachineLoader
 		MobMachine.setName(4, "Cow");
 		MobMachine.addActivators(4, new ItemStack(Item.leather), new ItemStack(Item.beefRaw), new ItemStack(Item.beefCooked));
 		MobMachine.addFood(4, new ItemStack[]{new ItemStack(Item.wheat), new ItemStack(APIItems.hemp)}, new int[]{500, 50});
-		MobMachine.addDrops(4, DropType.Common, new ItemStack(Item.leather), new ItemStack(Item.beefRaw), new ItemStack(Item.beefCooked));
+		MobMachine.addDrops(4, DropType.Common, new ItemStack(Item.leather), new ItemStack(Item.beefRaw), new ItemStack(Item.beefCooked), new ItemStack(APIItems.boneCow));
 		if(SpmodConfig.MobMachineEggs)
 		{
 			MobMachine.addDrops(4, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 92));
@@ -81,7 +83,7 @@ public class MobMachineLoader
 		MobMachine.createMob(5, true, 25, getMobMachineTextures("Mooshroom"));
 		MobMachine.addActivators(5, new ItemStack(Block.mushroomBrown), new ItemStack(Block.mushroomRed), new ItemStack(Item.bowlSoup));
 		MobMachine.addFood(5, new ItemStack[]{new ItemStack(Item.wheat), new ItemStack(APIItems.hemp)}, new int[]{500, 50});
-		MobMachine.addDrops(5, DropType.Common, new ItemStack(Item.leather), new ItemStack(Item.beefRaw), new ItemStack(Item.beefCooked), new ItemStack(Block.mushroomRed), new ItemStack(Block.mushroomBrown));
+		MobMachine.addDrops(5, DropType.Common, new ItemStack(Item.leather), new ItemStack(Item.beefRaw), new ItemStack(Item.beefCooked), new ItemStack(Block.mushroomRed), new ItemStack(Block.mushroomBrown), new ItemStack(APIItems.boneMooshroom));
 		MobMachine.addDrops(5, DropType.Rare, new ItemStack(Item.bowlSoup), new ItemStack(Block.mushroomCapBrown), new ItemStack(Block.mushroomCapRed));
 		if(SpmodConfig.MobMachineEggs)
 		{
@@ -269,7 +271,17 @@ public class MobMachineLoader
 		{
 			MobMachine.addDrops(21, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 62));
 		}
-	
+		
+		//Villager
+		MobMachine.createMob(22, true, 5, getMobMachineTextures("Villager"));
+		MobMachine.setName(22, "Villager");
+		MobMachine.addActivator(22, new ItemStack(Item.emerald));
+		MobMachine.addFood(22, new ItemStack[]{new ItemStack(Item.bread), new ItemStack(Item.carrot), new ItemStack(Item.bakedPotato)}, new int[]{2000, 1500, 4000});
+		if(SpmodConfig.MobMachineEggs)
+		{
+			MobMachine.addDrops(21, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 120));
+		}
+		
 	}
 	
 	

@@ -120,7 +120,6 @@ public class VillagerHelper
 		else
 		{
 			Tuple par3 = (Tuple)EntityVillager.villagerStockList.get(Integer.valueOf(par1.itemID));
-			FMLLog.getLogger().info("Test: "+par1.getDisplayName());
 			int key = (Integer) par3.getFirst();
 			int value = (Integer) par3.getSecond();
 			

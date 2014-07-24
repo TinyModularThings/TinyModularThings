@@ -10,6 +10,8 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.World;
+import speiger.src.spmodapi.common.blocks.utils.MobMachine;
+import speiger.src.spmodapi.common.blocks.utils.MobMachine.DropType;
 import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
@@ -57,6 +59,8 @@ public class CountdownTick implements ITickHandler
 			
 			
 			ItemRandomTrade.addRecipes(recipe);
+			
+			MobMachine.addDrops(22, DropType.Common, ItemRandomTrade.getAllTrades());
 		}
 		
 		NBTTagCompound playerNBT = player.getEntityData();

@@ -63,15 +63,23 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 	@Override
 	public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
 	{
-		NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Exp");
-		return icons[nbt.getInteger("ID")];
+		if(stack.hasTagCompound())
+		{
+			NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Exp");
+			return icons[nbt.getInteger("ID")];
+		}
+		return icons[0];
 	}
 
 	@Override
 	public Icon getIcon(ItemStack stack, int pass)
 	{
-		NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Exp");
-		return icons[nbt.getInteger("ID")];
+		if(stack.hasTagCompound())
+		{
+			NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Exp");
+			return icons[nbt.getInteger("ID")];
+		}
+		return icons[0];
 	}
 	
 	Icon[] icons = new Icon[5];
