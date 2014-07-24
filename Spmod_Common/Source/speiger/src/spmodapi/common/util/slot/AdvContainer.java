@@ -50,6 +50,24 @@ public abstract class AdvContainer extends Container
 		}
 	}
 	
+	public void setInventory(InventoryPlayer par1)
+	{
+		int var3;
+		
+		for (var3 = 0; var3 < 3; ++var3)
+		{
+			for (int var4 = 0; var4 < 9; ++var4)
+			{
+				addSlotToContainer(new Slot(par1, var4 + var3 * 9 + 9, 8 + var4 * 18, 84 + var3 * 18));
+			}
+		}
+		
+		for (var3 = 0; var3 < 9; ++var3)
+		{
+			addSlotToContainer(new Slot(par1, var3, 8 + var3 * 18, 142));
+		}
+	}
+	
 	public AdvContainer()
 	{
 	};

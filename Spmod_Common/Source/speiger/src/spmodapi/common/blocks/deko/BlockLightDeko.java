@@ -275,10 +275,30 @@ public class BlockLightDeko extends BlockContainer
 	
 	
 	@Override
+	public int getLightOpacity(World world, int x, int y, int z)
+	{
+		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		if(tile != null && tile instanceof TileLamp)
+		{
+			TileLamp lamp = (TileLamp) tile;
+			EnumLampType type = lamp.getType();
+			if(type != null)
+			{
+				if(type == type.FULL)
+				{
+					return 255;
+				}
+			}
+		}
+		return 0;
+	}
+
+	@Override
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
 	{
 		if(!par1World.isRemote)
 		{
+			
 			TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
 			if(tile != null && tile instanceof AdvTile)
 			{
@@ -321,6 +341,7 @@ public class BlockLightDeko extends BlockContainer
 		return false;
 	}
 
+	
 	@Override
 	public boolean isOpaqueCube()
 	{

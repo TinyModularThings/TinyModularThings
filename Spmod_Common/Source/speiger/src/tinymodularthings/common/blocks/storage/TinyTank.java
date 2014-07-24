@@ -27,6 +27,8 @@ import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
+import buildcraft.BuildCraftFactory;
+import buildcraft.factory.TileTank;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
@@ -35,8 +37,8 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	
 	public TinyFluidTank tank = new TinyFluidTank("TinyTank", 0, this);
 	public int tankMode = -1;
-	public int lastState = 0;
-	public boolean renderLiquid = true;
+	public int renderLiquid = 1;
+	public boolean BCTank = false;
 	
 	public void setTankMode(int tankMode)
 	{
@@ -57,6 +59,30 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
 	{
+		try
+		{
+			if(this.BCTank)
+			{
+				TinyTank tank = this.getHighestTank();
+				if(tank != null && tank.BCTank)
+				{
+					TileEntity tile = worldObj.getBlockTileEntity(tank.xCoord, tank.yCoord+1, tank.zCoord);
+					if(tile != null && tile instanceof TileTank)
+					{
+						TileTank bc = (TileTank) tile;
+						if(bc.fill(from.DOWN, resource, false) > 0)
+						{
+							bc.hasUpdate = true;
+							return bc.fill(from.DOWN, resource, doFill);
+						}
+					}
+				}
+			}
+		}
+		catch (Exception e)
+		{
+		}
+		
 		TinyTank tiny = this.getHighestTank();
 		if(tiny != null)
 		{
@@ -86,6 +112,29 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
 	{
+		try
+		{
+			if(this.BCTank)
+			{
+				TinyTank bottom = this.getBottomTank();
+				if(bottom != null && bottom.BCTank)
+				{
+					TileEntity tile = worldObj.getBlockTileEntity(bottom.xCoord, bottom.yCoord-1, bottom.zCoord);
+					if(tile != null && tile instanceof TileTank)
+					{
+						TileTank tank = (TileTank) tile;
+						if(tank.drain(from.UP, maxDrain, false) != null)
+						{
+							return tank.drain(from.UP, maxDrain, doDrain);
+						}
+					}
+				}
+			}
+		}
+		catch (Exception e)
+		{
+		}
+		
 		TinyTank bottom = this.getBottomTank();
 		if(bottom != null)
 		{
@@ -125,7 +174,8 @@ public class TinyTank extends AdvTile implements IFluidHandler
 		}
 		
 		tank.readFromNBT(nbt);
-		renderLiquid = nbt.getBoolean("Render");
+		renderLiquid = nbt.getInteger("Render");
+		BCTank = nbt.getBoolean("BC");
 	}
 	
 	@Override
@@ -142,7 +192,8 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	{
 		super.writeToNBT(nbt);
 		nbt.setInteger("TankMode", tankMode);
-		nbt.setBoolean("Render", renderLiquid);
+		nbt.setInteger("Render", renderLiquid);
+		nbt.setBoolean("BC", BCTank);
 		tank.writeToNBT(nbt);
 	}
 	
@@ -151,11 +202,6 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	{
 		super.onTick();
 		
-		if (lastState != tank.getFluidAmount() && renderLiquid)
-		{
-			lastState = tank.getFluidAmount();
-			
-		}
 		updateBlock();
 		if (!worldObj.isRemote)
 		{
@@ -165,13 +211,10 @@ public class TinyTank extends AdvTile implements IFluidHandler
 				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 			}
 			
-			if(worldObj.getWorldTime() % 40 == 0)
-			{
-				this.renderLiquid = !WorldReading.isBlockBlocked(worldObj, xCoord, yCoord, zCoord);
-			}
 			
 			if(this.tank.getFluid() != null)
 			{
+				
 				if(canFillBelow())
 				{
 					fillBelow();
@@ -179,6 +222,16 @@ public class TinyTank extends AdvTile implements IFluidHandler
 				else
 				{
 					fillToSide();
+				}
+			}
+			
+			if(this.BCTank)
+			{
+				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord);
+				if(tile != null && tile instanceof TileTank)
+				{
+					TileTank tanks = (TileTank) tile;
+					tanks.drain(ForgeDirection.DOWN, this.tank.fill(tanks.tank.getFluid(), true), true);
 				}
 			}
 		}
@@ -191,6 +244,30 @@ public class TinyTank extends AdvTile implements IFluidHandler
 		{
 			this.tank.drain(tank.tank.fill(this.tank.getFluid(), true), true);
 		}
+		else
+		{
+			tank = this;
+		}
+		
+		
+		if(this.BCTank)
+		{
+			try
+			{
+				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
+				if(tile != null && tile instanceof TileTank)
+				{
+					TileTank tanks = (TileTank) tile;
+					this.tank.drain(tanks.fill(ForgeDirection.UP, this.tank.getFluid(), true), true);
+				}
+				
+
+			}
+			catch (Exception e)
+			{
+			}
+		}
+		
 	}
 	
 	public void fillToSide()
@@ -254,9 +331,29 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	public boolean canFillBelow()
 	{
 		TinyTank tank = this.getTankBelow(this);
+		if(tank != null && tank.tank.fill(this.tank.getFluid(), false) > 0)
+		{
+			return true;
+		}
+		
+		if(tank == null)
+		{
+			tank = this;
+		}
+		
 		if(tank != null)
 		{
-			return tank.tank.fill(this.tank.getFluid(), false) > 0;
+			try
+			{
+				TileEntity tile = worldObj.getBlockTileEntity(tank.xCoord, tank.yCoord-1, tank.zCoord);
+				if(tile != null && tile instanceof TileTank)
+				{
+					return ((TileTank)tile).fill(ForgeDirection.UP, this.tank.getFluid(), false) > 0;
+				}
+			}
+			catch (Exception e)
+			{
+			}
 		}
 		return false;
 	}
@@ -283,16 +380,12 @@ public class TinyTank extends AdvTile implements IFluidHandler
 			ItemStack cu = par1.getCurrentEquippedItem();
 			if (cu == null)
 			{
-				if (renderLiquid)
+				this.renderLiquid++;
+				if(renderLiquid > 2)
 				{
-					renderLiquid = false;
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.dissabled", TinyModularThings.instance)));
+					renderLiquid = 0;
 				}
-				else
-				{
-					renderLiquid = true;
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.enabled", TinyModularThings.instance)));
-				}
+				this.sendMessage(renderLiquid, par1);
 				return true;
 			}
 			
@@ -302,55 +395,84 @@ public class TinyTank extends AdvTile implements IFluidHandler
 			ItemStack current = par1.getCurrentEquippedItem();
 			if (current != null)
 			{
-				
-				FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(current);
-				
-				if (liquid != null)
+				if(FluidContainerRegistry.isContainer(current) || FluidContainerRegistry.isBucket(current))
 				{
-					int qty = fill(ForgeDirection.UNKNOWN, liquid, true);
+					FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(current);
 					
-					if (qty != 0 && !par1.capabilities.isCreativeMode)
+					if (liquid != null)
 					{
-						par1.inventory.setInventorySlotContents(par1.inventory.currentItem, consumeItem(current));
-					}
-					
-					return true;
-					
-				}
-				else
-				{
-					
-					FluidStack available = getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;
-					if (available != null)
-					{
-						ItemStack filled = FluidContainerRegistry.fillFluidContainer(available, current);
+						int qty = fill(ForgeDirection.UNKNOWN, liquid, true);
 						
-						liquid = FluidContainerRegistry.getFluidForFilledItem(filled);
-						
-						if (liquid != null)
+						if (qty != 0 && !par1.capabilities.isCreativeMode)
 						{
-							if (!par1.capabilities.isCreativeMode)
+							par1.inventory.setInventorySlotContents(par1.inventory.currentItem, consumeItem(current));
+						}
+						
+						return true;
+						
+					}
+					else
+					{
+						
+						FluidStack available = getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;
+						if (available != null)
+						{
+							ItemStack filled = FluidContainerRegistry.fillFluidContainer(available, current);
+							
+							liquid = FluidContainerRegistry.getFluidForFilledItem(filled);
+							
+							if (liquid != null)
 							{
-								if (current.stackSize > 1)
+								if (!par1.capabilities.isCreativeMode)
 								{
-									if (!par1.inventory.addItemStackToInventory(filled))
+									if (current.stackSize > 1)
 									{
-										return false;
+										if (!par1.inventory.addItemStackToInventory(filled))
+										{
+											return false;
+										}
+										else
+										{
+											par1.inventory.setInventorySlotContents(par1.inventory.currentItem, consumeItem(current));
+										}
 									}
 									else
 									{
 										par1.inventory.setInventorySlotContents(par1.inventory.currentItem, consumeItem(current));
+										par1.inventory.setInventorySlotContents(par1.inventory.currentItem, filled);
 									}
 								}
-								else
-								{
-									par1.inventory.setInventorySlotContents(par1.inventory.currentItem, consumeItem(current));
-									par1.inventory.setInventorySlotContents(par1.inventory.currentItem, filled);
-								}
+								drain(ForgeDirection.UNKNOWN, liquid.amount, true);
+								return true;
 							}
-							drain(ForgeDirection.UNKNOWN, liquid.amount, true);
+						}
+					}
+				}
+				else
+				{
+					try
+					{
+						if(!this.BCTank && current.itemID == BuildCraftFactory.tankBlock.blockID)
+						{
+							TinyTank bottom = this.getBottomTank();
+							TinyTank top = this.getHighestTank();
+							this.BCTank = true;
+							par1.sendChatToPlayer(LanguageRegister.createChatMessage("Inited Tank to BuildCraft Compatiblity"));
+							if(bottom.hasBCTank(false) && !bottom.BCTank)
+							{
+								par1.sendChatToPlayer(LanguageRegister.createChatMessage("Found at the Bottom Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
+							}
+							
+							if(top.hasBCTank(true) && !top.BCTank)
+							{
+								par1.sendChatToPlayer(LanguageRegister.createChatMessage("Found at the Top Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
+							}
+							
 							return true;
 						}
+					}
+					catch (Exception e)
+					{
 					}
 				}
 				
@@ -399,6 +521,49 @@ public class TinyTank extends AdvTile implements IFluidHandler
 			}
 		}
 		
+		return false;
+	}
+	
+	public void sendMessage(int id, EntityPlayer par1)
+	{
+		switch(id)
+		{
+			case 0:
+				par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.dissabled", TinyModularThings.instance)));
+				break;
+			case 1:
+				par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.auto", TinyModularThings.instance)));
+				break;
+			case 2: 
+				par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.enabled", TinyModularThings.instance)));
+				break;
+		}
+	}
+	
+	public boolean hasBCTank(boolean top)
+	{
+		try
+		{
+			if(top)
+			{
+				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord);
+				if(tile != null && tile instanceof TileTank)
+				{
+					return true;
+				}
+			}
+			else
+			{
+				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
+				if(tile != null && tile instanceof TileTank)
+				{
+					return true;
+				}
+			}
+		}
+		catch (Exception e)
+		{
+		}
 		return false;
 	}
 	
@@ -456,7 +621,7 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	@Override
 	public ItemStack pickBlock(MovingObjectPosition target)
 	{
-		return new ItemStack(TinyItems.tinyTank, 1, tankMode - 1);
+		return new ItemStack(TinyItems.tinyTank, 1, tankMode);
 	}
 	
 	public TinyTank getHighestTank()
@@ -513,6 +678,26 @@ public class TinyTank extends AdvTile implements IFluidHandler
 			return (TinyTank)tile;
 		}
 		return null;
+	}
+
+	public boolean renderLiquid()
+	{
+		if(this.renderLiquid == 0)
+		{
+			return false;
+		}
+		else if(this.renderLiquid == 1)
+		{
+			return !WorldReading.isBlockBlocked(worldObj, xCoord, yCoord, zCoord);
+		}
+		else if(this.renderLiquid == 2)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
 	}
 	
 }

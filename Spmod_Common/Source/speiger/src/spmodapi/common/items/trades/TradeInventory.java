@@ -1,5 +1,6 @@
 package speiger.src.spmodapi.common.items.trades;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -17,13 +18,13 @@ public class TradeInventory extends AdvContainer
 	BasicTradeInventory inv;
 	public TradeInventory(InventoryPlayer par1, BasicTradeInventory item)
 	{
-		super(par1);
-		recipe = ItemRandomTrade.getRecipeFromItem(par1.player.getCurrentEquippedItem());
-		currentSlot = par1.currentItem;
-		inv = item;
 		this.addSpmodSlotToContainer(new Slot(item, 0, 30, 50));
 		this.addSpmodSlotToContainer(new Slot(item, 1, 70, 50));
 		this.addSpmodSlotToContainer(new TradeSlot(item, this, 2, 135, 50));
+		this.setInventory(par1);
+		recipe = new MerchantRecipe(ItemRandomTrade.getRecipeFromItem(par1.player.getCurrentEquippedItem()).writeToTags());
+		currentSlot = par1.currentItem;
+		inv = item;
 		inv.setContainer(this);
 	}
 	
@@ -39,9 +40,13 @@ public class TradeInventory extends AdvContainer
 	{
 		ItemStack key1 = inv.getStackInSlot(0);
 		ItemStack key2 = inv.getStackInSlot(1);
-		if(InventoryUtil.isItemEqualSave(recipe.getItemToBuy(), key1) && InventoryUtil.isItemEqualSave(recipe.getSecondItemToBuy(), key2))
+		if(!recipe.func_82784_g() && InventoryUtil.isItemEqualSave(recipe.getItemToBuy(), key1) && InventoryUtil.isItemEqualSave(recipe.getSecondItemToBuy(), key2))
 		{
 			inv.setInventorySlotContents(2, recipe.getItemToSell().copy());
+		}
+		else
+		{
+			inv.setInventorySlotContents(2, null);
 		}
 		super.onCraftMatrixChanged(par1iInventory);
 	}
@@ -85,10 +90,19 @@ public class TradeInventory extends AdvContainer
 	@Override
 	public ItemStack slotClick(int par1, int par2, int par3, EntityPlayer par4EntityPlayer)
 	{
-		if(par1 == currentSlot + 27)
+		if(par1 == currentSlot + 30)
 		{
 			return null;
 		}
+		if(par1 != 2)
+		{
+			this.onCraftMatrixChanged(inv);
+		}
+		if(par1 == 2 && !par4EntityPlayer.worldObj.isRemote)
+		{
+			this.recipe.incrementToolUses();
+		}
+		
 		return super.slotClick(par1, par2, par3, par4EntityPlayer);
 	}
 
@@ -102,8 +116,7 @@ public class TradeInventory extends AdvContainer
         {
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
-
-            if (par2 == 2)
+            if (par2 == 3)
             {
                 if (!this.mergeItemStack(itemstack1, 3, 39, true))
                 {

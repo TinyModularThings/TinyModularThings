@@ -34,7 +34,7 @@ public class RenderStorage implements ISimpleBlockRenderingHandler
 	private void renderTank(TinyTank tile, Block block, RenderBlocks render, IBlockAccess world, int x, int y, int z)
 	{
 		FluidStack stack = tile.tank.getFluid();
-		if (stack != null && stack.getFluid() != null && tile.renderLiquid)
+		if (stack != null && stack.getFluid() != null && tile.renderLiquid())
 		{
 			Fluid fluid = stack.getFluid();
 			Icon icon = fluid.getIcon(stack);
