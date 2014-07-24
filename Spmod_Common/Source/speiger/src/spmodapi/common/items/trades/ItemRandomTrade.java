@@ -31,7 +31,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemRandomTrade extends SpmodItem implements IItemGui
 {
-	
 	static ArrayList<MerchantRecipe> recipeList = new ArrayList<MerchantRecipe>();
 	
 	public ItemRandomTrade(int par1)
@@ -53,8 +52,6 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 		return LanguageRegister.getLanguageName(new DisplayStack(par1), "trade.random", par0);
 	}
 	
-	
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)

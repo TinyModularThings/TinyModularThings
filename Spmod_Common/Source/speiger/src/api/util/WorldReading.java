@@ -2,6 +2,7 @@ package speiger.src.api.util;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
@@ -179,5 +180,18 @@ public class WorldReading
 		}
 		
 		return (AdvTile)tile;
+	}
+
+	public static boolean isBlockBlocked(World world, int x, int y, int z)
+	{
+		for(int i = 0;i<ForgeDirection.VALID_DIRECTIONS.length;i++)
+		{
+			ForgeDirection cu = ForgeDirection.VALID_DIRECTIONS[i];
+			if(Block.blocksList[world.getBlockId(x+cu.offsetX, y+cu.offsetY, z+cu.offsetZ)] == null || Block.blocksList[world.getBlockId(x+cu.offsetX, y+cu.offsetY, z+cu.offsetZ)].isAirBlock(world, x+cu.offsetX, y+cu.offsetY, z+cu.offsetZ))
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 }

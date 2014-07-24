@@ -191,7 +191,7 @@ public class BlockStorage extends BlockContainer
 	public int getLightValue(IBlockAccess world, int x, int y, int z)
 	{
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if (tile != null && tile instanceof AdvTile)
+		if (tile != null && tile instanceof AdvTile && ((AdvTile) tile).getBlockLightLevel() > 0)
 		{
 			return ((AdvTile) tile).getBlockLightLevel();
 		}
