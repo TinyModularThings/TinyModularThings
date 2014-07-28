@@ -121,6 +121,16 @@ public class ItemGear extends SpmodItem
 			return name;
 		}
 		
+		public ItemStack getItem()
+		{
+			return new ItemStack(APIItems.gears, 1, this.ordinal());
+		}
+		
+		public ItemStack getItem(int qty)
+		{
+			return new ItemStack(APIItems.gears, qty, this.ordinal());
+		}
+		
 	}
 	
 }

@@ -50,5 +50,7 @@ public class BasicRecipes
 			pp.addRecipe(new ColorCardCleaning(data.filledContainer));
 		}
 		pp.addRecipe(new ItemStack(APIBlocks.blockUtils, 1, 3), new Object[]{"XYX", "CVC", "XYX", 'X', Block.glass, 'C', Block.ice, 'V', Item.porkRaw, 'Y', new ItemStack(Item.dyePowder, 1, EnumColor.BLACK.getAsDye())});
+		pp.addRecipe(new ItemStack(APIBlocks.blockUtils, 1, 2), new Object[]{"ABC", "DEF", "GGG", 'A', Item.leather, 'B', Item.porkRaw, 'C', Item.feather, 'D', Block.cloth, 'E', Item.ingotIron, 'F', Block.mushroomRed ,'G', new ItemStack(Block.glowStone)});
+		
 	}
 }
