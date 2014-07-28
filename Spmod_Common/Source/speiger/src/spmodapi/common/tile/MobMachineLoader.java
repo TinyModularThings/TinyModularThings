@@ -1,11 +1,11 @@
 package speiger.src.spmodapi.common.tile;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
@@ -20,9 +20,11 @@ import speiger.src.spmodapi.common.blocks.utils.MobMachine.DropType;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.enums.EnumColor;
-import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
 
 public class MobMachineLoader 
 {
@@ -192,7 +194,6 @@ public class MobMachineLoader
 		MobMachine.addActivator(14, new ItemStack(Item.netherStalkSeeds));
 		MobMachine.addFood(14, new ItemStack[]{new ItemStack(Item.sugar), new ItemStack(Block.mushroomBrown), new ItemStack(Block.mushroomRed), new ItemStack(Item.bread)}, new int[]{250, 1500, 1700, 1200}); 
 		MobMachine.addDrops(14, DropType.Common, getPotions(false, Item.potion));
-		MobMachine.addDrops(14, DropType.Rare, getPotions(true, Item.potion));
 		if(SpmodConfig.MobMachineEggs)
 		{
 			MobMachine.addDrops(14, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 66));
@@ -204,7 +205,7 @@ public class MobMachineLoader
 		MobMachine.addActivators(15, new ItemStack(Item.skull), new ItemStack(Item.coal));
 		MobMachine.addFood(15, new ItemStack[]{new ItemStack(Item.feather), new ItemStack(Item.bone), new ItemStack(Item.coal, 1, 1)}, new int[]{1750, 1500, 1000});
 		MobMachine.addDrops(15, DropType.Common, new ItemStack(Item.bone), new ItemStack(Item.arrow), new ItemStack(Item.swordStone));
-		MobMachine.addDrops(16, DropType.Rare, new ItemStack(Item.coal), new ItemStack(Item.skull, 1, 1));
+		MobMachine.addDrops(15, DropType.Rare, new ItemStack(Item.coal), new ItemStack(Item.skull, 1, 1));
 		if(SpmodConfig.MobMachineEggs)
 		{
 			MobMachine.addDrops(15, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 51));
@@ -282,6 +283,10 @@ public class MobMachineLoader
 			MobMachine.addDrops(21, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 120));
 		}
 		
+		HashMap<DropType, List<ItemStack>> drops = MobMachine.allDrops.get(Integer.valueOf(14));
+		
+		
+		
 	}
 	
 	
@@ -310,31 +315,31 @@ public class MobMachineLoader
 	public static ItemStack[] getPotions(boolean good, ItemPotion potion)
 	{
 		ArrayList<ItemStack> item = new ArrayList<ItemStack>();
-		potion.getSubItems(potion.itemID, CreativeTabs.tabBrewing, item);
+		loadPotions(item);
 		ArrayList<ItemStack> end = new ArrayList<ItemStack>();
 		for(ItemStack cu : item)
 		{
-			if(potion.hasEffect(cu))
+			if(potion.getEffects(cu) != null)
 			{
 				List list = potion.getEffects(cu);
-				boolean flag = true;
-				for(int i = 0;i<list.size();i++)
-				{
-					PotionEffect effect = (PotionEffect) list.get(i);
-					if(Potion.potionTypes[effect.getPotionID()].isBadEffect())
-					{
-						flag = false;
-					}
-				}
-				
-				if(good == flag)
-				{
-					end.add(cu);
-				}
-				
+				end.add(cu);
 			}
 		}
 		return end.toArray(new ItemStack[end.size()]);
 	}
+	
+	public static void loadPotions(ArrayList<ItemStack> item)
+	{
+		for(int i = 0;i<Short.MAX_VALUE;i++)
+		{
+			List collect = Item.potion.getEffects(i);
+			if(collect != null)
+			{
+				item.add(new ItemStack(Item.potion, 1, i));
+			}
+		}
+	}
+
+
 	
 }
