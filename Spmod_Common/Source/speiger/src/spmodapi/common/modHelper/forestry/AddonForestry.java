@@ -1,16 +1,24 @@
 package speiger.src.spmodapi.common.modHelper.forestry;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
+import cpw.mods.fml.common.FMLLog;
 import forestry.api.farming.Farmables;
 import forestry.api.farming.IFarmable;
 import forestry.api.recipes.RecipeManagers;
 import forestry.core.GameMode;
 import forestry.core.utils.RecipeUtil;
+import forestry.factory.gadgets.MachineFermenter;
+import forestry.factory.gadgets.MachineFermenter.Recipe;
 
 public class AddonForestry
 {
@@ -39,5 +47,54 @@ public class AddonForestry
 		{
 			
 		}
+		
+		if(SpmodConfig.forestrySeedOil)
+		{
+			FMLLog.getLogger().info("Start Overriding Recipes");
+			
+			FluidStack stack = FluidRegistry.getFluidStack("biomass", 1);
+			FluidStack seed = FluidRegistry.getFluidStack("seedoil", 1);
+			try
+			{
+				ArrayList<List<Integer>> keys = new ArrayList<List<Integer>>();
+				ArrayList<Recipe> recipesToAdd = new ArrayList<Recipe>();
+				if(stack != null)
+				{
+					ArrayList<Recipe> list = MachineFermenter.RecipeManager.recipes;
+					for(int i = 0;i<list.size();i++)
+					{
+						Recipe core = list.get(i);
+						if(core.output.isFluidEqual(stack))
+						{
+							if(!contains(keys, Arrays.asList(core.resource.itemID, core.resource.getItemDamage())))
+							{
+								keys.add(Arrays.asList(core.resource.itemID, core.resource.getItemDamage()));
+								recipesToAdd.add(new Recipe(core.resource, core.fermentationValue, 1.5F, core.output, seed));
+							}
+						}
+					}
+				}
+				MachineFermenter.RecipeManager.recipes.addAll(recipesToAdd);
+			}
+			catch (Exception e)
+			{
+			}
+			
+			FMLLog.getLogger().info("Finish Overriding Recipes");
+		}
+		
+	}
+	
+	public static boolean contains(ArrayList<List<Integer>> par1, List<Integer> par2)
+	{
+		for(int i = 0;i<par1.size();i++)
+		{
+			List<Integer> keys = par1.get(i);
+			if(keys.get(0) == par2.get(0) && keys.get(1) == par2.get(1))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 }

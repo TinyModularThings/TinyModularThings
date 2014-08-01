@@ -26,6 +26,7 @@ public class SpmodConfig implements IConfigHelper
 	public static boolean playSounds = true;
 	public static boolean loadTiles = true;
 	public static boolean MobMachineEggs = true;
+	public static boolean forestrySeedOil = true;
 	public static int[] ticks = new int[0];
 	public static int savingDelay = 24000;
 	
@@ -58,6 +59,8 @@ public class SpmodConfig implements IConfigHelper
 			playSounds = getBoolean(general, "Play Sounds", true).setComment("Dissable all Sounds in my Mods").getResult(config);
 			loadTiles = getBoolean(general, "LoadTileEntites", true).setComment("If you get crashes with my Blocks then just set this to false and load the game. My Block are frozen and do nothing in this time").getResult(config);
 			MobMachineEggs = getBoolean(general, "MobMachine Spawn Eggs", true).setComment("Enable that MobMachine drops Spawneggs").getResult(config);
+			forestrySeedOil = getBoolean(general, "Forestry Seed Oil in Fermenter", true).setComment("Enable the usage of SeedOil in a fermenter").getResult(config);
+			
 			
 			blockIDs = new ConfigBlock(ConfigBlock.getConfig(config, blocks, 950));
 			itemIDs = new ConfigItem(ConfigItem.getConfig(config, items, 15000));

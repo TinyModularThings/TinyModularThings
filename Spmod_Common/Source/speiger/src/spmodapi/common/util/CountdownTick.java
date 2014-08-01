@@ -1,8 +1,10 @@
 package speiger.src.spmodapi.common.util;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.EnumSet;
+import java.util.List;
 
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,12 +12,19 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine.DropType;
+import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.registry.VillagerRegistry;
+import forestry.api.recipes.RecipeManagers;
+import forestry.factory.gadgets.MachineFermenter;
+import forestry.factory.gadgets.MachineFermenter.Recipe;
 
 public class CountdownTick implements ITickHandler
 {
@@ -61,6 +70,8 @@ public class CountdownTick implements ITickHandler
 			ItemRandomTrade.addRecipes(recipe);
 			
 			MobMachine.addDrops(22, DropType.Common, ItemRandomTrade.getAllTrades());
+		
+
 		}
 		
 		NBTTagCompound playerNBT = player.getEntityData();
@@ -95,6 +106,8 @@ public class CountdownTick implements ITickHandler
 	{
 		return EnumSet.of(TickType.PLAYER);
 	}
+	
+
 	
 	@Override
 	public String getLabel()
