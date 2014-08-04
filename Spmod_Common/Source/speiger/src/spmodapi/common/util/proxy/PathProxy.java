@@ -1,7 +1,9 @@
 package speiger.src.spmodapi.common.util.proxy;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.FurnaceRecipes;
@@ -11,6 +13,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapelessOreRecipe;
 import speiger.src.api.recipe.pressureFurnace.PressureRecipe;
 import speiger.src.api.recipe.pressureFurnace.helper.PressureRecipeList;
 
@@ -84,6 +87,36 @@ public class PathProxy
 			}
 		}
 		return stack.toArray(new ItemStack[stack.size()]);
+	}
+	
+	public static void removeRecipeS(ItemStack input, Item output)
+	{
+		List<IRecipe> crafting = CraftingManager.getInstance().getRecipeList();
+		for(int i = 0;i<crafting.size();i++)
+		{
+			IRecipe recipe = crafting.get(i);
+			if(recipe != null)
+			{
+				if(recipe instanceof ShapelessOreRecipe)
+				{
+					ShapelessOreRecipe ore = (ShapelessOreRecipe) recipe;
+					if(output.itemID == ore.getRecipeOutput().itemID)
+					{
+						ArrayList list = (ArrayList) ore.getInput().get(0);
+						ArrayList toRemove = new ArrayList();
+						for(int z = 0;z<list.size();z++)
+						{
+							if(input.isItemEqual((ItemStack) list.get(z)))
+							{
+								toRemove.add(list.get(z));
+							}
+						}
+						list.removeAll(toRemove);
+						break;
+					}
+				}
+			}
+		}
 	}
 	
 }

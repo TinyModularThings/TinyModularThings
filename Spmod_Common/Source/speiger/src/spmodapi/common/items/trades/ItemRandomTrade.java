@@ -63,7 +63,8 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
-		for(int i = 0;i<recipeList.size();i++)
+		par3.add(new ItemStack(par1, 1, 0));
+		for(int i = 1;i<recipeList.size();i++)
 		{
 			par3.add(new ItemStack(par1, 1, i));
 		}
@@ -83,6 +84,12 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
 	{
+		if(recipeList.isEmpty())
+		{
+			par3.add("No Trades Aviable");
+			return;
+		}
+		
 		MerchantRecipe recipe = recipeList.get(par1.getItemDamage());
 		boolean first = recipe.getItemToBuy() != null;
 		boolean second = recipe.getSecondItemToBuy() != null;

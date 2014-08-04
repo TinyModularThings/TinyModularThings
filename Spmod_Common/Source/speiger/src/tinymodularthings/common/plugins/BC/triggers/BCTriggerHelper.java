@@ -8,7 +8,9 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import speiger.src.tinymodularthings.common.plugins.BC.BCVariables;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerProvider;
+import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.transport.IPipe;
+import forestry.factory.gadgets.MachineFermenter;
 
 public class BCTriggerHelper implements ITriggerProvider
 {
@@ -26,6 +28,21 @@ public class BCTriggerHelper implements ITriggerProvider
 				triggers.add(BCVariables.noWork);
 				triggers.add(BCVariables.hasWork);
 				triggers.add(BCVariables.needFuel);
+			}
+			
+			try
+			{
+				if(tile instanceof MachineFermenter)
+				{
+					triggers.add(BCVariables.canWork);
+				}
+				if(tile instanceof IPowerReceptor)
+				{
+					triggers.add(BCVariables.requestPower);
+				}
+			}
+			catch (Exception e)
+			{
 			}
 		}
 		

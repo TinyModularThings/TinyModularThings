@@ -16,6 +16,8 @@ import net.minecraft.world.World;
 
 import org.apache.commons.lang3.StringUtils;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
@@ -57,7 +59,7 @@ public class ButcherCommand implements ISpmodCommand
 			String name = sub.getSubCommandName();
 			if(name.equalsIgnoreCase("Everything"))
 			{
-				return MinecraftServer.getServer().getConfigurationManager().isPlayerOpped(par1.getCommandSenderName());
+				return FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().isPlayerOpped(par1.getCommandSenderName());
 			}
 			else if(name.equalsIgnoreCase("Custom"))
 			{

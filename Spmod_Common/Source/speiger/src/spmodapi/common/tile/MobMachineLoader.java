@@ -280,7 +280,7 @@ public class MobMachineLoader
 		MobMachine.addFood(22, new ItemStack[]{new ItemStack(Item.bread), new ItemStack(Item.carrot), new ItemStack(Item.bakedPotato)}, new int[]{2000, 1500, 4000});
 		if(SpmodConfig.MobMachineEggs)
 		{
-			MobMachine.addDrops(21, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 120));
+			MobMachine.addDrops(22, DropType.Legendary, new ItemStack(Item.monsterPlacer, 1, 120));
 		}
 		
 		HashMap<DropType, List<ItemStack>> drops = MobMachine.allDrops.get(Integer.valueOf(14));

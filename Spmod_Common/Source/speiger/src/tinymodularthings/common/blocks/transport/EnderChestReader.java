@@ -1,5 +1,6 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -41,7 +42,7 @@ public class EnderChestReader extends AdvTile implements IInventory
 			TileEntity tile = worldObj.getBlockTileEntity(x, y, z);
 			if (tile != null && tile instanceof TileEntityEnderChest)
 			{
-				EntityPlayer player = MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).getPlayerForUsername(owner);
+				EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().getPlayerForUsername(owner);
 				if (player != null)
 				{
 					return player.getInventoryEnderChest();

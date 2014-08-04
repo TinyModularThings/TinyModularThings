@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -49,7 +51,7 @@ public class ClearItems implements ISpmodCommand
 		{
 			if(sub.getSubCommandName().equalsIgnoreCase("All"))
 			{
-				if(MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).isPlayerOpped(par1.getCommandSenderName()))
+				if(FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().isPlayerOpped(par1.getCommandSenderName()))
 				{
 					return true;
 				}
@@ -60,7 +62,7 @@ public class ClearItems implements ISpmodCommand
 				if(arg.length == 1)
 				{
 					Integer in = Integer.parseInt(arg[0]);
-					if(in != null && in.intValue() > 50 && !MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).isPlayerOpped(par1.getCommandSenderName()))
+					if(in != null && in.intValue() > 50 && !FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().isPlayerOpped(par1.getCommandSenderName()))
 					{
 						return false;
 					}
@@ -82,7 +84,7 @@ public class ClearItems implements ISpmodCommand
 		
 		if(sub.getSubCommandName().equalsIgnoreCase("All"))
 		{
-			if(!MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).isPlayerOpped(par1.getCommandSenderName()))
+			if(!FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().isPlayerOpped(par1.getCommandSenderName()))
 			{
 				par1.sendChatToPlayer(LanguageRegister.createChatMessage("You are not allowed to use this command"));
 				return;
@@ -102,7 +104,7 @@ public class ClearItems implements ISpmodCommand
 			if(arg.length == 1)
 			{
 				Integer in = Integer.parseInt(arg[0]);
-				if(in != null && in.intValue() > 50 && !MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).isPlayerOpped(par1.getCommandSenderName()))
+				if(in != null && in.intValue() > 50 && !FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().isPlayerOpped(par1.getCommandSenderName()))
 				{
 					par1.sendChatToPlayer(LanguageRegister.createChatMessage("You are not allowed to clearing items in a that big Range"));
 					return;

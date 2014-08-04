@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
@@ -21,6 +23,7 @@ import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import buildcraft.BuildCraftCore;
+import buildcraft.BuildCraftTransport;
 import cpw.mods.fml.common.FMLLog;
 
 public class RecipeOverrider
@@ -40,6 +43,40 @@ public class RecipeOverrider
         replacements.put(new ItemStack(BuildCraftCore.ironGearItem), "gearIron");
         replacements.put(new ItemStack(BuildCraftCore.goldGearItem), "gearGold");
         replacements.put(new ItemStack(BuildCraftCore.diamondGearItem), "gearDiamond");
+        replacements.put(new ItemStack(Item.stick), "stickWood");
+        replacements.put(new ItemStack(Block.planks), "plankWood");
+        replacements.put(new ItemStack(Block.planks, 1, Short.MAX_VALUE), "plankWood");
+        replacements.put(new ItemStack(Block.stone), "stone");
+        replacements.put(new ItemStack(Block.stone, 1, Short.MAX_VALUE), "stone");
+        replacements.put(new ItemStack(Block.cobblestone), "cobblestone");
+        replacements.put(new ItemStack(Block.cobblestone, 1, Short.MAX_VALUE), "cobblestone");
+
+        String[] dyes =
+        {
+            "dyeBlack",
+            "dyeRed",
+            "dyeGreen",
+            "dyeBrown",
+            "dyeBlue",
+            "dyePurple",
+            "dyeCyan",
+            "dyeLightGray",
+            "dyeGray",
+            "dyePink",
+            "dyeLime",
+            "dyeYellow",
+            "dyeLightBlue",
+            "dyeMagenta",
+            "dyeOrange",
+            "dyeWhite"
+        };
+
+        for(int i = 0; i < 16; i++)
+        {
+            ItemStack dye = new ItemStack(Item.dyePowder, 1, i);
+            replacements.put(dye, dyes[i]);
+        }
+        
 
         ItemStack[] replaceStacks = replacements.keySet().toArray(new ItemStack[replacements.keySet().size()]);
         FMLLog.getLogger().info("Start");
@@ -56,7 +93,18 @@ public class RecipeOverrider
     			new ItemStack(BuildCraftCore.stoneGearItem),
     			new ItemStack(BuildCraftCore.ironGearItem),
     			new ItemStack(BuildCraftCore.goldGearItem),
-    			new ItemStack(BuildCraftCore.diamondGearItem)
+    			new ItemStack(BuildCraftCore.diamondGearItem),
+                new ItemStack(Block.blockLapis),
+                new ItemStack(Item.cookie),
+                new ItemStack(Block.stoneBrick),
+                new ItemStack(Block.stoneSingleSlab),
+                new ItemStack(Block.stairsCobblestone),
+                new ItemStack(Block.cobblestoneWall),
+                new ItemStack(Block.stairsWoodOak),
+                new ItemStack(Block.stairsWoodBirch),
+                new ItemStack(Block.stairsWoodJungle),
+                new ItemStack(Block.stairsWoodSpruce),
+                getBCPipeWire()
         };
        
 
@@ -182,7 +230,6 @@ public class RecipeOverrider
         {
             SpmodAPI.log.print("Replaced " + recipesToRemove.size() + " ore recipies");
         }
-        OreDictionary.initVanillaEntries();
 	}
 	
     static ShapelessOreRecipe getRecipeChange(ItemStack output, List recipe, Map<ItemStack, String> repl)
@@ -292,6 +339,18 @@ public class RecipeOverrider
             return false;
         }
         return (target.itemID == input.itemID && ((target.getItemDamage() == PathProxy.getRecipeBlankValue() && !strict) || target.getItemDamage() == input.getItemDamage()));
+    }
+    
+    public static ItemStack getBCPipeWire()
+    {
+    	try
+		{
+    		return new ItemStack(BuildCraftTransport.pipeWaterproof);
+		}
+		catch (Exception e)
+		{
+			return new ItemStack(Block.blockLapis);
+		}
     }
 	
 }

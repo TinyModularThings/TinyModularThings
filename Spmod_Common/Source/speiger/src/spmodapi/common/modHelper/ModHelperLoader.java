@@ -11,6 +11,15 @@ public class ModHelperLoader
 {
 	public static void loadModAdditions()
 	{
+		try
+		{
+			RecipeOverrider.loadTransmutationRecipes();
+		}
+		catch (Exception e)
+		{
+			
+		}
+		
 		if (Loader.isModLoaded("Forestry"))
 		{
 			AddonForestry.loadForestryStuff();
@@ -28,14 +37,7 @@ public class ModHelperLoader
 			BCAddon.loadBC();
 		}
 		
-		try
-		{
-			RecipeOverrider.loadTransmutationRecipes();
-		}
-		catch (Exception e)
-		{
-			
-		}
+
 	}
 	
 }

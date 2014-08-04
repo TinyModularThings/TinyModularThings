@@ -47,7 +47,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	public static HashMap<Integer, String[]> texture = new HashMap<Integer, String[]>();
 	public static HashMap<Integer, String> names = new HashMap<Integer, String>();
 	public static HashMap<List<Integer>, Integer> activators = new HashMap<List<Integer>, Integer>();
-	public static int totalTicks = 6000;
+	public static int totalTicks = 12000;
 	
 	//None Static variables
 	public int type = 0;
@@ -757,8 +757,8 @@ public class MobMachine extends TileFacing implements ISidedInventory
 				}
 				else
 				{
-					int stacksize = (inv[slot1].stackSize + inv[slot0].stackSize) - 64;
-					inv[slot1].stackSize = 64;
+					int stacksize = (inv[slot1].stackSize + inv[slot0].stackSize) - inv[1].getMaxStackSize();
+					inv[slot1].stackSize = inv[1].getMaxStackSize();
 					inv[slot0].stackSize = stacksize;
 				}
 			}

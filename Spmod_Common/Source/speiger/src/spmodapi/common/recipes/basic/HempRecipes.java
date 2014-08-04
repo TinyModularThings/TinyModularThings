@@ -69,6 +69,9 @@ public class HempRecipes
 		pp.addRecipe(new ItemStack(APIItems.hempChestPlate), new Object[] { "X X", "XXX", "XXX", 'X', APIItems.hemp });
 		pp.addRecipe(new ItemStack(APIItems.hempLeggings), new Object[] { "XXX", "X X", "X X", 'X', APIItems.hemp });
 		pp.addSRecipe(new ItemStack(APIItems.blueDye, 2), new Object[]{APIBlocks.blueFlower});
+		
+		
+		pp.addRecipe(new ItemStack(APIItems.hempResinBucket), new Object[]{"XBX", "XXX", "CVC", 'C', Block.stone, 'V', Item.bucketEmpty, 'B', Item.flint, 'X', APIBlocks.hempStraw});
 	}
 	
 	public static void addHempRecipe(PathProxy par0, Block output, int outputMeta, ItemStack input)

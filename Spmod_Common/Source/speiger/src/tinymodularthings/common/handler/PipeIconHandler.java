@@ -12,7 +12,9 @@ public class PipeIconHandler implements IIconProvider
 	public enum PipeTypes
 	{
 		EmeraldPipe(modID()+":pipes/bc/EmeraldPowerPipe"),
-		EmeraldExtractorPipe(modID()+":pipes/bc/EmeraldPowerPipeFull");
+		EmeraldExtractorPipe(modID()+":pipes/bc/EmeraldPowerPipeFull"),
+		RedstoneFluidPipeOff(modID()+":pipes/bc/RedstonePipeFluidOff"),
+		RedstoneFluidPipeOn(modID()+":pipes/bc/RedstonePipeFluidOn");
 		String name;
 		Icon icon;
 		
@@ -32,6 +34,12 @@ public class PipeIconHandler implements IIconProvider
 		}
 	}
 	
+	private static PipeIconHandler instance = new PipeIconHandler();
+	
+	public static PipeIconHandler getIcons()
+	{
+		return instance;
+	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)

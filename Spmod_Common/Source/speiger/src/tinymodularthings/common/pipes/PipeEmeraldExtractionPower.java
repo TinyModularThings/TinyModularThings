@@ -45,7 +45,7 @@ public class PipeEmeraldExtractionPower extends Pipe<PipeTransportPower> impleme
 	@SideOnly(Side.CLIENT)
 	public IIconProvider getIconProvider()
 	{
-		return new PipeIconHandler();
+		return PipeIconHandler.getIcons();
 	}
 
 	
