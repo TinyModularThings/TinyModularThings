@@ -4,13 +4,13 @@ import java.util.LinkedList;
 
 import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
 import speiger.src.tinymodularthings.common.plugins.BC.BCVariables;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerProvider;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.transport.IPipe;
-import forestry.factory.gadgets.MachineFermenter;
 
 public class BCTriggerHelper implements ITriggerProvider
 {
@@ -28,6 +28,12 @@ public class BCTriggerHelper implements ITriggerProvider
 				triggers.add(BCVariables.noWork);
 				triggers.add(BCVariables.hasWork);
 				triggers.add(BCVariables.needFuel);
+			}
+			
+			if(tile instanceof TileEntityBrewingStand)
+			{
+				triggers.add(BCVariables.hasWork);
+				triggers.add(BCVariables.noWork);
 			}
 			
 			try

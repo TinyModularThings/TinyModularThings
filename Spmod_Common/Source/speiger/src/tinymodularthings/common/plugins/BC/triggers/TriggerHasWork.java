@@ -1,9 +1,15 @@
 package speiger.src.tinymodularthings.common.plugins.BC.triggers;
 
+import java.util.List;
+
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
+import net.minecraft.potion.PotionHelper;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
@@ -95,13 +101,23 @@ public class TriggerHasWork implements ITrigger
 					return ((PressureFurnace) tile).currentRecipe == null;
 				}
 			}
-			else if (tile instanceof TileEntityFurnace)
+			if (tile instanceof TileEntityFurnace)
 			{
 				if (Active)
 				{
 					return canSmelt((TileEntityFurnace) tile);
 				}
 				return !canSmelt((TileEntityFurnace) tile);
+			}
+			
+			if(tile instanceof TileEntityBrewingStand)
+			{
+				TileEntityBrewingStand brew = (TileEntityBrewingStand) tile;
+				if(Active)
+				{
+					return this.canBrew(brew);
+				}
+				return !this.canBrew(brew);
 			}
 		}
 		
@@ -144,8 +160,59 @@ public class TriggerHasWork implements ITrigger
 	@Override
 	public boolean requiresParameter()
 	{
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
+	
+    private boolean canBrew(TileEntityBrewingStand par1)
+    {
+        if (par1.getStackInSlot(3) != null && par1.getStackInSlot(3).stackSize > 0)
+        {
+            ItemStack itemstack = par1.getStackInSlot(3);
+
+            if (!Item.itemsList[itemstack.itemID].isPotionIngredient())
+            {
+                return false;
+            }
+            else
+            {
+                boolean flag = false;
+
+                for (int i = 0; i < 3; ++i)
+                {
+                    if (par1.getStackInSlot(i) != null && par1.getStackInSlot(i).getItem() instanceof ItemPotion)
+                    {
+                        int j = par1.getStackInSlot(i).getItemDamage();
+                        int k = this.getPotionResult(j, itemstack);
+
+                        if (!ItemPotion.isSplash(j) && ItemPotion.isSplash(k))
+                        {
+                            flag = true;
+                            break;
+                        }
+
+                        List list = Item.potion.getEffects(j);
+                        List list1 = Item.potion.getEffects(k);
+
+                        if ((j <= 0 || list != list1) && (list == null || !list.equals(list1) && list1 != null) && j != k)
+                        {
+                            flag = true;
+                            break;
+                        }
+                    }
+                }
+
+                return flag;
+            }
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    private int getPotionResult(int par1, ItemStack par2ItemStack)
+    {
+        return par2ItemStack == null ? par1 : (Item.itemsList[par2ItemStack.itemID].isPotionIngredient() ? PotionHelper.applyIngredient(par1, Item.itemsList[par2ItemStack.itemID].getPotionEffect()) : par1);
+    }
 }

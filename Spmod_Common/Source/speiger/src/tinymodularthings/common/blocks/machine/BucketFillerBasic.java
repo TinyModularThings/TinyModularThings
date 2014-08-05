@@ -516,28 +516,39 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 	{
 		if(this.containesContainer(stack))
 		{
-			ItemStack cu = inv[0].copy();
-			if(cu.isItemEqual(stack))
+			ItemStack cu = inv[0];
+			if(cu != null)
 			{
-				int left = 64 - (stack.stackSize + cu.stackSize);
-				if(left < 0)
+				if(cu.isItemEqual(stack))
 				{
-					if(doAdd)
+					int left = stack.getMaxStackSize() - (stack.stackSize + cu.stackSize);
+					if(left < 0)
 					{
-						cu.stackSize = 64;
-						inv[0] = cu;
+						if(doAdd)
+						{
+							cu.stackSize = 64;
+							inv[0] = cu;
+						}
+						return stack.stackSize - left;
 					}
-					return stack.stackSize - left;
+					else
+					{
+						if(doAdd)
+						{
+							cu.stackSize += stack.stackSize;
+							inv[0] = cu;
+						}
+						return stack.stackSize;
+					}
 				}
-				else
+			}
+			else
+			{
+				if(doAdd)
 				{
-					if(doAdd)
-					{
-						cu.stackSize += stack.stackSize;
-						inv[0] = cu;
-					}
-					return stack.stackSize;
+					inv[0] = stack;
 				}
+				return stack.stackSize;
 			}
 		}
 		return 0;
