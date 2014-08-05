@@ -132,12 +132,14 @@ public class TinyItemsConfig
 			items.refinedDiamondPowerPipe = BuildItem(config.pipes.getCurrentID(), RefinedDiamondPowerPipe.class, "pipe.diamond.safe.power");
 			if(items.refinedDiamondPowerPipe != null)
 			{
-				AssemblyRecipe.assemblyRecipes.add(new AssemblyRecipe(new ItemStack[]{new ItemStack(BuildCraftTransport.pipePowerDiamond), new ItemStack(BuildCraftSilicon.redstoneChipset, 2, 2)}, 1000000, new ItemStack(items.refinedDiamondPowerPipe)));
+				AssemblyRecipe.assemblyRecipes.add(new AssemblyRecipe(new ItemStack[]{new ItemStack(BuildCraftTransport.pipePowerDiamond), new ItemStack(BuildCraftSilicon.redstoneChipset, 2, 2)}, 160000, new ItemStack(items.refinedDiamondPowerPipe)));
 				PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipePowerDiamond), new Object[]{items.refinedDiamondPowerPipe});
+				PathProxy.addRecipe(new ItemStack(items.refinedDiamondPowerPipe), new Object[]{"XXX", "XYX", "XXX", 'X', new ItemStack(BuildCraftSilicon.redstoneChipset, 1, 3), 'Y', BuildCraftTransport.pipePowerDiamond});
 			}
 		}
 		catch (Exception e)
 		{
+			
 		}
 	}
 	

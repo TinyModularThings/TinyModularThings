@@ -45,29 +45,8 @@ public class CountdownTick implements ITickHandler
 		{
 			loadedRecipes = true;
 			World world = player.worldObj;
-			
-			Collection<Integer> recipes = VillagerRegistry.getRegisteredVillagers();
-			ArrayList<MerchantRecipe> recipe = new ArrayList<MerchantRecipe>();
-			VillagerHelper.loadVillagerRecipes(recipe);
-			for(Integer ints : recipes)
-			{
-				MerchantRecipeList cu = new MerchantRecipeList();
-				EntityVillager villager = new EntityVillager(world, ints.intValue());
-				cu.addAll(villager.getRecipes(player));
-				VillagerRegistry.manageVillagerTrades(cu, villager, ints.intValue(), world.rand);
-				recipe.addAll(cu);
-			}
-			for(int i = 0;i<6;i++)
-			{
-				MerchantRecipeList cu = new MerchantRecipeList();
-				EntityVillager villager = new EntityVillager(world, i);
-				cu.addAll(villager.getRecipes(player));
-				VillagerRegistry.manageVillagerTrades(cu, villager, i, world.rand);
-				recipe.addAll(cu);
-			}
-			
-			
-			ItemRandomTrade.addRecipes(recipe);
+			loadRecipes(player);
+
 			
 			MobMachine.addDrops(22, DropType.Common, ItemRandomTrade.getAllTrades());
 		
@@ -107,6 +86,32 @@ public class CountdownTick implements ITickHandler
 		return EnumSet.of(TickType.PLAYER);
 	}
 	
+	public static void loadRecipes(EntityPlayer player)
+	{
+		World world = player.worldObj;
+		Collection<Integer> recipes = VillagerRegistry.getRegisteredVillagers();
+		ArrayList<MerchantRecipe> recipe = new ArrayList<MerchantRecipe>();
+		VillagerHelper.loadVillagerRecipes(recipe);
+		for(Integer ints : recipes)
+		{
+			MerchantRecipeList cu = new MerchantRecipeList();
+			EntityVillager villager = new EntityVillager(world, ints.intValue());
+			cu.addAll(villager.getRecipes(player));
+			VillagerRegistry.manageVillagerTrades(cu, villager, ints.intValue(), world.rand);
+			recipe.addAll(cu);
+		}
+		for(int i = 0;i<6;i++)
+		{
+			MerchantRecipeList cu = new MerchantRecipeList();
+			EntityVillager villager = new EntityVillager(world, i);
+			cu.addAll(villager.getRecipes(player));
+			VillagerRegistry.manageVillagerTrades(cu, villager, i, world.rand);
+			recipe.addAll(cu);
+		}
+		
+		
+		ItemRandomTrade.addRecipes(recipe);
+	}
 
 	
 	@Override

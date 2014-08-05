@@ -31,6 +31,7 @@ public class TinyConfig
 	public static ConfigItem pipes;
 	
 	public static boolean logging = true;
+	public static boolean pipesEnabled = true;
 	
 	public void loadTinyConfig(File file)
 	{
@@ -38,6 +39,7 @@ public class TinyConfig
 		try
 		{
 			logging = getBoolean(general, "Active Log", true).setComment("Same thing as SpmodAPI").getResult(config);
+			pipesEnabled = getBoolean(general, "Enable Pipes", true).setComment("You need my Custom BC version for that. If you do not use it the game will not load.").getResult(config);
 			
 			if (!logging)
 			{

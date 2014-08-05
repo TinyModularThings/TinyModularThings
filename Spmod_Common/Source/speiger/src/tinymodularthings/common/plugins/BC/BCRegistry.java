@@ -48,7 +48,6 @@ public class BCRegistry
 		ActionManager.registerTrigger(BCVariables.needFuel);
 		ActionManager.registerTrigger(BCVariables.hasWork);
 		ActionManager.registerTrigger(BCVariables.noWork);
-		ActionManager.registerTrigger(BCVariables.canWork);
 		ActionManager.registerTrigger(BCVariables.requestPower);
 		ActionManager.registerTriggerProvider(new BCTriggerHelper());
 	}

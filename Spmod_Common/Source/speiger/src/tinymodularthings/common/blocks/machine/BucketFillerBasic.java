@@ -15,6 +15,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -31,6 +32,7 @@ import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.tile.AdvancedFluidTank;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.machine.BucketFillerGui;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.plugins.BC.actions.BucketFillerAction;
 import buildcraft.api.gates.IAction;
@@ -165,7 +167,7 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 			}
 			
 			
-			if(cuRecipe != null && provider.getEnergy() > 10)
+			if(cuRecipe != null && provider.getEnergy() > 10 && canWork())
 			{
 				provider.useEnergy(10, false);
 				progress++;
@@ -216,11 +218,46 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 					this.updateBlock();
 				}
 			}
+			else
+			{
+				this.progress = 0;
+			}
 			
 		}
 	}
     
-    public FluidContainerData findRecipe()
+    public boolean canWork()
+	{
+    	if(drain)
+    	{
+    		ItemStack stack = this.cuRecipe.emptyContainer;
+    		if(inv[1] == null)
+    		{
+    			return true;
+    		}
+    		else if(inv[1] != null && inv[1].isItemEqual(stack))
+    		{
+    			int max = inv[1].getMaxStackSize();
+    			return inv[1].stackSize + 1 <= max;
+    		}
+    	}
+    	else
+    	{
+    		ItemStack stack = this.cuRecipe.filledContainer;
+    		if(inv[1] == null)
+    		{
+    			return true;
+    		}
+    		else if(inv[1] != null && inv[1].isItemEqual(stack))
+    		{
+    			int max = inv[1].getMaxStackSize();
+    			return inv[1].stackSize + 1 <= max;
+    		}
+    	}
+		return false;
+	}
+
+	public FluidContainerData findRecipe()
 	{
     	if(inv[0] == null)
     	{
@@ -712,5 +749,13 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 	{
 		return null;
 	}
+
+	@Override
+	public ItemStack pickBlock(MovingObjectPosition target)
+	{
+		return new ItemStack(TinyBlocks.machine, 1, this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
+	}
+	
+	
 	
 }

@@ -26,12 +26,14 @@ import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.items.SpmodItem;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.CountdownTick;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemRandomTrade extends SpmodItem implements IItemGui
 {
 	static ArrayList<MerchantRecipe> recipeList = new ArrayList<MerchantRecipe>();
+	static boolean secondTry = false;
 	
 	public ItemRandomTrade(int par1)
 	{
@@ -75,7 +77,15 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	{
 		if(!par2World.isRemote)
 		{
-			par3EntityPlayer.openGui(SpmodAPI.instance, EnumGuiIDs.Items.getID(), par2World, 0, 0, 0);
+			if(par3EntityPlayer.isSneaking())
+			{
+				this.addRecipes(recipeList);
+				par3EntityPlayer.sendChatToPlayer(LanguageRegister.createChatMessage("Relefresed Recipe List"));
+			}
+			else
+			{
+				par3EntityPlayer.openGui(SpmodAPI.instance, EnumGuiIDs.Items.getID(), par2World, 0, 0, 0);
+			}
 		}
 		return par1;
 	}
@@ -86,6 +96,11 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	{
 		if(recipeList.isEmpty())
 		{
+			if(!secondTry)
+			{
+				secondTry = true;
+				CountdownTick.loadRecipes(par2);
+			}
 			par3.add("No Trades Aviable");
 			return;
 		}
@@ -136,7 +151,15 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	
 	public static void addRecipes(ArrayList<MerchantRecipe> par1)
 	{
-		recipeList.addAll((Collection<? extends MerchantRecipe>) par1.clone());
+		for(int i = 0;i<par1.size();i++)
+		{
+			MerchantRecipe recipe = par1.get(i);
+			if(!recipeList.contains(recipe))
+			{
+				recipeList.add(recipe);
+			}
+			
+		}
 		for(int i = 0;i<recipeList.size();i++)
 		{
 			NBTTagCompound nbt = recipeList.get(i).writeToTags();

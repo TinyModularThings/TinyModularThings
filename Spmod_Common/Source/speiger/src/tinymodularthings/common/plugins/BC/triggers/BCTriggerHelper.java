@@ -32,10 +32,6 @@ public class BCTriggerHelper implements ITriggerProvider
 			
 			try
 			{
-				if(tile instanceof MachineFermenter)
-				{
-					triggers.add(BCVariables.canWork);
-				}
 				if(tile instanceof IPowerReceptor)
 				{
 					triggers.add(BCVariables.requestPower);

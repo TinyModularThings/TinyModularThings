@@ -757,9 +757,13 @@ public class MobMachine extends TileFacing implements ISidedInventory
 				}
 				else
 				{
-					int stacksize = (inv[slot1].stackSize + inv[slot0].stackSize) - inv[1].getMaxStackSize();
-					inv[slot1].stackSize = inv[1].getMaxStackSize();
+					int stacksize = (inv[slot1].stackSize + inv[slot0].stackSize) - inv[slot1].getMaxStackSize();
+					inv[slot1].stackSize = inv[slot1].getMaxStackSize();
 					inv[slot0].stackSize = stacksize;
+					if(inv[slot0].stackSize <= 0)
+					{
+						inv[slot0] = null;
+					}
 				}
 			}
 		}
