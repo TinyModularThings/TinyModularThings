@@ -32,8 +32,8 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemNetherCrystal extends TinyItem
 {
-	public HashMap<String, ArrayList<BlockPosition>> todo = new HashMap<String, ArrayList<BlockPosition>>();
-	public HashMap<String, ArrayList<BlockPosition>> replace = new HashMap<String, ArrayList<BlockPosition>>();
+	public static HashMap<String, ArrayList<BlockPosition>> todo = new HashMap<String, ArrayList<BlockPosition>>();
+	public static HashMap<String, ArrayList<BlockPosition>> replace = new HashMap<String, ArrayList<BlockPosition>>();
 	
 	public String[] names = new String[]{
 			"nether.crystal",
@@ -51,7 +51,6 @@ public class ItemNetherCrystal extends TinyItem
 		this.setMaxStackSize(1);
 		this.setHasSubtypes(true);
 		this.setCreativeTab(CreativeTabs.tabFood);
-		FluidContainerRegistry.registerFluidContainer(new FluidStack(FluidRegistry.LAVA, 1000), new ItemStack(this, 1, 3), new ItemStack(this, 1, 4));
 	}
 
 	@Override
@@ -59,6 +58,7 @@ public class ItemNetherCrystal extends TinyItem
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(createEmptyNetherCrystal(par1));
+		par3List.add(new ItemStack(par1, 1, 1));
 	}
 
 
@@ -152,13 +152,11 @@ public class ItemNetherCrystal extends TinyItem
 						IFluidHandler fluid = (IFluidHandler) tile;
 						ForgeDirection face = ForgeDirection.getOrientation(side);
 						
-						if(fluid.canDrain(face, FluidRegistry.LAVA))
+						if(fluid.canFill(face, FluidRegistry.LAVA))
 						{
-							FMLLog.getLogger().info("Test");
 							int filled = fluid.fill(face, new FluidStack(FluidRegistry.LAVA, 1000), false);
 							if(filled > 0)
 							{
-								FMLLog.getLogger().info("Test1");
 								fluid.fill(face, new FluidStack(FluidRegistry.LAVA, 1000), true);
 								this.discharge(stack, 1);
 								return true;
@@ -270,6 +268,10 @@ public class ItemNetherCrystal extends TinyItem
 			}
 			par1.setItemDamage(5);
 		}
+		else
+		{
+			par1.setItemDamage(5);
+		}
 	}
 	
 	public void cleanUpArea(ItemStack par1, World par2)
@@ -277,15 +279,20 @@ public class ItemNetherCrystal extends TinyItem
 		if(par1.hasTagCompound() && par1.getTagCompound().getCompoundTag("Lava") != null)
 		{
 			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Lava");
-			
 			int[] pos = nbt.getIntArray("Pos");
-			
 			ArrayList<BlockPosition> area = replace.get(nbt.getString("ID"));
 			
-			for(BlockPosition cu : area)
+			if(area != null)
 			{
-				par2.setBlock(cu.xCoord, cu.yCoord, cu.zCoord, Block.netherrack.blockID, 0, 3);
+				for(BlockPosition cu : area)
+				{
+					par2.setBlock(cu.xCoord, cu.yCoord, cu.zCoord, Block.netherrack.blockID, 0, 3);
+				}
+				
+				area.clear();
+				replace.remove(nbt.getString("ID"));
 			}
+			
 			
 			if(pos.length == 3)
 			{
@@ -306,7 +313,6 @@ public class ItemNetherCrystal extends TinyItem
 						}
 					}
 				}
-				
 				par1.setItemDamage(3);
 			}
 		}
@@ -419,21 +425,52 @@ public class ItemNetherCrystal extends TinyItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3, boolean par4)
+	public void addInformation(ItemStack par1, EntityPlayer par2EntityPlayer, List par3, boolean par4)
 	{
-		if(par1ItemStack != null && par1ItemStack.getItemDamage() == 1 || par1ItemStack.getItemDamage() == 3 || par1ItemStack.getItemDamage() == 2)
+		if(par1 != null && par1.hasTagCompound() && par1.getTagCompound().getCompoundTag("Lava") != null)
 		{
-			NBTTagCompound nbt = par1ItemStack.getTagCompound().getCompoundTag("Lava");
+			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Lava");
 			if(nbt != null)
 			{
-				ArrayList<BlockPosition> pos = todo.get(nbt.getString("ID"));
-				
-				int charge = nbt.getInteger("Charges");
-				
-				par3.add("Charges: "+charge);
-				if(pos != null)
+				int damage = par1.getItemDamage();
+				if(damage == 1)
 				{
-					par3.add("Size: "+pos.size());
+					int totalTodo = nbt.getInteger("Size");
+					ArrayList<BlockPosition> pos = todo.get(nbt.getString("ID"));
+					if(pos != null)
+					{
+						int todos = pos.size();
+						int realTodo = totalTodo - todos;
+						
+						double real = ((double)realTodo / (double)totalTodo) * 100;
+						
+						String end = ""+real;
+						if(end.length() > 4)
+						{
+							end = end.substring(0, 4);
+						}
+						par3.add("Charging Progress: "+end+"%");
+					}
+					
+				}
+				else if(damage == 2)
+				{
+					int remove = nbt.getInteger("RemoveSize");
+					int total = replace.get(nbt.getString("ID")).size();
+					int totalRemove = remove-total;
+					
+					double real = ((double)totalRemove / (double)remove) * 100;
+					
+					String end = ""+real;
+					
+					end = end.substring(0, 4);
+					
+					par3.add("Clean Up Progress: "+end+"%");
+				}
+				else if(damage == 3)
+				{
+					int charges = nbt.getInteger("Charges");
+					par3.add("Charges: "+charges);
 				}
 			}
 		}
@@ -479,12 +516,10 @@ public class ItemNetherCrystal extends TinyItem
 					}
 					if(z+1 == move.blockZ+range || z-1 == move.blockZ-range || x+1 == move.blockX+range || x-1 == move.blockX-range)
 					{
-						if(y < 35)
+						if(y < 32)
 						{
 							BlockPosition cu = new BlockPosition(world, x, y, z);
-							
 							rep.add(cu);
-							
 						}
 						
 					}
@@ -499,6 +534,8 @@ public class ItemNetherCrystal extends TinyItem
 			int[] min = new int[]{move.blockX-range, move.blockX+range};
 			int[] max = new int[]{move.blockZ-range, move.blockZ+range};
 			nbt.setIntArray("Pos", new int[]{move.blockX, move.blockY, move.blockZ});
+			nbt.setInteger("Size", all);
+			nbt.setInteger("RemoveSize", rep.size());
 			stack.setItemDamage(1);
 			player.sendChatToPlayer(LanguageRegister.createChatMessage("Start Charging Nether Crystal"));
 			player.sendChatToPlayer(LanguageRegister.createChatMessage("Please Stay in the Nether or let the Item Dropped (Item Life Time 10 Minutes) until its done and keep all chunks loaded from (x"+min[0]+"-"+max[0]+" z"+min[1]+"-"+max[1]+")"));

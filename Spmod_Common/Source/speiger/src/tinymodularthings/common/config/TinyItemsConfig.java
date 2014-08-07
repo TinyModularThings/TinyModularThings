@@ -3,6 +3,9 @@ package speiger.src.tinymodularthings.common.config;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
@@ -93,6 +96,8 @@ public class TinyItemsConfig
 		
 		items.netherCrystal = new ItemNetherCrystal(config.item.getCurrentID());
 		RegisterItem(items.netherCrystal, "NetherCrystal");
+		FluidContainerRegistry.registerFluidContainer(new FluidStack(FluidRegistry.LAVA, 1000), new ItemStack(items.netherCrystal, 1, 3), null);
+		config.item.updateToNextID();
 		
 	}
 	
@@ -109,37 +114,28 @@ public class TinyItemsConfig
 			PipeTransportPower.powerCapacities.put(PipeEmeraldExtractionPower.class, 2048);
 			items.emeraldPowerPipeE = BuildItem(config.pipes.getCurrentID(), PipeEmeraldExtractionPower.class, "pipe.emerald.power.extraction");
 			config.pipes.updateToNextID();
-			if(items.emeraldPowerPipeE != null)
-			{
-				AssemblyRecipe.assemblyRecipes.add(new AssemblyRecipe(new ItemStack[]{new ItemStack(BuildCraftTransport.pipeItemsEmerald, 8), new ItemStack(Item.redstone, 8)}, 10000, new ItemStack(items.emeraldPowerPipeE, 8)));
-				PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeItemsEmerald), new Object[]{items.emeraldPowerPipeE});
-			}
+			AssemblyRecipe.assemblyRecipes.add(new AssemblyRecipe(new ItemStack[]{new ItemStack(BuildCraftTransport.pipeItemsEmerald, 8), new ItemStack(Item.redstone, 8)}, 10000, new ItemStack(items.emeraldPowerPipeE, 8)));
+			PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeItemsEmerald), new Object[]{items.emeraldPowerPipeE});
+			
 			
 			PipeTransportPower.powerCapacities.put(PipeEmeraldPower.class, 2048);
 			items.emeraldPowerPipe = BuildItem(config.pipes.getCurrentID(), PipeEmeraldPower.class, "pipe.emerald.power");
 			config.pipes.updateToNextID();
-			if(items.emeraldPowerPipe != null)
-			{
-				PathProxy.addSRecipe(new ItemStack(items.emeraldPowerPipe), new Object[]{BuildCraftTransport.pipeItemsEmerald, Item.redstone});
-				PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeItemsEmerald), new Object[]{items.emeraldPowerPipe});
-			}
+			PathProxy.addSRecipe(new ItemStack(items.emeraldPowerPipe), new Object[]{BuildCraftTransport.pipeItemsEmerald, Item.redstone});
+			PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeItemsEmerald), new Object[]{items.emeraldPowerPipe});
+			
 			
 			items.redstoneFluidPipe = BuildItem(config.pipes.getCurrentID(), FluidRegstonePipe.class, "pipe.redstone.fluid");
 			config.pipes.updateToNextID();
-			if(items.redstoneFluidPipe != null)
-			{
-				PathProxy.addSRecipe(new ItemStack(items.redstoneFluidPipe, 1), new Object[]{new ItemStack(BuildCraftTransport.pipeFluidsGold), new ItemStack(Item.redstone)});
-				PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeFluidsGold, 1), new Object[]{items.redstoneFluidPipe});
-			}
+			PathProxy.addSRecipe(new ItemStack(items.redstoneFluidPipe, 1), new Object[]{new ItemStack(BuildCraftTransport.pipeFluidsGold), new ItemStack(Item.redstone)});
+			PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeFluidsGold, 1), new Object[]{items.redstoneFluidPipe});
+			
 			
 			PipeTransportPower.powerCapacities.put(RefinedDiamondPowerPipe.class, 512);
 			items.refinedDiamondPowerPipe = BuildItem(config.pipes.getCurrentID(), RefinedDiamondPowerPipe.class, "pipe.diamond.safe.power");
-			if(items.refinedDiamondPowerPipe != null)
-			{
-				AssemblyRecipe.assemblyRecipes.add(new AssemblyRecipe(new ItemStack[]{new ItemStack(BuildCraftTransport.pipePowerDiamond), new ItemStack(BuildCraftSilicon.redstoneChipset, 2, 2)}, 160000, new ItemStack(items.refinedDiamondPowerPipe)));
-				PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipePowerDiamond), new Object[]{items.refinedDiamondPowerPipe});
-				PathProxy.addRecipe(new ItemStack(items.refinedDiamondPowerPipe), new Object[]{"XXX", "XYX", "XXX", 'X', new ItemStack(BuildCraftSilicon.redstoneChipset, 1, 3), 'Y', BuildCraftTransport.pipePowerDiamond});
-			}
+			AssemblyRecipe.assemblyRecipes.add(new AssemblyRecipe(new ItemStack[]{new ItemStack(BuildCraftTransport.pipePowerDiamond), new ItemStack(BuildCraftSilicon.redstoneChipset, 2, 2)}, 160000, new ItemStack(items.refinedDiamondPowerPipe)));
+			PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipePowerDiamond), new Object[]{items.refinedDiamondPowerPipe});
+			PathProxy.addRecipe(new ItemStack(items.refinedDiamondPowerPipe), new Object[]{"XXX", "XYX", "XXX", 'X', new ItemStack(BuildCraftSilicon.redstoneChipset, 1, 3), 'Y', BuildCraftTransport.pipePowerDiamond});
 		}
 		catch (Exception e)
 		{
