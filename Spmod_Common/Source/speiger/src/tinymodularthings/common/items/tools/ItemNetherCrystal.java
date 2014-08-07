@@ -25,6 +25,7 @@ import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.common.util.BlockPosition;
+import speiger.src.spmodapi.common.util.data.BlockPositionList;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
@@ -32,9 +33,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemNetherCrystal extends TinyItem
 {
-	public static HashMap<String, ArrayList<BlockPosition>> todo = new HashMap<String, ArrayList<BlockPosition>>();
-	public static HashMap<String, ArrayList<BlockPosition>> replace = new HashMap<String, ArrayList<BlockPosition>>();
-	
 	public String[] names = new String[]{
 			"nether.crystal",
 			"nether.crystal.charging",
@@ -280,17 +278,40 @@ public class ItemNetherCrystal extends TinyItem
 		{
 			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Lava");
 			int[] pos = nbt.getIntArray("Pos");
-			ArrayList<BlockPosition> area = replace.get(nbt.getString("ID"));
+			BlockPositionList area = new BlockPositionList(nbt.getCompoundTag("Replace"));
 			
 			if(area != null)
 			{
+				ArrayList<BlockPosition> remove = new ArrayList<BlockPosition>();
+				int i = 20;
 				for(BlockPosition cu : area)
 				{
-					par2.setBlock(cu.xCoord, cu.yCoord, cu.zCoord, Block.netherrack.blockID, 0, 3);
+					boolean flag = par2.setBlock(cu.xCoord, cu.yCoord, cu.zCoord, Block.netherrack.blockID, 0, 3);
+					if(flag || (cu.doesBlockExsist() && cu.isThisBlock(new BlockStack(Block.netherrack), false)))
+					{
+						remove.add(cu);
+					}
+					else if(!flag && cu.getBlockID() == 0)
+					{
+						remove.add(cu);
+					}
+					
+					i--;
+					if(i<= 0)
+					{
+						break;
+					}
+				}
+				area.removeAll(remove);
+				if(area.size() > 0)
+				{
+					NBTTagCompound left = new NBTTagCompound();
+					area.writeFromNBT(left);
+					nbt.setCompoundTag("Replace", left);
+					
+					return;
 				}
 				
-				area.clear();
-				replace.remove(nbt.getString("ID"));
 			}
 			
 			
@@ -343,7 +364,7 @@ public class ItemNetherCrystal extends TinyItem
 		{
 			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Lava");
 			
-			ArrayList<BlockPosition> pos = todo.get(nbt.getString("ID"));
+			BlockPositionList pos = new BlockPositionList(nbt.getCompoundTag("Todo"));
 			
 			int charge = nbt.getInteger("Charges");
 			
@@ -370,17 +391,22 @@ public class ItemNetherCrystal extends TinyItem
 					
 					if(cu.doesBlockExsist() && cu.isThisBlock(new BlockStack(Block.lavaStill), false))
 					{
-						
 						if(cu.worldID.setBlock(cu.xCoord, cu.yCoord, cu.zCoord, 0))
 						{
 							remove.add(cu);
 							charge++;
 						}
 					}
+					else if(!cu.doesBlockExsist())
+					{
+						remove.add(cu);
+					}
 				}
 				nbt.setInteger("Charges", charge);
 				pos.removeAll(remove);
-				
+				NBTTagCompound key = new NBTTagCompound();
+				pos.writeFromNBT(key);
+				nbt.setCompoundTag("Todo", key);
 				
 				if(pos.size() > 0 && pos.size() < 100)
 				{
@@ -436,7 +462,7 @@ public class ItemNetherCrystal extends TinyItem
 				if(damage == 1)
 				{
 					int totalTodo = nbt.getInteger("Size");
-					ArrayList<BlockPosition> pos = todo.get(nbt.getString("ID"));
+					BlockPositionList pos = new BlockPositionList(nbt.getCompoundTag("Todo"));
 					if(pos != null)
 					{
 						int todos = pos.size();
@@ -450,13 +476,14 @@ public class ItemNetherCrystal extends TinyItem
 							end = end.substring(0, 4);
 						}
 						par3.add("Charging Progress: "+end+"%");
+						par3.add("Total Charges: "+nbt.getInteger("Charges"));
 					}
 					
 				}
 				else if(damage == 2)
 				{
 					int remove = nbt.getInteger("RemoveSize");
-					int total = replace.get(nbt.getString("ID")).size();
+					int total = new BlockPositionList(nbt.getCompoundTag("Replace")).size();
 					int totalRemove = remove-total;
 					
 					double real = ((double)totalRemove / (double)remove) * 100;
@@ -500,8 +527,8 @@ public class ItemNetherCrystal extends TinyItem
 		
 		NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Lava");
 		
-		ArrayList<BlockPosition> pos = new ArrayList<BlockPosition>();
-		ArrayList<BlockPosition> rep = new ArrayList<BlockPosition>();
+		BlockPositionList pos = new BlockPositionList();
+		BlockPositionList rep = new BlockPositionList();
 		
 		for(int y = move.blockY + rangeY;y>move.blockY-range;y--)
 		{
@@ -529,8 +556,15 @@ public class ItemNetherCrystal extends TinyItem
 		
 		if(all > 250)
 		{
-			todo.put(nbt.getString("ID"), pos);
-			replace.put(nbt.getString("ID"), rep);
+			NBTTagCompound key = new NBTTagCompound();
+			pos.writeFromNBT(key);
+			nbt.setCompoundTag("Todo", key);
+			NBTTagCompound value = new NBTTagCompound();
+			rep.writeFromNBT(value);
+			nbt.setCompoundTag("Replace", value);
+			
+			FMLLog.getLogger().info(""+nbt.getTags().size());
+			
 			int[] min = new int[]{move.blockX-range, move.blockX+range};
 			int[] max = new int[]{move.blockZ-range, move.blockZ+range};
 			nbt.setIntArray("Pos", new int[]{move.blockX, move.blockY, move.blockZ});
