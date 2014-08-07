@@ -14,6 +14,8 @@ import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import speiger.src.api.util.Ticks;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine.DropType;
 import speiger.src.spmodapi.common.config.SpmodConfig;
@@ -40,6 +42,8 @@ public class CountdownTick implements ITickHandler
 	public void tickEnd(EnumSet<TickType> type, Object... tickData)
 	{
 		EntityPlayer player = (EntityPlayer) tickData[0];
+		
+		Ticks.tick(SpmodAPI.instance);
 		
 		if(!loadedRecipes)
 		{

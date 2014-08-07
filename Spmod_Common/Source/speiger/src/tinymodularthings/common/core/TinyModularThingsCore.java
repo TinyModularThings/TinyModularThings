@@ -13,6 +13,7 @@ import speiger.src.api.hopper.IUpgradeGuiProvider;
 import speiger.src.api.items.IItemGui;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
+import speiger.src.tinymodularthings.common.handler.FuelHandler;
 import speiger.src.tinymodularthings.common.handler.TinyCraftingHandler;
 import speiger.src.tinymodularthings.common.interfaces.IEntityGuiProvider;
 import speiger.src.tinymodularthings.common.upgrades.hoppers.HopperItemFilter;
@@ -156,6 +157,7 @@ public class TinyModularThingsCore implements IGuiHandler
 	{
 		GameRegistry.registerCraftingHandler(new TinyCraftingHandler());
 		HopperRegistry.registerHopperUpgrade(new HopperItemFilter());
+		FuelHandler.init();
 	}
 
 	public void loadPipe(ItemPipe par1, int id, Class<? extends Pipe> par2)

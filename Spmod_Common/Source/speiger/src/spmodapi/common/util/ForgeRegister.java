@@ -31,6 +31,7 @@ public class ForgeRegister
 		}
 		StructureStorage.registerForgeEvent();
 		regist(new BucketHandler());
+		
 	}
 	
 	public static void regsiterClient()

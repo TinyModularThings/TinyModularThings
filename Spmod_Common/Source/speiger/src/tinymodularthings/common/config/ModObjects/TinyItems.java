@@ -8,6 +8,7 @@ public class TinyItems
 	// Resources
 	public static Item ingots;
 	public static Item IridiumDrop;
+	public static Item netherCrystal;
 	
 	// Dusts
 	public static Item bauxitDust;
@@ -37,5 +38,6 @@ public class TinyItems
 	public static Item emeraldPowerPipe;
 	public static Item redstoneFluidPipe;
 	public static Item refinedDiamondPowerPipe;
+	
 	
 }

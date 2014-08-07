@@ -9,6 +9,7 @@ import static speiger.src.spmodapi.common.lib.SpmodAPILib.Version;
 import java.io.File;
 
 import speiger.src.api.language.LanguageLoader;
+import speiger.src.api.nbt.DataStorage;
 import speiger.src.api.util.LogProxy;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
@@ -84,13 +85,13 @@ public class SpmodAPI implements SpmodMod
 	@EventHandler
 	public void onServerStarted(FMLServerStartingEvent evt)
 	{
-		StructureStorage.instance.readStructureDataFromNBT(evt.getServer());
+		DataStorage.read(evt.getServer());
 	}
 	
 	@EventHandler
 	public void onServerStopped(FMLServerStoppedEvent evt)
 	{
-		StructureStorage.instance.writeStructureDataToNBT(FMLCommonHandler.instance().getMinecraftServerInstance());
+		DataStorage.write(FMLCommonHandler.instance().getMinecraftServerInstance());
 	}
 	
 	@Override

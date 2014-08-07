@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -45,7 +46,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEnergyProvider, IFluidHandler, IPacketReciver, IPowerReceptor, IActionReceptor
+public class BucketFillerBasic extends AdvTile implements ISpecialInventory, ISidedInventory, IEnergyProvider, IFluidHandler, IPacketReciver, IPowerReceptor, IActionReceptor
 {
 	public ItemStack[] inv = new ItemStack[2];
 	public AdvancedFluidTank tank = new AdvancedFluidTank(this, "bucketFiller", 16000);
@@ -521,12 +522,17 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 			{
 				if(cu.isItemEqual(stack))
 				{
+					if(cu.stackSize >= cu.getMaxStackSize())
+					{
+						return 0;
+					}
+					
 					int left = stack.getMaxStackSize() - (stack.stackSize + cu.stackSize);
 					if(left < 0)
 					{
 						if(doAdd)
 						{
-							cu.stackSize = 64;
+							cu.stackSize = cu.getMaxStackSize();
 							inv[0] = cu;
 						}
 						return stack.stackSize - left;
@@ -765,6 +771,32 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 	public ItemStack pickBlock(MovingObjectPosition target)
 	{
 		return new ItemStack(TinyBlocks.machine, 1, this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
+	}
+
+	@Override
+	public int[] getAccessibleSlotsFromSide(int var1)
+	{
+		if(var1 < 2)
+		{
+			return new int[]{0};
+		}
+		return new int[]{1};
+	}
+
+	@Override
+	public boolean canInsertItem(int i, ItemStack itemstack, int j)
+	{
+		if(!(i < 2))
+		{
+			return false;
+		}
+		return FluidContainerRegistry.isContainer(itemstack) || FluidContainerRegistry.isBucket(itemstack);
+	}
+
+	@Override
+	public boolean canExtractItem(int i, ItemStack itemstack, int j)
+	{
+		return true;
 	}
 	
 	

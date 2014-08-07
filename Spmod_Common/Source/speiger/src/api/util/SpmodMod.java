@@ -3,7 +3,10 @@ package speiger.src.api.util;
 public interface SpmodMod
 {
 	
-	/** Mod Name **/
+	/**
+	 *  Mod Name
+	 * 	Has to be stable
+	 **/
 	public String getName();
 	
 	/** Language PackFolder **/

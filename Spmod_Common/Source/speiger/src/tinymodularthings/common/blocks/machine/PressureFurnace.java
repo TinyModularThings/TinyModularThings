@@ -834,6 +834,8 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		return false;
 	}
 	
+	int helper = 0;
+	
 	@Override
 	public void onReciveGuiInfo(int key, int val)
 	{
@@ -843,7 +845,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		}
 		if (key == 1)
 		{
-			fuel = val;
+			helper = this.upcastShort(val);
 		}
 		if (key == 2)
 		{
@@ -852,6 +854,10 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		if (key == 3)
 		{
 			progress = val;
+		}
+		if(key == 4)
+		{
+			fuel = (helper | (val << 16));
 		}
 	}
 	
@@ -862,6 +868,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		par2.sendProgressBarUpdate(par1, 1, fuel);
 		par2.sendProgressBarUpdate(par1, 2, heat);
 		par2.sendProgressBarUpdate(par1, 3, progress);
+		par2.sendProgressBarUpdate(par1, 4, fuel >> 16);
 	}
 	
 	@Override

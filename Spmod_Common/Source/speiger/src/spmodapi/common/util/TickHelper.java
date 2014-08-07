@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.util;
 
 import java.util.ArrayList;
 
+import speiger.src.api.nbt.DataStorage;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.util.data.StructureStorage;
 import speiger.src.spmodapi.common.world.retrogen.RetroGenTickHandler.OreReplacer;
@@ -35,7 +36,7 @@ public class TickHelper
 		if(cDelay>SpmodConfig.savingDelay)
 		{
 			cDelay = 0;
-			StructureStorage.instance.writeStructureDataToNBT(FMLCommonHandler.instance().getMinecraftServerInstance());
+			DataStorage.write(FMLCommonHandler.instance().getMinecraftServerInstance());
 		}
 	}
 	

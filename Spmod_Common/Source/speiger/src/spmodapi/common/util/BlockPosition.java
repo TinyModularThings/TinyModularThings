@@ -61,7 +61,11 @@ public class BlockPosition
 	
 	public boolean doesBlockExsist()
 	{
-		return getBlockID() > 0;
+		if(worldID.blockExists(xCoord, yCoord, zCoord))
+		{
+			return getBlockID() > 0;
+		}
+		return false;
 	}
 	
 	public int getBlockMetadata()

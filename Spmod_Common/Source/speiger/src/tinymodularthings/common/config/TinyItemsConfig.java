@@ -17,6 +17,7 @@ import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemTinyH
 import speiger.src.tinymodularthings.common.items.minecarts.AdvTinyChestCart;
 import speiger.src.tinymodularthings.common.items.minecarts.TinyChestCart;
 import speiger.src.tinymodularthings.common.items.study.ItemInformationBook;
+import speiger.src.tinymodularthings.common.items.tools.ItemNetherCrystal;
 import speiger.src.tinymodularthings.common.items.tools.ItemTinyInfo;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import speiger.src.tinymodularthings.common.pipes.FluidRegstonePipe;
@@ -89,6 +90,9 @@ public class TinyItemsConfig
 		TinyItems.tinyHopper = new ItemTinyHopper(config.item.getCurrentID());
 		RegisterItem(items.tinyHopper, "TinyHopper");
 		config.item.updateToNextID();
+		
+		items.netherCrystal = new ItemNetherCrystal(config.item.getCurrentID());
+		RegisterItem(items.netherCrystal, "NetherCrystal");
 		
 	}
 	

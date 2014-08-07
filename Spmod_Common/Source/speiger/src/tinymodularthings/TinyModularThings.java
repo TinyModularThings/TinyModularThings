@@ -18,6 +18,7 @@ import speiger.src.tinymodularthings.common.entity.EntityRegister;
 import speiger.src.tinymodularthings.common.plugins.ModularModLoader;
 import speiger.src.tinymodularthings.common.recipes.RecipesCore;
 import speiger.src.tinymodularthings.common.world.WorldRegister;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
