@@ -486,7 +486,7 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1)
 	{
-		this.itemIcon = par1.registerIcon(this.getModID().toLowerCase()+":/tools/NetherCrystal");
+		this.itemIcon = par1.registerIcon(this.getModID().toLowerCase()+":tools/NetherCrystal");
 	}
 
 	@Override
