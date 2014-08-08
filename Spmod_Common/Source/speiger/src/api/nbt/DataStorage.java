@@ -23,6 +23,8 @@ public class DataStorage
 {
 	static HashMap<SpmodMod, ArrayList<INBTReciver>> nbtStorage = new HashMap<SpmodMod, ArrayList<INBTReciver>>();
 	
+	
+	
 	public static void registerNBTReciver(INBTReciver par1)
 	{
 		if(SpmodModRegistry.isModRegistered(par1.getOwner()))

@@ -2,37 +2,46 @@ package speiger.src.tinymodularthings.common.items.tools;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.items.DisplayStack;
 import speiger.src.api.language.LanguageRegister;
+import speiger.src.api.nbt.INBTReciver;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.common.util.BlockPosition;
 import speiger.src.spmodapi.common.util.data.BlockPositionList;
+import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemNetherCrystal extends TinyItem
+public class ItemNetherCrystal extends TinyItem implements INBTReciver
 {
+	static HashMap<String, BlockPositionList> todo = new HashMap<String, BlockPositionList>();
+	static HashMap<String, BlockPositionList> replace = new HashMap<String, BlockPositionList>();
+	public static boolean dataLoaded = false;
+	
 	public String[] names = new String[]{
 			"nether.crystal",
 			"nether.crystal.charging",
@@ -56,7 +65,6 @@ public class ItemNetherCrystal extends TinyItem
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(createEmptyNetherCrystal(par1));
-		par3List.add(new ItemStack(par1, 1, 1));
 	}
 
 
@@ -278,7 +286,7 @@ public class ItemNetherCrystal extends TinyItem
 		{
 			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Lava");
 			int[] pos = nbt.getIntArray("Pos");
-			BlockPositionList area = new BlockPositionList(nbt.getCompoundTag("Replace"));
+			BlockPositionList area = replace.get(nbt.getString("ID"));
 			
 			if(area != null)
 			{
@@ -305,12 +313,11 @@ public class ItemNetherCrystal extends TinyItem
 				area.removeAll(remove);
 				if(area.size() > 0)
 				{
-					NBTTagCompound left = new NBTTagCompound();
-					area.writeFromNBT(left);
-					nbt.setCompoundTag("Replace", left);
-					
+					nbt.setInteger("Replace", area.size());
+					replace.put(nbt.getString("ID"), area);
 					return;
 				}
+				replace.remove(nbt.getString("ID"));
 				
 			}
 			
@@ -364,11 +371,11 @@ public class ItemNetherCrystal extends TinyItem
 		{
 			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Lava");
 			
-			BlockPositionList pos = new BlockPositionList(nbt.getCompoundTag("Todo"));
+			BlockPositionList pos = todo.get(nbt.getString("ID"));
 			
 			int charge = nbt.getInteger("Charges");
 			
-			int todo = 100;
+			int work = 100;
 			
 			ArrayList<BlockPosition> remove = new ArrayList<BlockPosition>();
 			
@@ -383,8 +390,8 @@ public class ItemNetherCrystal extends TinyItem
 			{
 				for(BlockPosition cu : pos)
 				{
-					todo--;
-					if(todo < 0)
+					work--;
+					if(work < 0)
 					{
 						break;
 					}
@@ -404,9 +411,13 @@ public class ItemNetherCrystal extends TinyItem
 				}
 				nbt.setInteger("Charges", charge);
 				pos.removeAll(remove);
-				NBTTagCompound key = new NBTTagCompound();
-				pos.writeFromNBT(key);
-				nbt.setCompoundTag("Todo", key);
+				todo.put(nbt.getString("ID"), pos);
+				nbt.setInteger("Todo", pos.size());
+				
+				if(pos.size() <= 0)
+				{
+					todo.remove(nbt.getString("ID"));
+				}
 				
 				if(pos.size() > 0 && pos.size() < 100)
 				{
@@ -449,6 +460,14 @@ public class ItemNetherCrystal extends TinyItem
 	}
 	
 	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1)
+	{
+		this.itemIcon = par1.registerIcon(this.getModID().toLowerCase()+":/tools/NetherCrystal");
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1, EntityPlayer par2EntityPlayer, List par3, boolean par4)
@@ -462,35 +481,34 @@ public class ItemNetherCrystal extends TinyItem
 				if(damage == 1)
 				{
 					int totalTodo = nbt.getInteger("Size");
-					BlockPositionList pos = new BlockPositionList(nbt.getCompoundTag("Todo"));
-					if(pos != null)
+					int todos = nbt.getInteger("Todo");
+					int realTodo = totalTodo - todos;
+					
+					double real = ((double)realTodo / (double)totalTodo) * 100;
+					
+					String end = ""+real;
+					if(end.length() > 4)
 					{
-						int todos = pos.size();
-						int realTodo = totalTodo - todos;
-						
-						double real = ((double)realTodo / (double)totalTodo) * 100;
-						
-						String end = ""+real;
-						if(end.length() > 4)
-						{
-							end = end.substring(0, 4);
-						}
-						par3.add("Charging Progress: "+end+"%");
-						par3.add("Total Charges: "+nbt.getInteger("Charges"));
+						end = end.substring(0, 4);
 					}
+					par3.add("Charging Progress: "+end+"%");
+					par3.add("Total Charges: "+nbt.getInteger("Charges"));
 					
 				}
 				else if(damage == 2)
 				{
 					int remove = nbt.getInteger("RemoveSize");
-					int total = new BlockPositionList(nbt.getCompoundTag("Replace")).size();
+					int total = nbt.getInteger("Replace");
 					int totalRemove = remove-total;
 					
 					double real = ((double)totalRemove / (double)remove) * 100;
 					
 					String end = ""+real;
 					
-					end = end.substring(0, 4);
+					if(end.length() > 4)
+					{
+						end = end.substring(0, 4);
+					}
 					
 					par3.add("Clean Up Progress: "+end+"%");
 				}
@@ -556,14 +574,10 @@ public class ItemNetherCrystal extends TinyItem
 		
 		if(all > 250)
 		{
-			NBTTagCompound key = new NBTTagCompound();
-			pos.writeFromNBT(key);
-			nbt.setCompoundTag("Todo", key);
-			NBTTagCompound value = new NBTTagCompound();
-			rep.writeFromNBT(value);
-			nbt.setCompoundTag("Replace", value);
-			
-			FMLLog.getLogger().info(""+nbt.getTags().size());
+			nbt.setInteger("Todo", pos.size());
+			nbt.setInteger("Replace", rep.size());
+			todo.put(nbt.getString("ID"), pos);
+			replace.put(nbt.getString("ID"), rep);
 			
 			int[] min = new int[]{move.blockX-range, move.blockX+range};
 			int[] max = new int[]{move.blockZ-range, move.blockZ+range};
@@ -585,6 +599,69 @@ public class ItemNetherCrystal extends TinyItem
 	public int getEntityLifespan(ItemStack itemStack, World world)
 	{
 		return 12000;
+	}
+
+	@Override
+	public void loadFromNBT(NBTTagCompound par1)
+	{
+		dataLoaded = false;
+		NBTTagList first = par1.getTagList("Todo");
+		todo.clear();
+		for(int i = 0;i<first.tagCount();i++)
+		{
+			NBTTagCompound nbt = (NBTTagCompound) first.tagAt(i);
+			todo.put(nbt.getString("Key"), new BlockPositionList(nbt));
+		}
+		NBTTagList second = par1.getTagList("Replace");
+		replace.clear();
+		for(int i = 0;i<second.tagCount();i++)
+		{
+			NBTTagCompound nbt = (NBTTagCompound)second.tagAt(i);
+			replace.put(nbt.getString("Key"), new BlockPositionList(nbt));
+		}
+		dataLoaded = true;
+	}
+
+	@Override
+	public void saveToNBT(NBTTagCompound par1)
+	{
+		NBTTagList first = new NBTTagList();
+		Iterator<Entry<String, BlockPositionList>> iterTodo = todo.entrySet().iterator();
+		while(iterTodo.hasNext())
+		{
+			Entry<String, BlockPositionList> iter = iterTodo.next();
+			NBTTagCompound nbt = new NBTTagCompound();
+			nbt.setString("Key", iter.getKey());
+			iter.getValue().writeToNBT(nbt);
+			first.appendTag(nbt);
+		}
+		par1.setTag("Todo", first);
+		
+		NBTTagList second = new NBTTagList();
+		
+		Iterator<Entry<String, BlockPositionList>> iterReplace = replace.entrySet().iterator();
+		while(iterReplace.hasNext())
+		{
+			Entry<String, BlockPositionList> iter = iterReplace.next();
+			NBTTagCompound nbt = new NBTTagCompound();
+			nbt.setString("Key", iter.getKey());
+			iter.getValue().writeToNBT(nbt);
+			second.appendTag(nbt);
+		}
+		par1.setTag("Replace", second);
+		
+	}
+
+	@Override
+	public SpmodMod getOwner()
+	{
+		return TinyModularThings.instance;
+	}
+
+	@Override
+	public String getID()
+	{
+		return "nether.crystal.data";
 	}
 	
 }

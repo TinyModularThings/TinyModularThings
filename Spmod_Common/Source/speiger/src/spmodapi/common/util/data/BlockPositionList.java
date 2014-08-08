@@ -20,7 +20,7 @@ public class BlockPositionList extends ArrayList<BlockPosition>
 		this.readFromNBT(nbt);
 	}
 	
-	public void writeFromNBT(NBTTagCompound nbt)
+	public void writeToNBT(NBTTagCompound nbt)
 	{
 		NBTTagList list = new NBTTagList();
 		for(int i = 0;i<this.size();i++)
