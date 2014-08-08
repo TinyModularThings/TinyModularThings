@@ -195,5 +195,11 @@ public class StructureStorage implements INBTReciver
 	{
 		return "Structure.Storage";
 	}
+
+	@Override
+	public void finishLoading()
+	{
+		
+	}
 	
 }

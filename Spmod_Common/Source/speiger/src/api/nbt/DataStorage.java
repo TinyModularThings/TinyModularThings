@@ -85,7 +85,6 @@ public class DataStorage
 		try
 		{
 			SpmodMod[] mods = nbtStorage.keySet().toArray(new SpmodMod[nbtStorage.keySet().size()]);
-			
 			for(int i = 0;i<mods.length;i++)
 			{
 				SpmodMod mod = mods[i];
@@ -111,10 +110,24 @@ public class DataStorage
 							{
 								re.loadFromNBT(cu);
 							}
+							
 						}
 					}
 					
 					stream.close();
+				}
+			}
+			
+			for(SpmodMod mod : mods)
+			{
+				ArrayList<INBTReciver> data = nbtStorage.get(mod);
+				if(data != null)
+				{
+					for(int i = 0;i<data.size();i++)
+					{
+						INBTReciver nbt = data.get(i);
+						nbt.finishLoading();
+					}
 				}
 			}
 		}

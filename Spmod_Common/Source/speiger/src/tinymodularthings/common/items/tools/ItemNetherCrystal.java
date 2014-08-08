@@ -40,7 +40,7 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 {
 	static HashMap<String, BlockPositionList> todo = new HashMap<String, BlockPositionList>();
 	static HashMap<String, BlockPositionList> replace = new HashMap<String, BlockPositionList>();
-	public static boolean dataLoaded = false;
+	public static DataType dataLoaded = DataType.NotLoaded;
 	
 	public String[] names = new String[]{
 			"nether.crystal",
@@ -244,13 +244,16 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 		{
 			if(world.provider.dimensionId == -1)
 			{
-				if(par1.getItemDamage() == 1)
+				if(dataLoaded == DataType.Loaded && hasWork(par1))
 				{
-					chargeCrystal(par1, world, player);
-				}
-				if(par1.getItemDamage() == 2)
-				{
-					cleanUpArea(par1, world);
+					if(par1.getItemDamage() == 1)
+					{
+						chargeCrystal(par1, world, player);
+					}
+					if(par1.getItemDamage() == 2)
+					{
+						cleanUpArea(par1, world);
+					}
 				}
 				if(par1.getItemDamage() == 4)
 				{
@@ -258,6 +261,24 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 				}
 			}
 		}
+	}
+	
+	public boolean hasWork(ItemStack par1)
+	{
+		if(par1 != null && par1.hasTagCompound() && par1.getTagCompound().getCompoundTag("Lava") != null)
+		{
+			int damage = par1.getItemDamage();
+			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Lava");
+			if(damage == 1)
+			{
+				return nbt.getInteger("Todo") > 0;
+			}
+			else if(damage == 2)
+			{
+				return nbt.getInteger("Replace") > 0;
+			}
+		}
+		return false;
 	}
 	
 	public void recharge(ItemStack par1)
@@ -604,7 +625,7 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 	@Override
 	public void loadFromNBT(NBTTagCompound par1)
 	{
-		dataLoaded = false;
+		dataLoaded = DataType.Loading;
 		NBTTagList first = par1.getTagList("Todo");
 		todo.clear();
 		for(int i = 0;i<first.tagCount();i++)
@@ -619,7 +640,7 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 			NBTTagCompound nbt = (NBTTagCompound)second.tagAt(i);
 			replace.put(nbt.getString("Key"), new BlockPositionList(nbt));
 		}
-		dataLoaded = true;
+		dataLoaded = DataType.Loaded;
 	}
 
 	@Override
@@ -663,5 +684,20 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 	{
 		return "nether.crystal.data";
 	}
+	
+	@Override
+	public void finishLoading()
+	{
+		dataLoaded = DataType.Loaded;
+	}
+	
+	public static enum DataType
+	{
+		Loading,
+		Loaded,
+		NotLoaded;
+	}
+
+
 	
 }

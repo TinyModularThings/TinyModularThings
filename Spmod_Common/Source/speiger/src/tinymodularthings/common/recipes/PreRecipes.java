@@ -23,7 +23,7 @@ public class PreRecipes
 		
 		GameRegistry.addRecipe(new ItemStack(TinyItems.interfaceBlock, 4, 0), new Object[]{"XYX", "CVC", "XBX", 'B', TinyBlocks.normalPipe, 'Y', Block.hopperBlock, 'C', ItemGear.getGearFromType(GearType.Redstone), 'V', Block.chest, 'X', new ItemStack(TinyItems.ingots, 1, EnumIngots.Aluminum.getIngotMeta())});
 	
-		GameRegistry.addRecipe(ItemNetherCrystal.createEmptyNetherCrystal(TinyItems.netherCrystal.itemID), new Object[]{"XYX", "YCY", "XYX"}, 'X', Item.netherStar, 'C', Item.diamond, 'Y', Item.enderPearl);
+		GameRegistry.addRecipe(ItemNetherCrystal.createEmptyNetherCrystal(TinyItems.netherCrystal.itemID), new Object[]{"XYX", "YCY", "XYX", 'X', Item.netherStar, 'C', Item.diamond, 'Y', Item.enderPearl});
 		GameRegistry.addShapelessRecipe(ItemNetherCrystal.createEmptyNetherCrystal(TinyItems.netherCrystal.itemID), new Object[]{new ItemStack(TinyItems.netherCrystal, 1, 5), Item.diamond, Item.enderPearl});
 	}
 }
