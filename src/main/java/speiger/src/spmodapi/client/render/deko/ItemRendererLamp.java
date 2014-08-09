@@ -11,7 +11,6 @@ import speiger.src.spmodapi.common.blocks.deko.TileLamp.EnumLampType;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class ItemRendererLamp implements IItemRenderer
 {

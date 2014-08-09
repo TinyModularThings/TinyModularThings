@@ -2,12 +2,12 @@ package speiger.src.spmodapi.common.handler;
 
 import java.util.UUID;
 
-import com.mojang.authlib.GameProfile;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.IChatComponent;
 import net.minecraft.world.World;
+
+import com.mojang.authlib.GameProfile;
 
 public class FakePlayer extends EntityPlayer
 {

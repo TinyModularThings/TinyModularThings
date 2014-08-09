@@ -10,7 +10,6 @@ import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.ForgeRegister;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 /**

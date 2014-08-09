@@ -15,17 +15,10 @@ import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
-import powercrystals.minefactoryreloaded.api.FertilizerType;
-import powercrystals.minefactoryreloaded.api.HarvestType;
-import powercrystals.minefactoryreloaded.api.IFactoryFertilizable;
-import powercrystals.minefactoryreloaded.api.IFactoryHarvestable;
-import powercrystals.minefactoryreloaded.api.IFactoryPlantable;
-import powercrystals.minefactoryreloaded.api.ReplacementBlock;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import forestry.api.farming.ICrop;
 
 public class BlockHempCrop extends BlockCrops implements ICrop,
 		IFactoryHarvestable, IFactoryFertilizable, IFactoryPlantable
@@ -181,7 +174,6 @@ public class BlockHempCrop extends BlockCrops implements ICrop,
 	@Override
 	public boolean canBePlanted(ItemStack stack)
 	{
-		// TODO Check implementation
 		return true;
 	}
 

@@ -1,6 +1,6 @@
 package speiger.src.tinymodularthings.common.pipes;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.tinymodularthings.common.handler.PipeIconHandler;
 import buildcraft.api.core.IIconProvider;
 import buildcraft.transport.Pipe;

@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.mojang.authlib.GameProfile;
-
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -14,6 +12,8 @@ import net.minecraft.util.AxisAlignedBB;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
+
+import com.mojang.authlib.GameProfile;
 
 public class ClearItems implements ISpmodCommand
 {

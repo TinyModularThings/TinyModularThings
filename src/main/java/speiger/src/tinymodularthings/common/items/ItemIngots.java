@@ -2,10 +2,10 @@ package speiger.src.tinymodularthings.common.items;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import javax.swing.Icon;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
 import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.api.items.DisplayStack;
 import speiger.src.api.language.LanguageRegister;

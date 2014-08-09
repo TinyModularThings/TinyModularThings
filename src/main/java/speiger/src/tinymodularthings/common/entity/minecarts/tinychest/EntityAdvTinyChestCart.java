@@ -1,7 +1,5 @@
 package speiger.src.tinymodularthings.common.entity.minecarts.tinychest;
 
-import mods.railcraft.api.carts.IRoutableCart;
-import mods.railcraft.api.core.items.IStackFilter;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

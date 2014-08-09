@@ -3,8 +3,6 @@ package speiger.src.spmodapi.common.tile;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.logging.log4j.Logger;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.Block.SoundType;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -22,6 +20,9 @@ import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.util.ForgeDirection;
+
+import org.apache.logging.log4j.Logger;
+
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.util.BlockPosition;
 import cpw.mods.fml.common.FMLLog;

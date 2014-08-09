@@ -2,14 +2,14 @@ package speiger.src.tinymodularthings.common.items.itemblocks.transport;
 
 import java.util.List;
 
+import javax.swing.Icon;
+
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.inventory.IAcceptor;
@@ -170,7 +170,7 @@ public class ItemInterfaceBlock extends TinyItem
 	@Override
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
 	{
-		int i1 = par3World.getBlockId(par4, par5, par6);
+		int i1 = par3World.getBlock(par4, par5, par6);
 		
 		if (i1 == Block.snow.blockID && (par3World.getBlockMetadata(par4, par5, par6) & 7) < 1)
 		{

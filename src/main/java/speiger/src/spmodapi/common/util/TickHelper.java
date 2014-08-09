@@ -2,11 +2,10 @@ package speiger.src.spmodapi.common.util;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.util.data.StructureStorage;
 import speiger.src.spmodapi.common.world.retrogen.RetroGenTickHandler.OreReplacer;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class TickHelper
 {

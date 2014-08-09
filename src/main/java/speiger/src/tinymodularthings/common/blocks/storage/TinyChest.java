@@ -2,6 +2,8 @@ package speiger.src.tinymodularthings.common.blocks.storage;
 
 import java.util.ArrayList;
 
+import javax.swing.Icon;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,10 +13,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
-import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import speiger.src.spmodapi.common.interfaces.ISharedInventory;
 import speiger.src.spmodapi.common.tile.TileFacing;
@@ -22,7 +20,6 @@ import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.storage.GuiTinyChest;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

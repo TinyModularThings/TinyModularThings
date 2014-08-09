@@ -16,7 +16,7 @@ import speiger.src.tinymodularthings.common.plugins.BC.triggers.BCTriggerHelper;
 import buildcraft.BuildCraftEnergy;
 import buildcraft.BuildCraftFactory;
 import buildcraft.BuildCraftTransport;
-import buildcraft.api.gates.ActionManager;
+import buildcraft.api.gates.StatementManager;
 
 public class BCRegistry
 {
@@ -45,25 +45,25 @@ public class BCRegistry
 	}
 	public void loadTrigger()
 	{
-		ActionManager.registerTrigger(BCVariables.needFuel);
-		ActionManager.registerTrigger(BCVariables.hasWork);
-		ActionManager.registerTrigger(BCVariables.noWork);
-		ActionManager.registerTriggerProvider(new BCTriggerHelper());
+		StatementManager.registerTrigger(BCVariables.needFuel);
+		StatementManager.registerTrigger(BCVariables.hasWork);
+		StatementManager.registerTrigger(BCVariables.noWork);
+		StatementManager.registerTriggerProvider(new BCTriggerHelper());
 	}
 	
 	public void loadActions()
 	{
-		ActionManager.registerActionProvider(new BCActionHelper());
+		StatementManager.registerActionProvider(new BCActionHelper());
 		for (int i = 0; i < BCVariables.changeToSlot.length; i++)
 		{
 			GateChangeToSlot action = new GateChangeToSlot(i);
 			BCVariables.changeToSlot[i] = action;
-			ActionManager.registerAction(action);
+			StatementManager.registerAction(action);
 		}
-		ActionManager.registerAction(BCVariables.changeOneTime[0] = new ActionOneSlotChange(false));
-		ActionManager.registerAction(BCVariables.changeOneTime[1] = new ActionOneSlotChange(true));
-		ActionManager.registerAction(BCVariables.bcFiller[0] = new BucketFillerAction(false));
-		ActionManager.registerAction(BCVariables.bcFiller[1] = new BucketFillerAction(true));
+		StatementManager.registerAction(BCVariables.changeOneTime[0] = new ActionOneSlotChange(false));
+		StatementManager.registerAction(BCVariables.changeOneTime[1] = new ActionOneSlotChange(true));
+		StatementManager.registerAction(BCVariables.bcFiller[0] = new BucketFillerAction(false));
+		StatementManager.registerAction(BCVariables.bcFiller[1] = new BucketFillerAction(true));
 	}
 	
 	public void overrideFurnace()

@@ -1,19 +1,20 @@
 package speiger.src.tinymodularthings.common.plugins.BC.triggers;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import javax.swing.Icon;
+
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerParameter;
-import buildcraft.core.triggers.ActionTriggerIconProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -45,7 +46,7 @@ public class TriggerHasWork implements ITrigger
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon()
+	public IIcon getIcon()
 	{
 		if (Active)
 		{
@@ -56,15 +57,9 @@ public class TriggerHasWork implements ITrigger
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerIcons(IIconRegister iconRegister)
 	{
 		
-	}
-	
-	@Override
-	public boolean hasParameter()
-	{
-		return false;
 	}
 	
 

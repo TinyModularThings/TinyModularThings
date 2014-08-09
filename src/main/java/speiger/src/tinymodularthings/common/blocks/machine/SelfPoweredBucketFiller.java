@@ -1,6 +1,6 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.energy.EnergyProvider;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 

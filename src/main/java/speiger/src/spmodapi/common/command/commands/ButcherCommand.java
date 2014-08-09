@@ -16,11 +16,11 @@ import net.minecraft.world.World;
 
 import org.apache.commons.lang3.StringUtils;
 
-import com.mojang.authlib.GameProfile;
-
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
+
+import com.mojang.authlib.GameProfile;
 
 public class ButcherCommand implements ISpmodCommand
 {

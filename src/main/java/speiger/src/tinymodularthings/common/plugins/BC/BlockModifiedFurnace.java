@@ -1,9 +1,10 @@
 package speiger.src.tinymodularthings.common.plugins.BC;
 
+import javax.swing.Icon;
+
 import net.minecraft.block.BlockFurnace;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import cpw.mods.fml.relauncher.Side;

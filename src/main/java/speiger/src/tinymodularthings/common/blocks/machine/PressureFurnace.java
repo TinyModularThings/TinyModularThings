@@ -3,7 +3,8 @@ package speiger.src.tinymodularthings.common.blocks.machine;
 import java.util.LinkedList;
 import java.util.Random;
 
-import mods.railcraft.common.items.firestone.ItemFirestoneRefined;
+import javax.swing.Icon;
+
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,13 +15,8 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.inventory.IAcceptor;
 import speiger.src.api.inventory.IAcceptor.AcceptorType;
@@ -44,7 +40,6 @@ import buildcraft.api.gates.IActionReceptor;
 import buildcraft.api.gates.IOverrideDefaultTriggers;
 import buildcraft.api.gates.ITrigger;
 import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

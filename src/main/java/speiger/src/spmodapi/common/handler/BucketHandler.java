@@ -1,12 +1,12 @@
 package speiger.src.spmodapi.common.handler;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.init.Blocks;
 import net.minecraft.item.ItemStack;
-import cpw.mods.fml.common.eventhandler.Event.Result;
 import net.minecraftforge.event.entity.player.FillBucketEvent;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
+import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class BucketHandler
 {

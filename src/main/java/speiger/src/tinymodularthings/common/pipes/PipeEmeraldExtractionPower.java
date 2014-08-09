@@ -2,7 +2,7 @@ package speiger.src.tinymodularthings.common.pipes;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.tinymodularthings.common.handler.PipeIconHandler;
 import buildcraft.api.core.IIconProvider;
 import buildcraft.api.power.IPowerEmitter;
@@ -15,7 +15,6 @@ import buildcraft.transport.IPipeTransportPowerHook;
 import buildcraft.transport.Pipe;
 import buildcraft.transport.PipeConnectionBans;
 import buildcraft.transport.PipeTransportPower;
-import buildcraft.transport.TileGenericPipe;
 import buildcraft.transport.pipes.PipePowerWood;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

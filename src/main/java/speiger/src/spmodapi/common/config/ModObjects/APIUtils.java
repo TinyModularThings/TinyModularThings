@@ -2,7 +2,6 @@ package speiger.src.spmodapi.common.config.ModObjects;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.ai.attributes.IAttribute;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.item.ItemArmor.ArmorMaterial;
 import net.minecraftforge.fluids.Fluid;
 

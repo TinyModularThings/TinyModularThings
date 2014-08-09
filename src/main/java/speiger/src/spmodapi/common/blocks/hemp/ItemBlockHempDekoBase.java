@@ -8,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.blocks.BlockStack;
-import speiger.src.api.items.DisplayStack;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.items.LanguageItem;
 import speiger.src.api.language.LanguageRegister;

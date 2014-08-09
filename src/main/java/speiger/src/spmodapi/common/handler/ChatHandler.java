@@ -1,9 +1,9 @@
 package speiger.src.spmodapi.common.handler;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.event.ServerChatEvent;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class ChatHandler
 {

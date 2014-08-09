@@ -1,9 +1,5 @@
 package speiger.src.spmodapi.common.config;
 
-import java.util.UUID;
-
-import cpw.mods.fml.common.FMLLog;
-import net.minecraft.entity.ai.attributes.AttributeModifier;
 import net.minecraft.entity.ai.attributes.RangedAttribute;
 import net.minecraft.init.Items;
 import net.minecraftforge.common.util.EnumHelper;

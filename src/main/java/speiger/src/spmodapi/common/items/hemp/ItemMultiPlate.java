@@ -21,8 +21,6 @@ import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.handler.PlateHandler;
 import speiger.src.spmodapi.common.items.SpmodItem;
-import speiger.src.spmodapi.common.recipes.SpmodRecipeRegistry;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

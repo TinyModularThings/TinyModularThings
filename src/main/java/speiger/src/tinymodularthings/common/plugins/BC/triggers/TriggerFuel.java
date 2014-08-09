@@ -1,11 +1,11 @@
 package speiger.src.tinymodularthings.common.plugins.BC.triggers;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import javax.swing.Icon;
+
 import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.tinymodularthings.TinyModularThings;

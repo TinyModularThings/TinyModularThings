@@ -1,6 +1,6 @@
 package speiger.src.tinymodularthings.common.plugins.Ic2;
 
-import ic2.api.item.Items;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import speiger.src.tinymodularthings.TinyModularThings;

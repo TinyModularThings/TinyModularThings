@@ -2,7 +2,8 @@ package speiger.src.tinymodularthings.common.blocks.transport;
 
 import java.io.DataInput;
 import java.io.IOException;
-import java.util.ArrayList;
+
+import javax.swing.Icon;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.item.EntityItem;
@@ -12,11 +13,7 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.inventory.IAcceptor;
@@ -35,8 +32,6 @@ import speiger.src.tinymodularthings.common.plugins.BC.actions.ActionOneSlotChan
 import speiger.src.tinymodularthings.common.plugins.BC.actions.GateChangeToSlot;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionReceptor;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

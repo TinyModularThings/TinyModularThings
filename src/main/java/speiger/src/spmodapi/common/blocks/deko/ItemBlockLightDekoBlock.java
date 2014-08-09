@@ -9,8 +9,6 @@ import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagInt;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -23,7 +21,6 @@ import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.blocks.deko.TileLamp.EnumLampType;
 import speiger.src.spmodapi.common.enums.EnumColor;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

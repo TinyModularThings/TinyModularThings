@@ -4,7 +4,6 @@ import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
-import net.minecraft.network.packet.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
@@ -18,7 +17,6 @@ import speiger.src.spmodapi.common.util.BlockPosition;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.common.blocks.transport.MultiStructureItemInterface;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
-import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class ItemInterfaceGui extends GuiInventoryCore
 {

@@ -1,12 +1,10 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
+import javax.swing.Icon;
+
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,7 +18,6 @@ import speiger.src.spmodapi.common.tile.AdvancedFluidTank;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
-import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class WaterGenerator extends AdvTile implements IFluidHandler, IPowerReceptor, IEnergyProvider
 {

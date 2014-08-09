@@ -1,9 +1,5 @@
 package speiger.src.spmodapi.common.modHelper.minefactoryReloaded;
 
-import powercrystals.minefactoryreloaded.api.FactoryRegistry;
-import powercrystals.minefactoryreloaded.api.IFactoryFertilizable;
-import powercrystals.minefactoryreloaded.api.IFactoryHarvestable;
-import powercrystals.minefactoryreloaded.api.IFactoryPlantable;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 
 public class MineFactoryReloadedAddon

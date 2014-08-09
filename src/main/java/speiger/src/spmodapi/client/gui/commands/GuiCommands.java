@@ -22,7 +22,6 @@ import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import cpw.mods.fml.common.network.simpleimpl.SimpleNetworkWrapper;
 
 public class GuiCommands extends GuiInventoryCore
 {

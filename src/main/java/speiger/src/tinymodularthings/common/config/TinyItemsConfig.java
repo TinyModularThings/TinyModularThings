@@ -1,8 +1,5 @@
 package speiger.src.tinymodularthings.common.config;
 
-import java.lang.reflect.Field;
-import java.util.HashMap;
-
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
@@ -27,7 +24,6 @@ import speiger.src.tinymodularthings.common.pipes.PipeEmeraldPower;
 import speiger.src.tinymodularthings.common.pipes.SpmodPipe;
 import speiger.src.tinymodularthings.common.utils.TinyTextureHelper;
 import buildcraft.BuildCraftTransport;
-import buildcraft.api.recipes.AssemblyRecipe;
 import buildcraft.transport.BlockGenericPipe;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;

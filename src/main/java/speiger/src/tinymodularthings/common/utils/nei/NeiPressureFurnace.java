@@ -13,10 +13,6 @@ import speiger.src.api.recipe.pressureFurnace.PressureRecipe;
 import speiger.src.api.recipe.pressureFurnace.helper.PressureRecipeList;
 import speiger.src.tinymodularthings.client.gui.machine.PressureFurnaceGui;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
-import codechicken.core.gui.GuiDraw;
-import codechicken.nei.NEIServerUtils;
-import codechicken.nei.PositionedStack;
-import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class NeiPressureFurnace extends TemplateRecipeHandler
 {

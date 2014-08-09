@@ -6,7 +6,6 @@ import net.minecraft.item.ItemStack;
 import speiger.src.api.util.InventoryUtil;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInterfaceBlock;
-import cpw.mods.fml.common.ICraftingHandler;
 
 public class TinyCraftingHandler implements ICraftingHandler
 {

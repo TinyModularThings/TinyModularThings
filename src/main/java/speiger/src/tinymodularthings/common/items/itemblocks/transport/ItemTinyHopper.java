@@ -8,7 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
@@ -97,9 +97,9 @@ public class ItemTinyHopper extends TinyItem
 			return false;
 		}
 		
-		if (par3World.setBlock(par4, par5, par6, TinyBlocks.transportBlock.blockID, 10, 3))
+		if (par3World.setBlock(par4, par5, par6, TinyBlocks.transportBlock, 10, 3))
 		{
-			TileEntity tile = par3World.getBlockTileEntity(par4, par5, par6);
+			TileEntity tile = par3World.getTileEntity(par4, par5, par6);
 			if ((tile != null) && ((tile instanceof TinyHopper)))
 			{
 				TinyHopper tiny = (TinyHopper) tile;

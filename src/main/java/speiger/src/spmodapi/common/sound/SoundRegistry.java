@@ -53,7 +53,7 @@ public class SoundRegistry
 	public void init(SoundLoadEvent evt)
 	{
 		manager = evt.manager;
-		system = evt.manager.sndSystem;
+		system = evt.;
 		settings = Minecraft.getMinecraft().gameSettings;
 		tryToRegist();
 		SpmodAPI.log.print("Register " + sounds.size() + " Sounds");

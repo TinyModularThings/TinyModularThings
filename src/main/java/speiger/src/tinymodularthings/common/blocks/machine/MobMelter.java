@@ -1,9 +1,9 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.util.Icon;
+import javax.swing.Icon;
+
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.energy.EnergyProvider;
 import speiger.src.api.energy.IEnergyProvider;
 import speiger.src.spmodapi.common.tile.AdvTile;

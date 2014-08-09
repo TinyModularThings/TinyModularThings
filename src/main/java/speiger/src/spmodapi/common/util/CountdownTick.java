@@ -1,8 +1,5 @@
 package speiger.src.spmodapi.common.util;
 
-import java.util.EnumSet;
-
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ChatComponentText;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;

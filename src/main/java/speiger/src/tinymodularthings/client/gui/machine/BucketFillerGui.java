@@ -1,11 +1,11 @@
 package speiger.src.tinymodularthings.client.gui.machine;
 
+import javax.swing.Icon;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -20,7 +20,6 @@ import speiger.src.tinymodularthings.common.blocks.machine.BucketFillerBasic;
 import speiger.src.tinymodularthings.common.blocks.machine.InventoryBucketFiller;
 import speiger.src.tinymodularthings.common.blocks.machine.SelfPoweredBucketFiller;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
-import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class BucketFillerGui extends GuiInventoryCore
 {

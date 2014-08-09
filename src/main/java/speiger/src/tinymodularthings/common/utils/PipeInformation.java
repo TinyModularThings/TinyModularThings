@@ -2,8 +2,8 @@ package speiger.src.tinymodularthings.common.utils;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.util.Icon;
+import javax.swing.Icon;
+
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.tinymodularthings.TinyModularThings;

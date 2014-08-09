@@ -2,11 +2,12 @@ package speiger.src.tinymodularthings.client.gui.transport;
 
 import java.util.ArrayList;
 
+import javax.swing.Icon;
+
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
-import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;

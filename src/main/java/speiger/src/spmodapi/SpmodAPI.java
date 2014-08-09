@@ -22,6 +22,7 @@ import speiger.src.spmodapi.common.util.data.StructureStorage;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 import speiger.src.spmodapi.common.world.WorldLoader;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -57,6 +58,7 @@ public class SpmodAPI implements SpmodMod
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt)
 	{
+		FMLLog.getLogger().info("Test");
 		SpmodModRegistry.registerMod(this);
 		log = new LogProxy(this);
 		LanguageLoader language = new LanguageLoader(this);

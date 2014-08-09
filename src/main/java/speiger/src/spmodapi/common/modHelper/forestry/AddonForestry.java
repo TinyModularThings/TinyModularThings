@@ -6,11 +6,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
-import forestry.api.farming.Farmables;
-import forestry.api.farming.IFarmable;
-import forestry.api.recipes.RecipeManagers;
-import forestry.core.GameMode;
-import forestry.core.utils.RecipeUtil;
 
 public class AddonForestry
 {

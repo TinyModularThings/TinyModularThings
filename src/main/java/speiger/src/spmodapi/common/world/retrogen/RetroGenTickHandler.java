@@ -1,7 +1,6 @@
 package speiger.src.spmodapi.common.world.retrogen;
 
 import java.util.ArrayList;
-import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Random;
 

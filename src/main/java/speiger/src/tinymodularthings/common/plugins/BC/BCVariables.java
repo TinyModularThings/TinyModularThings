@@ -1,7 +1,5 @@
 package speiger.src.tinymodularthings.common.plugins.BC;
 
-import speiger.src.tinymodularthings.common.plugins.BC.actions.ActionOneSlotChange;
-import speiger.src.tinymodularthings.common.plugins.BC.actions.GateChangeToSlot;
 import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerFuel;
 import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerHasWork;
 import buildcraft.api.gates.IAction;

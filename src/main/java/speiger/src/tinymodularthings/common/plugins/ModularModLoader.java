@@ -1,6 +1,5 @@
 package speiger.src.tinymodularthings.common.plugins;
 
-import speiger.src.spmodapi.common.recipes.helper.RecipeOverrider;
 import speiger.src.tinymodularthings.common.config.TinyItemsConfig;
 import speiger.src.tinymodularthings.common.plugins.BC.BCRegistry;
 import cpw.mods.fml.common.FMLLog;

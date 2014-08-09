@@ -4,14 +4,11 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.energy.EnergyProvider;
 import speiger.src.api.energy.IEnergyProvider;
@@ -25,7 +22,6 @@ import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInter
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
-import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class MultiStructureEnergyInterface extends AdvTile implements
 		IEnergyProvider, IPowerReceptor, IAcceptor
@@ -44,7 +40,7 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 	public boolean textureUpdate = false;
 	
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		if (blockID != -1 && metadata != -1)
 		{

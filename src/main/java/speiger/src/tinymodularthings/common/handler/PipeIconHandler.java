@@ -1,7 +1,7 @@
 package speiger.src.tinymodularthings.common.handler;
 
-import net.minecraft.client.renderer.texture.IconRegister;
-import net.minecraft.util.Icon;
+import javax.swing.Icon;
+
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import buildcraft.api.core.IIconProvider;
 import cpw.mods.fml.relauncher.Side;

@@ -1,5 +1,7 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
+import javax.swing.Icon;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -9,8 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityEnderChest;
-import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.spmodapi.common.tile.AdvTile;
 
 public class EnderChestReader extends AdvTile implements IInventory

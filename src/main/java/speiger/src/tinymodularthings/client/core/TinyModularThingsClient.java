@@ -1,8 +1,10 @@
 package speiger.src.tinymodularthings.client.core;
 
+import java.util.Iterator;
+
 import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
-import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.items.LanguageItem;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.SpmodAPI;
@@ -42,13 +44,13 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		
 		// Pipes
 		RenderingRegistry.registerBlockHandler(EnumIDs.Pipe.getId(), new RenderPipe());
-		MinecraftForgeClient.registerItemRenderer(TinyBlocks.smallPipe.blockID, new ItemRendererPipe(TinyBlocks.smallPipe));
-		MinecraftForgeClient.registerItemRenderer(TinyBlocks.normalPipe.blockID, new ItemRendererPipe(TinyBlocks.normalPipe));
-		MinecraftForgeClient.registerItemRenderer(TinyBlocks.mediumPipe.blockID, new ItemRendererPipe(TinyBlocks.mediumPipe));
-		MinecraftForgeClient.registerItemRenderer(TinyBlocks.bigPipe.blockID, new ItemRendererPipe(TinyBlocks.bigPipe));
-		MinecraftForgeClient.registerItemRenderer(TinyBlocks.biggerPipe.blockID, new ItemRendererPipe(TinyBlocks.biggerPipe));
-		MinecraftForgeClient.registerItemRenderer(TinyBlocks.largePipe.blockID, new ItemRendererPipe(TinyBlocks.largePipe));
-		MinecraftForgeClient.registerItemRenderer(TinyBlocks.hugePipe.blockID, new ItemRendererPipe(TinyBlocks.hugePipe));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TinyBlocks.smallPipe), new ItemRendererPipe(TinyBlocks.smallPipe));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TinyBlocks.normalPipe), new ItemRendererPipe(TinyBlocks.normalPipe));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TinyBlocks.mediumPipe), new ItemRendererPipe(TinyBlocks.mediumPipe));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TinyBlocks.bigPipe), new ItemRendererPipe(TinyBlocks.bigPipe));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TinyBlocks.biggerPipe), new ItemRendererPipe(TinyBlocks.biggerPipe));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TinyBlocks.largePipe), new ItemRendererPipe(TinyBlocks.largePipe));
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TinyBlocks.hugePipe), new ItemRendererPipe(TinyBlocks.hugePipe));
 		
 		// Storage Blocks
 		RenderingRegistry.registerBlockHandler(EnumIDs.StorageBlock.getId(), new RenderStorage());
@@ -56,22 +58,22 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		ClientRegistry.bindTileEntitySpecialRenderer(TinyTank.class, new RenderStorageBlock());
 		ClientRegistry.bindTileEntitySpecialRenderer(AdvTinyChest.class, new RenderStorageBlock());
 		
-		MinecraftForgeClient.registerItemRenderer(TinyItems.tinyChest.itemID, new ItemRendererStorageBlock());
-		MinecraftForgeClient.registerItemRenderer(TinyItems.tinyTank.itemID, new ItemRendererStorageBlock());
-		MinecraftForgeClient.registerItemRenderer(TinyItems.advTinyChest.itemID, new ItemRendererStorageBlock());
+		MinecraftForgeClient.registerItemRenderer(TinyItems.tinyChest, new ItemRendererStorageBlock());
+		MinecraftForgeClient.registerItemRenderer(TinyItems.tinyTank, new ItemRendererStorageBlock());
+		MinecraftForgeClient.registerItemRenderer(TinyItems.advTinyChest, new ItemRendererStorageBlock());
 		
 		// Transport Blocks
 		ClientRegistry.bindTileEntitySpecialRenderer(TinyHopper.class, new renderTransportTile());
-		MinecraftForgeClient.registerItemRenderer(TinyBlocks.transportBlock.blockID, new ItemRenderTransportTile());
-		MinecraftForgeClient.registerItemRenderer(TinyItems.interfaceBlock.itemID, new ItemRenderTransportTile());
+		MinecraftForgeClient.registerItemRenderer(Item.getItemFromBlock(TinyBlocks.transportBlock), new ItemRenderTransportTile());
+		MinecraftForgeClient.registerItemRenderer(TinyItems.interfaceBlock, new ItemRenderTransportTile());
 		RenderingRegistry.registerBlockHandler(EnumIDs.TransportBlock.getId(), new RenderTransport());
 		
 		
 		
 		// Entities
 		RenderingRegistry.registerEntityRenderingHandler(TCarts.class, new RenderTCarts());
-		MinecraftForgeClient.registerItemRenderer(TinyItems.tinyStorageCart.itemID, new CartItemRenderer(false));
-		MinecraftForgeClient.registerItemRenderer(TinyItems.advTinyStorageCart.itemID, new CartItemRenderer(true));
+		MinecraftForgeClient.registerItemRenderer(TinyItems.tinyStorageCart, new CartItemRenderer(false));
+		MinecraftForgeClient.registerItemRenderer(TinyItems.advTinyStorageCart, new CartItemRenderer(true));
 		
 		NeiRegistry.getInstance().init();
 		
@@ -79,16 +81,18 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 	
 	private void registerLanguage()
 	{
+		
 		if (TinyModularThings.LanguagePrint)
 		{
-			Item[] items = Item.itemsList;
-			for (Item cu : items)
+			Iterator items = Item.itemRegistry.iterator();
+			while(items.hasNext())
 			{
+				Item cu = (Item) items.next();
 				if (cu != null && cu instanceof LanguageItem)
 				{
 					LanguageItem item = (LanguageItem) cu;
-					item.registerItems(cu.itemID, TinyModularThings.instance);
-					item.registerItems(cu.itemID, SpmodAPI.instance);
+					item.registerItems(cu, TinyModularThings.instance);
+					item.registerItems(cu, SpmodAPI.instance);
 				}
 			}
 			LanguageRegister.printModLanguage(TinyModularThings.instance);

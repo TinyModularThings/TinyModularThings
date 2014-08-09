@@ -13,11 +13,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.eventhandler.Event.Result;
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import net.minecraft.nbt.CompressedStreamTools;
-import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.server.MinecraftServer;
@@ -28,6 +24,8 @@ import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.BlockPosition;
+import cpw.mods.fml.common.eventhandler.Event.Result;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 
 public class StructureStorage
 {

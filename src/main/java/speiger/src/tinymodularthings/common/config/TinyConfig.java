@@ -2,10 +2,7 @@ package speiger.src.tinymodularthings.common.config;
 
 import java.io.File;
 
-import net.minecraftforge.common.Configuration;
 import speiger.src.api.util.config.ConfigBoolean;
-import speiger.src.spmodapi.common.config.configType.ConfigBlock;
-import speiger.src.spmodapi.common.config.configType.ConfigItem;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.plugins.BC.BCRegistry;
 

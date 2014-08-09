@@ -1,11 +1,6 @@
 package speiger.src.spmodapi.common.handler;
 
 import io.netty.buffer.ByteBuf;
-
-import java.io.ByteArrayInputStream;
-import java.io.DataInputStream;
-import java.io.UnsupportedEncodingException;
-
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
@@ -14,14 +9,10 @@ import speiger.src.api.packets.SpmodPacketHelper;
 import speiger.src.api.packets.SpmodPacketHelper.PacketType;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
-import speiger.src.spmodapi.SpmodAPI;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.ByteBufUtils;
 import cpw.mods.fml.common.network.simpleimpl.IMessage;
 import cpw.mods.fml.common.network.simpleimpl.IMessageHandler;
 import cpw.mods.fml.common.network.simpleimpl.MessageContext;
-import cpw.mods.fml.relauncher.Side;
 
 public class SpmodPacket implements IMessage
 {

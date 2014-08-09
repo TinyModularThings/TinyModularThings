@@ -1,6 +1,5 @@
 package speiger.src.tinymodularthings.common.items;
 
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.items.DisplayItem;

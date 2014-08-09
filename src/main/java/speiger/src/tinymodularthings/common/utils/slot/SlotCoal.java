@@ -1,7 +1,5 @@
 package speiger.src.tinymodularthings.common.utils.slot;
 
-import mods.railcraft.common.items.firestone.ItemFirestoneRefined;
-import mods.railcraft.common.plugins.forge.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;

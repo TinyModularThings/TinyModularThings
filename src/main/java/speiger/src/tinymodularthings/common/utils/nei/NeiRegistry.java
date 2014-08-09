@@ -1,7 +1,7 @@
 package speiger.src.tinymodularthings.common.utils.nei;
 
 import speiger.src.tinymodularthings.client.gui.machine.PressureFurnaceGui;
-import codechicken.nei.api.API;
+import cpw.mods.fml.common.API;
 
 public class NeiRegistry
 {
