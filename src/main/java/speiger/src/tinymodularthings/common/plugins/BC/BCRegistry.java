@@ -68,10 +68,8 @@ public class BCRegistry
 	
 	public void overrideFurnace()
 	{
-//		Block.blocksList[61] = null;
-//		Block.blocksList[62] = null;
-//		Block.blocksList[61] = new BlockModifiedFurnace(false);
-//		Block.blocksList[62] = new BlockModifiedFurnace(true);
-//		TileEntity.addMapping(TileEntityModifiedFurnace.class, "ModifiedFurnace");
+		Block.blockRegistry.addObject(61, "furnace", new BlockModifiedFurnace(false));
+		Block.blockRegistry.addObject(62, "lit_furnace", new BlockModifiedFurnace(true));
+		TileEntity.addMapping(TileEntityModifiedFurnace.class, "ModifiedFurnace");
 	}
 }

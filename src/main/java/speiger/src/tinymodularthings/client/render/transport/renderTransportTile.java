@@ -14,7 +14,7 @@ public class renderTransportTile extends TileEntitySpecialRenderer
 {
 
 	ModelTinyHopper hopper = new ModelTinyHopper();
-	private NBTTagCompound data = new NBTTagCompound("RenderData");
+	private NBTTagCompound data = new NBTTagCompound();
 	
 	
 	@Override
@@ -26,7 +26,7 @@ public class renderTransportTile extends TileEntitySpecialRenderer
 			{
 				NBTTagCompound hopper = data.getCompoundTag("TinyHopper");
 				this.renderTinyHopper((IHopper) tileentity, d0, d1, d2, hopper);
-				data.setCompoundTag("TinyHopper", hopper);
+				data.setTag("TinyHopper", hopper);
 			}
 		}
 	}

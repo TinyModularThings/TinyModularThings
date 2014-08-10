@@ -30,8 +30,9 @@ public class AddonForestry
 		RecipeManagers.squeezerManager.addRecipe(10, new ItemStack[]{new ItemStack(APIBlocks.hempStraw)}, FluidRegistry.getFluidStack("hemp.resin", 250), new ItemStack(APIItems.compressedHemp), 100);
 		try
 		{
-			RecipeUtil.injectLeveledRecipe(new ItemStack(APIItems.hemp), GameMode.getGameMode().getIntegerSetting("fermenter.yield.sapling"), "biomass");
-			RecipeUtil.injectLeveledRecipe(new ItemStack(APIBlocks.hempStraw), GameMode.getGameMode().getIntegerSetting("fermenter.yield.sapling")*10, "biomass");
+			//TODO Need Forestry Core as Dev version
+//			RecipeUtil.injectLeveledRecipe(new ItemStack(APIItems.hemp), GameMode.getGameMode().getIntegerSetting("fermenter.yield.sapling"), "biomass");
+//			RecipeUtil.injectLeveledRecipe(new ItemStack(APIBlocks.hempStraw), GameMode.getGameMode().getIntegerSetting("fermenter.yield.sapling")*10, "biomass");
 		}
 		catch (Exception e)
 		{

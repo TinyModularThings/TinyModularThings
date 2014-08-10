@@ -8,17 +8,20 @@ import javax.swing.Icon;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.tinymodularthings.TinyModularThings;
@@ -30,18 +33,18 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockMachine extends BlockContainer
 {
 	
-	public BlockMachine(int par1)
+	public BlockMachine()
 	{
-		super(par1, Material.iron);
+		super(Material.iron);
 		setHardness(4.0F);
-		MinecraftForge.setBlockHarvestLevel(this, "pickaxe", 1);
+		setHarvestLevel("pickaxe", 1, 0);
 		setCreativeTab(CreativeTabs.tabFood);
 	}
 	
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3)
 	{
 		for(int i = 0;i<4;i++)
 		{
@@ -54,20 +57,15 @@ public class BlockMachine extends BlockContainer
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile != null && tile instanceof AdvTile)
 		{
 			return ((AdvTile)tile).pickBlock(target);
 		}
-		return new ItemStack(world.getBlockId(x, y, z), 1, world.getBlockMetadata(x, y, z));
+		return new ItemStack(world.getBlock(x, y, z), 1, world.getBlockMetadata(x, y, z));
 	}
 
 
-	@Override
-	public TileEntity createNewTileEntity(World var1)
-	{
-		return null;
-	}
 	
 	@Override
 	public TileEntity createTileEntity(World par1, int metadata)
@@ -92,9 +90,9 @@ public class BlockMachine extends BlockContainer
 	}
 	
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
 	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			((AdvTile) tile).onBreaking();
@@ -108,7 +106,7 @@ public class BlockMachine extends BlockContainer
 	{
 		if (!par1.isRemote)
 		{
-			TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
+			TileEntity tile = par1.getTileEntity(par2, par3, par4);
 			if (tile instanceof AdvTile)
 			{
 				return ((AdvTile) tile).onActivated(par5EntityPlayer);
@@ -120,7 +118,7 @@ public class BlockMachine extends BlockContainer
 	@Override
 	public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4, Explosion par5Explosion)
 	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			((AdvTile) tile).onBreaking();
@@ -130,7 +128,7 @@ public class BlockMachine extends BlockContainer
 	@Override
 	public float getBlockHardness(World par1, int par2, int par3, int par4)
 	{
-		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1.getTileEntity(par2, par3, par4);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			return ((AdvTile) tile).getBlockHardness();
@@ -162,7 +160,7 @@ public class BlockMachine extends BlockContainer
 			direction = ForgeDirection.WEST.ordinal();
 		}
 		
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			((AdvTile) tile).onPlaced(direction);
@@ -172,9 +170,9 @@ public class BlockMachine extends BlockContainer
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getBlockTexture(IBlockAccess par1, int par2, int par3, int par4, int par5)
+	public IIcon getIcon(IBlockAccess par1, int par2, int par3, int par4, int par5)
 	{
-		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1.getTileEntity(par2, par3, par4);
 		int meta = par1.getBlockMetadata(par2, par3, par4);
 		if (tile != null && tile instanceof AdvTile &&  ((AdvTile) tile).getIconFromSideAndMetadata(par5, 0) != null)
 		{
@@ -186,7 +184,7 @@ public class BlockMachine extends BlockContainer
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		switch (par2)
 		{
@@ -196,14 +194,14 @@ public class BlockMachine extends BlockContainer
 				{
 					if (BCRegistry.overrideVanilla)
 					{
-						return Block.blocksList[61].getIcon(3, 2);
+						return ((Block)Block.blockRegistry.getObjectById(61)).getIcon(3, 2);
 					}
 					else
 					{
-						return Block.blocksList[61].getIcon(2, 2);
+						return ((Block)Block.blockRegistry.getObjectById(61)).getIcon(2, 2);
 					}
 				}
-				return Block.cobblestone.getBlockTextureFromSide(0);
+				return Blocks.cobblestone.getBlockTextureFromSide(0);
 			}
 			case 1:
 			{
@@ -242,11 +240,11 @@ public class BlockMachine extends BlockContainer
 		}
 	}
 	
-	Icon[][] textures = new Icon[3][3];
+	IIcon[][] textures = new IIcon[3][3];
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		String[] names = new String[]{"top", "bottom", "side"};
 		for(int i = 0;i<names.length;i++)
@@ -264,25 +262,25 @@ public class BlockMachine extends BlockContainer
 	public void updateTick(World world, int i, int j, int k, Random random)
 	{
 		notifyNeighbors(world, i, j, k);
-		world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
+		world.scheduleBlockUpdate(i, j, k, this, tickRate());
 	}
 	
 	public void notifyNeighbors(World world, int i, int j, int k)
 	{
-		world.notifyBlocksOfNeighborChange(i, j, k, blockID);
-		world.notifyBlocksOfNeighborChange(i, j - 1, k, blockID);
-		world.notifyBlocksOfNeighborChange(i, j + 1, k, blockID);
-		world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
-		world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
-		world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
-		world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
+		world.notifyBlocksOfNeighborChange(i, j, k, this);
+		world.notifyBlocksOfNeighborChange(i, j - 1, k, this);
+		world.notifyBlocksOfNeighborChange(i, j + 1, k, this);
+		world.notifyBlocksOfNeighborChange(i - 1, j, k, this);
+		world.notifyBlocksOfNeighborChange(i + 1, j, k, this);
+		world.notifyBlocksOfNeighborChange(i, j, k - 1, this);
+		world.notifyBlocksOfNeighborChange(i, j, k + 1, this);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
 	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			((AdvTile) tile).onClientTick();
@@ -298,12 +296,19 @@ public class BlockMachine extends BlockContainer
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k)
 	{
-		world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
+		world.scheduleBlockUpdate(i, j, k, this, tickRate());
 	}
 	
 	public int tickRate()
 	{
 		return 5;
+	}
+
+
+	@Override
+	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
+	{
+		return this.createTileEntity(p_149915_1_, p_149915_2_);
 	}
 	
 }

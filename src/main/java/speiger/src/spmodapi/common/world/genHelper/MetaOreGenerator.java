@@ -34,6 +34,11 @@ public class MetaOreGenerator
 	
 	public boolean generate(World par1World, Random par2Random, int par3, int par4, int par5)
 	{
+		if(ore != null)
+		{
+			return true;
+		}
+		
 		float f = par2Random.nextFloat() * (float) Math.PI;
 		double d0 = par3 + 8 + MathHelper.sin(f) * size / 8.0F;
 		double d1 = par3 + 8 - MathHelper.sin(f) * size / 8.0F;

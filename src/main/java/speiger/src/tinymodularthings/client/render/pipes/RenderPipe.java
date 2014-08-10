@@ -7,6 +7,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.energy.IEnergyProvider;
 import speiger.src.api.pipes.IAdvancedPipeProvider;
 import speiger.src.api.pipes.IBasicPipeProvider;
@@ -45,7 +46,7 @@ public class RenderPipe implements ISimpleBlockRenderingHandler
 	
 	public void renderBlock(RenderBlocks render, BlockPipe pipe, IBlockAccess world, int x, int y, int z)
 	{
-		if (world.getBlockId(x, y, z) != pipe.blockID)
+		if (world.getBlock(x, y, z) != pipe)
 		{
 			return;
 		}
@@ -106,22 +107,21 @@ public class RenderPipe implements ISimpleBlockRenderingHandler
 		int y = yCoord + direction.offsetY;
 		int z = zCoord + direction.offsetZ;
 		
-		int id = world.getBlockId(x, y, z);
-		int meta = world.getBlockMetadata(x, y, z) % 6;
+		BlockStack id = new BlockStack(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z) % 6);
 		
-		if (id == 0 || Block.blocksList[id] == null)
+		if (id.hasBlock())
 		{
 			return false;
 		}
-		if (Block.blocksList[id].hasTileEntity(meta))
+		if (id.hasTileEntity())
 		{
-			TileEntity tile = world.getBlockTileEntity(x, y, z);
+			TileEntity tile = world.getTileEntity(x, y, z);
 			if (tile instanceof IInventory || tile instanceof IFluidHandler || tile instanceof IPowerReceptor || tile instanceof IEnergyProvider || tile instanceof IPipeTile)
 			{
 				return true;
 			}
 		}
-		if (Block.blocksList[id] instanceof IBasicPipe)
+		if (id.getBlock() instanceof IBasicPipe)
 		{
 			return true;
 		}
@@ -134,16 +134,16 @@ public class RenderPipe implements ISimpleBlockRenderingHandler
 		int yCoord = y + direction.offsetY;
 		int zCoord = z + direction.offsetZ;
 		
-		int id = world.getBlockId(xCoord, yCoord, zCoord);
-		int meta = world.getBlockMetadata(xCoord, yCoord, zCoord) % 6;
+		BlockStack id = new BlockStack(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z) % 6);
 		
-		if (id == 0 || Block.blocksList[id] == null)
+		
+		if (id.hasBlock())
 		{
 			return false;
 		}
-		if (Block.blocksList[id].hasTileEntity(meta))
+		if (id.hasTileEntity())
 		{
-			TileEntity tile = world.getBlockTileEntity(xCoord, yCoord, zCoord);
+			TileEntity tile = world.getTileEntity(xCoord, yCoord, zCoord);
 			if (tile != null)
 			{
 				
@@ -164,22 +164,22 @@ public class RenderPipe implements ISimpleBlockRenderingHandler
 			}
 		}
 		
-		if (Block.blocksList[id] instanceof IAdvancedPipeProvider)
+		if (id.getBlock() instanceof IAdvancedPipeProvider)
 		{
-			return ((IAdvancedPipeProvider) Block.blocksList[id]).canConnect(direction.getOpposite());
+			return ((IAdvancedPipeProvider) id.getBlock()).canConnect(direction.getOpposite());
 		}
 		
-		if (Block.blocksList[id] instanceof IBasicPipeProvider)
+		if (id.getBlock() instanceof IBasicPipeProvider)
 		{
-			ForgeDirection provider = ((IBasicPipeProvider) Block.blocksList[id]).getConnectionSide(world, xCoord, yCoord, zCoord);
+			ForgeDirection provider = ((IBasicPipeProvider) id.getBlock()).getConnectionSide(world, xCoord, yCoord, zCoord);
 			if (x == xCoord + provider.offsetX && y == yCoord + provider.offsetY && z == zCoord + provider.offsetZ)
 			{
 				return true;
 			}
 		}
-		if (Block.blocksList[id] instanceof IBasicPipe)
+		if (id.getBlock() instanceof IBasicPipe)
 		{
-			ForgeDirection provider = ((IBasicPipe) Block.blocksList[id]).getNextDirection(world, xCoord, yCoord, zCoord);
+			ForgeDirection provider = ((IBasicPipe) id.getBlock()).getNextDirection(world, xCoord, yCoord, zCoord);
 			if (x == xCoord + provider.offsetX && y == yCoord + provider.offsetY && z == zCoord + provider.offsetZ)
 			{
 				return true;
@@ -188,16 +188,18 @@ public class RenderPipe implements ISimpleBlockRenderingHandler
 		return false;
 	}
 	
-	@Override
-	public boolean shouldRender3DInInventory()
-	{
-		return false;
-	}
-	
+
 	@Override
 	public int getRenderId()
 	{
 		return EnumIDs.Pipe.getId();
+	}
+
+	@Override
+	public boolean shouldRender3DInInventory(int modelId)
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

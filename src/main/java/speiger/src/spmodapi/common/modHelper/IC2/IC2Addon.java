@@ -1,7 +1,6 @@
 package speiger.src.spmodapi.common.modHelper.IC2;
 
 import ic2.api.crops.Crops;
-import ic2.core.block.crop.IC2Crops;
 import net.minecraft.item.ItemStack;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
@@ -20,8 +19,7 @@ public class IC2Addon
 		
 		try
 		{
-			IC2Crops crops = (IC2Crops)Crops.instance;
-			crops.registerBaseSeed(new ItemStack(APIBlocks.blueFlower, 4, 0), crops.cropBlueFlower.getId(), 4, 1, 1, 1);
+			Crops.instance.registerBaseSeed(new ItemStack(APIBlocks.blueFlower, 4, 0), 8, 4, 1, 1, 1);
 		}
 		catch (Exception e)
 		{

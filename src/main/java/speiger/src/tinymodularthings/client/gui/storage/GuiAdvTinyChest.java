@@ -35,8 +35,8 @@ public class GuiAdvTinyChest extends GuiInventoryCore
 		{
 			s = LanguageRegister.getLanguageName(this, "tiny.chest.cart.adv", getCore());
 		}
-		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
-		fontRenderer.drawString(I18n.getString("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		fontRendererObj.drawString(s, xSize / 2 - fontRendererObj.getStringWidth(s) / 2, 6, 4210752);
+		fontRendererObj.drawString(I18n.format("container.inventory"), 8, ySize - 96 + 2, 4210752);
 		
 	}
 	

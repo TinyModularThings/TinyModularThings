@@ -1,7 +1,5 @@
 package speiger.src.tinymodularthings.client.render.pipes;
 
-import javax.swing.Icon;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -9,6 +7,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
@@ -18,11 +17,6 @@ import speiger.src.tinymodularthings.common.blocks.pipes.basic.ItemBlockPipe;
 public class ItemRendererPipe implements IItemRenderer
 {
 	Block block;
-	
-	public ItemRendererPipe(int BlockID)
-	{
-		this(Block.blocksList[BlockID]);
-	}
 	
 	public ItemRendererPipe(Block block)
 	{
@@ -62,7 +56,7 @@ public class ItemRendererPipe implements IItemRenderer
 	private void renderItem(RenderBlocks render, ItemStack item, float x, float y, float z)
 	{
 		Tessellator tessellator = Tessellator.instance;
-		Icon icon = ((ItemBlockPipe) Item.itemsList[item.itemID]).getIconFromDamage(0);
+		IIcon icon = ((ItemBlockPipe) item.getItem()).getIconFromDamage(0);
 		
 		if (icon == null)
 		{

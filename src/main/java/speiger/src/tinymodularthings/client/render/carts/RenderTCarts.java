@@ -23,16 +23,16 @@ public class RenderTCarts extends RenderMinecart
 	ModelAdvTinyChest advtinychest = new ModelAdvTinyChest();
 	
 	@Override
-	protected void renderBlockInMinecart(EntityMinecart par1EntityMinecart, float par2, Block par3, int par4)
+	protected void func_147910_a(EntityMinecart par1EntityMinecart, float par2, Block par3, int par4)
 	{
-		super.renderBlockInMinecart(par1EntityMinecart, par2, par3, par4);
+		super.func_147910_a(par1EntityMinecart, par2, par3, par4);
 		
-		if (par3.blockID == TinyBlocks.storageBlock.blockID && par4 == 0)
+		if (par3 == TinyBlocks.storageBlock && par4 == 0)
 		{
 			renderTinyChest(par1EntityMinecart, par2);
 			return;
 		}
-		else if (par3.blockID == TinyBlocks.storageBlock.blockID && par4 == 2 && par1EntityMinecart instanceof EntityAdvTinyChestCart)
+		else if (par3 == TinyBlocks.storageBlock && par4 == 2 && par1EntityMinecart instanceof EntityAdvTinyChestCart)
 		{
 			renderAdvTinyChest((EntityAdvTinyChestCart) par1EntityMinecart, par2);
 		}

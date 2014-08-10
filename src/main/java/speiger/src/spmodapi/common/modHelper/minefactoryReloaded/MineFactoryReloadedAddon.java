@@ -7,8 +7,8 @@ public class MineFactoryReloadedAddon
 	public static void loadMFR()
 	{
 		// Although not needed, the casts ensure the objects are of the correct type
-		FactoryRegistry.sendMessage("registerFertilizable", (IFactoryFertilizable) APIBlocks.hempCrop);
-		FactoryRegistry.sendMessage("registerHarvestable", (IFactoryHarvestable) APIBlocks.hempCrop);
-		FactoryRegistry.sendMessage("registerPlantable", (IFactoryPlantable) APIBlocks.hempCrop);
+//		FactoryRegistry.sendMessage("registerFertilizable", (IFactoryFertilizable) APIBlocks.hempCrop);
+//		FactoryRegistry.sendMessage("registerHarvestable", (IFactoryHarvestable) APIBlocks.hempCrop);
+//		FactoryRegistry.sendMessage("registerPlantable", (IFactoryPlantable) APIBlocks.hempCrop);
 	}
 }

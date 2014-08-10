@@ -1,5 +1,6 @@
 package speiger.src.tinymodularthings.client.render.storage;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
@@ -64,17 +65,17 @@ public class ItemRendererStorageBlock implements IItemRenderer
 			return;
 		}
 		
-		int id = item.itemID;
+		Item id = item.getItem();
 		item.getItemDamage();
-		if (id == TinyItems.tinyChest.itemID)
+		if (id == TinyItems.tinyChest)
 		{
 			renderTinyChest(0.5F, 1.5F, 0.5F);
 		}
-		else if (id == TinyItems.tinyTank.itemID)
+		else if (id == TinyItems.tinyTank)
 		{
 			renderTinyTank(0.5F, 1.5F, 0.5F);
 		}
-		else if (id == TinyItems.advTinyChest.itemID)
+		else if (id == TinyItems.advTinyChest)
 		{
 			renderAdvTinyChest(0.5F, 1.5F, 0.5F);
 		}
@@ -87,17 +88,17 @@ public class ItemRendererStorageBlock implements IItemRenderer
 			return;
 		}
 		
-		int id = item.itemID;
+		Item id = item.getItem();
 		item.getItemDamage();
-		if (id == TinyItems.tinyChest.itemID)
+		if (id == TinyItems.tinyChest)
 		{
 			renderTinyChest(0.0F, 1.5F, 0.0F);
 		}
-		else if (id == TinyItems.tinyTank.itemID)
+		else if (id == TinyItems.tinyTank)
 		{
 			renderTinyTank(0.0F, 1.5F, 0.0F);
 		}
-		else if (id == TinyItems.advTinyChest.itemID)
+		else if (id == TinyItems.advTinyChest)
 		{
 			renderAdvTinyChest(0.0F, 1.5F, 0.0F);
 		}
@@ -110,17 +111,17 @@ public class ItemRendererStorageBlock implements IItemRenderer
 			return;
 		}
 		
-		int id = item.itemID;
+		Item id = item.getItem();
 		item.getItemDamage();
-		if (id == TinyItems.tinyChest.itemID)
+		if (id == TinyItems.tinyChest)
 		{
 			renderTinyChest(0.5F, 1.5F, 0.0F);
 		}
-		else if (id == TinyItems.tinyTank.itemID)
+		else if (id == TinyItems.tinyTank)
 		{
 			renderTinyTank(1.0F, 1.0F, 0.0F);
 		}
-		else if (id == TinyItems.advTinyChest.itemID)
+		else if (id == TinyItems.advTinyChest)
 		{
 			renderAdvTinyChest(1.0F, 1.0F, 0.0F);
 		}
@@ -133,17 +134,17 @@ public class ItemRendererStorageBlock implements IItemRenderer
 			return;
 		}
 		
-		int id = item.itemID;
+		Item id = item.getItem();
 		item.getItemDamage();
-		if (id == TinyItems.tinyChest.itemID)
+		if (id == TinyItems.tinyChest)
 		{
 			renderTinyChest(0.0F, 1.0F, 0.0F);
 		}
-		else if (id == TinyItems.tinyTank.itemID)
+		else if (id == TinyItems.tinyTank)
 		{
 			renderTinyTank(0.0F, 1.0F, 0.0F);
 		}
-		else if (id == TinyItems.advTinyChest.itemID)
+		else if (id == TinyItems.advTinyChest)
 		{
 			renderAdvTinyChest(0.0F, 1.0F, 0.0F);
 		}

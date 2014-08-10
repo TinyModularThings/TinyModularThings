@@ -4,6 +4,10 @@ import javax.swing.Icon;
 
 import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -45,7 +49,7 @@ public class WaterGenerator extends AdvTile implements IFluidHandler, IPowerRece
 			sendWater();
 			if(worldObj.getWorldTime() % 10 == 0)
 			{
-				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
+				this.sendPacket(20, getDescriptionPacket());
 				this.updateBlock();
 			}
 		}
@@ -103,7 +107,7 @@ public class WaterGenerator extends AdvTile implements IFluidHandler, IPowerRece
 	}
 	
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		return null;
 	}
@@ -191,14 +195,13 @@ public class WaterGenerator extends AdvTile implements IFluidHandler, IPowerRece
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
 	}
-
-
+	
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 	{
-		this.readFromNBT(pkt.data);
+		readFromNBT(pkt.func_148857_g());
 	}
 	
 	

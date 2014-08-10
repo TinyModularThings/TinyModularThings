@@ -30,15 +30,15 @@ public class PressureFurnaceGui extends GuiInventoryCore
 	{
 		String name = LanguageRegister.getLanguageName(this, "pressurefurnace", getCore());
 		String heat = LanguageRegister.getLanguageName(this, "heat", getCore());
-		fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 4210752);
-		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 105 + 2, 4210752);
-		fontRenderer.drawString(heat, 33, 50, 4210752);
+		fontRendererObj.drawString(name, xSize / 2 - fontRendererObj.getStringWidth(name) / 2, 6, 4210752);
+		fontRendererObj.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 105 + 2, 4210752);
+		fontRendererObj.drawString(heat, 33, 50, 4210752);
 		int maxHeat = tile.heat / 12;
-		fontRenderer.drawString("" + maxHeat + "%", 32, 61, 4210752);
+		fontRendererObj.drawString("" + maxHeat + "%", 32, 61, 4210752);
 		if (maxHeat < 100)
 		{
 			String text = LanguageRegister.getLanguageName(this, "furnace.starting", getCore());
-			fontRenderer.drawString(text, 80, 65, 4210752);
+			fontRendererObj.drawString(text, 80, 65, 4210752);
 		}
 		else
 		{
@@ -46,16 +46,16 @@ public class PressureFurnaceGui extends GuiInventoryCore
 			{
 				int progress = tile.progress / 3;
 				String done = LanguageRegister.getLanguageName(this, "furnace.progress", getCore());
-				fontRenderer.drawString(done + ": " + progress + "%", 80, 67, 4210752);
+				fontRendererObj.drawString(done + ": " + progress + "%", 80, 67, 4210752);
 			}
 			else
 			{
 				String need = LanguageRegister.getLanguageName(this, "furnace.request", getCore());
-				fontRenderer.drawString(need, 80, 67, 4210752);
+				fontRendererObj.drawString(need, 80, 67, 4210752);
 			}
 			
 		}
-		drawSlotInventory(new Slot(tile, 6, 20, 50));
+		this.drawSlot(new Slot(tile, 6, 20, 50));
 	}
 	
 	private static final ResourceLocation gui = new ResourceLocation(TinyModularThingsLib.ModID.toLowerCase() + ":textures/gui/machine/pressuredFurnace.png");

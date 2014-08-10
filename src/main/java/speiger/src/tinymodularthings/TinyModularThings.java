@@ -30,7 +30,6 @@ import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
 @Mod(modid = ModID, name = Name, version = Version, dependencies = "after:BuildCraft|Core", useMetadata = true)
-@NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class TinyModularThings implements SpmodMod
 {
 	
@@ -53,7 +52,7 @@ public class TinyModularThings implements SpmodMod
 		language.registerAllAviableLanguages();
 		TinyConfig.getConfig().loadTinyConfig(new File(evt.getModConfigurationDirectory().getAbsolutePath() + "/Spmod/TinyModularThings.cfg"));
 		instance = this;
-		NetworkRegistry.instance().registerGuiHandler(instance, core);
+		NetworkRegistry.INSTANCE.registerGuiHandler(instance, core);
 	}
 	
 	@EventHandler

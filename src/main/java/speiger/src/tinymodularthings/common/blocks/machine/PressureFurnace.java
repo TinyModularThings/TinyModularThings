@@ -6,19 +6,24 @@ import java.util.Random;
 import javax.swing.Icon;
 
 import mods.railcraft.common.items.firestone.ItemFirestoneRefined;
-import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.common.util.Constants.NBT;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.inventory.IAcceptor;
 import speiger.src.api.inventory.IAcceptor.AcceptorType;
@@ -127,8 +132,8 @@ public class PressureFurnace extends TileFacing implements IInventory,
 			
 			if (update)
 			{
-				onInventoryChanged();
-				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 30, worldObj.provider.dimensionId, getDescriptionPacket());
+				this.markDirty();
+				this.sendPacket(30, getDescriptionPacket());
 				updateBlock();
 				update = false;
 			}
@@ -153,7 +158,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 						inv[0].stackSize--;
 						if (fuelItem.stackSize <= 0)
 						{
-							inv[0] = fuelItem.getItem().getContainerItemStack(fuelItem);
+							inv[0] = fuelItem.getItem().getContainerItem(fuelItem);
 						}
 						heat = Math.min(heat + 100, MaxHeat);
 					}
@@ -371,7 +376,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 					
 					BlockStack item = new BlockStack(TinyBlocks.transportBlock, 1);
 					
-					if (realBlock.getBlock() != null && realBlock.getBlock().isAirBlock(worldObj, posX, posY, posZ))
+					if (realBlock.getBlock() != null && realBlock.getBlock().isAir(worldObj, posX, posY, posZ))
 					{
 						realBlock = new BlockStack();
 					}
@@ -385,17 +390,17 @@ public class PressureFurnace extends TileFacing implements IInventory,
 						
 						match++;
 					}
-					else if (realBlock.getBlock() != null && cuBlock.getBlock() != null && cuBlock.getBlockID() == Block.cobblestone.blockID)
+					else if (realBlock.getBlock() != null && cuBlock.getBlock() != null && cuBlock.getBlock() == Blocks.cobblestone)
 					{
 						String name = realBlock.getHiddenName();
 						boolean ore = name.contains("Ore") || name.contains("ore");
 						if ((!ore && (name.contains("cobble") || name.contains("sandStone") || name.contains("brick") || name.contains("stone"))))
 						{
-							if (realBlock.getBlock().isBlockNormalCube(worldObj, posX, posY, posZ))
+							if (realBlock.getBlock().isNormalCube(worldObj, posX, posY, posZ))
 							{
 								match++;
 							}
-							else if (!realBlock.getBlock().isBlockNormalCube(worldObj, posX, posY, posZ) && name.contains("railcraft") && realBlock.getBlock().isBlockSolidOnSide(worldObj, posX, posY, posZ, ForgeDirection.WEST))
+							else if (!realBlock.getBlock().isNormalCube(worldObj, posX, posY, posZ) && name.contains("railcraft") && realBlock.getBlock().isSideSolid(worldObj, posX, posY, posZ, ForgeDirection.WEST))
 							{
 								match++;
 							}
@@ -433,7 +438,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		
 		if (save != valid)
 		{
-			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		}
 		
 		update = true;
@@ -450,7 +455,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		{
 			return new BlockStack(getBlockType(), getBlockMetadata());
 		}
-		return new BlockStack(Block.cobblestone);
+		return new BlockStack(Blocks.cobblestone);
 	}
 	
 	public void addToStorage()
@@ -604,7 +609,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	}
 	
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		if (side == getFacing())
 		{
@@ -612,23 +617,23 @@ public class PressureFurnace extends TileFacing implements IInventory,
 			{
 				if (valid)
 				{
-					return Block.blocksList[62].getIcon(3, 2);
+					return ((Block)Block.blockRegistry.getObjectById(62)).getIcon(3, 2);
 				}
 				else
 				{
-					return Block.blocksList[61].getIcon(3, 2);
+					return ((Block)Block.blockRegistry.getObjectById(61)).getIcon(3, 2);
 				}
 			}
 			if (valid)
 			{
-				return Block.blocksList[62].getIcon(2, 2);
+				return ((Block)Block.blockRegistry.getObjectById(62)).getIcon(2, 2);
 			}
 			else
 			{
-				return Block.blocksList[61].getIcon(2, 2);
+				return ((Block)Block.blockRegistry.getObjectById(61)).getIcon(2, 2);
 			}
 		}
-		return Block.cobblestone.getBlockTextureFromSide(0);
+		return Blocks.cobblestone.getBlockTextureFromSide(0);
 	}
 	
 	@Override
@@ -722,12 +727,6 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	}
 	
 	@Override
-	public String getInvName()
-	{
-		return "Updating Chest";
-	}
-	
-	@Override
 	public int getInventoryStackLimit()
 	{
 		return 64;
@@ -739,21 +738,6 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		return valid;
 	}
 	
-	@Override
-	public void openChest()
-	{
-	}
-	
-	@Override
-	public void closeChest()
-	{
-	}
-	
-	@Override
-	public boolean isInvNameLocalized()
-	{
-		return false;
-	}
 	
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
@@ -791,12 +775,12 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		NBTTagList var2 = nbt.getTagList("Items");
+		NBTTagList var2 = nbt.getTagList("Items", NBT.TAG_COMPOUND);
 		inv = new ItemStack[getSizeInventory()];
 		
 		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
 		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
+			NBTTagCompound var4 = (NBTTagCompound) var2.getCompoundTagAt(var3);
 			byte var5 = var4.getByte("Slot");
 			
 			if (var5 >= 0 && var5 < inv.length)
@@ -817,13 +801,13 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	{
 		NBTTagCompound var1 = new NBTTagCompound();
 		writeToNBT(var1);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, var1);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, var1);
 	}
 	
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 	{
-		readFromNBT(pkt.data);
+		readFromNBT(pkt.func_148857_g());
 	}
 	
 	@Override
@@ -983,6 +967,28 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		{
 			TinyModularThings.log.print("Error with BC Gate Actions");
 		}
+	}
+
+	@Override
+	public String getInventoryName()
+	{
+		return "Pressure Furnace";
+	}
+
+	@Override
+	public boolean hasCustomInventoryName()
+	{
+		return false;
+	}
+
+	@Override
+	public void openInventory()
+	{
+	}
+
+	@Override
+	public void closeInventory()
+	{		
 	}
 
 	

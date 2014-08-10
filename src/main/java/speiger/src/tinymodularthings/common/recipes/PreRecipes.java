@@ -38,6 +38,6 @@ public class PreRecipes
 		GameRegistry.addRecipe(new ItemStack(TinyBlocks.machine), new Object[] { "XXX", "XYX", "XXX", 'X', Blocks.cobblestone, 'Y', new ItemStack(Blocks.log, 1, PathProxy.getRecipeBlankValue())});
 		GameRegistry.addShapelessRecipe(new ItemStack(Items.skull, 1, 1), new Object[]{Items.diamond, Items.diamond, Blocks.coal_block, Items.arrow, Items.arrow, Items.bone, Items.bone});
 		
-		GameRegistry.addRecipe(new ItemStack(TinyItems.interfaceBlock, 4, 0), new Object[]{"XYX", "CVC", "XBX", 'B', TinyBlocks.normalPipe, 'Y', Blocks.hopper, 'C', ItemGear.getGearFromType(GearType.Redstone), 'V', Blocks.chest, 'X', new ItemStack(TinyItems.ingots, 1, EnumIngots.Aluminum.getIngotMeta())});
+//		GameRegistry.addRecipe(new ItemStack(TinyItems.interfaceBlock, 4, 0), new Object[]{"XYX", "CVC", "XBX", 'B', TinyBlocks.normalPipe, 'Y', Blocks.hopper, 'C', ItemGear.getGearFromType(GearType.Redstone), 'V', Blocks.chest, 'X', new ItemStack(TinyItems.ingots, 1, EnumIngots.Aluminum.getIngotMeta())});
 	}
 }

@@ -1,12 +1,10 @@
 package speiger.src.tinymodularthings.client.gui.machine;
 
-import javax.swing.Icon;
-
-import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -16,6 +14,7 @@ import org.lwjgl.opengl.GL11;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.packets.SpmodPacketHelper;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
+import speiger.src.spmodapi.common.handler.SpmodPacket;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.machine.BucketFillerBasic;
 import speiger.src.tinymodularthings.common.blocks.machine.InventoryBucketFiller;
@@ -43,8 +42,8 @@ public class BucketFillerGui extends GuiInventoryCore
     		name = LanguageRegister.getLanguageName(this, "self.bucketfiller", getCore());
     	}
     	
-        this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
-        this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+        this.fontRendererObj.drawString(name, this.xSize / 2 - this.fontRendererObj.getStringWidth(name) / 2, 6, 4210752);
+        this.fontRendererObj.drawString(I18n.format("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 
         this.buttonList.clear();
         int k = (this.width - this.xSize) / 2;
@@ -95,10 +94,10 @@ public class BucketFillerGui extends GuiInventoryCore
 		if(par1GuiButton.id == 0)
 		{
 			boolean oppo = !this.basic.drain;
-			Packet packet = SpmodPacketHelper.getHelper().createNBTPacket(basic, TinyModularThings.instance).InjectNumber(oppo ? 0 : 1).finishPacket();
+			SpmodPacket packet = SpmodPacketHelper.getHelper().createNBTPacket(basic, TinyModularThings.instance).InjectNumber(oppo ? 0 : 1).finishPacket();
 			if(packet != null)
 			{
-				PacketDispatcher.sendPacketToServer(packet);
+				//TODO Need to create a Networkhelper
 			}
 		}
 		this.initGui();
@@ -116,7 +115,7 @@ public class BucketFillerGui extends GuiInventoryCore
 		
 		int start = 0;
 		
-		Icon liquidIcon = null;
+		IIcon liquidIcon = null;
 		Fluid fluid = liquid.getFluid();
 		if ((fluid != null) && (fluid.getStillIcon() != null))
 		{

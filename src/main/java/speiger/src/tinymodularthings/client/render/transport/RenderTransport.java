@@ -33,7 +33,7 @@ public class RenderTransport implements ISimpleBlockRenderingHandler
 			}
 			else
 			{
-				TileEntity tile = world.getBlockTileEntity(x, y, z);
+				TileEntity tile = world.getTileEntity(x, y, z);
 				if (tile != null && tile instanceof IAcceptor)
 				{
 					AdvTile adv = (AdvTile) tile;
@@ -59,16 +59,17 @@ public class RenderTransport implements ISimpleBlockRenderingHandler
 		renderer.clearOverrideBlockTexture();
 	}
 	
-	@Override
-	public boolean shouldRender3DInInventory()
-	{
-		return false;
-	}
-	
+
 	@Override
 	public int getRenderId()
 	{
 		return 0;
+	}
+
+	@Override
+	public boolean shouldRender3DInInventory(int modelId)
+	{
+		return false;
 	}
 	
 }

@@ -26,14 +26,14 @@ public class PipeRecipes
 	
 	public static void upgradeRecipes()
 	{
-		int size = BlockPipe.getRecipesLenght();
-		for (int i = 1; i < size; i++)
-		{
-			Block output = BlockPipe.getBasicPipes()[i];
-			Block input = BlockPipe.getBasicPipes()[i - 1];
-			BlockStack slapType = BlockPipe.getSlabs()[i];
-			
-			CraftingManager.getInstance().addShapelessRecipe(new ItemStack(output, 3), new Object[] { slapType.asItemStack(), input, input, input });
-		}
+//		int size = BlockPipe.getRecipesLenght();
+//		for (int i = 1; i < size; i++)
+//		{
+//			Block output = BlockPipe.getBasicPipes()[i];
+//			Block input = BlockPipe.getBasicPipes()[i - 1];
+//			BlockStack slapType = BlockPipe.getSlabs()[i];
+//			
+//			CraftingManager.getInstance().addShapelessRecipe(new ItemStack(output, 3), new Object[] { slapType.asItemStack(), input, input, input });
+//		}
 	}
 }

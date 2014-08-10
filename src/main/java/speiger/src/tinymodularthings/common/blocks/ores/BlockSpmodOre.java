@@ -3,16 +3,17 @@ package speiger.src.tinymodularthings.common.blocks.ores;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.Icon;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.utils.TinyTextureHelper;
 import cpw.mods.fml.relauncher.Side;
@@ -21,17 +22,17 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockSpmodOre extends Block
 {
 	
-	public BlockSpmodOre(int par1)
+	public BlockSpmodOre()
 	{
-		super(par1, Material.rock);
+		super(Material.rock);
 		setHardness(4.0F);
 		setResistance(4.0F);
 		setCreativeTab(CreativeTabs.tabFood);
-		MinecraftForge.setBlockHarvestLevel(this, 0, "pickaxe", 1);
-		MinecraftForge.setBlockHarvestLevel(this, 1, "pickaxe", 1);
-		MinecraftForge.setBlockHarvestLevel(this, 2, "pickaxe", 2);
-		MinecraftForge.setBlockHarvestLevel(this, 3, "pickaxe", 2);
-		MinecraftForge.setBlockHarvestLevel(this, 5, "pickaxe", 3);
+		setHarvestLevel("pickaxe", 0, 1);
+		setHarvestLevel("pickaxe", 1, 1);
+		setHarvestLevel("pickaxe", 2, 2);
+		setHarvestLevel("pickaxe", 3, 2);
+		setHarvestLevel("pickaxe", 5, 3);
 		OreDictionary.registerOre("oreCopper", new ItemStack(this));
 		OreDictionary.registerOre("oreTin", new ItemStack(this, 1, 1));
 		OreDictionary.registerOre("oreSilver", new ItemStack(this, 1, 2));
@@ -39,13 +40,13 @@ public class BlockSpmodOre extends Block
 	}
 	
 	@Override
-	public int idDropped(int meta, Random par2Random, int dmg)
+	public Item getItemDropped(int meta, Random par2Random, int dmg)
 	{
 		if (meta == 5)
 		{
-			return TinyItems.IridiumDrop.itemID;
+			return TinyItems.IridiumDrop;
 		}
-		return blockID;
+		return super.getItemDropped(meta, par2Random, dmg);
 	}
 	
 	@Override
@@ -61,9 +62,7 @@ public class BlockSpmodOre extends Block
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
-		int id = world.getBlockId(x, y, z);
-		int meta = world.getBlockMetadata(x, y, z);
-		return new ItemStack(id, 1, meta);
+		return new BlockStack(world, x, y, z).asItemStack();
 	}
 	
 	@Override
@@ -78,18 +77,18 @@ public class BlockSpmodOre extends Block
 		return 4.0F;
 	}
 	
-	Icon[] oreTexture = new Icon[6];
+	IIcon[] oreTexture = new IIcon[6];
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		return oreTexture[par2];
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerBlockIcons(IIconRegister par1)
 	{
 		oreTexture[0] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ores/oreCopper"));
 		oreTexture[1] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ores/oreTin"));
@@ -101,7 +100,7 @@ public class BlockSpmodOre extends Block
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3)
 	{
 		for (int i = 0; i < 6; i++)
 		{

@@ -1,11 +1,11 @@
 package speiger.src.tinymodularthings.client.render.transport;
 
-import javax.swing.Icon;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer;
 
@@ -70,18 +70,18 @@ public class ItemRenderTransportTile implements IItemRenderer
 			return;
 		}
 		
-		int id = item.itemID;
+		Item id = item.getItem();
 		int damage = item.getItemDamage();
 		
-		if (id == TinyBlocks.transportBlock.blockID && damage == 0)
+		if (id == Item.getItemFromBlock(TinyBlocks.transportBlock) && damage == 0)
 		{
 			renderEnderProxy((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f);
 		}
-		else if (id == TinyItems.interfaceBlock.itemID)
+		else if (id == TinyItems.interfaceBlock)
 		{
 			renderInterfaces((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f, item);
 		}
-		else if(id == TinyItems.tinyChest.itemID)
+		else if(id == TinyItems.tinyChest)
 		{
 			renderTinyHopper(-0.4f, 0.50f, 0.35f, getTextureFromID(0));
 		}
@@ -94,17 +94,18 @@ public class ItemRenderTransportTile implements IItemRenderer
 			return;
 		}
 		
-		int id = item.itemID;
+		Item id = item.getItem();
 		int damage = item.getItemDamage();
-		if (id == TinyBlocks.transportBlock.blockID && damage == 0)
+		
+		if (id == Item.getItemFromBlock(TinyBlocks.transportBlock) && damage == 0)
 		{
 			renderEnderProxy((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f);
 		}
-		else if (id == TinyItems.interfaceBlock.itemID)
+		else if (id == TinyItems.interfaceBlock)
 		{
 			renderInterfaces((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f, item);
 		}
-		else if(id == TinyItems.tinyChest.itemID)
+		else if(id == TinyItems.tinyChest)
 		{
 			renderTinyHopper(-0.5f, -0.5f, -0.5f, getTextureFromID(0));
 		}
@@ -117,18 +118,18 @@ public class ItemRenderTransportTile implements IItemRenderer
 			return;
 		}
 		
-		int id = item.itemID;
+		Item id = item.getItem();
 		int damage = item.getItemDamage();
 		
-		if (id == TinyBlocks.transportBlock.blockID && damage == 0)
+		if (id == Item.getItemFromBlock(TinyBlocks.transportBlock) && damage == 0)
 		{
 			renderEnderProxy((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f);
 		}
-		else if (id == TinyItems.interfaceBlock.itemID)
+		else if (id == TinyItems.interfaceBlock)
 		{
 			renderInterfaces((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f, item);
 		}
-		else if(id == TinyItems.tinyChest.itemID)
+		else if(id == TinyItems.tinyChest)
 		{
 			renderTinyHopper(-0.4f, 0.50f, 0.35f, getTextureFromID(0));
 		}
@@ -141,18 +142,18 @@ public class ItemRenderTransportTile implements IItemRenderer
 			return;
 		}
 		
-		int id = item.itemID;
+		Item id = item.getItem();
 		int damage = item.getItemDamage();
 		
-		if (id == TinyBlocks.transportBlock.blockID && damage == 0)
+		if (id == Item.getItemFromBlock(TinyBlocks.transportBlock) && damage == 0)
 		{
 			renderEnderProxy((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f);
 		}
-		else if (id == TinyItems.interfaceBlock.itemID)
+		else if (id == TinyItems.interfaceBlock)
 		{
 			renderInterfaces((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f, item);
 		}
-		else if(id == TinyItems.tinyChest.itemID)
+		else if(id == TinyItems.tinyChest)
 		{
 			renderTinyHopper(-0.5f, -0.5f, -0.5f, getTextureFromID(0));
 		}
@@ -203,7 +204,7 @@ public class ItemRenderTransportTile implements IItemRenderer
 		block.setBlockBounds(0.35F, 0.35F, 0.35F, 0.65F, 0.65F, 0.65F);
 		block.setBlockBoundsForItemRender();
 		render.setRenderBoundsFromBlock(block);
-		Icon texture = render.getIconSafe(stack.getItem().getIconFromDamage(stack.getItemDamage()));
+		IIcon texture = render.getIconSafe(stack.getItem().getIconFromDamage(stack.getItemDamage()));
 		
 		GL11.glTranslatef(x, y, z);
 		tessellator.startDrawingQuads();

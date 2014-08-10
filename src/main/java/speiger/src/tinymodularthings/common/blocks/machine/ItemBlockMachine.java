@@ -1,5 +1,7 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.language.LanguageRegister;
@@ -13,7 +15,7 @@ public class ItemBlockMachine extends ItemBlockTinyChest
 	
 	String[] names = new String[] { "pressureFurnace" , "basicBucketFiller", "selfpoweredBucketfiller", "water.generator"};
 	
-	public ItemBlockMachine(int par1)
+	public ItemBlockMachine(Block par1)
 	{
 		super(par1);
 		setHasSubtypes(true);
@@ -32,7 +34,7 @@ public class ItemBlockMachine extends ItemBlockTinyChest
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item id, SpmodMod par0)
 	{
 		if (!SpmodModRegistry.areModsEqual(par0, TinyModularThings.instance))
 		{

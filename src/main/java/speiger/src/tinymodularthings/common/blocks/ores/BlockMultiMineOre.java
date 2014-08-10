@@ -5,8 +5,10 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import speiger.src.api.blocks.AdvancedPosition;
@@ -22,16 +24,16 @@ public abstract class BlockMultiMineOre extends Block implements IMultimineOre
 	String texture;
 	int maxMine;
 	
-	public BlockMultiMineOre(int par1, Material par2Material, String par3, int par4)
+	public BlockMultiMineOre(Material par2Material, String par3, int par4)
 	{
-		super(par1, par2Material);
+		super(par2Material);
 		maxMine = par4;
 		texture = par3;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		blockIcon = par1IconRegister.registerIcon(texture);
 	}
@@ -59,9 +61,9 @@ public abstract class BlockMultiMineOre extends Block implements IMultimineOre
 	public abstract ItemStack[] getRareDrops(int fortune, int meta);
 	
 	@Override
-	public int idDropped(int par1, Random par2Random, int par3)
+	public Item getItemDropped(int par1, Random par2Random, int par3)
 	{
-		return getBasicDrop(0, par1) != null ? getBasicDrop(0, par1).itemID : 0;
+		return getBasicDrop(0, par1) != null ? getBasicDrop(0, par1).getItem() : null;
 	}
 	
 	@Override
@@ -83,7 +85,7 @@ public abstract class BlockMultiMineOre extends Block implements IMultimineOre
 	}
 	
 	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
 	{
 		ArrayList<ItemStack> end = new ArrayList<ItemStack>();
 		if (getDrops(fortune, metadata) != null && getDrops(fortune, metadata).length > 0)
@@ -127,7 +129,7 @@ public abstract class BlockMultiMineOre extends Block implements IMultimineOre
 	@Override
 	public void init(World par0, int x, int y, int z)
 	{
-		par0.setBlock(x, y, z, blockID, new Random().nextInt(maxMine), 3);
+		par0.setBlock(x, y, z, this, new Random().nextInt(maxMine), 3);
 	}
 	
 }

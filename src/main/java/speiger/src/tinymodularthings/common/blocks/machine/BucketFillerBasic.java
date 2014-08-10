@@ -1,6 +1,7 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
-import java.io.DataInput;
+import io.netty.buffer.ByteBuf;
+
 import java.util.ArrayList;
 
 import javax.swing.Icon;
@@ -14,8 +15,13 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
@@ -159,7 +165,7 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 			}
 			if(worldObj.getWorldTime() % 10 == 0)
 			{
-				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
+				this.sendPacket(20, getDescriptionPacket());
 			}
 			
 			
@@ -210,7 +216,7 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 							inv[0] = null;
 						}
 					}
-					this.onInventoryChanged();
+					this.markDirty();
 					this.updateBlock();
 				}
 			}
@@ -391,18 +397,6 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
     }
 	
 	@Override
-	public String getInvName()
-	{
-		return "BasicBucketFiller";
-	}
-	
-	@Override
-	public boolean isInvNameLocalized()
-	{
-		return false;
-	}
-	
-	@Override
 	public int getInventoryStackLimit()
 	{
 		return 64;
@@ -412,16 +406,6 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
 		return true;
-	}
-	
-	@Override
-	public void openChest()
-	{
-	}
-	
-	@Override
-	public void closeChest()
-	{
 	}
 	
 	@Override
@@ -547,24 +531,6 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 	}
 
 	@Override
-	public void recivePacket(DataInput par1)
-	{
-		try
-		{
-			if(!worldObj.isRemote)
-			{
-				this.drain = par1.readInt() == 1 ? false : true;
-				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
-
-			}
-		}
-		catch (Exception e)
-		{
-		}
-
-	}
-
-	@Override
 	public PowerReceiver getPowerReceiver(ForgeDirection side)
 	{
 		return provider.getSaveBCPowerProvider();
@@ -607,7 +573,7 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 	
 	
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		return null;
 	}
@@ -620,11 +586,11 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 		this.provider.readFromNBT(nbt);
 		drain = nbt.getBoolean("drain");
 		progress = nbt.getInteger("progress");
-        NBTTagList nbttaglist = nbt.getTagList("Items");
+        NBTTagList nbttaglist = nbt.getTagList("Items", NBT.TAG_COMPOUND);
         this.inv = new ItemStack[this.getSizeInventory()];
         for (int i = 0; i < nbttaglist.tagCount(); ++i)
         {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
+            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.getCompoundTagAt(i);
             byte b0 = nbttagcompound1.getByte("Slot");
 
             if (b0 >= 0 && b0 < this.inv.length)
@@ -661,13 +627,13 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
 	}
-
+	
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 	{
-		this.readFromNBT(pkt.data);
+		readFromNBT(pkt.func_148857_g());
 	}
 
 	@Override
@@ -709,6 +675,47 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 	public String identifier()
 	{
 		return null;
+	}
+
+	@Override
+	public String getInventoryName()
+	{
+		return "Basic Bucket Filler";
+	}
+
+	@Override
+	public boolean hasCustomInventoryName()
+	{
+		return false;
+	}
+
+	@Override
+	public void openInventory()
+	{
+		
+	}
+
+	@Override
+	public void closeInventory()
+	{
+		
+	}
+
+	@Override
+	public void recivePacket(ByteBuf par1)
+	{
+		try
+		{
+			if(!worldObj.isRemote)
+			{
+				this.drain = par1.readInt() == 1 ? false : true;
+				this.sendPacket(20, getDescriptionPacket());
+
+			}
+		}
+		catch (Exception e)
+		{
+		}
 	}
 	
 }

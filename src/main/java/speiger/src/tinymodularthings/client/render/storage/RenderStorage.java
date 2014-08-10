@@ -1,10 +1,9 @@
 package speiger.src.tinymodularthings.client.render.storage;
 
-import javax.swing.Icon;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -23,7 +22,7 @@ public class RenderStorage implements ISimpleBlockRenderingHandler
 	@Override
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if (tile != null && tile instanceof TinyTank)
 		{
 			renderTank((TinyTank) tile, block, renderer, world, x, y, z);
@@ -38,7 +37,7 @@ public class RenderStorage implements ISimpleBlockRenderingHandler
 		if (stack != null && stack.getFluid() != null && tile.renderLiquid)
 		{
 			Fluid fluid = stack.getFluid();
-			Icon icon = fluid.getIcon(stack);
+			IIcon icon = fluid.getIcon(stack);
 			
 			double amount = (stack.amount / (tile.tank.getCapacity() * 0.114)) / 10;
 			
@@ -62,16 +61,18 @@ public class RenderStorage implements ISimpleBlockRenderingHandler
 		
 	}
 	
-	@Override
-	public boolean shouldRender3DInInventory()
-	{
-		return false;
-	}
 	
 	@Override
 	public int getRenderId()
 	{
 		return EnumIDs.StorageBlock.getId();
+	}
+
+	@Override
+	public boolean shouldRender3DInInventory(int modelId)
+	{
+		// TODO Auto-generated method stub
+		return false;
 	}
 	
 }

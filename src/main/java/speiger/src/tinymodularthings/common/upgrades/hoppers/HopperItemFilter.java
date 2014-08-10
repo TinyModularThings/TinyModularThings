@@ -6,8 +6,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.Container;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import speiger.src.api.hopper.HopperRegistry;
@@ -78,7 +78,7 @@ public class HopperItemFilter implements HopperUpgrade, IUpgradeGuiProvider
 	{
 		ItemStack item = player.getCurrentEquippedItem();
 		FMLLog.getLogger().info("Test");
-		if(item != null && item.itemID == Item.silk.itemID)
+		if(item != null && item.getItem() == Items.string)
 		{
 			FMLLog.getLogger().info("Test");
 			HopperRegistry.makeGuiProviderForUpgrade(item, this);

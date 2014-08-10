@@ -2,12 +2,11 @@ package speiger.src.tinymodularthings.client.gui.transport;
 
 import java.util.ArrayList;
 
-import javax.swing.Icon;
-
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -40,15 +39,15 @@ public class TinyHopperGui extends GuiInventoryCore
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		String s = "Tiny Hopper";
-		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 3, 4210752);
-		fontRenderer.drawString(I18n.getString("container.inventory"), 8, ySize - 96 + 2, 4210752);
+		fontRendererObj.drawString(s, xSize / 2 - fontRendererObj.getStringWidth(s) / 2, 3, 4210752);
+		fontRendererObj.drawString(I18n.format("container.inventory"), 8, ySize - 96 + 2, 4210752);
 		IHopperInventory hopperInv = (IHopperInventory) tile;
 		IHopper hopper = (IHopper) tile;
 		if (hopperInv.getHopperType() == HopperType.Energy)
 		{
 			String text = "" + hopper.getEnergyStorage().getEnergy() + "MJ / " + hopper.getEnergyStorage().getMaxStorage() + " MJ";
-			fontRenderer.drawString("Stored Energy:", 45, 30, 4210752);
-			fontRenderer.drawString(text, 50, 40, 4210752);
+			fontRendererObj.drawString("Stored Energy:", 45, 30, 4210752);
+			fontRendererObj.drawString(text, 50, 40, 4210752);
 		}
 	}
 	
@@ -101,7 +100,7 @@ public class TinyHopperGui extends GuiInventoryCore
 		}
 		int start = 0;
 		
-		Icon liquidIcon = null;
+		IIcon liquidIcon = null;
 		Fluid fluid = liquid.getFluid();
 		if ((fluid != null) && (fluid.getStillIcon() != null))
 		{
