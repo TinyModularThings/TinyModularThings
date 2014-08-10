@@ -2,13 +2,15 @@ package speiger.src.tinymodularthings.common.items.itemblocks.transport;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
@@ -18,15 +20,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemTinyHopper extends TinyItem
 {
-	public ItemTinyHopper(int par1)
+	public ItemTinyHopper()
 	{
-		super(par1);
+		super();
 		setHasSubtypes(true);
 		setCreativeTab(CreativeTabs.tabFood);
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < 9; i++)
 		{
@@ -34,7 +36,7 @@ public class ItemTinyHopper extends TinyItem
 		}
 	}
 	
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item id, SpmodMod par0)
 	{
 	}
 	
@@ -45,13 +47,13 @@ public class ItemTinyHopper extends TinyItem
 	
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
 	{
-		int i1 = par3World.getBlockId(par4, par5, par6);
+		BlockStack i1 = new BlockStack(par3World, par4, par5, par6);
 		
-		if ((i1 == Block.snow.blockID) && ((par3World.getBlockMetadata(par4, par5, par6) & 0x7) < 1))
+		if ((i1.getBlock() == Blocks.snow) && ((par3World.getBlockMetadata(par4, par5, par6) & 0x7) < 1))
 		{
 			par7 = 1;
 		}
-		else if ((i1 != Block.vine.blockID) && (i1 != Block.tallGrass.blockID) && (i1 != Block.deadBush.blockID) && ((Block.blocksList[i1] == null) || (!Block.blocksList[i1].isBlockReplaceable(par3World, par4, par5, par6))))
+		else if ((i1.getBlock() != Blocks.vine) && (i1.getBlock() != Blocks.tallgrass) && (i1.getBlock() != Blocks.deadbush) && ((i1.getBlock() == null) || (!i1.getBlock().isReplaceable(par3World, par4, par5, par6))))
 		{
 			if (par7 == 0)
 			{
@@ -92,7 +94,7 @@ public class ItemTinyHopper extends TinyItem
 		{
 			return false;
 		}
-		if ((par5 == 255) && (Block.blocksList[par3World.getBlockId(par4, par5, par6)].blockMaterial.isSolid()))
+		if ((par5 == 255) && (i1.getBlock().getMaterial().isSolid()))
 		{
 			return false;
 		}
@@ -105,7 +107,7 @@ public class ItemTinyHopper extends TinyItem
 				TinyHopper tiny = (TinyHopper) tile;
 				tiny.setMode(par1ItemStack.getItemDamage() + 1);
 				tiny.updateMode();
-				Block.blocksList[par3World.getBlockId(par4, par5, par6)].onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer, par1ItemStack);
+				i1.getBlock().onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer, par1ItemStack);
 				
 				if (par2EntityPlayer.isSneaking())
 				{

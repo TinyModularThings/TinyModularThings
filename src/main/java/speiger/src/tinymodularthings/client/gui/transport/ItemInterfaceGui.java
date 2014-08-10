@@ -1,5 +1,6 @@
 package speiger.src.tinymodularthings.client.gui.transport;
 
+import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;

@@ -1,20 +1,21 @@
 package speiger.src.tinymodularthings.common.plugins.BC.triggers;
 
-import javax.swing.Icon;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
+import buildcraft.api.gates.IGate;
+import buildcraft.api.gates.IStatement;
+import buildcraft.api.gates.IStatementParameter;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerParameter;
+import buildcraft.core.triggers.StatementIconProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -28,11 +29,7 @@ public class TriggerHasWork implements ITrigger
 		Active = active;
 	}
 	
-	@Override
-	public int getLegacyId()
-	{
-		return 0;
-	}
+
 	
 	@Override
 	public String getUniqueTag()
@@ -50,9 +47,9 @@ public class TriggerHasWork implements ITrigger
 	{
 		if (Active)
 		{
-			return ActionTriggerIconProvider.INSTANCE.getIcon(ActionTriggerIconProvider.Trigger_Machine_Active);
+			return StatementIconProvider.INSTANCE.getIcon(StatementIconProvider.Trigger_Machine_Active);
 		}
-		return ActionTriggerIconProvider.INSTANCE.getIcon(ActionTriggerIconProvider.Trigger_Machine_Inactive);
+		return StatementIconProvider.INSTANCE.getIcon(StatementIconProvider.Trigger_Machine_Inactive);
 	}
 	
 	@Override
@@ -74,40 +71,6 @@ public class TriggerHasWork implements ITrigger
 		return LanguageRegister.getLanguageName(new InfoStack(), "no.work", TinyModularThings.instance);
 	}
 	
-	@Override
-	public boolean isTriggerActive(ForgeDirection side, TileEntity tile, ITriggerParameter parameter)
-	{
-		if (tile != null)
-		{
-			if (tile instanceof PressureFurnace)
-			{
-				if (Active)
-				{
-					return ((PressureFurnace) tile).currentRecipe != null;
-				}
-				else
-				{
-					return ((PressureFurnace) tile).currentRecipe == null;
-				}
-			}
-			else if (tile instanceof TileEntityFurnace)
-			{
-				if (Active)
-				{
-					return canSmelt((TileEntityFurnace) tile);
-				}
-				return !canSmelt((TileEntityFurnace) tile);
-			}
-		}
-		
-		return false;
-	}
-	
-	@Override
-	public ITriggerParameter createParameter()
-	{
-		return null;
-	}
 	
 	public boolean canSmelt(TileEntityFurnace par1)
 	{
@@ -136,10 +99,67 @@ public class TriggerHasWork implements ITrigger
 		}
 	}
 
+
+
 	@Override
-	public boolean requiresParameter()
+	public int maxParameters()
 	{
-		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+
+	@Override
+	public int minParameters()
+	{
+		return 0;
+	}
+
+
+
+	@Override
+	public IStatementParameter createParameter(int index)
+	{
+		return null;
+	}
+
+
+
+	@Override
+	public IStatement rotateLeft()
+	{
+		return this;
+	}
+
+
+
+	@Override
+	public boolean isTriggerActive(IGate gate, ITriggerParameter[] parameters)
+	{
+		TileEntity tile = gate.getPipe().getAdjacentTile(gate.getSide());
+		if (tile != null)
+		{
+			if (tile instanceof PressureFurnace)
+			{
+				if (Active)
+				{
+					return ((PressureFurnace) tile).currentRecipe != null;
+				}
+				else
+				{
+					return ((PressureFurnace) tile).currentRecipe == null;
+				}
+			}
+			else if (tile instanceof TileEntityFurnace)
+			{
+				if (Active)
+				{
+					return canSmelt((TileEntityFurnace) tile);
+				}
+				return !canSmelt((TileEntityFurnace) tile);
+			}
+		}
+		
 		return false;
 	}
 	

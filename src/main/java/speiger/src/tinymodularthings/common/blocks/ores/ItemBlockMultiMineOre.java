@@ -3,6 +3,7 @@ package speiger.src.tinymodularthings.common.blocks.ores;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.language.LanguageRegister;
@@ -15,7 +16,7 @@ public class ItemBlockMultiMineOre extends ItemBlockTinyChest
 {
 	private static HashMap<Block, String> names = new HashMap<Block, String>();
 	
-	public ItemBlockMultiMineOre(int par1)
+	public ItemBlockMultiMineOre(Block par1)
 	{
 		super(par1);
 	}
@@ -31,13 +32,13 @@ public class ItemBlockMultiMineOre extends ItemBlockTinyChest
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item id, SpmodMod par0)
 	{
 		if (!SpmodModRegistry.areModsEqual(par0, TinyModularThings.instance))
 		{
 			return;
 		}
-		if (id < Block.blocksList.length && Block.blocksList[id] != null)
+		if (Block.getBlockFromItem(id) != null)
 		{
 			LanguageRegister.getLanguageName(new BlockStack(id), names.get(new BlockStack(id).getBlock()), par0);
 		}
@@ -46,7 +47,7 @@ public class ItemBlockMultiMineOre extends ItemBlockTinyChest
 	@Override
 	public String getDisplayName(ItemStack par1, SpmodMod par0)
 	{
-		if (par1.itemID < Block.blocksList.length && Block.blocksList[par1.itemID] != null)
+		if (new BlockStack(par1).getBlock() != null)
 		{
 			return LanguageRegister.getLanguageName(new BlockStack(par1), names.get(new BlockStack(par1).getBlock()), par0);
 		}

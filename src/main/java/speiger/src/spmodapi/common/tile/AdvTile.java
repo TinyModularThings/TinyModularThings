@@ -14,6 +14,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.network.Packet;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.IIcon;
@@ -25,6 +26,7 @@ import org.apache.logging.log4j.Logger;
 
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.util.BlockPosition;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -40,6 +42,11 @@ public abstract class AdvTile extends TileEntity
 	public SoundType getStepSound()
 	{
 		return getBlockType().stepSound;
+	}
+	
+	public void sendPacket(int range, Packet packet)
+	{
+		FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendToAllNear(xCoord, yCoord, zCoord, range, this.getWorldObj().provider.dimensionId, packet);
 	}
 	
 	public float getBlockHardness()

@@ -4,10 +4,15 @@ import java.util.ArrayList;
 
 import javax.swing.Icon;
 
+import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -43,7 +48,7 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	}
 	
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		return null;
 	}
@@ -145,15 +150,15 @@ public class TinyTank extends AdvTile implements IFluidHandler
 		{
 			if (worldObj.getWorldTime() % 10 == 0)
 			{
-				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
+				this.sendPacket(20, getDescriptionPacket());
 			}
 		}
 	}
 	
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 	{
-		readFromNBT(pkt.data);
+		readFromNBT(pkt.func_148857_g());
 	}
 	
 	@Override
@@ -161,7 +166,7 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
 	}
 	
 	@Override
@@ -175,12 +180,12 @@ public class TinyTank extends AdvTile implements IFluidHandler
 				if (renderLiquid)
 				{
 					renderLiquid = false;
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.dissabled", TinyModularThings.instance)));
+					par1.addChatComponentMessage(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.dissabled", TinyModularThings.instance)));
 				}
 				else
 				{
 					renderLiquid = true;
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.enabled", TinyModularThings.instance)));
+					par1.addChatComponentMessage(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.enabled", TinyModularThings.instance)));
 				}
 				return true;
 			}
@@ -252,13 +257,13 @@ public class TinyTank extends AdvTile implements IFluidHandler
 				if (tank.getFluid() != null && tank.getFluid().amount > 0 && tank.getFluid().getFluid() != null)
 				{
 					Fluid fluid = tank.getFluid().getFluid();
-					if (fluid.getBlockID() != -1)
+					if (fluid.getBlock() != null)
 					{
-						BlockStack stack = new BlockStack(fluid.getBlockID());
+						BlockStack stack = new BlockStack(fluid.getBlock());
 						name = stack.getBlockDisplayName();
 						
 					}
-					else if (fluid.getBlockID() == -1 && !fluid.getName().startsWith("tile"))
+					else if (fluid.getBlock() == null && !fluid.getLocalizedName(tank.getFluid()).startsWith("tile"))
 					{
 						name = fluid.getName();
 					}
@@ -272,18 +277,18 @@ public class TinyTank extends AdvTile implements IFluidHandler
 				
 				if (name.equals("Nothing"))
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(new InfoStack(), "tank.stored.nothing", TinyModularThings.instance)));
+					par1.addChatComponentMessage(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(new InfoStack(), "tank.stored.nothing", TinyModularThings.instance)));
 				}
 				else if (name.equals("Unknowen Fluid"))
 				{
 					String tank = LanguageRegister.getLanguageName(new InfoStack(), "tank.stored", TinyModularThings.instance);
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage(tank + ": " + LangProxy.UFluid(TinyModularThings.instance) + " " + LangProxy.getAmount(TinyModularThings.instance) + ": " + amount + "mB / " + this.tank.getCapacity() + "mB"));
+					par1.addChatComponentMessage(LanguageRegister.createChatMessage(tank + ": " + LangProxy.UFluid(TinyModularThings.instance) + " " + LangProxy.getAmount(TinyModularThings.instance) + ": " + amount + "mB / " + this.tank.getCapacity() + "mB"));
 					
 				}
 				else
 				{
 					String tank = LanguageRegister.getLanguageName(new InfoStack(), "tank.stored", TinyModularThings.instance);
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage(tank + ": " + name + " " + LangProxy.getAmount(TinyModularThings.instance) + ": " + amount + "mB / " + this.tank.getCapacity() + "mB"));
+					par1.addChatComponentMessage(LanguageRegister.createChatMessage(tank + ": " + name + " " + LangProxy.getAmount(TinyModularThings.instance) + ": " + amount + "mB / " + this.tank.getCapacity() + "mB"));
 				}
 			}
 		}
@@ -295,9 +300,9 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	{
 		if (stack.stackSize == 1)
 		{
-			if (stack.getItem().hasContainerItem())
+			if (stack.getItem().hasContainerItem(stack))
 			{
-				return stack.getItem().getContainerItemStack(stack);
+				return stack.getItem().getContainerItem(stack);
 			}
 			else
 			{

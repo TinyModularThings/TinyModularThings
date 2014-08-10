@@ -1,5 +1,8 @@
 package speiger.src.spmodapi.common.modHelper.IC2;
 
+import ic2.api.crops.CropCard;
+import ic2.api.crops.ICropTile;
+
 import java.util.List;
 
 import net.minecraft.entity.passive.EntityAnimal;

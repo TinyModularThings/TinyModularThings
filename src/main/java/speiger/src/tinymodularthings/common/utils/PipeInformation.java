@@ -2,8 +2,8 @@ package speiger.src.tinymodularthings.common.utils;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.tinymodularthings.TinyModularThings;
@@ -39,7 +39,7 @@ public class PipeInformation
 	/**
 	 * Texture of the pipe and the Texture of the Pipe with the Arrow
 	 */
-	Icon[] pipeTexture = new Icon[2];
+	IIcon[] pipeTexture = new IIcon[2];
 	
 	public PipeInformation()
 	{
@@ -88,17 +88,17 @@ public class PipeInformation
 		par1.add("No Use Yet!");
 	}
 	
-	public Icon getDirectionIcon()
+	public IIcon getDirectionIcon()
 	{
 		return pipeTexture[1];
 	}
 	
-	public Icon getPipeIcon()
+	public IIcon getPipeIcon()
 	{
 		return pipeTexture[0];
 	}
 	
-	public void updateIcon(IconRegister par1)
+	public void updateIcon(IIconRegister par1)
 	{
 		pipeTexture[0] = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":pipes/" + texture);
 		pipeTexture[1] = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":pipes/" + texture + "_face");

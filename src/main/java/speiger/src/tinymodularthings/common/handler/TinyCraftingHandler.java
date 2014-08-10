@@ -1,5 +1,7 @@
 package speiger.src.tinymodularthings.common.handler;
 
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -7,33 +9,28 @@ import speiger.src.api.util.InventoryUtil;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInterfaceBlock;
 
-public class TinyCraftingHandler implements ICraftingHandler
+public class TinyCraftingHandler
 {
 	
-	@Override
-	public void onCrafting(EntityPlayer player, ItemStack item, IInventory craftMatrix)
+	@SubscribeEvent
+	public void onCrafting(PlayerEvent.ItemCraftedEvent event)
 	{
-		if (player != null && item.itemID == TinyItems.interfaceBlock.itemID)
+		if (event.player != null && event.crafting.getItem() == TinyItems.interfaceBlock)
 		{
-			ItemStack stack = InventoryUtil.getItemFromInventory(craftMatrix, item.itemID);
+			ItemStack stack = InventoryUtil.getItemFromInventory(event.craftMatrix, event.crafting.getItem());
 			if (stack != null && stack.hasTagCompound() && ItemInterfaceBlock.isValidBlock(stack))
 			{
 				ItemStack block = ItemInterfaceBlock.getBlockFromInterface(stack);
 				if (block != null)
 				{
-					if (!player.inventory.addItemStackToInventory(block))
+					if (!event.player.inventory.addItemStackToInventory(block))
 					{
-						player.dropPlayerItem(block);
+						event.player.dropPlayerItemWithRandomChoice(block, true);
 					}
 				}
 			}
 		}
 	}
 	
-	@Override
-	public void onSmelting(EntityPlayer player, ItemStack item)
-	{
-		
-	}
 	
 }

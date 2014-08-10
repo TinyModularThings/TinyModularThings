@@ -5,6 +5,8 @@ import java.util.Random;
 
 import javax.swing.Icon;
 
+import mods.railcraft.common.items.firestone.ItemFirestoneRefined;
+import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;

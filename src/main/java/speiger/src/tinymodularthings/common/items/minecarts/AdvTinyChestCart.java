@@ -6,8 +6,10 @@ import net.minecraft.block.BlockRailBase;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.items.DisplayItem;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.SpmodMod;
@@ -30,9 +32,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class AdvTinyChestCart extends TinyItem
 {
 	
-	public AdvTinyChestCart(int par1)
+	public AdvTinyChestCart()
 	{
-		super(par1);
+		super();
 		setCreativeTab(CreativeTabs.tabFood);
 		setHasSubtypes(true);
 	}
@@ -50,7 +52,7 @@ public class AdvTinyChestCart extends TinyItem
 
 
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item id, SpmodMod par0)
 	{
 		if (!SpmodModRegistry.areModsEqual(par0, TinyModularThings.instance))
 		{
@@ -62,15 +64,15 @@ public class AdvTinyChestCart extends TinyItem
 	@Override
 	public String getDisplayName(ItemStack par1, SpmodMod Start)
 	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "advTinyCart", Start);
+		return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), "advTinyCart", Start);
 	}
 	
 	@Override
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
 	{
-		int i1 = par3World.getBlockId(par4, par5, par6);
+		BlockStack stack = new BlockStack(par3World, par4, par5, par6);
 		
-		if (BlockRailBase.isRailBlock(i1))
+		if (BlockRailBase.func_150051_a(stack.getBlock()))
 		{
 			if (!par3World.isRemote)
 			{
@@ -95,7 +97,7 @@ public class AdvTinyChestCart extends TinyItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3)
 	{
 		for (int i = 0; i < 9; i++)
 		{

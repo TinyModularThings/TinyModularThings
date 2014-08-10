@@ -2,8 +2,12 @@ package speiger.src.tinymodularthings.common.blocks.transport;
 
 import java.util.ArrayList;
 
+import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
@@ -117,7 +121,7 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 		if (!worldObj.isRemote && (textureUpdate || worldObj.getWorldTime() % 200 == 0))
 		{
 			textureUpdate = false;
-			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
+			this.sendPacket(20, getDescriptionPacket());
 		}
 		
 		if (!worldObj.isRemote)
@@ -157,7 +161,7 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 					x = pos.xCoord;
 					y = pos.yCoord;
 					z = pos.zCoord;
-					worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
+					worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 				}
 			}
 		}
@@ -170,7 +174,7 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 				if (inter.acceptEnergy(this) && inter.addAcceptor(this))
 				{
 					target = (IEnergyProvider) pos.getTileEntity();
-					worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
+					worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 				}
 			}
 		}
@@ -222,7 +226,7 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 	@Override
 	public void targetLeave(TileEntity tile)
 	{
-		if (x == tile.xCoord && y == tile.yCoord && z == tile.zCoord && worldObj.provider.dimensionId == tile.worldObj.provider.dimensionId)
+		if (x == tile.xCoord && y == tile.yCoord && z == tile.zCoord && worldObj.provider.dimensionId == tile.getWorldObj().provider.dimensionId)
 		{
 			removeInventory();
 		}
@@ -260,13 +264,13 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
 	}
 	
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 	{
-		readFromNBT(pkt.data);
+		readFromNBT(pkt.func_148857_g());
 	}
 	
 }

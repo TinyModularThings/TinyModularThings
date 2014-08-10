@@ -7,6 +7,8 @@ import net.minecraft.world.World;
 import speiger.src.spmodapi.common.blocks.hemp.BlockHempCrop;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
+import forestry.api.farming.ICrop;
+import forestry.api.farming.IFarmable;
 
 public class Hanfaddon implements IFarmable
 {

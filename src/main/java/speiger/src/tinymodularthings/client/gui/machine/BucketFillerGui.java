@@ -2,6 +2,7 @@ package speiger.src.tinymodularthings.client.gui.machine;
 
 import javax.swing.Icon;
 
+import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;

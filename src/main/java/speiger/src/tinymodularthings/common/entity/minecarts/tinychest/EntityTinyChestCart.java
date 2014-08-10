@@ -1,5 +1,9 @@
 package speiger.src.tinymodularthings.common.entity.minecarts.tinychest;
 
+import mods.railcraft.api.carts.CartTools;
+import mods.railcraft.api.carts.IItemTransfer;
+import mods.railcraft.api.carts.ILinkageManager;
+import mods.railcraft.api.core.items.IStackFilter;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
@@ -240,7 +244,7 @@ public abstract class EntityTinyChestCart extends TCarts implements
 			{
 				return false;
 			}
-			if (a.itemID != b.itemID)
+			if (a.getItem() != b.getItem())
 			{
 				return false;
 			}
@@ -351,7 +355,7 @@ public abstract class EntityTinyChestCart extends TCarts implements
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -424,7 +428,7 @@ public abstract class EntityTinyChestCart extends TCarts implements
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -496,7 +500,7 @@ public abstract class EntityTinyChestCart extends TCarts implements
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -568,7 +572,7 @@ public abstract class EntityTinyChestCart extends TCarts implements
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -634,7 +638,7 @@ public abstract class EntityTinyChestCart extends TCarts implements
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -712,7 +716,7 @@ public abstract class EntityTinyChestCart extends TCarts implements
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -785,7 +789,7 @@ public abstract class EntityTinyChestCart extends TCarts implements
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -857,7 +861,7 @@ public abstract class EntityTinyChestCart extends TCarts implements
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			return true;
 		}
@@ -928,12 +932,13 @@ public abstract class EntityTinyChestCart extends TCarts implements
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
 		}
 		
 	}
+
 	
 }

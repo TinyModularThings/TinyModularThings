@@ -1,6 +1,9 @@
 package speiger.src.tinymodularthings.common.utils.slot;
 
-import net.minecraft.block.Block;
+import mods.railcraft.common.items.firestone.ItemFirestoneRefined;
+import mods.railcraft.common.plugins.forge.ItemRegistry;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;
@@ -21,9 +24,9 @@ public class SlotCoal extends Slot
 		{
 			return false;
 		}
-		int i = par1.itemID;
+		Item i = par1.getItem();
 		
-		if (i == Item.coal.itemID || i == Block.coalBlock.blockID)
+		if (i == Items.coal || i == Item.getItemFromBlock(Blocks.coal_ore))
 		{
 			return true;
 		}
@@ -34,11 +37,11 @@ public class SlotCoal extends Slot
 			{
 				return true;
 			}
-			else if (ItemRegistry.getItem("railcraft.cube.coke", 1) != null && i == ItemRegistry.getItem("railcraft.cube.coke", 1).itemID)
+			else if (ItemRegistry.getItem("railcraft.cube.coke", 1) != null && i == ItemRegistry.getItem("railcraft.cube.coke", 1).getItem())
 			{
 				return true;
 			}
-			else if (ItemRegistry.getItem("railcraft.fuel.coke", 1) != null && i == ItemRegistry.getItem("railcraft.fuel.coke", 1).itemID)
+			else if (ItemRegistry.getItem("railcraft.fuel.coke", 1) != null && i == ItemRegistry.getItem("railcraft.fuel.coke", 1).getItem())
 			{
 				return true;
 			}

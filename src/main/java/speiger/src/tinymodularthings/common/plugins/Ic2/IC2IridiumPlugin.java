@@ -1,7 +1,7 @@
 package speiger.src.tinymodularthings.common.plugins.Ic2;
 
+import ic2.api.item.IC2Items;
 import net.minecraft.init.Items;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
@@ -17,8 +17,8 @@ public class IC2IridiumPlugin
 			{
 				try
 				{
-					ItemStack iridum = Items.getItem("iridiumOre");
-					Class.forName("factorization.common.TileEntityCrystallizer").getMethod("addRecipe", ItemStack.class, Float.class).invoke(null, new ItemStack(TinyBlocks.ores, 5), iridum, 2.0F, new ItemStack(Item.diamond));
+					ItemStack iridum = IC2Items.getItem("iridiumOre");
+					Class.forName("factorization.common.TileEntityCrystallizer").getMethod("addRecipe", ItemStack.class, Float.class).invoke(null, new ItemStack(TinyBlocks.ores, 5), iridum, 2.0F, new ItemStack(Items.diamond));
 				}
 				catch (Exception e)
 				{

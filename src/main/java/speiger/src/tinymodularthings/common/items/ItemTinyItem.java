@@ -1,6 +1,8 @@
 package speiger.src.tinymodularthings.common.items;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.items.DisplayItem;
 import speiger.src.api.language.LanguageRegister;
@@ -16,9 +18,9 @@ public class ItemTinyItem extends TinyItem
 	String Name;
 	String Texture;
 	
-	public ItemTinyItem(int par1, String name, String texture)
+	public ItemTinyItem(String name, String texture)
 	{
-		super(par1);
+		super();
 		Name = name;
 		Texture = texture;
 		setCreativeTab(CreativeTabs.tabFood);
@@ -32,13 +34,13 @@ public class ItemTinyItem extends TinyItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerIcons(IIconRegister par1IconRegister)
 	{
 		itemIcon = par1IconRegister.registerIcon(Texture);
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item id, SpmodMod par0)
 	{
 		if (!par0.getName().equals(TinyModularThingsLib.Name))
 		{

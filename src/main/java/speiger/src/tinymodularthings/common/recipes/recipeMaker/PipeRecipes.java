@@ -1,7 +1,8 @@
 package speiger.src.tinymodularthings.common.recipes.recipeMaker;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import speiger.src.api.blocks.BlockStack;
@@ -16,7 +17,7 @@ public class PipeRecipes
 		{
 			Block output = BlockPipe.getBasicPipes()[i];
 			BlockStack slab = BlockPipe.getSlabs()[i];
-			CraftingManager.getInstance().addRecipe(new ItemStack(output, 16), new Object[] { "XXX", "YCY", "XXX", 'X', slab.asItemStack(), 'C', Item.silk, 'Y', Block.glass });
+			CraftingManager.getInstance().addRecipe(new ItemStack(output, 16), new Object[] { "XXX", "YCY", "XXX", 'X', slab.asItemStack(), 'C', Items.string, 'Y', Blocks.glass });
 		}
 		upgradeRecipes();
 		

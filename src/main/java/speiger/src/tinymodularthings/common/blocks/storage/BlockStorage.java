@@ -6,17 +6,19 @@ import java.util.Random;
 
 import javax.swing.Icon;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.tinymodularthings.TinyModularThings;
@@ -27,22 +29,22 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockStorage extends BlockContainer
 {
 	
-	public BlockStorage(int par1)
+	public BlockStorage()
 	{
-		super(par1, Material.iron);
+		super(Material.iron);
 		setHardness(4.0F);
 		setCreativeTab(CreativeTabs.tabFood);
-		MinecraftForge.setBlockHarvestLevel(this, 0, "pickaxe", 0);
-		MinecraftForge.setBlockHarvestLevel(this, 0, "axe", 0);
-		MinecraftForge.setBlockHarvestLevel(this, 1, "pickaxe", 0);
-		MinecraftForge.setBlockHarvestLevel(this, 1, "axe", 0);
-		MinecraftForge.setBlockHarvestLevel(this, 2, "pickaxe", 0);
-		MinecraftForge.setBlockHarvestLevel(this, 2, "axe", 0);
+		this.setHarvestLevel("pickaxe", 0, 0);
+		this.setHarvestLevel("axe", 0, 0);
+		this.setHarvestLevel("pickaxe", 1, 0);
+		this.setHarvestLevel("axe", 1, 0);
+		this.setHarvestLevel("pickaxe", 2, 0);
+		this.setHarvestLevel("axe", 2, 0);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3)
 	{
 		
 	}
@@ -54,9 +56,9 @@ public class BlockStorage extends BlockContainer
 	}
 	
 	@Override
-	public int idDropped(int par1, Random par2Random, int par3)
+	public Item getItemDropped(int par1, Random par2Random, int par3)
 	{
-		return 0;
+		return null;
 	}
 	
 	@Override
@@ -87,18 +89,12 @@ public class BlockStorage extends BlockContainer
 		{
 			direction = ForgeDirection.WEST.ordinal();
 		}
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			((AdvTile) tile).onPlaced(direction);
 		}
 		
-	}
-	
-	@Override
-	public TileEntity createNewTileEntity(World world)
-	{
-		return null;
 	}
 	
 	@Override
@@ -131,7 +127,7 @@ public class BlockStorage extends BlockContainer
 		if (!par1.isRemote)
 		{
 			
-			TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
+			TileEntity tile = par1.getTileEntity(par2, par3, par4);
 			if (par5.isSneaking())
 			{
 				if (tile != null && tile instanceof AdvTile)
@@ -159,9 +155,9 @@ public class BlockStorage extends BlockContainer
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getBlockTexture(IBlockAccess par1, int par2, int par3, int par4, int par5)
+	public IIcon getIcon(IBlockAccess par1, int par2, int par3, int par4, int par5)
 	{
-		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1.getTileEntity(par2, par3, par4);
 		int meta = par1.getBlockMetadata(par2, par3, par4);
 		if (tile != null && tile instanceof AdvTile)
 		{
@@ -191,7 +187,7 @@ public class BlockStorage extends BlockContainer
 	@Override
 	public int getLightValue(IBlockAccess world, int x, int y, int z)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			return ((AdvTile) tile).getBlockLightLevel();
@@ -200,26 +196,26 @@ public class BlockStorage extends BlockContainer
 	}
 	
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
 	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			((AdvTile) tile).onBreaking();
-			for (ItemStack cu : getBlockDropped(par1World, par2, par3, par4, par6, 0))
+			for (ItemStack cu : getDrops(par1World, par2, par3, par4, par6, 0))
 			{
-				dropBlockAsItem_do(par1World, par2, par3, par4, cu);
+				dropBlockAsItem(par1World, par2, par3, par4, cu);
 			}
 		}
 		super.breakBlock(par1World, par2, par3, par4, par5, par6);
 	}
 	
 	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
 	{
 		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
 		
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			drops.addAll(((AdvTile) tile).onDrop(fortune));
@@ -230,7 +226,7 @@ public class BlockStorage extends BlockContainer
 	@Override
 	public int isProvidingWeakPower(IBlockAccess par1, int par2, int par3, int par4, int par5)
 	{
-		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1.getTileEntity(par2, par3, par4);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			return ((AdvTile) tile).isIndirectlyPowering(par5);
@@ -248,7 +244,7 @@ public class BlockStorage extends BlockContainer
 	@Override
 	public int isProvidingStrongPower(IBlockAccess par1, int par2, int par3, int par4, int par5)
 	{
-		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1.getTileEntity(par2, par3, par4);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			return ((AdvTile) tile).isPowering(par5);
@@ -259,7 +255,7 @@ public class BlockStorage extends BlockContainer
 	@Override
 	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			return ((AdvTile) tile).canConnectToWire();
@@ -268,13 +264,19 @@ public class BlockStorage extends BlockContainer
 	}
 	
 	@Override
-	public boolean shouldCheckWeakPower(World world, int x, int y, int z, int side)
-	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+    public boolean shouldCheckWeakPower(IBlockAccess world, int x, int y, int z, int side)
+    {
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			return ((AdvTile) tile).shouldCheckWeakPower();
 		}
 		return false;
+    }
+
+	@Override
+	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
+	{
+		return this.createTileEntity(p_149915_1_, p_149915_2_);
 	}
 }

@@ -7,11 +7,14 @@ import javax.swing.Icon;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.util.ForgeDirection;
@@ -34,9 +37,9 @@ public class BlockPipe extends Block implements IBasicPipe
 	
 	public PipeInformation info;
 	
-	public BlockPipe(int par1, PipeInformation par2)
+	public BlockPipe(PipeInformation par2)
 	{
-		super(par1, Material.iron);
+		super(Material.iron);
 		setCreativeTab(CreativeTabs.tabFood);
 		info = par2;
 		setLightOpacity(0);
@@ -87,7 +90,7 @@ public class BlockPipe extends Block implements IBasicPipe
 	@Override
 	public PipeInformation getItemInformation(ItemStack par1)
 	{
-		if (blockID != par1.itemID)
+		if (this != new BlockStack(par1).getBlock())
 		{
 			return null;
 		}
@@ -107,7 +110,7 @@ public class BlockPipe extends Block implements IBasicPipe
 	
 	public static BlockStack[] getSlabs()
 	{
-		BlockStack[] array = new BlockStack[] { new BlockStack(Block.stoneSingleSlab, 2), new BlockStack(Block.stoneSingleSlab, 3), new BlockStack(Block.stoneSingleSlab, 1), new BlockStack(Block.stoneSingleSlab, 5), new BlockStack(Block.stoneSingleSlab, 4), new BlockStack(Block.stoneSingleSlab, 6), new BlockStack(Block.stoneSingleSlab, 7) };
+		BlockStack[] array = new BlockStack[] { new BlockStack(Blocks.stone_slab, 2), new BlockStack(Blocks.stone_slab, 3), new BlockStack(Blocks.stone_slab, 1), new BlockStack(Blocks.stone_slab, 5), new BlockStack(Blocks.stone_slab, 4), new BlockStack(Blocks.stone_slab, 6), new BlockStack(Blocks.stone_slab, 7) };
 		return array;
 	}
 	
@@ -130,7 +133,7 @@ public class BlockPipe extends Block implements IBasicPipe
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerBlockIcons(IIconRegister par1IconRegister)
 	{
 		info.updateIcon(par1IconRegister);
 	}
@@ -142,14 +145,14 @@ public class BlockPipe extends Block implements IBasicPipe
 	}
 	
 	@Override
-	public boolean isBlockNormalCube(World world, int x, int y, int z)
+	public boolean isBlockNormalCube()
 	{
 		return false;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		return info.getPipeIcon();
 	}
@@ -165,14 +168,14 @@ public class BlockPipe extends Block implements IBasicPipe
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
 	{
 		double[] box = getBoxes(par1World, par2, par3, par4);
-		return AxisAlignedBB.getAABBPool().getAABB(par2 + box[0], par3 + box[1], par4 + box[2], par2 + box[3], par3 + box[4], par4 + box[5]);
+		return AxisAlignedBB.getBoundingBox(par2 + box[0], par3 + box[1], par4 + box[2], par2 + box[3], par3 + box[4], par4 + box[5]);
 	}
 	
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
 	{
 		double[] box = getBoxes(par1World, par2, par3, par4);
-		return AxisAlignedBB.getAABBPool().getAABB(par2 + box[0], par3 + box[1], par4 + box[2], par2 + box[3], par3 + box[4], par4 + box[5]);
+		return AxisAlignedBB.getBoundingBox(par2 + box[0], par3 + box[1], par4 + box[2], par2 + box[3], par3 + box[4], par4 + box[5]);
 	}
 	
 	@Override
@@ -260,44 +263,42 @@ public class BlockPipe extends Block implements IBasicPipe
 		int y = yCoord + direction.offsetY;
 		int z = zCoord + direction.offsetZ;
 		
-		int id = world.getBlockId(x, y, z);
-		int meta = world.getBlockMetadata(x, y, z) % 6;
+		BlockStack stack = new BlockStack(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z) % 6);
 		
-		if (id == 0 || Block.blocksList[id] == null)
+		if (stack.getBlock() == null)
 		{
 			return false;
 		}
-		if (Block.blocksList[id].hasTileEntity(meta))
+		if (stack.hasTileEntity())
 		{
-			TileEntity tile = world.getBlockTileEntity(x, y, z);
+			TileEntity tile = world.getTileEntity(x, y, z);
 			if (tile instanceof IInventory || tile instanceof IFluidHandler || tile instanceof IPowerReceptor || tile instanceof IEnergyProvider || tile instanceof IPipeTile)
 			{
 				return true;
 			}
 		}
-		if (Block.blocksList[id] instanceof IBasicPipe)
+		if (stack.getBlock() instanceof IBasicPipe)
 		{
 			return true;
 		}
 		return isConnected(direction, world, xCoord, yCoord, zCoord);
 	}
 	
-	private boolean isConnected(ForgeDirection direction, IBlockAccess world, int x, int y, int z)
+	private boolean isConnected(ForgeDirection direction, IBlockAccess world, int xCoord, int yCoord, int zCoord)
 	{
-		int xCoord = x + direction.offsetX;
-		int yCoord = y + direction.offsetY;
-		int zCoord = z + direction.offsetZ;
+		int x = xCoord + direction.offsetX;
+		int y = yCoord + direction.offsetY;
+		int z = zCoord + direction.offsetZ;
 		
-		int id = world.getBlockId(xCoord, yCoord, zCoord);
-		int meta = world.getBlockMetadata(xCoord, yCoord, zCoord) % 6;
+		BlockStack stack = new BlockStack(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z) % 6);
 		
-		if (id == 0 || Block.blocksList[id] == null)
+		if (stack.getBlock() == null)
 		{
 			return false;
 		}
-		if (Block.blocksList[id].hasTileEntity(meta))
+		if (stack.hasTileEntity())
 		{
-			TileEntity tile = world.getBlockTileEntity(xCoord, yCoord, zCoord);
+			TileEntity tile = world.getTileEntity(x, y, z);
 			if (tile != null)
 			{
 				
@@ -318,22 +319,22 @@ public class BlockPipe extends Block implements IBasicPipe
 			}
 		}
 		
-		if (Block.blocksList[id] instanceof IAdvancedPipeProvider)
+		if (stack.getBlock() instanceof IAdvancedPipeProvider)
 		{
-			return ((IAdvancedPipeProvider) Block.blocksList[id]).canConnect(direction.getOpposite());
+			return ((IAdvancedPipeProvider) stack.getBlock()).canConnect(direction.getOpposite());
 		}
 		
-		if (Block.blocksList[id] instanceof IBasicPipeProvider)
+		if (stack.getBlock() instanceof IBasicPipeProvider)
 		{
-			ForgeDirection provider = ((IBasicPipeProvider) Block.blocksList[id]).getConnectionSide(world, xCoord, yCoord, zCoord);
+			ForgeDirection provider = ((IBasicPipeProvider) stack.getBlock()).getConnectionSide(world, xCoord, yCoord, zCoord);
 			if (x == xCoord + provider.offsetX && y == yCoord + provider.offsetY && z == zCoord + provider.offsetZ)
 			{
 				return true;
 			}
 		}
-		if (Block.blocksList[id] instanceof IBasicPipe)
+		if (stack.getBlock() instanceof IBasicPipe)
 		{
-			ForgeDirection provider = ((IBasicPipe) Block.blocksList[id]).getNextDirection(world, xCoord, yCoord, zCoord);
+			ForgeDirection provider = ((IBasicPipe) stack.getBlock()).getNextDirection(world, xCoord, yCoord, zCoord);
 			if (x == xCoord + provider.offsetX && y == yCoord + provider.offsetY && z == zCoord + provider.offsetZ)
 			{
 				return true;
@@ -345,7 +346,7 @@ public class BlockPipe extends Block implements IBasicPipe
 	@Override
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
 	{
-		par1World.scheduleBlockUpdate(par2, par3, par4, blockID, tickRate(par1World));
+		par1World.scheduleBlockUpdate(par2, par3, par4, this, tickRate(par1World));
 		notifyNeighbors(par1World, par2, par3, par4);
 		
 	}
@@ -368,18 +369,18 @@ public class BlockPipe extends Block implements IBasicPipe
 	@Override
 	public void onBlockAdded(World par1World, int par2, int par3, int par4)
 	{
-		par1World.scheduleBlockUpdate(par2, par3, par4, blockID, tickRate(par1World));
+		par1World.scheduleBlockUpdate(par2, par3, par4, this, tickRate(par1World));
 	}
 	
 	public void notifyNeighbors(World world, int i, int j, int k)
 	{
-		world.notifyBlocksOfNeighborChange(i, j, k, blockID);
-		world.notifyBlocksOfNeighborChange(i, j - 1, k, blockID);
-		world.notifyBlocksOfNeighborChange(i, j + 1, k, blockID);
-		world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
-		world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
-		world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
-		world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
+		world.notifyBlocksOfNeighborChange(i, j, k, this);
+		world.notifyBlocksOfNeighborChange(i, j - 1, k, this);
+		world.notifyBlocksOfNeighborChange(i, j + 1, k, this);
+		world.notifyBlocksOfNeighborChange(i - 1, j, k, this);
+		world.notifyBlocksOfNeighborChange(i + 1, j, k, this);
+		world.notifyBlocksOfNeighborChange(i, j, k - 1, this);
+		world.notifyBlocksOfNeighborChange(i, j, k + 1, this);
 	}
 	
 	@Override

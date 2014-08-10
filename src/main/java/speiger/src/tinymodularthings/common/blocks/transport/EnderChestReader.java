@@ -1,9 +1,8 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
-import javax.swing.Icon;
-
-import net.minecraft.block.Block;
+import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryEnderChest;
 import net.minecraft.item.ItemStack;
@@ -11,6 +10,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityEnderChest;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.spmodapi.common.tile.AdvTile;
 
@@ -20,15 +20,15 @@ public class EnderChestReader extends AdvTile implements IInventory
 	String owner = "None";
 	
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
-		return Block.endPortal.getIcon(0, 0);
+		return Blocks.end_portal.getIcon(0, 0);
 	}
 	
 	@Override
 	public void setupUser(EntityPlayer player)
 	{
-		owner = player.username;
+		owner = player.getCommandSenderName();
 	}
 	
 	public InventoryEnderChest findEnderChest()
@@ -39,10 +39,10 @@ public class EnderChestReader extends AdvTile implements IInventory
 			int y = yCoord + ForgeDirection.getOrientation(i).offsetY;
 			int z = zCoord + ForgeDirection.getOrientation(i).offsetZ;
 			
-			TileEntity tile = worldObj.getBlockTileEntity(x, y, z);
+			TileEntity tile = worldObj.getTileEntity(x, y, z);
 			if (tile != null && tile instanceof TileEntityEnderChest)
 			{
-				EntityPlayer player = MinecraftServer.getServerConfigurationManager(MinecraftServer.getServer()).getPlayerForUsername(owner);
+				EntityPlayer player = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().func_152612_a(owner);
 				if (player != null)
 				{
 					return player.getInventoryEnderChest();
@@ -86,18 +86,7 @@ public class EnderChestReader extends AdvTile implements IInventory
 		
 	}
 	
-	@Override
-	public String getInvName()
-	{
-		return "EnderChest Reader";
-	}
-	
-	@Override
-	public boolean isInvNameLocalized()
-	{
-		return false;
-	}
-	
+
 	@Override
 	public int getInventoryStackLimit()
 	{
@@ -110,17 +99,6 @@ public class EnderChestReader extends AdvTile implements IInventory
 		return false;
 	}
 	
-	@Override
-	public void openChest()
-	{
-		
-	}
-	
-	@Override
-	public void closeChest()
-	{
-		
-	}
 	
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
@@ -140,6 +118,28 @@ public class EnderChestReader extends AdvTile implements IInventory
 	{
 		super.writeToNBT(nbt);
 		nbt.setString("Owner", owner);
+	}
+
+	@Override
+	public String getInventoryName()
+	{
+		return "EnderChest Reader";
+	}
+
+	@Override
+	public boolean hasCustomInventoryName()
+	{
+		return false;
+	}
+
+	@Override
+	public void openInventory()
+	{
+	}
+
+	@Override
+	public void closeInventory()
+	{
 	}
 	
 }

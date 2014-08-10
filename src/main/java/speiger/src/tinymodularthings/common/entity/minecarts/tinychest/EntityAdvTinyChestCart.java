@@ -1,5 +1,7 @@
 package speiger.src.tinymodularthings.common.entity.minecarts.tinychest;
 
+import mods.railcraft.api.carts.IRoutableCart;
+import mods.railcraft.api.core.items.IStackFilter;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -237,7 +239,7 @@ public abstract class EntityAdvTinyChestCart extends EntityTinyChestCart
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -308,7 +310,7 @@ public abstract class EntityAdvTinyChestCart extends EntityTinyChestCart
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -380,7 +382,7 @@ public abstract class EntityAdvTinyChestCart extends EntityTinyChestCart
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -451,7 +453,7 @@ public abstract class EntityAdvTinyChestCart extends EntityTinyChestCart
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -522,7 +524,7 @@ public abstract class EntityAdvTinyChestCart extends EntityTinyChestCart
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -593,7 +595,7 @@ public abstract class EntityAdvTinyChestCart extends EntityTinyChestCart
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -665,7 +667,7 @@ public abstract class EntityAdvTinyChestCart extends EntityTinyChestCart
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -737,7 +739,7 @@ public abstract class EntityAdvTinyChestCart extends EntityTinyChestCart
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;
@@ -808,7 +810,7 @@ public abstract class EntityAdvTinyChestCart extends EntityTinyChestCart
 			}
 			if (!worldObj.isRemote)
 			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
+				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, getEntityId(), -1, 0);
 			}
 			
 			return true;

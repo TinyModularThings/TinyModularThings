@@ -5,11 +5,15 @@ import java.util.List;
 import javax.swing.Icon;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.inventory.IAcceptor;
@@ -27,15 +31,15 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemInterfaceBlock extends TinyItem
 {
 	
-	public ItemInterfaceBlock(int par1)
+	public ItemInterfaceBlock()
 	{
-		super(par1);
+		super();
 		setHasSubtypes(true);
 		setCreativeTab(CreativeTabs.tabFood);
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item id, SpmodMod par0)
 	{
 		if (!SpmodModRegistry.areModsEqual(par0, TinyModularThings.instance))
 		{
@@ -48,7 +52,7 @@ public class ItemInterfaceBlock extends TinyItem
 		
 	}
 	
-	Icon[] texture = new Icon[3];
+	IIcon[] texture = new IIcon[3];
 	
 	public static ItemStack getBlockFromInterface(ItemStack par1)
 	{
@@ -59,7 +63,7 @@ public class ItemInterfaceBlock extends TinyItem
 	public static boolean isValidBlock(ItemStack par1)
 	{
 		NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Interface");
-		if (Block.blocksList[nbt.getInteger("ID")] != null)
+		if (new BlockStack(nbt.getInteger("ID")).getBlock() != null)
 		{
 			return true;
 		}
@@ -73,14 +77,14 @@ public class ItemInterfaceBlock extends TinyItem
 			par1.setTagInfo("Interface", new NBTTagCompound());
 		}
 		NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Interface");
-		nbt.setInteger("ID", stack.getBlockID());
+		nbt.setInteger("ID", Block.getIdFromBlock(stack.getBlock()));
 		nbt.setInteger("Meta", stack.getMeta());
 		return par1;
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerIcons(IIconRegister par1)
 	{
 		texture[0] = par1.registerIcon(getModID() + ":transport/ItemTransport");
 		texture[1] = par1.registerIcon(getModID() + ":transport/FluidTransport");
@@ -89,7 +93,7 @@ public class ItemInterfaceBlock extends TinyItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3)
 	{
 		for (int i = 0; i < 3; i++)
 		{
@@ -97,14 +101,14 @@ public class ItemInterfaceBlock extends TinyItem
 		}
 	}
 	
-	public static ItemStack createInterface(int id, int meta)
+	public static ItemStack createInterface(Item item, int meta)
 	{
-		ItemStack stack = new ItemStack(id, 1, meta);
+		ItemStack stack = new ItemStack(item, 1, meta);
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setInteger("ID", 0);
 		nbt.setInteger("Meta", 0);
 		NBTTagCompound end = new NBTTagCompound();
-		end.setCompoundTag("Interface", nbt);
+		end.setTag("Interface", nbt);
 		stack.setTagCompound(end);
 		
 		return stack;
@@ -112,7 +116,7 @@ public class ItemInterfaceBlock extends TinyItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int par1)
+	public IIcon getIconFromDamage(int par1)
 	{
 		return texture[par1];
 	}
@@ -148,13 +152,12 @@ public class ItemInterfaceBlock extends TinyItem
 		if (par1.hasTagCompound() && par1.getTagCompound().getCompoundTag("Interface") != null)
 		{
 			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Interface");
-			int id = nbt.getInteger("ID");
-			int meta = nbt.getInteger("Meta");
+			BlockStack id = new BlockStack(nbt.getInteger("ID"), nbt.getInteger("Meta"));
 			
-			if (id != 0)
+			if (id.hasBlock())
 			{
-				ItemStack stack = new ItemStack(id, 1, meta);
-				String end = stack.getItem().getItemDisplayName(stack);
+				ItemStack stack = id.asItemStack();
+				String end = stack.getItem().getItemStackDisplayName(stack);
 				if (end != null)
 				{
 					par3.add(text + ": " + end);
@@ -170,13 +173,13 @@ public class ItemInterfaceBlock extends TinyItem
 	@Override
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
 	{
-		int i1 = par3World.getBlock(par4, par5, par6);
+		BlockStack i1 = new BlockStack(par3World, par4, par5, par6);
 		
-		if (i1 == Block.snow.blockID && (par3World.getBlockMetadata(par4, par5, par6) & 7) < 1)
+		if ((i1.getBlock() == Blocks.snow) && ((par3World.getBlockMetadata(par4, par5, par6) & 0x7) < 1))
 		{
 			par7 = 1;
 		}
-		else if (i1 != Block.vine.blockID && i1 != Block.tallGrass.blockID && i1 != Block.deadBush.blockID && (Block.blocksList[i1] == null || !Block.blocksList[i1].isBlockReplaceable(par3World, par4, par5, par6)))
+		else if ((i1.getBlock() != Blocks.vine) && (i1.getBlock() != Blocks.tallgrass) && (i1.getBlock() != Blocks.deadbush) && ((i1.getBlock() == null) || (!i1.getBlock().isReplaceable(par3World, par4, par5, par6))))
 		{
 			if (par7 == 0)
 			{
@@ -232,7 +235,7 @@ public class ItemInterfaceBlock extends TinyItem
 					NBTTagCompound nbt = par1ItemStack.getTagCompound().getCompoundTag("Interface");
 					if (nbt.getInteger("ID") == 0)
 					{
-						par2EntityPlayer.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(new InfoStack(), "need.internal.block", getMod())));
+						par2EntityPlayer.addChatComponentMessage(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(new InfoStack(), "need.internal.block", getMod())));
 						return false;
 					}
 					stack = new BlockStack(nbt.getInteger("ID"), nbt.getInteger("Meta"));
@@ -243,9 +246,9 @@ public class ItemInterfaceBlock extends TinyItem
 					return false;
 				}
 				
-				if (par3World.setBlock(par4, par5, par6, TinyBlocks.transportBlock.blockID, getMetaFromDamage(par1ItemStack), 3))
+				if (par3World.setBlock(par4, par5, par6, TinyBlocks.transportBlock, getMetaFromDamage(par1ItemStack), 3))
 				{
-					TileEntity tile = par3World.getBlockTileEntity(par4, par5, par6);
+					TileEntity tile = par3World.getTileEntity(par4, par5, par6);
 					if (tile != null && tile instanceof IAcceptor)
 					{
 						IAcceptor hidden = (IAcceptor) tile;

@@ -1,5 +1,6 @@
 package speiger.src.tinymodularthings.common.plugins.BC.triggers;
 
+import java.util.Collection;
 import java.util.LinkedList;
 
 import net.minecraft.block.Block;
@@ -9,6 +10,7 @@ import speiger.src.tinymodularthings.common.plugins.BC.BCVariables;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerProvider;
 import buildcraft.api.transport.IPipe;
+import buildcraft.api.transport.IPipeTile;
 
 public class BCTriggerHelper implements ITriggerProvider
 {
@@ -31,10 +33,11 @@ public class BCTriggerHelper implements ITriggerProvider
 		
 		return triggers;
 	}
-	
+
 	@Override
-	public LinkedList<ITrigger> getPipeTriggers(IPipe pipe)
+	public Collection<ITrigger> getPipeTriggers(IPipeTile pipe)
 	{
 		return null;
 	}
+	
 }

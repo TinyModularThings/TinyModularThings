@@ -4,6 +4,7 @@ import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import speiger.src.api.items.DisplayItem;
@@ -22,14 +23,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemInformationBook extends TinyItem implements IItemGui
 {
 	
-	public ItemInformationBook(int par1)
+	public ItemInformationBook()
 	{
-		super(par1);
+		super();
 		setCreativeTab(CreativeTabs.tabFood);
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item id, SpmodMod par0)
 	{
 		if (!par0.getName().equals(TinyModularThingsLib.Name))
 		{

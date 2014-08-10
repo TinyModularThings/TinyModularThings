@@ -5,6 +5,7 @@ import java.util.ArrayList;
 
 import javax.swing.Icon;
 
+import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -38,6 +39,7 @@ import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+import forestry.api.core.ISpecialInventory;
 
 public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEnergyProvider, IFluidHandler, IPacketReciver, IPowerReceptor, IActionReceptor
 {

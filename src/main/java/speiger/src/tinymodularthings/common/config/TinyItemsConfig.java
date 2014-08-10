@@ -38,53 +38,53 @@ public class TinyItemsConfig
 	
 	public static void initItems()
 	{
-		items.ingots = new ItemIngots(config.item.getCurrentID());
+		items.ingots = new ItemIngots();
 		RegisterItem(items.ingots, "Ingots");
-		config.item.updateToNextID();
 		
-		items.IridiumDrop = new ItemTinyItem(config.item.getCurrentID(), "Unrefined_Iridium", TinyTextureHelper.getTextureStringFromName("ingots/UnrefinedIridium"));
+		
+		items.IridiumDrop = new ItemTinyItem("Unrefined_Iridium", TinyTextureHelper.getTextureStringFromName("ingots/UnrefinedIridium"));
 		RegisterItem(items.IridiumDrop, "IridiumDrop");
-		config.item.updateToNextID();
 		
-		items.bauxitDust = new ItemTinyItem(config.item.getCurrentID(), "bauxit_dust", TinyTextureHelper.getTextureStringFromName("dusts/BauxitDust")).setUnlocalizedName("BauxiteDust");
+		
+		items.bauxitDust = new ItemTinyItem("bauxit_dust", TinyTextureHelper.getTextureStringFromName("dusts/BauxitDust")).setUnlocalizedName("BauxiteDust");
 		RegisterItem(items.bauxitDust, "BaxitDust");
-		config.item.updateToNextID();
 		
-		items.informationBook = new ItemInformationBook(config.item.getCurrentID());
+		
+		items.informationBook = new ItemInformationBook();
 		RegisterItem(items.informationBook, "ForschungsInfoBuch");
-		config.item.updateToNextID();
 		
-		items.tinyChest = new ItemTinyChest(config.item.getCurrentID());
+		
+		items.tinyChest = new ItemTinyChest();
 		RegisterItem(items.tinyChest, "TinyChests");
-		config.item.updateToNextID();
 		
-		items.tinyTank = new ItemTinyTank(config.item.getCurrentID());
+		
+		items.tinyTank = new ItemTinyTank();
 		RegisterItem(items.tinyTank, "TinyTanks");
-		config.item.updateToNextID();
 		
-		items.tinyStorageCart = new TinyChestCart(TinyConfig.item.getCurrentID());
+		
+		items.tinyStorageCart = new TinyChestCart();
 		RegisterItem(items.tinyStorageCart, "TinyChestCart");
-		config.item.updateToNextID();
 		
-		items.advTinyChest = new ItemAdvTinyChest(TinyConfig.item.getCurrentID());
+		
+		items.advTinyChest = new ItemAdvTinyChest();
 		RegisterItem(items.advTinyChest, "AdvTinyChests");
-		config.item.updateToNextID();
 		
-		items.advTinyStorageCart = new AdvTinyChestCart(TinyConfig.item.getCurrentID());
+		
+		items.advTinyStorageCart = new AdvTinyChestCart();
 		RegisterItem(items.advTinyStorageCart, "AdvTinyChestCart");
-		config.item.updateToNextID();
 		
-		items.playerGame = new ItemTinyInfo(TinyConfig.item.getCurrentID());
+		
+		items.playerGame = new ItemTinyInfo();
 		RegisterItem(items.playerGame, "PlayerChanger");
-		config.item.updateToNextID();
 		
-		items.interfaceBlock = new ItemInterfaceBlock(TinyConfig.item.getCurrentID());
+		
+		items.interfaceBlock = new ItemInterfaceBlock();
 		RegisterItem(items.interfaceBlock, "InterfaceBlock");
-		config.item.updateToNextID();
 		
-		TinyItems.tinyHopper = new ItemTinyHopper(config.item.getCurrentID());
+		
+		TinyItems.tinyHopper = new ItemTinyHopper();
 		RegisterItem(items.tinyHopper, "TinyHopper");
-		config.item.updateToNextID();
+		
 		
 	}
 	
@@ -99,15 +99,15 @@ public class TinyItemsConfig
 		try
 		{
 			PipeTransportPower.powerCapacities.put(PipeEmeraldExtractionPower.class, 2048);
-			items.emeraldPowerPipeE = BuildItem(config.pipes.getCurrentID(), PipeEmeraldExtractionPower.class, "pipe.emerald.power.extraction");
-			config.pipes.updateToNextID();
+			items.emeraldPowerPipeE = BuildItem(PipeEmeraldExtractionPower.class, "pipe.emerald.power.extraction");
+	
 			if(items.emeraldPowerPipeE != null)
 			{
 				AssemblyRecipe.assemblyRecipes.add(new AssemblyRecipe(new ItemStack[]{new ItemStack(BuildCraftTransport.pipeItemsEmerald, 8), new ItemStack(Item.redstone, 8)}, 10000, new ItemStack(items.emeraldPowerPipeE, 8)));
 				PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeItemsEmerald), new Object[]{items.emeraldPowerPipeE});
 			}
 			PipeTransportPower.powerCapacities.put(PipeEmeraldPower.class, 2048);
-			items.emeraldPowerPipe = BuildItem(config.pipes.getCurrentID(), PipeEmeraldPower.class, "pipe.emerald.power");
+			items.emeraldPowerPipe = BuildItem(PipeEmeraldPower.class, "pipe.emerald.power");
 			PathProxy.addSRecipe(new ItemStack(items.emeraldPowerPipe), new Object[]{BuildCraftTransport.pipeItemsEmerald, Item.redstone});
 			PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeItemsEmerald), new Object[]{items.emeraldPowerPipe});
 		}
@@ -116,17 +116,16 @@ public class TinyItemsConfig
 		}
 	}
 	
-	public static Item BuildItem(int defaultID, Class<? extends Pipe> clas, String descr)
+	public static Item BuildItem(Class<? extends Pipe> clas, String descr)
 	{
 		try
 		{
-			ItemPipe res = new SpmodPipe(defaultID, descr);
+			ItemPipe res = new SpmodPipe(descr);
 			RegisterProxy.RegisterItem(TinyModularThingsLib.ModID, res);
 			if(res != null)
 			{
-				BlockGenericPipe.pipes.put(res.itemID, clas);
-				TinyModularThings.core.loadPipe(res, res.itemID, clas);
-				MinecraftForgeClient.registerItemRenderer(res.itemID, ((TransportProxyClient)TransportProxyClient.proxy).pipeItemRenderer);
+				BlockGenericPipe.pipes.put(res, clas);
+				TinyModularThings.core.loadPipe(res, clas);
 			}
 			
 			return res;

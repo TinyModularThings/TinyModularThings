@@ -1,10 +1,13 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
+import io.netty.buffer.ByteBuf;
+
 import java.io.DataInput;
 import java.io.IOException;
 
 import javax.swing.Icon;
 
+import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +16,11 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.inventory.IAcceptor;
@@ -32,6 +39,7 @@ import speiger.src.tinymodularthings.common.plugins.BC.actions.ActionOneSlotChan
 import speiger.src.tinymodularthings.common.plugins.BC.actions.GateChangeToSlot;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionReceptor;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -56,7 +64,7 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	
 	
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		if (blockID != -1 && metadata != -1)
 		{
@@ -89,7 +97,7 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 		if ((!worldObj.isRemote && textureUpdate) || (!worldObj.isRemote && worldObj.getWorldTime() % 200 == 0))
 		{
 			textureUpdate = false;
-			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
+			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendToAllNear(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 		}
 		
 		if (worldObj.isRemote || worldObj.getWorldTime() % 20 != 0)
@@ -155,7 +163,7 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 		y = 0;
 		z = 0;
 		choosenSlot = 0;
-		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
+		FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendToAllNear(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 	}
 	
 	public void findInventory()
@@ -175,7 +183,7 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 						x = tile.xCoord;
 						y = tile.yCoord;
 						z = tile.zCoord;
-						worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
+						worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 					}
 				}
 			}
@@ -196,7 +204,7 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 					{
 						
 						target = (IInventory) tile;
-						worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
+						worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 					}
 				}
 				
@@ -252,7 +260,7 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	{
 		if (tile != null)
 		{
-			if (tile.worldObj.provider.dimensionId == worldObj.provider.dimensionId && tile.xCoord == x && tile.yCoord == y && tile.zCoord == z)
+			if (tile.getWorldObj().provider.dimensionId == worldObj.provider.dimensionId && tile.xCoord == x && tile.yCoord == y && tile.zCoord == z)
 			{
 				target = null;
 				x = 0;
@@ -296,17 +304,6 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 		}
 	}
 	
-	@Override
-	public String getInvName()
-	{
-		return "Item Interface";
-	}
-	
-	@Override
-	public boolean isInvNameLocalized()
-	{
-		return false;
-	}
 	
 	@Override
 	public int getInventoryStackLimit()
@@ -318,17 +315,6 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
 		return true;
-	}
-	
-	@Override
-	public void openChest()
-	{
-		
-	}
-	
-	@Override
-	public void closeChest()
-	{
 	}
 	
 	@Override
@@ -415,37 +401,16 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
 	}
 	
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 	{
-		readFromNBT(pkt.data);
+		readFromNBT(pkt.func_148857_g());
 	}
 	
-	@Override
-	public void recivePacket(DataInput par1)
-	{
-		if (!worldObj.isRemote)
-		{
-			int nextID;
-			try
-			{
-				nextID = par1.readInt();
-				
-			}
-			catch (IOException e)
-			{
-				return;
-			}
-			if (nextID != choosenSlot)
-			{
-				choosenSlot = nextID;
-			}
-		}
-		
-	}
+
 	
 	@Override
 	public void actionActivated(IAction action)
@@ -515,6 +480,58 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	public String identifier()
 	{
 		return null;
+	}
+
+
+
+
+
+	@Override
+	public void recivePacket(ByteBuf par1)
+	{
+		if (!worldObj.isRemote)
+		{
+			int nextID;
+			try
+			{
+				nextID = par1.readInt();
+				
+			}
+			catch (Exception e)
+			{
+				return;
+			}
+			if (nextID != choosenSlot)
+			{
+				choosenSlot = nextID;
+			}
+		}
+	}
+
+
+
+
+
+	@Override
+	public String getInventoryName()
+	{
+		return "Item Interface";
+	}
+
+	@Override
+	public boolean hasCustomInventoryName()
+	{
+		return false;
+	}
+
+	@Override
+	public void openInventory()
+	{
+	}
+
+	@Override
+	public void closeInventory()
+	{
 	}
 	
 }

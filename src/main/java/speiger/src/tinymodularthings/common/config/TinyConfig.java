@@ -2,6 +2,8 @@ package speiger.src.tinymodularthings.common.config;
 
 import java.io.File;
 
+import net.minecraftforge.common.config.Configuration;
+
 import speiger.src.api.util.config.ConfigBoolean;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.plugins.BC.BCRegistry;
@@ -23,9 +25,6 @@ public class TinyConfig
 	public static final String world = "World";
 	public static final String retro = "World" + config.CATEGORY_SPLITTER + "RetroGen";
 	
-	public static ConfigBlock block;
-	public static ConfigItem item;
-	public static ConfigItem pipes;
 	
 	public static boolean logging = true;
 	
@@ -44,15 +43,8 @@ public class TinyConfig
 			
 			BCRegistry.overrideVanilla = getBoolean(general, "Vanilla BC Intigration", true).setComment("Make the Vanilla Furnace Compatioble to Gates").getResult(config);
 			
-			block = new ConfigBlock(ConfigBlock.getConfig(config, blocks, 1300));
-			item = new ConfigItem(ConfigItem.getConfig(config, items, 13000));
-			pipes = new ConfigItem(ConfigItem.getConfig(config, "Pipe StartID", items, 12000));
-			
 			TinyBlocksConfig.initBlocks();
 			TinyItemsConfig.initItems();
-			
-			block.setEnd(config, blocks.toLowerCase());
-			item.setEnd(config, items.toLowerCase());
 			
 		}
 		catch (Exception e)

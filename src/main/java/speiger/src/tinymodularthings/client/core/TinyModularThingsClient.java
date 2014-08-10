@@ -102,11 +102,11 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 	}
 	
 	@Override
-	public void loadPipe(ItemPipe par1, int id, Class<? extends Pipe> par2)
+	public void loadPipe(ItemPipe par1, Class<? extends Pipe> par2)
 	{
 		try
 		{
-			Pipe pipe = (Pipe)par2.getConstructor(new Class[]{Integer.TYPE}).newInstance(new Object[]{Integer.valueOf(id)});
+			Pipe pipe = (Pipe)par2.getConstructor(new Class[]{Integer.TYPE}).newInstance(new Object[]{Integer.valueOf(Item.getIdFromItem(par1))});
 			if(pipe != null)
 			{
 				par1.setPipesIcons(pipe.getIconProvider());

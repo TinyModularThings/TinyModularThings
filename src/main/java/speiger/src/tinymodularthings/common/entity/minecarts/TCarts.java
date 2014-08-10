@@ -27,7 +27,7 @@ public abstract class TCarts extends EntityMinecartContainer implements
 	}
 	
 	@Override
-	public Block getDefaultDisplayTile()
+	public Block func_145817_o()
 	{
 		return getRenderedBlock().getBlock();
 	}

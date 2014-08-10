@@ -4,9 +4,14 @@ import java.util.ArrayList;
 
 import javax.swing.Icon;
 
+import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -62,7 +67,7 @@ public class MultiStructureFluidInterface extends AdvTile implements
 						x = tile.xCoord;
 						y = tile.yCoord;
 						z = tile.zCoord;
-						worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
+						worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 					}
 				}
 			}
@@ -79,7 +84,7 @@ public class MultiStructureFluidInterface extends AdvTile implements
 					if (inter.acceptFluids(this) && inter.addAcceptor(this))
 					{
 						target = (IFluidHandler) tile;
-						worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
+						worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType());
 					}
 				}
 				
@@ -132,7 +137,7 @@ public class MultiStructureFluidInterface extends AdvTile implements
 		if ((!worldObj.isRemote && textureUpdate) || (!worldObj.isRemote && worldObj.getWorldTime() % 200 == 0))
 		{
 			textureUpdate = false;
-			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
+			sendPacket(20, getDescriptionPacket());
 		}
 		
 	}
@@ -251,7 +256,7 @@ public class MultiStructureFluidInterface extends AdvTile implements
 	{
 		if (tile != null)
 		{
-			if (tile.worldObj.provider.dimensionId == worldObj.provider.dimensionId && tile.xCoord == x && tile.yCoord == y && tile.zCoord == z)
+			if (tile.getWorldObj().provider.dimensionId == worldObj.provider.dimensionId && tile.xCoord == x && tile.yCoord == y && tile.zCoord == z)
 			{
 				target = null;
 				x = 0;
@@ -263,7 +268,7 @@ public class MultiStructureFluidInterface extends AdvTile implements
 	
 	
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		if (blockID != -1 && metadata != -1 && renderPass == 1)
 		{
@@ -306,12 +311,12 @@ public class MultiStructureFluidInterface extends AdvTile implements
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
 	}
 	
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 	{
-		readFromNBT(pkt.data);
+		readFromNBT(pkt.func_148857_g());
 	}
 }

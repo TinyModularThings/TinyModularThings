@@ -1,7 +1,7 @@
 package speiger.src.tinymodularthings.common.recipes;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
@@ -18,7 +18,7 @@ public class PreRecipes
 	public static void initRecipes()
 	{
 		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(TinyItems.tinyChest, 1, 0), "XXX", "X X", "XXX", 'X', "slabWood"));
-		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(TinyItems.tinyTank, 1, 0), "XXX", "XCX", "XXX", 'X', "slabWood", 'C', Item.bucketEmpty));
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(new ItemStack(TinyItems.tinyTank, 1, 0), "XXX", "XCX", "XXX", 'X', "slabWood", 'C', Items.bucket));
 		
 		for (int i = 0; i < 8; i++)
 		{
@@ -28,16 +28,16 @@ public class PreRecipes
 		}
 		for (int i = 0; i < 9; i++)
 		{
-			CraftingManager.getInstance().addShapelessRecipe(new ItemStack(TinyItems.tinyStorageCart, 1, i), new Object[] { new ItemStack(TinyItems.tinyChest, 1, i), Item.minecartEmpty });
-			CraftingManager.getInstance().addShapelessRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i), new Object[] { new ItemStack(TinyItems.advTinyChest, 1, i), Item.minecartEmpty });
-			CraftingManager.getInstance().addShapelessRecipe(new ItemStack(TinyItems.advTinyChest, 1, i), new Object[] { new ItemStack(TinyItems.tinyChest, 1, i), Item.redstone });
+			CraftingManager.getInstance().addShapelessRecipe(new ItemStack(TinyItems.tinyStorageCart, 1, i), new Object[] { new ItemStack(TinyItems.tinyChest, 1, i), Items.minecart });
+			CraftingManager.getInstance().addShapelessRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i), new Object[] { new ItemStack(TinyItems.advTinyChest, 1, i), Items.minecart });
+			CraftingManager.getInstance().addShapelessRecipe(new ItemStack(TinyItems.advTinyChest, 1, i), new Object[] { new ItemStack(TinyItems.tinyChest, 1, i), Items.redstone });
 		}
-		CraftingManager.getInstance().addRecipe(new ItemStack(TinyBlocks.transportBlock, 4, 0), new Object[] { "XXX", "XYX", "XXX", 'X', Block.obsidian, 'Y', Item.enderPearl});
-		GameRegistry.addRecipe(new ItemStack(TinyBlocks.machine), new Object[] { "XXX", "XYX", "XXX", 'X', Block.cobblestone, 'Y', Item.coal});
-		GameRegistry.addRecipe(new ItemStack(TinyBlocks.machine), new Object[] { "XXX", "XYX", "XXX", 'X', Block.cobblestone, 'Y', new ItemStack(Item.coal, 1, 1)});
-		GameRegistry.addRecipe(new ItemStack(TinyBlocks.machine), new Object[] { "XXX", "XYX", "XXX", 'X', Block.cobblestone, 'Y', new ItemStack(Block.wood, 1, PathProxy.getRecipeBlankValue())});
-		GameRegistry.addShapelessRecipe(new ItemStack(Item.skull, 1, 1), new Object[]{Item.diamond, Item.diamond, Block.coalBlock, Item.arrow, Item.arrow, Item.bone, Item.bone});
+		CraftingManager.getInstance().addRecipe(new ItemStack(TinyBlocks.transportBlock, 4, 0), new Object[] { "XXX", "XYX", "XXX", 'X', Blocks.obsidian, 'Y', Items.ender_pearl});
+		GameRegistry.addRecipe(new ItemStack(TinyBlocks.machine), new Object[] { "XXX", "XYX", "XXX", 'X', Blocks.cobblestone, 'Y', Items.coal});
+		GameRegistry.addRecipe(new ItemStack(TinyBlocks.machine), new Object[] { "XXX", "XYX", "XXX", 'X', Blocks.cobblestone, 'Y', new ItemStack(Items.coal, 1, 1)});
+		GameRegistry.addRecipe(new ItemStack(TinyBlocks.machine), new Object[] { "XXX", "XYX", "XXX", 'X', Blocks.cobblestone, 'Y', new ItemStack(Blocks.log, 1, PathProxy.getRecipeBlankValue())});
+		GameRegistry.addShapelessRecipe(new ItemStack(Items.skull, 1, 1), new Object[]{Items.diamond, Items.diamond, Blocks.coal_block, Items.arrow, Items.arrow, Items.bone, Items.bone});
 		
-		GameRegistry.addRecipe(new ItemStack(TinyItems.interfaceBlock, 4, 0), new Object[]{"XYX", "CVC", "XBX", 'B', TinyBlocks.normalPipe, 'Y', Block.hopperBlock, 'C', ItemGear.getGearFromType(GearType.Redstone), 'V', Block.chest, 'X', new ItemStack(TinyItems.ingots, 1, EnumIngots.Aluminum.getIngotMeta())});
+		GameRegistry.addRecipe(new ItemStack(TinyItems.interfaceBlock, 4, 0), new Object[]{"XYX", "CVC", "XBX", 'B', TinyBlocks.normalPipe, 'Y', Blocks.hopper, 'C', ItemGear.getGearFromType(GearType.Redstone), 'V', Blocks.chest, 'X', new ItemStack(TinyItems.ingots, 1, EnumIngots.Aluminum.getIngotMeta())});
 	}
 }

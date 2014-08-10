@@ -4,6 +4,8 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -27,7 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemBlockPipe extends ItemBlockTinyChest
 {
 	
-	public ItemBlockPipe(int par1)
+	public ItemBlockPipe(Block par1)
 	{
 		super(par1);
 	}
@@ -51,7 +53,7 @@ public class ItemBlockPipe extends ItemBlockTinyChest
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item id, SpmodMod par0)
 	{
 		if (!SpmodModRegistry.areModsEqual(par0, TinyModularThings.instance))
 		{
@@ -93,23 +95,23 @@ public class ItemBlockPipe extends ItemBlockTinyChest
 		if (nbt.hasKey(NBTHelper.getPlayerNBTStringFromMode(0)))
 		{
 			int mode = nbt.getInteger(NBTHelper.getPlayerNBTStringFromMode(0));
-			par3.sendChatToPlayer(LanguageRegister.createChatMessage(LangProxy.getModeString(TinyModularThings.instance) + ": " + LanguageRegister.getLanguageName(new InfoStack(), BlockHelper.getPlacingMode(mode), TinyModularThings.instance)));
+			par3.addChatComponentMessage(LanguageRegister.createChatMessage(LangProxy.getModeString(TinyModularThings.instance) + ": " + LanguageRegister.getLanguageName(new InfoStack(), BlockHelper.getPlacingMode(mode), TinyModularThings.instance)));
 			return par1;
 		}
-		par3.sendChatToPlayer(LanguageRegister.createChatMessage(LangProxy.getModeString(TinyModularThings.instance) + ": " + LanguageRegister.getLanguageName(new InfoStack(), "error.hasNot.Mode", TinyModularThings.instance)));
+		par3.addChatComponentMessage(LanguageRegister.createChatMessage(LangProxy.getModeString(TinyModularThings.instance) + ": " + LanguageRegister.getLanguageName(new InfoStack(), "error.hasNot.Mode", TinyModularThings.instance)));
 		return par1;
 	}
 	
 	@Override
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
 	{
-		int i1 = par3World.getBlockId(par4, par5, par6);
+		BlockStack i1 = new BlockStack(par3World, par4, par5, par6);
 		
-		if (i1 == Block.snow.blockID && (par3World.getBlockMetadata(par4, par5, par6) & 7) < 1)
+		if ((i1.getBlock() == Blocks.snow) && ((par3World.getBlockMetadata(par4, par5, par6) & 0x7) < 1))
 		{
 			par7 = 1;
 		}
-		else if (i1 != Block.vine.blockID && i1 != Block.tallGrass.blockID && i1 != Block.deadBush.blockID && (Block.blocksList[i1] == null || !Block.blocksList[i1].isBlockReplaceable(par3World, par4, par5, par6)))
+		else if ((i1.getBlock() != Blocks.vine) && (i1.getBlock() != Blocks.tallgrass) && (i1.getBlock() != Blocks.deadbush) && ((i1.getBlock() == null) || (!i1.getBlock().isReplaceable(par3World, par4, par5, par6))))
 		{
 			if (par7 == 0)
 			{
@@ -150,13 +152,13 @@ public class ItemBlockPipe extends ItemBlockTinyChest
 		{
 			return false;
 		}
-		else if (par5 == 255 && Block.blocksList[getBlockID()].blockMaterial.isSolid())
+		else if (par5 == 255 && i1.getBlock().getMaterial().isSolid())
 		{
 			return false;
 		}
 		else
 		{
-			Block block = Block.blocksList[getBlockID()];
+			Block block = i1.getBlock();
 			
 			ForgeDirection direction = ForgeDirection.UNKNOWN;
 			
@@ -190,9 +192,9 @@ public class ItemBlockPipe extends ItemBlockTinyChest
 				direction = direction.getOpposite();
 			}
 			
-			if (par3World.setBlock(par4, par5, par6, getBlockID(), direction.ordinal(), 3))
+			if (par3World.setBlock(par4, par5, par6, block, direction.ordinal(), 3))
 			{
-				par3World.playSoundEffect(par4 + 0.5F, par5 + 0.5F, par6 + 0.5F, block.stepSound.getPlaceSound(), (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
+				par3World.playSoundEffect(par4 + 0.5F, par5 + 0.5F, par6 + 0.5F, block.stepSound.soundName, (block.stepSound.getVolume() + 1.0F) / 2.0F, block.stepSound.getPitch() * 0.8F);
 				--par1ItemStack.stackSize;
 			}
 			return true;

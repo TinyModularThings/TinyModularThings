@@ -4,16 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.Icon;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
@@ -31,19 +33,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class BlockTransport extends BlockContainer
 {
 	
-	public BlockTransport(int par1)
+	public BlockTransport()
 	{
-		super(par1, Material.iron);
+		super(Material.iron);
 		setCreativeTab(CreativeTabs.tabFood);
 		this.setHardness(4.0F);
 		this.setResistance(4.0F);
 	}
 	
-	@Override
-	public TileEntity createNewTileEntity(World world)
-	{
-		return null;
-	}
 	
 	@Override
 	public TileEntity createTileEntity(World world, int metadata)
@@ -80,7 +77,7 @@ public class BlockTransport extends BlockContainer
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubBlocks(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(new ItemStack(par1, 1, 0));
 	}
@@ -118,7 +115,7 @@ public class BlockTransport extends BlockContainer
 				direction = ForgeDirection.WEST.ordinal();
 			}
 		}
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			((AdvTile) tile).onPlaced(direction);
@@ -134,7 +131,7 @@ public class BlockTransport extends BlockContainer
 	{
 		if (!par1World.isRemote)
 		{
-			TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+			TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 			
 			if (tile instanceof TileFacing)
 			{
@@ -166,9 +163,9 @@ public class BlockTransport extends BlockContainer
 	}
 	
 	@Override
-	public int idDropped(int par1, Random par2Random, int par3)
+	public Item getItemDropped(int par1, Random par2Random, int par3)
 	{
-		return 0;
+		return null;
 	}
 	
 	@Override
@@ -186,7 +183,7 @@ public class BlockTransport extends BlockContainer
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if (tile != null && tile instanceof AdvTile)
 		{
 			return ((AdvTile) tile).pickBlock(target);
@@ -196,20 +193,20 @@ public class BlockTransport extends BlockContainer
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public IIcon getIcon(int par1, int par2)
 	{
 		if (par2 == 0)
 		{
-			return Block.endPortal.getIcon(0, 0);
+			return Blocks.end_portal.getIcon(0, 0);
 		}
 		return null;
 	}
 	
-	Icon[] texture = new Icon[3];
+	IIcon[] texture = new IIcon[3];
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getBlockTexture(IBlockAccess par1, int par2, int par3, int par4, int par5)
+	public IIcon getIcon(IBlockAccess par1, int par2, int par3, int par4, int par5)
 	{
 		int meta = par1.getBlockMetadata(par2, par3, par4);
 		if (meta == 0)
@@ -218,7 +215,7 @@ public class BlockTransport extends BlockContainer
 		}
 		else
 		{
-			TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
+			TileEntity tile = par1.getTileEntity(par2, par3, par4);
 			if (tile != null && tile instanceof AdvTile)
 			{
 				return TileIconMaker.getIconMaker().getIconSafe(((AdvTile) tile).getIconFromSideAndMetadata(par5, 0));
@@ -227,17 +224,17 @@ public class BlockTransport extends BlockContainer
 		return null;
 	}
 	
-	public Icon getTextureFromMeta(int meta)
+	public IIcon getTextureFromMeta(int meta)
 	{
 		return texture[meta];
 	}
 	
 
 	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
+	public ArrayList<ItemStack> getDrops(World world, int x, int y, int z, int metadata, int fortune)
 	{
 		ArrayList<ItemStack> drop = new ArrayList<ItemStack>();
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if(tile != null && tile instanceof AdvTile)
 		{
 			drop.addAll(((AdvTile)tile).onDrop(fortune));
@@ -247,7 +244,7 @@ public class BlockTransport extends BlockContainer
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerBlockIcons(IIconRegister par1)
 	{
 		texture[0] = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":transport/ItemTransport");
 		texture[1] = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":transport/FluidTransport");
@@ -255,14 +252,21 @@ public class BlockTransport extends BlockContainer
 	}
 
 	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
+	public void breakBlock(World par1World, int par2, int par3, int par4, Block par5, int par6)
 	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+		TileEntity tile = par1World.getTileEntity(par2, par3, par4);
 		if(tile != null && tile instanceof AdvTile)
 		{
 			((AdvTile)tile).onBreaking();
 		}
 		super.breakBlock(par1World, par2, par3, par4, par5, par6);
+	}
+
+
+	@Override
+	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
+	{
+		return this.createTileEntity(p_149915_1_, p_149915_2_);
 	}
 	
 	

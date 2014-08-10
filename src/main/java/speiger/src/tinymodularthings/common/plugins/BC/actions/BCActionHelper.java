@@ -1,6 +1,7 @@
 package speiger.src.tinymodularthings.common.plugins.BC.actions;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.LinkedList;
 
 import net.minecraft.block.Block;
@@ -14,6 +15,7 @@ import speiger.src.tinymodularthings.common.plugins.BC.TileEntityModifiedFurnace
 import buildcraft.BuildCraftCore;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionProvider;
+import buildcraft.api.transport.IPipeTile;
 
 public class BCActionHelper implements IActionProvider
 {
@@ -66,6 +68,12 @@ public class BCActionHelper implements IActionProvider
 		}
 		
 		return list;
+	}
+
+	@Override
+	public Collection<IAction> getPipeActions(IPipeTile pipe)
+	{
+		return null;
 	}
 	
 }

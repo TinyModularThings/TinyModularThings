@@ -41,10 +41,9 @@ public class TinyBlocksConfig
 	
 	public static void initBlocks()
 	{
-		TinyBlocks.ores = new BlockSpmodOre(TinyConfig.block.getCurrentID());
+		TinyBlocks.ores = new BlockSpmodOre();
 		RegisterProxy.RegisterBlock(TinyBlocks.ores, ItemBlockSpmodOre.class, "TinyOres");
-		TinyConfig.block.updateToNextID();
-		TinyBlocks.bauxitOre = new BlockMultiMineOre(TinyConfig.block.getCurrentID(), Material.grass, TinyTextureHelper.getTextureStringFromName("ores/oreBauxit"), 8)
+		TinyBlocks.bauxitOre = new BlockMultiMineOre(Material.grass, TinyTextureHelper.getTextureStringFromName("ores/oreBauxit"), 8)
 		{
 			@Override
 			public ItemStack getBasicDrop(int fortune, int meta)
@@ -65,63 +64,63 @@ public class TinyBlocksConfig
 			}
 		};
 		blocks.bauxitOre.setHardness(0.3F);
-		blocks.bauxitOre.setStepSound(Block.soundGravelFootstep);
+		blocks.bauxitOre.setStepSound(Block.soundTypeGravel);
 		blocks.bauxitOre.setCreativeTab(CreativeTabs.tabFood);
 		RegisterProxy.RegisterBlock(TinyBlocks.bauxitOre, ItemBlockMultiMineOre.class, "BauxitOreTiny");
 		ItemBlockMultiMineOre.addName(TinyBlocks.bauxitOre, "oreBauxit");
-		TinyConfig.block.updateToNextID();
 		
-		blocks.smallPipe = new BlockPipe(TinyConfig.block.getCurrentID(), EnumPipes.Small.getPipeInformation());
+		
+		blocks.smallPipe = new BlockPipe(EnumPipes.Small.getPipeInformation());
 		RegisterProxy.RegisterBlock(TinyBlocks.smallPipe, ItemBlockPipe.class, "SmallPipe");
-		TinyConfig.block.updateToNextID();
 		
-		blocks.normalPipe = new BlockPipe(TinyConfig.block.getCurrentID(), EnumPipes.Normal.getPipeInformation());
+		
+		blocks.normalPipe = new BlockPipe(EnumPipes.Normal.getPipeInformation());
 		RegisterProxy.RegisterBlock(TinyBlocks.normalPipe, ItemBlockPipe.class, "NormalPipe");
-		TinyConfig.block.updateToNextID();
 		
-		blocks.mediumPipe = new BlockPipe(TinyConfig.block.getCurrentID(), EnumPipes.Medium.getPipeInformation());
+		
+		blocks.mediumPipe = new BlockPipe(EnumPipes.Medium.getPipeInformation());
 		RegisterProxy.RegisterBlock(TinyBlocks.mediumPipe, ItemBlockPipe.class, "MediumPipe");
-		TinyConfig.block.updateToNextID();
 		
-		blocks.bigPipe = new BlockPipe(TinyConfig.block.getCurrentID(), EnumPipes.Big.getPipeInformation());
+		
+		blocks.bigPipe = new BlockPipe(EnumPipes.Big.getPipeInformation());
 		RegisterProxy.RegisterBlock(TinyBlocks.bigPipe, ItemBlockPipe.class, "BigPipe");
-		TinyConfig.block.updateToNextID();
 		
-		blocks.biggerPipe = new BlockPipe(TinyConfig.block.getCurrentID(), EnumPipes.Bigger.getPipeInformation());
+		
+		blocks.biggerPipe = new BlockPipe(EnumPipes.Bigger.getPipeInformation());
 		RegisterProxy.RegisterBlock(TinyBlocks.biggerPipe, ItemBlockPipe.class, "BiggerPipe");
-		TinyConfig.block.updateToNextID();
 		
-		blocks.largePipe = new BlockPipe(TinyConfig.block.getCurrentID(), EnumPipes.Large.getPipeInformation());
+		
+		blocks.largePipe = new BlockPipe(EnumPipes.Large.getPipeInformation());
 		RegisterProxy.RegisterBlock(TinyBlocks.largePipe, ItemBlockPipe.class, "LargePipe");
-		TinyConfig.block.updateToNextID();
 		
-		blocks.hugePipe = new BlockPipe(TinyConfig.block.getCurrentID(), EnumPipes.Huge.getPipeInformation());
+		
+		blocks.hugePipe = new BlockPipe(EnumPipes.Huge.getPipeInformation());
 		RegisterProxy.RegisterBlock(TinyBlocks.hugePipe, ItemBlockPipe.class, "HugePipe");
-		TinyConfig.block.updateToNextID();
 		
-		blocks.machine = new BlockMachine(TinyConfig.block.getCurrentID());
+		
+		blocks.machine = new BlockMachine();
 		RegisterProxy.RegisterBlock(TinyBlocks.machine, ItemBlockMachine.class, "BlockMachines");
 		RegisterProxy.RegisterTile(PressureFurnace.class, "PressureFurnace");
 		RegisterProxy.RegisterTile(BucketFillerBasic.class, "BucketFiller");
 		RegisterProxy.RegisterTile(SelfPoweredBucketFiller.class, "SelfBucketFiller");
 		RegisterProxy.RegisterTile(WaterGenerator.class, "WaterGen");
-		TinyConfig.block.updateToNextID();
 		
-		blocks.storageBlock = new BlockStorage(TinyConfig.block.getCurrentID());
+		
+		blocks.storageBlock = new BlockStorage();
 		RegisterProxy.RegisterBlock(TinyBlocks.storageBlock, ItemBlockStorage.class, "StorageBlock");
 		RegisterProxy.RegisterTile(TinyChest.class, "TinyChests");
 		RegisterProxy.RegisterTile(TinyTank.class, "TinyTanks");
 		RegisterProxy.RegisterTile(AdvTinyChest.class, "AdvTinyChest");
-		TinyConfig.block.updateToNextID();
 		
-		blocks.transportBlock = new BlockTransport(TinyConfig.block.getCurrentID());
+		
+		blocks.transportBlock = new BlockTransport();
 		RegisterProxy.RegisterBlock(TinyBlocks.transportBlock, ItemBlockTransport.class, "TransportBlock");
 		RegisterProxy.RegisterTile(EnderChestReader.class, "EnderChestProxy");
 		RegisterProxy.RegisterTile(MultiStructureItemInterface.class, "ItemInterface");
 		RegisterProxy.RegisterTile(MultiStructureFluidInterface.class, "FluidInterface");
 		RegisterProxy.RegisterTile(MultiStructureEnergyInterface.class, "EnergyInterface");
 		RegisterProxy.RegisterTile(TinyHopper.class, "ModularTinyHopper");
-		TinyConfig.block.updateToNextID();
+		
 		
 	}
 }

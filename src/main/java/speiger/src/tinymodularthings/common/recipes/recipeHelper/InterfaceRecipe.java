@@ -1,8 +1,8 @@
 package speiger.src.tinymodularthings.common.recipes.recipeHelper;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Items;
 import net.minecraft.inventory.InventoryCrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
@@ -25,7 +25,7 @@ public class InterfaceRecipe implements IRecipe
 			ItemStack stack = inv.getStackInSlot(i);
 			if (stack != null)
 			{
-				if (stack.itemID == TinyItems.interfaceBlock.itemID)
+				if (stack.getItem() == TinyItems.interfaceBlock)
 				{
 					if (interfaces != null)
 					{
@@ -33,7 +33,7 @@ public class InterfaceRecipe implements IRecipe
 					}
 					interfaces = stack;
 				}
-				else if (isValidBlock(stack) || stack.itemID == Item.stick.itemID)
+				else if (isValidBlock(stack) || stack.getItem() == Items.stick)
 				{
 					if (block != null)
 					{
@@ -74,11 +74,11 @@ public class InterfaceRecipe implements IRecipe
 				{
 					stack = cu;
 				}
-				else if (cu.itemID == TinyItems.interfaceBlock.itemID)
+				else if (cu.getItem() == TinyItems.interfaceBlock)
 				{
 					meta = cu.getItemDamage();
 				}
-				else if (cu.itemID == Item.stick.itemID)
+				else if (cu.getItem() == Items.stick)
 				{
 					stack = cu;
 				}
@@ -88,13 +88,13 @@ public class InterfaceRecipe implements IRecipe
 		
 		if (meta != -1 && stack != null)
 		{
-			if (stack.itemID == Item.stick.itemID)
+			if (stack.getItem() == Items.stick)
 			{
-				return ItemInterfaceBlock.createInterface(TinyItems.interfaceBlock.itemID, meta);
+				return ItemInterfaceBlock.createInterface(TinyItems.interfaceBlock, meta);
 			}
 			else
 			{
-				ItemStack inter = ItemInterfaceBlock.createInterface(TinyItems.interfaceBlock.itemID, meta);
+				ItemStack inter = ItemInterfaceBlock.createInterface(TinyItems.interfaceBlock, meta);
 				ItemStack interEnd = ItemInterfaceBlock.addBlockToInterface(inter, new BlockStack(stack));
 				return interEnd;
 			}
@@ -119,7 +119,7 @@ public class InterfaceRecipe implements IRecipe
 	{
 		if (par1 != null && par1.getItem() instanceof ItemBlock)
 		{
-			Block blocks = Block.blocksList[((ItemBlock) par1.getItem()).getBlockID()];
+			Block blocks = Block.getBlockFromItem(par1.getItem());
 			if (blocks != null)
 			{
 				return blocks.isOpaqueCube() && blocks.renderAsNormalBlock();

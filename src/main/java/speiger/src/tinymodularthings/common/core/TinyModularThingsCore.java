@@ -18,6 +18,7 @@ import speiger.src.tinymodularthings.common.interfaces.IItemGui;
 import speiger.src.tinymodularthings.common.upgrades.hoppers.HopperItemFilter;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -37,7 +38,7 @@ public class TinyModularThingsCore implements IGuiHandler
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		
 		if (ID == EnumIDs.ADVTiles.getId())
 		{
@@ -97,7 +98,7 @@ public class TinyModularThingsCore implements IGuiHandler
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		TileEntity tile = world.getTileEntity(x, y, z);
 		if (ID == EnumIDs.ADVTiles.getId())
 		{
 			if (tile instanceof AdvTile)
@@ -154,11 +155,11 @@ public class TinyModularThingsCore implements IGuiHandler
 	
 	public void registerServer()
 	{
-		GameRegistry.registerCraftingHandler(new TinyCraftingHandler());
+		FMLCommonHandler.instance().bus().register(new TinyCraftingHandler());
 		HopperRegistry.registerHopperUpgrade(new HopperItemFilter());
 	}
 
-	public void loadPipe(ItemPipe par1, int id, Class<? extends Pipe> par2)
+	public void loadPipe(ItemPipe par1, Class<? extends Pipe> par2)
 	{
 		
 	}

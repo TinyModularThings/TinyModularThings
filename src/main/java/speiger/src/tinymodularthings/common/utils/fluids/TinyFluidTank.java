@@ -42,7 +42,7 @@ public class TinyFluidTank extends FluidTank
 		
 		super.writeToNBT(tank);
 		
-		nbt.setCompoundTag(name, tank);
+		nbt.setTag(name, tank);
 		
 		return nbt;
 	}

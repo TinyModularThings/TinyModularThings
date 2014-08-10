@@ -1,7 +1,7 @@
 package speiger.src.tinymodularthings.common.plugins.BC;
 
 import net.minecraft.block.Block;
-import net.minecraft.item.Item;
+import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
@@ -40,14 +40,14 @@ public class BCRegistry
 	public void loadRecipes()
 	{
 		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 1), new Object[]{" X ", "YCY", " V ", 'X', BuildCraftTransport.pipeFluidsWood, 'V', BuildCraftTransport.pipeFluidsGold, 'Y', ItemGear.getGearFromType(GearType.Cobblestone), 'C', BuildCraftFactory.tankBlock});
-		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 3), new Object[]{"XXX", "CVC", "XXX", 'X', Item.bucketWater, 'C', ItemGear.getGearFromType(GearType.Diamond), 'V', BuildCraftFactory.pumpBlock});
+		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 3), new Object[]{"XXX", "CVC", "XXX", 'X', Items.water_bucket, 'C', ItemGear.getGearFromType(GearType.Diamond), 'V', BuildCraftFactory.pumpBlock});
 		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 2), new Object[]{"GEG", "EFE", "GEG", 'G', ItemGear.getGearFromType(GearType.Redstone), 'E', new ItemStack(BuildCraftEnergy.engineBlock, 1, 0), 'F', new ItemStack(TinyBlocks.machine, 1, 1)});
 	}
 	public void loadTrigger()
 	{
-		StatementManager.registerTrigger(BCVariables.needFuel);
-		StatementManager.registerTrigger(BCVariables.hasWork);
-		StatementManager.registerTrigger(BCVariables.noWork);
+		StatementManager.registerStatement(BCVariables.needFuel);
+		StatementManager.registerStatement(BCVariables.hasWork);
+		StatementManager.registerStatement(BCVariables.noWork);
 		StatementManager.registerTriggerProvider(new BCTriggerHelper());
 	}
 	
@@ -58,20 +58,20 @@ public class BCRegistry
 		{
 			GateChangeToSlot action = new GateChangeToSlot(i);
 			BCVariables.changeToSlot[i] = action;
-			StatementManager.registerAction(action);
+			StatementManager.registerStatement(action);
 		}
-		StatementManager.registerAction(BCVariables.changeOneTime[0] = new ActionOneSlotChange(false));
-		StatementManager.registerAction(BCVariables.changeOneTime[1] = new ActionOneSlotChange(true));
-		StatementManager.registerAction(BCVariables.bcFiller[0] = new BucketFillerAction(false));
-		StatementManager.registerAction(BCVariables.bcFiller[1] = new BucketFillerAction(true));
+		StatementManager.registerStatement(BCVariables.changeOneTime[0] = new ActionOneSlotChange(false));
+		StatementManager.registerStatement(BCVariables.changeOneTime[1] = new ActionOneSlotChange(true));
+		StatementManager.registerStatement(BCVariables.bcFiller[0] = new BucketFillerAction(false));
+		StatementManager.registerStatement(BCVariables.bcFiller[1] = new BucketFillerAction(true));
 	}
 	
 	public void overrideFurnace()
 	{
-		Block.blocksList[61] = null;
-		Block.blocksList[62] = null;
-		Block.blocksList[61] = new BlockModifiedFurnace(false);
-		Block.blocksList[62] = new BlockModifiedFurnace(true);
-		TileEntity.addMapping(TileEntityModifiedFurnace.class, "ModifiedFurnace");
+//		Block.blocksList[61] = null;
+//		Block.blocksList[62] = null;
+//		Block.blocksList[61] = new BlockModifiedFurnace(false);
+//		Block.blocksList[62] = new BlockModifiedFurnace(true);
+//		TileEntity.addMapping(TileEntityModifiedFurnace.class, "ModifiedFurnace");
 	}
 }

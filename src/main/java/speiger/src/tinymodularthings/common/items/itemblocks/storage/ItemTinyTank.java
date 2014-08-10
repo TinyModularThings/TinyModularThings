@@ -2,12 +2,14 @@ package speiger.src.tinymodularthings.common.items.itemblocks.storage;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.items.DisplayItem;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
@@ -23,9 +25,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemTinyTank extends TinyItem
 {
 	
-	public ItemTinyTank(int par1)
+	public ItemTinyTank()
 	{
-		super(par1);
+		super();
 		setCreativeTab(CreativeTabs.tabFood);
 		setHasSubtypes(true);
 	}
@@ -48,13 +50,13 @@ public class ItemTinyTank extends TinyItem
 	@Override
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
 	{
-		int i1 = par3World.getBlockId(par4, par5, par6);
+		BlockStack i1 = new BlockStack(par3World, par4, par5, par6);
 		
-		if (i1 == Block.snow.blockID && (par3World.getBlockMetadata(par4, par5, par6) & 7) < 1)
+		if ((i1.getBlock() == Blocks.snow) && ((par3World.getBlockMetadata(par4, par5, par6) & 0x7) < 1))
 		{
 			par7 = 1;
 		}
-		else if (i1 != Block.vine.blockID && i1 != Block.tallGrass.blockID && i1 != Block.deadBush.blockID && (Block.blocksList[i1] == null || !Block.blocksList[i1].isBlockReplaceable(par3World, par4, par5, par6)))
+		else if ((i1.getBlock() != Blocks.vine) && (i1.getBlock() != Blocks.tallgrass) && (i1.getBlock() != Blocks.deadbush) && ((i1.getBlock() == null) || (!i1.getBlock().isReplaceable(par3World, par4, par5, par6))))
 		{
 			if (par7 == 0)
 			{
@@ -101,13 +103,13 @@ public class ItemTinyTank extends TinyItem
 		}
 		else
 		{
-			if (par3World.setBlock(par4, par5, par6, TinyBlocks.storageBlock.blockID, 1, 3))
+			if (par3World.setBlock(par4, par5, par6, TinyBlocks.storageBlock, 1, 3))
 			{
-				TileEntity tile = par3World.getBlockTileEntity(par4, par5, par6);
+				TileEntity tile = par3World.getTileEntity(par4, par5, par6);
 				if (tile != null && tile instanceof TinyTank)
 				{
 					((TinyTank) tile).setTankMode(par1ItemStack.getItemDamage());
-					Block.blocksList[par3World.getBlockId(par4, par5, par6)].onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer, par1ItemStack);
+					i1.getBlock().onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer, par1ItemStack);
 					par1ItemStack.stackSize--;
 					return true;
 				}
@@ -120,7 +122,7 @@ public class ItemTinyTank extends TinyItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		for (int i = 0; i < 9; i++)
 		{
@@ -130,7 +132,7 @@ public class ItemTinyTank extends TinyItem
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item id, SpmodMod par0)
 	{
 		if (!par0.getName().equals(TinyModularThingsLib.Name))
 		{

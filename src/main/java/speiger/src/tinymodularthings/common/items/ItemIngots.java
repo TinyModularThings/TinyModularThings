@@ -2,10 +2,11 @@ package speiger.src.tinymodularthings.common.items;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
+import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.IIcon;
 import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.api.items.DisplayStack;
 import speiger.src.api.language.LanguageRegister;
@@ -21,11 +22,11 @@ public class ItemIngots extends TinyItem
 	
 	String[] ingots = new String[] { "ingotCopper", "ingotTin", "ingotAluminium", "ingotSilver", "ingotLead", "ingotBronze", "ingotIridium" };
 	
-	Icon[] ingotTextures = new Icon[ingots.length];
+	IIcon[] ingotTextures = new IIcon[ingots.length];
 	
-	public ItemIngots(int par1)
+	public ItemIngots()
 	{
-		super(par1);
+		super();
 		setHasSubtypes(true);
 		setMaxStackSize(64);
 		setCreativeTab(CreativeTabs.tabFood);
@@ -44,7 +45,7 @@ public class ItemIngots extends TinyItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
+	public void getSubItems(Item par1, CreativeTabs par2CreativeTabs, List par3)
 	{
 		for (int i = 0; i < ingots.length; i++)
 		{
@@ -53,7 +54,7 @@ public class ItemIngots extends TinyItem
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item id, SpmodMod par0)
 	{
 		if (!par0.getName().equals(TinyModularThingsLib.Name))
 		{
@@ -68,14 +69,14 @@ public class ItemIngots extends TinyItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int par1)
+	public IIcon getIconFromDamage(int par1)
 	{
 		return ingotTextures[par1];
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerIcons(IIconRegister par1)
 	{
 		ingotTextures[0] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ingots/IngotCopper"));
 		ingotTextures[1] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ingots/IngotTin"));

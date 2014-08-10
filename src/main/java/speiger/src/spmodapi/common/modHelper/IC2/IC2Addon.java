@@ -1,5 +1,7 @@
 package speiger.src.spmodapi.common.modHelper.IC2;
 
+import ic2.api.crops.Crops;
+import ic2.core.block.crop.IC2Crops;
 import net.minecraft.item.ItemStack;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;

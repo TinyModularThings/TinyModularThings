@@ -2,6 +2,7 @@ package speiger.src.tinymodularthings.common.items.tools;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -16,15 +17,15 @@ import speiger.src.tinymodularthings.common.items.core.TinyItem;
 public class ItemTinyInfo extends TinyItem
 {
 	
-	public ItemTinyInfo(int par1)
+	public ItemTinyInfo()
 	{
-		super(par1);
+		super();
 		setMaxStackSize(1);
 		setCreativeTab(CreativeTabs.tabFood);
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
+	public void registerItems(Item id, SpmodMod par0)
 	{
 		
 	}
@@ -53,7 +54,7 @@ public class ItemTinyInfo extends TinyItem
 					mode = 0;
 				}
 				nbt.setInteger("Mode", mode);
-				par3.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(new InfoStack(), getModeFromKey(mode), TinyModularThings.instance)));
+				par3.addChatComponentMessage(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(new InfoStack(), getModeFromKey(mode), TinyModularThings.instance)));
 			}
 			else
 			{
@@ -74,7 +75,7 @@ public class ItemTinyInfo extends TinyItem
 						}
 						
 						data.setInteger(NBTHelper.getPlayerNBTStringFromMode(mode), placer);
-						par3.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(new InfoStack(), BlockHelper.getPlacingMode(placer), TinyModularThings.instance)));
+						par3.addChatComponentMessage(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(new InfoStack(), BlockHelper.getPlacingMode(placer), TinyModularThings.instance)));
 						break;
 					}
 					

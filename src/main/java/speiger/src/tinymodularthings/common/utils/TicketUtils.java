@@ -15,7 +15,7 @@ public class TicketUtils
 		ItemStack newStack = GameRegistry.findItemStack("Railcraft", "routing.ticket.gold", 1);
 		if (stack != null && stacks != null && newStack != null)
 		{
-			if (stack.itemID == stacks.itemID || stack.itemID == newStack.itemID)
+			if (stack.getItem() == stacks.getItem() || stack.getItem() == newStack.getItem())
 			{
 				return true;
 			}
@@ -91,8 +91,8 @@ public class TicketUtils
 		NBTTagCompound nbt = stack.getTagCompound();
 		if (nbt == null)
 		{
-			nbt = new NBTTagCompound("tag");
-			stack.setTagCompound(nbt);
+			nbt = new NBTTagCompound();
+			stack.setTagInfo("tag", nbt);
 		}
 		return nbt;
 	}

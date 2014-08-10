@@ -58,7 +58,7 @@ public class BlockStack
 	{
 		this(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
 	}
-	
+	//I leave this at it is but we will remove the @Deprecated because its required for NBTData
 	@Deprecated
 	public BlockStack(int id, int meta)
 	{
@@ -89,6 +89,11 @@ public class BlockStack
 	public Block getBlock()
 	{
 		return blocks;
+	}
+	
+	public int getBlockID()
+	{
+		return Block.getIdFromBlock(blocks);
 	}
 
 	public int getMeta()
@@ -134,6 +139,16 @@ public class BlockStack
 	public boolean placeBlock(World world, int x, int y, int z)
 	{
 		return world.setBlock(x, y, z, blocks, meta, 3);
+	}
+	
+	public boolean hasBlock()
+	{
+		return blocks != null;
+	}
+	
+	public boolean hasTileEntity()
+	{
+		return blocks.hasTileEntity(meta);
 	}
 	
 }

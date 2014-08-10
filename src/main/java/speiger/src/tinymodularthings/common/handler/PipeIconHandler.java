@@ -2,6 +2,8 @@ package speiger.src.tinymodularthings.common.handler;
 
 import javax.swing.Icon;
 
+import net.minecraft.client.renderer.texture.IIconRegister;
+import net.minecraft.util.IIcon;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import buildcraft.api.core.IIconProvider;
 import cpw.mods.fml.relauncher.Side;
@@ -14,19 +16,19 @@ public class PipeIconHandler implements IIconProvider
 		EmeraldPipe(modID()+":pipes/bc/EmeraldPowerPipe"),
 		EmeraldExtractorPipe(modID()+":pipes/bc/EmeraldPowerPipeFull");
 		String name;
-		Icon icon;
+		IIcon icon;
 		
 		private PipeTypes(String par1)
 		{
 			name = par1;
 		}
 		
-		public Icon getIcon()
+		public IIcon getIcon()
 		{
 			return icon;
 		}
 		
-		public void registerIcon(IconRegister par1)
+		public void registerIcon(IIconRegister par1)
 		{
 			icon = par1.registerIcon(name);
 		}
@@ -35,7 +37,7 @@ public class PipeIconHandler implements IIconProvider
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int iconIndex)
+	public IIcon getIcon(int iconIndex)
 	{
 		try
 		{
@@ -51,7 +53,7 @@ public class PipeIconHandler implements IIconProvider
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister iconRegister)
+	public void registerIcons(IIconRegister iconRegister)
 	{
 		for(int i = 0;i<PipeTypes.values().length;i++)
 		{

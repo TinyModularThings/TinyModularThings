@@ -67,6 +67,7 @@ public class SpmodPacket implements IMessage
 		@Override
 		public IMessage onMessage(SpmodPacket packet, MessageContext ctx)
 		{
+			
 			return null;
 		}
 	}

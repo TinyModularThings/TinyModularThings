@@ -2,8 +2,7 @@ package speiger.src.tinymodularthings.common.blocks.transport;
 
 import java.util.ArrayList;
 
-import javax.swing.Icon;
-
+import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,9 +14,14 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.common.util.Constants.NBT;
 import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
@@ -49,6 +53,7 @@ import speiger.src.tinymodularthings.common.utils.HopperType;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -183,17 +188,8 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		}
 	}
 	
-	@Override
-	public String getInvName()
-	{
-		return "TinyHopper";
-	}
 	
-	@Override
-	public boolean isInvNameLocalized()
-	{
-		return false;
-	}
+
 	
 	@Override
 	public int getInventoryStackLimit()
@@ -207,15 +203,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		return true;
 	}
 	
-	@Override
-	public void openChest()
-	{
-	}
-	
-	@Override
-	public void closeChest()
-	{
-	}
+
 	
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
@@ -365,7 +353,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 							item.stackSize--;
 							if(item.stackSize<= 0)
 							{
-								item = item.getItem().getContainerItemStack(item);
+								item = item.getItem().getContainerItem(item);
 								par1.setCurrentItemOrArmor(0, item);
 							}
 						}
@@ -377,7 +365,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 							item.stackSize--;
 							if(item.stackSize<= 0)
 							{
-								item = item.getItem().getContainerItemStack(item);
+								item = item.getItem().getContainerItem(item);
 								par1.setCurrentItemOrArmor(0, item);
 							}
 						}
@@ -620,7 +608,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		if (worldObj.getWorldTime() % 80L == 0L)
 		{
 			
-			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20.0D, worldObj.provider.dimensionId, getDescriptionPacket());
+			FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().sendToAllNear(xCoord, yCoord, zCoord, 20.0D, worldObj.provider.dimensionId, getDescriptionPacket());
 		}
 		
 		if(fakePlayer == null)
@@ -639,13 +627,13 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
 	}
 	
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 	{
-		readFromNBT(pkt.data);
+		readFromNBT(pkt.func_148857_g());
 	}
 	
 	@Override
@@ -667,17 +655,17 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		owner = nbt.getString("Owner");
 		energy.readFromNBT(nbt);
 		
-		NBTTagList tanksdata = nbt.getTagList("Tanks");
+		NBTTagList tanksdata = nbt.getTagList("Tanks", NBT.TAG_COMPOUND);
 		for (int i = 0; i < tanksdata.tagCount(); i++)
 		{
-			NBTTagCompound data = (NBTTagCompound) tanksdata.tagAt(i);
+			NBTTagCompound data = (NBTTagCompound) tanksdata.getCompoundTagAt(i);
 			tanks[data.getInteger("Slot")] = new AdvancedFluidTank(this, data.getString("Name"), data.getInteger("Size"));
 			tanks[data.getInteger("Slot")].readFromNBT(data);
 		}
-		NBTTagList nbttaglist = nbt.getTagList("Items");
+		NBTTagList nbttaglist = nbt.getTagList("Items", NBT.TAG_COMPOUND);
 		for (int i = 0; i < nbttaglist.tagCount(); i++)
 		{
-			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
+			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
 			byte b0 = nbttagcompound1.getByte("Slot");
 			
 			if ((b0 >= 0) && (b0 < inventory.length))
@@ -685,10 +673,10 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 				inventory[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
 			}
 		}
-		NBTTagList upgrades = nbt.getTagList("Upgrades");
+		NBTTagList upgrades = nbt.getTagList("Upgrades", NBT.TAG_COMPOUND);
 		for (int i = 0; i < upgrades.tagCount(); i++)
 		{
-			NBTTagCompound data = (NBTTagCompound) upgrades.tagAt(i);
+			NBTTagCompound data = (NBTTagCompound) upgrades.getCompoundTagAt(i);
 			HopperUpgrade upgrade = HopperRegistry.getHopperUpgradeFromNBT(data.getString("Name"));
 			if (upgrade != null)
 			{
@@ -696,10 +684,10 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 				installedUpgrades.add(upgrade);
 			}
 		}
-		NBTTagList players = nbt.getTagList("Players");
+		NBTTagList players = nbt.getTagList("Players", NBT.TAG_COMPOUND);
 		for (int i = 0; i < players.tagCount(); i++)
 		{
-			NBTTagCompound player = (NBTTagCompound) players.tagAt(i);
+			NBTTagCompound player = (NBTTagCompound) players.getCompoundTagAt(i);
 			users.add(worldObj.getPlayerEntityByName(player.getString("Name")));
 		}
 	}
@@ -761,7 +749,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		for (int i = 0; i < users.size(); i++)
 		{
 			NBTTagCompound data = new NBTTagCompound();
-			data.setString("Name", users.get(i).username);
+			data.setString("Name", users.get(i).getCommandSenderName());
 			players.appendTag(data);
 		}
 		nbt.setTag("Players", players);
@@ -920,7 +908,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	}
 	
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		return null;
 	}
@@ -1061,5 +1049,29 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	public void setFilteredItem(int slotID, ItemStack par1)
 	{
 		filter[slotID] = par1;
+	}
+
+	@Override
+	public String getInventoryName()
+	{
+		return "Tiny Hopper";
+	}
+
+	@Override
+	public boolean hasCustomInventoryName()
+	{
+		return false;
+	}
+
+	@Override
+	public void openInventory()
+	{
+		
+	}
+
+	@Override
+	public void closeInventory()
+	{
+		
 	}
 }

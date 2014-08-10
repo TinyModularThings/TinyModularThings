@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.Icon;
 
+import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,7 +14,12 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.Packet;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
+import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraftforge.common.util.Constants.NBT;
 import speiger.src.spmodapi.common.interfaces.ISharedInventory;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.tinymodularthings.TinyModularThings;
@@ -37,7 +43,7 @@ public class TinyChest extends TileFacing implements IInventory,
 	}
 	
 	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	public IIcon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		return null;
 	}
@@ -66,7 +72,7 @@ public class TinyChest extends TileFacing implements IInventory,
 	@Override
 	public void updateBlock()
 	{
-		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 30, worldObj.provider.dimensionId, getDescriptionPacket());
+		this.sendPacket(30, getDescriptionPacket());
 	}
 	
 	@Override
@@ -110,13 +116,13 @@ public class TinyChest extends TileFacing implements IInventory,
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 1, nbt);
 	}
 	
 	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt)
 	{
-		readFromNBT(pkt.data);
+		readFromNBT(pkt.func_148857_g());
 	}
 	
 	@Override
@@ -124,12 +130,12 @@ public class TinyChest extends TileFacing implements IInventory,
 	{
 		super.readFromNBT(nbt);
 		mode = nbt.getInteger("Mode");
-		NBTTagList nbttaglist = nbt.getTagList("Items");
+		NBTTagList nbttaglist = nbt.getTagList("Items", NBT.TAG_COMPOUND);
 		inventory = new ItemStack[getSizeInventory()];
 		
 		for (int i = 0; i < nbttaglist.tagCount(); ++i)
 		{
-			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
+			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.getCompoundTagAt(i);
 			byte b0 = nbttagcompound1.getByte("Slot");
 			
 			if (b0 >= 0 && b0 < inventory.length)
@@ -179,7 +185,7 @@ public class TinyChest extends TileFacing implements IInventory,
 	public void updateInventory()
 	{
 		inventory = new ItemStack[getSizeInventory()];
-		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 30, worldObj.provider.dimensionId, getDescriptionPacket());
+		this.sendPacket(30, getDescriptionPacket());
 	}
 	
 	@Override
@@ -281,17 +287,6 @@ public class TinyChest extends TileFacing implements IInventory,
 		}
 	}
 	
-	@Override
-	public String getInvName()
-	{
-		return "TinyChest";
-	}
-	
-	@Override
-	public boolean isInvNameLocalized()
-	{
-		return false;
-	}
 	
 	@Override
 	public int getInventoryStackLimit()
@@ -305,15 +300,6 @@ public class TinyChest extends TileFacing implements IInventory,
 		return true;
 	}
 	
-	@Override
-	public void openChest()
-	{
-	}
-	
-	@Override
-	public void closeChest()
-	{
-	}
 	
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
@@ -331,6 +317,28 @@ public class TinyChest extends TileFacing implements IInventory,
 	public ItemStack pickBlock(MovingObjectPosition target)
 	{
 		return new ItemStack(TinyItems.tinyChest, 1, mode - 1);
+	}
+
+	@Override
+	public String getInventoryName()
+	{
+		return "TinyChest";
+	}
+
+	@Override
+	public boolean hasCustomInventoryName()
+	{
+		return false;
+	}
+
+	@Override
+	public void openInventory()
+	{	
+	}
+
+	@Override
+	public void closeInventory()
+	{		
 	}
 	
 }
