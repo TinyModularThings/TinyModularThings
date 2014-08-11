@@ -31,9 +31,6 @@ import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.utils.fluids.FluidAdjuster;
 import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
-import buildcraft.BuildCraftFactory;
-import buildcraft.factory.TileTank;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class TinyTank extends AdvTile implements IFluidHandler
@@ -44,7 +41,6 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	public int renderLiquid = 1;
 	public int updateTick = 80;
 	public boolean keepFluid = false;
-	public boolean BCTank = false;
 	
 	public void setTankMode(int tankMode)
 	{
@@ -93,7 +89,7 @@ public class TinyTank extends AdvTile implements IFluidHandler
 			return stack;
 		}
 		
-		TinyTank tank = this.getBottomTank();
+		TinyTank tank = this.tank.getFluid() != null ? this.getBottomTank(this.tank.getFluid(), this) : this.getBottomTank();
 		if(tank != null)
 		{
 			if(tank.getPosition().isThisPosition(getPosition()))
@@ -112,7 +108,16 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
 	{
-		
+		if(resource != null)
+		{
+			if(this.tank.getFluid() != null)
+			{
+				if(!resource.isFluidEqual(this.tank.getFluid()))
+				{
+					return 0;
+				}
+			}
+		}
 		if(from == from.UP)
 		{
 			FluidAdjuster ad = this.getAdjuster();
@@ -120,7 +125,7 @@ public class TinyTank extends AdvTile implements IFluidHandler
 			ad.adjust();
 			return filled;
 		}
-		TinyTank tank = this.getHighestTank();
+		TinyTank tank = this.getHighestTank(resource, this);
 		if(tank != null)
 		{
 			if(tank.getPosition().isThisPosition(getPosition()))
@@ -178,7 +183,7 @@ public class TinyTank extends AdvTile implements IFluidHandler
 			tank.setFluid(null);
 		}
 		renderLiquid = nbt.getInteger("Render");
-		BCTank = nbt.getBoolean("BC");
+		this.renderLiquid = nbt.getInteger("Delay");
 	}
 	
 	@Override
@@ -196,7 +201,7 @@ public class TinyTank extends AdvTile implements IFluidHandler
 		super.writeToNBT(nbt);
 		nbt.setInteger("TankMode", tankMode);
 		nbt.setInteger("Render", renderLiquid);
-		nbt.setBoolean("BC", BCTank);
+		nbt.setInteger("Delay", updateTick);
 		tank.writeToNBT(nbt);
 	}
 	
@@ -214,16 +219,19 @@ public class TinyTank extends AdvTile implements IFluidHandler
 				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 			}
 			
-			if(this.tank.getFluid() != null)
+			if(worldObj.getWorldTime() % 20 == 0)
 			{
-				
-				if(canFillBelow())
+				if(this.tank.getFluid() != null)
 				{
-					fillBelow();
-				}
-				else
-				{
-					fillToSide();
+					
+					if(canFillBelow())
+					{
+						fillBelow();
+					}
+					else
+					{
+						fillToSide();
+					}
 				}
 			}
 		}
@@ -318,9 +326,10 @@ public class TinyTank extends AdvTile implements IFluidHandler
 		for(int i = 0;i<tanks.length;i++)
 		{
 			TinyTank tank = ((TinyTank) new BlockPosition(tankPos.get(i)).getTileEntity());
-			tank.updateTick = 80;
+			tank.updateTick = 85;
 			tanks[i] = tank.tank;
 		}
+		this.updateTick = 70;
 		
 		FluidAdjuster adjuster = new FluidAdjuster(this.tank.getFluid(), tanks);
 		return adjuster;
@@ -451,33 +460,6 @@ public class TinyTank extends AdvTile implements IFluidHandler
 						}
 					}
 				}
-				else
-				{
-					try
-					{
-						if(!this.BCTank && current.itemID == BuildCraftFactory.tankBlock.blockID)
-						{
-							TinyTank bottom = this.getBottomTank();
-							TinyTank top = this.getHighestTank();
-							this.BCTank = true;
-							par1.sendChatToPlayer(LanguageRegister.createChatMessage("Inited Tank to BuildCraft Compatiblity"));
-							if(bottom.hasBCTank(false) && !bottom.BCTank)
-							{
-								par1.sendChatToPlayer(LanguageRegister.createChatMessage("Found at the Bottom Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
-							}
-							
-							if(top.hasBCTank(true) && !top.BCTank)
-							{
-								par1.sendChatToPlayer(LanguageRegister.createChatMessage("Found at the Top Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
-							}
-							
-							return true;
-						}
-					}
-					catch (Exception e)
-					{
-					}
-				}
 				
 			}
 			else
@@ -543,32 +525,6 @@ public class TinyTank extends AdvTile implements IFluidHandler
 		}
 	}
 	
-	public boolean hasBCTank(boolean top)
-	{
-		try
-		{
-			if(top)
-			{
-				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord);
-				if(tile != null && tile instanceof TileTank)
-				{
-					return true;
-				}
-			}
-			else
-			{
-				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
-				if(tile != null && tile instanceof TileTank)
-				{
-					return true;
-				}
-			}
-		}
-		catch (Exception e)
-		{
-		}
-		return false;
-	}
 	
 	public ItemStack consumeItem(ItemStack stack)
 	{
@@ -636,6 +592,58 @@ public class TinyTank extends AdvTile implements IFluidHandler
 			if(above != null)
 			{
 				tiny = above;
+			}
+			else
+			{
+				break;
+			}
+		}
+		return tiny;
+	}
+	
+	public TinyTank getHighestTank(FluidStack fluid, TinyTank tank)
+	{
+		TinyTank tiny = tank;
+		while(true)
+		{
+			TinyTank top = this.getTankAbove(tiny);
+			if(top != null)
+			{
+				if(top.tank.getFluid() != null && top.tank.getFluid().isFluidEqual(fluid))
+				{
+					tiny = top;
+				}
+				else if(top.tank.getFluid() == null)
+				{
+					tiny = top;
+					break;
+				}
+				else
+				{
+					break;
+				}
+			}
+			else
+			{
+				break;
+			}
+		}
+		return tiny;
+	}
+	
+	public TinyTank getBottomTank(FluidStack fluid, TinyTank tank)
+	{
+		TinyTank tiny = tank;
+		while(true)
+		{
+			TinyTank bottom = this.getTankBelow(tiny);
+			if(bottom != null)
+			{
+				tiny = bottom;
+				if(fluid.isFluidEqual(bottom.tank.getFluid()))
+				{
+					break;
+				}
 			}
 			else
 			{
