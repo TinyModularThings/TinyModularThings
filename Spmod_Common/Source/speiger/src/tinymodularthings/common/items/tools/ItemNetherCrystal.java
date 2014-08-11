@@ -165,6 +165,7 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 							{
 								fluid.fill(face, new FluidStack(FluidRegistry.LAVA, 1000), true);
 								this.discharge(stack, 1);
+								player.swingItem();
 								return true;
 							}
 						}

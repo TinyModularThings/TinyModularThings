@@ -9,6 +9,7 @@ import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.render.carts.CartItemRenderer;
 import speiger.src.tinymodularthings.client.render.carts.RenderTCarts;
+import speiger.src.tinymodularthings.client.render.pipes.ItemRendererBCPipe;
 import speiger.src.tinymodularthings.client.render.pipes.ItemRendererPipe;
 import speiger.src.tinymodularthings.client.render.pipes.RenderPipe;
 import speiger.src.tinymodularthings.client.render.storage.ItemRendererStorageBlock;
@@ -29,6 +30,8 @@ import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.utils.nei.NeiRegistry;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
+import buildcraft.transport.TransportProxy;
+import buildcraft.transport.TransportProxyClient;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -103,10 +106,13 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		try
 		{
 			Pipe pipe = (Pipe)par2.getConstructor(new Class[]{Integer.TYPE}).newInstance(new Object[]{Integer.valueOf(id)});
+			MinecraftForgeClient.registerItemRenderer(par1.itemID, ItemRendererBCPipe.pipe);
+			
 			if(pipe != null)
 			{
 				par1.setPipesIcons(pipe.getIconProvider());
 				par1.setPipeIconIndex(pipe.getIconIndex(ForgeDirection.VALID_DIRECTIONS[0]));
+				
 			}
 		}
 		catch (Exception e)

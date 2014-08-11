@@ -1,6 +1,7 @@
 package speiger.src.tinymodularthings.common.blocks.storage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -16,6 +17,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.blocks.BlockStack;
@@ -23,9 +25,11 @@ import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.WorldReading;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.BlockPosition;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
+import speiger.src.tinymodularthings.common.utils.fluids.FluidAdjuster;
 import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
 import buildcraft.BuildCraftFactory;
 import buildcraft.factory.TileTank;
@@ -38,6 +42,8 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	public TinyFluidTank tank = new TinyFluidTank("TinyTank", 0, this);
 	public int tankMode = -1;
 	public int renderLiquid = 1;
+	public int updateTick = 80;
+	public boolean keepFluid = false;
 	public boolean BCTank = false;
 	
 	public void setTankMode(int tankMode)
@@ -56,40 +62,7 @@ public class TinyTank extends AdvTile implements IFluidHandler
 		return null;
 	}
 	
-	@Override
-	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
-	{
-		try
-		{
-			if(this.BCTank)
-			{
-				TinyTank tank = this.getHighestTank();
-				if(tank != null && tank.BCTank)
-				{
-					TileEntity tile = worldObj.getBlockTileEntity(tank.xCoord, tank.yCoord+1, tank.zCoord);
-					if(tile != null && tile instanceof TileTank)
-					{
-						TileTank bc = (TileTank) tile;
-						if(bc.fill(from.DOWN, resource, false) > 0)
-						{
-							bc.hasUpdate = true;
-							return bc.fill(from.DOWN, resource, doFill);
-						}
-					}
-				}
-			}
-		}
-		catch (Exception e)
-		{
-		}
-		
-		TinyTank tiny = this.getHighestTank();
-		if(tiny != null)
-		{
-			return tiny.tank.fill(resource, doFill);
-		}
-		return 0;
-	}
+
 	
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
@@ -112,35 +85,61 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	@Override
 	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
 	{
-		try
+		if(from == from.DOWN)
 		{
-			if(this.BCTank)
-			{
-				TinyTank bottom = this.getBottomTank();
-				if(bottom != null && bottom.BCTank)
-				{
-					TileEntity tile = worldObj.getBlockTileEntity(bottom.xCoord, bottom.yCoord-1, bottom.zCoord);
-					if(tile != null && tile instanceof TileTank)
-					{
-						TileTank tank = (TileTank) tile;
-						if(tank.drain(from.UP, maxDrain, false) != null)
-						{
-							return tank.drain(from.UP, maxDrain, doDrain);
-						}
-					}
-				}
-			}
-		}
-		catch (Exception e)
-		{
+			FluidAdjuster ad = this.getAdjuster();
+			FluidStack stack = ad.drain(maxDrain, doDrain);
+			ad.adjust();
+			return stack;
 		}
 		
-		TinyTank bottom = this.getBottomTank();
-		if(bottom != null)
+		TinyTank tank = this.getBottomTank();
+		if(tank != null)
 		{
-			return bottom.tank.drain(maxDrain, doDrain);
+			if(tank.getPosition().isThisPosition(getPosition()))
+			{
+				FluidAdjuster ad = this.getAdjuster();
+				FluidStack stack = ad.drain(maxDrain, doDrain);
+				ad.adjust();
+				return stack;
+			}
+			
+			return tank.drain(from.UP, maxDrain, doDrain);
 		}
 		return null;
+	}
+	
+	@Override
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+	{
+		
+		if(from == from.UP)
+		{
+			FluidAdjuster ad = this.getAdjuster();
+			int filled = ad.fill(resource, doFill);
+			ad.adjust();
+			return filled;
+		}
+		TinyTank tank = this.getHighestTank();
+		if(tank != null)
+		{
+			if(tank.getPosition().isThisPosition(getPosition()))
+			{
+				if(this.tank.getFluid() == null)
+				{
+					FluidStack stack = resource.copy();
+					stack.amount = 0;
+					this.tank.setFluid(stack);
+				}
+				FluidAdjuster ad = this.getAdjuster();
+				int filled = ad.fill(resource, doFill);
+				ad.adjust();
+				return filled;
+			}
+			return tank.fill(from.DOWN, resource, doFill);
+		}
+		return 0;
+		
 	}
 	
 	@Override
@@ -173,7 +172,11 @@ public class TinyTank extends AdvTile implements IFluidHandler
 			initTank();
 		}
 		
-		tank.readFromNBT(nbt);
+		tank = (TinyFluidTank) tank.readFromNBT(nbt);
+		if(tank.getFluid() != null && tank.getFluidAmount() <= 0)
+		{
+			tank.setFluid(null);
+		}
 		renderLiquid = nbt.getInteger("Render");
 		BCTank = nbt.getBoolean("BC");
 	}
@@ -211,7 +214,6 @@ public class TinyTank extends AdvTile implements IFluidHandler
 				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 			}
 			
-			
 			if(this.tank.getFluid() != null)
 			{
 				
@@ -224,16 +226,6 @@ public class TinyTank extends AdvTile implements IFluidHandler
 					fillToSide();
 				}
 			}
-			
-			if(this.BCTank)
-			{
-				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord);
-				if(tile != null && tile instanceof TileTank)
-				{
-					TileTank tanks = (TileTank) tile;
-					tanks.drain(ForgeDirection.DOWN, this.tank.fill(tanks.tank.getFluid(), true), true);
-				}
-			}
 		}
 	}
 	
@@ -242,81 +234,111 @@ public class TinyTank extends AdvTile implements IFluidHandler
 		TinyTank tank = this.getTankBelow(this);
 		if(tank != null)
 		{
-			this.tank.drain(tank.tank.fill(this.tank.getFluid(), true), true);
-		}
-		else
-		{
-			tank = this;
-		}
-		
-		
-		if(this.BCTank)
-		{
-			try
-			{
-				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
-				if(tile != null && tile instanceof TileTank)
-				{
-					TileTank tanks = (TileTank) tile;
-					this.tank.drain(tanks.fill(ForgeDirection.UP, this.tank.getFluid(), true), true);
-				}
-				
-
-			}
-			catch (Exception e)
-			{
-			}
+			this.drain(ForgeDirection.DOWN, tank.fill(ForgeDirection.UP, this.drain(ForgeDirection.DOWN, 50000, false), true), true);
 		}
 		
 	}
 	
 	public void fillToSide()
 	{
-		TinyTank[] tanks = new TinyTank[4];
-		for(int i = 0;i<tanks.length;i++)
+		if(updateTick > 0)
 		{
-			tanks[i] = getTinyTankFromSide(i+2);
+			this.updateTick--;
 		}
-		
-		double[] prozent = new double[4];
-		double ownProzent = ((double) tank.getFluidAmount() / (double)this.tank.getCapacity() )*100;
-		for(int i = 0;i<tanks.length;i++)
+		else
 		{
-			if(tanks[i] != null)
-			{
-				prozent[i] = ((double)tanks[i].tank.getFluidAmount() / (double)tanks[i].tank.getCapacity())*100;
-			}
-		}
-		
-		for(int i = 0;i<tanks.length;i++)
-		{
-			if(tanks[i] != null)
-			{
-				double pro = ownProzent - prozent[i];
-				if(pro > 0)
-				{
-					
-					if(tanks[i].tank.fill(this.tank.drain(this.getProzentInMilliBuckets(pro/2, tanks[i]), false), false) == this.getProzentInMilliBuckets(pro/2, tanks[i]))
-					{
-						tanks[i].tank.fill(this.tank.drain(this.getProzentInMilliBuckets(pro/2, tanks[i]), true), true);
-					}
-					else if(this.getProzentInMilliBuckets(pro/2, tanks[i]) > this.tank.getFluidAmount())
-					{
-						this.tank.drain(tanks[i].tank.fill(this.tank.getFluid(), true), true);
-					}
-				}
-			}
+			FluidAdjuster ad = this.getAdjuster();
+			ad.adjust();
 		}
 	}
 	
-	public int getProzentInMilliBuckets(double persent, TinyTank tank)
+	public FluidAdjuster getAdjuster()
 	{
-		double one = ((double)1 / (double)tank.tank.getCapacity())*100;
-		
-		int result = (int) (persent / one);
+		ArrayList<List<Integer>> tankPos = new ArrayList<List<Integer>>();
+		ArrayList<List<Integer>> todo = new ArrayList<List<Integer>>();
+		ArrayList<List<Integer>> todoNext = new ArrayList<List<Integer>>();
+		tankPos.add(this.getPosition().getAsList());
+		for(int x = 2;x<ForgeDirection.VALID_DIRECTIONS.length;x++)
+		{
+			TinyTank tank = getTinyTankFromSide(x);
+			if(tank != null && (tank.tank.getFluid() == null || tank.tank.getFluid().isFluidEqual(this.tank.getFluid())))
+			{
+				BlockPosition pos = tank.getPosition();
+				if(!containsIt(tankPos, pos.getAsList()))
+				{
+					tankPos.add(pos.getAsList());
+					todo.add(pos.getAsList());
+				}
 
-		return result;
+			}
+		}
+		
+		
+		boolean run = true;
+		while(run)
+		{
+			if(!todo.isEmpty())
+			{
+				for(int i = 0;i<todo.size();i++)
+				{
+					BlockPosition pos = new BlockPosition(todo.get(i));
+					for(int z = 2;z<ForgeDirection.VALID_DIRECTIONS.length;z++)
+					{
+						BlockPosition newPos = pos.getPosFromSide(z);
+						if(newPos.hasTileEntity() && newPos.getTileEntity() instanceof TinyTank)
+						{
+							TinyTank tank = (TinyTank) newPos.getTileEntity();
+							if(tank != null && (tank.tank.getFluid() == null || tank.tank.getFluid().isFluidEqual(this.tank.getFluid())))
+							{
+								if(!containsIt(tankPos, newPos.getAsList()))
+								{
+									tankPos.add(newPos.getAsList());
+									todoNext.add(newPos.getAsList());
+								}
+							}
+						}
+					}
+				}
+				todo.clear();
+			}
+			else
+			{
+				if(todoNext.isEmpty())
+				{
+					run = false;
+				}
+				else
+				{
+					todo.addAll(todoNext);
+					todoNext.clear();
+				}
+			}
+		}
+		FluidTank[] tanks = new FluidTank[tankPos.size()];
+		for(int i = 0;i<tanks.length;i++)
+		{
+			TinyTank tank = ((TinyTank) new BlockPosition(tankPos.get(i)).getTileEntity());
+			tank.updateTick = 80;
+			tanks[i] = tank.tank;
+		}
+		
+		FluidAdjuster adjuster = new FluidAdjuster(this.tank.getFluid(), tanks);
+		return adjuster;
 	}
+	
+	
+	public boolean containsIt(ArrayList<List<Integer>> list, List<Integer> target)
+	{
+		for(List<Integer> cu : list)
+		{
+			if(cu.get(0) == target.get(0) && cu.get(1) == target.get(1) && cu.get(2) == target.get(2) && cu.get(3) == target.get(3))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	
 	private TinyTank getTinyTankFromSide(int i)
 	{
@@ -336,25 +358,6 @@ public class TinyTank extends AdvTile implements IFluidHandler
 			return true;
 		}
 		
-		if(tank == null)
-		{
-			tank = this;
-		}
-		
-		if(tank != null)
-		{
-			try
-			{
-				TileEntity tile = worldObj.getBlockTileEntity(tank.xCoord, tank.yCoord-1, tank.zCoord);
-				if(tile != null && tile instanceof TileTank)
-				{
-					return ((TileTank)tile).fill(ForgeDirection.UP, this.tank.getFluid(), false) > 0;
-				}
-			}
-			catch (Exception e)
-			{
-			}
-		}
 		return false;
 	}
 	

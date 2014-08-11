@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.blocks.BlockStack;
+import speiger.src.api.util.WorldReading;
 
 public class BlockPosition
 {
@@ -24,6 +25,11 @@ public class BlockPosition
 	public int zCoord;
 	
 	public ForgeDirection facing;
+	
+	public BlockPosition(List<Integer> par1)
+	{
+		this(par1.get(0), par1.get(1), par1.get(2), par1.get(3));
+	}
 	
 	public BlockPosition(int dimID, int x, int y, int z)
 	{
@@ -90,6 +96,21 @@ public class BlockPosition
 		}
 	}
 	
+	public boolean isThisPosition(BlockPosition par1)
+	{
+		if(par1 != null)
+		{
+			if(this.worldID.provider.dimensionId == par1.worldID.provider.dimensionId)
+			{
+				if(xCoord == par1.xCoord && yCoord == par1.yCoord && par1.zCoord == zCoord)
+				{
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
 	public boolean hasTileEntity()
 	{
 		return getTileEntity() != null;
@@ -128,5 +149,11 @@ public class BlockPosition
 	public void remove()
 	{
 		worldID.setBlockToAir(xCoord, yCoord, zCoord);
+	}
+	
+	public BlockPosition getPosFromSide(int side)
+	{
+		ForgeDirection direction = ForgeDirection.getOrientation(side);
+		return new BlockPosition(worldID, xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
 	}
 }

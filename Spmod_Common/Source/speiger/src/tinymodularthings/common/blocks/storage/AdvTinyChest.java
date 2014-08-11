@@ -372,7 +372,7 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 	public void updateRedstone()
 	{
 		int fullSlot = 0;
-		for (int i = 0; i < mode; i++)
+		for (int i = 0; i < this.getSizeInventory(); i++)
 		{
 			ItemStack stack = getStackInSlot(i);
 			if (stack != null && stack.stackSize >= stack.getMaxStackSize())
@@ -380,7 +380,7 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 				fullSlot++;
 			}
 		}
-		if (fullSlot == mode)
+		if (fullSlot == this.getSizeInventory())
 		{
 			isFull = true;
 		}
