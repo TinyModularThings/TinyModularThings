@@ -1,5 +1,6 @@
 package speiger.src.tinymodularthings.common.utils.fluids;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -26,6 +27,7 @@ import cpw.mods.fml.relauncher.Side;
 public class FluidStorage implements ITickReader, INBTReciver
 {
 	static HashMap<List<Integer>, SharedFluidTank> tanks = new HashMap<List<Integer>, SharedFluidTank>();
+	static HashMap<SharedFluidTank, ArrayList<List<Integer>>> tankKey = new HashMap<SharedFluidTank, ArrayList<List<Integer>>>();
 	static HashMap<List<Integer>, List<Integer>> key = new HashMap<List<Integer>, List<Integer>>();
 	static HashMap<List<Integer>, List<Integer>> value = new HashMap<List<Integer>, List<Integer>>();
 	
@@ -54,6 +56,10 @@ public class FluidStorage implements ITickReader, INBTReciver
 		SharedFluidTank tank = new SharedFluidTank(par1);
 		
 		tanks.put(pos.getAsList(), tank);
+		ArrayList<List<Integer>> list = new ArrayList<List<Integer>>();
+		list.add(pos.getAsList());
+		tankKey.put(tank, list);
+		
 		this.addTankToOthers(par1);
 	}
 	
@@ -61,7 +67,11 @@ public class FluidStorage implements ITickReader, INBTReciver
 	{
 		BlockPosition pos = par1.getPosition();
 		SharedFluidTank tank = tanks.remove(pos.getAsList());
-		tank.removeTank(par1);
+		if(tank != null)
+		{
+			tank.removeTank(par1);
+			tankKey.remove(tank);
+		}
 		if(key.get(pos.getAsList()) != null)
 		{
 			key.remove(pos.getAsList());
@@ -77,6 +87,16 @@ public class FluidStorage implements ITickReader, INBTReciver
 		for(TinyTank tank : par1.getAllTanks())
 		{
 			tanks.put(tank.getPosition().getAsList(), par1);
+			if(tankKey.get(par1) == null)
+			{
+				ArrayList<List<Integer>> list = new ArrayList<List<Integer>>();
+				list.add(tank.getPosition().getAsList());
+				tankKey.put(par1, list);
+			}
+			else
+			{
+				tankKey.get(par1).add(tank.getPosition().getAsList());
+			}
 		}
 	}
 	
@@ -86,11 +106,21 @@ public class FluidStorage implements ITickReader, INBTReciver
 		for(ForgeDirection dir : WorldReading.getHDirections())
 		{
 			SharedFluidTank first = tanks.get(par1.getPosition().getPosFromFSide(dir).getAsList());
-			if(first != null && !first.isSame(core))
+			if(first != null && !this.isSame(par1.getPosition().getAsList(), par1.getPosition().getPosFromFSide(dir).getAsList()) && core.canAddFluid(first))
 			{
 				first.addTank(par1);
+				this.removeTank(core.getCore());
 				tanks.put(par1.getPosition().getAsList(), first);
-				first.adjust();
+				if(tankKey.get(first) == null)
+				{
+					ArrayList<List<Integer>> list = new ArrayList<List<Integer>>();
+					list.add(par1.getPosition().getAsList());
+					tankKey.put(first, list);
+				}
+				else
+				{
+					tankKey.get(first).add(par1.getPosition().getAsList());
+				}
 				break;
 			}
 		}
@@ -103,7 +133,8 @@ public class FluidStorage implements ITickReader, INBTReciver
 		{
 			SharedFluidTank core = tanks.get(par1.getPosition().getAsList());
 			SharedFluidTank next = tanks.get(par1.getPosition().getPosFromFSide(dir).getAsList());
-			if(next != null && !core.isSame(next) && core.canAddFluid(next))
+			
+			if(next != null && !this.isSame(par1.getPosition().getAsList(), par1.getPosition().getPosFromFSide(dir).getAsList()) && core.canAddFluid(next))
 			{
 				int first = core.getAllTanks().size();
 				int second = next.getAllTanks().size();
@@ -115,10 +146,10 @@ public class FluidStorage implements ITickReader, INBTReciver
 				{
 					next.replace(core);
 				}
+				FMLLog.getLogger().info("Called");
 			}
 		}
-		SharedFluidTank core = tanks.get(par1.getPosition().getAsList());
-		core.adjust();
+		FMLLog.getLogger().info("Test: "+tankKey.keySet().size()+":"+tankKey.values().size());
 		findFillProgress(par1);
 	}
 	
@@ -127,13 +158,16 @@ public class FluidStorage implements ITickReader, INBTReciver
 		BlockPosition core = par1.getPosition();
 		BlockPosition up = core.getPosFromFSide(ForgeDirection.UP);
 		BlockPosition down = core.getPosFromFSide(ForgeDirection.DOWN);
-		if(tanks.get(up) != null)
+		
+		if(tanks.get(up.getAsList()) != null && key.get(up.getAsList()) == null)
 		{
+			FMLLog.getLogger().info("UP");
 			key.put(up.getAsList(), core.getAsList());
 			value.put(core.getAsList(), up.getAsList());
 		}
-		if(tanks.get(down) != null)
+		if(tanks.get(down.getAsList()) != null && value.get(down.getAsList()) == null)
 		{
+			FMLLog.getLogger().info("DOWN");
 			key.put(core.getAsList(), down.getAsList());
 			value.put(down.getAsList(), core.getAsList());
 		}
@@ -146,6 +180,15 @@ public class FluidStorage implements ITickReader, INBTReciver
 		{
 			tank.adjust();
 		}
+	}
+	
+	public boolean isSame(List<Integer> par1, List<Integer> par2)
+	{
+		if(par1.get(0) == par2.get(0) && par1.get(1) == par2.get(1) && par1.get(2) == par2.get(2) && par1.get(3) == par2.get(3))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	public BlockPosition getBottom(BlockPosition par1)
@@ -249,6 +292,7 @@ public class FluidStorage implements ITickReader, INBTReciver
 					int[] data = array.intArray;
 					sTank.addTank((TinyTank) new BlockPosition(data[0], data[1], data[2], data[3]).getTileEntity());
 				}
+				sTank.readFromNBT(nbt);
 				this.replace(sTank);
 			}
 			
@@ -296,6 +340,7 @@ public class FluidStorage implements ITickReader, INBTReciver
 				list.appendTag(array);
 			}
 			nbt.setTag("Tanks", list);
+			SharedTank.writeToNBT(nbt);
 			tankData.appendTag(nbt);
 		}
 		
@@ -358,16 +403,17 @@ public class FluidStorage implements ITickReader, INBTReciver
 		}
 		minTime = t;
 		
-		if(adjustDelay < 2400)
+		if(adjustDelay < 40)
 		{
 			adjustDelay++;
 		}
 		else
 		{
 			adjustDelay = 0;
-			for(SharedFluidTank tank : tanks.values())
+			FMLLog.getLogger().info("Test: "+tankKey.keySet().size());
+			for(SharedFluidTank tank : tankKey.keySet())
 			{
-				tank.adjust();
+				tank.onTick();
 			}
 		}
 		
@@ -378,17 +424,9 @@ public class FluidStorage implements ITickReader, INBTReciver
 		else
 		{
 			downDelay = 0;
-			Iterator<Entry<List<Integer>, List<Integer>>> iter = key.entrySet().iterator();
-			while(iter.hasNext())
-			{
-				Entry<List<Integer>, List<Integer>> work = iter.next();
-				SharedFluidTank top = tanks.get(work.getKey());
-				SharedFluidTank bottom = tanks.get(work.getValue());
-				if(top != null && bottom != null)
-				{
-					top.drain(bottom.fill(top.drain(10000, false), true), true);
-				}
-			}
+			
+			
+
 		}
 	}
 	
