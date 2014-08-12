@@ -6,6 +6,9 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.FMLLog;
+
+import speiger.src.api.util.WorldReading;
 import speiger.src.tinymodularthings.client.models.storage.ModelAdvTinyChest;
 import speiger.src.tinymodularthings.client.models.storage.ModelTinyChest;
 import speiger.src.tinymodularthings.client.models.storage.ModelTinyTank;
@@ -30,15 +33,15 @@ public class RenderStorageBlock extends TileEntitySpecialRenderer
 	{
 		if (tile != null)
 		{
-			if (tile instanceof TinyTank)
+			if (tile instanceof TinyTank && !WorldReading.isSorunded(tile.getWorldObj(), (int)d0, (int)d1, (int)d2, TinyTank.class))
 			{
 				renderTinyTank((TinyTank) tile, d0, d1, d2);
 			}
-			else if (tile instanceof TinyChest)
+			else if (tile instanceof TinyChest)// && !WorldReading.isSorunded(tile.getWorldObj(), (int)d0, (int)d1, (int)d2, TinyChest.class, AdvTinyChest.class))
 			{
 				renderTinyChest((TinyChest) tile, d0, d1, d2);
 			}
-			else if (tile instanceof AdvTinyChest)
+			else if (tile instanceof AdvTinyChest)// && !WorldReading.isSorunded(tile.getWorldObj(), (int)d0, (int)d1, (int)d2, TinyChest.class, AdvTinyChest.class))
 			{
 				renderAdvTinyChest((AdvTinyChest) tile, d0, d1, d2);
 			}

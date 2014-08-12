@@ -10,6 +10,7 @@ import net.minecraftforge.fluids.FluidStack;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyTank;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.common.FMLLog;
 
 public class RenderStorage implements ISimpleBlockRenderingHandler
 {

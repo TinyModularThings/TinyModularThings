@@ -2,11 +2,13 @@ package speiger.src.api.util;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.relauncher.Side;
+
 public class Ticks
 {
 	static ArrayList<ITickReader> ticks = new ArrayList<ITickReader>();
 	
-	public static void tick(SpmodMod sender)
+	public static void tick(SpmodMod sender, Side side)
 	{
 		if(!SpmodModRegistry.isModRegistered(sender))
 		{
@@ -18,7 +20,7 @@ public class Ticks
 			{
 				if(SpmodModRegistry.isModRegistered(tick.getOwner()))
 				{
-					tick.onTick(sender);
+					tick.onTick(sender, side);
 				}
 			}
 		}
@@ -39,7 +41,7 @@ public class Ticks
 	
 	public static interface ITickReader
 	{
-		public void onTick(SpmodMod sender);
+		public void onTick(SpmodMod sender, Side side);
 		
 		public SpmodMod getOwner();
 	}

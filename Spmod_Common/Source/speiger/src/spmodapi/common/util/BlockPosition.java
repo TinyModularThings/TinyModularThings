@@ -8,7 +8,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.blocks.BlockStack;
-import speiger.src.api.util.WorldReading;
 
 public class BlockPosition
 {
@@ -154,6 +153,37 @@ public class BlockPosition
 	public BlockPosition getPosFromSide(int side)
 	{
 		ForgeDirection direction = ForgeDirection.getOrientation(side);
+		return getPosFromFSide(direction);
+	}
+	
+	public BlockPosition getPosFromFSide(ForgeDirection direction)
+	{
 		return new BlockPosition(worldID, xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
+
+	}
+
+	public boolean isBlockAir()
+	{
+		BlockStack stack = this.getAsBlockStack();
+		if(stack != null && stack.getBlock() != null && stack.getBlock().isAirBlock(worldID, xCoord, yCoord, zCoord))
+		{
+			return true;
+		}
+		return false;
+	}
+
+	public boolean isBlockFull()
+	{
+		BlockStack stack = this.getAsBlockStack();
+		if(stack != null && stack.getBlock() != null && stack.getBlock().isOpaqueCube())
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	public BlockPosition copy()
+	{
+		return new BlockPosition(worldID, xCoord, yCoord, zCoord);
 	}
 }
