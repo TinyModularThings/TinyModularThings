@@ -146,10 +146,8 @@ public class FluidStorage implements ITickReader, INBTReciver
 				{
 					next.replace(core);
 				}
-				FMLLog.getLogger().info("Called");
 			}
 		}
-		FMLLog.getLogger().info("Test: "+tankKey.keySet().size()+":"+tankKey.values().size());
 		findFillProgress(par1);
 	}
 	
@@ -161,13 +159,11 @@ public class FluidStorage implements ITickReader, INBTReciver
 		
 		if(tanks.get(up.getAsList()) != null && key.get(up.getAsList()) == null)
 		{
-			FMLLog.getLogger().info("UP");
 			key.put(up.getAsList(), core.getAsList());
 			value.put(core.getAsList(), up.getAsList());
 		}
 		if(tanks.get(down.getAsList()) != null && value.get(down.getAsList()) == null)
 		{
-			FMLLog.getLogger().info("DOWN");
 			key.put(core.getAsList(), down.getAsList());
 			value.put(down.getAsList(), core.getAsList());
 		}
@@ -180,6 +176,11 @@ public class FluidStorage implements ITickReader, INBTReciver
 		{
 			tank.adjust();
 		}
+	}
+	
+	public SharedFluidTank getTankFromTinyTank(TinyTank par1)
+	{
+		return tanks.get(par1.getPosition().getAsList());
 	}
 	
 	public boolean isSame(List<Integer> par1, List<Integer> par2)
@@ -410,7 +411,6 @@ public class FluidStorage implements ITickReader, INBTReciver
 		else
 		{
 			adjustDelay = 0;
-			FMLLog.getLogger().info("Test: "+tankKey.keySet().size());
 			for(SharedFluidTank tank : tankKey.keySet())
 			{
 				tank.onTick();

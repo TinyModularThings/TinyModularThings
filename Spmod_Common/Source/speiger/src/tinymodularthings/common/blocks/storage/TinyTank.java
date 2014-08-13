@@ -1,7 +1,6 @@
 package speiger.src.tinymodularthings.common.blocks.storage;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
@@ -10,7 +9,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.ForgeDirection;
@@ -29,6 +27,7 @@ import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.utils.fluids.FluidStorage;
+import speiger.src.tinymodularthings.common.utils.fluids.SharedFluidTank;
 import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
@@ -282,10 +281,10 @@ public class TinyTank extends AdvTile implements IFluidHandler
 			{
 				String name = "Nothing";
 				int amount = 0;
-				
-				if (tank.getFluid() != null && tank.getFluid().amount > 0 && tank.getFluid().getFluid() != null)
+				FluidStack fluidStack = this.getFluidFromMultiTank();
+				if (fluidStack != null && fluidStack.amount > 0 && fluidStack.getFluid() != null)
 				{
-					Fluid fluid = tank.getFluid().getFluid();
+					Fluid fluid = fluidStack.getFluid();
 					if (fluid.getBlockID() != -1)
 					{
 						BlockStack stack = new BlockStack(fluid.getBlockID());
@@ -300,7 +299,7 @@ public class TinyTank extends AdvTile implements IFluidHandler
 					{
 						name = "Unknowen Fluid";
 					}
-					amount = tank.getFluid().amount;
+					amount = fluidStack.amount;
 					
 				}
 				
@@ -422,6 +421,16 @@ public class TinyTank extends AdvTile implements IFluidHandler
 	public FluidTank getTank()
 	{
 		return tank;
+	}
+
+	public FluidStack getFluidFromMultiTank()
+	{
+		SharedFluidTank tank = FluidStorage.instance.getTankFromTinyTank(this);
+		if(tank != null)
+		{
+			return tank.getFluidForTinyTank(this);
+		}
+		return null;
 	}
 	
 }

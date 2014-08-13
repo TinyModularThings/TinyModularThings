@@ -58,7 +58,7 @@ public class SharedFluidTank
 	
 	public void addTank(TinyTank par1)
 	{
-		if(!allTanks.contains(par1))
+		if(!contains(par1))
 		{
 			if(par1.getTank().getFluid() == null || this.getFluid() == null || this.getFluid().isFluidEqual(par1.getTank().getFluid()))
 			{
@@ -67,6 +67,18 @@ public class SharedFluidTank
 				this.TotalSpace = par1.getTank().getCapacity();
 			}
 		}
+	}
+	
+	public boolean contains(TinyTank par1)
+	{
+		for(TinyTank tank : allTanks)
+		{
+			if(tank.getPosition().isThisPosition(par1.getPosition()))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 	
 	public void adjust()
@@ -211,7 +223,7 @@ public class SharedFluidTank
 			stack = fluid.copy();
 		}
 		
-		double per = ((double)totalFluid / (double)TotalSpace) * 100;
+		double per = this.getPercentFromSharedTank();
 		
 		for(TinyTank tank : this.getAllTanks())
 		{
@@ -227,10 +239,36 @@ public class SharedFluidTank
 		}
 	}
 	
-	private int getFluidSizeFromProzent(FluidTank tank, double prozent)
+	public int getFluidSizeFromProzent(FluidTank tank, double prozent)
 	{
 		double one = ((double)1 / (double)tank.getCapacity())*100;
+		if(this.allTanks.size() == 1)
+		{
+			return this.totalFluid;
+		}
 		return DoubleMath.roundToInt(prozent / one, RoundingMode.HALF_EVEN);
+	}
+	
+	public double getPercentFromSharedTank()
+	{
+		double per = ((double)totalFluid / (double)TotalSpace) * 100;;
+		return per;
+	}
+	
+	public FluidStack getFluidForTinyTank(TinyTank par1)
+	{
+		FluidStack stack = null;
+		if(fluid != null)
+		{
+			stack = fluid.copy();
+		}
+		else
+		{
+			return null;
+		}
+		stack.amount = this.getFluidSizeFromProzent(par1.getTank(), getPercentFromSharedTank());
+		
+		return stack;
 	}
 	
 	private int drain(int req)
