@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
@@ -43,6 +44,11 @@ public class ClearItems implements ISpmodCommand
 	public boolean isCommandRunnable(ICommandSender par1, boolean guiAdding, ISubCommand sub, String[] arg)
 	{
 		if(sub == null && guiAdding)
+		{
+			return true;
+		}
+		
+		if(FMLCommonHandler.instance().getSidedDelegate().getSide() == Side.CLIENT)
 		{
 			return true;
 		}

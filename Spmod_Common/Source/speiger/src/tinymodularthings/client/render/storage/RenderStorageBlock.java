@@ -60,7 +60,8 @@ public class RenderStorageBlock extends TileEntitySpecialRenderer
 		if(tile instanceof AdvTinyTank)
 		{
 			AdvTinyTank tank = (AdvTinyTank) tile;
-			if(tank.isTankFull() == 15)
+			boolean win = tank.isTankFull();
+			if(win)
 			{
 				bindTexture(advTCClosedTexture);
 			}
@@ -74,7 +75,7 @@ public class RenderStorageBlock extends TileEntitySpecialRenderer
 			bindTexture(basicTCTexture);
 		}
 		GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
-		tinytank.render(0.0625F);
+		tinytank.render(0.0625F, tile instanceof AdvTinyTank);
 		GL11.glPopMatrix();
 	}
 	

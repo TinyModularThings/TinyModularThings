@@ -55,7 +55,7 @@ public class CommandExecuter implements IPacketReciver
 								}
 								else
 								{
-									player.sendChatToPlayer(LanguageRegister.createChatMessage("Wrong Arguments. Check the info for right arguments"));
+									player.sendChatToPlayer(LanguageRegister.createChatMessage("Wrong Arguments or You are not OP. Check the info for right arguments"));
 									return;
 								}
 							}

@@ -10,9 +10,11 @@ public class APIUtils
 	public static Attribute jumpBoost;
 	public static EnumArmorMaterial hempArmor;
 	public static Fluid hempResin;
+	public static Fluid fluidPotionSteam;
 	
 	public static CreativeTabs tabHemp;
 	public static CreativeTabs tabHempDeko;
 	public static CreativeTabs tabCrafing;
+
 	
 }

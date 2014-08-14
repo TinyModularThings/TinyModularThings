@@ -31,6 +31,12 @@ public class ModelTinyTank extends ModelBase
 	ModelRenderer Cube_Bottom_Right;
 	ModelRenderer Cube_Bottom_Left;
 	ModelRenderer Cube_Bottom_Back;
+	ModelRenderer BlockedFront;
+	ModelRenderer BlockedBottom;
+	ModelRenderer BlockedLeft;
+	ModelRenderer BlockedBack;
+	ModelRenderer BlockedTop;
+	ModelRenderer BlockedRight;
 	
 	public ModelTinyTank()
 	{
@@ -181,9 +187,45 @@ public class ModelTinyTank extends ModelBase
 		Cube_Bottom_Back.setTextureSize(64, 32);
 		Cube_Bottom_Back.mirror = true;
 		setRotation(Cube_Bottom_Back, 0F, 0F, 0F);
+		BlockedFront = new ModelRenderer(this, 0, 119);
+		BlockedFront.addBox(0F, 0F, 0F, 8, 8, 1);
+		BlockedFront.setRotationPoint(-4F, 12F, -8F);
+		BlockedFront.setTextureSize(128, 128);
+		BlockedFront.mirror = true;
+		setRotation(BlockedFront, 0F, 0F, 0F);
+		BlockedBottom = new ModelRenderer(this, 0, 108);
+		BlockedBottom.addBox(0F, 0F, 0F, 8, 1, 8);
+		BlockedBottom.setRotationPoint(-4F, 23F, -4F);
+		BlockedBottom.setTextureSize(128, 128);
+		BlockedBottom.mirror = true;
+		setRotation(BlockedBottom, 0F, 0F, 0F);
+		BlockedLeft = new ModelRenderer(this, 0, 90);
+		BlockedLeft.addBox(0F, 0F, 0F, 1, 8, 8);
+		BlockedLeft.setRotationPoint(-8F, 12F, -4F);
+		BlockedLeft.setTextureSize(128, 128);
+		BlockedLeft.mirror = true;
+		setRotation(BlockedLeft, 0F, 0F, 0F);
+		BlockedBack = new ModelRenderer(this, 0, 79);
+		BlockedBack.addBox(0F, 0F, 0F, 8, 8, 1);
+		BlockedBack.setRotationPoint(-4F, 12F, 7F);
+		BlockedBack.setTextureSize(128, 128);
+		BlockedBack.mirror = true;
+		setRotation(BlockedBack, 0F, 0F, 0F);
+		BlockedTop = new ModelRenderer(this, 0, 68);
+		BlockedTop.addBox(0F, 0F, 0F, 8, 1, 8);
+		BlockedTop.setRotationPoint(-4F, 8F, -4F);
+		BlockedTop.setTextureSize(128, 128);
+		BlockedTop.mirror = true;
+		setRotation(BlockedTop, 0F, 0F, 0F);
+		BlockedRight = new ModelRenderer(this, 0, 50);
+		BlockedRight.addBox(0F, 0F, 0F, 1, 8, 8);
+		BlockedRight.setRotationPoint(7F, 12F, -4F);
+		BlockedRight.setTextureSize(128, 128);
+		BlockedRight.mirror = true;
+		setRotation(BlockedRight, 0F, 0F, 0F);
 	}
 	
-	public void render(float f5)
+	public void render(float f5, boolean b)
 	{
 		Cube_Top_Front.render(f5);
 		Cube_Top_Right.render(f5);
@@ -209,6 +251,15 @@ public class ModelTinyTank extends ModelBase
 		Cube_Bottom_Right.render(f5);
 		Cube_Bottom_Left.render(f5);
 		Cube_Bottom_Back.render(f5);
+		if(b)
+		{
+			BlockedFront.render(f5);
+			BlockedBottom.render(f5);
+			BlockedLeft.render(f5);
+			BlockedBack.render(f5);
+			BlockedTop.render(f5);
+			BlockedRight.render(f5);
+		}
 	}
 	
 	@Override
@@ -240,6 +291,12 @@ public class ModelTinyTank extends ModelBase
 		Cube_Bottom_Right.render(f5);
 		Cube_Bottom_Left.render(f5);
 		Cube_Bottom_Back.render(f5);
+		BlockedFront.render(f5);
+		BlockedBottom.render(f5);
+		BlockedLeft.render(f5);
+		BlockedBack.render(f5);
+		BlockedTop.render(f5);
+		BlockedRight.render(f5);
 	}
 	
 	private void setRotation(ModelRenderer model, float x, float y, float z)

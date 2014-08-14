@@ -190,7 +190,7 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		GL11.glTranslatef(x, y, z);
 		GL11.glRotatef(180, 1, 0, 0);
 		GL11.glRotatef(-90, 0, 1, 0);
-		tinyTank.render(0.0625F);
+		tinyTank.render(0.0625F, false);
 		GL11.glPopMatrix();
 	}
 	
@@ -201,7 +201,7 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		GL11.glTranslatef(x, y, z);
 		GL11.glRotatef(180, 1, 0, 0);
 		GL11.glRotatef(-90, 0, 1, 0);
-		tinyTank.render(0.0625F);
+		tinyTank.render(0.0625F, false);
 		GL11.glPopMatrix();
 	}
 

@@ -34,6 +34,7 @@ import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
 import buildcraft.BuildCraftFactory;
 import buildcraft.api.tools.IToolWrench;
 import buildcraft.factory.TileTank;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -47,7 +48,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	public boolean BCTank = false;
 	public static Icon texture = null;
 	public boolean renderTank = false;
-	@SideOnly(Side.CLIENT)
+	
 	public static boolean dissableRenderer = false;
 	
 	
@@ -263,6 +264,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 				}
 			}
 		}
+		
 	}
 	
 	public void fillBelow()

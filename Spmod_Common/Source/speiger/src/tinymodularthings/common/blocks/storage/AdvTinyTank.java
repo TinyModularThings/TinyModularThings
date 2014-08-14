@@ -10,6 +10,7 @@ import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.MovingObjectPosition;
 
 public class AdvTinyTank extends TinyTank
 {
@@ -29,7 +30,7 @@ public class AdvTinyTank extends TinyTank
 			return stack;
 		}
 		droped = true;
-		ItemStack item = new ItemStack(TinyItems.tinyTank, 1, tankMode);
+		ItemStack item = new ItemStack(TinyItems.advTinyTank, 1, tankMode);
 		if(tank.getFluid() != null)
 		{
 			if(wrench)
@@ -76,40 +77,47 @@ public class AdvTinyTank extends TinyTank
 	{
 		if(side == 0)
 		{
-			return isTankFull();
+			return isTankFull() ? 15 : 0;
 		}
 		else if(side == 1)
 		{
-			return isTankEmpty();
+			return isTankEmpty() ? 15 : 0;
 		}
 		return 0;
 	}
 	
-	public int isTankFull()
+	public boolean isTankFull()
 	{
 		int amount = tank.getCapacity() - (tank.getCapacity() / 100);
 		if(tank.getFluidAmount() >= amount)
 		{
-			return 15;
+			return true;
 		}
-		return 0;
+		return false;
 	}
 	
 	
 	
+	
+	@Override
+	public ItemStack pickBlock(MovingObjectPosition target)
+	{
+		return new ItemStack(TinyItems.advTinyTank, 1, tankMode);
+	}
+
 	@Override
 	public boolean shouldCheckWeakPower()
 	{
 		return true;
 	}
 
-	public int isTankEmpty()
+	public boolean isTankEmpty()
 	{
 		if(tank.getFluidAmount() == 0)
 		{
-			return 15;
+			return true;
 		}
-		return 0;
+		return false;
 	}
 
 	@Override

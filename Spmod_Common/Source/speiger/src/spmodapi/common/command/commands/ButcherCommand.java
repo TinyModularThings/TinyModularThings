@@ -17,6 +17,7 @@ import net.minecraft.world.World;
 import org.apache.commons.lang3.StringUtils;
 
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
@@ -50,6 +51,11 @@ public class ButcherCommand implements ISpmodCommand
 	public boolean isCommandRunnable(ICommandSender par1, boolean guiAdding, ISubCommand sub, String[] arg)
 	{
 		if(guiAdding && sub == null)
+		{
+			return true;
+		}
+		
+		if(FMLCommonHandler.instance().getSidedDelegate().getSide() == Side.CLIENT)
 		{
 			return true;
 		}
