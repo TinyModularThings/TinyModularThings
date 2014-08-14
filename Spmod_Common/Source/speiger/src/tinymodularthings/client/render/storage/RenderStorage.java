@@ -7,10 +7,11 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
+import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyTank;
+import speiger.src.tinymodularthings.common.config.TinyConfig;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class RenderStorage implements ISimpleBlockRenderingHandler
 {
@@ -26,6 +27,7 @@ public class RenderStorage implements ISimpleBlockRenderingHandler
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
 		if (tile != null && tile instanceof TinyTank)
 		{
+			renderTinyTank((TinyTank)tile, block, renderer, x, y, z);
 			renderTank((TinyTank) tile, block, renderer, world, x, y, z);
 		}
 		
@@ -34,8 +36,8 @@ public class RenderStorage implements ISimpleBlockRenderingHandler
 	
 	private void renderTank(TinyTank tile, Block block, RenderBlocks render, IBlockAccess world, int x, int y, int z)
 	{
-		FluidStack stack = tile.getFluidFromMultiTank();
-		if (stack != null && stack.getFluid() != null && tile.renderLiquid())
+		FluidStack stack = tile.tank.getFluid();
+		if (stack != null && stack.getFluid() != null && tile.renderLiquid() && !tile.renderTank())
 		{
 			Fluid fluid = stack.getFluid();
 			Icon icon = fluid.getIcon(stack);
@@ -59,7 +61,14 @@ public class RenderStorage implements ISimpleBlockRenderingHandler
 			render.renderStandardBlock(block, x, y, z);
 			render.clearOverrideBlockTexture();
 		}
-		
+	}
+	
+	public void renderTinyTank(TinyTank tiny, Block block, RenderBlocks render, int x, int y, int z)
+	{
+		if(tiny.renderTank())
+		{
+			render.renderStandardBlock(block, x, y, z);
+		}
 	}
 	
 	@Override

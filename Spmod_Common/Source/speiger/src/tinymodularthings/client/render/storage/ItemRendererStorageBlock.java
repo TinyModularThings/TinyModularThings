@@ -68,18 +68,23 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		item.getItemDamage();
 		if (id == TinyItems.tinyChest.itemID)
 		{
-			renderTinyChest(0.5F, 1.5F, 0.5F);
+			renderTinyChest(0.5F, 1.5F, 0.5F, false);
 		}
 		else if (id == TinyItems.tinyTank.itemID)
 		{
-			renderTinyTank(0.5F, 1.5F, 0.5F);
+			renderTinyTank(0.5F, 1.5F, 0.5F, false);
 		}
 		else if (id == TinyItems.advTinyChest.itemID)
 		{
-			renderAdvTinyChest(0.5F, 1.5F, 0.5F);
+			renderAdvTinyChest(0.5F, 1.5F, 0.5F, false);
+		}
+		else if(id == TinyItems.advTinyTank.itemID)
+		{
+			renderAdvTinyTank(0.5F, 1.5F, 0.5F, false);
 		}
 	}
 	
+
 	private void handleEntityRendering(ItemStack item)
 	{
 		if (item == null)
@@ -91,15 +96,19 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		item.getItemDamage();
 		if (id == TinyItems.tinyChest.itemID)
 		{
-			renderTinyChest(0.0F, 1.5F, 0.0F);
+			renderTinyChest(0.0F, 1.5F, 0.0F, true);
 		}
 		else if (id == TinyItems.tinyTank.itemID)
 		{
-			renderTinyTank(0.0F, 1.5F, 0.0F);
+			renderTinyTank(0.0F, 1.5F, 0.0F, true);
 		}
 		else if (id == TinyItems.advTinyChest.itemID)
 		{
-			renderAdvTinyChest(0.0F, 1.5F, 0.0F);
+			renderAdvTinyChest(0.0F, 1.5F, 0.0F, true);
+		}
+		else if(id == TinyItems.advTinyTank.itemID)
+		{
+			renderAdvTinyTank(0.0F, 1.5F, 0.0F, true);
 		}
 	}
 	
@@ -114,15 +123,19 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		item.getItemDamage();
 		if (id == TinyItems.tinyChest.itemID)
 		{
-			renderTinyChest(0.5F, 1.5F, 0.0F);
+			renderTinyChest(0.5F, 1.5F, 0.0F, false);
 		}
 		else if (id == TinyItems.tinyTank.itemID)
 		{
-			renderTinyTank(1.0F, 1.0F, 0.0F);
+			renderTinyTank(1.0F, 1.0F, 0.0F, false);
 		}
 		else if (id == TinyItems.advTinyChest.itemID)
 		{
-			renderAdvTinyChest(1.0F, 1.0F, 0.0F);
+			renderAdvTinyChest(1.0F, 1.0F, 0.0F, false);
+		}
+		else if(id == TinyItems.advTinyTank.itemID)
+		{
+			renderAdvTinyTank(1.0F, 1.0F, 0.0F, false);
 		}
 	}
 	
@@ -137,15 +150,19 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		item.getItemDamage();
 		if (id == TinyItems.tinyChest.itemID)
 		{
-			renderTinyChest(0.0F, 1.0F, 0.0F);
+			renderTinyChest(0.0F, 1.0F, 0.0F, false);
 		}
 		else if (id == TinyItems.tinyTank.itemID)
 		{
-			renderTinyTank(0.0F, 1.0F, 0.0F);
+			renderTinyTank(0.0F, 1.0F, 0.0F, false);
 		}
 		else if (id == TinyItems.advTinyChest.itemID)
 		{
-			renderAdvTinyChest(0.0F, 1.0F, 0.0F);
+			renderAdvTinyChest(0.0F, 1.0F, 0.0F, false);
+		}
+		else if(id == TinyItems.advTinyTank.itemID)
+		{
+			renderAdvTinyTank(0.0F, 1.0F, 0.0F, false);
 		}
 	}
 	
@@ -155,7 +172,7 @@ public class ItemRendererStorageBlock implements IItemRenderer
 	ModelTinyTank tinyTank = new ModelTinyTank();
 	ModelTinyChest tinyChest = new ModelTinyChest();
 	
-	public void renderTinyChest(float x, float y, float z)
+	public void renderTinyChest(float x, float y, float z, boolean entity)
 	{
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(basicTCTexture);
 		GL11.glPushMatrix();
@@ -166,7 +183,7 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		GL11.glPopMatrix();
 	}
 	
-	public void renderTinyTank(float x, float y, float z)
+	public void renderTinyTank(float x, float y, float z, boolean entity)
 	{
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(basicTCTexture);
 		GL11.glPushMatrix();
@@ -177,7 +194,7 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		GL11.glPopMatrix();
 	}
 	
-	public void renderAdvTinyChest(float x, float y, float z)
+	public void renderAdvTinyTank(float x, float y, float z, boolean b)
 	{
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(advTCOpenTexture);
 		GL11.glPushMatrix();
@@ -185,6 +202,19 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		GL11.glRotatef(180, 1, 0, 0);
 		GL11.glRotatef(-90, 0, 1, 0);
 		tinyTank.render(0.0625F);
+		GL11.glPopMatrix();
+	}
+
+	
+	public void renderAdvTinyChest(float x, float y, float z, boolean entity)
+	{
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(advTCOpenTexture);
+		GL11.glPushMatrix();
+		GL11.glTranslatef(x, y, z);
+		GL11.glScalef(1F, 1F, 1F);
+		GL11.glRotatef(180, 1, 0, 0);
+		GL11.glRotatef(-90, 0, 1, 0);
+		tinyChest.render(0.0625F);
 		GL11.glPopMatrix();
 	}
 	

@@ -65,6 +65,11 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		par3List.add(createEmptyNetherCrystal(par1));
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setInteger("Charges", 81*21*81);
+		ItemStack end = new ItemStack(par1, 1, 3);
+		end.setTagInfo("Lava", nbt);
+		par3List.add(end);
 	}
 
 

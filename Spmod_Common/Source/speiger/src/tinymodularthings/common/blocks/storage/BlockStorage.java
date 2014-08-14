@@ -38,6 +38,8 @@ public class BlockStorage extends BlockContainer
 		MinecraftForge.setBlockHarvestLevel(this, 1, "axe", 0);
 		MinecraftForge.setBlockHarvestLevel(this, 2, "pickaxe", 0);
 		MinecraftForge.setBlockHarvestLevel(this, 2, "axe", 0);
+		MinecraftForge.setBlockHarvestLevel(this, 3, "pickaxe", 0);
+		MinecraftForge.setBlockHarvestLevel(this, 3, "axe", 0);
 	}
 	
 	@Override
@@ -128,6 +130,8 @@ public class BlockStorage extends BlockContainer
 					return new TinyTank();
 				case 2:
 					return new AdvTinyChest();
+				case 3:
+					return new AdvTinyTank();
 				default:
 					return null;
 			}

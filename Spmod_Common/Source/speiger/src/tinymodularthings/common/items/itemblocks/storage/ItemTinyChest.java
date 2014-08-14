@@ -3,6 +3,7 @@ package speiger.src.tinymodularthings.common.items.itemblocks.storage;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.StepSound;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -98,6 +99,10 @@ public class ItemTinyChest extends TinyItem
 		{
 			return false;
 		}
+		else if(!par3World.canPlaceEntityOnSide(TinyBlocks.storageBlock.blockID, par4, par5, par6, false, par7, par2EntityPlayer, par1ItemStack))
+		{
+			return false;
+		}
 		else
 		{
 			if (par3World.setBlock(par4, par5, par6, TinyBlocks.storageBlock.blockID, 0, 3))
@@ -107,6 +112,8 @@ public class ItemTinyChest extends TinyItem
 				{
 					((TinyChest) tile).setMode(par1ItemStack.getItemDamage() + 1);
 					Block.blocksList[par3World.getBlockId(par4, par5, par6)].onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer, par1ItemStack);
+					StepSound sound = Block.blocksList[par3World.getBlockId(par4, par5, par6)].stepSound;
+					par3World.playSoundEffect(par4, par5, par6, sound.getPlaceSound(), sound.stepSoundVolume, sound.stepSoundPitch);
 					par1ItemStack.stackSize--;
 					return true;
 				}

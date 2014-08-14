@@ -9,7 +9,7 @@ import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 
 public class ItemBlockStorage extends ItemBlockTinyChest
 {
-	String[] names = new String[] { "tinychest", "tinytank", "advtinychest" };
+	String[] names = new String[] { "tinychest", "tinytank", "advtinychest", "advTinyTank"};
 	
 	public ItemBlockStorage(int par1)
 	{

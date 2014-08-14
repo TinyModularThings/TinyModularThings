@@ -3,6 +3,7 @@ package speiger.src.tinymodularthings.common.config;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
@@ -12,6 +13,7 @@ import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.items.ItemIngots;
 import speiger.src.tinymodularthings.common.items.ItemTinyItem;
 import speiger.src.tinymodularthings.common.items.itemblocks.storage.ItemAdvTinyChest;
+import speiger.src.tinymodularthings.common.items.itemblocks.storage.ItemAdvTinyTank;
 import speiger.src.tinymodularthings.common.items.itemblocks.storage.ItemTinyChest;
 import speiger.src.tinymodularthings.common.items.itemblocks.storage.ItemTinyTank;
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInterfaceBlock;
@@ -94,7 +96,13 @@ public class TinyItemsConfig
 		
 		items.netherCrystal = new ItemNetherCrystal(config.item.getCurrentID());
 		RegisterItem(items.netherCrystal, "NetherCrystal");
-		FluidContainerRegistry.registerFluidContainer(new FluidStack(FluidRegistry.LAVA, 1000), new ItemStack(items.netherCrystal, 1, 3), null);
+		FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(FluidRegistry.LAVA, 1000), new ItemStack(items.netherCrystal, 1, 3), null, true));
+		config.item.updateToNextID();
+
+		
+		
+		items.advTinyTank = new ItemAdvTinyTank(config.item.getCurrentID());
+		RegisterItem(items.advTinyTank, "AdvTinyTank");
 		config.item.updateToNextID();
 		
 	}

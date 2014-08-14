@@ -4,8 +4,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagString;
 
-
-
 public class PlateManager
 {
 	public static PlateInterface plates;
@@ -82,10 +80,6 @@ public class PlateManager
 			stack.setTagInfo("Identity", text);
 			return stack;
 		}
-		
-			
-			
-		
 		
 	}
 }

@@ -2,58 +2,89 @@ package speiger.src.tinymodularthings.common.items.itemblocks.storage;
 
 import java.util.List;
 
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.block.StepSound;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import speiger.src.api.items.DisplayItem;
+import net.minecraftforge.fluids.FluidStack;
+import speiger.src.api.items.DisplayStack;
+import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.SpmodMod;
+import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
-import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyChest;
+import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyTank;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
-import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemAdvTinyChest extends TinyItem
+public class ItemAdvTinyTank extends TinyItem
 {
 	
-	public ItemAdvTinyChest(int par1)
+	public ItemAdvTinyTank(int par1)
 	{
 		super(par1);
-		setHasSubtypes(true);
-		setCreativeTab(CreativeTabs.tabFood);
+		this.setHasSubtypes(true);
+		this.setCreativeTab(CreativeTabs.tabFood);
+		
 	}
 	
+	
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	{
+		for (int i = 0; i < 9; i++)
+		{
+			par3List.add(new ItemStack(par1, 1, i));
+			
+		}
+	}
+
+
+
 	@Override
 	public void registerItems(int id, SpmodMod par0)
 	{
-		if (!par0.getName().equals(TinyModularThingsLib.Name))
+		if(!SpmodModRegistry.areModsEqual(par0, getMod()))
 		{
 			return;
 		}
-		
-		LanguageRegister.getLanguageName(new DisplayItem(id), "adv.tinychest", par0);
+		LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, 0)), "tiny.tank.adv", par0);
 	}
 	
 	@Override
 	public String getDisplayName(ItemStack par1, SpmodMod Start)
 	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), "adv.tinychest", Start);
+		return LanguageRegister.getLanguageName(new DisplayStack(par1), "tiny.tank.adv", Start);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
+	public void addInformation(ItemStack par1, EntityPlayer par2EntityPlayer, List par3, boolean par4)
 	{
-		String slots = LangProxy.getSlot(TinyModularThings.instance, par1.getItemDamage() == 0);
-		par3.add((1 + par1.getItemDamage()) + " " + slots);
+		int[] tankSizes = new int[] { 1000, 2000, 4000, 8000, 12000, 16000, 24000, 32000, 64000 };
+		String name = LanguageRegister.getLanguageName(new InfoStack(), "tank.size", TinyModularThings.instance);
+		par3.add(name+": " + tankSizes[par1.getItemDamage()] + "mB");
+		if(par1.hasTagCompound() && par1.getTagCompound().hasKey("Fluid"))
+		{
+			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Fluid");
+			String stored = LangProxy.getStored(TinyModularThings.instance);
+			FluidStack fluid = new FluidStack(nbt.getInteger("FluidID"), nbt.getInteger("Amount"));
+			if(fluid != null)
+			{
+				par3.add(stored+" Fluid: "+fluid.getFluid().getLocalizedName());
+				par3.add(LangProxy.getAmount(TinyModularThings.instance)+": "+fluid.amount+"mB");
+			}
+		}
 	}
 	
 	@Override
@@ -116,13 +147,23 @@ public class ItemAdvTinyChest extends TinyItem
 		}
 		else
 		{
-			if (par3World.setBlock(par4, par5, par6, TinyBlocks.storageBlock.blockID, 2, 3))
+			if (par3World.setBlock(par4, par5, par6, TinyBlocks.storageBlock.blockID, 3, 3))
 			{
 				TileEntity tile = par3World.getBlockTileEntity(par4, par5, par6);
-				if (tile != null && tile instanceof AdvTinyChest)
+				if (tile != null && tile instanceof AdvTinyTank)
 				{
-					((AdvTinyChest) tile).setMode(par1ItemStack.getItemDamage() + 1);
+					((AdvTinyTank) tile).setTankMode(par1ItemStack.getItemDamage());
 					Block.blocksList[par3World.getBlockId(par4, par5, par6)].onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer, par1ItemStack);
+					if(par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("Fluid"))
+					{
+						NBTTagCompound nbt = par1ItemStack.getTagCompound().getCompoundTag("Fluid");
+						FluidStack fluid = new FluidStack(nbt.getInteger("FluidID"), nbt.getInteger("Amount"));
+						if(nbt.hasKey("Data"))
+						{
+							fluid.tag = nbt.getCompoundTag("Data");
+						}
+						((AdvTinyTank)tile).tank.setFluid(fluid);
+					}
 					StepSound sound = Block.blocksList[par3World.getBlockId(par4, par5, par6)].stepSound;
 					par3World.playSoundEffect(par4, par5, par6, sound.getPlaceSound(), sound.stepSoundVolume, sound.stepSoundPitch);
 					par1ItemStack.stackSize--;
@@ -132,16 +173,6 @@ public class ItemAdvTinyChest extends TinyItem
 			}
 			
 			return false;
-		}
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		for (int i = 0; i < 9; i++)
-		{
-			par3List.add(new ItemStack(par1, 1, i));
 		}
 	}
 	

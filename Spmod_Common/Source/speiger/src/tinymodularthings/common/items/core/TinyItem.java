@@ -22,7 +22,7 @@ public abstract class TinyItem extends Item implements LanguageItem
 	}
 	
 	@Override
-	public abstract String getDisplayName(ItemStack par1, SpmodMod Start);
+	public abstract String getDisplayName(ItemStack par1, SpmodMod par0);
 	
 	public SpmodMod getMod()
 	{

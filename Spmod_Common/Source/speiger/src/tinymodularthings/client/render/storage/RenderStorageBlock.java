@@ -6,13 +6,11 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLLog;
-
-import speiger.src.api.util.WorldReading;
 import speiger.src.tinymodularthings.client.models.storage.ModelAdvTinyChest;
 import speiger.src.tinymodularthings.client.models.storage.ModelTinyChest;
 import speiger.src.tinymodularthings.client.models.storage.ModelTinyTank;
 import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyChest;
+import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyTank;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyChest;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyTank;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
@@ -33,15 +31,15 @@ public class RenderStorageBlock extends TileEntitySpecialRenderer
 	{
 		if (tile != null)
 		{
-			if (tile instanceof TinyTank && !WorldReading.isSorunded(tile.getWorldObj(), (int)d0, (int)d1, (int)d2, TinyTank.class))
+			if (tile instanceof TinyTank)
 			{
 				renderTinyTank((TinyTank) tile, d0, d1, d2);
 			}
-			else if (tile instanceof TinyChest)// && !WorldReading.isSorunded(tile.getWorldObj(), (int)d0, (int)d1, (int)d2, TinyChest.class, AdvTinyChest.class))
+			else if (tile instanceof TinyChest)
 			{
 				renderTinyChest((TinyChest) tile, d0, d1, d2);
 			}
-			else if (tile instanceof AdvTinyChest)// && !WorldReading.isSorunded(tile.getWorldObj(), (int)d0, (int)d1, (int)d2, TinyChest.class, AdvTinyChest.class))
+			else if (tile instanceof AdvTinyChest)
 			{
 				renderAdvTinyChest((AdvTinyChest) tile, d0, d1, d2);
 			}
@@ -50,10 +48,31 @@ public class RenderStorageBlock extends TileEntitySpecialRenderer
 	
 	public void renderTinyTank(TinyTank tile, double x, double y, double z)
 	{
+		if(tile.renderTank())
+		{
+			return;
+		}
+		
+		
 		
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5f, (float) y + 1.5f, (float) z + 0.5f);
-		bindTexture(basicTCTexture);
+		if(tile instanceof AdvTinyTank)
+		{
+			AdvTinyTank tank = (AdvTinyTank) tile;
+			if(tank.isTankFull() == 15)
+			{
+				bindTexture(advTCClosedTexture);
+			}
+			else
+			{
+				bindTexture(advTCOpenTexture);
+			}
+		}
+		else
+		{
+			bindTexture(basicTCTexture);
+		}
 		GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
 		tinytank.render(0.0625F);
 		GL11.glPopMatrix();

@@ -13,6 +13,7 @@ import speiger.src.api.hopper.IUpgradeGuiProvider;
 import speiger.src.api.items.IItemGui;
 import speiger.src.api.nbt.DataStorage;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.tinymodularthings.common.commands.RenderCommand;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.handler.FuelHandler;
@@ -162,6 +163,7 @@ public class TinyModularThingsCore implements IGuiHandler
 		HopperRegistry.registerHopperUpgrade(new HopperItemFilter());
 		FuelHandler.init();
 		DataStorage.registerNBTReciver((ItemNetherCrystal)TinyItems.netherCrystal);
+		new RenderCommand();
 	}
 
 	public void loadPipe(ItemPipe par1, int id, Class<? extends Pipe> par2)

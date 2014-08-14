@@ -18,6 +18,7 @@ import speiger.src.tinymodularthings.common.blocks.ores.ItemBlockSpmodOre;
 import speiger.src.tinymodularthings.common.blocks.pipes.basic.BlockPipe;
 import speiger.src.tinymodularthings.common.blocks.pipes.basic.ItemBlockPipe;
 import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyChest;
+import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyTank;
 import speiger.src.tinymodularthings.common.blocks.storage.BlockStorage;
 import speiger.src.tinymodularthings.common.blocks.storage.ItemBlockStorage;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyChest;
@@ -110,8 +111,9 @@ public class TinyBlocksConfig
 		blocks.storageBlock = new BlockStorage(TinyConfig.block.getCurrentID());
 		RegisterProxy.RegisterBlock(TinyBlocks.storageBlock, ItemBlockStorage.class, "StorageBlock");
 		RegisterProxy.RegisterTile(TinyChest.class, "TinyChests");
-		RegisterProxy.RegisterTile(TinyTank.class, "TinyTanks");
+		RegisterProxy.RegisterTile(blocks.storageBlock, TinyTank.class, "TinyTanks");
 		RegisterProxy.RegisterTile(AdvTinyChest.class, "AdvTinyChest");
+		RegisterProxy.RegisterTile(blocks.storageBlock, AdvTinyTank.class, "AdvTinyTank");
 		TinyConfig.block.updateToNextID();
 		
 		blocks.transportBlock = new BlockTransport(TinyConfig.block.getCurrentID());

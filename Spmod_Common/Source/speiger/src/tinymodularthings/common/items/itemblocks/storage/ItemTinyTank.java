@@ -3,15 +3,19 @@ package speiger.src.tinymodularthings.common.items.itemblocks.storage;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.StepSound;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.fluids.FluidStack;
 import speiger.src.api.items.DisplayItem;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.SpmodMod;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyTank;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
@@ -43,6 +47,17 @@ public class ItemTinyTank extends TinyItem
 		int[] tankSizes = new int[] { 1000, 2000, 4000, 8000, 12000, 16000, 24000, 32000, 64000 };
 		String name = LanguageRegister.getLanguageName(new InfoStack(), "tank.size", TinyModularThings.instance);
 		par3.add(name+": " + tankSizes[par1.getItemDamage()] + "mB");
+		if(par1.hasTagCompound() && par1.getTagCompound().hasKey("Fluid"))
+		{
+			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Fluid");
+			String stored = LangProxy.getStored(TinyModularThings.instance);
+			FluidStack fluid = new FluidStack(nbt.getInteger("FluidID"), nbt.getInteger("Amount"));
+			if(fluid != null)
+			{
+				par3.add(stored+" Fluid: "+fluid.getFluid().getLocalizedName());
+				par3.add(LangProxy.getAmount(TinyModularThings.instance)+": "+fluid.amount+"mB");
+			}
+		}
 	}
 	
 	@Override
@@ -99,6 +114,10 @@ public class ItemTinyTank extends TinyItem
 		{
 			return false;
 		}
+		else if(!par3World.canPlaceEntityOnSide(TinyBlocks.storageBlock.blockID, par4, par5, par6, false, par7, par2EntityPlayer, par1ItemStack))
+		{
+			return false;
+		}
 		else
 		{
 			if (par3World.setBlock(par4, par5, par6, TinyBlocks.storageBlock.blockID, 1, 3))
@@ -108,6 +127,18 @@ public class ItemTinyTank extends TinyItem
 				{
 					((TinyTank) tile).setTankMode(par1ItemStack.getItemDamage());
 					Block.blocksList[par3World.getBlockId(par4, par5, par6)].onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer, par1ItemStack);
+					if(par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("Fluid"))
+					{
+						NBTTagCompound nbt = par1ItemStack.getTagCompound().getCompoundTag("Fluid");
+						FluidStack fluid = new FluidStack(nbt.getInteger("FluidID"), nbt.getInteger("Amount"));
+						if(nbt.hasKey("Data"))
+						{
+							fluid.tag = nbt.getCompoundTag("Data");
+						}
+						((TinyTank)tile).tank.setFluid(fluid);
+					}
+					StepSound sound = Block.blocksList[par3World.getBlockId(par4, par5, par6)].stepSound;
+					par3World.playSoundEffect(par4, par5, par6, sound.getPlaceSound(), sound.stepSoundVolume, sound.stepSoundPitch);
 					par1ItemStack.stackSize--;
 					return true;
 				}

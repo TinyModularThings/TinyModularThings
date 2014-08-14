@@ -184,7 +184,7 @@ public class WorldReading
 		return (AdvTile)tile;
 	}
 
-	public static boolean isBlockBlocked(World world, int xCoord, int yCoord, int zCoord)
+	public static boolean isBlockBlocked(World world, int xCoord, int yCoord, int zCoord, boolean optional)
 	{
 		for(int i = 0;i<ForgeDirection.VALID_DIRECTIONS.length;i++)
 		{
@@ -202,10 +202,11 @@ public class WorldReading
 			{
 				return false;
 			}
-			if(!block.isOpaqueCube())
+			if(!block.isOpaqueCube() && !optional)
 			{
 				return false;
 			}
+			
 		}
 		return true;
 	}
@@ -226,8 +227,9 @@ public class WorldReading
 				return false;
 			}
 			
-			if(block.hasTileEntity(world.getBlockMetadata(x, y, z)))
+			if(world.getBlockTileEntity(x, y, z) != null)
 			{
+				
 				TileEntity tiles = world.getBlockTileEntity(x, y, z);
 				if(tiles != null)
 				{

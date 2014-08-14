@@ -19,9 +19,11 @@ import speiger.src.tinymodularthings.client.render.transport.ItemRenderTransport
 import speiger.src.tinymodularthings.client.render.transport.RenderTransport;
 import speiger.src.tinymodularthings.client.render.transport.renderTransportTile;
 import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyChest;
+import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyTank;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyChest;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyTank;
 import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
+import speiger.src.tinymodularthings.common.config.TinyConfig;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.core.TinyModularThingsCore;
@@ -58,11 +60,13 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		ClientRegistry.bindTileEntitySpecialRenderer(TinyChest.class, new RenderStorageBlock());
 		ClientRegistry.bindTileEntitySpecialRenderer(TinyTank.class, new RenderStorageBlock());
 		ClientRegistry.bindTileEntitySpecialRenderer(AdvTinyChest.class, new RenderStorageBlock());
+		ClientRegistry.bindTileEntitySpecialRenderer(AdvTinyTank.class, new RenderStorageBlock());
 		
 		MinecraftForgeClient.registerItemRenderer(TinyItems.tinyChest.itemID, new ItemRendererStorageBlock());
 		MinecraftForgeClient.registerItemRenderer(TinyItems.tinyTank.itemID, new ItemRendererStorageBlock());
 		MinecraftForgeClient.registerItemRenderer(TinyItems.advTinyChest.itemID, new ItemRendererStorageBlock());
-		
+		MinecraftForgeClient.registerItemRenderer(TinyItems.advTinyTank.itemID, new ItemRendererStorageBlock());
+	
 		// Transport Blocks
 		ClientRegistry.bindTileEntitySpecialRenderer(TinyHopper.class, new renderTransportTile());
 		MinecraftForgeClient.registerItemRenderer(TinyBlocks.transportBlock.blockID, new ItemRenderTransportTile());

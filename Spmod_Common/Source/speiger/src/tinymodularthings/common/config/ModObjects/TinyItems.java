@@ -17,6 +17,7 @@ public class TinyItems
 	public static Item tinyChest;
 	public static Item tinyTank;
 	public static Item advTinyChest;
+	public static Item advTinyTank;
 	
 	// Carts
 	public static Item tinyStorageCart;
@@ -32,6 +33,8 @@ public class TinyItems
 	// TransportItems
 	public static Item interfaceBlock;
 	public static Item tinyHopper;
+	
+	
 	
 	//Pipes
 	public static Item emeraldPowerPipeE;
