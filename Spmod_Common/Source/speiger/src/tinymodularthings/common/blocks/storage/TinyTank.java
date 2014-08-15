@@ -243,15 +243,8 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 			
 			if(this.tank.getFluid() != null)
 			{
-				
-				if(canFillBelow())
-				{
-					fillBelow();
-				}
-				else
-				{
-					fillToSide();
-				}
+				fillBelow();
+				fillToSide();	
 			}
 			
 			if(this.BCTank)
