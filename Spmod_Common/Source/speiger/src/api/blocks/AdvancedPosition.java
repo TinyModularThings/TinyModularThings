@@ -27,4 +27,5 @@ public class AdvancedPosition
 	{
 		return DimensionManager.getWorld(dim).setBlock(xCoord, yCoord, zCoord, block, meta, 3);
 	}
+	
 }
