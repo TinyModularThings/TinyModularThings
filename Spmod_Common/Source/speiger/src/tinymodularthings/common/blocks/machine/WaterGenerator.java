@@ -82,7 +82,7 @@ public class WaterGenerator extends AdvTile implements IFluidHandler, IPowerRece
 	public void produceWater()
 	{
 		int energy = this.provider.getEnergy();
-		int can = energy / 10;
+		int can = energy / 50;
 		if(can > 0)
 		{
 			int added = tank.fill(new FluidStack(FluidRegistry.WATER, can*1000), false);

@@ -143,7 +143,7 @@ public class EnergyProvider
 	{
 		if (storedEnergy > 0)
 		{
-			double loss = storedEnergy / 1000;
+			double loss = (double)storedEnergy / (double)1000;
 			int losedPower = (int) (loss * powerloss);
 			storedEnergy -= losedPower;
 		}
