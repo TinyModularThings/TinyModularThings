@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
 import speiger.src.tinymodularthings.common.blocks.machine.BlockMachine;
 import speiger.src.tinymodularthings.common.blocks.machine.BucketFillerBasic;
@@ -14,7 +15,6 @@ import speiger.src.tinymodularthings.common.blocks.machine.WaterGenerator;
 import speiger.src.tinymodularthings.common.blocks.ores.BlockMultiMineOre;
 import speiger.src.tinymodularthings.common.blocks.ores.BlockSpmodOre;
 import speiger.src.tinymodularthings.common.blocks.ores.ItemBlockMultiMineOre;
-import speiger.src.tinymodularthings.common.blocks.ores.ItemBlockSpmodOre;
 import speiger.src.tinymodularthings.common.blocks.pipes.basic.BlockPipe;
 import speiger.src.tinymodularthings.common.blocks.pipes.basic.ItemBlockPipe;
 import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyChest;
@@ -42,7 +42,6 @@ public class TinyBlocksConfig
 	public static void initBlocks()
 	{
 		TinyBlocks.ores = new BlockSpmodOre();
-		RegisterProxy.RegisterBlock(TinyBlocks.ores, ItemBlockSpmodOre.class, "TinyOres");
 		TinyBlocks.bauxitOre = new BlockMultiMineOre(Material.grass, TinyTextureHelper.getTextureStringFromName("ores/oreBauxit"), 8)
 		{
 			@Override

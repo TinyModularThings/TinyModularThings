@@ -107,13 +107,13 @@ public class RenderPipe implements ISimpleBlockRenderingHandler
 		int y = yCoord + direction.offsetY;
 		int z = zCoord + direction.offsetZ;
 		
-		BlockStack id = new BlockStack(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z) % 6);
+		BlockStack blockStack = new BlockStack(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z) % 6);
 		
-		if (id.hasBlock())
+		if (blockStack.hasBlock())
 		{
 			return false;
 		}
-		if (id.hasTileEntity())
+		if (blockStack.hasTileEntity())
 		{
 			TileEntity tile = world.getTileEntity(x, y, z);
 			if (tile instanceof IInventory || tile instanceof IFluidHandler || tile instanceof IPowerReceptor || tile instanceof IEnergyProvider || tile instanceof IPipeTile)
@@ -121,7 +121,7 @@ public class RenderPipe implements ISimpleBlockRenderingHandler
 				return true;
 			}
 		}
-		if (id.getBlock() instanceof IBasicPipe)
+		if (blockStack.getBlock() instanceof IBasicPipe)
 		{
 			return true;
 		}
@@ -134,14 +134,14 @@ public class RenderPipe implements ISimpleBlockRenderingHandler
 		int yCoord = y + direction.offsetY;
 		int zCoord = z + direction.offsetZ;
 		
-		BlockStack id = new BlockStack(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z) % 6);
+		BlockStack blockStack = new BlockStack(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z) % 6);
 		
 		
-		if (id.hasBlock())
+		if (blockStack.hasBlock())
 		{
 			return false;
 		}
-		if (id.hasTileEntity())
+		if (blockStack.hasTileEntity())
 		{
 			TileEntity tile = world.getTileEntity(xCoord, yCoord, zCoord);
 			if (tile != null)
@@ -164,22 +164,22 @@ public class RenderPipe implements ISimpleBlockRenderingHandler
 			}
 		}
 		
-		if (id.getBlock() instanceof IAdvancedPipeProvider)
+		if (blockStack.getBlock() instanceof IAdvancedPipeProvider)
 		{
-			return ((IAdvancedPipeProvider) id.getBlock()).canConnect(direction.getOpposite());
+			return ((IAdvancedPipeProvider) blockStack.getBlock()).canConnect(direction.getOpposite());
 		}
 		
-		if (id.getBlock() instanceof IBasicPipeProvider)
+		if (blockStack.getBlock() instanceof IBasicPipeProvider)
 		{
-			ForgeDirection provider = ((IBasicPipeProvider) id.getBlock()).getConnectionSide(world, xCoord, yCoord, zCoord);
+			ForgeDirection provider = ((IBasicPipeProvider) blockStack.getBlock()).getConnectionSide(world, xCoord, yCoord, zCoord);
 			if (x == xCoord + provider.offsetX && y == yCoord + provider.offsetY && z == zCoord + provider.offsetZ)
 			{
 				return true;
 			}
 		}
-		if (id.getBlock() instanceof IBasicPipe)
+		if (blockStack.getBlock() instanceof IBasicPipe)
 		{
-			ForgeDirection provider = ((IBasicPipe) id.getBlock()).getNextDirection(world, xCoord, yCoord, zCoord);
+			ForgeDirection provider = ((IBasicPipe) blockStack.getBlock()).getNextDirection(world, xCoord, yCoord, zCoord);
 			if (x == xCoord + provider.offsetX && y == yCoord + provider.offsetY && z == zCoord + provider.offsetZ)
 			{
 				return true;
@@ -198,7 +198,6 @@ public class RenderPipe implements ISimpleBlockRenderingHandler
 	@Override
 	public boolean shouldRender3DInInventory(int modelId)
 	{
-		// TODO Auto-generated method stub
 		return false;
 	}
 	

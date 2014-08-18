@@ -20,7 +20,6 @@ import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IGuiHandler;
-import cpw.mods.fml.common.registry.GameRegistry;
 
 public class TinyModularThingsCore implements IGuiHandler
 {

@@ -2,8 +2,6 @@ package speiger.src.tinymodularthings.common.items.itemblocks.transport;
 
 import java.util.List;
 
-import javax.swing.Icon;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -33,7 +31,6 @@ public class ItemInterfaceBlock extends TinyItem
 	
 	public ItemInterfaceBlock()
 	{
-		super();
 		setHasSubtypes(true);
 		setCreativeTab(CreativeTabs.tabFood);
 	}

@@ -3,8 +3,6 @@ package speiger.src.tinymodularthings.common.blocks.machine;
 import java.util.LinkedList;
 import java.util.Random;
 
-import javax.swing.Icon;
-
 import mods.railcraft.common.items.firestone.ItemFirestoneRefined;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -22,8 +20,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.IIcon;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.inventory.IAcceptor;
 import speiger.src.api.inventory.IAcceptor.AcceptorType;
@@ -978,7 +976,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	@Override
 	public boolean hasCustomInventoryName()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

@@ -21,7 +21,7 @@
     "MineFactoryReloaded"
   ],
   "dependants": [],
-  "useDependencyInformation": "true"
+  "useDependencyInformation": true
 },
 {
   "modid": "TinyModularThings",
@@ -41,11 +41,11 @@
   ],
   "dependencies": [
     "BuildCraft|Core",
-    "CodeChickenCore",
+    "CodeChickenLib",
     "NotEnoughItems",
     "Railcraft"
   ],
   "dependants": [],
-  "useDependencyInformation": "true"
+  "useDependencyInformation": true
 }
 ]

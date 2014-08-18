@@ -6,20 +6,19 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
-import buildcraft.api.gates.IGate;
-import buildcraft.api.gates.IStatement;
-import buildcraft.api.gates.IStatementParameter;
+import buildcraft.api.gates.ITileTrigger;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerParameter;
-import buildcraft.core.triggers.StatementIconProvider;
+import buildcraft.core.triggers.ActionTriggerIconProvider;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TriggerHasWork implements ITrigger
+public class TriggerHasWork implements ITileTrigger
 {
 	
 	boolean Active;
@@ -47,9 +46,9 @@ public class TriggerHasWork implements ITrigger
 	{
 		if (Active)
 		{
-			return StatementIconProvider.INSTANCE.getIcon(StatementIconProvider.Trigger_Machine_Active);
+			return  ActionTriggerIconProvider.INSTANCE.getIcon(ActionTriggerIconProvider.Trigger_Machine_Active);
 		}
-		return StatementIconProvider.INSTANCE.getIcon(StatementIconProvider.Trigger_Machine_Inactive);
+		return  ActionTriggerIconProvider.INSTANCE.getIcon(ActionTriggerIconProvider.Trigger_Machine_Inactive);
 	}
 	
 	@Override
@@ -99,44 +98,9 @@ public class TriggerHasWork implements ITrigger
 		}
 	}
 
-
-
 	@Override
-	public int maxParameters()
+	public boolean isTriggerActive(ForgeDirection side, TileEntity tile, ITriggerParameter parameter) 
 	{
-		return 0;
-	}
-
-
-
-	@Override
-	public int minParameters()
-	{
-		return 0;
-	}
-
-
-
-	@Override
-	public IStatementParameter createParameter(int index)
-	{
-		return null;
-	}
-
-
-
-	@Override
-	public IStatement rotateLeft()
-	{
-		return this;
-	}
-
-
-
-	@Override
-	public boolean isTriggerActive(IGate gate, ITriggerParameter[] parameters)
-	{
-		TileEntity tile = gate.getPipe().getAdjacentTile(gate.getSide());
 		if (tile != null)
 		{
 			if (tile instanceof PressureFurnace)
@@ -162,5 +126,28 @@ public class TriggerHasWork implements ITrigger
 		
 		return false;
 	}
-	
+
+	@Override
+	public boolean hasParameter()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean requiresParameter()
+	{
+		return false;
+	}
+
+	@Override
+	public ITriggerParameter createParameter()
+	{
+		return null;
+	}
+
+	@Override
+	public ITrigger rotateLeft()
+	{
+		return this;
+	}
 }

@@ -12,12 +12,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
-import net.minecraftforge.oredict.OreDictionary;
-import speiger.src.api.blocks.BlockStack;
-import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
-import speiger.src.tinymodularthings.common.utils.TinyTextureHelper;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraftforge.oredict.OreDictionary;
+
+import speiger.src.api.blocks.BlockStack;
+import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
+import speiger.src.tinymodularthings.common.utils.TinyTextureHelper;
 
 public class BlockSpmodOre extends Block
 {
@@ -33,6 +38,7 @@ public class BlockSpmodOre extends Block
 		setHarvestLevel("pickaxe", 2, 2);
 		setHarvestLevel("pickaxe", 3, 2);
 		setHarvestLevel("pickaxe", 5, 3);
+		RegisterProxy.RegisterBlock(this, ItemBlockSpmodOre.class, "TinyOres");
 		OreDictionary.registerOre("oreCopper", new ItemStack(this));
 		OreDictionary.registerOre("oreTin", new ItemStack(this, 1, 1));
 		OreDictionary.registerOre("oreSilver", new ItemStack(this, 1, 2));

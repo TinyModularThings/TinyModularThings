@@ -9,3 +9,4 @@ eclipse/
 .project
 
 Thumbs.db
+*.ffs_db

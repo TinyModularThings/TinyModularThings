@@ -27,7 +27,6 @@ public class ItemTinyChest extends TinyItem
 	
 	public ItemTinyChest()
 	{
-		super();
 		setCreativeTab(CreativeTabs.tabFood);
 		setHasSubtypes(true);
 	}

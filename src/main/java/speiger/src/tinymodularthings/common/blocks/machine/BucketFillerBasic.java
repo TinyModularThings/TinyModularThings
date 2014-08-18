@@ -4,9 +4,6 @@ import io.netty.buffer.ByteBuf;
 
 import java.util.ArrayList;
 
-import javax.swing.Icon;
-
-import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -20,8 +17,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.world.World;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
@@ -686,7 +683,7 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, IEn
 	@Override
 	public boolean hasCustomInventoryName()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

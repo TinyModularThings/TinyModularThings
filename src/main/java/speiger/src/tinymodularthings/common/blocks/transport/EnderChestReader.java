@@ -1,18 +1,17 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryEnderChest;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityEnderChest;
 import net.minecraft.util.IIcon;
 import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import cpw.mods.fml.common.FMLCommonHandler;
 
 public class EnderChestReader extends AdvTile implements IInventory
 {
@@ -129,7 +128,7 @@ public class EnderChestReader extends AdvTile implements IInventory
 	@Override
 	public boolean hasCustomInventoryName()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

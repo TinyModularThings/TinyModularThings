@@ -5,19 +5,18 @@ import net.minecraft.init.Items;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.IIcon;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
-import buildcraft.api.gates.IGate;
-import buildcraft.api.gates.IStatement;
-import buildcraft.api.gates.IStatementParameter;
+import buildcraft.api.gates.ITileTrigger;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerParameter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TriggerFuel implements ITrigger
+public class TriggerFuel implements ITileTrigger
 {
 	
 	@Override
@@ -64,33 +63,8 @@ public class TriggerFuel implements ITrigger
 	}
 
 	@Override
-	public int maxParameters()
+	public boolean isTriggerActive(ForgeDirection side, TileEntity tile,  ITriggerParameter parameter)
 	{
-		return 0;
-	}
-
-	@Override
-	public int minParameters()
-	{
-		return 0;
-	}
-
-	@Override
-	public IStatementParameter createParameter(int index)
-	{
-		return null;
-	}
-
-	@Override
-	public IStatement rotateLeft()
-	{
-		return null;
-	}
-
-	@Override
-	public boolean isTriggerActive(IGate gate, ITriggerParameter[] parameters)
-	{
-		TileEntity tile = gate.getPipe().getAdjacentTile(gate.getSide());
 		if (tile != null)
 		{
 			if (tile instanceof PressureFurnace)
@@ -104,6 +78,30 @@ public class TriggerFuel implements ITrigger
 			
 		}
 		return false;
+	}
+
+	@Override
+	public boolean hasParameter()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean requiresParameter()
+	{
+		return false;
+	}
+
+	@Override
+	public ITriggerParameter createParameter()
+	{
+		return null;
+	}
+
+	@Override
+	public ITrigger rotateLeft()
+	{
+		return this;
 	}
 
 

@@ -2,9 +2,6 @@ package speiger.src.tinymodularthings.common.blocks.storage;
 
 import java.util.ArrayList;
 
-import javax.swing.Icon;
-
-import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,8 +17,8 @@ import net.minecraft.network.Packet;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.IIcon;
 import net.minecraft.util.MovingObjectPosition;
-import net.minecraftforge.common.util.ForgeDirection;
 import net.minecraftforge.common.util.Constants.NBT;
+import net.minecraftforge.common.util.ForgeDirection;
 import speiger.src.spmodapi.common.interfaces.ISharedInventory;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.tinymodularthings.TinyModularThings;
@@ -429,7 +426,7 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 	@Override
 	public boolean hasCustomInventoryName()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

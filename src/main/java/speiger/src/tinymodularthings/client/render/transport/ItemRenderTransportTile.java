@@ -63,97 +63,96 @@ public class ItemRenderTransportTile implements IItemRenderer
 		}
 	}
 	
-	private void handleFirstPerson(ItemStack item, Object... data)
+	private void handleFirstPerson(ItemStack itemStack, Object... data)
 	{
-		if (item == null)
+		if (itemStack == null)
 		{
 			return;
 		}
 		
-		Item id = item.getItem();
-		int damage = item.getItemDamage();
+		Item item = itemStack.getItem();
+		int damage = itemStack.getItemDamage();
 		
-		if (id == Item.getItemFromBlock(TinyBlocks.transportBlock) && damage == 0)
+		if (item == Item.getItemFromBlock(TinyBlocks.transportBlock) && damage == 0)
 		{
 			renderEnderProxy((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f);
 		}
-		else if (id == TinyItems.interfaceBlock)
+		else if (item == TinyItems.interfaceBlock)
 		{
-			renderInterfaces((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f, item);
+			renderInterfaces((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f, itemStack);
 		}
-		else if(id == TinyItems.tinyChest)
+		else if(item == TinyItems.tinyChest)
 		{
 			renderTinyHopper(-0.4f, 0.50f, 0.35f, getTextureFromID(0));
 		}
 	}
 	
-	private void handleEntityRendering(ItemStack item, Object... data)
+	private void handleEntityRendering(ItemStack itemStack, Object... data)
 	{
-		if (item == null)
+		if (itemStack == null)
 		{
 			return;
 		}
 		
-		Item id = item.getItem();
-		int damage = item.getItemDamage();
-		
-		if (id == Item.getItemFromBlock(TinyBlocks.transportBlock) && damage == 0)
+		Item item = itemStack.getItem();
+		int damage = itemStack.getItemDamage();
+		if (item == Item.getItemFromBlock(TinyBlocks.transportBlock) && damage == 0)
 		{
 			renderEnderProxy((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f);
 		}
-		else if (id == TinyItems.interfaceBlock)
+		else if (item == TinyItems.interfaceBlock)
 		{
-			renderInterfaces((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f, item);
+			renderInterfaces((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f, itemStack);
 		}
-		else if(id == TinyItems.tinyChest)
+		else if(item == TinyItems.tinyChest)
 		{
 			renderTinyHopper(-0.5f, -0.5f, -0.5f, getTextureFromID(0));
 		}
 	}
 	
-	private void handleEquicktRendering(ItemStack item, Object... data)
+	private void handleEquicktRendering(ItemStack itemStack, Object... data)
 	{
-		if (item == null)
+		if (itemStack == null)
 		{
 			return;
 		}
 		
-		Item id = item.getItem();
-		int damage = item.getItemDamage();
+		Item item = itemStack.getItem();
+		int damage = itemStack.getItemDamage();
 		
-		if (id == Item.getItemFromBlock(TinyBlocks.transportBlock) && damage == 0)
+		if (item == Item.getItemFromBlock(TinyBlocks.transportBlock) && damage == 0)
 		{
 			renderEnderProxy((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f);
 		}
-		else if (id == TinyItems.interfaceBlock)
+		else if (item == TinyItems.interfaceBlock)
 		{
-			renderInterfaces((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f, item);
+			renderInterfaces((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f, itemStack);
 		}
-		else if(id == TinyItems.tinyChest)
+		else if(item == TinyItems.tinyChest)
 		{
 			renderTinyHopper(-0.4f, 0.50f, 0.35f, getTextureFromID(0));
 		}
 	}
 	
-	private void handleInventoryRendering(ItemStack item, Object... data)
+	private void handleInventoryRendering(ItemStack itemStack, Object... data)
 	{
-		if (item == null)
+		if (itemStack == null)
 		{
 			return;
 		}
 		
-		Item id = item.getItem();
-		int damage = item.getItemDamage();
+		Item item = itemStack.getItem();
+		int damage = itemStack.getItemDamage();
 		
-		if (id == Item.getItemFromBlock(TinyBlocks.transportBlock) && damage == 0)
+		if (item == Item.getItemFromBlock(TinyBlocks.transportBlock) && damage == 0)
 		{
 			renderEnderProxy((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f);
 		}
-		else if (id == TinyItems.interfaceBlock)
+		else if (item == TinyItems.interfaceBlock)
 		{
-			renderInterfaces((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f, item);
+			renderInterfaces((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f, itemStack);
 		}
-		else if(id == TinyItems.tinyChest)
+		else if(item == TinyItems.tinyChest)
 		{
 			renderTinyHopper(-0.5f, -0.5f, -0.5f, getTextureFromID(0));
 		}

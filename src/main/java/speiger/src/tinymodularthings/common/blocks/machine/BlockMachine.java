@@ -3,8 +3,6 @@ package speiger.src.tinymodularthings.common.blocks.machine;
 import java.util.List;
 import java.util.Random;
 
-import javax.swing.Icon;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
@@ -66,6 +64,11 @@ public class BlockMachine extends BlockContainer
 	}
 
 
+	@Override
+	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
+	{
+		return this.createTileEntity(p_149915_1_, p_149915_2_);
+	}
 	
 	@Override
 	public TileEntity createTileEntity(World par1, int metadata)
@@ -194,11 +197,11 @@ public class BlockMachine extends BlockContainer
 				{
 					if (BCRegistry.overrideVanilla)
 					{
-						return ((Block)Block.blockRegistry.getObjectById(61)).getIcon(3, 2);
+						return Blocks.furnace.getIcon(3, 2);
 					}
 					else
 					{
-						return ((Block)Block.blockRegistry.getObjectById(61)).getIcon(2, 2);
+						return Blocks.furnace.getIcon(2, 2);
 					}
 				}
 				return Blocks.cobblestone.getBlockTextureFromSide(0);
@@ -302,13 +305,6 @@ public class BlockMachine extends BlockContainer
 	public int tickRate()
 	{
 		return 5;
-	}
-
-
-	@Override
-	public TileEntity createNewTileEntity(World p_149915_1_, int p_149915_2_)
-	{
-		return this.createTileEntity(p_149915_1_, p_149915_2_);
 	}
 	
 }

@@ -26,7 +26,6 @@ public class ItemIngots extends TinyItem
 	
 	public ItemIngots()
 	{
-		super();
 		setHasSubtypes(true);
 		setMaxStackSize(64);
 		setCreativeTab(CreativeTabs.tabFood);

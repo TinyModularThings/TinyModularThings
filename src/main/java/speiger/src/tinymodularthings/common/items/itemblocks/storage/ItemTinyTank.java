@@ -27,7 +27,6 @@ public class ItemTinyTank extends TinyItem
 	
 	public ItemTinyTank()
 	{
-		super();
 		setCreativeTab(CreativeTabs.tabFood);
 		setHasSubtypes(true);
 	}

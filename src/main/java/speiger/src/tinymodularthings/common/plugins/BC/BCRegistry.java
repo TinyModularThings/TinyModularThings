@@ -1,6 +1,7 @@
 package speiger.src.tinymodularthings.common.plugins.BC;
 
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -16,7 +17,7 @@ import speiger.src.tinymodularthings.common.plugins.BC.triggers.BCTriggerHelper;
 import buildcraft.BuildCraftEnergy;
 import buildcraft.BuildCraftFactory;
 import buildcraft.BuildCraftTransport;
-import buildcraft.api.gates.StatementManager;
+import buildcraft.api.gates.ActionManager;
 
 public class BCRegistry
 {
@@ -45,31 +46,32 @@ public class BCRegistry
 	}
 	public void loadTrigger()
 	{
-		StatementManager.registerStatement(BCVariables.needFuel);
-		StatementManager.registerStatement(BCVariables.hasWork);
-		StatementManager.registerStatement(BCVariables.noWork);
-		StatementManager.registerTriggerProvider(new BCTriggerHelper());
+		ActionManager.registerTrigger(BCVariables.needFuel);
+		ActionManager.registerTrigger(BCVariables.hasWork);
+		ActionManager.registerTrigger(BCVariables.noWork);
+		ActionManager.registerTriggerProvider(new BCTriggerHelper());
 	}
 	
 	public void loadActions()
 	{
-		StatementManager.registerActionProvider(new BCActionHelper());
+		ActionManager.registerActionProvider(new BCActionHelper());
 		for (int i = 0; i < BCVariables.changeToSlot.length; i++)
 		{
 			GateChangeToSlot action = new GateChangeToSlot(i);
 			BCVariables.changeToSlot[i] = action;
-			StatementManager.registerStatement(action);
+			ActionManager.registerAction(action);
 		}
-		StatementManager.registerStatement(BCVariables.changeOneTime[0] = new ActionOneSlotChange(false));
-		StatementManager.registerStatement(BCVariables.changeOneTime[1] = new ActionOneSlotChange(true));
-		StatementManager.registerStatement(BCVariables.bcFiller[0] = new BucketFillerAction(false));
-		StatementManager.registerStatement(BCVariables.bcFiller[1] = new BucketFillerAction(true));
+		ActionManager.registerAction(BCVariables.changeOneTime[0] = new ActionOneSlotChange(false));
+		ActionManager.registerAction(BCVariables.changeOneTime[1] = new ActionOneSlotChange(true));
+		ActionManager.registerAction(BCVariables.bcFiller[0] = new BucketFillerAction(false));
+		ActionManager.registerAction(BCVariables.bcFiller[1] = new BucketFillerAction(true));
 	}
 	
 	public void overrideFurnace()
 	{
-		Block.blockRegistry.addObject(61, "furnace", new BlockModifiedFurnace(false));
-		Block.blockRegistry.addObject(62, "lit_furnace", new BlockModifiedFurnace(true));
+		// This doesn't work AFAICT
+		Block.blockRegistry.addObject(Block.getIdFromBlock(Blocks.furnace), "furnace", new BlockModifiedFurnace(false));
+		Block.blockRegistry.addObject(Block.getIdFromBlock(Blocks.lit_furnace), "lit_furnace", new BlockModifiedFurnace(true));
 		TileEntity.addMapping(TileEntityModifiedFurnace.class, "ModifiedFurnace");
 	}
 }

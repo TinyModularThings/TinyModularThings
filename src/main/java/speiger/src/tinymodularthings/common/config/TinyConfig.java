@@ -50,6 +50,7 @@ public class TinyConfig
 		catch (Exception e)
 		{
 			TinyModularThings.log.print("Could not Load TinyModularThings Config");
+			e.printStackTrace();
 		}
 		finally
 		{

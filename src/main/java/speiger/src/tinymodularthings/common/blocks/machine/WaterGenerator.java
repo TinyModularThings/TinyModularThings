@@ -1,8 +1,5 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
-import javax.swing.Icon;
-
-import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.Packet;

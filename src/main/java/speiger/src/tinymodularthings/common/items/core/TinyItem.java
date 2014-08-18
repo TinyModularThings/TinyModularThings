@@ -10,11 +10,6 @@ import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 public abstract class TinyItem extends Item implements LanguageItem
 {
 	
-	public TinyItem()
-	{
-		super();
-	}
-	
 	@Override
 	public String getItemStackDisplayName(ItemStack par1ItemStack)
 	{

@@ -25,7 +25,6 @@ public class ItemInformationBook extends TinyItem implements IItemGui
 	
 	public ItemInformationBook()
 	{
-		super();
 		setCreativeTab(CreativeTabs.tabFood);
 	}
 	

@@ -3,7 +3,6 @@ package speiger.src.tinymodularthings.common.config;
 import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraftforge.client.MinecraftForgeClient;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
@@ -25,12 +24,11 @@ import speiger.src.tinymodularthings.common.pipes.PipeEmeraldPower;
 import speiger.src.tinymodularthings.common.pipes.SpmodPipe;
 import speiger.src.tinymodularthings.common.utils.TinyTextureHelper;
 import buildcraft.BuildCraftTransport;
-import buildcraft.api.recipes.BuildcraftRecipeRegistry;
+import buildcraft.api.recipes.BuildcraftRecipes;
 import buildcraft.transport.BlockGenericPipe;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
 import buildcraft.transport.PipeTransportPower;
-import buildcraft.transport.TransportProxyClient;
 import cpw.mods.fml.common.FMLLog;
 
 public class TinyItemsConfig
@@ -105,7 +103,7 @@ public class TinyItemsConfig
 	
 			if(items.emeraldPowerPipeE != null)
 			{
-				BuildcraftRecipeRegistry.assemblyTable.addRecipe("Emerald Extraction Pipe", 10000, new ItemStack(items.emeraldPowerPipeE, 8), new ItemStack(BuildCraftTransport.pipeItemsEmerald, 8), new ItemStack(Items.redstone, 8));
+				BuildcraftRecipes.assemblyTable.addRecipe(10000, new ItemStack(items.emeraldPowerPipeE, 8), new ItemStack(BuildCraftTransport.pipeItemsEmerald, 8), new ItemStack(Items.redstone, 8));
 				PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeItemsEmerald), new Object[]{items.emeraldPowerPipeE});
 			}
 			PipeTransportPower.powerCapacities.put(PipeEmeraldPower.class, 2048);

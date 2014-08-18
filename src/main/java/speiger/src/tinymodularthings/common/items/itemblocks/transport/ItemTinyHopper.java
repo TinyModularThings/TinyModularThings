@@ -22,7 +22,6 @@ public class ItemTinyHopper extends TinyItem
 {
 	public ItemTinyHopper()
 	{
-		super();
 		setHasSubtypes(true);
 		setCreativeTab(CreativeTabs.tabFood);
 	}

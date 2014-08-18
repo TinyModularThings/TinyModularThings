@@ -19,7 +19,6 @@ public class ItemTinyInfo extends TinyItem
 	
 	public ItemTinyInfo()
 	{
-		super();
 		setMaxStackSize(1);
 		setCreativeTab(CreativeTabs.tabFood);
 	}

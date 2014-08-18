@@ -5,12 +5,9 @@ import net.minecraft.init.Items;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraftforge.oredict.ShapedOreRecipe;
-import speiger.src.spmodapi.common.items.crafting.ItemGear;
-import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
-import speiger.src.tinymodularthings.common.enums.EnumIngots;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class PreRecipes

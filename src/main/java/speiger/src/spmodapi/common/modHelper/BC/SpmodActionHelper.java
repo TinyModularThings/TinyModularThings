@@ -1,7 +1,6 @@
 package speiger.src.spmodapi.common.modHelper.BC;
 
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.LinkedList;
 
 import net.minecraft.block.Block;
@@ -11,7 +10,6 @@ import speiger.src.spmodapi.common.enums.EnumColor;
 import buildcraft.BuildCraftCore;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionProvider;
-import buildcraft.api.transport.IPipeTile;
 
 public class SpmodActionHelper implements IActionProvider
 {
@@ -65,11 +63,4 @@ public class SpmodActionHelper implements IActionProvider
 		
 		return actions;
 	}
-
-	@Override
-	public Collection<IAction> getPipeActions(IPipeTile pipe)
-	{
-		return null;
-	}
-	
 }

@@ -2,7 +2,6 @@ package speiger.src.tinymodularthings.common.blocks.transport;
 
 import java.util.ArrayList;
 
-import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;

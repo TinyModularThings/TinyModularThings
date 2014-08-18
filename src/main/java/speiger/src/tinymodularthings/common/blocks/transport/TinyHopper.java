@@ -2,7 +2,6 @@ package speiger.src.tinymodularthings.common.blocks.transport;
 
 import java.util.ArrayList;
 
-import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -1060,7 +1059,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	@Override
 	public boolean hasCustomInventoryName()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

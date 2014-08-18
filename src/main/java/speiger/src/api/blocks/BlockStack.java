@@ -30,7 +30,7 @@ public class BlockStack
 	
 	public BlockStack(ItemStack par1)
 	{
-		this(Item.getIdFromItem(par1.getItem()), par1.getItemDamage());
+		this(Block.getBlockFromItem(par1.getItem()), par1.getItemDamage());
 	}
 
 	public BlockStack(Item item)
@@ -40,7 +40,7 @@ public class BlockStack
 
 	public BlockStack(Item item, int meta)
 	{
-		this(Item.getIdFromItem(item), meta);
+		this(Block.getBlockFromItem(item), meta);
 	}
 
 	public BlockStack(Block block)
@@ -48,6 +48,9 @@ public class BlockStack
 		this(block, 0);
 	}
 	
+	/**
+	 * @deprecated because block ID's should not be dealt with, even for NBT data.
+	 */
 	@Deprecated
 	public BlockStack(int id)
 	{
@@ -58,7 +61,10 @@ public class BlockStack
 	{
 		this(world.getBlock(x, y, z), world.getBlockMetadata(x, y, z));
 	}
-	//I leave this at it is but we will remove the @Deprecated because its required for NBTData
+
+	/**
+	 * @deprecated because block ID's should not be dealt with, even for NBT data.
+	 */
 	@Deprecated
 	public BlockStack(int id, int meta)
 	{
@@ -90,7 +96,11 @@ public class BlockStack
 	{
 		return blocks;
 	}
-	
+
+	/**
+	 * @deprecated because block ID's should not be dealt with, even for NBT data.
+	 */
+	@Deprecated
 	public int getBlockID()
 	{
 		return Block.getIdFromBlock(blocks);

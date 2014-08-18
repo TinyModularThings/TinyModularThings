@@ -9,6 +9,8 @@ import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import forestry.api.farming.Farmables;
 import forestry.api.farming.IFarmable;
 import forestry.api.recipes.RecipeManagers;
+import forestry.core.GameMode;
+import forestry.core.utils.RecipeUtil;
 
 public class AddonForestry
 {
@@ -30,9 +32,8 @@ public class AddonForestry
 		RecipeManagers.squeezerManager.addRecipe(10, new ItemStack[]{new ItemStack(APIBlocks.hempStraw)}, FluidRegistry.getFluidStack("hemp.resin", 250), new ItemStack(APIItems.compressedHemp), 100);
 		try
 		{
-			//TODO Need Forestry Core as Dev version
-//			RecipeUtil.injectLeveledRecipe(new ItemStack(APIItems.hemp), GameMode.getGameMode().getIntegerSetting("fermenter.yield.sapling"), "biomass");
-//			RecipeUtil.injectLeveledRecipe(new ItemStack(APIBlocks.hempStraw), GameMode.getGameMode().getIntegerSetting("fermenter.yield.sapling")*10, "biomass");
+			RecipeUtil.injectLeveledRecipe(new ItemStack(APIItems.hemp), GameMode.getGameMode().getIntegerSetting("fermenter.yield.sapling"), "biomass");
+			RecipeUtil.injectLeveledRecipe(new ItemStack(APIBlocks.hempStraw), GameMode.getGameMode().getIntegerSetting("fermenter.yield.sapling")*10, "biomass");
 		}
 		catch (Exception e)
 		{

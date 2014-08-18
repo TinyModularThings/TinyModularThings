@@ -1,17 +1,11 @@
 package speiger.src.tinymodularthings.common.plugins.BC.actions;
 
-import javax.swing.Icon;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.tinymodularthings.TinyModularThings;
 import buildcraft.api.gates.IAction;
-import buildcraft.api.gates.IActionParameter;
-import buildcraft.api.gates.IGate;
-import buildcraft.api.gates.IStatement;
-import buildcraft.api.gates.IStatementParameter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -53,39 +47,16 @@ public class BucketFillerAction implements IAction
 		return fill ? LanguageRegister.getLanguageName(new InfoStack(), "bucketFiller.fill", TinyModularThings.instance) : LanguageRegister.getLanguageName(new InfoStack(), "bucketFiller.drain", TinyModularThings.instance);
 	}
 
-
 	@Override
-	public int maxParameters()
+	public boolean hasParameter()
 	{
-		return 0;
+		return false;
 	}
 
-
 	@Override
-	public int minParameters()
+	public IAction rotateLeft()
 	{
-		return 0;
+		return this;
 	}
 
-
-	@Override
-	public IStatementParameter createParameter(int index)
-	{
-		return null;
-	}
-
-
-	@Override
-	public IStatement rotateLeft()
-	{
-		return null;
-	}
-
-
-	@Override
-	public void actionActivate(IGate gate, IActionParameter[] parameters)
-	{
-		
-	}
-	
 }

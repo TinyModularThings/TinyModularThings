@@ -2,9 +2,6 @@ package speiger.src.tinymodularthings.common.blocks.storage;
 
 import java.util.ArrayList;
 
-import javax.swing.Icon;
-
-import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;

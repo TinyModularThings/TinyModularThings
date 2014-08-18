@@ -7,9 +7,6 @@ import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.SpmodAPI;
 import buildcraft.BuildCraftCore;
 import buildcraft.api.gates.IAction;
-import buildcraft.api.gates.IActionParameter;
-import buildcraft.api.gates.IGate;
-import buildcraft.api.gates.IStatementParameter;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -73,26 +70,8 @@ public class ActionChange implements IAction
 	}
 
 	@Override
-	public int maxParameters() 
+	public boolean hasParameter()
 	{
-		return 0;
-	}
-
-	@Override
-	public int minParameters() 
-	{
-		return 0;
-	}
-
-	@Override
-	public IStatementParameter createParameter(int index)
-	{
-		return null;
-	}
-
-	@Override
-	public void actionActivate(IGate gate, IActionParameter[] parameters) 
-	{
-		
+		return false;
 	}
 }

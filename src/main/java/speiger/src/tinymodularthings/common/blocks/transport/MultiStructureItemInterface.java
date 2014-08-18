@@ -1,13 +1,6 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
 import io.netty.buffer.ByteBuf;
-
-import java.io.DataInput;
-import java.io.IOException;
-
-import javax.swing.Icon;
-
-import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -521,7 +514,7 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	@Override
 	public boolean hasCustomInventoryName()
 	{
-		return false;
+		return true;
 	}
 
 	@Override

@@ -34,7 +34,6 @@ public class AdvTinyChestCart extends TinyItem
 	
 	public AdvTinyChestCart()
 	{
-		super();
 		setCreativeTab(CreativeTabs.tabFood);
 		setHasSubtypes(true);
 	}

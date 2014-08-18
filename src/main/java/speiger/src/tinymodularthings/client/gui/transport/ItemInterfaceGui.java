@@ -1,6 +1,5 @@
 package speiger.src.tinymodularthings.client.gui.transport;
 
-import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -9,8 +8,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.common.FMLCommonHandler;
 
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;

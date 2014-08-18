@@ -4,9 +4,9 @@ import net.minecraft.item.Item;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.util.ForgeDirection;
-import speiger.src.tinymodularthings.common.handler.PipeIconHandler;
 import buildcraft.BuildCraftTransport;
 import buildcraft.api.core.IIconProvider;
+import buildcraft.api.mj.IBatteryIOObject;
 import buildcraft.api.mj.IBatteryObject;
 import buildcraft.api.mj.IOMode;
 import buildcraft.api.mj.MjAPI;
@@ -19,10 +19,8 @@ import buildcraft.api.power.PowerHandler.Type;
 import buildcraft.api.transport.IPipeTile;
 import buildcraft.transport.IPipeTransportPowerHook;
 import buildcraft.transport.Pipe;
-import buildcraft.transport.PipeConnectionBans;
 import buildcraft.transport.PipeIconProvider;
 import buildcraft.transport.PipeTransportPower;
-import buildcraft.transport.pipes.PipePowerWood;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -33,7 +31,7 @@ public class PipeEmeraldExtractionPower extends Pipe<PipeTransportPower> impleme
 	protected int standardIconIndex = PipeIconProvider.TYPE.PipePowerWood_Standard.ordinal();
 	protected int solidIconIndex = PipeIconProvider.TYPE.PipeAllWood_Solid.ordinal();
 
-	@MjBattery(mode = IOMode.ReceiveActive, maxCapacity = Short.MAX_VALUE, maxReceivedPerCycle = 500, minimumConsumption = 0)
+	@MjBattery(mode = IOMode.Receive, maxCapacity = Short.MAX_VALUE, maxReceivedPerCycle = 500, minimumConsumption = 0)
 	private double mjStored = 0;
 	private boolean full;
 
@@ -169,7 +167,7 @@ public class PipeEmeraldExtractionPower extends Pipe<PipeTransportPower> impleme
 			return true;
 		}
 		IBatteryObject battery = MjAPI.getMjBattery(tile, MjAPI.DEFAULT_POWER_FRAMEWORK, from.getOpposite());
-		return MjAPI.canSend(battery) && MjAPI.isActive(battery);
+		return battery instanceof IBatteryIOObject && ((IBatteryIOObject) battery).canSend();
 	}
 
 	@Override

@@ -20,7 +20,6 @@ public class ItemTinyItem extends TinyItem
 	
 	public ItemTinyItem(String name, String texture)
 	{
-		super();
 		Name = name;
 		Texture = texture;
 		setCreativeTab(CreativeTabs.tabFood);

@@ -1,13 +1,11 @@
 package speiger.src.tinymodularthings.common.handler;
 
-import cpw.mods.fml.common.eventhandler.SubscribeEvent;
-import cpw.mods.fml.common.gameevent.PlayerEvent;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.util.InventoryUtil;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInterfaceBlock;
+import cpw.mods.fml.common.eventhandler.SubscribeEvent;
+import cpw.mods.fml.common.gameevent.PlayerEvent;
 
 public class TinyCraftingHandler
 {

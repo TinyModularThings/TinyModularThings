@@ -4,6 +4,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import cpw.mods.fml.relauncher.Side;
@@ -35,6 +36,12 @@ public class TabCrafting extends CreativeTabs
 	@Override
 	public Item getTabIconItem()
 	{
-		return ItemGear.getGearFromType(GearType.Redstone).getItem();
+		return APIItems.gears;
+	}
+
+	@Override
+	public int func_151243_f()
+	{
+		return ItemGear.getGearFromType(GearType.Redstone).getItemDamage();
 	}
 }

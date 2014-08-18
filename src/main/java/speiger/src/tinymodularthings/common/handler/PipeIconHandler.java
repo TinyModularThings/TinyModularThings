@@ -1,7 +1,5 @@
 package speiger.src.tinymodularthings.common.handler;
 
-import javax.swing.Icon;
-
 import net.minecraft.client.renderer.texture.IIconRegister;
 import net.minecraft.util.IIcon;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;

@@ -2,9 +2,6 @@ package speiger.src.tinymodularthings.common.blocks.storage;
 
 import java.util.ArrayList;
 
-import javax.swing.Icon;
-
-import mods.railcraft.common.util.network.PacketDispatcher;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -328,7 +325,7 @@ public class TinyChest extends TileFacing implements IInventory,
 	@Override
 	public boolean hasCustomInventoryName()
 	{
-		return false;
+		return true;
 	}
 
 	@Override
