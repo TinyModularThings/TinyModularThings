@@ -12,6 +12,8 @@ import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.items.ItemIngots;
 import speiger.src.tinymodularthings.common.items.ItemTinyItem;
+import speiger.src.tinymodularthings.common.items.energy.Batteries;
+import speiger.src.tinymodularthings.common.items.energy.Batteries.BatterieType;
 import speiger.src.tinymodularthings.common.items.itemblocks.storage.ItemAdvTinyChest;
 import speiger.src.tinymodularthings.common.items.itemblocks.storage.ItemAdvTinyTank;
 import speiger.src.tinymodularthings.common.items.itemblocks.storage.ItemTinyChest;
@@ -99,10 +101,24 @@ public class TinyItemsConfig
 		FluidContainerRegistry.registerFluidContainer(new FluidContainerData(new FluidStack(FluidRegistry.LAVA, 1000), new ItemStack(items.netherCrystal, 1, 3), null, true));
 		config.item.updateToNextID();
 
-		
-		
 		items.advTinyTank = new ItemAdvTinyTank(config.item.getCurrentID());
 		RegisterItem(items.advTinyTank, "AdvTinyTank");
+		config.item.updateToNextID();
+		
+		items.smallMJBattery = new Batteries(config.item.getCurrentID(), "small", BatterieType.Small);
+		RegisterItem(items.smallMJBattery, "SmallMJBattery");
+		config.item.updateToNextID();
+		
+		items.mediumMJBattery = new Batteries(config.item.getCurrentID(), "medium", BatterieType.Medium);
+		RegisterItem(items.mediumMJBattery, "MediumMJBattery");
+		config.item.updateToNextID();
+		
+		items.bigMJBattery = new Batteries(config.item.getCurrentID(), "big", BatterieType.Big);
+		RegisterItem(items.bigMJBattery, "BigMJBattery");
+		config.item.updateToNextID();
+		
+		items.hugeMJBattery = new Batteries(config.item.getCurrentID(), "huge", BatterieType.Huge);
+		RegisterItem(items.hugeMJBattery, "HugeMJBattery");
 		config.item.updateToNextID();
 		
 	}

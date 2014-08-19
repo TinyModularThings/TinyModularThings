@@ -39,6 +39,17 @@ public class EnergyProvider
 	 */
 	final int countdown = Short.MAX_VALUE / 3;
 	
+	/**
+	 * How much the BC Energy Provider can recive.
+	 */
+	int transferlimit = 0;
+	
+	/**
+	 * If the transferlimit get Forced.
+	 */
+	boolean forceTransferlimit = false;
+	
+	
 	public EnergyProvider(TileEntity tile, int maxStorage)
 	{
 		this.maxStorage = maxStorage;
@@ -73,7 +84,6 @@ public class EnergyProvider
 		}
 		if (BCPower != null)
 		{
-			
 			BCUpdate();
 		}
 	}
@@ -165,31 +175,50 @@ public class EnergyProvider
 		{
 			storedEnergy = 0;
 		}
-		int energy = storedEnergy + amount;
-		
-		if (energy > maxStorage)
+		int limit = amount;
+		if(this.forceTransferlimit)
 		{
-			int left = energy - maxStorage;
-			if (!simulate)
+			limit = Math.min(limit, transferlimit);
+		}
+		
+		if(storedEnergy + limit > this.maxStorage)
+		{
+			int added = limit - ((storedEnergy + limit) - maxStorage);
+			
+			if(!simulate)
 			{
-				storedEnergy = maxStorage;
+				storedEnergy = this.maxStorage;
 			}
-			return left;
+			return added;
 		}
-		
-		if (!simulate)
+		else
 		{
-			storedEnergy = energy;
+			if(!simulate)
+			{
+				storedEnergy += limit;
+			}
+			return limit;
 		}
-		
-		return 0;
-		
 	}
 	
 	public int getRequestedEnergy()
 	{
 		int left = maxStorage - storedEnergy;
 		return left;
+	}
+	
+	public void setTransferlimtit(int limit)
+	{
+		if(limit < 0)
+		{
+			transferlimit = 0;
+			forceTransferlimit = false;
+		}
+		else
+		{
+			transferlimit = limit;
+			forceTransferlimit = true;
+		}
 	}
 	
 	/** BuildCraft Side **/
@@ -229,13 +258,22 @@ public class EnergyProvider
 	
 	private void BCUpdate()
 	{
-		int between = maxStorage - storedEnergy;
-		int minimum = Math.min(1000, between);
-		BCPower.configure(1, minimum, 0, 2000);
+		if(forceTransferlimit)
+		{
+			int between = maxStorage - storedEnergy;
+			int minimum = Math.min(transferlimit, between);
+			BCPower.configure(1, minimum, 0, 2000);
+		}
+		else
+		{
+			int between = maxStorage - storedEnergy;
+			int minimum = Math.min(1000, between);
+			BCPower.configure(1, minimum, 0, 2000);
+		}
 		
 		double energy = BCPower.getEnergyStored();
 		int roundedEnergy = (int) energy;
-		roundedEnergy = addEnergy(roundedEnergy, false);
+		roundedEnergy -= addEnergy(roundedEnergy, false);
 		BCPower.setEnergy(roundedEnergy);
 		
 	}
@@ -246,7 +284,6 @@ public class EnergyProvider
 		{
 			return true;
 		}
-		
 		return false;
 	}
 	

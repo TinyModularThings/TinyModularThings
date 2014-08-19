@@ -34,6 +34,12 @@ public class TinyItems
 	public static Item interfaceBlock;
 	public static Item tinyHopper;
 	
+	//Energy Items
+	public static Item smallMJBattery;
+	public static Item mediumMJBattery;
+	public static Item bigMJBattery;
+	public static Item hugeMJBattery;
+	
 	
 	
 	//Pipes

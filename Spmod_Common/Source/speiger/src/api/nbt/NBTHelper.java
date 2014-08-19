@@ -43,5 +43,18 @@ public class NBTHelper
 	{
 		nbt.setCompoundTag("TinyModularThings", data);
 	}
+
+	public static boolean nbtCheck(ItemStack par1, String string)
+	{
+		if(par1.hasTagCompound())
+		{
+			NBTTagCompound data = par1.getTagCompound();
+			if(data.hasKey(string))
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 	
 }

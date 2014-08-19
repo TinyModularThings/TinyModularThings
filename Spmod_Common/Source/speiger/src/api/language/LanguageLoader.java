@@ -7,6 +7,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Properties;
 
+import speiger.src.api.nbt.DataStorage.LoadingType;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
 import cpw.mods.fml.common.FMLLog;
@@ -29,7 +30,7 @@ public class LanguageLoader
 			mod = par1;
 		}
 	}
-	
+
 	// If game is already started
 	
 	public void registerLanguage(EnumLanguage par1)

@@ -44,8 +44,6 @@ public class LanguageRegister
 	 *            request
 	 * @param par2
 	 *            The Name of the Item
-	 * @param start
-	 *            if you register your Items
 	 * @return the name
 	 */
 	public static String getLanguageName(Object par1, String par2, SpmodMod par0)

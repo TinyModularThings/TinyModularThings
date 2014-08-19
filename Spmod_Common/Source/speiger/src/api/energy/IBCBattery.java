@@ -17,12 +17,12 @@ public interface IBCBattery
 	/**
 	 * @Return charged amount.
 	 */
-	public int charge(ItemStack par1, int par2);
+	public int charge(ItemStack par1, int par2, boolean ignoreTransferlimit, boolean simulate);
 	
 	/**
 	 * @Return discharged amount.
 	 */
-	public int discharge(ItemStack par1, int par2);
+	public int discharge(ItemStack par1, int par2, boolean ignoreTransferlimit, boolean simulate);
 	
 	/**
 	 * @Return Transferlimit
@@ -57,8 +57,27 @@ public interface IBCBattery
 	
 	public static enum BatteryType
 	{
-		Machine,
-		Battery,
-		Generator;
+		Machine(true, false),
+		Battery(true, true),
+		Generator(false, true);
+		
+		boolean provide;
+		boolean recive;
+		
+		private BatteryType(boolean par1, boolean par2)
+		{
+			provide = par1;
+			recive = par2;
+		}
+		
+		public boolean canRecivePower()
+		{
+			return recive;
+		}
+		
+		public boolean canProvidePower()
+		{
+			return provide;
+		}
 	}
 }

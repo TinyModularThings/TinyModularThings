@@ -233,4 +233,11 @@ public class DataStorage
 		
 		FMLLog.getLogger().info("Finish Saving Data");
 	}
+	
+	public static enum LoadingType
+	{
+		NotLoaded,
+		Loading,
+		Loaded;
+	}
 }
