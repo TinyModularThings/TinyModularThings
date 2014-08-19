@@ -36,7 +36,12 @@ public class TickHelper
 		if(cDelay>SpmodConfig.savingDelay)
 		{
 			cDelay = 0;
-			DataStorage.write(FMLCommonHandler.instance().getMinecraftServerInstance());
+			DataStorage.write(FMLCommonHandler.instance().getMinecraftServerInstance(), true);
+		}
+		if(cDelay > 40 && DataStorage.hasRequest())
+		{
+			cDelay-=40;
+			DataStorage.write(FMLCommonHandler.instance().getMinecraftServerInstance(), false);
 		}
 	}
 	

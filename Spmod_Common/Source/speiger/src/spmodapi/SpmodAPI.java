@@ -91,7 +91,7 @@ public class SpmodAPI implements SpmodMod
 	@EventHandler
 	public void onServerStopped(FMLServerStoppedEvent evt)
 	{
-		DataStorage.write(FMLCommonHandler.instance().getMinecraftServerInstance());
+		DataStorage.write(FMLCommonHandler.instance().getMinecraftServerInstance(), true);
 	}
 	
 	@Override

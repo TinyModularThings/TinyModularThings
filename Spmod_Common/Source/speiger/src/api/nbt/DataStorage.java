@@ -9,7 +9,7 @@ import java.io.FileOutputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map.Entry;
+import java.util.Set;
 
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,7 +22,7 @@ import cpw.mods.fml.common.FMLLog;
 public class DataStorage
 {
 	static HashMap<SpmodMod, ArrayList<INBTReciver>> nbtStorage = new HashMap<SpmodMod, ArrayList<INBTReciver>>();
-	
+	static ArrayList<SpmodMod> requestedUpdates = new ArrayList<SpmodMod>();
 	
 	
 	public static void registerNBTReciver(INBTReciver par1)
@@ -138,7 +138,7 @@ public class DataStorage
 		FMLLog.getLogger().info("Start Loading Data");
 	}
 	
-	public static void write(MinecraftServer server)
+	public static void write(MinecraftServer server, boolean forceAll)
 	{
 		if(server == null)
 		{
@@ -162,17 +162,29 @@ public class DataStorage
 		
 		FMLLog.getLogger().info("Start Saving Data");
 		
+		if(forceAll)
+		{
+			requestedUpdates.clear();
+			Iterator<SpmodMod> keys = nbtStorage.keySet().iterator();
+			while(keys.hasNext())
+			{
+				requestedUpdates.add(keys.next());
+			}
+		}
+		
+		if(requestedUpdates.isEmpty())
+		{
+			return;
+		}
+		
 		HashMap<String, NBTTagCompound> data = new HashMap<String, NBTTagCompound>();
 		
-		Iterator<Entry<SpmodMod, ArrayList<INBTReciver>>> reader = nbtStorage.entrySet().iterator();
-		
-		while(reader.hasNext())
+		for(int z = 0;z<requestedUpdates.size();z++)
 		{
-			Entry<SpmodMod, ArrayList<INBTReciver>> cu = reader.next();
-			
+			SpmodMod mod = requestedUpdates.get(z);
 			
 			NBTTagList list = new NBTTagList();
-			ArrayList<INBTReciver> start = cu.getValue();
+			ArrayList<INBTReciver> start = nbtStorage.get(mod);
 			
 			for(int i = 0;i<start.size();i++)
 			{
@@ -184,10 +196,12 @@ public class DataStorage
 			}
 			NBTTagCompound nbt = new NBTTagCompound();
 			nbt.setTag("Value", list);
-			nbt.setString("Key", cu.getKey().getName());
+			nbt.setString("Key", mod.getName());
 			
-			data.put(cu.getKey().getName(), nbt);
+			data.put(mod.getName(), nbt);
 		}
+		
+		requestedUpdates.clear();
 		
 		try
 		{
@@ -232,6 +246,11 @@ public class DataStorage
 		}
 		
 		FMLLog.getLogger().info("Finish Saving Data");
+	}
+	
+	public static boolean hasRequest()
+	{
+		return requestedUpdates.size() > 0;
 	}
 	
 	public static enum LoadingType

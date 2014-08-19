@@ -42,7 +42,7 @@ public class TinyRecipes
 			pp.addRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i), new Object[]{"XYX", "CVC", "XBX", 'X', GearType.Redstone.getItem(), 'C', Block.torchRedstoneActive, 'Y', Block.stoneButton, 'B', Block.pressurePlateStone, 'V', new ItemStack(TinyItems.tinyStorageCart, 1, i)});
 			pp.addRecipe(new ItemStack(TinyItems.advTinyChest, 1, i), new Object[]{"XYX", "CVC", "XBX", 'X', GearType.Redstone.getItem(), 'C', Block.torchRedstoneActive, 'Y', Block.stoneButton, 'B', Block.pressurePlateStone, 'V', new ItemStack(TinyItems.tinyChest, 1, i)});
 		}
-		pp.addRecipe(new ItemStack(TinyBlocks.transportBlock, 4, 0), new Object[] { "XXX", "XYX", "XXX", 'X', Block.obsidian, 'Y', Item.enderPearl});
+		pp.addRecipe(new ItemStack(TinyBlocks.transportBlock, 4, 0), new Object[] { "XXX", "XYX", "XXX", 'X', Item.blazePowder, 'Y', Item.enderPearl});
 		pp.addRecipe(new ItemStack(TinyBlocks.machine), new Object[]{"XXX", "XYX", "XXX", 'X', Block.cobblestone, 'Y', new ItemStack(Item.coal, 1, pp.getRecipeBlankValue())});
 		pp.addRecipe(new ShapedOreRecipe(new ItemStack(TinyBlocks.machine), "XXX", "XYX", "XXX", 'X', Block.cobblestone, 'Y', "logWood"));
 		
