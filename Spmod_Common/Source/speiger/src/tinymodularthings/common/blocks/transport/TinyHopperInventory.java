@@ -4,6 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import speiger.src.api.hopper.IHopperInventory;
+import speiger.src.api.inventory.FilterSlot;
+import speiger.src.api.inventory.IFilteredInventory;
 import speiger.src.api.inventory.TankSlot;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 
@@ -26,7 +28,26 @@ public class TinyHopperInventory extends AdvContainer
 	{
 		if(filter)
 		{
-			
+			switch(par2.getHopperType())
+			{
+				case Fluids:
+					Slot[] slots = par2.getSlots();
+					for(int i = 0;i<slots.length;i++)
+					{
+						this.addSpmodSlotToContainer(new FilterSlot((IFilteredInventory) par2, i, slots[i].xDisplayPosition, slots[i].yDisplayPosition));
+					}
+					break;
+				case Items:
+					Slot[] slots1 = par2.getSlots();
+					for(int i = 0;i<slots1.length;i++)
+					{
+						this.addSpmodSlotToContainer(new FilterSlot((IFilteredInventory) par2, i, slots1[i].xDisplayPosition, slots1[i].yDisplayPosition));
+					}
+					break;
+				default:
+					break;
+				
+			}
 		}
 		else
 		{
@@ -78,8 +99,10 @@ public class TinyHopperInventory extends AdvContainer
 		}
 	}
 	
+	@Override
 	public void clearInventory()
 	{
+		super.clearInventory();
 		this.inventoryItemStacks.clear();
 		this.inventorySlots.clear();
 	}

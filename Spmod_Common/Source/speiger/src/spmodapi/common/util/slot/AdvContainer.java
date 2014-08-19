@@ -103,4 +103,11 @@ public abstract class AdvContainer extends Container
 		return fakeSlots;
 	}
 	
+	public void clearInventory()
+	{
+		fakeSlots.clear();
+		slots.clear();
+		tanks.clear();
+	}
+	
 }

@@ -50,6 +50,7 @@ import speiger.src.tinymodularthings.common.upgrades.hoppers.HopperItemFilter;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
+import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.tools.IToolWrench;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
@@ -517,7 +518,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	{
 		if (par1.getUpgradeType() == EffectType.Else)
 		{
-			if ((par1 == HopperRegistry.HopperEffect.Speed) && (speed != change))
+			if ((par1 == HopperEffect.Speed) && (speed != change))
 			{
 				speed = change;
 				return true;
@@ -536,13 +537,13 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	}
 	
 	@Override
-	public boolean hasEffectApplied(HopperRegistry.HopperEffect par1)
+	public boolean hasEffectApplied(HopperEffect par1)
 	{
-		if (par1 == HopperRegistry.HopperEffect.Speed)
+		if (par1 == HopperEffect.Speed)
 		{
 			return speed;
 		}
-		if (par1 == HopperRegistry.HopperEffect.AllSlots)
+		if (par1 == HopperEffect.AllSlots)
 		{
 			return allSlots;
 		}
@@ -588,7 +589,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	}
 	
 	@Override
-	public PowerHandler.PowerReceiver getPowerReceiver(ForgeDirection side)
+	public PowerReceiver getPowerReceiver(ForgeDirection side)
 	{
 		if (type != HopperType.Energy)
 		{
@@ -622,7 +623,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		
 		if (worldObj.getWorldTime() % 80L == 0L)
 		{
-			
 			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20.0D, worldObj.provider.dimensionId, getDescriptionPacket());
 		}
 		

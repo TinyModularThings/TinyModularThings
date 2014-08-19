@@ -53,44 +53,50 @@ public class TinyHopperGui extends GuiInventoryCore
 	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
-  {
-    GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-    mc.getTextureManager().bindTexture(furnaceGuiTextures);
-    int k = (width - xSize) / 2;
-    int l = (height - ySize) / 2;
-    drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
-    IHopperInventory hopper = (IHopperInventory)tile;
-    switch (hopper.getHopperType())
-    {
-    case Fluids:
-      ArrayList tanks = ((AdvContainer)tile.getInventory(inv)).getTanks();
-      defineSlot(176, 24);
-      for (int i = 0; i < tanks.size(); i++)
-      {
-        TankSlot slots = (TankSlot)tanks.get(i);
-        drawSlotPros(slots.getXCoord(), slots.getYCoord(), 18, 59);
-        if (slots.getTank() != null)
-        {
-          displayGauge(k, l, slots.getYCoord(), slots.getXCoord(), slots.getTank().getFluid() != null ? slots.getTank().getFluid().amount / 275 : 0, slots.getTank().getFluid());
-        }
-      }
-      break;
-    case Items:
-      ArrayList slotToDraw = ((AdvContainer)tile.getInventory(inv)).getAllSlots();
-      defineSlot(176, 4);
-      for (int i = 0; i < slotToDraw.size(); i++)
-      {
-        drawSlot((Slot)slotToDraw.get(i));
-      }
-      break;
-    case Energy:
-    	break;
-	case Nothing:
-		break;
-	default:
-		break;
-    }
-  }
+	{
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		mc.getTextureManager().bindTexture(furnaceGuiTextures);
+		int k = (width - xSize) / 2;
+		int l = (height - ySize) / 2;
+		drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
+		IHopperInventory hopper = (IHopperInventory) tile;
+		switch (hopper.getHopperType())
+		{
+			case Fluids:
+				ArrayList tanks = ((AdvContainer) tile.getInventory(inv)).getTanks();
+				defineSlot(176, 24);
+				for (int i = 0; i < tanks.size(); i++)
+				{
+					TankSlot slots = (TankSlot) tanks.get(i);
+					drawSlotPros(slots.getXCoord(), slots.getYCoord(), 18, 59);
+					if (slots.getTank() != null)
+					{
+						displayGauge(k, l, slots.getYCoord(), slots.getXCoord(), slots.getTank().getFluid() != null ? slots.getTank().getFluid().amount / 275 : 0, slots.getTank().getFluid());
+					}
+				}
+				break;
+			case Items:
+				ArrayList slotToDraw = ((AdvContainer) tile.getInventory(inv)).getAllSlots();
+				defineSlot(176, 4);
+				for (int i = 0; i < slotToDraw.size(); i++)
+				{
+					drawSlot((Slot) slotToDraw.get(i));
+				}
+				break;
+			case Energy:
+				ArrayList slotToDraw1 = ((AdvContainer) tile.getInventory(inv)).getAllSlots();
+				defineSlot(176, 4);
+				for (int i = 0; i < slotToDraw1.size(); i++)
+				{
+					drawSlot((Slot) slotToDraw1.get(i));
+				}
+				break;
+			case Nothing:
+				break;
+			default:
+				break;
+		}
+	}
 	
 	private void displayGauge(int j, int k, int line, int col, int squaled, FluidStack liquid)
 	{
