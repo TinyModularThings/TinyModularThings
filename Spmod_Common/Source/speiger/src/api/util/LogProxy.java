@@ -8,11 +8,22 @@ package speiger.src.api.util;
 public class LogProxy
 {
 	String mod;
+	SpmodMod mods;
 	boolean log = true;
 	
 	public LogProxy(SpmodMod modID)
 	{
 		mod = "[" + modID.getName() + "] ";
+		mods = modID;
+	}
+	
+	public boolean isRegistered()
+	{
+		if(SpmodModRegistry.isModRegistered(mods))
+		{
+			return true;
+		}
+		return false;
 	}
 	
 	public void disable()
@@ -22,6 +33,10 @@ public class LogProxy
 	
 	public void print(String par1)
 	{
+		if(!isRegistered())
+		{
+			return;
+		}
 		if (!log)
 		{
 			return;
@@ -31,6 +46,10 @@ public class LogProxy
 	
 	public void print(Object par1)
 	{
+		if(!isRegistered())
+		{
+			return;
+		}
 		if (!log)
 		{
 			return;

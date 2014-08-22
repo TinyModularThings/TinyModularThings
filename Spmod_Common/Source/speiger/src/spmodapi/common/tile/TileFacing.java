@@ -17,7 +17,7 @@ public abstract class TileFacing extends AdvTile implements IRotation
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
+		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
 	}
 	
 	@Override

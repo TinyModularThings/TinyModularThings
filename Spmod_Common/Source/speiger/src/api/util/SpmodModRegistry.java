@@ -1,5 +1,6 @@
 package speiger.src.api.util;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import com.google.common.base.Strings;
@@ -38,5 +39,10 @@ public class SpmodModRegistry
 	public static SpmodMod getModFromName(String name)
 	{
 		return addons.get(name);
+	}
+
+	public static Collection<SpmodMod> getRegisteredMods()
+	{
+		return addons.values();
 	}
 }
