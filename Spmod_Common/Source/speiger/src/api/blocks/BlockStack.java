@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
@@ -26,6 +27,11 @@ public class BlockStack
 	{
 		blocks = null;
 		meta = 0;
+	}
+	
+	public BlockStack(TileEntity par1)
+	{
+		this(par1.getBlockType(), par1.getBlockMetadata());
 	}
 	
 	public BlockStack(ItemStack par1)

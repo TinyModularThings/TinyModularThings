@@ -61,7 +61,7 @@ public class BlockWindmill extends BlockContainer
 		if(mill != null)
 		{
 			mill.type = WindmillType.values()[par2];
-			mill.setFacing(3);
+			mill.setFacing((short) 3);
 			return TileIconMaker.getIconMaker().getIconSafe(mill.getIconFromSideAndMetadata(par1, 0));
 		}
 		return TileIconMaker.getIconMaker().getIconSafe(null);

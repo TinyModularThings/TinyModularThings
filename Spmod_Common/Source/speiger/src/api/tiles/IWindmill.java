@@ -30,4 +30,9 @@ public interface IWindmill
 	 * It makes the is away. Only Reason calling it is at Damage Rotor.
 	 */
 	public void distroyRotor();
+	
+	/**
+	 * @Return the Facing of the Rotor
+	 */
+	public short getFacing();
 }

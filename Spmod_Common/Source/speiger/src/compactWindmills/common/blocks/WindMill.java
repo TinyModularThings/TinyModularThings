@@ -4,6 +4,7 @@ import static speiger.src.compactWindmills.common.core.CWPreference.ModID;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySource;
+import ic2.api.tile.IWrenchable;
 
 import java.util.HashMap;
 
@@ -24,20 +25,20 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.items.IRotorItem;
 import speiger.src.api.tiles.IWindmill;
 import speiger.src.api.util.InventoryUtil;
 import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.client.gui.GuiWindmill;
 import speiger.src.compactWindmills.common.utils.WindmillType;
-import speiger.src.spmodapi.common.tile.TileFacing;
-import cpw.mods.fml.common.FMLLog;
+import speiger.src.spmodapi.common.tile.TileIC2Facing;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class WindMill extends TileFacing implements IInventory, IEnergySource,
-		IWindmill
+public class WindMill extends TileIC2Facing implements IInventory, IEnergySource,
+		IWindmill, IWrenchable
 {
 	private static HashMap<WindmillType, Icon[]> textures = new HashMap<WindmillType, Icon[]>();
 	public ItemStack[] inv = new ItemStack[1];
@@ -90,11 +91,24 @@ public class WindMill extends TileFacing implements IInventory, IEnergySource,
 	@Override
 	public void onPlaced(int facing)
 	{
-		this.setFacing(facing);
+		this.setFacing((short)facing);
 	}
+	
+	
 
 	
 	
+	@Override
+	public void setFacing(short i)
+	{
+		super.setFacing(i);
+		if(worldObj != null)
+		{
+			this.updateBlock();
+			this.onInventoryChanged();
+		}
+	}
+
 	@Override
 	public boolean hasContainer()
 	{
@@ -230,7 +244,7 @@ public class WindMill extends TileFacing implements IInventory, IEnergySource,
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
-		return true;//itemstack != null && itemstack.getItem() instanceof IRotorItem && ((IRotorItem)itemstack.getItem()).ignoreTier(itemstack) ? true : ((IRotorItem)itemstack.getItem()).canWorkWithWindmillTier(itemstack, type.ordinal());
+		return itemstack != null && itemstack.getItem() instanceof IRotorItem && ((IRotorItem)itemstack.getItem()).ignoreTier(itemstack) ? true : ((IRotorItem)itemstack.getItem()).canWorkWithWindmillTier(itemstack, type.ordinal());
 	}
 	
 	@Override
@@ -312,7 +326,7 @@ public class WindMill extends TileFacing implements IInventory, IEnergySource,
 		if(hasRotor())
 		{
 			IRotorItem rotor = getRotor();
-			float effiziens = rotor.getRotorEfficeny(inv[0]);
+			float effiziens = rotor.getRotorEfficeny(inv[0], this);
 			if(!rotor.isInfinite(inv[0]) && damageActive)
 			{
 				int damage = calculateDamage();
@@ -572,7 +586,34 @@ public class WindMill extends TileFacing implements IInventory, IEnergySource,
         nbt.setBoolean("Damage", damageActive);
         nbt.setInteger("Type", type.ordinal());
 	}
-	
+
+	@Override
+	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side)
+	{
+		if(side != getFacing() && !entityPlayer.isSneaking())
+		{
+			return true;
+		}
+		return false;
+	}
+
+	@Override
+	public boolean wrenchCanRemove(EntityPlayer entityPlayer)
+	{
+		return entityPlayer.isSneaking();
+	}
+
+	@Override
+	public float getWrenchDropRate()
+	{
+		return 100F;
+	}
+
+	@Override
+	public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
+	{
+		return new BlockStack(this).asItemStack();
+	}
 	
 	
 	

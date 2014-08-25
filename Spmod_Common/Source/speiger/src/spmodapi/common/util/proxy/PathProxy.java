@@ -1,5 +1,7 @@
 package speiger.src.spmodapi.common.util.proxy;
 
+import ic2.api.item.Items;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -16,6 +18,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import speiger.src.api.recipe.pressureFurnace.PressureRecipe;
 import speiger.src.api.recipe.pressureFurnace.helper.PressureRecipeList;
+import buildcraft.api.recipes.AssemblyRecipe;
 
 public class PathProxy
 {
@@ -117,6 +120,25 @@ public class PathProxy
 				}
 			}
 		}
+	}
+	
+	public static void addAssemblyRecipe(ItemStack output, int MJCost, ItemStack...input)
+	{
+		AssemblyRecipe recipe = new AssemblyRecipe(input, MJCost, output);
+		recipe.assemblyRecipes.add(recipe);
+	}
+	
+	public static void addAssemblyRecipe(ItemStack output, int MJCost, Object...input)
+	{
+		AssemblyRecipe recipe = new AssemblyRecipe(MJCost, output, input);
+		recipe.assemblyRecipes.add(recipe);
+	}
+	
+	public static ItemStack getIC2Item(String name, int qty)
+	{
+		ItemStack result = Items.getItem(name);
+		result.stackSize = Math.min(result.getMaxStackSize(), qty);
+		return result;
 	}
 	
 }

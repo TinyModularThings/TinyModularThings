@@ -229,11 +229,8 @@ public class InventoryUtil
 					}
 					
 					itemstack.stackSize -= j;
-					ItemStack stack = new ItemStack(itemstack.itemID, j, itemstack.getItemDamage());
-					if (itemstack.hasTagCompound())
-					{
-						stack.setTagCompound(stack.getTagCompound());
-					}
+					ItemStack stack = itemstack.copy();
+					stack.stackSize = j;
 					
 					EntityItem entityitem = new EntityItem(world, x + (double) f, y + (double) f1, z + (double) f2, stack);
 					float f3 = 0.05F;

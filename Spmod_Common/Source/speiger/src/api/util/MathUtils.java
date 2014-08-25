@@ -13,4 +13,10 @@ public class MathUtils
 		
 		return "Days: "+Tag+" Hours: "+Stunde+" Minutes: "+Minute+" Seconds: "+Sekunde;
 	}
+	
+	public static int getSekInRotorTicks(int sek)
+	{
+		int copy = sek * 20;
+		return copy / 64;
+	}
 }

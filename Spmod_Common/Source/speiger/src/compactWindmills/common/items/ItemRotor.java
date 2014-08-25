@@ -3,8 +3,6 @@ package speiger.src.compactWindmills.common.items;
 import java.util.HashMap;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -14,6 +12,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.common.EnumHelper;
+
+import org.lwjgl.input.Keyboard;
+
 import speiger.src.api.items.DisplayStack;
 import speiger.src.api.items.IRotorItem;
 import speiger.src.api.items.LanguageItem;
@@ -37,12 +39,48 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 	{
 		super(par1);
 		this.setHasSubtypes(true);
+		this.setMaxDamage(100);
+		this.setMaxStackSize(1);
+		this.setNoRepair();
 	}
 
 	@Override
 	public boolean ignoreTier(ItemStack par1)
 	{
 		return false;
+	}
+	
+	public static ItemStack createRotor(BasicRotorType par1)
+	{
+		ItemStack stack = new ItemStack(CompactWindmills.rotor, 1, par1.ordinal());
+		NBTTagCompound nbt = new NBTTagCompound();
+		nbt.setInteger("Damage", 0);
+		stack.setTagInfo("Rotor", nbt);
+		return stack;
+	}
+
+	@Override
+	public boolean isDamaged(ItemStack stack)
+	{
+		if(NBTHelper.nbtCheck(stack, "Rotor"))
+		{
+			int damage = stack.getTagCompound().getCompoundTag("Rotor").getInteger("Damage");
+			return damage > 0;
+		}
+		return false;
+	}
+
+	@Override
+	public int getDisplayDamage(ItemStack stack)
+	{
+		if(NBTHelper.nbtCheck(stack, "Rotor"))
+		{
+			int damage = stack.getTagCompound().getCompoundTag("Rotor").getInteger("Damage");
+			BasicRotorType type = BasicRotorType.values()[stack.getItemDamage()];
+			double per = ((double)damage / (double)type.getMaxDamage()) * 100;
+			return (int)per;
+		}
+		return 0;
 	}
 
 	@Override
@@ -102,7 +140,7 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 	@SideOnly(Side.CLIENT)
 	public ResourceLocation getRenderTexture(ItemStack par1)
 	{
-		return null;
+		return BasicRotorType.values()[par1.getItemDamage()].getRenderTexture();
 	}
 
 	@Override
@@ -112,8 +150,12 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 	}
 
 	@Override
-	public float getRotorEfficeny(ItemStack par1)
+	public float getRotorEfficeny(ItemStack par1, IWindmill par2)
 	{
+		if(par2.getFacing() == 1 || par2.getFacing() == 0)
+		{
+			return 0.01F;
+		}
 		return BasicRotorType.values()[par1.getItemDamage()].getEfficeny();
 	}
 
@@ -210,7 +252,7 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 	{
 		WoodenRotor(2250, 0, 0.5F, "rotor.basic.wood"),
 		WoolRotor(562, 0, 0.9F, "rotor.basic.wool"),
-//		IronRotor(),
+		IronRotor(18000, 2, 0.68F, "rotor.basic.iron"),
 		CarbonRotor(27000, 2, 0.75F, "rotor.basic.carbon"),
 		AlloyRotor(6750, 3, 0.9F, "rotor.basic.alloy"),
 		IridiumRotor(0, 4, 1.0F, "rotor.basic.iridium");
@@ -219,6 +261,7 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 		int tier;
 		float eff;
 		String displayName;
+		ResourceLocation texture;
 		
 		private BasicRotorType(int par1, int par2, float par3, String par4)
 		{
@@ -226,6 +269,15 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 			tier = par2;
 			eff = par3;
 			displayName = par4;
+		}
+		
+		public static BasicRotorType addRotor(String name, int maxDamage, int tier, float effiency, String names)
+		{
+			Class[][] classes = new Class[][]{
+					{BasicRotorType.class}	
+			};
+			BasicRotorType type = EnumHelper.addEnum(classes, BasicRotorType.class, name, maxDamage, tier, effiency, names);
+			return type;
 		}
 		
 		public String getDisplayName()
@@ -236,6 +288,15 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 		public float getEfficeny()
 		{
 			return eff;
+		}
+		
+		public ResourceLocation getRenderTexture()
+		{
+			if(texture == null)
+			{
+				texture = new ResourceLocation(CWPreference.ModID.toLowerCase()+":textures/renders/"+displayName+".png");
+			}
+			return texture;
 		}
 
 		public int getMaxDamage()
@@ -251,6 +312,15 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 		public boolean matchTier(int Wtier)
 		{
 			if(Wtier - 1 == tier || Wtier == tier || Wtier + 1 == tier)
+			{
+				return true;
+			}
+			return false;
+		}
+
+		public boolean isMetal()
+		{
+			if(this == AlloyRotor || this == IronRotor)
 			{
 				return true;
 			}

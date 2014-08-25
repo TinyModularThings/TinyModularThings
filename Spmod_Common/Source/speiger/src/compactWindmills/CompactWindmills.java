@@ -17,9 +17,9 @@ import speiger.src.compactWindmills.common.blocks.BlockWindmill;
 import speiger.src.compactWindmills.common.blocks.ItemBlockWindmill;
 import speiger.src.compactWindmills.common.blocks.WindMill;
 import speiger.src.compactWindmills.common.core.CompactWindmillsCore;
+import speiger.src.compactWindmills.common.items.ItemAdvancedRotor;
 import speiger.src.compactWindmills.common.items.ItemRotor;
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
@@ -46,30 +46,23 @@ public class CompactWindmills implements SpmodMod
 	
 	public static Block windmill;
 	public static Item rotor;
+	public static Item advRotor;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt)
 	{
 		logger = new LogProxy(this);
 		Configuration config = new Configuration(new File(evt.getModConfigurationDirectory().getAbsolutePath()+"/Spmod/CompactWindmills.cfg"));
-		FMLLog.getLogger().info("Test");
 		try
 		{
-			FMLLog.getLogger().info("Test1");
 			oldIC2 = Boolean.parseBoolean(config.get("General", "IC2 Vanilla WindMills", false).getString());
-			FMLLog.getLogger().info("Test2");
 			specailRenderer = Boolean.parseBoolean(config.get("General", "Specail Renderer for Winmills", true).getString());
-			FMLLog.getLogger().info("Test3");
 			windmill = new BlockWindmill(Integer.parseInt(config.getBlock("Windmill", 2790).getString()));
-			FMLLog.getLogger().info("Test4");
 			rotor = new ItemRotor(Integer.parseInt(config.getItem("Rotor Item", 27900).getString()));
-			FMLLog.getLogger().info("Test5");
+			advRotor = new ItemAdvancedRotor(Integer.parseInt(config.getItem("Advanced Rotor Item", 27901).getString()));
 			RegisterProxy.RegisterBlock(windmill, ItemBlockWindmill.class, "Windmill");
-			FMLLog.getLogger().info("Test6");
 			RegisterProxy.RegisterTile(windmill, WindMill.class, "WindmillType");
-			FMLLog.getLogger().info("Test7: "+rotor);
 			RegisterProxy.RegisterItem(ModID, "Windmill", rotor);
-			FMLLog.getLogger().info("Test8");
 		}
 		catch (Exception e)
 		{
@@ -81,15 +74,14 @@ public class CompactWindmills implements SpmodMod
 		finally
 		{
 			config.save();
-			FMLLog.getLogger().info("Test9");
 		}
-		FMLLog.getLogger().info("Test10");
 	}
 	
 	@EventHandler
 	public void load(FMLInitializationEvent evt)
 	{
-		
+		proxy.onClientLoad(this);
+		proxy.onServerLoad(this);
 	}
 	
 	@EventHandler

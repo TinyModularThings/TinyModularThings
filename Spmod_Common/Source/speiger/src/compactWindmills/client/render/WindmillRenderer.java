@@ -10,6 +10,7 @@ import org.lwjgl.opengl.GL11;
 
 import speiger.src.api.items.IRotorItem.IRotorModel;
 import speiger.src.compactWindmills.common.blocks.WindMill;
+import speiger.src.compactWindmills.common.items.ItemRotor.BasicRotorType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -27,7 +28,7 @@ public class WindmillRenderer extends TileEntitySpecialRenderer
 	
 	public void renderBlockRotor(WindMill tile, World world, int posX, int posY, int posZ)
 	{
-		if (!tile.hasRotor() || tile.getType() == null)
+		if (!tile.hasRotor() || tile.getType() == null || tile.getRotor().getRenderTexture(tile.inv[0]) == null)
 		{
 			model = null;
 			return;
@@ -76,18 +77,18 @@ public class WindmillRenderer extends TileEntitySpecialRenderer
 		
 		bindTexture(tile.getRotor().getRenderTexture(tile.inv[0]));
 		
-		model.render(0.0625F);
 		
+		model.render(0.0625F);
 		GL11.glPopMatrix();
 	}
 	
 	@Override
 	public void renderTileEntityAt(TileEntity tileEntity, double posX, double posY, double posZ, float f)
 	{
-//		GL11.glPushMatrix();
-//		GL11.glTranslatef((float) posX, (float) posY, (float) posZ);
-		renderBlockRotor((WindMill)tileEntity, tileEntity.worldObj, (int)posX, (int)posY, (int)posZ);
-//		GL11.glPopMatrix();
+		GL11.glPushMatrix();
+		GL11.glTranslatef((float) posX, (float) posY, (float) posZ);
+		renderBlockRotor((WindMill)tileEntity, tileEntity.worldObj, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+		GL11.glPopMatrix();
 	}
 	
 }

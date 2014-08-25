@@ -58,7 +58,7 @@ public interface IRotorItem
 	 * @ItemStack The Rotor itself.
 	 * @Return the efficeny of the Rotor
 	 */
-	float getRotorEfficeny(ItemStack par1);
+	float getRotorEfficeny(ItemStack par1, IWindmill par2);
 	
 	/**
 	 * This function will call the damage stuff.

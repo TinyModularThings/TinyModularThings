@@ -66,11 +66,9 @@ public class Batteries extends TinyItem implements IBCBattery
 	{
 		ItemStack empty = createBattery(par1, type);
 		par3List.add(empty);
-		
-		empty = createBattery(par1, type);
-		IBCBattery battery = (IBCBattery) empty.getItem();
-		battery.charge(empty, Integer.MAX_VALUE, true, false);
-		par3List.add(empty);
+		ItemStack full = createBattery(par1, type);
+		full.getTagCompound().getCompoundTag("Battery").setInteger("StoredMJ", type.maxStorage);
+		par3List.add(full);
 	}
 	
 	public static ItemStack createBattery(int par1, BatterieType par2)
@@ -274,12 +272,14 @@ public class Batteries extends TinyItem implements IBCBattery
 				TileEntity tile = par2.getBlockTileEntity(pos.blockX, pos.blockY, pos.blockZ);
 				if(tile != null)
 				{
+					boolean flag = false;
 					if(tile instanceof IEnergyProvider)
 					{
 						EnergyProvider provider = ((IEnergyProvider)tile).getEnergyProvider(ForgeDirection.getOrientation(pos.sideHit));
 						if(provider != null)
 						{
 							this.discharge(par1, provider.addEnergy(this.discharge(par1, 10000, false, true), false), false, false);
+							flag = true;
 						}
 					}
 					else if(tile instanceof IPowerReceptor)
@@ -288,7 +288,12 @@ public class Batteries extends TinyItem implements IBCBattery
 						if(provider != null)
 						{
 							this.discharge(par1, new Float(provider.receiveEnergy(Type.STORAGE, this.discharge(par1, 100000, false, true), ForgeDirection.getOrientation(pos.sideHit))).intValue(), false, false);
+							flag = true;
 						}
+					}
+					if(flag)
+					{
+						par3.swingItem();
 					}
 
 				}
