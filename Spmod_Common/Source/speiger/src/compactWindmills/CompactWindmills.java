@@ -11,8 +11,11 @@ import java.io.File;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
+import speiger.src.api.language.LanguageLoader;
+import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.LogProxy;
 import speiger.src.api.util.SpmodMod;
+import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.compactWindmills.common.blocks.BlockWindmill;
 import speiger.src.compactWindmills.common.blocks.ItemBlockWindmill;
 import speiger.src.compactWindmills.common.blocks.WindMill;
@@ -28,6 +31,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
+import cpw.mods.fml.common.registry.LanguageRegistry;
 
 @Mod(modid = ModID, version = ModVersion, name = ModName, dependencies = "required-after:SpmodAPI")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
@@ -52,6 +56,9 @@ public class CompactWindmills implements SpmodMod
 	public void preInit(FMLPreInitializationEvent evt)
 	{
 		logger = new LogProxy(this);
+		SpmodModRegistry.registerMod(this);
+		LanguageLoader loader = new LanguageLoader(this);
+		loader.registerAllAviableLanguages();
 		Configuration config = new Configuration(new File(evt.getModConfigurationDirectory().getAbsolutePath()+"/Spmod/CompactWindmills.cfg"));
 		try
 		{
@@ -93,7 +100,7 @@ public class CompactWindmills implements SpmodMod
 	@Override
 	public String getName()
 	{
-		return ModName;
+		return ModID;
 	}
 	
 	@Override

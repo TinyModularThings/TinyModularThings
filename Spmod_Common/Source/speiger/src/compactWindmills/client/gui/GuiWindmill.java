@@ -25,11 +25,11 @@ public class GuiWindmill extends GuiInventoryCore
 
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
     {
-        String s = "Wind Mill";
+        String s = LanguageRegister.getLanguageName(this, "wind.mill", CompactWindmills.instance);
         this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
         this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
         this.fontRenderer.drawString("Rotor:", 40, 14, 0x404040);
-        this.fontRenderer.drawSplitString(LanguageRegister.getLanguageName(this, "output", CompactWindmills.instance)+mill.cuOutput, 95, 15, 70, 0x404040);
+        this.fontRenderer.drawSplitString(LanguageRegister.getLanguageName(this, "output", CompactWindmills.instance)+" "+mill.cuOutput+"EU", 95, 15, 70, 0x404040);
     }
     
     private static final ResourceLocation furnaceGuiTextures = new ResourceLocation(CWPreference.ModID.toLowerCase()+":textures/gui/GuiWindmill.png");

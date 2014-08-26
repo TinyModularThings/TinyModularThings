@@ -36,7 +36,7 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 	@Override
 	public void registerItems(int id, SpmodMod par0)
 	{	
-		if(SpmodModRegistry.areModsEqual(par0, getMod()))
+		if(!SpmodModRegistry.areModsEqual(par0, getMod()))
 		{
 			return;
 		}

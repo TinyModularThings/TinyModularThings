@@ -7,7 +7,6 @@ import speiger.src.api.items.LanguageItem;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
-import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.render.carts.CartItemRenderer;
 import speiger.src.tinymodularthings.client.render.carts.RenderTCarts;
@@ -25,7 +24,6 @@ import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyTank;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyChest;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyTank;
 import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
-import speiger.src.tinymodularthings.common.config.TinyConfig;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.core.TinyModularThingsCore;
@@ -34,8 +32,6 @@ import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.utils.nei.NeiRegistry;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
-import buildcraft.transport.TransportProxy;
-import buildcraft.transport.TransportProxyClient;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -45,7 +41,6 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 	@Override
 	public void registerRenderer()
 	{
-		registerLanguage();
 		
 		// Pipes
 		RenderingRegistry.registerBlockHandler(EnumIDs.Pipe.getId(), new RenderPipe());
@@ -84,6 +79,7 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		
 		NeiRegistry.getInstance().init();
 		
+		registerLanguage();
 	}
 	
 	private void registerLanguage()

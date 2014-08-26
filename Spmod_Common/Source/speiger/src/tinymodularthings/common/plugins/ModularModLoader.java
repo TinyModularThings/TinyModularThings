@@ -1,5 +1,6 @@
 package speiger.src.tinymodularthings.common.plugins;
 
+import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.TinyConfig;
 import speiger.src.tinymodularthings.common.config.TinyItemsConfig;
 import speiger.src.tinymodularthings.common.plugins.BC.BCRegistry;
@@ -30,6 +31,7 @@ public class ModularModLoader
 				}
 			}
 		}
+		
 		
 		if(Loader.isModLoaded("Forestry"))
 		{

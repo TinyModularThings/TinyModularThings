@@ -134,8 +134,12 @@ public class LanguageRegister
 	{
 		ArrayList<String> list = new ArrayList<String>();
 		ArrayList<String> everything = new ArrayList<String>();
-		list.addAll(strings.get(par1));
-		everything.addAll(strings.get(par1));
+		if(strings.get(par1) != null)
+		{
+			list.addAll(strings.get(par1));
+			everything.addAll(strings.get(par1));
+		}
+		
 		if (list != null && list.size() > 0)
 		{
 			File file = new File(Minecraft.getMinecraft().mcDataDir, "Spmod-Debug");
