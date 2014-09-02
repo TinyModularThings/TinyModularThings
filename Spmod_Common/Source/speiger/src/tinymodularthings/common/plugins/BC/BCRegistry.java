@@ -1,12 +1,16 @@
 package speiger.src.tinymodularthings.common.plugins.BC;
 
+import mods.railcraft.api.fuel.FuelManager;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
+import speiger.src.tinymodularthings.common.config.TinyConfig;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.plugins.BC.actions.ActionOneSlotChange;
 import speiger.src.tinymodularthings.common.plugins.BC.actions.BCActionHelper;
@@ -16,7 +20,10 @@ import speiger.src.tinymodularthings.common.plugins.BC.triggers.BCTriggerHelper;
 import buildcraft.BuildCraftEnergy;
 import buildcraft.BuildCraftFactory;
 import buildcraft.BuildCraftTransport;
+import buildcraft.api.fuels.IronEngineFuel;
+import buildcraft.api.fuels.IronEngineFuel.Fuel;
 import buildcraft.api.gates.ActionManager;
+import cpw.mods.fml.common.Loader;
 
 public class BCRegistry
 {
@@ -32,6 +39,11 @@ public class BCRegistry
 		if (overrideVanilla)
 		{
 			instance.overrideFurnace();
+		}
+		boolean result = TinyConfig.getBoolean(TinyConfig.general, "BuildCraft 1.4.7 PowerBackport", true).setComment("This thing set the generated power of Oil and Fuel back to 1.4.7 MC mode. That also contains Lava gen and other mods including that, Also lava on other Mods").getResult(TinyConfig.config);
+		if(result)
+		{
+			instance.reload147();
 		}
 		instance.loadRecipes();
 	}
@@ -74,5 +86,33 @@ public class BCRegistry
 		Block.blocksList[61] = new BlockModifiedFurnace(false);
 		Block.blocksList[62] = new BlockModifiedFurnace(true);
 		TileEntity.addMapping(TileEntityModifiedFurnace.class, "ModifiedFurnace");
+	}
+	
+	public void reload147()
+	{
+		Fuel oil = IronEngineFuel.fuels.get("oil");
+		Fuel fuel = IronEngineFuel.fuels.get("fuel");
+		
+		double oilmulti = (double)oil.totalBurningTime / (double)5000;
+		double fuelmulti = (double)fuel.totalBurningTime / (double)25000;
+		
+		IronEngineFuel.addFuel("oil", oil.powerPerCycle, (int) (20000*oilmulti));
+		IronEngineFuel.addFuel("fuel", fuel.powerPerCycle, (int)(100000*fuelmulti));
+		IronEngineFuel.addFuel(FluidRegistry.LAVA, 2, 10000);
+		if(Loader.isModLoaded("Railcraft"))
+		{
+			FuelManager.addBoilerFuel(fuel.liquid, 96000);
+			Fluid fluid = FluidRegistry.getFluid("bioethanol");
+			if(fluid != null)
+			{
+				FuelManager.addBoilerFuel(fluid, 32000);
+			}
+			fluid = FluidRegistry.getFluid("biofuel");
+			if(fluid != null)
+			{
+				FuelManager.addBoilerFuel(fluid, 32000);
+			}
+		}
+		
 	}
 }
