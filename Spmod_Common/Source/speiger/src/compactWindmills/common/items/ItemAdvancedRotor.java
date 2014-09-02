@@ -116,7 +116,7 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 			NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Rotor");
 			int damage = nbt.getInteger("Damage");
 			BasicRotorType type = BasicRotorType.values()[stack.getItemDamage()];
-			double per = ((double)damage / (double)type.getMaxDamage()+(double)nbt.getInteger("ExtraLife")) * 100;
+			double per = ((double)damage / ((double)type.getMaxDamage()+(double)nbt.getInteger("ExtraLife"))) * 100;
 			return (int)per;
 		}
 		return 0;
@@ -396,7 +396,7 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 						{
 							if(remove(item, Items.getItem("resin"), new ItemStack(Block.obsidian)))
 							{
-								nbt.setFloat("EffBoost", nbt.getFloat("EffBoost")+5F);
+								nbt.setFloat("EffBoost", nbt.getFloat("EffBoost")-5F);
 								nbt.setInteger("ExtraLife", nbt.getInteger("ExtraLife")+40500);
 								nbt.setInteger("Modifire", nbt.getInteger("Modifire")-1);
 							}

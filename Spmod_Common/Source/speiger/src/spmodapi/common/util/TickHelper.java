@@ -3,12 +3,15 @@ package speiger.src.spmodapi.common.util;
 import java.util.ArrayList;
 
 import speiger.src.api.nbt.DataStorage;
+import speiger.src.api.util.SpmodMod;
+import speiger.src.api.util.Ticks.ITickReader;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.SpmodConfig;
-import speiger.src.spmodapi.common.util.data.StructureStorage;
 import speiger.src.spmodapi.common.world.retrogen.RetroGenTickHandler.OreReplacer;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
-public class TickHelper
+public class TickHelper implements ITickReader
 {
 	private static TickHelper helper = new TickHelper();
 	private static int cDelay = 0;
@@ -43,6 +46,22 @@ public class TickHelper
 			cDelay-=40;
 			DataStorage.write(FMLCommonHandler.instance().getMinecraftServerInstance(), false);
 		}
+	}
+
+	@Override
+	public void onTick(SpmodMod sender, Side side)
+	{
+		if(side != side.SERVER)
+		{
+			return;
+		}
+		tick();
+	}
+
+	@Override
+	public SpmodMod getOwner()
+	{
+		return SpmodAPI.instance;
 	}
 	
 }

@@ -5,6 +5,7 @@ import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.handler.BucketHandler;
 import speiger.src.spmodapi.common.handler.LivingHandler;
 import speiger.src.spmodapi.common.sound.SoundRegistry;
+import speiger.src.spmodapi.common.util.data.ServerTick;
 import speiger.src.spmodapi.common.util.data.StructureStorage;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 import speiger.src.spmodapi.common.world.retrogen.ChunkCollector;
@@ -31,6 +32,7 @@ public class ForgeRegister
 		}
 		StructureStorage.registerForgeEvent();
 		regist(new BucketHandler());
+		TickRegistry.registerTickHandler(new ServerTick(), Side.SERVER);
 		
 	}
 	

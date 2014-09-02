@@ -13,13 +13,14 @@ import speiger.src.api.nbt.DataStorage;
 import speiger.src.api.util.LogProxy;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.api.util.Ticks;
 import speiger.src.spmodapi.common.command.CommandRegistry;
+import speiger.src.spmodapi.common.command.commands.CommandServerTimer;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.core.Registry;
 import speiger.src.spmodapi.common.core.SpmodAPICore;
 import speiger.src.spmodapi.common.handler.SpmodPacketHandler;
 import speiger.src.spmodapi.common.modHelper.ModHelperLoader;
-import speiger.src.spmodapi.common.util.data.StructureStorage;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 import speiger.src.spmodapi.common.world.WorldLoader;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -71,6 +72,7 @@ public class SpmodAPI implements SpmodMod
 	{
 		core.clientSide();
 		core.serverSide();
+		Ticks.registerTickReciver(new CommandServerTimer());
 	}
 	
 	@EventHandler

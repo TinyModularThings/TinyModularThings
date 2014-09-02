@@ -76,7 +76,7 @@ public class GuiCommands extends GuiInventoryCore
 
         int k = (this.width - this.xSize) / 2;
         int l = (this.height - this.ySize) / 2;
-		text = new GuiTextField(this.fontRenderer, 1-85+k, 25+l, 140, 20);
+		text = new GuiTextField(this.fontRenderer, 30, 20, 140, 20);
 		
 		this.reloadCommands();
 	}

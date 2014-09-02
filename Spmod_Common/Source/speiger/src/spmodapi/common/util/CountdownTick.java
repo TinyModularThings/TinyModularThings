@@ -34,9 +34,7 @@ public class CountdownTick implements ITickHandler
 	public void tickEnd(EnumSet<TickType> type, Object... tickData)
 	{
 		EntityPlayer player = (EntityPlayer) tickData[0];
-		
-		Ticks.tick(SpmodAPI.instance, Side.SERVER);
-		
+				
 		if(!loadedRecipes)
 		{
 			loadedRecipes = true;
@@ -72,7 +70,6 @@ public class CountdownTick implements ITickHandler
 			}
 		}
 		
-		TickHelper.getInstance().tick();
 		
 	}
 	

@@ -1,10 +1,15 @@
 package speiger.src.tinymodularthings.common.items.tools;
 
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+
+import com.google.common.math.DoubleMath;
+
+import codechicken.core.inventory.IntegerSync;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
@@ -16,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -165,11 +171,24 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 						
 						if(fluid.canFill(face, FluidRegistry.LAVA))
 						{
-							int filled = fluid.fill(face, new FluidStack(FluidRegistry.LAVA, 1000), false);
+							int amount = 1000;
+							if(player.isSneaking())
+							{
+								amount = 1000*charges;
+							}
+							int filled = fluid.fill(face, new FluidStack(FluidRegistry.LAVA, amount), false);
 							if(filled > 0)
 							{
-								fluid.fill(face, new FluidStack(FluidRegistry.LAVA, 1000), true);
-								this.discharge(stack, 1);
+								double removes = (double)((double)filled / (double)1000);
+								if(removes <= 0)
+								{
+									removes = 1;
+								}
+								
+								int rounded = DoubleMath.roundToInt(removes, RoundingMode.CEILING);
+								
+								fluid.fill(face, new FluidStack(FluidRegistry.LAVA, filled), true);
+								this.discharge(stack, rounded);
 								player.swingItem();
 								return true;
 							}

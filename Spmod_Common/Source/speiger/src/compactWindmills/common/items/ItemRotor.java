@@ -251,7 +251,7 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 	public static enum BasicRotorType
 	{
 		WoodenRotor(2250, 0, 0.5F, "rotor.basic.wood"),
-		WoolRotor(562, 0, 0.9F, "rotor.basic.wool"),
+		WoolRotor(562, 1, 0.9F, "rotor.basic.wool"),
 		IronRotor(18000, 2, 0.68F, "rotor.basic.iron"),
 		CarbonRotor(27000, 2, 0.75F, "rotor.basic.carbon"),
 		AlloyRotor(6750, 3, 0.9F, "rotor.basic.alloy"),
