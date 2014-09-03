@@ -20,7 +20,6 @@ import speiger.src.tinymodularthings.common.handler.FuelHandler;
 import speiger.src.tinymodularthings.common.handler.TinyCraftingHandler;
 import speiger.src.tinymodularthings.common.interfaces.IEntityGuiProvider;
 import speiger.src.tinymodularthings.common.items.tools.ItemNetherCrystal;
-import speiger.src.tinymodularthings.common.upgrades.hoppers.HopperItemFilter;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
 import cpw.mods.fml.common.network.IGuiHandler;
@@ -160,7 +159,6 @@ public class TinyModularThingsCore implements IGuiHandler
 	public void registerServer()
 	{
 		GameRegistry.registerCraftingHandler(new TinyCraftingHandler());
-		HopperRegistry.registerHopperUpgrade(new HopperItemFilter());
 		FuelHandler.init();
 		DataStorage.registerNBTReciver((ItemNetherCrystal)TinyItems.netherCrystal);
 		new RenderCommand();

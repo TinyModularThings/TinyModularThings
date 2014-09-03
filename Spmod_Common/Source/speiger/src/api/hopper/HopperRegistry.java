@@ -13,47 +13,10 @@ import net.minecraft.nbt.NBTTagString;
 public class HopperRegistry
 {
 	static HashMap<String, HopperUpgrade> upgrades = new HashMap<String, HopperUpgrade>();
-	static HashMap<List<Integer>, HopperUpgrade> items = new HashMap<List<Integer>, HopperUpgrade>();
 	
 	public static void registerHopperUpgrade(HopperUpgrade par1)
 	{
 		upgrades.put(par1.getNBTName(), par1);
-	}
-	
-	public static void registerBasicHopperUpgrade(Item item, int meta, HopperUpgrade par1)
-	{
-		String name = par1.getNBTName();
-		if(!upgrades.containsKey(name))
-		{
-			upgrades.put(name, par1);
-		}
-		if(item != null)
-		{
-			List<Integer> list = Arrays.asList(item.itemID, meta);
-			if(!items.containsKey(list))
-			{
-				items.put(list, par1);
-			}
-		}
-		
-	}
-	/**
-	 * Function for Advanced HopperUpgrade Adding.
-	 * Do NOT CHANGE THIS DATA IN YOUR ITEM. Else it does no longer Count as Valid Hopper Upgrade
-	 */
-	public static void registerCustomHopperUpgrade(HopperUpgrade par1, ItemStack par2)
-	{
-		String name = par1.getNBTName();
-		
-		NBTTagCompound nbt = new NBTTagCompound();
-		nbt.setString("HopperUpgrade", name);
-		nbt.setBoolean("Remove", false);
-		nbt.setBoolean("Infinite", false);
-		par2.setTagInfo("Hopper", nbt);
-		if(!upgrades.containsValue(par1))
-		{
-			upgrades.put(name, par1);
-		}
 	}
 	
 	public static boolean canApplyUpgrade(HopperUpgrade par1, ArrayList<HopperUpgrade> par2)
@@ -80,25 +43,6 @@ public class HopperRegistry
 		}
 		
 		return true;
-	}
-	
-	public static void makeGuiProviderForUpgrade(ItemStack open, HopperUpgrade target)
-	{
-		NBTTagString string = new NBTTagString("UpgradeGui", target.getNBTName());
-		open.setTagInfo(string.getName(), string);
-	}
-	
-	public static void removeGuiProviderFromItem(ItemStack par1)
-	{
-		if(par1.hasTagCompound())
-		{
-			par1.getTagCompound().removeTag("UpgradeGui");
-		}
-	}
-	
-	public static HashMap<String, HopperUpgrade> getHopperUpgrades()
-	{
-		return upgrades;
 	}
 	
 	public static HopperUpgrade getHopperUpgradeFromNBT(String name)
@@ -136,42 +80,4 @@ public class HopperRegistry
 		}
 	}
 
-	public static boolean containsHopperUpgrade(ItemStack item)
-	{
-		List<Integer> ids = Arrays.asList(item.itemID, item.getItemDamage());
-		if(items.containsKey(ids))
-		{
-			return true;
-		}
-		else if(item.hasTagCompound() && item.getTagCompound().hasKey("Hopper"))
-		{
-			return true;
-		}
-		return false;
-	}
-	
-	public static HopperUpgrade getUpgradeFromItem(ItemStack item)
-	{
-		List<Integer> ids = Arrays.asList(item.itemID, item.getItemDamage());
-		if(items.containsKey(ids))
-		{
-			return items.get(ids);
-		}
-		else if(item.hasTagCompound() && item.getTagCompound().hasKey("Hopper"))
-		{
-			NBTTagCompound nbt = item.getTagCompound().getCompoundTag("Hopper");
-			return upgrades.get(nbt.getString("HopperUpgrade"));
-		}
-		return null;
-	}
-
-	public static boolean isRemovingUpgrade(ItemStack item)
-	{
-		return item.getTagCompound().getCompoundTag("Hopper").getBoolean("Remove");
-	}
-
-	public static boolean isUpgradeInfinte(ItemStack item)
-	{
-		return item.getTagCompound().getCompoundTag("Hopper").getBoolean("Infinite");
-	}
 }

@@ -8,7 +8,7 @@ import buildcraft.api.power.PowerHandler.Type;
 
 public class EnergyUsageProvider
 {
-	private EnergyProvider energyProvider;
+	private IEnergySubject energyProvider;
 	private PowerReceiver bcPower;
 	private ForgeDirection face;
 	
@@ -107,7 +107,7 @@ public class EnergyUsageProvider
 	{
 		if (energyProvider != null)
 		{
-			return energyProvider.getEnergy();
+			return energyProvider.getStoredEnergy();
 		}
 		if (bcPower != null)
 		{

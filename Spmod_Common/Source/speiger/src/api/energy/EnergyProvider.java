@@ -6,8 +6,13 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
-
-public class EnergyProvider
+/**
+ * 
+ * @author Speiger
+ * To prevent doing the same error as BC with powerproviders i changed how energy get transfered and stuff.
+ * That should allow that you can use your own ways. Just implement IEnergyProvider and IEnergySubject.
+ */
+public class EnergyProvider implements IEnergySubject
 {
 	/**
 	 * Stored Energy
@@ -159,10 +164,6 @@ public class EnergyProvider
 		}
 	}
 	
-	public int getEnergy()
-	{
-		return storedEnergy;
-	}
 	
 	public void setEnergy(int amount)
 	{
@@ -285,6 +286,12 @@ public class EnergyProvider
 			return true;
 		}
 		return false;
+	}
+
+	@Override
+	public int getStoredEnergy()
+	{
+		return storedEnergy;
 	}
 	
 }

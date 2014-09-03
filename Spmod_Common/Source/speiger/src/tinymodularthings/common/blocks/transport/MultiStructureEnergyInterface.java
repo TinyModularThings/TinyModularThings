@@ -76,7 +76,7 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 	{
 		if (target != null)
 		{
-			return target.getEnergyProvider(side);
+			return (EnergyProvider) target.getEnergyProvider(side);
 		}
 		return null;
 	}
@@ -86,7 +86,7 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 	{
 		if (target != null)
 		{
-			return target.getEnergyProvider(side).getSaveBCPowerProvider();
+			return ((EnergyProvider) target.getEnergyProvider(side)).getSaveBCPowerProvider();
 		}
 		return null;
 	}

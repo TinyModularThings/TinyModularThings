@@ -19,6 +19,7 @@ import speiger.src.api.inventory.TankSlot;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
+import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 
 public class TinyHopperGui extends GuiInventoryCore
@@ -35,19 +36,34 @@ public class TinyHopperGui extends GuiInventoryCore
 		inv = par1;
 	}
 	
+	
+	
+	
+	@Override
+	public void initGui()
+	{
+		super.initGui();
+		this.buttonList.clear();
+		TinyHopper hopper = (TinyHopper) tile;
+		
+	}
+
+
+
+
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
 		String s = "Tiny Hopper";
-		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 3, 4210752);
+		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 5, 4210752);
 		fontRenderer.drawString(I18n.getString("container.inventory"), 8, ySize - 96 + 2, 4210752);
 		IHopperInventory hopperInv = (IHopperInventory) tile;
 		IHopper hopper = (IHopper) tile;
 		if (hopperInv.getHopperType() == HopperType.Energy)
 		{
-			String text = "" + hopper.getEnergyStorage().getEnergy() + "MJ / " + hopper.getEnergyStorage().getMaxStorage() + " MJ";
-			fontRenderer.drawString("Stored Energy:", 45, 30, 4210752);
-			fontRenderer.drawString(text, 50, 40, 4210752);
+			String text = "" + hopper.getEnergyStorage().getStoredEnergy() + "MJ / " + hopper.getEnergyStorage().getMaxStorage() + " MJ";
+			fontRenderer.drawString("Stored Energy:", 50, 15, 4210752);
+			fontRenderer.drawString(text, 50, 25, 4210752);
 		}
 	}
 	
@@ -68,7 +84,7 @@ public class TinyHopperGui extends GuiInventoryCore
 				for (int i = 0; i < tanks.size(); i++)
 				{
 					TankSlot slots = (TankSlot) tanks.get(i);
-					drawSlotPros(slots.getXCoord(), slots.getYCoord(), 18, 59);
+					drawSlotPros(slots.getXCoord(), slots.getYCoord(), 18, 60);
 					if (slots.getTank() != null)
 					{
 						displayGauge(k, l, slots.getYCoord(), slots.getXCoord(), slots.getTank().getFluid() != null ? slots.getTank().getFluid().amount / 275 : 0, slots.getTank().getFluid());

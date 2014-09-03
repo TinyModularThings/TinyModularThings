@@ -33,6 +33,11 @@ public class TinyItems
 	// TransportItems
 	public static Item interfaceBlock;
 	public static Item tinyHopper;
+	public static Item advTinyHopper;
+	public static Item fluidHopper;
+	public static Item advFluidHopper;
+	public static Item energyHopper;
+	public static Item advEnergyHopper;
 	
 	//Energy Items
 	public static Item smallMJBattery;

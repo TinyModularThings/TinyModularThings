@@ -13,9 +13,9 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.energy.EnergyProvider;
 import speiger.src.api.energy.IBCBattery;
 import speiger.src.api.energy.IEnergyProvider;
+import speiger.src.api.energy.IEnergySubject;
 import speiger.src.api.items.DisplayItem;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.nbt.NBTHelper;
@@ -275,7 +275,7 @@ public class Batteries extends TinyItem implements IBCBattery
 					boolean flag = false;
 					if(tile instanceof IEnergyProvider)
 					{
-						EnergyProvider provider = ((IEnergyProvider)tile).getEnergyProvider(ForgeDirection.getOrientation(pos.sideHit));
+						IEnergySubject provider = ((IEnergyProvider)tile).getEnergyProvider(ForgeDirection.getOrientation(pos.sideHit));
 						if(provider != null)
 						{
 							this.discharge(par1, provider.addEnergy(this.discharge(par1, 10000, false, true), false), false, false);

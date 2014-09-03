@@ -35,6 +35,7 @@ import speiger.src.api.hopper.HopperRegistry.HopperEffect.EffectType;
 import speiger.src.api.hopper.HopperUpgrade;
 import speiger.src.api.hopper.IHopper;
 import speiger.src.api.hopper.IHopperInventory;
+import speiger.src.api.hopper.IHopperUpgradeItem;
 import speiger.src.api.inventory.IFilteredInventory;
 import speiger.src.api.inventory.IOwner;
 import speiger.src.api.inventory.TankSlot;
@@ -46,7 +47,6 @@ import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.transport.TinyHopperGui;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
-import speiger.src.tinymodularthings.common.upgrades.hoppers.HopperItemFilter;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
@@ -85,7 +85,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	{
 		type = ADV;
 		redstone = adv;
-		this.installedUpgrades.add(new HopperItemFilter());
 	}
 	
 	@Override
@@ -355,35 +354,24 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 				this.updateBlock();
 				return true;
 			}
-			else if(HopperRegistry.containsHopperUpgrade(item))
+			else if(item.getItem() instanceof IHopperUpgradeItem)
 			{
-				HopperUpgrade upgrade = HopperRegistry.getUpgradeFromItem(item);
+				IHopperUpgradeItem upgrade = (IHopperUpgradeItem) item.getItem();
 				if(upgrade != null)
 				{
-					boolean infinte = HopperRegistry.isUpgradeInfinte(item);
-					boolean remove = HopperRegistry.isRemovingUpgrade(item);
-					if(remove)
+					HopperUpgrade hopper = upgrade.getUpgrade(item);
+					if(upgrade.isRemovingUpgrade(item))
 					{
-						if(this.removeUpgrade(upgrade) && !infinte)
+						if(installedUpgrades.contains(hopper))
 						{
-							item.stackSize--;
-							if(item.stackSize<= 0)
-							{
-								item = item.getItem().getContainerItemStack(item);
-								par1.setCurrentItemOrArmor(0, item);
-							}
+							this.removeUpgrade(hopper);
 						}
 					}
 					else
 					{
-						if(this.addUpgrade(upgrade) && !infinte)
+						if(HopperRegistry.canApplyUpgrade(hopper, installedUpgrades))
 						{
-							item.stackSize--;
-							if(item.stackSize<= 0)
-							{
-								item = item.getItem().getContainerItemStack(item);
-								par1.setCurrentItemOrArmor(0, item);
-							}
+							this.addUpgrade(hopper);
 						}
 					}
 

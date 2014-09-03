@@ -168,7 +168,7 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, ISi
 			}
 			
 			
-			if(cuRecipe != null && provider.getEnergy() > 10 && canWork())
+			if(cuRecipe != null && provider.getStoredEnergy() > 10 && canWork())
 			{
 				provider.useEnergy(10, false);
 				progress++;

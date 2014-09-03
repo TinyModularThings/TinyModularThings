@@ -19,7 +19,7 @@ public class SelfPoweredBucketFiller extends BucketFillerBasic
 	{
 		if(!worldObj.isRemote)
 		{
-			if(this.provider.getEnergy() < 100)
+			if(this.provider.getStoredEnergy() < 100)
 			{
 				this.provider.setEnergy(1000);
 			}

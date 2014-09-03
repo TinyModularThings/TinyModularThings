@@ -18,13 +18,27 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemTinyHopper extends TinyItem
 {
-	public ItemTinyHopper(int par1)
+	HopperType type;
+	
+	public ItemTinyHopper(int par1, HopperType par2)
 	{
 		super(par1);
+		type = par2;
 		setHasSubtypes(true);
 		setCreativeTab(CreativeTabs.tabFood);
 	}
 	
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+	{
+		par3List.add(type+" Hopper");
+	}
+
+
+
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
@@ -40,7 +54,7 @@ public class ItemTinyHopper extends TinyItem
 	
 	public String getDisplayName(ItemStack par1, SpmodMod Start)
 	{
-		return "Basic Tiny Hopper";
+		return "Tiny Hopper";
 	}
 	
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
@@ -97,7 +111,7 @@ public class ItemTinyHopper extends TinyItem
 			return false;
 		}
 		
-		if (par3World.setBlock(par4, par5, par6, TinyBlocks.transportBlock.blockID, 10, 3))
+		if (par3World.setBlock(par4, par5, par6, TinyBlocks.transportBlock.blockID, 10+type.ordinal(), 3))
 		{
 			TileEntity tile = par3World.getBlockTileEntity(par4, par5, par6);
 			if ((tile != null) && ((tile instanceof TinyHopper)))
@@ -115,5 +129,15 @@ public class ItemTinyHopper extends TinyItem
 		}
 		
 		return true;
+	}
+	
+	public static enum HopperType
+	{
+		Items,
+		AdvItems,
+		Fluids,
+		AdvFluids,
+		Energy,
+		AdvancedEnergy;
 	}
 }
