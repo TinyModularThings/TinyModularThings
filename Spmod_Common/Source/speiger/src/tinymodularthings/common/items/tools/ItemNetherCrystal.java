@@ -21,6 +21,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.DamageSource;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
@@ -128,6 +130,7 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 		return par1ItemStack;
 	}
 
+
 	public boolean isFillAbleBlock(MovingObjectPosition pos, World world)
 	{
 		TileEntity tile = world.getBlockTileEntity(pos.blockX, pos.blockY, pos.blockZ);
@@ -149,7 +152,7 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 		}
 	}
 	
-	
+
 
 	@Override
 	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
@@ -287,6 +290,8 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 			}
 		}
 	}
+	
+
 	
 	public boolean hasWork(ItemStack par1)
 	{
@@ -511,7 +516,21 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1)
 	{
-		this.itemIcon = par1.registerIcon(this.getModID().toLowerCase()+":tools/NetherCrystal");
+		this.texture[0] = par1.registerIcon(this.getModID().toLowerCase()+":tools/NetherCrystal");
+		this.texture[1] = par1.registerIcon(this.getModID().toLowerCase()+":tools/NetherCrystal_Charged");
+	}
+	
+	Icon[] texture = new Icon[2];
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getIconFromDamage(int par1)
+	{
+		if(par1 == 3)
+		{
+			return texture[1];
+		}
+		return texture[0];
 	}
 
 	@Override

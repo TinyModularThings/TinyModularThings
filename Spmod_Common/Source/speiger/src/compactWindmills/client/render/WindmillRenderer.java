@@ -1,5 +1,8 @@
 package speiger.src.compactWindmills.client.render;
 
+import java.util.HashMap;
+import java.util.List;
+
 import net.minecraft.client.renderer.OpenGlHelper;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
@@ -8,9 +11,11 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import speiger.src.api.items.IRotorItem;
 import speiger.src.api.items.IRotorItem.IRotorModel;
+import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.common.blocks.WindMill;
-import speiger.src.compactWindmills.common.items.ItemRotor.BasicRotorType;
+import speiger.src.spmodapi.common.util.BlockPosition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -25,30 +30,47 @@ public class WindmillRenderer extends TileEntitySpecialRenderer
 {
 	
 	private IRotorModel model;
+	private HashMap<List<Integer>, IRotorModel> models = new HashMap<List<Integer>, IRotorModel>();
 	
 	public void renderBlockRotor(WindMill tile, World world, int posX, int posY, int posZ)
 	{
-		if (!tile.hasRotor() || tile.getType() == null || tile.getRotor().getRenderTexture(tile.inv[0]) == null)
+		if(CompactWindmills.sharedWindmillModel)
 		{
-			model = null;
-			return;
+			if (!tile.hasRotor() || tile.getType() == null || tile.getRotor().getRenderTexture(tile.inv[0]) == null)
+			{
+				model = null;
+				return;
+			}
+			if(model == null)
+			{
+				IRotorModel rotor = tile.getRotor().getCustomModel(tile.inv[0], tile.getType().getRadius());
+				if(rotor == null)
+				{
+					model = new ModelRotor(tile.getType().getRadius());
+				}
+				else
+				{
+					model = rotor;
+				}
+			}
+			
+			if(model == null)
+			{
+				return;
+			}
 		}
-		if(model == null)
+		else
 		{
-			IRotorModel rotor = tile.getRotor().getCustomModel(tile.inv[0], tile.getType().getRadius());
+			IRotorModel rotor = this.getOrCreateIRotorModel(tile);
 			if(rotor == null)
 			{
-				model = new ModelRotor(tile.getType().getRadius());
+				if(models.containsKey(tile.getPosition().getAsList()))
+				{
+					models.remove(tile.getPosition().getAsList());
+				}
+				return;
 			}
-			else
-			{
-				model = rotor;
-			}
-		}
-		
-		if(model == null)
-		{
-			return;
+			model = rotor;
 		}
 		
 		Tessellator tessellator = Tessellator.instance;
@@ -91,4 +113,40 @@ public class WindmillRenderer extends TileEntitySpecialRenderer
 		GL11.glPopMatrix();
 	}
 	
+	
+	public IRotorModel getOrCreateIRotorModel(WindMill par1)
+	{
+		if(par1 == null)
+		{
+			return null;
+		}
+		if(par1.getStackInSlot(0) == null)
+		{
+			return null;
+		}
+		IRotorItem rotor = par1.getRotor();
+		if(rotor == null)
+		{
+			return null;
+		}
+		BlockPosition pos = par1.getPosition();
+		if(pos == null)
+		{
+			return null;
+		}
+		IRotorModel Rmodel = models.get(pos.getAsList());
+		if(Rmodel != null)
+		{
+			return Rmodel;
+		}
+		Rmodel = rotor.getCustomModel(par1.getStackInSlot(0), par1.type.getRadius());
+		if(Rmodel == null)
+		{
+			Rmodel = new ModelRotor(par1.type.getRadius());
+		}
+		
+		models.put(pos.getAsList(), Rmodel);
+		
+		return Rmodel;
+	}
 }

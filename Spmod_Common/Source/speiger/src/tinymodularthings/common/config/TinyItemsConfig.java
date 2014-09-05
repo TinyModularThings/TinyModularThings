@@ -122,25 +122,25 @@ public class TinyItemsConfig
 		RegisterItem(items.hugeMJBattery, "HugeMJBattery");
 		config.item.updateToNextID();
 		
-//		items.advTinyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvItems);
-//		RegisterItem(items.advTinyHopper, "AdvancedTinyHopper");
-//		config.item.updateToNextID();
-//		
-//		items.fluidHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.Fluids);
-//		RegisterItem(items.fluidHopper, "FluidHopper");
-//		config.item.updateToNextID();
-//		
-//		items.advFluidHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvFluids);
-//		RegisterItem(items.advFluidHopper, "AdvancedFluidHopper");
-//		config.item.updateToNextID();
-//		
-//		items.energyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.Energy);
-//		RegisterItem(items.energyHopper, "EnergyHopper");
-//		config.item.updateToNextID();
-//		
-//		items.advEnergyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvancedEnergy);
-//		RegisterItem(items.advEnergyHopper, "AdvancedEnergyHopper");
-//		config.item.updateToNextID();
+		items.advTinyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvItems);
+		RegisterItem(items.advTinyHopper, "AdvancedTinyHopper");
+		config.item.updateToNextID();
+		
+		items.fluidHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.Fluids);
+		RegisterItem(items.fluidHopper, "FluidHopper");
+		config.item.updateToNextID();
+		
+		items.advFluidHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvFluids);
+		RegisterItem(items.advFluidHopper, "AdvancedFluidHopper");
+		config.item.updateToNextID();
+		
+		items.energyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.Energy);
+		RegisterItem(items.energyHopper, "EnergyHopper");
+		config.item.updateToNextID();
+		
+		items.advEnergyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvancedEnergy);
+		RegisterItem(items.advEnergyHopper, "AdvancedEnergyHopper");
+		config.item.updateToNextID();
 		
 	}
 	
