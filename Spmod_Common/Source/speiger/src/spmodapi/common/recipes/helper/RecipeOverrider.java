@@ -50,32 +50,6 @@ public class RecipeOverrider
         replacements.put(new ItemStack(Block.stone, 1, Short.MAX_VALUE), "stone");
         replacements.put(new ItemStack(Block.cobblestone), "cobblestone");
         replacements.put(new ItemStack(Block.cobblestone, 1, Short.MAX_VALUE), "cobblestone");
-
-        String[] dyes =
-        {
-            "dyeBlack",
-            "dyeRed",
-            "dyeGreen",
-            "dyeBrown",
-            "dyeBlue",
-            "dyePurple",
-            "dyeCyan",
-            "dyeLightGray",
-            "dyeGray",
-            "dyePink",
-            "dyeLime",
-            "dyeYellow",
-            "dyeLightBlue",
-            "dyeMagenta",
-            "dyeOrange",
-            "dyeWhite"
-        };
-
-        for(int i = 0; i < 16; i++)
-        {
-            ItemStack dye = new ItemStack(Item.dyePowder, 1, i);
-            replacements.put(dye, dyes[i]);
-        }
         
 
         ItemStack[] replaceStacks = replacements.keySet().toArray(new ItemStack[replacements.keySet().size()]);

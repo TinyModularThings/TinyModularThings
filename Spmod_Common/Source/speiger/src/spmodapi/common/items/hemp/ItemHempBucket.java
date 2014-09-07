@@ -3,6 +3,7 @@ package speiger.src.spmodapi.common.items.hemp;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import speiger.src.api.items.DisplayItem;
 import speiger.src.api.items.LanguageItem;
 import speiger.src.api.language.LanguageRegister;
@@ -51,13 +52,22 @@ public class ItemHempBucket extends ItemBucket implements LanguageItem
 		LanguageRegister.getLanguageName(new DisplayItem(id), "bucket.liquid.hemp", par0);
 	}
 
-
+	Icon texture;
 
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1)
 	{
-		this.itemIcon = par1.registerIcon(SpmodAPILib.ModID.toLowerCase()+":hemp/hemp.resin.bucket");
+		texture = this.itemIcon = par1.registerIcon(SpmodAPILib.ModID.toLowerCase()+":hemp/hemp.resin.bucket");
+	}
+
+
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getIconFromDamage(int par1)
+	{
+		return texture;
 	}
 	
 	

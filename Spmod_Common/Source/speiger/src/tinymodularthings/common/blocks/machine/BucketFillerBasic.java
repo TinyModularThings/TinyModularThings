@@ -180,6 +180,11 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory, ISi
 						ItemStack output = cuRecipe.emptyContainer.copy();
 						tank.fill(cuRecipe.fluid, true);
 						
+						if(inv[0].getItem().hasContainerItem())
+						{
+							output = inv[0].getItem().getContainerItemStack(inv[0]);
+						}
+						
 						if(inv[1] == null)
 						{
 							inv[1] = output;

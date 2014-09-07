@@ -77,11 +77,6 @@ public abstract class BlockMultiMineOre extends Block implements IMultimineOre
 		return getBasicDrop(fortune, meta) != null ? getBasicDrop(fortune, meta).stackSize : 0;
 	}
 	
-	@Override
-	public void harvestBlock(World par1World, EntityPlayer par2EntityPlayer, int par3, int par4, int par5, int par6)
-	{
-		super.harvestBlock(par1World, par2EntityPlayer, par3, par4, par5, par6);
-	}
 	
 	@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)

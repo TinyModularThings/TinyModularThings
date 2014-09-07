@@ -13,6 +13,7 @@ import org.lwjgl.opengl.GL11;
 import speiger.src.tinymodularthings.client.models.transport.ModelTinyHopper;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
+import speiger.src.tinymodularthings.common.utils.HopperType;
 import cpw.mods.fml.client.FMLClientHandler;
 
 public class ItemRenderTransportTile implements IItemRenderer
@@ -80,10 +81,11 @@ public class ItemRenderTransportTile implements IItemRenderer
 		{
 			renderInterfaces((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f, item);
 		}
-		else if(id == TinyItems.tinyChest.itemID)
+		else if(this.isHopperID(id))
 		{
-			renderTinyHopper(-0.4f, 0.50f, 0.35f, getTextureFromID(0));
+			renderTinyHopper(0.5F, 1.5F, 0.5F, getTextureFromID(this.getHopperIDFromID(id)));
 		}
+		
 	}
 	
 	private void handleEntityRendering(ItemStack item, Object... data)
@@ -103,9 +105,9 @@ public class ItemRenderTransportTile implements IItemRenderer
 		{
 			renderInterfaces((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f, item);
 		}
-		else if(id == TinyItems.tinyChest.itemID)
+		else if(this.isHopperID(id))
 		{
-			renderTinyHopper(-0.5f, -0.5f, -0.5f, getTextureFromID(0));
+			renderTinyHopper(0.0F, 1.5F, 0.0F, getTextureFromID(this.getHopperIDFromID(id)));
 		}
 	}
 	
@@ -127,9 +129,9 @@ public class ItemRenderTransportTile implements IItemRenderer
 		{
 			renderInterfaces((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f, item);
 		}
-		else if(id == TinyItems.tinyChest.itemID)
+		else if(this.isHopperID(id))
 		{
-			renderTinyHopper(-0.4f, 0.50f, 0.35f, getTextureFromID(0));
+			renderTinyHopper(1.0F, 1.0F, 0.0F, getTextureFromID(this.getHopperIDFromID(id)));
 		}
 	}
 	
@@ -151,9 +153,9 @@ public class ItemRenderTransportTile implements IItemRenderer
 		{
 			renderInterfaces((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f, item);
 		}
-		else if(id == TinyItems.tinyChest.itemID)
+		else if(this.isHopperID(id))
 		{
-			renderTinyHopper(-0.5f, -0.5f, -0.5f, getTextureFromID(0));
+			renderTinyHopper(0.0F, 1.0F, 0.0F, getTextureFromID(this.getHopperIDFromID(id)));
 		}
 		
 	}
@@ -246,12 +248,66 @@ public class ItemRenderTransportTile implements IItemRenderer
 	
 	private ResourceLocation getTextureFromID(int i)
 	{
-		switch (i)
+		boolean adv = i % 2 == 1;
+		return HopperType.values()[(i/2)].getTexture(adv);
+	}
+	
+	public boolean isHopperID(int id)
+	{
+		if(id == TinyItems.advEnergyHopper.itemID)
 		{
-			case 0:
-				return new ResourceLocation("tinymodularthings:textures/models/transport/ModelHopperAll.png");
+			return true;
 		}
-		return null;
+		else if(id == TinyItems.advFluidHopper.itemID)
+		{
+			return true;
+		}
+		else if(id == TinyItems.advTinyHopper.itemID)
+		{
+			return true;
+		}
+		else if(id == TinyItems.fluidHopper.itemID)
+		{
+			return true;
+		}
+		else if(id == TinyItems.energyHopper.itemID)
+		{
+			return true;
+		}
+		else if(id == TinyItems.tinyHopper.itemID)
+		{
+			return true;
+		}
+		return false;
+	}
+	
+	public int getHopperIDFromID(int id)
+	{
+		if(id == TinyItems.advEnergyHopper.itemID)
+		{
+			return 5;
+		}
+		else if(id == TinyItems.advFluidHopper.itemID)
+		{
+			return 3;
+		}
+		else if(id == TinyItems.advTinyHopper.itemID)
+		{
+			return 1;
+		}
+		else if(id == TinyItems.fluidHopper.itemID)
+		{
+			return 2;
+		}
+		else if(id == TinyItems.energyHopper.itemID)
+		{
+			return 4;
+		}
+		else if(id == TinyItems.tinyHopper.itemID)
+		{
+			return 0;
+		}
+		return -1;
 	}
 	
 }

@@ -3,6 +3,7 @@ package speiger.src.spmodapi.common.blocks.deko;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,6 +19,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.util.RedstoneUtils;
+import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
@@ -38,7 +40,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	public ArrayList<EnumColor> roubinColor = new ArrayList<EnumColor>();
 	public int color = 0;
 	public int meta = 0;
-	public EnumLampType lampType = null;
+	public EnumLampType lampType = EnumLampType.Nothing;
 	public boolean isActive = false;
 	public boolean inverted = false;
 	public boolean allColored = false;
@@ -263,7 +265,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	public ArrayList<ItemStack> onDrop(int fortune)
 	{
 		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
-		ItemStack drop = new ItemStack(this.getBlockType(), 1, meta);
+		ItemStack drop = new ItemStack(APIBlocks.hempLamp, 1, meta);
 		if(this.noneColored)
 		{
 			NBTTagList list = new NBTTagList();
@@ -284,7 +286,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	{
 		if(this.noneColored)
 		{
-			ItemStack drop = new ItemStack(this.getBlockType(), 1, meta);
+			ItemStack drop = new ItemStack(APIBlocks.hempLamp, 1, meta);
 			NBTTagList list = new NBTTagList();
 			for(EnumColor color : this.validColors)
 			{
@@ -428,12 +430,21 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	public static enum EnumLampType
 	{
 		FULL(new ResourceLocation(SpmodAPILib.ModID.toLowerCase()+":textures/models/blocks/ModelFullLamp.png"), 0, "Full", false),
-		RP2CAGELAMP(new ResourceLocation(SpmodAPILib.ModID.toLowerCase()+":textures/models/blocks/ModelCageLamp.png"), 1, "RPCageLamp", true);
+		RP2CAGELAMP(new ResourceLocation(SpmodAPILib.ModID.toLowerCase()+":textures/models/blocks/ModelCageLamp.png"), 1, "RPCageLamp", true),
+		Nothing();
 		
 		ResourceLocation texture;
 		int render;
 		String name;
 		boolean facing;
+		
+		private EnumLampType()
+		{
+			texture = TextureMap.locationBlocksTexture;
+			render = -1;
+			name = "";
+			facing = false;
+		}
 		
 		private EnumLampType(ResourceLocation texture, int renderType, String name, boolean hasFacing)
 		{

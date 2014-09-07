@@ -66,7 +66,7 @@ public class BucketFillerGui extends GuiInventoryCore
         
         displayGauge(k, l, 19, 123, basic.tank.getFluidAmount() / 275, basic.tank.getFluid());
         
-        int ptotal = this.basic.progress / 9;
+        int ptotal = this.basic.progress / (basic instanceof SelfPoweredBucketFiller ? 7 : 9);
         
         this.drawTexturedModalRect(k + 75, l + 41, 176, 60, ptotal + 1, 16);
         

@@ -227,6 +227,7 @@ public class ItemBlockLightDekoBlock extends ItemBlock implements LanguageItem
         		else if(color == 17) lamp.setAllColored();
         		
         		lamp.setMetadata(meta);
+        		par1ItemStack.stackSize--;
         		
         	}
 

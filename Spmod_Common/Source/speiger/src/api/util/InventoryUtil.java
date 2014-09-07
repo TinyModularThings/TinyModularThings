@@ -294,5 +294,22 @@ public class InventoryUtil
 		EntityItem drop = new EntityItem(tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord, item);
 		tile.worldObj.spawnEntityInWorld(drop);
 	}
+
+	public static boolean isInventoryFull(IInventory inv)
+	{
+		for(int i = 0;i<inv.getSizeInventory();i++)
+		{
+			ItemStack stack = inv.getStackInSlot(i);
+			if(stack == null)
+			{
+				return false;
+			}
+			if(stack.stackSize < stack.getMaxStackSize())
+			{
+				return false;
+			}
+		}
+		return true;
+	}
 	
 }

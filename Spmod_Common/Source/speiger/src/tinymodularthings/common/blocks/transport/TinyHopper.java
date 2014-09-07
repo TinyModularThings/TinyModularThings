@@ -38,9 +38,11 @@ import speiger.src.api.hopper.IHopperInventory;
 import speiger.src.api.hopper.IHopperUpgradeItem;
 import speiger.src.api.inventory.IFilteredInventory;
 import speiger.src.api.inventory.IOwner;
+import speiger.src.api.inventory.IOwnerProvider;
 import speiger.src.api.inventory.TankSlot;
 import speiger.src.api.pipes.IAdvancedPipeProvider;
 import speiger.src.api.util.FluidUtils;
+import speiger.src.api.util.InventoryUtil;
 import speiger.src.spmodapi.common.handler.FakePlayer;
 import speiger.src.spmodapi.common.tile.AdvancedFluidTank;
 import speiger.src.spmodapi.common.tile.TileFacing;
@@ -48,6 +50,7 @@ import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.transport.TinyHopperGui;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.utils.HopperType;
+import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
@@ -56,19 +59,19 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, ISidedInventory, IPowerReceptor, IHopperInventory, IAdvancedPipeProvider, IFilteredInventory
+public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, ISidedInventory, IPowerReceptor, IHopperInventory, IAdvancedPipeProvider, IFilteredInventory, IPowerEmitter, IOwnerProvider
 {
 	public HopperType type;
 	public boolean redstone;
 	public boolean speed = false;
 	public boolean allSlots = false;
-	public ArrayList<EntityPlayer> users = new ArrayList();
+	public ArrayList<EntityPlayer> users = new ArrayList<EntityPlayer>();
 	public ItemStack[] inventory = new ItemStack[0];
 	public ItemStack[] filter = new ItemStack[0];
 	public int InventoryMode = -1;
 	public AdvancedFluidTank[] tanks = new AdvancedFluidTank[0];
 	public EnergyProvider energy = new EnergyProvider(this, 25000).setPowerLoss(1);
-	public ArrayList<HopperUpgrade> installedUpgrades = new ArrayList();
+	public ArrayList<HopperUpgrade> installedUpgrades = new ArrayList<HopperUpgrade>();
 	public int[] transferlimits = { 1, 10, 10 };
 	public String owner = "None";
 	public EntityPlayer fakePlayer = null;
@@ -87,6 +90,14 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		redstone = adv;
 	}
 	
+	
+	
+	@Override
+	public void setupUser(EntityPlayer player)
+	{
+		owner = player.getCommandSenderName();
+	}
+
 	@Override
 	public void onPlaced(int facing)
 	{
@@ -498,7 +509,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	@Override
 	public ArrayList<HopperUpgrade> getValidUpgrades()
 	{
-		return null;
+		return new ArrayList<HopperUpgrade>();
 	}
 	
 	@Override
@@ -579,7 +590,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	@Override
 	public PowerReceiver getPowerReceiver(ForgeDirection side)
 	{
-		if (type != HopperType.Energy)
+		if (type != HopperType.Energy || side.ordinal() == getRotation())
 		{
 			return null;
 		}
@@ -619,9 +630,12 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 			fakePlayer = new FakePlayer(worldObj, xCoord, yCoord, zCoord);
 		}
 		
-		for (HopperUpgrade upgrade : installedUpgrades)
+		if(speed || worldObj.getWorldTime() % 20 == 0)
 		{
-			upgrade.onTick(this);
+			for (HopperUpgrade upgrade : installedUpgrades)
+			{
+				upgrade.onTick(this);
+			}
 		}
 	}
 	
@@ -676,6 +690,18 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 				inventory[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
 			}
 		}
+		
+		NBTTagList filters = nbt.getTagList("Filter");
+		for(int i = 0;i<filters.tagCount();i++)
+		{
+			NBTTagCompound nbt1 = (NBTTagCompound) filters.tagAt(i);
+			byte slot = nbt1.getByte("Slot");
+			if(slot >= 0 && slot < filter.length)
+			{
+				filter[slot] = ItemStack.loadItemStackFromNBT(nbt1);
+			}
+		}
+		
 		NBTTagList upgrades = nbt.getTagList("Upgrades");
 		for (int i = 0; i < upgrades.tagCount(); i++)
 		{
@@ -736,6 +762,19 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 			}
 		}
 		nbt.setTag("Items", nbttaglist);
+		
+		NBTTagList filters = new NBTTagList();
+		for(int i = 0;i<filter.length;i++)
+		{
+			if(filter[i] != null)
+			{
+				NBTTagCompound nbt1 = new NBTTagCompound();
+				nbt1.setByte("Slot", (byte)i);
+				filter[i].writeToNBT(nbt1);
+				filters.appendTag(nbt1);
+			}
+		}
+		nbt.setTag("Filter", filters);
 		
 		NBTTagList upgrades = new NBTTagList();
 		for (int i = 0; i < installedUpgrades.size(); i++)
@@ -842,6 +881,10 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid)
 	{
+		if(from.ordinal() == getRotation())
+		{
+			return false;
+		}
 		return true;
 	}
 	
@@ -907,7 +950,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	@SideOnly(Side.CLIENT)
 	public ResourceLocation getRenderingTexture()
 	{
-		return new ResourceLocation("tinymodularthings:textures/models/transport/ModelHopperAll.png");
+		return type.getTexture(redstone);
 	}
 	
 	@Override
@@ -1011,6 +1054,10 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemstack, int j)
 	{
+		if(j == getRotation())
+		{
+			return false;
+		}
 		if(filter[i] == null || (filter[i] != null && filter[i].isItemEqual(itemstack)))
 		{
 			return true;
@@ -1053,4 +1100,62 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	{
 		filter[slotID] = par1;
 	}
+
+	@Override
+	public boolean canEmitPowerFrom(ForgeDirection side)
+	{
+		if(type == type.Energy)
+		{
+			return side.ordinal() == this.getRotation();
+		}
+		return false;
+	}
+
+	@Override
+	public int isPowering(int side)
+	{
+		if(redstone)
+		{
+			if(side == getFacing())
+			{
+				boolean flag = false;
+				
+				switch(type)
+				{
+					case Energy:
+						flag = this.isEnergyFull();
+						break;
+					case Fluids:
+						flag = FluidUtils.areTankFull(this);
+						break;
+					case Items:
+						flag = InventoryUtil.isInventoryFull(this);
+						break;
+					default:
+						break;
+					
+				}
+				
+				if(flag)
+				{
+					return 15;
+				}
+			}
+		}
+		return 0;
+	}
+	
+	public boolean isEnergyFull()
+	{
+		return this.getEnergyStorage().isFull();
+	}
+
+	@Override
+	public IOwner getOwners()
+	{
+		return null;
+	}
+
+	
+	
 }

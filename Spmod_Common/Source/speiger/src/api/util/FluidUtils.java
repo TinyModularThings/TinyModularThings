@@ -1,11 +1,16 @@
 package speiger.src.api.util;
 
+import java.util.ArrayList;
+
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 
 public class FluidUtils
 {
@@ -166,5 +171,26 @@ public class FluidUtils
 		}
 		
 		return null;
+	}
+
+	public static boolean areTankFull(IFluidHandler tank)
+	{
+		ArrayList<FluidTankInfo> list = new ArrayList<FluidTankInfo>();
+		for(ForgeDirection dir : ForgeDirection.values())
+		{
+			for(FluidTankInfo info : tank.getTankInfo(dir))
+			{
+				if(info.fluid == null)
+				{
+					return false;
+				}
+				if(info.capacity > info.fluid.amount)
+				{
+					return false;
+				}
+			}
+		}
+		
+		return true;
 	}
 }

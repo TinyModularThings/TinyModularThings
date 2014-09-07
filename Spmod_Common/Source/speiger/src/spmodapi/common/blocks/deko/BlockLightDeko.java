@@ -18,11 +18,14 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.MinecraftForge;
+import speiger.src.api.util.InventoryUtil;
 import speiger.src.spmodapi.common.blocks.deko.TileLamp.EnumLampType;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -40,26 +43,17 @@ public class BlockLightDeko extends BlockContainer
 	
 	public BlockLightDeko(int par1)
 	{
-		super(par1, Material.glass);
+		super(par1, Material.redstoneLight);
 		setCreativeTab(APIUtils.tabHempDeko);
 		this.setHardness(4.0F);
 		this.setResistance(4.0F);
+		MinecraftForge.setBlockHarvestLevel(this, "pickaxe", 0);
 	}
 
 	@Override
 	public TileEntity createNewTileEntity(World world)
 	{
 		return new TileLamp();
-	}
-
-
-	
-	
-
-	@Override
-	public float getBlockHardness(World par1World, int par2, int par3, int par4)
-	{
-		return super.getBlockHardness(par1World, par2, par3, par4);
 	}
 
 	@Override
@@ -177,22 +171,34 @@ public class BlockLightDeko extends BlockContainer
 	{
 		return 0;
 	}
+	
 
 	@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
 	{
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if(tile != null && tile instanceof TileLamp)
+		if(tile != null && tile instanceof AdvTile)
 		{
-			return ((TileLamp)tile).onDrop(fortune);
+			AdvTile adv = (AdvTile) tile;
+			return adv.onDrop(fortune);
 		}
 		return super.getBlockDropped(world, x, y, z, metadata, fortune);
 	}
+	
+	
 
 	@Override
-	public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+	public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer)
 	{
-		return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
+		if(par6EntityPlayer == null || par6EntityPlayer.capabilities.isCreativeMode)
+		{
+			return;
+		}
+		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+		if(tile != null && tile instanceof AdvTile)
+		{
+			InventoryUtil.dropInventory(par1World, par2, par3, par4, ((AdvTile)tile).onDrop(0));
+		}
 	}
 
 	@Override
@@ -215,7 +221,7 @@ public class BlockLightDeko extends BlockContainer
 	@Override
 	public boolean shouldCheckWeakPower(World world, int x, int y, int z, int side)
 	{
-		return super.shouldCheckWeakPower(world, x, y, z, side);
+		return false;
 	}
 
 	@Override

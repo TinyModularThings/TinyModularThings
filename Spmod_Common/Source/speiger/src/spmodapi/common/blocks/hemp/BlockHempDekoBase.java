@@ -7,12 +7,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.MinecraftForge;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import cpw.mods.fml.relauncher.Side;
@@ -25,6 +27,10 @@ public class BlockHempDekoBase extends Block
 	{
 		super(par1, Material.cloth);
 		this.setCreativeTab(APIUtils.tabHempDeko);
+		MinecraftForge.setBlockHarvestLevel(this, 0, "axe", 0);
+		MinecraftForge.setBlockHarvestLevel(this, 1, "pickaxe", 0);
+		MinecraftForge.setBlockHarvestLevel(this, 2, "axe", 0);
+		MinecraftForge.setBlockHarvestLevel(this, 3, "pickaxe", 0);
 	}
 	
 	@Override
@@ -41,6 +47,22 @@ public class BlockHempDekoBase extends Block
 		return true;
 	}
 	
+	
+	
+	@Override
+	public float getBlockHardness(World par1World, int par2, int par3, int par4)
+	{
+		int meta = par1World.getBlockMetadata(par2, par3, par4) % 1;
+		return meta == 0 ? 1F : 2F;
+	}
+
+	@Override
+	public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+	{
+		int meta = world.getBlockMetadata(x, y, z) % 1;
+		return meta == 0 ? 3F : 8F;
+	}
+
 	@Override
 	public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
 	{

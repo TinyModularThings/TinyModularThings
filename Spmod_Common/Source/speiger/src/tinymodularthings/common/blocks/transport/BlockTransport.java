@@ -151,7 +151,6 @@ public class BlockTransport extends BlockContainer
 			
 			if (tile != null && tile instanceof AdvTile)
 			{
-				
 				return ((AdvTile) tile).onActivated(par5EntityPlayer);
 			}
 		}

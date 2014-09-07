@@ -68,6 +68,12 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		ClientRegistry.bindTileEntitySpecialRenderer(TinyHopper.class, new renderTransportTile());
 		MinecraftForgeClient.registerItemRenderer(TinyBlocks.transportBlock.blockID, new ItemRenderTransportTile());
 		MinecraftForgeClient.registerItemRenderer(TinyItems.interfaceBlock.itemID, new ItemRenderTransportTile());
+		MinecraftForgeClient.registerItemRenderer(TinyItems.tinyHopper.itemID, new ItemRenderTransportTile());
+		MinecraftForgeClient.registerItemRenderer(TinyItems.advTinyHopper.itemID, new ItemRenderTransportTile());
+		MinecraftForgeClient.registerItemRenderer(TinyItems.fluidHopper.itemID, new ItemRenderTransportTile());
+		MinecraftForgeClient.registerItemRenderer(TinyItems.advFluidHopper.itemID, new ItemRenderTransportTile());
+		MinecraftForgeClient.registerItemRenderer(TinyItems.energyHopper.itemID, new ItemRenderTransportTile());
+		MinecraftForgeClient.registerItemRenderer(TinyItems.advEnergyHopper.itemID, new ItemRenderTransportTile());
 		RenderingRegistry.registerBlockHandler(EnumIDs.TransportBlock.getId(), new RenderTransport());
 		
 		

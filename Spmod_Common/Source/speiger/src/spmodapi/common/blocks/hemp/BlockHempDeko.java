@@ -28,6 +28,7 @@ public class BlockHempDeko extends Block
 		super(par1, par2.getMaterial());
 		info = par2;
 		setCreativeTab(APIUtils.tabHempDeko);
+		par2.registerToForge(this);
 	}
 	
 	public HempBlockInformation getInfos()
@@ -151,7 +152,7 @@ public class BlockHempDeko extends Block
 		public void registerToForge(Block par1)
 		{
 			MinecraftForge.setBlockHarvestLevel(par1, axe ? "axe" : "pickaxe", 0);
-			par1.setHardness(4F);
+			par1.setHardness(axe ? 1F : 2F);
 			par1.setResistance(axe ? 3F : 8F);
 		}
 		
