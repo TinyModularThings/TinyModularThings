@@ -6,6 +6,7 @@ import java.util.Random;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -66,6 +67,37 @@ public class InventoryUtil
 	public static int getPipeRotation(IBlockAccess par0, int x, int y, int z)
 	{
 		return getPipeRotationFromMeta(getMetadata(par0, x, y, z));
+	}
+	
+	public static int getFirstSlot(IInventory par1, int side)
+	{
+		if(par1 != null)
+		{
+			if(par1 instanceof ISidedInventory)
+			{
+				ISidedInventory inv = (ISidedInventory) par1;
+				int[] slots = inv.getAccessibleSlotsFromSide(side);
+				for(int i = 0;i<slots.length;i++)
+				{
+					int slot = slots[i];
+					if(par1.getStackInSlot(slot) != null)
+					{
+						return slot;
+					}
+				}
+			}
+			else
+			{
+				for(int i = 0;i<par1.getSizeInventory();i++)
+				{
+					if(par1.getStackInSlot(i) != null)
+					{
+						return i;
+					}
+				}
+			}
+		}
+		return -1;
 	}
 	
 	public static ItemStack splitStack(ItemStack par1, int size)

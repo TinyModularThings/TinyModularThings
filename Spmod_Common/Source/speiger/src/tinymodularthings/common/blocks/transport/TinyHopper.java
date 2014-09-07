@@ -1021,7 +1021,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	@Override
 	public boolean addUpgrade(HopperUpgrade par1)
 	{
-		if(HopperRegistry.canApplyUpgrade(par1, installedUpgrades) && par1.getUpgradeType() == this.type)
+		if(HopperRegistry.canApplyUpgrade(par1, installedUpgrades) && (par1.getUpgradeType() == this.type || par1.getUpgradeType() == HopperType.Nothing))
 		{
 			par1.onRegisterUpgrade(this);
 			return true;

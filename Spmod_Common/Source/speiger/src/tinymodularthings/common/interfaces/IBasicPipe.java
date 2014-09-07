@@ -23,4 +23,6 @@ public interface IBasicPipe
 	public PipeInformation getItemInformation(ItemStack par1);
 	
 	public PipeInformation getItemInforamtion(IBlockAccess world, int x, int y, int z);
+
+	public World getNextWorld(World world, int x, int y, int z);
 }

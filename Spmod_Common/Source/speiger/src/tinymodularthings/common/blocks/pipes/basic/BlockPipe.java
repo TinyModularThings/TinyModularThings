@@ -94,6 +94,12 @@ public class BlockPipe extends Block implements IBasicPipe
 		return info;
 	}
 	
+	@Override
+	public World getNextWorld(World world, int x, int y, int z)
+	{
+		return world;
+	}
+	
 	public static Block[] getBasicPipes()
 	{
 		Block[] array = new Block[] { TinyBlocks.smallPipe, TinyBlocks.normalPipe, TinyBlocks.mediumPipe, TinyBlocks.bigPipe, TinyBlocks.biggerPipe, TinyBlocks.largePipe, TinyBlocks.hugePipe };
@@ -387,5 +393,7 @@ public class BlockPipe extends Block implements IBasicPipe
 	{
 		notifyNeighbors(world, i, j, k);
 	}
+
+
 	
 }
