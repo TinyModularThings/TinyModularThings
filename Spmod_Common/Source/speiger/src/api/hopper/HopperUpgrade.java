@@ -12,17 +12,17 @@ public abstract interface HopperUpgrade
 	/**
 	 * @Info MainTick!
 	 */
-	public abstract void onTick(IHopper paramIHopper);
+	public abstract void onTick(IHopper par1);
 	
 	/**
 	 * save Function. So you can save your data
 	 */
-	public abstract void onNBTWrite(NBTTagCompound paramNBTTagCompound);
+	public abstract void onNBTWrite(NBTTagCompound nbt);
 	
 	/**
 	 * reading Function. Reading your NBTData
 	 */
-	public abstract void onNBTRead(NBTTagCompound paramNBTTagCompound);
+	public abstract void onNBTRead(NBTTagCompound nbt);
 	
 	/**
 	 * DisplayName.

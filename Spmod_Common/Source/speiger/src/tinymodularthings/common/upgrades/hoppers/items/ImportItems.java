@@ -10,15 +10,15 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.hopper.HopperRegistry.HopperEffect;
 import speiger.src.api.hopper.HopperUpgrade;
 import speiger.src.api.hopper.IHopper;
-import speiger.src.api.util.InventoryUtil;
+import speiger.src.api.util.WorldReading;
 import speiger.src.spmodapi.common.lib.bc.ITransactor;
+import speiger.src.spmodapi.common.lib.bc.SpmodStackFilter;
 import speiger.src.spmodapi.common.lib.bc.Transactor;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 
-public class ExportItems implements HopperUpgrade
+public class ImportItems implements HopperUpgrade
 {
 	
 	@Override
@@ -32,61 +32,34 @@ public class ExportItems implements HopperUpgrade
 		int x = par1.getXPos();
 		int y = par1.getYPos();
 		int z = par1.getZPos();
-		ForgeDirection head = ForgeDirection.getOrientation(par1.getRotation());
-		TileEntity tile = world.getBlockTileEntity(x+head.offsetX, y+head.offsetY, z+head.offsetZ);
+		ForgeDirection dir = ForgeDirection.getOrientation(par1.getFacing());
+		TileEntity tile = WorldReading.getTileEntity(world, x, y, z, dir.ordinal());
 		if(tile != null && tile instanceof IInventory)
 		{
-			IInventory hopper = par1.getInventory();
-			for(int slot = 0;slot<hopper.getSizeInventory();slot++)
-			{
-				if(sendItems(par1, (IInventory)tile, head.getOpposite(), par1.removeItemsFromHopper(slot, par1.getTransferlimit(HopperType.Items))))
-				{
-					if(par1.hasEffectApplied(HopperEffect.AllSlots))
-					{
-						continue;
-					}
-					return;
-				}
-			}
 			
 		}
 		
 	}
 	
-	public static boolean sendItems(IHopper par0, IInventory par1, ForgeDirection par2, ItemStack stack)
+	public static void getItems(IHopper par1, IInventory par2, ForgeDirection par3)
 	{
-		if(stack == null)
-		{
-			return false;
-		}
-		
-		ITransactor trans = Transactor.getTransactorFor(par1);
+		ITransactor trans = Transactor.getTransactorFor(par2);
 		if(trans == null)
 		{
-			par0.addItemsToHopper(stack);
-			return false;
+			return;
 		}
-		ItemStack copy = stack.copy();
-		ItemStack added = trans.add(stack, par2, true);
 		
-		if(added != null)
+		ItemStack stack = trans.remove(new SpmodStackFilter(null), par1.getTransferlimit(HopperType.Items), par3, false);
+		if(stack != null && stack.stackSize > 0)
 		{
-			copy.stackSize -= added.stackSize;
-			if(copy.stackSize > 0)
+			ItemStack added = par1.addItemsToHopper(stack);
+			if(added != null && added.stackSize > 0)
 			{
-				par0.addItemsToHopper(copy);
+				trans.remove(new SpmodStackFilter(null), added.stackSize, par3, true);
 			}
-			return true;
 		}
-		else
-		{
-			par0.addItemsToHopper(copy);
-		}
-		return false;
 	}
-		
-		
-
+	
 	@Override
 	public void onNBTWrite(NBTTagCompound nbt)
 	{
@@ -102,20 +75,20 @@ public class ExportItems implements HopperUpgrade
 	@Override
 	public String getUpgradeName()
 	{
-		return "Basic Export Items";
+		return "Basic Item Import";
 	}
 	
 	@Override
 	public String getNBTName()
 	{
-		return "item.export.basic";
+		return "item.import.basic";
 	}
 	
 	@Override
 	public void getInformationList(EntityPlayer player, List par2)
 	{
-		par2.add("Transfer Items");
-		par2.add("Only 1 Time useable");
+		par2.add("Import Items from Inventories");
+		par2.add("Only 1 time useable");
 	}
 	
 	@Override

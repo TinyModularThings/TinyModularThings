@@ -1,24 +1,23 @@
-package speiger.src.tinymodularthings.common.upgrades.hoppers.items;
+package speiger.src.tinymodularthings.common.upgrades.hoppers.fluids;
 
 import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.inventory.IInventory;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidHandler;
+import speiger.src.api.hopper.CopiedFluidTank;
 import speiger.src.api.hopper.HopperRegistry.HopperEffect;
 import speiger.src.api.hopper.HopperUpgrade;
 import speiger.src.api.hopper.IHopper;
-import speiger.src.api.util.InventoryUtil;
-import speiger.src.spmodapi.common.lib.bc.ITransactor;
-import speiger.src.spmodapi.common.lib.bc.Transactor;
+import speiger.src.api.util.WorldReading;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 
-public class ExportItems implements HopperUpgrade
+public class ExportFluids implements HopperUpgrade
 {
 	
 	@Override
@@ -32,14 +31,15 @@ public class ExportItems implements HopperUpgrade
 		int x = par1.getXPos();
 		int y = par1.getYPos();
 		int z = par1.getZPos();
-		ForgeDirection head = ForgeDirection.getOrientation(par1.getRotation());
-		TileEntity tile = world.getBlockTileEntity(x+head.offsetX, y+head.offsetY, z+head.offsetZ);
-		if(tile != null && tile instanceof IInventory)
+		ForgeDirection dir = ForgeDirection.getOrientation(par1.getRotation()).getOpposite();
+		TileEntity tile = WorldReading.getTileEntity(world, x, y, z, par1.getRotation());
+		if(tile != null && tile instanceof IFluidHandler)
 		{
-			IInventory hopper = par1.getInventory();
-			for(int slot = 0;slot<hopper.getSizeInventory();slot++)
+			CopiedFluidTank[] tank = par1.getFluidTank();
+			IFluidHandler target = (IFluidHandler) tile;
+			for(int i = 0;i<tank.length;i++)
 			{
-				if(sendItems(par1, (IInventory)tile, head.getOpposite(), par1.removeItemsFromHopper(slot, par1.getTransferlimit(HopperType.Items))))
+				if(exportFluids(par1, target, dir, par1.removeFluid(par1.getTransferlimit(HopperType.Fluids), i, false), i))
 				{
 					if(par1.hasEffectApplied(HopperEffect.AllSlots))
 					{
@@ -48,45 +48,29 @@ public class ExportItems implements HopperUpgrade
 					return;
 				}
 			}
-			
 		}
-		
 	}
 	
-	public static boolean sendItems(IHopper par0, IInventory par1, ForgeDirection par2, ItemStack stack)
+	public static boolean exportFluids(IHopper par0, IFluidHandler par1, ForgeDirection par2, FluidStack fluid, int tankSlot)
 	{
-		if(stack == null)
+		if(par1 == null || fluid == null)
 		{
 			return false;
 		}
 		
-		ITransactor trans = Transactor.getTransactorFor(par1);
-		if(trans == null)
+		if(par1.canFill(par2, fluid.getFluid()))
 		{
-			par0.addItemsToHopper(stack);
-			return false;
-		}
-		ItemStack copy = stack.copy();
-		ItemStack added = trans.add(stack, par2, true);
-		
-		if(added != null)
-		{
-			copy.stackSize -= added.stackSize;
-			if(copy.stackSize > 0)
+			int added = par1.fill(par2, fluid, true);
+			if(added > 0)
 			{
-				par0.addItemsToHopper(copy);
+				par0.removeFluid(added, tankSlot, true);
+				return true;
 			}
-			return true;
 		}
-		else
-		{
-			par0.addItemsToHopper(copy);
-		}
+		
 		return false;
 	}
-		
-		
-
+	
 	@Override
 	public void onNBTWrite(NBTTagCompound nbt)
 	{
@@ -102,20 +86,20 @@ public class ExportItems implements HopperUpgrade
 	@Override
 	public String getUpgradeName()
 	{
-		return "Basic Export Items";
+		return "Basic Fluid Export";
 	}
 	
 	@Override
 	public String getNBTName()
 	{
-		return "item.export.basic";
+		return "fluids.export.basic";
 	}
 	
 	@Override
 	public void getInformationList(EntityPlayer player, List par2)
 	{
-		par2.add("Transfer Items");
-		par2.add("Only 1 Time useable");
+		par2.add("Export Fluids");
+		par2.add("Can be used 1 time");
 	}
 	
 	@Override
@@ -145,7 +129,7 @@ public class ExportItems implements HopperUpgrade
 	@Override
 	public HopperType getUpgradeType()
 	{
-		return HopperType.Items;
+		return HopperType.Fluids;
 	}
 	
 }

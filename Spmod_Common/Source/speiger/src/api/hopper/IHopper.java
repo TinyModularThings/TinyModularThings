@@ -130,7 +130,7 @@ public abstract interface IHopper
 	
 	/**
 	 * Function for removing Fluid. 
-	 * @Simulate If you really want to remove it.
+	 * @Simulate If you really want to remove it. True == Draining for real
 	 * @return Removed amount. Can be null
 	 */
 	public abstract FluidStack removeFluid(int amount, int slot, boolean simulate);
