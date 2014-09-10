@@ -1,4 +1,4 @@
-package speiger.src.tinymodularthings.common.upgrades.hoppers.fluids;
+package speiger.src.tinymodularthings.common.upgrades.hoppers.energy;
 
 import java.util.List;
 
@@ -8,14 +8,13 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.IFluidHandler;
+import speiger.src.api.energy.EnergyUsageProvider;
 import speiger.src.api.hopper.HopperUpgrade;
 import speiger.src.api.hopper.IHopper;
 import speiger.src.api.util.WorldReading;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 
-public class ImportFluids implements HopperUpgrade
+public class ExportEnergy implements HopperUpgrade
 {
 	
 	@Override
@@ -31,57 +30,60 @@ public class ImportFluids implements HopperUpgrade
 		int z = par1.getZPos();
 		ForgeDirection dir = ForgeDirection.getOrientation(par1.getRotation()).getOpposite();
 		TileEntity tile = WorldReading.getTileEntity(world, x, y, z, par1.getFacing());
-		if(tile != null && tile instanceof IFluidHandler)
+		if(tile != null)
 		{
-			drainFluids(par1, (IFluidHandler)tile, dir, par1.getTransferlimit(HopperType.Fluids));
+			EnergyUsageProvider provider = EnergyUsageProvider.createUsageProvider(tile, dir.ordinal());
+			if(provider != null)
+			{
+				exportEnergy(par1, provider, dir, par1.getTransferlimit(HopperType.Energy));
+			}
 		}
 	}
 	
-	public static void drainFluids(IHopper par0, IFluidHandler par1, ForgeDirection par2, int transferlimit)
+	public static void exportEnergy(IHopper par1, EnergyUsageProvider par2, ForgeDirection par3, int transferlimit)
 	{
-		FluidStack fluid = par1.drain(par2, transferlimit, false);
-		
-		if(fluid == null || !par1.canDrain(par2, fluid.getFluid()))
+		if(par2 == null)
 		{
 			return;
 		}
-		
-		FluidStack added = par0.addFluid(fluid);
-		if(added != null && added.amount > 0)
+		int added = par1.getEnergyStorage().useEnergy(transferlimit, true);
+		if(added > 0)
 		{
-			par1.drain(par2, added, true);
+			int used = par2.addEnergy(added);
+			if(used > 0)
+			{
+				par1.getEnergyStorage().useEnergy(used, false);
+			}
 		}
 	}
 	
 	@Override
 	public void onNBTWrite(NBTTagCompound nbt)
 	{
-		
 	}
 	
 	@Override
 	public void onNBTRead(NBTTagCompound nbt)
 	{
-		
 	}
 	
 	@Override
 	public String getUpgradeName()
 	{
-		return "Basic Fluid Import";
+		return "Export Basic Energy";
 	}
 	
 	@Override
 	public String getNBTName()
 	{
-		return "fluids.import.basic";
+		return "energy.export.basic";
 	}
 	
 	@Override
 	public void getInformationList(EntityPlayer player, List par2)
 	{
-		par2.add("Import Fluids");
-		par2.add("Can be used 1 time");
+		par2.add("Transfer Energy");
+		par2.add("Only 1 Time useable");
 	}
 	
 	@Override
@@ -111,7 +113,7 @@ public class ImportFluids implements HopperUpgrade
 	@Override
 	public HopperType getUpgradeType()
 	{
-		return HopperType.Fluids;
+		return HopperType.Energy;
 	}
 	
 }

@@ -19,9 +19,14 @@ public class TinyHopperInventory extends AdvContainer
 		par2.playerJoins(par1.player);
 		this.clearInventory();
 		this.createInventory(false, par1, par2);
-		
-		
-
+	}
+	
+	public TinyHopperInventory(InventoryPlayer par1, IHopperInventory par2, boolean par3)
+	{
+		tile = par2;
+		par2.playerJoins(par1.player);
+		this.clearInventory();
+		this.createInventory(par3, par1, par2);
 	}
 	
 	public void createInventory(boolean filter, InventoryPlayer par1, IHopperInventory par2)

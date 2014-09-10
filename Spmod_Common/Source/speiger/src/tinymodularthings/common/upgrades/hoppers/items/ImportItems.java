@@ -36,12 +36,12 @@ public class ImportItems implements HopperUpgrade
 		TileEntity tile = WorldReading.getTileEntity(world, x, y, z, dir.ordinal());
 		if(tile != null && tile instanceof IInventory)
 		{
-			
+			getItems(par1, (IInventory)tile, dir, par1.getTransferlimit(HopperType.Items));
 		}
 		
 	}
 	
-	public static void getItems(IHopper par1, IInventory par2, ForgeDirection par3)
+	public static void getItems(IHopper par1, IInventory par2, ForgeDirection par3, int transferlimit)
 	{
 		ITransactor trans = Transactor.getTransactorFor(par2);
 		if(trans == null)

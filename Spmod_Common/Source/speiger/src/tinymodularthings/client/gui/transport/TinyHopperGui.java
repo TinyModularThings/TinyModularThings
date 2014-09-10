@@ -2,6 +2,7 @@ package speiger.src.tinymodularthings.client.gui.transport;
 
 import java.util.ArrayList;
 
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -20,12 +21,15 @@ import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
+import speiger.src.tinymodularthings.common.blocks.transport.TinyHopperInventory;
+import speiger.src.tinymodularthings.common.upgrades.hoppers.all.FilterUpgrade;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 
 public class TinyHopperGui extends GuiInventoryCore
 {
 	AdvTile tile;
 	InventoryPlayer inv;
+	boolean filter = false;
 	private static final ResourceLocation furnaceGuiTextures = new ResourceLocation("TinyModularThings".toLowerCase() + ":textures/gui/storage/StorageGui.png");
 	private static final ResourceLocation BLOCK_TEXTURE = TextureMap.locationBlocksTexture;
 	
@@ -34,18 +38,6 @@ public class TinyHopperGui extends GuiInventoryCore
 		super(par2.getInventory(par1));
 		tile = par2;
 		inv = par1;
-	}
-	
-	
-	
-	
-	@Override
-	public void initGui()
-	{
-		super.initGui();
-		this.buttonList.clear();
-		TinyHopper hopper = (TinyHopper) tile;
-		
 	}
 
 
@@ -65,6 +57,7 @@ public class TinyHopperGui extends GuiInventoryCore
 			fontRenderer.drawString("Stored Energy:", 50, 15, 4210752);
 			fontRenderer.drawString(text, 50, 25, 4210752);
 		}
+
 	}
 	
 	@Override
@@ -112,6 +105,7 @@ public class TinyHopperGui extends GuiInventoryCore
 			default:
 				break;
 		}
+		
 	}
 	
 	private void displayGauge(int j, int k, int line, int col, int squaled, FluidStack liquid)
@@ -159,4 +153,32 @@ public class TinyHopperGui extends GuiInventoryCore
 		mc.renderEngine.bindTexture(furnaceGuiTextures);
 		drawTexturedModalRect(j + col, k + line, 197, 25, 16, 60);
 	}
+
+
+
+
+	@Override
+	protected void actionPerformed(GuiButton par1)
+	{
+		if(par1 != null)
+		{
+			if(par1.id == 0)
+			{
+				TinyHopperInventory inv = (TinyHopperInventory) this.inventorySlots;
+				if(filter)
+				{
+					inv.createInventory(false, this.inv, (IHopperInventory)tile);
+					filter = false;
+				}
+				else
+				{
+					inv.createInventory(true, this.inv, (IHopperInventory)tile);
+					filter = true;
+				}
+			}
+		}
+	}
+	
+	
+	
 }

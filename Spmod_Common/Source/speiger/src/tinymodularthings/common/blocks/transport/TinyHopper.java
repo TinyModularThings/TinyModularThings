@@ -49,12 +49,14 @@ import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.transport.TinyHopperGui;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
+import speiger.src.tinymodularthings.common.upgrades.hoppers.all.FilterUpgrade;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -88,6 +90,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	{
 		type = ADV;
 		redstone = adv;
+		this.installedUpgrades.add(new FilterUpgrade());
 	}
 	
 	
@@ -338,69 +341,71 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	@Override
 	public boolean onClick(boolean sneak, EntityPlayer par1, Block par2, int side)
 	{
-		ItemStack item = par1.getCurrentEquippedItem();
-		if(item != null)
+		if(!worldObj.isRemote)
 		{
-			if(item.getItem() instanceof IToolWrench && ((IToolWrench)item.getItem()).canWrench(par1, xCoord, yCoord, zCoord))
+			ItemStack item = par1.getCurrentEquippedItem();
+			if(item != null)
 			{
-				if(sneak)
+				if(item.getItem() instanceof IToolWrench && ((IToolWrench)item.getItem()).canWrench(par1, xCoord, yCoord, zCoord))
 				{
-					int nextFacing = this.setNextFacing();
-					this.setFacing(nextFacing);
-					if(nextFacing == this.getRotation())
+					if(sneak)
 					{
-						this.setFacing(this.setNextFacing());
-					}
-				}
-				else
-				{
-					int nextRotation = this.setNextRotation();
-					this.setRotation(nextRotation);
-					if(nextRotation == this.getFacing())
-					{
-						this.setRotation(this.setNextRotation());
-					}
-				}
-				((IToolWrench)item.getItem()).wrenchUsed(par1, xCoord, yCoord, zCoord);
-				this.updateBlock();
-				return true;
-			}
-			else if(item.getItem() instanceof IHopperUpgradeItem)
-			{
-				IHopperUpgradeItem upgrade = (IHopperUpgradeItem) item.getItem();
-				if(upgrade != null)
-				{
-					HopperUpgrade hopper = upgrade.getUpgrade(item);
-					if(upgrade.isRemovingUpgrade(item))
-					{
-						if(installedUpgrades.contains(hopper))
+						int nextFacing = this.setNextFacing();
+						this.setFacing(nextFacing);
+						if(nextFacing == this.getRotation())
 						{
-							this.removeUpgrade(hopper);
+							this.setFacing(this.setNextFacing());
 						}
 					}
 					else
 					{
-						if(HopperRegistry.canApplyUpgrade(hopper, installedUpgrades))
+						int nextRotation = this.setNextRotation();
+						this.setRotation(nextRotation);
+						if(nextRotation == this.getFacing())
 						{
-							this.addUpgrade(hopper);
+							this.setRotation(this.setNextRotation());
 						}
 					}
-
+					((IToolWrench)item.getItem()).wrenchUsed(par1, xCoord, yCoord, zCoord);
+					this.updateBlock();
 					return true;
 				}
-			}
-			else
-			{
-				boolean preventOpening = false;
-				for(HopperUpgrade cu : this.installedUpgrades)
+				else if(item.getItem() instanceof IHopperUpgradeItem)
 				{
-					if(cu.onClick(sneak, par1, par2, this, side))
+					IHopperUpgradeItem upgrade = (IHopperUpgradeItem) item.getItem();
+					if(upgrade != null)
 					{
-						preventOpening = true;
+						HopperUpgrade hopper = upgrade.getUpgrade(item);
+						if(upgrade.isRemovingUpgrade(item))
+						{
+							if(installedUpgrades.contains(hopper))
+							{
+								this.removeUpgrade(hopper);
+							}
+						}
+						else
+						{
+							if(HopperRegistry.canApplyUpgrade(hopper, installedUpgrades))
+							{
+								this.addUpgrade(hopper);
+							}
+						}
+
+						return true;
 					}
 				}
-				return preventOpening;
+
 			}
+			boolean preventOpening = false;
+			for(HopperUpgrade cu : this.installedUpgrades)
+			{
+				if(cu.onClick(sneak, par1, par2, this, side))
+				{
+					preventOpening = true;
+				}
+			}
+			return preventOpening;
+			
 		}
 
 		return false;

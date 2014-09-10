@@ -47,7 +47,15 @@ public class HopperRegistry
 	
 	public static HopperUpgrade getHopperUpgradeFromNBT(String name)
 	{
-		return upgrades.get(name);
+		try
+		{
+			return upgrades.get(name).getClass().newInstance();
+		}
+		catch (Exception e)
+		{
+			
+		}
+		return null;
 	}
 	
 	public static enum HopperEffect
