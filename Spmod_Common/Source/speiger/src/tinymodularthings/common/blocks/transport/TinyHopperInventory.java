@@ -3,91 +3,48 @@ package speiger.src.tinymodularthings.common.blocks.transport;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import speiger.src.api.hopper.IHopperInventory;
-import speiger.src.api.inventory.FilterSlot;
-import speiger.src.api.inventory.IFilteredInventory;
 import speiger.src.api.inventory.TankSlot;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 
 public class TinyHopperInventory extends AdvContainer
 {
 	IHopperInventory tile;
-	
 	public TinyHopperInventory(InventoryPlayer par1, IHopperInventory par2)
 	{
 		tile = par2;
 		par2.playerJoins(par1.player);
-		this.clearInventory();
-		this.createInventory(false, par1, par2);
-	}
-	
-	public TinyHopperInventory(InventoryPlayer par1, IHopperInventory par2, boolean par3)
-	{
-		tile = par2;
-		par2.playerJoins(par1.player);
-		this.clearInventory();
-		this.createInventory(par3, par1, par2);
-	}
-	
-	public void createInventory(boolean filter, InventoryPlayer par1, IHopperInventory par2)
-	{
-		if(filter)
+		switch (par2.getHopperType())
 		{
-			switch(par2.getHopperType())
-			{
-				case Fluids:
-					Slot[] slots = par2.getSlots();
-					for(int i = 0;i<slots.length;i++)
-					{
-						this.addSpmodSlotToContainer(new FilterSlot((IFilteredInventory) par2, i, slots[i].xDisplayPosition, slots[i].yDisplayPosition));
-					}
-					break;
-				case Items:
-					Slot[] slots1 = par2.getSlots();
-					for(int i = 0;i<slots1.length;i++)
-					{
-						this.addSpmodSlotToContainer(new FilterSlot((IFilteredInventory) par2, i, slots1[i].xDisplayPosition, slots1[i].yDisplayPosition));
-					}
-					break;
-				default:
-					break;
+			case Items:
+				Slot[] slots = par2.getSlots();
+				for (Slot cu : slots)
+				{
+					addSpmodSlotToContainer(cu);
+				}
 				
-			}
+				break;
+			case Energy:
+				Slot[] slots1 = par2.getSlots();
+				for (Slot cu : slots1)
+				{
+					addSpmodSlotToContainer(cu);
+				}
+				break;
+			case Fluids:
+				TankSlot[] slot = par2.getTanks();
+				for (int i = 0; i < slot.length; i++)
+				{
+					if (slot[i] != null)
+					{
+						addTankSlot(slot[i]);
+					}
+				}
+				break;
+			case Nothing:
+				break;
 		}
-		else
-		{
-			switch (par2.getHopperType())
-			{
-				case Items:
-					Slot[] slots = par2.getSlots();
-					for (Slot cu : slots)
-					{
-						addSpmodSlotToContainer(cu);
-					}
-					
-					break;
-				case Energy:
-					Slot[] slots1 = par2.getSlots();
-					for (Slot cu : slots1)
-					{
-						addSpmodSlotToContainer(cu);
-					}
-					break;
-				case Fluids:
-					TankSlot[] slot = par2.getTanks();
-					for (int i = 0; i < slot.length; i++)
-					{
-						if (slot[i] != null)
-						{
-							addTankSlot(slot[i]);
-						}
-					}
-					break;
-				case Nothing:
-					break;
-			}
-		}
-		
 		
 		int var3;
 		for (var3 = 0; var3 < 3; var3++)
@@ -105,14 +62,6 @@ public class TinyHopperInventory extends AdvContainer
 	}
 	
 	@Override
-	public void clearInventory()
-	{
-		super.clearInventory();
-		this.inventoryItemStacks.clear();
-		this.inventorySlots.clear();
-	}
-	
-	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer)
 	{
 		return true;
@@ -123,5 +72,50 @@ public class TinyHopperInventory extends AdvContainer
 	{
 		super.onContainerClosed(par1EntityPlayer);
 		tile.playerLeaves(par1EntityPlayer);
+	}
+	
+	@Override
+	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
+	{
+		int size = tile.getSlots().length;
+		
+		ItemStack itemstack = null;
+		Slot slot = (Slot) inventorySlots.get(par2);
+		
+		if (slot != null && slot.getHasStack())
+		{
+			ItemStack itemstack1 = slot.getStack();
+			itemstack = itemstack1.copy();
+			
+			if (par2 < size)
+			{
+				if (!mergeItemStack(itemstack1, size, 36 + size, true))
+				{
+					return null;
+				}
+			}
+			else if (!mergeItemStack(itemstack1, 0, size, false))
+			{
+				return null;
+			}
+			
+			if (itemstack1.stackSize == 0)
+			{
+				slot.putStack((ItemStack) null);
+			}
+			else
+			{
+				slot.onSlotChanged();
+			}
+			
+			if (itemstack1.stackSize == itemstack.stackSize)
+			{
+				return null;
+			}
+			
+			slot.onPickupFromSlot(par1EntityPlayer, itemstack1);
+		}
+		
+		return itemstack;
 	}
 }

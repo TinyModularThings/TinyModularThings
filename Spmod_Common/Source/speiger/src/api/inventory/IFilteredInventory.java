@@ -1,10 +1,8 @@
 package speiger.src.api.inventory;
 
-import net.minecraft.item.ItemStack;
+import net.minecraft.inventory.IInventory;
 
 public interface IFilteredInventory
 {
-	public ItemStack getFilteredItem(int slotID);
-
-	public void setFilteredItem(int slotID, ItemStack par1);
+	IInventory getFilterInventory();
 }

@@ -2,8 +2,6 @@ package speiger.src.tinymodularthings.common.upgrades.hoppers.all;
 
 import java.util.List;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,13 +11,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import speiger.src.api.hopper.HopperUpgrade;
 import speiger.src.api.hopper.IHopper;
-import speiger.src.api.hopper.IHopperInventory;
 import speiger.src.api.hopper.IUpgradeGuiProvider;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.api.inventory.IFilteredInventory;
 import speiger.src.tinymodularthings.TinyModularThings;
-import speiger.src.tinymodularthings.client.gui.transport.TinyHopperGui;
-import speiger.src.tinymodularthings.common.blocks.transport.TinyHopperInventory;
 import speiger.src.tinymodularthings.common.enums.HopperUpgradeIDs;
+import speiger.src.tinymodularthings.common.upgrades.hoppers.guis.FilterGui;
+import speiger.src.tinymodularthings.common.upgrades.hoppers.guis.FilterInventory;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 
 public class FilterUpgrade implements HopperUpgrade, IUpgradeGuiProvider
@@ -104,13 +101,13 @@ public class FilterUpgrade implements HopperUpgrade, IUpgradeGuiProvider
 	@Override
 	public GuiContainer getGui(InventoryPlayer par1, IHopper par2)
 	{
-		return new TinyHopperGui(par1, (AdvTile) par2);
+		return new FilterGui(getInventory(par1, par2));
 	}
 
 	@Override
 	public Container getInventory(InventoryPlayer par1, IHopper par2)
 	{
-		return new TinyHopperInventory(par1, (IHopperInventory) par2, true);
+		return new FilterInventory(par1, ((IFilteredInventory)par2).getFilterInventory(), par2.getHopperType());
 	}
 	
 }

@@ -2,6 +2,8 @@ package speiger.src.api.util;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.common.FMLLog;
+
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -135,16 +137,13 @@ public class FluidUtils
 		for (int i = 0; i < tanks.length; i++)
 		{
 			FluidTank cuTank = tanks[i];
-			if (cuTank != null && cuTank.getFluid() != null && cuTank.getCapacity() > cuTank.getFluid().amount)
+			if (cuTank != null && cuTank.getCapacity() > cuTank.getFluidAmount())
 			{
 				FluidStack stacks = cuTank.getFluid();
-				if (((items[i] != null && FluidContainerRegistry.isFilledContainer(items[i]) && FluidContainerRegistry.getFluidForFilledItem(items[i]).isFluidEqual(stack)) || items[i] == null))
+				if ((items[i] != null && FluidContainerRegistry.isFilledContainer(items[i]) && FluidContainerRegistry.getFluidForFilledItem(items[i]).isFluidEqual(stack)))
 				{
-					if (stacks != null && stacks.isFluidEqual(stack))
-					{
-						tank = cuTank;
-						break;
-					}
+					tank = cuTank;
+					break;
 				}
 			}
 		}
@@ -161,13 +160,22 @@ public class FluidUtils
 	{
 		for (int i = 0; i < tanks.length; i++)
 		{
-			FluidStack fluid = tanks[i].getFluid();
-			ItemStack filter = items[i];
-			if (fluid != null && fluid.getFluid() == null && (filter == null || (filter != null && FluidContainerRegistry.isFilledContainer(filter) && FluidContainerRegistry.getFluidForFilledItem(filter).isFluidEqual(input))))
+			ItemStack stack = items[i];
+			if(stack == null)
 			{
-				return tanks[i];
+				FluidTank tank = tanks[i];
+				if(tank.getFluid() == null)
+				{
+					return tank;
+				}
+				else
+				{
+					if(tank.getFluid().isFluidEqual(input))
+					{
+						return tank;
+					}
+				}
 			}
-			
 		}
 		
 		return null;

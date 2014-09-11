@@ -1,6 +1,7 @@
 package speiger.src.api.hopper;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.inventory.TankSlot;
@@ -18,9 +19,8 @@ public abstract interface IHopperInventory
 	
 	public abstract TankSlot[] getTanks();
 	
-	public abstract ItemStack[] getFilter();
+	public abstract IInventory getFilter();
 	
 	public abstract ItemStack getFilter(int id);
 	
-	public abstract int getFilterSize();
 }

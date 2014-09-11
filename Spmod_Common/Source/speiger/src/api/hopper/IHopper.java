@@ -206,6 +206,11 @@ public abstract interface IHopper
 	public abstract boolean removeUpgrade(HopperUpgrade par1);
 	
 	/**
+	 * @Return what kind of hopper it is
+	 */
+	public abstract HopperType getHopperType();
+	
+	/**
 	 * @return ModelTexture
 	 */
 	@SideOnly(Side.CLIENT)

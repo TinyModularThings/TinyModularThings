@@ -13,6 +13,7 @@ import speiger.src.api.hopper.IUpgradeGuiProvider;
 import speiger.src.api.items.IItemGui;
 import speiger.src.api.nbt.DataStorage;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 import speiger.src.tinymodularthings.common.commands.RenderCommand;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
@@ -87,17 +88,14 @@ public class TinyModularThingsCore implements IGuiHandler
 		}
 		else if(EnumIDs.HopperUpgrades.isInRange(ID))
 		{
-			if(tile != null && tile instanceof IHopper)
+			if(tile != null && tile instanceof TinyHopper)
 			{
-				IHopper hopper = (IHopper) tile;
+				TinyHopper hopper = (TinyHopper) tile;
 				int left = ID - EnumIDs.HopperUpgrades.getId();
 				HopperUpgradeIDs upgrade = HopperUpgradeIDs.values()[left];
-				int index = hopper.getUpgrades().indexOf();
-				FMLLog.getLogger().info("Index: "+index);
-				if(index != -1)
+				HopperUpgrade iUpgrade = HopperRegistry.getHopperUpgradeFromNBT(upgrade.getUpgradeClass());
+				if(iUpgrade != null)
 				{
-					
-					HopperUpgrade iUpgrade = hopper.getUpgrades().get(index);
 					if(iUpgrade instanceof IUpgradeGuiProvider)
 					{
 						return ((IUpgradeGuiProvider)iUpgrade).getInventory(player.inventory, hopper);
@@ -159,10 +157,9 @@ public class TinyModularThingsCore implements IGuiHandler
 				IHopper hopper = (IHopper) tile;
 				int left = ID - EnumIDs.HopperUpgrades.getId();
 				HopperUpgradeIDs upgrade = HopperUpgradeIDs.values()[left];
-				int index = hopper.getUpgrades().indexOf(HopperRegistry.getHopperUpgradeFromNBT(upgrade.getUpgradeClass()));
-				if(index != -1)
+				HopperUpgrade iUpgrade = HopperRegistry.getHopperUpgradeFromNBT(upgrade.getUpgradeClass());
+				if(iUpgrade != null)
 				{
-					HopperUpgrade iUpgrade = hopper.getUpgrades().get(index);
 					if(iUpgrade instanceof IUpgradeGuiProvider)
 					{
 						return ((IUpgradeGuiProvider)iUpgrade).getGui(player.inventory, hopper);

@@ -199,6 +199,11 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 	
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
 	{
+		if(par2ItemStack != null && !(par2ItemStack.getItem() instanceof IRotorItem))
+		{
+			return;
+		}
+		
 		this.inv[par1] = par2ItemStack;
 		
 		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())

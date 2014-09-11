@@ -157,27 +157,7 @@ public class TinyHopperGui extends GuiInventoryCore
 
 
 
-	@Override
-	protected void actionPerformed(GuiButton par1)
-	{
-		if(par1 != null)
-		{
-			if(par1.id == 0)
-			{
-				TinyHopperInventory inv = (TinyHopperInventory) this.inventorySlots;
-				if(filter)
-				{
-					inv.createInventory(false, this.inv, (IHopperInventory)tile);
-					filter = false;
-				}
-				else
-				{
-					inv.createInventory(true, this.inv, (IHopperInventory)tile);
-					filter = true;
-				}
-			}
-		}
-	}
+
 	
 	
 	

@@ -51,6 +51,7 @@ import speiger.src.tinymodularthings.client.gui.transport.TinyHopperGui;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.upgrades.hoppers.all.FilterUpgrade;
 import speiger.src.tinymodularthings.common.utils.HopperType;
+import speiger.src.tinymodularthings.common.utils.slot.InventoryFilter;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
@@ -69,7 +70,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	public boolean allSlots = false;
 	public ArrayList<EntityPlayer> users = new ArrayList<EntityPlayer>();
 	public ItemStack[] inventory = new ItemStack[0];
-	public ItemStack[] filter = new ItemStack[0];
+	public InventoryFilter filter = new InventoryFilter(0);
 	public int InventoryMode = -1;
 	public AdvancedFluidTank[] tanks = new AdvancedFluidTank[0];
 	public EnergyProvider energy = new EnergyProvider(this, 25000).setPowerLoss(1);
@@ -115,11 +116,16 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	
 	public void updateMode()
 	{
+		if(this.InventoryMode < 0)
+		{
+			return;
+		}
+		
 		switch (type)
 		{
 			case Items:
 				this.inventory = new ItemStack[this.InventoryMode];
-				this.filter = new ItemStack[this.InventoryMode];
+				this.filter = new InventoryFilter(this.InventoryMode);
 				break;
 			case Fluids:
 				this.tanks = new AdvancedFluidTank[this.InventoryMode];
@@ -127,7 +133,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 				{
 					this.tanks[i] = new AdvancedFluidTank(this, "BasicHopperTank_" + i, 16000);
 				}
-				this.filter = new ItemStack[this.InventoryMode];
+				this.filter = new InventoryFilter(this.InventoryMode);
 				break;
 			case Energy:
 				inventory = new ItemStack[this.InventoryMode];
@@ -696,17 +702,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 			}
 		}
 		
-		NBTTagList filters = nbt.getTagList("Filter");
-		for(int i = 0;i<filters.tagCount();i++)
-		{
-			NBTTagCompound nbt1 = (NBTTagCompound) filters.tagAt(i);
-			byte slot = nbt1.getByte("Slot");
-			if(slot >= 0 && slot < filter.length)
-			{
-				filter[slot] = ItemStack.loadItemStackFromNBT(nbt1);
-			}
-		}
-		
 		NBTTagList upgrades = nbt.getTagList("Upgrades");
 		for (int i = 0; i < upgrades.tagCount(); i++)
 		{
@@ -724,6 +719,9 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 			NBTTagCompound player = (NBTTagCompound) players.tagAt(i);
 			users.add(worldObj.getPlayerEntityByName(player.getString("Name")));
 		}
+		
+		NBTTagCompound filterNBT = nbt.getCompoundTag("Filter");
+		filter.readFromNBT(filterNBT);
 	}
 	
 	@Override
@@ -742,6 +740,9 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		nbt.setInteger("rotation", rotation);
 		nbt.setString("Owner", owner);
 		energy.writeToNBT(nbt);
+		NBTTagCompound filter = new NBTTagCompound();
+		this.filter.writeToNBT(filter);
+		nbt.setCompoundTag("Filter", filter);
 		
 		NBTTagList tanksdata = new NBTTagList();
 		for (int i = 0; i < tanks.length; i++)
@@ -767,19 +768,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 			}
 		}
 		nbt.setTag("Items", nbttaglist);
-		
-		NBTTagList filters = new NBTTagList();
-		for(int i = 0;i<filter.length;i++)
-		{
-			if(filter[i] != null)
-			{
-				NBTTagCompound nbt1 = new NBTTagCompound();
-				nbt1.setByte("Slot", (byte)i);
-				filter[i].writeToNBT(nbt1);
-				filters.appendTag(nbt1);
-			}
-		}
-		nbt.setTag("Filter", filters);
 		
 		NBTTagList upgrades = new NBTTagList();
 		for (int i = 0; i < installedUpgrades.size(); i++)
@@ -852,7 +840,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		{
 			return 0;
 		}
-		FluidTank validTank = FluidUtils.getPossibleTankFromFluidAndFilter(tanks, resource, this.filter);
+		FluidTank validTank = FluidUtils.getPossibleTankFromFluidAndFilter(tanks, resource, this.filter.getItems());
 		if (validTank == null)
 		{
 			return 0;
@@ -1063,7 +1051,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		{
 			return false;
 		}
-		if(filter[i] == null || (filter[i] != null && filter[i].isItemEqual(itemstack)))
+		if(filter.getStackInSlot(i) == null || (filter.getStackInSlot(i) != null && filter.getStackInSlot(i).isItemEqual(itemstack)))
 		{
 			return true;
 		}
@@ -1076,35 +1064,9 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		return true;
 	}
 
-	@Override
-	public ItemStack[] getFilter()
-	{
-		return filter;
-	}
 
-	@Override
-	public ItemStack getFilter(int id)
-	{
-		return filter[id];
-	}
 
-	@Override
-	public int getFilterSize()
-	{
-		return this.getFilter().length;
-	}
 
-	@Override
-	public ItemStack getFilteredItem(int slotID)
-	{
-		return filter[slotID];
-	}
-
-	@Override
-	public void setFilteredItem(int slotID, ItemStack par1)
-	{
-		filter[slotID] = par1;
-	}
 
 	@Override
 	public boolean canEmitPowerFrom(ForgeDirection side)
@@ -1159,6 +1121,25 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	public IOwner getOwners()
 	{
 		return null;
+	}
+
+	@Override
+	public IInventory getFilterInventory()
+	{
+		return filter;
+	}
+
+
+	@Override
+	public ItemStack getFilter(int id)
+	{
+		return filter.getStackInSlot(id);
+	}
+
+	@Override
+	public IInventory getFilter()
+	{
+		return filter;
 	}
 
 	
