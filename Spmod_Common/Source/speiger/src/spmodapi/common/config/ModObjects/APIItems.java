@@ -17,7 +17,7 @@ public class APIItems
 	public static Item hempLeggings;
 	public static Item hempBoots;
 	
-	//Crafting
+	// Crafting
 	public static Item gears;
 	public static Item blueDye;
 	public static Item colorCard;
@@ -27,19 +27,18 @@ public class APIItems
 	public static ItemStack[] hempPlates;
 	public static Item hempResinBucket;
 	
-	//ExpBottle 
+	// ExpBottle
 	public static Item expBottles;
 	
-	//Mob Machine
+	// Mob Machine
 	public static Item mobMachineHelper;
 	
-	//Bone
+	// Bone
 	public static Item boneChicken;
 	public static Item bonePig;
 	public static Item boneCow;
 	public static Item boneMooshroom;
 	public static Item boneSheep;
 	public static Item boneHorse;
-	
 	
 }

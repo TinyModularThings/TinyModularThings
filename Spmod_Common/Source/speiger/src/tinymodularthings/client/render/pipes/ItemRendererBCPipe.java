@@ -18,23 +18,24 @@ public class ItemRendererBCPipe implements IItemRenderer
 {
 	public static ItemRendererBCPipe pipe = new ItemRendererBCPipe();
 	
-	private void renderPipeItem(RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ) {
-
+	private void renderPipeItem(RenderBlocks render, ItemStack item, float translateX, float translateY, float translateZ)
+	{
+		
 		try
 		{
 			// GL11.glBindTexture(GL11.GL_TEXTURE_2D, 10);
 			Tessellator tessellator = Tessellator.instance;
-
+			
 			Block block = BuildCraftTransport.genericPipeBlock;
 			Icon icon = item.getItem().getIconFromDamage(0);
-
+			
 			if (icon == null)
 				icon = ((TextureMap) Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
-
+			
 			block.setBlockBounds(CoreConstants.PIPE_MIN_POS, 0.0F, CoreConstants.PIPE_MIN_POS, CoreConstants.PIPE_MAX_POS, 1.0F, CoreConstants.PIPE_MAX_POS);
 			block.setBlockBoundsForItemRender();
 			render.setRenderBoundsFromBlock(block);
-
+			
 			GL11.glTranslatef(translateX, translateY, translateZ);
 			tessellator.startDrawingQuads();
 			tessellator.setNormal(0.0F, -1F, 0.0F);
@@ -65,16 +66,18 @@ public class ItemRendererBCPipe implements IItemRenderer
 		}
 		catch (Exception e)
 		{
-		
+			
 		}
 	}
-
+	
 	/**
 	 * IItemRenderer implementation *
 	 */
 	@Override
-	public boolean handleRenderType(ItemStack item, ItemRenderType type) {
-		switch (type) {
+	public boolean handleRenderType(ItemStack item, ItemRenderType type)
+	{
+		switch (type)
+		{
 			case ENTITY:
 				return true;
 			case EQUIPPED:
@@ -87,15 +90,18 @@ public class ItemRendererBCPipe implements IItemRenderer
 				return false;
 		}
 	}
-
+	
 	@Override
-	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper) {
+	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
+	{
 		return true;
 	}
-
+	
 	@Override
-	public void renderItem(ItemRenderType type, ItemStack item, Object... data) {
-		switch (type) {
+	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
+	{
+		switch (type)
+		{
 			case ENTITY:
 				renderPipeItem((RenderBlocks) data[0], item, -0.5f, -0.5f, -0.5f);
 				break;

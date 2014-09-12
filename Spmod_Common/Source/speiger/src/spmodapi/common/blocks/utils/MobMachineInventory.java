@@ -19,7 +19,7 @@ public class MobMachineInventory extends AdvContainer
 	{
 		super(par1);
 		tile = par2;
-		addSpmodSlotToContainer(new Slot(par2, 0, 115, 13));//Output
+		addSpmodSlotToContainer(new Slot(par2, 0, 115, 13));// Output
 		addSpmodSlotToContainer(new Slot(par2, 1, 133, 13));
 		addSpmodSlotToContainer(new Slot(par2, 2, 151, 13));
 		addSpmodSlotToContainer(new Slot(par2, 3, 115, 31));
@@ -27,10 +27,10 @@ public class MobMachineInventory extends AdvContainer
 		addSpmodSlotToContainer(new Slot(par2, 5, 151, 31));
 		addSpmodSlotToContainer(new Slot(par2, 6, 115, 49));
 		addSpmodSlotToContainer(new Slot(par2, 7, 133, 49));
-		addSpmodSlotToContainer(new Slot(par2, 8, 151, 49));//Output End
-		addSpmodSlotToContainer(new Slot(par2, 9, 6, 53));//Food
-		addSpmodSlotToContainer(new SlotAdjust(par2, 10, 54, 53, IEssens.class));//Fuel
-		addSpmodSlotToContainer(new SlotAdjust(par2, 11, 30, 53, IExpBottle.class));//Exp
+		addSpmodSlotToContainer(new Slot(par2, 8, 151, 49));// Output End
+		addSpmodSlotToContainer(new Slot(par2, 9, 6, 53));// Food
+		addSpmodSlotToContainer(new SlotAdjust(par2, 10, 54, 53, IEssens.class));// Fuel
+		addSpmodSlotToContainer(new SlotAdjust(par2, 11, 30, 53, IExpBottle.class));// Exp
 	}
 	
 	@Override

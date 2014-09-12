@@ -2,8 +2,6 @@ package speiger.src.api.util;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
@@ -161,16 +159,16 @@ public class FluidUtils
 		for (int i = 0; i < tanks.length; i++)
 		{
 			ItemStack stack = items[i];
-			if(stack == null)
+			if (stack == null)
 			{
 				FluidTank tank = tanks[i];
-				if(tank.getFluid() == null)
+				if (tank.getFluid() == null)
 				{
 					return tank;
 				}
 				else
 				{
-					if(tank.getFluid().isFluidEqual(input))
+					if (tank.getFluid().isFluidEqual(input))
 					{
 						return tank;
 					}
@@ -180,19 +178,19 @@ public class FluidUtils
 		
 		return null;
 	}
-
+	
 	public static boolean areTankFull(IFluidHandler tank)
 	{
 		ArrayList<FluidTankInfo> list = new ArrayList<FluidTankInfo>();
-		for(ForgeDirection dir : ForgeDirection.values())
+		for (ForgeDirection dir : ForgeDirection.values())
 		{
-			for(FluidTankInfo info : tank.getTankInfo(dir))
+			for (FluidTankInfo info : tank.getTankInfo(dir))
 			{
-				if(info.fluid == null)
+				if (info.fluid == null)
 				{
 					return false;
 				}
-				if(info.capacity > info.fluid.amount)
+				if (info.capacity > info.fluid.amount)
 				{
 					return false;
 				}

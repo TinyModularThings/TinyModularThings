@@ -22,7 +22,7 @@ public class ImportFluids implements HopperUpgrade
 	public void onTick(IHopper par1)
 	{
 		World world = par1.getWorld();
-		if(world.isRemote)
+		if (world.isRemote)
 		{
 			return;
 		}
@@ -31,9 +31,9 @@ public class ImportFluids implements HopperUpgrade
 		int z = par1.getZPos();
 		ForgeDirection dir = ForgeDirection.getOrientation(par1.getRotation()).getOpposite();
 		TileEntity tile = WorldReading.getTileEntity(world, x, y, z, par1.getFacing());
-		if(tile != null && tile instanceof IFluidHandler)
+		if (tile != null && tile instanceof IFluidHandler)
 		{
-			drainFluids(par1, (IFluidHandler)tile, dir, par1.getTransferlimit(HopperType.Fluids));
+			drainFluids(par1, (IFluidHandler) tile, dir, par1.getTransferlimit(HopperType.Fluids));
 		}
 	}
 	
@@ -41,13 +41,13 @@ public class ImportFluids implements HopperUpgrade
 	{
 		FluidStack fluid = par1.drain(par2, transferlimit, false);
 		
-		if(fluid == null || !par1.canDrain(par2, fluid.getFluid()))
+		if (fluid == null || !par1.canDrain(par2, fluid.getFluid()))
 		{
 			return;
 		}
 		
 		FluidStack added = par0.addFluid(fluid);
-		if(added != null && added.amount > 0)
+		if (added != null && added.amount > 0)
 		{
 			par1.drain(par2, added, true);
 		}

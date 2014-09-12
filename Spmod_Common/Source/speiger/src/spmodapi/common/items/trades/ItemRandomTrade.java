@@ -1,7 +1,6 @@
 package speiger.src.spmodapi.common.items.trades;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiScreen;
@@ -41,7 +40,7 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 		this.setHasSubtypes(true);
 		this.setCreativeTab(APIUtils.tabHemp);
 	}
-
+	
 	@Override
 	public void registerItems(int id, SpmodMod par0)
 	{
@@ -58,26 +57,26 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		this.itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase()+":crafting/random_Trade");
+		this.itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":crafting/random_Trade");
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
 		par3.add(new ItemStack(par1, 1, 0));
-		for(int i = 1;i<recipeList.size();i++)
+		for (int i = 1; i < recipeList.size(); i++)
 		{
 			par3.add(new ItemStack(par1, 1, i));
 		}
 	}
-
+	
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1, World par2World, EntityPlayer par3EntityPlayer)
 	{
-		if(!par2World.isRemote)
+		if (!par2World.isRemote)
 		{
-			if(par3EntityPlayer.isSneaking())
+			if (par3EntityPlayer.isSneaking())
 			{
 				this.addRecipes(recipeList);
 				par3EntityPlayer.sendChatToPlayer(LanguageRegister.createChatMessage("Relefresed Recipe List"));
@@ -89,14 +88,14 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 		}
 		return par1;
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
 	{
-		if(recipeList.isEmpty())
+		if (recipeList.isEmpty())
 		{
-			if(!secondTry)
+			if (!secondTry)
 			{
 				secondTry = true;
 				CountdownTick.loadRecipes(par2);
@@ -109,40 +108,40 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 		boolean first = recipe.getItemToBuy() != null;
 		boolean second = recipe.getSecondItemToBuy() != null;
 		
-		if(first && !second)
+		if (first && !second)
 		{
-			par3.add("Trade: x"+recipe.getItemToBuy().stackSize+" "+recipe.getItemToBuy().getDisplayName()+" = x"+recipe.getItemToSell().stackSize+" "+recipe.getItemToSell().getDisplayName());
+			par3.add("Trade: x" + recipe.getItemToBuy().stackSize + " " + recipe.getItemToBuy().getDisplayName() + " = x" + recipe.getItemToSell().stackSize + " " + recipe.getItemToSell().getDisplayName());
 		}
-		else if(!first && second)
+		else if (!first && second)
 		{
-			par3.add("Trade: x"+recipe.getSecondItemToBuy().stackSize+" "+recipe.getSecondItemToBuy().getDisplayName()+" = x"+recipe.getItemToSell().stackSize+" "+recipe.getItemToSell().getDisplayName());
+			par3.add("Trade: x" + recipe.getSecondItemToBuy().stackSize + " " + recipe.getSecondItemToBuy().getDisplayName() + " = x" + recipe.getItemToSell().stackSize + " " + recipe.getItemToSell().getDisplayName());
 		}
 		else
 		{
-			par3.add("Trade: x"+recipe.getItemToBuy().stackSize+" "+recipe.getItemToBuy().getDisplayName()+" + x"+recipe.getSecondItemToBuy().stackSize+" "+recipe.getSecondItemToBuy().getDisplayName()+" = x"+recipe.getItemToSell().stackSize+" "+recipe.getItemToSell().getDisplayName());
+			par3.add("Trade: x" + recipe.getItemToBuy().stackSize + " " + recipe.getItemToBuy().getDisplayName() + " + x" + recipe.getSecondItemToBuy().stackSize + " " + recipe.getSecondItemToBuy().getDisplayName() + " = x" + recipe.getItemToSell().stackSize + " " + recipe.getItemToSell().getDisplayName());
 		}
-		par3.add(LanguageRegister.getLanguageName(new InfoStack(), "trade.size", SpmodAPI.instance)+" "+recipeList.size());
+		par3.add(LanguageRegister.getLanguageName(new InfoStack(), "trade.size", SpmodAPI.instance) + " " + recipeList.size());
 	}
-
+	
 	@Override
 	public boolean hasGui(ItemStack par1)
 	{
 		return true;
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public GuiScreen getGui(InventoryPlayer par1, ItemStack par2)
 	{
-		return new GuiTrade(par1, (IItemGui)par2.getItem());
+		return new GuiTrade(par1, (IItemGui) par2.getItem());
 	}
-
+	
 	@Override
 	public boolean hasContainer(ItemStack par1)
 	{
 		return true;
 	}
-
+	
 	@Override
 	public Container getContainer(InventoryPlayer par1, ItemStack par2)
 	{
@@ -151,16 +150,16 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	
 	public static void addRecipes(ArrayList<MerchantRecipe> par1)
 	{
-		for(int i = 0;i<par1.size();i++)
+		for (int i = 0; i < par1.size(); i++)
 		{
 			MerchantRecipe recipe = par1.get(i);
-			if(!recipeList.contains(recipe))
+			if (!recipeList.contains(recipe))
 			{
 				recipeList.add(recipe);
 			}
 			
 		}
-		for(int i = 0;i<recipeList.size();i++)
+		for (int i = 0; i < recipeList.size(); i++)
 		{
 			NBTTagCompound nbt = recipeList.get(i).writeToTags();
 			/**
@@ -174,7 +173,7 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	public static ItemStack[] getAllTrades()
 	{
 		ItemStack[] array = new ItemStack[recipeList.size()];
-		for(int i = 0;i<array.length;i++)
+		for (int i = 0; i < array.length; i++)
 		{
 			array[i] = new ItemStack(APIItems.trades, 1, i);
 		}
@@ -183,11 +182,11 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	
 	public static MerchantRecipe getRecipeFromItem(ItemStack par1)
 	{
-		if(par1.itemID == APIItems.trades.itemID)
+		if (par1.itemID == APIItems.trades.itemID)
 		{
 			return recipeList.get(par1.getItemDamage());
 		}
-		return new MerchantRecipe((ItemStack)null, (ItemStack)null);
+		return new MerchantRecipe((ItemStack) null, (ItemStack) null);
 	}
 	
 }

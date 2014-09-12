@@ -16,7 +16,6 @@ public class TickHelper implements ITickReader
 	private static TickHelper helper = new TickHelper();
 	private static int cDelay = 0;
 	
-	
 	public static TickHelper getInstance()
 	{
 		return helper;
@@ -36,28 +35,28 @@ public class TickHelper implements ITickReader
 			}
 		}
 		cDelay++;
-		if(cDelay>SpmodConfig.savingDelay)
+		if (cDelay > SpmodConfig.savingDelay)
 		{
 			cDelay = 0;
 			DataStorage.write(FMLCommonHandler.instance().getMinecraftServerInstance(), true);
 		}
-		if(cDelay > 40 && DataStorage.hasRequest())
+		if (cDelay > 40 && DataStorage.hasRequest())
 		{
-			cDelay-=40;
+			cDelay -= 40;
 			DataStorage.write(FMLCommonHandler.instance().getMinecraftServerInstance(), false);
 		}
 	}
-
+	
 	@Override
 	public void onTick(SpmodMod sender, Side side)
 	{
-		if(side != side.SERVER)
+		if (side != side.SERVER)
 		{
 			return;
 		}
 		tick();
 	}
-
+	
 	@Override
 	public SpmodMod getOwner()
 	{

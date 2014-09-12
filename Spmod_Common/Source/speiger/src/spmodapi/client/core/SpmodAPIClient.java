@@ -18,11 +18,11 @@ public class SpmodAPIClient extends SpmodAPICore
 	public void clientSide()
 	{
 		ForgeRegister.regsiterClient();
-		//Deko
+		// Deko
 		ClientRegistry.bindTileEntitySpecialRenderer(TileLamp.class, new RenderLamp());
 		MinecraftForgeClient.registerItemRenderer(APIBlocks.hempLamp.blockID, new ItemRendererLamp());
 		
-		//Utils
+		// Utils
 		RenderingRegistry.registerBlockHandler(RenderUtilsBlock.renderID, new RenderUtilsBlock());
 		MinecraftForgeClient.registerItemRenderer(APIBlocks.blockUtils.blockID, new ItemRendererUtilsBlock());
 	}

@@ -32,17 +32,17 @@ public class InventoryUtil
 	
 	public static boolean isItemEqualSave(ItemStack par1, ItemStack par2)
 	{
-		if(par1 != null && par2 != null)
+		if (par1 != null && par2 != null)
 		{
-			if(par1.itemID == par2.itemID)
+			if (par1.itemID == par2.itemID)
 			{
-				if(par1.getItemDamage() == par2.getItemDamage() && par1.stackSize <= par2.stackSize)
+				if (par1.getItemDamage() == par2.getItemDamage() && par1.stackSize <= par2.stackSize)
 				{
 					return true;
 				}
 			}
 		}
-		else if(par1 == null && par2 == null)
+		else if (par1 == null && par2 == null)
 		{
 			return true;
 		}
@@ -71,16 +71,16 @@ public class InventoryUtil
 	
 	public static int getFirstSlot(IInventory par1, int side)
 	{
-		if(par1 != null)
+		if (par1 != null)
 		{
-			if(par1 instanceof ISidedInventory)
+			if (par1 instanceof ISidedInventory)
 			{
 				ISidedInventory inv = (ISidedInventory) par1;
 				int[] slots = inv.getAccessibleSlotsFromSide(side);
-				for(int i = 0;i<slots.length;i++)
+				for (int i = 0; i < slots.length; i++)
 				{
 					int slot = slots[i];
-					if(par1.getStackInSlot(slot) != null)
+					if (par1.getStackInSlot(slot) != null)
 					{
 						return slot;
 					}
@@ -88,9 +88,9 @@ public class InventoryUtil
 			}
 			else
 			{
-				for(int i = 0;i<par1.getSizeInventory();i++)
+				for (int i = 0; i < par1.getSizeInventory(); i++)
 				{
-					if(par1.getStackInSlot(i) != null)
+					if (par1.getStackInSlot(i) != null)
 					{
 						return i;
 					}
@@ -197,6 +197,29 @@ public class InventoryUtil
 			return copy;
 		}
 		
+	}
+	
+	public static boolean addItemToPlayer(ItemStack par1, EntityPlayer par2)
+	{
+		if (par1.stackSize == 1)
+		{
+			return true;
+		}
+		if (par2.capabilities.isCreativeMode)
+		{
+			return false;
+		}
+		ItemStack rest_stack = par1.copy();
+		rest_stack.stackSize--;
+		int slot = par2.inventory.getFirstEmptyStack();
+		if (slot >= 0)
+		{
+			par2.inventory.setInventorySlotContents(slot, rest_stack);
+			par2.inventory.onInventoryChanged();
+			par1.stackSize = 1;
+			return true;
+		}
+		return false;
 	}
 	
 	public static void dropInventory(World world, int x, int y, int z)
@@ -313,7 +336,7 @@ public class InventoryUtil
 			inv.remove(i);
 		}
 	}
-
+	
 	public static void dropItem(EntityPlayer player, ItemStack item)
 	{
 		EntityItem drop = new EntityItem(player.worldObj, player.posX, player.posY, player.posZ, item);
@@ -326,17 +349,17 @@ public class InventoryUtil
 		EntityItem drop = new EntityItem(tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord, item);
 		tile.worldObj.spawnEntityInWorld(drop);
 	}
-
+	
 	public static boolean isInventoryFull(IInventory inv)
 	{
-		for(int i = 0;i<inv.getSizeInventory();i++)
+		for (int i = 0; i < inv.getSizeInventory(); i++)
 		{
 			ItemStack stack = inv.getStackInSlot(i);
-			if(stack == null)
+			if (stack == null)
 			{
 				return false;
 			}
-			if(stack.stackSize < stack.getMaxStackSize())
+			if (stack.stackSize < stack.getMaxStackSize())
 			{
 				return false;
 			}

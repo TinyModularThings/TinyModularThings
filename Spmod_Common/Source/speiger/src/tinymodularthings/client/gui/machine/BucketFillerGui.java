@@ -31,82 +31,71 @@ public class BucketFillerGui extends GuiInventoryCore
 		super(new InventoryBucketFiller(par1, par2));
 		basic = par2;
 	}
-
-
 	
+	protected void drawGuiContainerForegroundLayer(int par1, int par2)
+	{
+		String name = LanguageRegister.getLanguageName(this, "bucketFiller.Basic", getCore());
+		if (basic instanceof SelfPoweredBucketFiller)
+		{
+			name = LanguageRegister.getLanguageName(this, "self.bucketfiller", getCore());
+		}
+		
+		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
+		this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+		
+		this.buttonList.clear();
+		int k = (this.width - this.xSize) / 2;
+		int l = (this.height - this.ySize) / 2;
+		this.buttonList.add(new GuiButton(0, k + 15, l + 35, 30, 20, basic.drain ? "Drain" : "Fill"));
+	}
 	
-    protected void drawGuiContainerForegroundLayer(int par1, int par2)
-    {
-    	String name = LanguageRegister.getLanguageName(this, "bucketFiller.Basic", getCore());
-    	if(basic instanceof SelfPoweredBucketFiller)
-    	{
-    		name = LanguageRegister.getLanguageName(this, "self.bucketfiller", getCore());
-    	}
-    	
-        this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);
-        this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
-
-        this.buttonList.clear();
-        int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
-        this.buttonList.add(new GuiButton(0, k+15, l+35, 30, 20, basic.drain ? "Drain" : "Fill"));
-    }
-    
 	private static final ResourceLocation gui = new ResourceLocation(TinyModularThingsLib.ModID.toLowerCase() + ":textures/gui/machine/bucket_filler_gui.png");
 	private static final ResourceLocation BLOCK_TEXTURE = TextureMap.locationBlocksTexture;
-
-
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
-    {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(gui);
-        int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-        
-        displayGauge(k, l, 19, 123, basic.tank.getFluidAmount() / 275, basic.tank.getFluid());
-        
-        int ptotal = this.basic.progress / (basic instanceof SelfPoweredBucketFiller ? 7 : 9);
-        
-        this.drawTexturedModalRect(k + 75, l + 41, 176, 60, ptotal + 1, 16);
-        
-    
-    }
-    
+	
+	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
+	{
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		this.mc.getTextureManager().bindTexture(gui);
+		int k = (this.width - this.xSize) / 2;
+		int l = (this.height - this.ySize) / 2;
+		this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
+		
+		displayGauge(k, l, 19, 123, basic.tank.getFluidAmount() / 275, basic.tank.getFluid());
+		
+		int ptotal = this.basic.progress / (basic instanceof SelfPoweredBucketFiller ? 7 : 9);
+		
+		this.drawTexturedModalRect(k + 75, l + 41, 176, 60, ptotal + 1, 16);
+		
+	}
+	
 	@Override
 	public void initGui()
 	{
 		super.initGui();
-        this.buttonList.clear();
-        int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
-        this.buttonList.add(new GuiButton(0, k+15, l+35, 30, 20, basic.drain ? "Drain" : "Fill"));
-
+		this.buttonList.clear();
+		int k = (this.width - this.xSize) / 2;
+		int l = (this.height - this.ySize) / 2;
+		this.buttonList.add(new GuiButton(0, k + 15, l + 35, 30, 20, basic.drain ? "Drain" : "Fill"));
+		
 	}
-
-
-
-
+	
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton)
 	{
 		super.actionPerformed(par1GuiButton);
 		
-		if(par1GuiButton.id == 0)
+		if (par1GuiButton.id == 0)
 		{
 			boolean oppo = !this.basic.drain;
 			Packet packet = SpmodPacketHelper.getHelper().createNBTPacket(basic, TinyModularThings.instance).InjectNumber(oppo ? 0 : 1).finishPacket();
-			if(packet != null)
+			if (packet != null)
 			{
 				PacketDispatcher.sendPacketToServer(packet);
 			}
 		}
 		this.initGui();
 	}
-
-
-
-
+	
 	private void displayGauge(int j, int k, int line, int col, int squaled, FluidStack liquid)
 	{
 		if (liquid == null)
@@ -153,5 +142,5 @@ public class BucketFillerGui extends GuiInventoryCore
 		mc.renderEngine.bindTexture(gui);
 		drawTexturedModalRect(j + col, k + line, 176, 0, 16, 60);
 	}
-    
+	
 }

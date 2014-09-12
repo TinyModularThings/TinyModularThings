@@ -18,15 +18,15 @@ public class RenderLamp extends TileEntitySpecialRenderer
 	@Override
 	public void renderTileEntityAt(TileEntity tileentity, double d0, double d1, double d2, float f)
 	{
-		if(tileentity != null)
+		if (tileentity != null)
 		{
-			if(tileentity instanceof TileLamp)
+			if (tileentity instanceof TileLamp)
 			{
-				renderLamp((TileLamp)tileentity, d0, d1, d2);
+				renderLamp((TileLamp) tileentity, d0, d1, d2);
 			}
 		}
 	}
-
+	
 	private void renderLamp(TileLamp Lamp, double x, double y, double z)
 	{
 		GL11.glPushMatrix();
@@ -34,16 +34,16 @@ public class RenderLamp extends TileEntitySpecialRenderer
 		GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 		EnumLampType type = Lamp.getType();
 		
-		if(type == null)
+		if (type == null)
 		{
 			GL11.glPopMatrix();
 			return;
 		}
-		if(type.hasFacing())
+		if (type.hasFacing())
 		{
 			int facing = Lamp.getFacing();
 			
-			switch(facing)
+			switch (facing)
 			{
 				case 0:
 					break;
@@ -66,18 +66,16 @@ public class RenderLamp extends TileEntitySpecialRenderer
 			
 			GL11.glRotatef(180, 1, 0, 0);
 		}
-
 		
 		this.bindTexture(type.getTexture());
 		GL11.glTranslatef(0, -f, 0);
-	
 		
 		SpmodColor color = Lamp.getFullColor();
-		if(color != null)
+		if (color != null)
 		{
 			GL11.glColor4d(color.red, color.green, color.blue, 1.0D);
 		}
-
+		
 		lamp.render(0.0625F, type.getRenderType());
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		lamp.renderAfter(0.0625F, type.getRenderType());

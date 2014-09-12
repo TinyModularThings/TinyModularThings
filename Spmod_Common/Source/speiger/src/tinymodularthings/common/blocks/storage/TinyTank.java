@@ -34,7 +34,6 @@ import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
 import buildcraft.BuildCraftFactory;
 import buildcraft.api.tools.IToolWrench;
 import buildcraft.factory.TileTank;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -51,13 +50,12 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	
 	public static boolean dissableRenderer = false;
 	
-	
 	@Override
 	public void registerIcon(IconRegister par1)
 	{
-		texture = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase()+":storage/TinyTank");
+		texture = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":storage/TinyTank");
 	}
-
+	
 	public void setTankMode(int tankMode)
 	{
 		this.tankMode = tankMode;
@@ -79,16 +77,16 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	{
 		try
 		{
-			if(this.BCTank)
+			if (this.BCTank)
 			{
 				TinyTank tank = this.getHighestTank();
-				if(tank != null && tank.BCTank)
+				if (tank != null && tank.BCTank)
 				{
-					TileEntity tile = worldObj.getBlockTileEntity(tank.xCoord, tank.yCoord+1, tank.zCoord);
-					if(tile != null && tile instanceof TileTank)
+					TileEntity tile = worldObj.getBlockTileEntity(tank.xCoord, tank.yCoord + 1, tank.zCoord);
+					if (tile != null && tile instanceof TileTank)
 					{
 						TileTank bc = (TileTank) tile;
-						if(bc.fill(from.DOWN, resource, false) > 0)
+						if (bc.fill(from.DOWN, resource, false) > 0)
 						{
 							bc.hasUpdate = true;
 							return bc.fill(from.DOWN, resource, doFill);
@@ -102,7 +100,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 		}
 		
 		TinyTank tiny = this.getHighestTank();
-		if(tiny != null)
+		if (tiny != null)
 		{
 			return tiny.tank.fill(resource, doFill);
 		}
@@ -132,16 +130,16 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	{
 		try
 		{
-			if(this.BCTank)
+			if (this.BCTank)
 			{
 				TinyTank bottom = this.getBottomTank();
-				if(bottom != null && bottom.BCTank)
+				if (bottom != null && bottom.BCTank)
 				{
-					TileEntity tile = worldObj.getBlockTileEntity(bottom.xCoord, bottom.yCoord-1, bottom.zCoord);
-					if(tile != null && tile instanceof TileTank)
+					TileEntity tile = worldObj.getBlockTileEntity(bottom.xCoord, bottom.yCoord - 1, bottom.zCoord);
+					if (tile != null && tile instanceof TileTank)
 					{
 						TileTank tank = (TileTank) tile;
-						if(tank.drain(from.UP, maxDrain, false) != null)
+						if (tank.drain(from.UP, maxDrain, false) != null)
 						{
 							return tank.drain(from.UP, maxDrain, doDrain);
 						}
@@ -154,7 +152,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 		}
 		
 		TinyTank bottom = this.getBottomTank();
-		if(bottom != null)
+		if (bottom != null)
 		{
 			return bottom.tank.drain(maxDrain, doDrain);
 		}
@@ -192,7 +190,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 		}
 		
 		tank = (TinyFluidTank) tank.readFromNBT(nbt);
-		if(tank.getFluid() != null && tank.getFluidAmount() <= 0)
+		if (tank.getFluid() != null && tank.getFluidAmount() <= 0)
 		{
 			tank.setFluid(null);
 		}
@@ -235,22 +233,21 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 			}
 			
-			if(worldObj.getWorldTime() % 15 == 0)
+			if (worldObj.getWorldTime() % 15 == 0)
 			{
 				renderTank = WorldReading.isBlockBlocked(worldObj, xCoord, yCoord, zCoord, true);
 			}
 			
-			
-			if(this.tank.getFluid() != null)
+			if (this.tank.getFluid() != null)
 			{
 				fillBelow();
-				fillToSide();	
+				fillToSide();
 			}
 			
-			if(this.BCTank)
+			if (this.BCTank)
 			{
-				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord);
-				if(tile != null && tile instanceof TileTank)
+				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
+				if (tile != null && tile instanceof TileTank)
 				{
 					TileTank tanks = (TileTank) tile;
 					tanks.drain(ForgeDirection.DOWN, this.tank.fill(tanks.tank.getFluid(), true), true);
@@ -263,7 +260,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	public void fillBelow()
 	{
 		TinyTank tank = this.getTankBelow(this);
-		if(tank != null)
+		if (tank != null)
 		{
 			this.tank.drain(tank.tank.fill(this.tank.getFluid(), true), true);
 		}
@@ -272,19 +269,17 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 			tank = this;
 		}
 		
-		
-		if(this.BCTank)
+		if (this.BCTank)
 		{
 			try
 			{
-				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
-				if(tile != null && tile instanceof TileTank)
+				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord);
+				if (tile != null && tile instanceof TileTank)
 				{
 					TileTank tanks = (TileTank) tile;
 					this.tank.drain(tanks.fill(ForgeDirection.UP, this.tank.getFluid(), true), true);
 				}
 				
-
 			}
 			catch (Exception e)
 			{
@@ -296,34 +291,34 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	public void fillToSide()
 	{
 		TinyTank[] tanks = new TinyTank[4];
-		for(int i = 0;i<tanks.length;i++)
+		for (int i = 0; i < tanks.length; i++)
 		{
-			tanks[i] = getTinyTankFromSide(i+2);
+			tanks[i] = getTinyTankFromSide(i + 2);
 		}
 		
 		double[] prozent = new double[4];
-		double ownProzent = ((double) tank.getFluidAmount() / (double)this.tank.getCapacity() )*100;
-		for(int i = 0;i<tanks.length;i++)
+		double ownProzent = ((double) tank.getFluidAmount() / (double) this.tank.getCapacity()) * 100;
+		for (int i = 0; i < tanks.length; i++)
 		{
-			if(tanks[i] != null)
+			if (tanks[i] != null)
 			{
-				prozent[i] = ((double)tanks[i].tank.getFluidAmount() / (double)tanks[i].tank.getCapacity())*100;
+				prozent[i] = ((double) tanks[i].tank.getFluidAmount() / (double) tanks[i].tank.getCapacity()) * 100;
 			}
 		}
 		
-		for(int i = 0;i<tanks.length;i++)
+		for (int i = 0; i < tanks.length; i++)
 		{
-			if(tanks[i] != null)
+			if (tanks[i] != null)
 			{
 				double pro = ownProzent - prozent[i];
-				if(pro > 0)
+				if (pro > 0)
 				{
 					
-					if(tanks[i].tank.fill(this.tank.drain(this.getProzentInMilliBuckets(pro/2, tanks[i]), false), false) == this.getProzentInMilliBuckets(pro/2, tanks[i]))
+					if (tanks[i].tank.fill(this.tank.drain(this.getProzentInMilliBuckets(pro / 2, tanks[i]), false), false) == this.getProzentInMilliBuckets(pro / 2, tanks[i]))
 					{
-						tanks[i].tank.fill(this.tank.drain(this.getProzentInMilliBuckets(pro/2, tanks[i]), true), true);
+						tanks[i].tank.fill(this.tank.drain(this.getProzentInMilliBuckets(pro / 2, tanks[i]), true), true);
 					}
-					else if(this.getProzentInMilliBuckets(pro/2, tanks[i]) > this.tank.getFluidAmount())
+					else if (this.getProzentInMilliBuckets(pro / 2, tanks[i]) > this.tank.getFluidAmount())
 					{
 						this.tank.drain(tanks[i].tank.fill(this.tank.getFluid(), true), true);
 					}
@@ -334,44 +329,44 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	
 	public int getProzentInMilliBuckets(double persent, TinyTank tank)
 	{
-		double one = ((double)1 / (double)tank.tank.getCapacity())*100;
+		double one = ((double) 1 / (double) tank.tank.getCapacity()) * 100;
 		
 		int result = (int) (persent / one);
-
+		
 		return result;
 	}
 	
 	private TinyTank getTinyTankFromSide(int i)
 	{
 		TileEntity tile = WorldReading.getTileEntity(worldObj, xCoord, yCoord, zCoord, i);
-		if(tile != null && tile instanceof TinyTank)
+		if (tile != null && tile instanceof TinyTank)
 		{
-			return (TinyTank)tile;
+			return (TinyTank) tile;
 		}
 		return null;
 	}
-
+	
 	public boolean canFillBelow()
 	{
 		TinyTank tank = this.getTankBelow(this);
-		if(tank != null && tank.tank.fill(this.tank.getFluid(), false) > 0)
+		if (tank != null && tank.tank.fill(this.tank.getFluid(), false) > 0)
 		{
 			return true;
 		}
 		
-		if(tank == null)
+		if (tank == null)
 		{
 			tank = this;
 		}
 		
-		if(tank != null)
+		if (tank != null)
 		{
 			try
 			{
-				TileEntity tile = worldObj.getBlockTileEntity(tank.xCoord, tank.yCoord-1, tank.zCoord);
-				if(tile != null && tile instanceof TileTank)
+				TileEntity tile = worldObj.getBlockTileEntity(tank.xCoord, tank.yCoord - 1, tank.zCoord);
+				if (tile != null && tile instanceof TileTank)
 				{
-					return ((TileTank)tile).fill(ForgeDirection.UP, this.tank.getFluid(), false) > 0;
+					return ((TileTank) tile).fill(ForgeDirection.UP, this.tank.getFluid(), false) > 0;
 				}
 			}
 			catch (Exception e)
@@ -404,7 +399,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 			if (cu == null)
 			{
 				this.renderLiquid++;
-				if(renderLiquid > 2)
+				if (renderLiquid > 2)
 				{
 					renderLiquid = 0;
 				}
@@ -413,10 +408,10 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 			}
 			else
 			{
-				if(cu.getItem() instanceof IToolWrench)
+				if (cu.getItem() instanceof IToolWrench)
 				{
 					IToolWrench wrench = (IToolWrench) cu.getItem();
-					if(wrench.canWrench(par1, xCoord, yCoord, zCoord))
+					if (wrench.canWrench(par1, xCoord, yCoord, zCoord))
 					{
 						this.wrench = true;
 						worldObj.setBlockToAir(xCoord, yCoord, zCoord);
@@ -432,7 +427,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 			ItemStack current = par1.getCurrentEquippedItem();
 			if (current != null)
 			{
-				if(FluidContainerRegistry.isContainer(current) || FluidContainerRegistry.isBucket(current))
+				if (FluidContainerRegistry.isContainer(current) || FluidContainerRegistry.isBucket(current))
 				{
 					FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(current);
 					
@@ -489,18 +484,18 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 				{
 					try
 					{
-						if(!this.BCTank && current.itemID == BuildCraftFactory.tankBlock.blockID)
+						if (!this.BCTank && current.itemID == BuildCraftFactory.tankBlock.blockID)
 						{
 							TinyTank bottom = this.getBottomTank();
 							TinyTank top = this.getHighestTank();
 							this.BCTank = true;
 							par1.sendChatToPlayer(LanguageRegister.createChatMessage("Inited Tank to BuildCraft Compatiblity"));
-							if(bottom.hasBCTank(false) && !bottom.BCTank)
+							if (bottom.hasBCTank(false) && !bottom.BCTank)
 							{
 								par1.sendChatToPlayer(LanguageRegister.createChatMessage("Found at the Bottom Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
 							}
 							
-							if(top.hasBCTank(true) && !top.BCTank)
+							if (top.hasBCTank(true) && !top.BCTank)
 							{
 								par1.sendChatToPlayer(LanguageRegister.createChatMessage("Found at the Top Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
 							}
@@ -563,7 +558,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	
 	public void sendMessage(int id, EntityPlayer par1)
 	{
-		switch(id)
+		switch (id)
 		{
 			case 0:
 				par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.dissabled", TinyModularThings.instance)));
@@ -571,7 +566,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 			case 1:
 				par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.auto", TinyModularThings.instance)));
 				break;
-			case 2: 
+			case 2:
 				par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.enabled", TinyModularThings.instance)));
 				break;
 		}
@@ -581,18 +576,18 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	{
 		try
 		{
-			if(top)
+			if (top)
 			{
-				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord+1, zCoord);
-				if(tile != null && tile instanceof TileTank)
+				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord + 1, zCoord);
+				if (tile != null && tile instanceof TileTank)
 				{
 					return true;
 				}
 			}
 			else
 			{
-				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord-1, zCoord);
-				if(tile != null && tile instanceof TileTank)
+				TileEntity tile = worldObj.getBlockTileEntity(xCoord, yCoord - 1, zCoord);
+				if (tile != null && tile instanceof TileTank)
 				{
 					return true;
 				}
@@ -652,7 +647,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	public ArrayList<ItemStack> onDrop(int fortune)
 	{
 		ArrayList<ItemStack> stack = new ArrayList<ItemStack>();
-		if(droped)
+		if (droped)
 		{
 			return stack;
 		}
@@ -661,14 +656,14 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 		
 		ItemStack item = new ItemStack(TinyItems.tinyTank, 1, tankMode);
 		
-		if(tank.getFluid() != null)
+		if (tank.getFluid() != null)
 		{
-			if(wrench)
+			if (wrench)
 			{
 				NBTTagCompound data = new NBTTagCompound();
 				data.setInteger("FluidID", tank.getFluid().fluidID);
 				data.setInteger("Amount", tank.getFluid().amount);
-				if(tank.getFluid().tag != null)
+				if (tank.getFluid().tag != null)
 				{
 					data.setCompoundTag("Data", tank.getFluid().tag);
 				}
@@ -677,13 +672,13 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 			else
 			{
 				boolean all = this.worldObj.rand.nextBoolean();
-				double per = (double)this.worldObj.rand.nextInt(101);
+				double per = (double) this.worldObj.rand.nextInt(101);
 				int fluidAmount = this.getProzentInMilliBuckets(per, this);
-				if(fluidAmount > this.tank.getFluidAmount())
+				if (fluidAmount > this.tank.getFluidAmount())
 				{
 					fluidAmount = this.tank.getFluidAmount();
 				}
-				if(fluidAmount <= 0 || !all)
+				if (fluidAmount <= 0 || !all)
 				{
 					stack.add(item);
 					return stack;
@@ -691,7 +686,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 				NBTTagCompound data = new NBTTagCompound();
 				data.setInteger("FluidID", tank.getFluid().fluidID);
 				data.setInteger("Amount", fluidAmount);
-				if(tank.getFluid().tag != null)
+				if (tank.getFluid().tag != null)
 				{
 					data.setCompoundTag("Data", tank.getFluid().tag);
 				}
@@ -712,10 +707,10 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	public TinyTank getHighestTank()
 	{
 		TinyTank tiny = this;
-		while(true)
+		while (true)
 		{
 			TinyTank above = this.getTankAbove(tiny);
-			if(above != null)
+			if (above != null)
 			{
 				tiny = above;
 			}
@@ -730,10 +725,10 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	public TinyTank getBottomTank()
 	{
 		TinyTank tiny = this;
-		while(true)
+		while (true)
 		{
 			TinyTank below = this.getTankBelow(tiny);
-			if(below != null)
+			if (below != null)
 			{
 				tiny = below;
 			}
@@ -747,35 +742,35 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	
 	public TinyTank getTankAbove(TinyTank tiny)
 	{
-		TileEntity tile = worldObj.getBlockTileEntity(tiny.xCoord, tiny.yCoord+1, tiny.zCoord);
-		if(tile instanceof TinyTank)
+		TileEntity tile = worldObj.getBlockTileEntity(tiny.xCoord, tiny.yCoord + 1, tiny.zCoord);
+		if (tile instanceof TinyTank)
 		{
-			return (TinyTank)tile;
+			return (TinyTank) tile;
 		}
 		return null;
 	}
 	
 	public TinyTank getTankBelow(TinyTank tiny)
 	{
-		TileEntity tile = worldObj.getBlockTileEntity(tiny.xCoord, tiny.yCoord-1, tiny.zCoord);
-		if(tile instanceof TinyTank)
+		TileEntity tile = worldObj.getBlockTileEntity(tiny.xCoord, tiny.yCoord - 1, tiny.zCoord);
+		if (tile instanceof TinyTank)
 		{
-			return (TinyTank)tile;
+			return (TinyTank) tile;
 		}
 		return null;
 	}
-
+	
 	public boolean renderLiquid()
 	{
-		if(this.renderLiquid == 0)
+		if (this.renderLiquid == 0)
 		{
 			return false;
 		}
-		else if(this.renderLiquid == 1)
+		else if (this.renderLiquid == 1)
 		{
 			return !WorldReading.isBlockBlocked(worldObj, xCoord, yCoord, zCoord, false);
 		}
-		else if(this.renderLiquid == 2)
+		else if (this.renderLiquid == 2)
 		{
 			return true;
 		}
@@ -788,43 +783,43 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	@SideOnly(Side.CLIENT)
 	public boolean renderTank()
 	{
-		if(this.dissableRenderer)
+		if (this.dissableRenderer)
 		{
 			return true;
 		}
 		return renderTank;
 	}
-
+	
 	@Override
 	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side)
 	{
 		return false;
 	}
-
+	
 	@Override
 	public short getFacing()
 	{
 		return 0;
 	}
-
+	
 	@Override
 	public void setFacing(short facing)
 	{
 		
 	}
-
+	
 	@Override
 	public boolean wrenchCanRemove(EntityPlayer entityPlayer)
 	{
 		return true;
 	}
-
+	
 	@Override
 	public float getWrenchDropRate()
 	{
 		return 1F;
 	}
-
+	
 	@Override
 	public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
 	{

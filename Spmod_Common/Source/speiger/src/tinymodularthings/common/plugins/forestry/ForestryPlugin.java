@@ -10,7 +10,7 @@ public class ForestryPlugin
 {
 	public static void initForestryStuff()
 	{
-		if(Loader.isModLoaded("IC2"))
+		if (Loader.isModLoaded("IC2"))
 		{
 			loadCrops();
 		}

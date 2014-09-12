@@ -1,6 +1,5 @@
 package speiger.src.spmodapi.common.handler;
 
-import cpw.mods.fml.common.FMLLog;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.ServerChatEvent;
 import speiger.src.spmodapi.SpmodAPI;
@@ -18,12 +17,12 @@ public class ChatHandler
 	@ForgeSubscribe
 	public void onChatMessage(ServerChatEvent evt)
 	{
-		if(evt.username.equalsIgnoreCase("Server"))
+		if (evt.username.equalsIgnoreCase("Server"))
 		{
 			return;
 		}
 		
-		if(evt.message.equalsIgnoreCase("SpmodMod"))
+		if (evt.message.equalsIgnoreCase("SpmodMod"))
 		{
 			evt.setCanceled(true);
 			evt.player.openGui(SpmodAPI.instance, EnumGuiIDs.Commands.getID(), evt.player.worldObj, 0, 0, 0);

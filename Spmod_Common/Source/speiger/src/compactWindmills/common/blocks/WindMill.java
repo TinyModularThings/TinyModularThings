@@ -37,8 +37,8 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class WindMill extends TileIC2Facing implements IInventory, IEnergySource,
-		IWindmill, IWrenchable
+public class WindMill extends TileIC2Facing implements IInventory,
+		IEnergySource, IWindmill, IWrenchable
 {
 	private static HashMap<WindmillType, Icon[]> textures = new HashMap<WindmillType, Icon[]>();
 	public ItemStack[] inv = new ItemStack[1];
@@ -67,7 +67,7 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		Icon[] tex = textures.get(type);
-		if(tex != null)
+		if (tex != null)
 		{
 			if (type == null || type == type.Nothing)
 			{
@@ -86,48 +86,42 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 		return null;
 	}
 	
-	
-	
 	@Override
 	public void onPlaced(int facing)
 	{
-		this.setFacing((short)facing);
+		this.setFacing((short) facing);
 	}
-	
-	
-
-	
 	
 	@Override
 	public void setFacing(short i)
 	{
 		super.setFacing(i);
-		if(worldObj != null)
+		if (worldObj != null)
 		{
 			this.updateBlock();
 			this.onInventoryChanged();
 		}
 	}
-
+	
 	@Override
 	public boolean hasContainer()
 	{
 		return true;
 	}
-
+	
 	@Override
 	public Container getInventory(InventoryPlayer par1)
 	{
 		return new ContainerWindmill(par1, this);
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public GuiContainer getGui(InventoryPlayer par1)
 	{
 		return new GuiWindmill(par1, this);
 	}
-
+	
 	@Override
 	public void registerIcon(IconRegister par1)
 	{
@@ -199,7 +193,7 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 	
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
 	{
-		if(par2ItemStack != null && !(par2ItemStack.getItem() instanceof IRotorItem))
+		if (par2ItemStack != null && !(par2ItemStack.getItem() instanceof IRotorItem))
 		{
 			return;
 		}
@@ -249,7 +243,7 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
-		return itemstack != null && itemstack.getItem() instanceof IRotorItem && ((IRotorItem)itemstack.getItem()).ignoreTier(itemstack) ? true : ((IRotorItem)itemstack.getItem()).canWorkWithWindmillTier(itemstack, type.ordinal());
+		return itemstack != null && itemstack.getItem() instanceof IRotorItem && ((IRotorItem) itemstack.getItem()).ignoreTier(itemstack) ? true : ((IRotorItem) itemstack.getItem()).canWorkWithWindmillTier(itemstack, type.ordinal());
 	}
 	
 	@Override
@@ -279,8 +273,8 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 					int oldOutput = cuOutput;
 					((IRotorItem) inv[0].getItem()).onRotorTick(this, this.worldObj, inv[0]);
 					cuOutput = getCurrentOutput();
-//					FMLLog.getLogger().info("Damage: ");
-					if(oldOutput != cuOutput)
+					// FMLLog.getLogger().info("Damage: ");
+					if (oldOutput != cuOutput)
 					{
 						PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 100, worldObj.provider.dimensionId, this.getDescriptionPacket());
 					}
@@ -290,7 +284,7 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 			{
 				int oldOutput = cuOutput;
 				cuOutput = 0;
-				if(oldOutput != cuOutput)
+				if (oldOutput != cuOutput)
 				{
 					PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 100, worldObj.provider.dimensionId, this.getDescriptionPacket());
 				}
@@ -302,11 +296,11 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 	{
 		int blocks = getNoneAirBlocks();
 		float weather = getWeather();
-		//Needed for SuperFlat Worlds. Testing Stuff and co. You know Aroma :P
+		// Needed for SuperFlat Worlds. Testing Stuff and co. You know Aroma :P
 		int heigt = worldObj.provider.getAverageGroundLevel();
 		float totalEfficiency = Math.min(1.0F, (yCoord - heigt - blocks / type.getRadius() / 37.5F)) * weather;
 		float energy = type.getOutput() * totalEfficiency;
-		if(!CompactWindmills.oldIC2)
+		if (!CompactWindmills.oldIC2)
 		{
 			energy *= rotorUpdate();
 		}
@@ -314,25 +308,25 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 		{
 			energy *= 0.5F + worldObj.rand.nextFloat() / 2;
 		}
-		if(energy > type.getOutput())
+		if (energy > type.getOutput())
 		{
 			energy = type.getOutput();
 		}
 		
-		if((int)energy < 0)
+		if ((int) energy < 0)
 		{
 			return 0;
 		}
-		return (int)energy;
+		return (int) energy;
 	}
 	
 	public float rotorUpdate()
 	{
-		if(hasRotor())
+		if (hasRotor())
 		{
 			IRotorItem rotor = getRotor();
 			float effiziens = rotor.getRotorEfficeny(inv[0], this);
-			if(!rotor.isInfinite(inv[0]) && damageActive)
+			if (!rotor.isInfinite(inv[0]) && damageActive)
 			{
 				int damage = calculateDamage();
 				
@@ -350,23 +344,23 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 		int Wtier = getType().ordinal();
 		int RTier = getRotor().getTier(inv[0]);
 		
-		if(getRotor().isAdvancedRotor(inv[0]))
+		if (getRotor().isAdvancedRotor(inv[0]))
 		{
-			if(Wtier > RTier)
+			if (Wtier > RTier)
 			{
 				int damage = (Wtier - RTier);
 				return 1 + (worldObj.rand.nextBoolean() ? damage : 0);
 			}
-			else if(Wtier == RTier)
+			else if (Wtier == RTier)
 			{
 				return 1;
 			}
 			else
 			{
-				double chance = ((double)Wtier / (double)RTier) * 100;
-				int rounded = (int)chance;
+				double chance = ((double) Wtier / (double) RTier) * 100;
+				int rounded = (int) chance;
 				int damage = 0;
-				if(worldObj.rand.nextInt(100) < chance)
+				if (worldObj.rand.nextInt(100) < chance)
 				{
 					damage = 1;
 				}
@@ -381,30 +375,28 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 	
 	public float getWeather()
 	{
-		if(worldObj.isThundering())
+		if (worldObj.isThundering())
 		{
 			return 1.5F;
 		}
-		if(worldObj.isRaining())
+		if (worldObj.isRaining())
 		{
 			return 1.2F;
 		}
 		return 1.0F;
 	}
 	
-	
-	
 	public int getNoneAirBlocks()
 	{
 		int radius = type.getRadius();
 		int totalBlocks = 0;
-		for(int x = xCoord - radius;x<=xCoord + radius;x++)
+		for (int x = xCoord - radius; x <= xCoord + radius; x++)
 		{
-			for(int y = yCoord - radius;y<=yCoord + radius;y++)
+			for (int y = yCoord - radius; y <= yCoord + radius; y++)
 			{
-				for(int z = zCoord - radius;z<=zCoord + radius;z++)
+				for (int z = zCoord - radius; z <= zCoord + radius; z++)
 				{
-					if(!worldObj.isAirBlock(x, y, z))
+					if (!worldObj.isAirBlock(x, y, z))
 					{
 						totalBlocks++;
 					}
@@ -436,15 +428,15 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 	
 	public boolean hasRotor()
 	{
-		if(inv[0] == null)
+		if (inv[0] == null)
 		{
 			return false;
 		}
-		if(inv[0].getItem() == null)
+		if (inv[0].getItem() == null)
 		{
 			return false;
 		}
-		if(!(inv[0].getItem() instanceof IRotorItem))
+		if (!(inv[0].getItem() instanceof IRotorItem))
 		{
 			return false;
 		}
@@ -516,26 +508,24 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 	{
 		return type.getRadius();
 	}
-
+	
 	@Override
 	public void distroyRotor()
 	{
-		if(!worldObj.isRemote)
+		if (!worldObj.isRemote)
 		{
 			inv[0] = null;
 			this.onInventoryChanged();
 		}
 	}
 	
-	
-
 	@Override
 	public void onInventoryChanged()
 	{
 		super.onInventoryChanged();
 		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 100, worldObj.provider.dimensionId, this.getDescriptionPacket());
 	}
-
+	
 	@Override
 	public Packet getDescriptionPacket()
 	{
@@ -549,78 +539,75 @@ public class WindMill extends TileIC2Facing implements IInventory, IEnergySource
 	{
 		readFromNBT(pkt.data);
 	}
-
+	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-        NBTTagList nbttaglist = nbt.getTagList("Items");
-        this.inv = new ItemStack[this.getSizeInventory()];
-        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-        {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
-            byte b0 = nbttagcompound1.getByte("Slot");
-
-            if (b0 >= 0 && b0 < this.inv.length)
-            {
-                this.inv[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-            }
-        }
-        cuOutput = nbt.getInteger("Output");
-        damageActive = nbt.getBoolean("Damage");
-        type = WindmillType.values()[nbt.getInteger("Type")];
+		NBTTagList nbttaglist = nbt.getTagList("Items");
+		this.inv = new ItemStack[this.getSizeInventory()];
+		for (int i = 0; i < nbttaglist.tagCount(); ++i)
+		{
+			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
+			byte b0 = nbttagcompound1.getByte("Slot");
+			
+			if (b0 >= 0 && b0 < this.inv.length)
+			{
+				this.inv[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+			}
+		}
+		cuOutput = nbt.getInteger("Output");
+		damageActive = nbt.getBoolean("Damage");
+		type = WindmillType.values()[nbt.getInteger("Type")];
 	}
-
+	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-        NBTTagList nbttaglist = new NBTTagList();
-        for (int i = 0; i < this.inv.length; ++i)
-        {
-            if (this.inv[i] != null)
-            {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte)i);
-                this.inv[i].writeToNBT(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
-            }
-        }
-        nbt.setTag("Items", nbttaglist);
-        nbt.setInteger("Output", cuOutput);
-        nbt.setBoolean("Damage", damageActive);
-        nbt.setInteger("Type", type.ordinal());
+		NBTTagList nbttaglist = new NBTTagList();
+		for (int i = 0; i < this.inv.length; ++i)
+		{
+			if (this.inv[i] != null)
+			{
+				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+				nbttagcompound1.setByte("Slot", (byte) i);
+				this.inv[i].writeToNBT(nbttagcompound1);
+				nbttaglist.appendTag(nbttagcompound1);
+			}
+		}
+		nbt.setTag("Items", nbttaglist);
+		nbt.setInteger("Output", cuOutput);
+		nbt.setBoolean("Damage", damageActive);
+		nbt.setInteger("Type", type.ordinal());
 	}
-
+	
 	@Override
 	public boolean wrenchCanSetFacing(EntityPlayer entityPlayer, int side)
 	{
-		if(side != getFacing() && !entityPlayer.isSneaking())
+		if (side != getFacing() && !entityPlayer.isSneaking())
 		{
 			return true;
 		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean wrenchCanRemove(EntityPlayer entityPlayer)
 	{
 		return entityPlayer.isSneaking();
 	}
-
+	
 	@Override
 	public float getWrenchDropRate()
 	{
 		return 100F;
 	}
-
+	
 	@Override
 	public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
 	{
 		return new BlockStack(this).asItemStack();
 	}
-	
-	
-	
 	
 }

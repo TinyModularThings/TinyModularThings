@@ -10,20 +10,20 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class PipeEmeraldPower extends Pipe<PipeTransportPower>
 {
-
+	
 	public PipeEmeraldPower(int itemID)
 	{
 		super(new PipeTransportPower(), itemID);
 		this.transport.initFromPipe(this.getClass());
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIconProvider getIconProvider()
 	{
 		return new PipeIconHandler();
 	}
-
+	
 	@Override
 	public int getIconIndex(ForgeDirection direction)
 	{

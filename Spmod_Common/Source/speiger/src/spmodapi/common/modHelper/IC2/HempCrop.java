@@ -20,8 +20,6 @@ import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-
-
 public class HempCrop extends CropCard
 {
 	

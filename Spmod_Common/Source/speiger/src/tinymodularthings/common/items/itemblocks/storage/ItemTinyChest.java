@@ -99,7 +99,7 @@ public class ItemTinyChest extends TinyItem
 		{
 			return false;
 		}
-		else if(!par3World.canPlaceEntityOnSide(TinyBlocks.storageBlock.blockID, par4, par5, par6, false, par7, par2EntityPlayer, par1ItemStack))
+		else if (!par3World.canPlaceEntityOnSide(TinyBlocks.storageBlock.blockID, par4, par5, par6, false, par7, par2EntityPlayer, par1ItemStack))
 		{
 			return false;
 		}

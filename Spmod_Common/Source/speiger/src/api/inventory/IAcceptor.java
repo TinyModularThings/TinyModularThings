@@ -21,8 +21,7 @@ public interface IAcceptor
 	// Can be null!
 	BlockStack getBlock();
 	
-	//Leaving the Multistructure.
+	// Leaving the Multistructure.
 	void targetLeave(TileEntity tile);
-	
 	
 }

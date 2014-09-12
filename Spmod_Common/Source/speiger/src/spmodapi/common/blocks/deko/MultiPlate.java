@@ -8,6 +8,7 @@ import speiger.src.spmodapi.common.tile.TileFacing;
 public class MultiPlate extends TileFacing
 {
 	public String identity = "";
+	
 	@Override
 	public boolean isSixSidedFacing()
 	{
@@ -29,24 +30,21 @@ public class MultiPlate extends TileFacing
 	{
 		return identity;
 	}
-
+	
 	@Override
 	public boolean isSixSidedRotation()
 	{
 		return false;
 	}
-
-
+	
 	public ResourceLocation getTexture()
 	{
 		ResourceLocation texture = PlateManager.plates.getTexture(identity);
-		if(texture == null)
+		if (texture == null)
 		{
 			texture = new ResourceLocation("Error");
 		}
 		return texture;
 	}
-	
-	
 	
 }

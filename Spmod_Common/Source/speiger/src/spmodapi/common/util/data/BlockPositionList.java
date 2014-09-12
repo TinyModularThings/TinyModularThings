@@ -23,11 +23,11 @@ public class BlockPositionList extends ArrayList<BlockPosition>
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		NBTTagList list = new NBTTagList();
-		for(int i = 0;i<this.size();i++)
+		for (int i = 0; i < this.size(); i++)
 		{
 			BlockPosition pos = this.get(i);
 			List<Integer> ints = pos.getAsList();
-			NBTTagIntArray array = new NBTTagIntArray("Data", new int[]{ints.get(0), ints.get(1), ints.get(2), ints.get(3)});
+			NBTTagIntArray array = new NBTTagIntArray("Data", new int[] { ints.get(0), ints.get(1), ints.get(2), ints.get(3) });
 			list.appendTag(array);
 		}
 		
@@ -37,7 +37,7 @@ public class BlockPositionList extends ArrayList<BlockPosition>
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		NBTTagList list = nbt.getTagList("Pos");
-		for(int i = 0;i<list.tagCount();i++)
+		for (int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagIntArray array = (NBTTagIntArray) list.tagAt(i);
 			int[] data = array.intArray;

@@ -59,7 +59,7 @@ public class LivingHandler
 	{
 		if (par0.entity != null)
 		{
-			if(par0.entity instanceof EntityLivingBase)
+			if (par0.entity instanceof EntityLivingBase)
 			{
 				EntityLivingBase entity = (EntityLivingBase) par0.entity;
 				if (!entity.getAttributeMap().getAllAttributes().contains(APIUtils.jumpBoost))
@@ -74,62 +74,62 @@ public class LivingHandler
 	public void onDeath(LivingDeathEvent evt)
 	{
 		EntityLivingBase entity = evt.entityLiving;
-		if(entity != null && !entity.worldObj.isRemote)
+		if (entity != null && !entity.worldObj.isRemote)
 		{
-			if(entity instanceof EntityMob)
+			if (entity instanceof EntityMob)
 			{
 				EntityMob mob = (EntityMob) entity;
-				ArrayList<TileEntity> tiles = WorldReading.getTileWithAABB((int)mob.posX, (int)mob.posY, (int)mob.posZ, mob.worldObj, 10, APIBlocks.blockUtils.blockID, 1);
-				for(TileEntity tile : tiles)
+				ArrayList<TileEntity> tiles = WorldReading.getTileWithAABB((int) mob.posX, (int) mob.posY, (int) mob.posZ, mob.worldObj, 10, APIBlocks.blockUtils.blockID, 1);
+				for (TileEntity tile : tiles)
 				{
-					if(tile != null && tile instanceof IExpProvider)
+					if (tile != null && tile instanceof IExpProvider)
 					{
 						IExpProvider pro = (IExpProvider) tile;
-						if(pro.absorbDeath())
+						if (pro.absorbDeath())
 						{
 							pro.addExp(mob.experienceValue);
 						}
 					}
 				}
 			}
-			if(entity instanceof EntitySheep)
+			if (entity instanceof EntitySheep)
 			{
-				EntitySheep killed = (EntitySheep)entity;
+				EntitySheep killed = (EntitySheep) entity;
 				killed.dropItem(APIItems.boneSheep.itemID, rand.nextInt(2));
-
+				
 			}
 			
-			if(entity instanceof EntityPig)
+			if (entity instanceof EntityPig)
 			{
-				EntityPig killed = (EntityPig)entity;
+				EntityPig killed = (EntityPig) entity;
 				killed.dropItem(APIItems.bonePig.itemID, rand.nextInt(3));
-
+				
 			}
 			
-			if(entity instanceof EntityCow)
+			if (entity instanceof EntityCow)
 			{
-				EntityCow killed = (EntityCow)entity;
+				EntityCow killed = (EntityCow) entity;
 				killed.dropItem(APIItems.boneCow.itemID, rand.nextInt(2));
-
+				
 			}
 			
-			if(entity instanceof EntityMooshroom)
+			if (entity instanceof EntityMooshroom)
 			{
-				EntityMooshroom killed = (EntityMooshroom)entity;
+				EntityMooshroom killed = (EntityMooshroom) entity;
 				killed.dropItem(APIItems.boneMooshroom.itemID, rand.nextInt(3));
 			}
 			
-			if(entity instanceof EntityChicken)
+			if (entity instanceof EntityChicken)
 			{
-				EntityChicken killed = (EntityChicken)entity;
+				EntityChicken killed = (EntityChicken) entity;
 				killed.dropItem(APIItems.boneChicken.itemID, 1);
 			}
 			
-			if(entity instanceof EntityHorse)
+			if (entity instanceof EntityHorse)
 			{
-				EntityHorse killed = (EntityHorse)entity;
+				EntityHorse killed = (EntityHorse) entity;
 				killed.dropItem(APIItems.boneHorse.itemID, rand.nextInt(3));
-
+				
 			}
 			
 		}
@@ -141,10 +141,10 @@ public class LivingHandler
 		EntityLivingBase entity = par1.entityLiving;
 		if (entity != null)
 		{
-			if(entity instanceof EntityAnimal)
+			if (entity instanceof EntityAnimal)
 			{
 				EntityAnimal animal = (EntityAnimal) entity;
-				if(!this.containsTask(animal.tasks.taskEntries) && animal.createChild(animal) != null)
+				if (!this.containsTask(animal.tasks.taskEntries) && animal.createChild(animal) != null)
 				{
 					animal.tasks.addTask(5, new EntityAiAutoFeed(animal));
 				}
@@ -175,10 +175,10 @@ public class LivingHandler
 				}
 			}
 			
-			if(entity instanceof EntityMob)
+			if (entity instanceof EntityMob)
 			{
 				EntityMob mob = (EntityMob) entity;
-				if(mob.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.followRange).getBaseValue() < 25D)
+				if (mob.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.followRange).getBaseValue() < 25D)
 				{
 					mob.getAttributeMap().getAttributeInstance(SharedMonsterAttributes.followRange).setAttribute(25D);
 				}
@@ -200,9 +200,9 @@ public class LivingHandler
 	
 	public boolean containsTask(List<EntityAITaskEntry> list)
 	{
-		for(EntityAITaskEntry task : list)
+		for (EntityAITaskEntry task : list)
 		{
-			if(task.action instanceof EntityAiAutoFeed)
+			if (task.action instanceof EntityAiAutoFeed)
 			{
 				return true;
 			}
@@ -213,7 +213,7 @@ public class LivingHandler
 	@ForgeSubscribe
 	public void handleSpmodEnderman(EnderTeleportEvent evt)
 	{
-		if(evt.entityLiving instanceof EntityOverridenEnderman)
+		if (evt.entityLiving instanceof EntityOverridenEnderman)
 		{
 			evt.setCanceled(true);
 		}

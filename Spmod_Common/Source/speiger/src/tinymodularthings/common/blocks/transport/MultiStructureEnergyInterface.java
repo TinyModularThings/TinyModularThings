@@ -60,7 +60,7 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 		ItemInterfaceBlock.addBlockToInterface(stack, new BlockStack(blockID, metadata));
 		return stack;
 	}
-
+	
 	@Override
 	public ArrayList<ItemStack> onDrop(int fortune)
 	{

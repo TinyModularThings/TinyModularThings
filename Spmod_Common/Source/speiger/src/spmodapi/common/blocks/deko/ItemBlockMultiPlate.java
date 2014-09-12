@@ -10,13 +10,11 @@ public class ItemBlockMultiPlate extends ItemBlock
 	{
 		super(par1);
 	}
-
+	
 	@Override
 	public String getItemDisplayName(ItemStack par1ItemStack)
 	{
 		return "MultiPlate";
 	}
-
-	
 	
 }

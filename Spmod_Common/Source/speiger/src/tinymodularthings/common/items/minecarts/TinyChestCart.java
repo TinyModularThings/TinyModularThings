@@ -42,8 +42,8 @@ public class TinyChestCart extends TinyItem
 	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
 	{
 		String name = LangProxy.getSlot(getMod(), par1.getItemDamage() == 0);
-		int id = par1.getItemDamage()+1;
-		par3.add(name+": "+id);
+		int id = par1.getItemDamage() + 1;
+		par3.add(name + ": " + id);
 	}
 	
 	@Override

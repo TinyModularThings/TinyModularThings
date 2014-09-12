@@ -2,11 +2,12 @@ package speiger.src.tinymodularthings.common.upgrades.hoppers.guis;
 
 import java.util.ArrayList;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 
@@ -18,7 +19,6 @@ public class FilterGui extends GuiInventoryCore
 	}
 	
 	private static final ResourceLocation furnaceGuiTextures = new ResourceLocation("TinyModularThings".toLowerCase() + ":textures/gui/storage/StorageGui.png");
-
 	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float f, int x, int j)

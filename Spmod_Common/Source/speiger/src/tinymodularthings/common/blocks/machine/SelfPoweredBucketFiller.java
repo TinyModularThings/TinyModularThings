@@ -17,22 +17,22 @@ public class SelfPoweredBucketFiller extends BucketFillerBasic
 	@Override
 	public void onTick()
 	{
-		if(!worldObj.isRemote)
+		if (!worldObj.isRemote)
 		{
-			if(this.provider.getStoredEnergy() < 100)
+			if (this.provider.getStoredEnergy() < 100)
 			{
 				this.provider.setEnergy(1000);
 			}
 		}
 		super.onTick();
 	}
-
+	
 	@Override
 	public EnergyProvider getEnergyProvider(ForgeDirection side)
 	{
 		return null;
 	}
-
+	
 	@Override
 	public PowerReceiver getPowerReceiver(ForgeDirection side)
 	{

@@ -34,7 +34,6 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 {
 	public static HashMap<BasicRotorType, Icon> textures = new HashMap<BasicRotorType, Icon>();
 	
-	
 	public ItemRotor(int par1)
 	{
 		super(par1);
@@ -43,7 +42,7 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 		this.setMaxStackSize(1);
 		this.setNoRepair();
 	}
-
+	
 	@Override
 	public boolean ignoreTier(ItemStack par1)
 	{
@@ -58,45 +57,43 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 		stack.setTagInfo("Rotor", nbt);
 		return stack;
 	}
-
+	
 	@Override
 	public boolean isDamaged(ItemStack stack)
 	{
-		if(NBTHelper.nbtCheck(stack, "Rotor"))
+		if (NBTHelper.nbtCheck(stack, "Rotor"))
 		{
 			int damage = stack.getTagCompound().getCompoundTag("Rotor").getInteger("Damage");
 			return damage > 0;
 		}
 		return false;
 	}
-
+	
 	@Override
 	public int getDisplayDamage(ItemStack stack)
 	{
-		if(NBTHelper.nbtCheck(stack, "Rotor"))
+		if (NBTHelper.nbtCheck(stack, "Rotor"))
 		{
 			int damage = stack.getTagCompound().getCompoundTag("Rotor").getInteger("Damage");
 			BasicRotorType type = BasicRotorType.values()[stack.getItemDamage()];
-			double per = ((double)damage / (double)type.getMaxDamage()) * 100;
-			return (int)per;
+			double per = ((double) damage / (double) type.getMaxDamage()) * 100;
+			return (int) per;
 		}
 		return 0;
 	}
-
+	
 	@Override
 	public boolean canWorkWithWindmillTier(ItemStack par1, int tier)
 	{
 		return BasicRotorType.values()[par1.getItemDamage()].matchTier(tier);
 	}
-
+	
 	@Override
 	public int getTier(ItemStack par1)
 	{
 		return BasicRotorType.values()[par1.getItemDamage()].getTier();
 	}
 	
-	
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
@@ -104,30 +101,28 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 		return textures.get(BasicRotorType.values()[par1]);
 	}
 	
-	
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1)
 	{
-		for(BasicRotorType type : BasicRotorType.values())
+		for (BasicRotorType type : BasicRotorType.values())
 		{
-			textures.put(type, par1.registerIcon(CWPreference.ModID.toLowerCase()+":rotors/"+type.getDisplayName()));
+			textures.put(type, par1.registerIcon(CWPreference.ModID.toLowerCase() + ":rotors/" + type.getDisplayName()));
 		}
 	}
-
+	
 	@Override
 	public void damageRotor(ItemStack par1, int damage, IWindmill windmill)
 	{
 		BasicRotorType type = BasicRotorType.values()[par1.getItemDamage()];
-		if(!NBTHelper.nbtCheck(par1, "Rotor"))
+		if (!NBTHelper.nbtCheck(par1, "Rotor"))
 		{
 			NBTTagCompound nbt = new NBTTagCompound();
 			nbt.setInteger("Damage", 0);
 			par1.setTagInfo("Rotor", nbt);
 		}
 		int totalDamage = par1.getTagCompound().getCompoundTag("Rotor").getInteger("Damage");
-		if(totalDamage + damage > type.getMaxDamage())
+		if (totalDamage + damage > type.getMaxDamage())
 		{
 			windmill.distroyRotor();
 			return;
@@ -135,107 +130,103 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 		totalDamage += damage;
 		par1.getTagCompound().getCompoundTag("Rotor").setInteger("Damage", totalDamage);
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ResourceLocation getRenderTexture(ItemStack par1)
 	{
 		return BasicRotorType.values()[par1.getItemDamage()].getRenderTexture();
 	}
-
+	
 	@Override
 	public void onRotorTick(IWindmill windMill, World world, ItemStack rotor)
 	{
 		
 	}
-
+	
 	@Override
 	public float getRotorEfficeny(ItemStack par1, IWindmill par2)
 	{
-		if(par2.getFacing() == 1 || par2.getFacing() == 0)
+		if (par2.getFacing() == 1 || par2.getFacing() == 0)
 		{
 			return 0.01F;
 		}
 		return BasicRotorType.values()[par1.getItemDamage()].getEfficeny();
 	}
-
+	
 	@Override
 	public boolean isInfinite(ItemStack par1)
 	{
 		return BasicRotorType.values()[par1.getItemDamage()].getMaxDamage() == 0;
 	}
-
+	
 	@Override
 	public IRotorModel getCustomModel(ItemStack par1, int size)
 	{
 		return null;
 	}
 	
-	
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1, EntityPlayer par2EntityPlayer, List par3, boolean par4)
 	{
-		if(NBTHelper.nbtCheck(par1, "Rotor"))
+		if (NBTHelper.nbtCheck(par1, "Rotor"))
 		{
 			BasicRotorType type = BasicRotorType.values()[par1.getItemDamage()];
 			int damage = par1.getTagCompound().getCompoundTag("Rotor").getInteger("Damage");
 			int damageLeft = type.getMaxDamage() - damage;
 			int eff = (int) (type.getEfficeny() * 100);
-			if(this.isInfinite(par1))
+			if (this.isInfinite(par1))
 			{
 				par3.add("Stays Infinite");
 			}
 			else
 			{
 				par3.add("Time the Rotor will stay at Least: ");
-				par3.add(MathUtils.getTicksInTime(damageLeft*64));
+				par3.add(MathUtils.getTicksInTime(damageLeft * 64));
 			}
-			par3.add("Rotor Efficency: "+eff+"%");
-			if(Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54))
+			par3.add("Rotor Efficency: " + eff + "%");
+			if (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54))
 			{
-				par3.add("Damage: "+damage+" / "+type.getMaxDamage());
+				par3.add("Damage: " + damage + " / " + type.getMaxDamage());
 			}
 		}
 	}
 	
-	
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setInteger("Damage", 0);
-		for(BasicRotorType type : BasicRotorType.values())
+		for (BasicRotorType type : BasicRotorType.values())
 		{
 			ItemStack stack = new ItemStack(par1, 1, type.ordinal());
 			stack.setTagInfo("Rotor", nbt);
 			par3List.add(stack);
 		}
 	}
-
+	
 	@Override
 	public String getItemDisplayName(ItemStack par1ItemStack)
 	{
 		return getDisplayName(par1ItemStack, CompactWindmills.instance);
 	}
-
+	
 	@Override
 	public String getDisplayName(ItemStack par1, SpmodMod par0)
 	{
 		return LanguageRegister.getLanguageName(new DisplayStack(par1), BasicRotorType.values()[par1.getItemDamage()].getDisplayName(), par0);
 	}
-
+	
 	@Override
 	public void registerItems(int id, SpmodMod par0)
 	{
-		if(!SpmodModRegistry.areModsEqual(par0, CompactWindmills.instance))
+		if (!SpmodModRegistry.areModsEqual(par0, CompactWindmills.instance))
 		{
 			return;
 		}
-		for(BasicRotorType type : BasicRotorType.values())
+		for (BasicRotorType type : BasicRotorType.values())
 		{
 			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, type.ordinal())), type.getDisplayName(), par0);
 		}
@@ -250,12 +241,7 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 	
 	public static enum BasicRotorType
 	{
-		WoodenRotor(2250, 0, 0.5F, "rotor.basic.wood"),
-		WoolRotor(562, 1, 0.9F, "rotor.basic.wool"),
-		IronRotor(18000, 2, 0.68F, "rotor.basic.iron"),
-		CarbonRotor(27000, 2, 0.75F, "rotor.basic.carbon"),
-		AlloyRotor(6750, 3, 0.9F, "rotor.basic.alloy"),
-		IridiumRotor(0, 4, 1.0F, "rotor.basic.iridium");
+		WoodenRotor(2250, 0, 0.5F, "rotor.basic.wood"), WoolRotor(562, 1, 0.9F, "rotor.basic.wool"), IronRotor(18000, 2, 0.68F, "rotor.basic.iron"), CarbonRotor(27000, 2, 0.75F, "rotor.basic.carbon"), AlloyRotor(6750, 3, 0.9F, "rotor.basic.alloy"), IridiumRotor(0, 4, 1.0F, "rotor.basic.iridium");
 		
 		int maxDamage;
 		int tier;
@@ -273,9 +259,7 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 		
 		public static BasicRotorType addRotor(String name, int maxDamage, int tier, float effiency, String names)
 		{
-			Class[][] classes = new Class[][]{
-					{BasicRotorType.class}	
-			};
+			Class[][] classes = new Class[][] { { BasicRotorType.class } };
 			BasicRotorType type = EnumHelper.addEnum(classes, BasicRotorType.class, name, maxDamage, tier, effiency, names);
 			return type;
 		}
@@ -284,7 +268,7 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 		{
 			return displayName;
 		}
-
+		
 		public float getEfficeny()
 		{
 			return eff;
@@ -292,42 +276,40 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 		
 		public ResourceLocation getRenderTexture()
 		{
-			if(texture == null)
+			if (texture == null)
 			{
-				texture = new ResourceLocation(CWPreference.ModID.toLowerCase()+":textures/renders/"+displayName+".png");
+				texture = new ResourceLocation(CWPreference.ModID.toLowerCase() + ":textures/renders/" + displayName + ".png");
 			}
 			return texture;
 		}
-
+		
 		public int getMaxDamage()
 		{
 			return maxDamage;
 		}
-
+		
 		public int getTier()
 		{
 			return tier;
 		}
-
+		
 		public boolean matchTier(int Wtier)
 		{
-			if(Wtier - 1 == tier || Wtier == tier || Wtier + 1 == tier)
+			if (Wtier - 1 == tier || Wtier == tier || Wtier + 1 == tier)
 			{
 				return true;
 			}
 			return false;
 		}
-
+		
 		public boolean isMetal()
 		{
-			if(this == AlloyRotor || this == IronRotor)
+			if (this == AlloyRotor || this == IronRotor)
 			{
 				return true;
 			}
 			return false;
 		}
 	}
-
-
 	
 }

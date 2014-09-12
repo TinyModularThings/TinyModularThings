@@ -24,7 +24,6 @@ import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.storage.GuiAdvTinyChest;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -379,7 +378,7 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 			ItemStack stack = getStackInSlot(i);
 			if (stack != null)
 			{
-				if(stack.stackSize >= stack.getMaxStackSize())
+				if (stack.stackSize >= stack.getMaxStackSize())
 				{
 					fullSlot++;
 				}
@@ -443,12 +442,11 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 	{
 		return null;
 	}
-
+	
 	@Override
 	public boolean shouldCheckWeakPower()
 	{
 		return true;
 	}
-	
 	
 }

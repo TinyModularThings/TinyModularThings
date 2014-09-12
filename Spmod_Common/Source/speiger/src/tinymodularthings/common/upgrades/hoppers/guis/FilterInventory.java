@@ -12,24 +12,23 @@ public class FilterInventory extends AdvContainer
 {
 	int[][] SlotX = { new int[0], { 80 }, { 70, 88 }, { 62, 80, 98 }, { 52, 70, 88, 106 }, { 44, 62, 80, 98, 116 }, { 34, 52, 70, 88, 106, 124 }, { 26, 44, 62, 80, 98, 116, 134 }, { 16, 34, 52, 70, 88, 106, 124, 142 }, { 8, 26, 44, 62, 80, 98, 116, 134, 152 } };
 	int size;
+	
 	public FilterInventory(InventoryPlayer par1, IInventory par2, HopperType par3)
 	{
 		size = par2.getSizeInventory();
-		for(int i = 0;i<size;i++)
+		for (int i = 0; i < size; i++)
 		{
 			this.addSpmodSlotToContainer(new FilterSlot(par2, par3, i, SlotX[size][i], 39));
 		}
 		this.setInventory(par1);
 	}
 	
-	
 	@Override
 	public boolean canInteractWith(EntityPlayer entityplayer)
 	{
 		return true;
 	}
-
-
+	
 	@Override
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
 	{

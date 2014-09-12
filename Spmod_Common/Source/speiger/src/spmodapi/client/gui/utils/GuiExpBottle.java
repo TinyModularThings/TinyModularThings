@@ -14,6 +14,7 @@ import speiger.src.spmodapi.common.lib.SpmodAPILib;
 public class GuiExpBottle extends GuiInventoryCore
 {
 	ExpStorage exp;
+	
 	public GuiExpBottle(InventoryPlayer player, ExpStorage par0)
 	{
 		super(par0.getInventory(player));
@@ -27,10 +28,8 @@ public class GuiExpBottle extends GuiInventoryCore
 		fontRenderer.drawString(string, xSize / 2 - fontRenderer.getStringWidth(string) / 2, 6, 4210752);
 		fontRenderer.drawString(I18n.getString("container.inventory"), 8, ySize - 96 + 2, 4210752);
 		String name = LanguageRegister.getLanguageName(this, "exp.stored", getSpmodCore());
-		fontRenderer.drawString(name+": "+exp.exp, 45, ySize - 110 + 2, 4210752);
+		fontRenderer.drawString(name + ": " + exp.exp, 45, ySize - 110 + 2, 4210752);
 	}
-
-	
 	
 	private static final ResourceLocation furnaceGuiTextures = new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/gui/utils/StorageGui.png");
 	

@@ -6,6 +6,7 @@ public interface IPacketReciver
 {
 	void recivePacket(DataInput par1);
 	
-	//For Registration. Only needed for None TileEntities! TileEntities can say NULL!
+	// For Registration. Only needed for None TileEntities! TileEntities can say
+	// NULL!
 	public String identifier();
 }

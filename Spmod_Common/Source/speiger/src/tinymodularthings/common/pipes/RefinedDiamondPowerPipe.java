@@ -11,7 +11,6 @@ import buildcraft.api.power.PowerHandler.Type;
 import buildcraft.transport.Pipe;
 import buildcraft.transport.PipeIconProvider;
 import buildcraft.transport.PipeTransportPower;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -24,35 +23,32 @@ public class RefinedDiamondPowerPipe extends Pipe<PipeTransportPower>
 	{
 		super(new PipeTransportPower(), itemID);
 		this.transport.initFromPipe(this.getClass());
-		for(int i = 0;i<requestPower.length;i++)
+		for (int i = 0; i < requestPower.length; i++)
 		{
 			requestPower[i] = true;
 		}
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public IIconProvider getIconProvider() 
+	public IIconProvider getIconProvider()
 	{
 		return BuildCraftTransport.instance.pipeIconProvider;
 	}
-
+	
 	@Override
-	public int getIconIndex(ForgeDirection direction) 
+	public int getIconIndex(ForgeDirection direction)
 	{
 		return PipeIconProvider.TYPE.PipePowerDiamond.ordinal();
 	}
 	
-	
-	
-	
 	@Override
 	public boolean canPipeConnect(TileEntity tile, ForgeDirection side)
 	{
-		if(tile instanceof IPowerReceptor)
+		if (tile instanceof IPowerReceptor)
 		{
-			PowerReceiver power = ((IPowerReceptor)tile).getPowerReceiver(side.getOpposite());
-			if(power != null)
+			PowerReceiver power = ((IPowerReceptor) tile).getPowerReceiver(side.getOpposite());
+			if (power != null)
 			{
 				return requestPower[side.ordinal()];
 			}
@@ -60,30 +56,30 @@ public class RefinedDiamondPowerPipe extends Pipe<PipeTransportPower>
 		
 		return super.canPipeConnect(tile, side);
 	}
-
+	
 	@Override
 	public void updateEntity()
 	{
-		for(int i = 0;i<this.requestPower.length;i++)
+		for (int i = 0; i < this.requestPower.length; i++)
 		{
 			ForgeDirection direction = ForgeDirection.getOrientation(i);
 			int x = this.container.xCoord + direction.offsetX;
 			int y = this.container.yCoord + direction.offsetY;
 			int z = this.container.zCoord + direction.offsetZ;
 			TileEntity tile = this.getWorld().getBlockTileEntity(x, y, z);
-			if(tile != null && tile instanceof IPowerReceptor && ((IPowerReceptor)tile).getPowerReceiver(direction.getOpposite()) != null)
+			if (tile != null && tile instanceof IPowerReceptor && ((IPowerReceptor) tile).getPowerReceiver(direction.getOpposite()) != null)
 			{
-				PowerReceiver power = ((IPowerReceptor)tile).getPowerReceiver(direction.getOpposite());
+				PowerReceiver power = ((IPowerReceptor) tile).getPowerReceiver(direction.getOpposite());
 				power.update();
 				power.receiveEnergy(Type.STORAGE, 0.01F, direction.getOpposite());
-				if(requestPower(power) && !requestPower[direction.ordinal()])
+				if (requestPower(power) && !requestPower[direction.ordinal()])
 				{
 					requestPower[direction.ordinal()] = true;
 					this.updateNeighbors(true);
 				}
-				else if(!requestPower(power) && requestPower[direction.ordinal()])
+				else if (!requestPower(power) && requestPower[direction.ordinal()])
 				{
-					if(prevRequestPower[direction.ordinal()] >= 20)
+					if (prevRequestPower[direction.ordinal()] >= 20)
 					{
 						requestPower[direction.ordinal()] = false;
 						prevRequestPower[direction.ordinal()] = 0;
@@ -98,25 +94,25 @@ public class RefinedDiamondPowerPipe extends Pipe<PipeTransportPower>
 		}
 		super.updateEntity();
 	}
-
+	
 	@Override
 	public void writeToNBT(NBTTagCompound data)
 	{
 		super.writeToNBT(data);
-		for(int i = 0;i<this.requestPower.length;i++)
+		for (int i = 0; i < this.requestPower.length; i++)
 		{
-			data.setBoolean("Request_"+i, this.requestPower[i]);
-			data.setInteger("PreRequest_"+i, this.prevRequestPower[i]);
+			data.setBoolean("Request_" + i, this.requestPower[i]);
+			data.setInteger("PreRequest_" + i, this.prevRequestPower[i]);
 		}
 	}
-
+	
 	@Override
 	public void readFromNBT(NBTTagCompound data)
 	{
-		for(int i = 0;i<this.requestPower.length;i++)
+		for (int i = 0; i < this.requestPower.length; i++)
 		{
-			requestPower[i] = data.getBoolean("Request_"+i);
-			this.prevRequestPower[i] = data.getInteger("PreRequest_"+i);
+			requestPower[i] = data.getBoolean("Request_" + i);
+			this.prevRequestPower[i] = data.getInteger("PreRequest_" + i);
 		}
 		super.readFromNBT(data);
 	}

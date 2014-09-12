@@ -13,7 +13,7 @@ public class EntityCounter
 	{
 		ID = i;
 	}
-
+	
 	public int getCurrentID()
 	{
 		return ID;

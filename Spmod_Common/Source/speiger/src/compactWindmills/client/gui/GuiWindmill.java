@@ -16,32 +16,31 @@ import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 public class GuiWindmill extends GuiInventoryCore
 {
 	WindMill mill;
-    public GuiWindmill(InventoryPlayer par1, WindMill par2)
+	
+	public GuiWindmill(InventoryPlayer par1, WindMill par2)
 	{
 		super(new ContainerWindmill(par1, par2));
 		mill = par2;
 	}
-
-
-	protected void drawGuiContainerForegroundLayer(int par1, int par2)
-    {
-        String s = LanguageRegister.getLanguageName(this, "wind.mill", CompactWindmills.instance);
-        this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
-        this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
-        this.fontRenderer.drawString("Rotor:", 40, 14, 0x404040);
-        this.fontRenderer.drawSplitString(LanguageRegister.getLanguageName(this, "output", CompactWindmills.instance)+" "+mill.cuOutput+"EU", 95, 15, 70, 0x404040);
-    }
-    
-    private static final ResourceLocation furnaceGuiTextures = new ResourceLocation(CWPreference.ModID.toLowerCase()+":textures/gui/GuiWindmill.png");
-
 	
-    protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
-    {
-        GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-        this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
-        int k = (this.width - this.xSize) / 2;
-        int l = (this.height - this.ySize) / 2;
-        this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
-    }
+	protected void drawGuiContainerForegroundLayer(int par1, int par2)
+	{
+		String s = LanguageRegister.getLanguageName(this, "wind.mill", CompactWindmills.instance);
+		this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
+		this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+		this.fontRenderer.drawString("Rotor:", 40, 14, 0x404040);
+		this.fontRenderer.drawSplitString(LanguageRegister.getLanguageName(this, "output", CompactWindmills.instance) + " " + mill.cuOutput + "EU", 95, 15, 70, 0x404040);
+	}
+	
+	private static final ResourceLocation furnaceGuiTextures = new ResourceLocation(CWPreference.ModID.toLowerCase() + ":textures/gui/GuiWindmill.png");
+	
+	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
+	{
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		this.mc.getTextureManager().bindTexture(furnaceGuiTextures);
+		int k = (this.width - this.xSize) / 2;
+		int l = (this.height - this.ySize) / 2;
+		this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
+	}
 	
 }

@@ -28,7 +28,7 @@ public class SpmodPacketHelper
 	
 	public void registerPacketReciver(IPacketReciver par1)
 	{
-		if(!Strings.isNullOrEmpty(par1.identifier()))
+		if (!Strings.isNullOrEmpty(par1.identifier()))
 		{
 			packets.put(par1.identifier(), par1);
 		}
@@ -36,7 +36,7 @@ public class SpmodPacketHelper
 	
 	public IPacketReciver getReciverFromName(String par1)
 	{
-		if(!Strings.isNullOrEmpty(par1))
+		if (!Strings.isNullOrEmpty(par1))
 		{
 			return packets.get(par1);
 		}
@@ -65,26 +65,27 @@ public class SpmodPacketHelper
 	
 	public static enum PacketType
 	{
-		TileEntity,
-		Custom;
+		TileEntity, Custom;
 	}
 	
 	public static class ModularPacket
 	{
 		DataOutputStream stream;
 		ByteArrayOutputStream bytes;
+		
 		/**
-		 * Mostly used for Custom Packets. That simply allow that you can send everything that you want. At least that the reciver is declared!
+		 * Mostly used for Custom Packets. That simply allow that you can send
+		 * everything that you want. At least that the reciver is declared!
 		 */
 		public ModularPacket(SpmodMod par0, PacketType type, String key)
 		{
-			this(par0, (byte)type.ordinal());
+			this(par0, (byte) type.ordinal());
 			this.injetString(key);
 		}
 		
 		private ModularPacket(SpmodMod mod, int dimID, int x, int y, int z)
 		{
-			this(mod, (byte)PacketType.TileEntity.ordinal());
+			this(mod, (byte) PacketType.TileEntity.ordinal());
 			InjectNumbers(dimID, x, y, z);
 		}
 		

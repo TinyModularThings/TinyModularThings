@@ -29,7 +29,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class AdvTile extends TileEntity
 {
-	 
+	
 	public void loadInformation(List par1)
 	{
 		
@@ -320,7 +320,8 @@ public abstract class AdvTile extends TileEntity
 	
 	public int upcastShort(int value)
 	{
-		if(value < 0) value += 65536;
+		if (value < 0)
+			value += 65536;
 		return value;
 	}
 	

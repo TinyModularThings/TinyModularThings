@@ -20,13 +20,13 @@ public class IC2Addon
 		
 		try
 		{
-			IC2Crops crops = (IC2Crops)Crops.instance;
+			IC2Crops crops = (IC2Crops) Crops.instance;
 			crops.registerBaseSeed(new ItemStack(APIBlocks.blueFlower, 4, 0), crops.cropBlueFlower.getId(), 4, 1, 1, 1);
 		}
 		catch (Exception e)
 		{
 			FMLLog.getLogger().info("Crash");
 		}
-	
+		
 	}
 }

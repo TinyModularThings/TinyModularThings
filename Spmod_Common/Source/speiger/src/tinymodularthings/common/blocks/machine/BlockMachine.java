@@ -38,31 +38,27 @@ public class BlockMachine extends BlockContainer
 		setCreativeTab(CreativeTabs.tabFood);
 	}
 	
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
-		for(int i = 0;i<4;i++)
+		for (int i = 0; i < 4; i++)
 		{
 			par3.add(new ItemStack(par1, 1, i));
 		}
 	}
-
-	
 	
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if(tile != null && tile instanceof AdvTile)
+		if (tile != null && tile instanceof AdvTile)
 		{
-			return ((AdvTile)tile).pickBlock(target);
+			return ((AdvTile) tile).pickBlock(target);
 		}
 		return new ItemStack(world.getBlockId(x, y, z), 1, world.getBlockMetadata(x, y, z));
 	}
-
-
+	
 	@Override
 	public TileEntity createNewTileEntity(World var1)
 	{
@@ -76,10 +72,14 @@ public class BlockMachine extends BlockContainer
 		{
 			switch (metadata)
 			{
-				case 0: return new PressureFurnace();
-				case 1: return new BucketFillerBasic();
-				case 2: return new SelfPoweredBucketFiller();
-				case 3: return new WaterGenerator();
+				case 0:
+					return new PressureFurnace();
+				case 1:
+					return new BucketFillerBasic();
+				case 2:
+					return new SelfPoweredBucketFiller();
+				case 3:
+					return new WaterGenerator();
 				default:
 					return null;
 			}
@@ -176,13 +176,12 @@ public class BlockMachine extends BlockContainer
 	{
 		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
 		int meta = par1.getBlockMetadata(par2, par3, par4);
-		if (tile != null && tile instanceof AdvTile &&  ((AdvTile) tile).getIconFromSideAndMetadata(par5, 0) != null)
+		if (tile != null && tile instanceof AdvTile && ((AdvTile) tile).getIconFromSideAndMetadata(par5, 0) != null)
 		{
 			return ((AdvTile) tile).getIconFromSideAndMetadata(par5, 0);
 		}
 		return getIcon(par5, meta);
 	}
-
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -207,7 +206,7 @@ public class BlockMachine extends BlockContainer
 			}
 			case 1:
 			{
-				if(par1 < 2)
+				if (par1 < 2)
 				{
 					return textures[0][par1];
 				}
@@ -215,7 +214,7 @@ public class BlockMachine extends BlockContainer
 			}
 			case 2:
 			{
-				if(par1 < 2)
+				if (par1 < 2)
 				{
 					return textures[1][par1];
 				}
@@ -223,13 +222,13 @@ public class BlockMachine extends BlockContainer
 			}
 			case 3:
 			{
-				if(par1 < 2)
+				if (par1 < 2)
 				{
-					if(par1 == 1)
+					if (par1 == 1)
 					{
 						par1 = 0;
 					}
-					else if(par1 == 0)
+					else if (par1 == 0)
 					{
 						par1 = 1;
 					}
@@ -248,18 +247,16 @@ public class BlockMachine extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		String[] names = new String[]{"top", "bottom", "side"};
-		for(int i = 0;i<names.length;i++)
+		String[] names = new String[] { "top", "bottom", "side" };
+		for (int i = 0; i < names.length; i++)
 		{
-			textures[0][i] = par1IconRegister.registerIcon(TinyModularThingsLib.ModID.toLowerCase()+":machine/basicBucketFiller_"+names[i]);
-			textures[1][i] = par1IconRegister.registerIcon(TinyModularThingsLib.ModID.toLowerCase()+":machine/SelfPoweredBucketFiller_"+names[i]);
-			textures[2][i] = par1IconRegister.registerIcon(TinyModularThingsLib.ModID.toLowerCase()+":machine/waterGenerator_"+names[i]);
+			textures[0][i] = par1IconRegister.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":machine/basicBucketFiller_" + names[i]);
+			textures[1][i] = par1IconRegister.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":machine/SelfPoweredBucketFiller_" + names[i]);
+			textures[2][i] = par1IconRegister.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":machine/waterGenerator_" + names[i]);
 			
 		}
 	}
 	
-	
-
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random)
 	{

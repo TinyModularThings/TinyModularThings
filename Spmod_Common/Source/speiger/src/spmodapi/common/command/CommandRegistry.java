@@ -27,9 +27,9 @@ public class CommandRegistry
 	public ArrayList<ISpmodCommand> getCommands(ICommandSender par1)
 	{
 		ArrayList<ISpmodCommand> com = new ArrayList<ISpmodCommand>();
-		for(ISpmodCommand cu : list)
+		for (ISpmodCommand cu : list)
 		{
-			if(cu.isCommandRunnable(par1, true, (ISubCommand)null, new String[0]))
+			if (cu.isCommandRunnable(par1, true, (ISubCommand) null, new String[0]))
 			{
 				com.add(cu);
 			}
@@ -40,11 +40,11 @@ public class CommandRegistry
 	public ArrayList<ISubCommand> getSubCommands(ICommandSender par1, ISpmodCommand par2)
 	{
 		ArrayList<ISubCommand> com = new ArrayList<ISubCommand>();
-		if(!par2.getSubCommands().isEmpty())
+		if (!par2.getSubCommands().isEmpty())
 		{
-			for(ISubCommand cu : par2.getSubCommands())
+			for (ISubCommand cu : par2.getSubCommands())
 			{
-				if(cu != null && par2.isCommandRunnable(par1, true, cu, new String[0]))
+				if (cu != null && par2.isCommandRunnable(par1, true, cu, new String[0]))
 				{
 					com.add(cu);
 				}

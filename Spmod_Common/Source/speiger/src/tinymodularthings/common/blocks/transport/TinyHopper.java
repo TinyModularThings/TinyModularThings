@@ -49,20 +49,22 @@ import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.transport.TinyHopperGui;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
-import speiger.src.tinymodularthings.common.upgrades.hoppers.all.FilterUpgrade;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 import speiger.src.tinymodularthings.common.utils.slot.InventoryFilter;
+import speiger.src.tinymodularthings.common.utils.slot.InventoryHopperUpgrades;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.tools.IToolWrench;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, ISidedInventory, IPowerReceptor, IHopperInventory, IAdvancedPipeProvider, IFilteredInventory, IPowerEmitter, IOwnerProvider
+public class TinyHopper extends TileFacing implements IFluidHandler, IHopper,
+		ISidedInventory, IPowerReceptor, IHopperInventory,
+		IAdvancedPipeProvider, IFilteredInventory, IPowerEmitter,
+		IOwnerProvider
 {
 	public HopperType type;
 	public boolean redstone;
@@ -71,10 +73,10 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	public ArrayList<EntityPlayer> users = new ArrayList<EntityPlayer>();
 	public ItemStack[] inventory = new ItemStack[0];
 	public InventoryFilter filter = new InventoryFilter(0);
+	public InventoryHopperUpgrades installedUpgrades = new InventoryHopperUpgrades(this);
 	public int InventoryMode = -1;
 	public AdvancedFluidTank[] tanks = new AdvancedFluidTank[0];
 	public EnergyProvider energy = new EnergyProvider(this, 25000).setPowerLoss(1);
-	public ArrayList<HopperUpgrade> installedUpgrades = new ArrayList<HopperUpgrade>();
 	public int[] transferlimits = { 1, 10, 10 };
 	public String owner = "None";
 	public EntityPlayer fakePlayer = null;
@@ -91,17 +93,14 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	{
 		type = ADV;
 		redstone = adv;
-		this.installedUpgrades.add(new FilterUpgrade());
 	}
-	
-	
 	
 	@Override
 	public void setupUser(EntityPlayer player)
 	{
 		owner = player.getCommandSenderName();
 	}
-
+	
 	@Override
 	public void onPlaced(int facing)
 	{
@@ -116,7 +115,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	
 	public void updateMode()
 	{
-		if(this.InventoryMode < 0)
+		if (this.InventoryMode < 0)
 		{
 			return;
 		}
@@ -294,8 +293,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		return new CopiedIInventory(this);
 	}
 	
-
-	
 	@Override
 	public ItemStack addItemsToHopper(ItemStack par1)
 	{
@@ -342,23 +339,21 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		return false;
 	}
 	
-	
-
 	@Override
 	public boolean onClick(boolean sneak, EntityPlayer par1, Block par2, int side)
 	{
-		if(!worldObj.isRemote)
+		if (!worldObj.isRemote)
 		{
 			ItemStack item = par1.getCurrentEquippedItem();
-			if(item != null)
+			if (item != null)
 			{
-				if(item.getItem() instanceof IToolWrench && ((IToolWrench)item.getItem()).canWrench(par1, xCoord, yCoord, zCoord))
+				if (item.getItem() instanceof IToolWrench && ((IToolWrench) item.getItem()).canWrench(par1, xCoord, yCoord, zCoord))
 				{
-					if(sneak)
+					if (sneak)
 					{
 						int nextFacing = this.setNextFacing();
 						this.setFacing(nextFacing);
-						if(nextFacing == this.getRotation())
+						if (nextFacing == this.getRotation())
 						{
 							this.setFacing(this.setNextFacing());
 						}
@@ -367,45 +362,36 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 					{
 						int nextRotation = this.setNextRotation();
 						this.setRotation(nextRotation);
-						if(nextRotation == this.getFacing())
+						if (nextRotation == this.getFacing())
 						{
 							this.setRotation(this.setNextRotation());
 						}
 					}
-					((IToolWrench)item.getItem()).wrenchUsed(par1, xCoord, yCoord, zCoord);
+					((IToolWrench) item.getItem()).wrenchUsed(par1, xCoord, yCoord, zCoord);
 					this.updateBlock();
 					return true;
 				}
-				else if(item.getItem() instanceof IHopperUpgradeItem)
+				else if (item.getItem() instanceof IHopperUpgradeItem)
 				{
 					IHopperUpgradeItem upgrade = (IHopperUpgradeItem) item.getItem();
-					if(upgrade != null)
+					if (upgrade != null)
 					{
 						HopperUpgrade hopper = upgrade.getUpgrade(item);
-						if(upgrade.isRemovingUpgrade(item))
+						if (this.addUpgrade(hopper))
 						{
-							if(installedUpgrades.contains(hopper))
-							{
-								this.removeUpgrade(hopper);
-							}
+							installedUpgrades.addUpgrade(item, hopper);
 						}
-						else
-						{
-							if(HopperRegistry.canApplyUpgrade(hopper, installedUpgrades))
-							{
-								this.addUpgrade(hopper);
-							}
-						}
-
+						par1.inventory.setInventorySlotContents(par1.inventory.currentItem, item);
+						par1.inventory.onInventoryChanged();
 						return true;
 					}
 				}
-
+				
 			}
 			boolean preventOpening = false;
-			for(HopperUpgrade cu : this.installedUpgrades)
+			for (HopperUpgrade cu : this.installedUpgrades.getAllUpgrades())
 			{
-				if(cu.onClick(sneak, par1, par2, this, side))
+				if (cu.onClick(sneak, par1, par2, this, side))
 				{
 					preventOpening = true;
 				}
@@ -413,10 +399,10 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 			return preventOpening;
 			
 		}
-
+		
 		return false;
 	}
-
+	
 	@Override
 	public ItemStack removeItemsFromHopper(int slot, int stackSize)
 	{
@@ -446,8 +432,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	{
 		return CopiedFluidTank.createTanks(tanks);
 	}
-	
-
 	
 	@Override
 	public FluidStack addFluid(FluidStack par1)
@@ -490,7 +474,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		return tanks[slot].drain(amount, remove);
 	}
 	
-	
 	@Override
 	public boolean hasEnergyProvider()
 	{
@@ -503,12 +486,10 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		return energy;
 	}
 	
-
-	
 	@Override
 	public ArrayList<HopperUpgrade> getUpgrades()
 	{
-		return installedUpgrades;
+		return installedUpgrades.getAllUpgrades();
 	}
 	
 	@Override
@@ -559,8 +540,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		}
 		return false;
 	}
-	
-
 	
 	@Override
 	public ArrayList<EntityPlayer> getUsingPlayers()
@@ -626,7 +605,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 			return;
 		}
 		
-		if(worldObj.getWorldTime() % 10 == 0)
+		if (worldObj.getWorldTime() % 10 == 0)
 		{
 			this.updateBlock();
 		}
@@ -636,14 +615,14 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20.0D, worldObj.provider.dimensionId, getDescriptionPacket());
 		}
 		
-		if(fakePlayer == null)
+		if (fakePlayer == null)
 		{
 			fakePlayer = new FakePlayer(worldObj, xCoord, yCoord, zCoord);
 		}
 		
-		if(speed || worldObj.getWorldTime() % 20 == 0)
+		if (speed || worldObj.getWorldTime() % 20 == 0)
 		{
-			for (HopperUpgrade upgrade : installedUpgrades)
+			for (HopperUpgrade upgrade : installedUpgrades.getAllUpgrades())
 			{
 				upgrade.onTick(this);
 			}
@@ -702,17 +681,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 			}
 		}
 		
-		NBTTagList upgrades = nbt.getTagList("Upgrades");
-		for (int i = 0; i < upgrades.tagCount(); i++)
-		{
-			NBTTagCompound data = (NBTTagCompound) upgrades.tagAt(i);
-			HopperUpgrade upgrade = HopperRegistry.getHopperUpgradeFromNBT(data.getString("Name"));
-			if (upgrade != null)
-			{
-				upgrade.onNBTRead(data);
-				installedUpgrades.add(upgrade);
-			}
-		}
 		NBTTagList players = nbt.getTagList("Players");
 		for (int i = 0; i < players.tagCount(); i++)
 		{
@@ -722,6 +690,9 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		
 		NBTTagCompound filterNBT = nbt.getCompoundTag("Filter");
 		filter.readFromNBT(filterNBT);
+		
+		NBTTagCompound upgrades = nbt.getCompoundTag("Upgrades");
+		installedUpgrades.readFromNBT(upgrades);
 	}
 	
 	@Override
@@ -740,9 +711,14 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		nbt.setInteger("rotation", rotation);
 		nbt.setString("Owner", owner);
 		energy.writeToNBT(nbt);
+		
 		NBTTagCompound filter = new NBTTagCompound();
 		this.filter.writeToNBT(filter);
 		nbt.setCompoundTag("Filter", filter);
+		
+		NBTTagCompound upgrades = new NBTTagCompound();
+		this.installedUpgrades.readFromNBT(upgrades);
+		nbt.setCompoundTag("Upgrades", upgrades);
 		
 		NBTTagList tanksdata = new NBTTagList();
 		for (int i = 0; i < tanks.length; i++)
@@ -769,17 +745,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		}
 		nbt.setTag("Items", nbttaglist);
 		
-		NBTTagList upgrades = new NBTTagList();
-		for (int i = 0; i < installedUpgrades.size(); i++)
-		{
-			HopperUpgrade upgrade = installedUpgrades.get(i);
-			NBTTagCompound cuData = new NBTTagCompound();
-			cuData.setString("Name", upgrade.getNBTName());
-			upgrade.onNBTWrite(cuData);
-			upgrades.appendTag(cuData);
-		}
-		nbt.setTag("Upgrades", upgrades);
-		
 		NBTTagList players = new NBTTagList();
 		for (int i = 0; i < users.size(); i++)
 		{
@@ -801,7 +766,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		return array;
 	}
 	
-
 	@Override
 	public boolean hasContainer()
 	{
@@ -874,7 +838,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid)
 	{
-		if(from.ordinal() == getRotation())
+		if (from.ordinal() == getRotation())
 		{
 			return false;
 		}
@@ -951,143 +915,139 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	{
 		return null;
 	}
-
+	
 	@Override
 	public int getTransferlimit(HopperType par1)
 	{
-		if(par1 != par1.Nothing)
+		if (par1 != par1.Nothing)
 		{
 			return transferlimits[par1.ordinal()];
 		}
 		return 0;
 	}
-
+	
 	@Override
 	public int getClearTransferlimit(HopperType par1)
 	{
-		switch(par1)
+		switch (par1)
 		{
-			case Items: return 1;
-			case Fluids: return 10;
-			case Energy: return 10;
-			case Nothing: return 0;
-			default: return 0;
+			case Items:
+				return 1;
+			case Fluids:
+				return 10;
+			case Energy:
+				return 10;
+			case Nothing:
+				return 0;
+			default:
+				return 0;
 		}
 	}
-
+	
 	@Override
 	public void addTransferlimit(HopperType par1, int amount)
 	{
-		if(par1 == par1.Nothing)
+		if (par1 == par1.Nothing)
 		{
 			return;
 		}
-		transferlimits[par1.ordinal()]+=amount;
+		transferlimits[par1.ordinal()] += amount;
 	}
-
+	
 	@Override
 	public void removeTransferlimit(HopperType par1, int amount)
 	{
-		if(par1 == par1.Nothing)
+		if (par1 == par1.Nothing)
 		{
 			return;
 		}
-		transferlimits[par1.ordinal()]-=amount;
-		if(transferlimits[par1.ordinal()] < 0)
+		transferlimits[par1.ordinal()] -= amount;
+		if (transferlimits[par1.ordinal()] < 0)
 		{
 			transferlimits[par1.ordinal()] = 0;
 		}
 	}
-
+	
 	@Override
 	public String getOwner()
 	{
 		return owner;
 	}
-
+	
 	@Override
 	public boolean isOwnerInventory()
 	{
 		return this instanceof IOwner;
 	}
-
+	
 	@Override
 	public boolean addUpgrade(HopperUpgrade par1)
 	{
-		if(HopperRegistry.canApplyUpgrade(par1, installedUpgrades) && (par1.getUpgradeType() == this.type || par1.getUpgradeType() == HopperType.Nothing))
+		if (HopperRegistry.canApplyUpgrade(par1, installedUpgrades.getAllUpgrades()) && (par1.getUpgradeType() == this.type || par1.getUpgradeType() == HopperType.Nothing))
 		{
 			par1.onRegisterUpgrade(this);
 			return true;
 		}
 		return false;
 	}
-
+	
 	@Override
-	public boolean removeUpgrade(HopperUpgrade par1)
+	public void removeUpgrade(HopperUpgrade par1)
 	{
-		if(this.installedUpgrades.remove(par1))
-		{
-			par1.onRemovingUpgrade(this);
-			return true;
-		}
-		return false;
+		par1.onRemovingUpgrade(this);
 	}
-
+	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1)
 	{
 		int[] array = new int[InventoryMode];
-		for(int i = 0;i<array.length;i++)
+		for (int i = 0; i < array.length; i++)
 		{
 			array[i] = i;
 		}
 		return array;
 	}
-
+	
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemstack, int j)
 	{
-		if(j == getRotation())
+		if (j == getRotation())
 		{
 			return false;
 		}
-		if(filter.getStackInSlot(i) == null || (filter.getStackInSlot(i) != null && filter.getStackInSlot(i).isItemEqual(itemstack)))
+		if (filter.getStackInSlot(i) == null || (filter.getStackInSlot(i) != null && filter.getStackInSlot(i).isItemEqual(itemstack)))
 		{
 			return true;
 		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean canExtractItem(int i, ItemStack itemstack, int j)
 	{
 		return true;
 	}
-
-
-
-
-
+	
 	@Override
 	public boolean canEmitPowerFrom(ForgeDirection side)
 	{
-		if(type == type.Energy)
+		if (type == type.Energy)
 		{
 			return side.ordinal() == this.getRotation();
 		}
 		return false;
 	}
-
+	
 	@Override
 	public int isPowering(int side)
 	{
-		if(redstone)
+		if (redstone)
 		{
-			if(side == getFacing())
+			if (side == getFacing())
 			{
 				boolean flag = false;
 				
-				switch(type)
+				switch (type)
 				{
 					case Energy:
 						flag = this.isEnergyFull();
@@ -1100,10 +1060,8 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 						break;
 					default:
 						break;
-					
 				}
-				
-				if(flag)
+				if (flag)
 				{
 					return 15;
 				}
@@ -1116,32 +1074,29 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	{
 		return this.getEnergyStorage().isFull();
 	}
-
+	
 	@Override
 	public IOwner getOwners()
 	{
 		return null;
 	}
-
+	
 	@Override
 	public IInventory getFilterInventory()
 	{
 		return filter;
 	}
-
-
+	
 	@Override
 	public ItemStack getFilter(int id)
 	{
 		return filter.getStackInSlot(id);
 	}
-
+	
 	@Override
 	public IInventory getFilter()
 	{
 		return filter;
 	}
-
-	
 	
 }

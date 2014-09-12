@@ -50,7 +50,6 @@ public class TriggerFuel implements ITrigger
 		return false;
 	}
 	
-
 	@Override
 	public String getDescription()
 	{
@@ -94,7 +93,7 @@ public class TriggerFuel implements ITrigger
 		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean requiresParameter()
 	{

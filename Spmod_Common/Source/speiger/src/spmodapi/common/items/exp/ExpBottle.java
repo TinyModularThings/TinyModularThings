@@ -21,8 +21,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ExpBottle extends SpmodItem implements IExpBottle
 {
-	String[] exp = new String[]{"small", "medium", "big", "huge", "transdimensional"};
-	static int[] exps = new int[]{100, 1000, 10000, 100000, 1000000};
+	String[] exp = new String[] { "small", "medium", "big", "huge", "transdimensional" };
+	static int[] exps = new int[] { 100, 1000, 10000, 100000, 1000000 };
+	
 	public ExpBottle(int par1)
 	{
 		super(par1);
@@ -32,49 +33,47 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 		this.setMaxStackSize(1);
 		this.setCreativeTab(APIUtils.tabCrafing);
 	}
-
+	
 	@Override
 	public void registerItems(int id, SpmodMod par0)
-	{	
-		if(!SpmodModRegistry.areModsEqual(par0, getMod()))
+	{
+		if (!SpmodModRegistry.areModsEqual(par0, getMod()))
 		{
 			return;
 		}
-		for(int i = 0;i<exp.length;i++)
+		for (int i = 0; i < exp.length; i++)
 		{
-			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, 0)), "exp.bottle."+exp[i], par0);
+			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, 0)), "exp.bottle." + exp[i], par0);
 		}
 	}
-	
-
 	
 	@Override
 	public String getDisplayName(ItemStack par1, SpmodMod Start)
 	{
-		if(par1.getTagCompound() == null)
+		if (par1.getTagCompound() == null)
 		{
 			par1 = this.getExpBottle(par1.itemID, 0, false, false);
 		}
 		NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Exp");
-		return LanguageRegister.getLanguageName(new DisplayStack(par1), "exp.bottle."+exp[nbt.getInteger("ID")], Start);
-
+		return LanguageRegister.getLanguageName(new DisplayStack(par1), "exp.bottle." + exp[nbt.getInteger("ID")], Start);
+		
 	}
-
+	
 	@Override
 	public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
 	{
-		if(stack.hasTagCompound())
+		if (stack.hasTagCompound())
 		{
 			NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Exp");
 			return icons[nbt.getInteger("ID")];
 		}
 		return icons[0];
 	}
-
+	
 	@Override
 	public Icon getIcon(ItemStack stack, int pass)
 	{
-		if(stack.hasTagCompound())
+		if (stack.hasTagCompound())
 		{
 			NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Exp");
 			return icons[nbt.getInteger("ID")];
@@ -88,31 +87,29 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1)
 	{
-		for(int i = 0;i<icons.length;i++)
+		for (int i = 0; i < icons.length; i++)
 		{
-			icons[i] = par1.registerIcon(this.getModID()+":exp/bottle_"+exp[i]);
+			icons[i] = par1.registerIcon(this.getModID() + ":exp/bottle_" + exp[i]);
 		}
 	}
-
-	
 	
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1, World par2, EntityPlayer par3)
 	{
-		if(!par2.isRemote)
+		if (!par2.isRemote)
 		{
-			if(par3.isSneaking())
+			if (par3.isSneaking())
 			{
 				int expLevel = par3.experienceLevel;
-				if(expLevel > 0)
+				if (expLevel > 0)
 				{
-					if(this.needExp(par1))
+					if (this.needExp(par1))
 					{
 						
 						par3.addExperienceLevel(-1);
 						int expCap = par3.xpBarCap();
 						expCap -= this.charge(par1, expCap);
-						if(expCap > 0)
+						if (expCap > 0)
 						{
 							par3.addExperience(expCap);
 						}
@@ -129,7 +126,7 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 			}
 			else
 			{
-				if(this.hasExp(par1))
+				if (this.hasExp(par1))
 				{
 					par3.addExperience(this.discharge(par1, this.getTransferlimit(par1)));
 				}
@@ -137,48 +134,48 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 		}
 		return par1;
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
 	{
-		if(par1.hasTagCompound())
+		if (par1.hasTagCompound())
 		{
 			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Exp");
 			int stored = nbt.getInteger("Cu");
 			int max = nbt.getInteger("Max");
 			int transfer = nbt.getInteger("Transfer");
-			par3List.add("Can Store: "+max+" Exp");
-			par3List.add("Stored Exp: "+stored+" Exp");
-			par3List.add("Exp Transferlimit: "+transfer+" Exp");
+			par3List.add("Can Store: " + max + " Exp");
+			par3List.add("Stored Exp: " + stored + " Exp");
+			par3List.add("Exp Transferlimit: " + transfer + " Exp");
 		}
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean requiresMultipleRenderPasses()
 	{
 		return true;
 	}
-
+	
 	@Override
 	public int getDisplayDamage(ItemStack stack)
 	{
-		double charge = ((double)this.getStoredExp(stack) / (double)this.getMaxExp(stack)) * 100;
-		if(charge == 0 && this.getStoredExp(stack) > 0)
+		double charge = ((double) this.getStoredExp(stack) / (double) this.getMaxExp(stack)) * 100;
+		if (charge == 0 && this.getStoredExp(stack) > 0)
 		{
 			return 100;
 		}
-		return 100 -(int)charge; 
+		return 100 - (int) charge;
 	}
-
+	
 	@Override
 	public int getMaxExp(ItemStack par1)
 	{
 		NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Exp");
 		return nbt.getInteger("Max");
 	}
-
+	
 	@Override
 	public int getStoredExp(ItemStack par1)
 	{
@@ -191,34 +188,32 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 		ItemStack item = new ItemStack(id, 1, full ? 1 : 100);
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setInteger("ID", type);
-		nbt.setInteger("Max", doubles ? exps[type]*2 : exps[type]);
+		nbt.setInteger("Max", doubles ? exps[type] * 2 : exps[type]);
 		nbt.setInteger("Cu", full ? nbt.getInteger("Max") : 0);
 		nbt.setInteger("Transfer", nbt.getInteger("Max") / 100);
 		item.setTagInfo("Exp", nbt);
 		return item;
 	}
 	
-	
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
-		for(int i = 0;i<exp.length;i++)
+		for (int i = 0; i < exp.length; i++)
 		{
 			par3.add(getExpBottle(par1, i, false, false));
 			par3.add(getExpBottle(par1, i, false, true));
 		}
 	}
-
+	
 	@Override
 	public int charge(ItemStack par1, int amount)
 	{
 		boolean toBig = this.getTransferlimit(par1) < amount;
-		if(toBig)
+		if (toBig)
 		{
 			int charge = this.getStoredExp(par1);
-			if(charge + this.getTransferlimit(par1) > this.getMaxExp(par1))
+			if (charge + this.getTransferlimit(par1) > this.getMaxExp(par1))
 			{
 				int max = (charge + this.getTransferlimit(par1)) - this.getMaxExp(par1);
 				NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Exp");
@@ -226,12 +221,12 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 				return this.getTransferlimit(par1) - max;
 			}
 			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Exp");
-			nbt.setInteger("Cu", this.getTransferlimit(par1)+this.getStoredExp(par1));
+			nbt.setInteger("Cu", this.getTransferlimit(par1) + this.getStoredExp(par1));
 			return this.getTransferlimit(par1);
 		}
 		
 		int adding = this.getStoredExp(par1) + amount;
-		if(adding > this.getMaxExp(par1))
+		if (adding > this.getMaxExp(par1))
 		{
 			int totalAdded = amount - (adding - this.getStoredExp(par1));
 			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Exp");
@@ -243,16 +238,16 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 		nbt.setInteger("Cu", adding);
 		return amount;
 	}
-
+	
 	@Override
 	public int discharge(ItemStack par1, int amount)
 	{
 		boolean toMuch = this.getTransferlimit(par1) < amount;
-		if(toMuch)
+		if (toMuch)
 		{
 			int re = this.getStoredExp(par1) - this.getTransferlimit(par1);
 			int extra = 0;
-			if(re < 0)
+			if (re < 0)
 			{
 				extra += -re;
 				re = 0;
@@ -263,7 +258,7 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 		}
 		int re = this.getStoredExp(par1) - amount;
 		int extra = 0;
-		if(re < 0)
+		if (re < 0)
 		{
 			extra += -re;
 			re = 0;
@@ -273,26 +268,24 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 		
 		return amount - extra;
 	}
-
+	
 	@Override
 	public int getTransferlimit(ItemStack par1)
 	{
 		NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Exp");
 		return nbt.getInteger("Transfer");
 	}
-
+	
 	@Override
 	public boolean hasExp(ItemStack par1)
 	{
 		return this.getStoredExp(par1) > 0;
 	}
-
+	
 	@Override
 	public boolean needExp(ItemStack par1)
 	{
 		return this.getStoredExp(par1) < this.getMaxExp(par1);
 	}
-	
-	
 	
 }

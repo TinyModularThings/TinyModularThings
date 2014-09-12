@@ -22,13 +22,14 @@ import cpw.mods.fml.relauncher.Side;
 public class SpmodPacketHandler implements IPacketHandler
 {
 	private static boolean packets = false;
+	
 	@Override
-	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player player)
+	public void onPacketData(INetworkManager manager, Packet250CustomPayload packet, Player par1)
 	{
 		Side side = FMLCommonHandler.instance().getEffectiveSide();
 		if (packet.channel.equalsIgnoreCase("Spmod"))
 		{
-			if(!packets)
+			if (!packets)
 			{
 				packets = true;
 				return;
@@ -52,7 +53,7 @@ public class SpmodPacketHandler implements IPacketHandler
 		{
 			SpmodMod mod = SpmodModRegistry.getModFromName(stream.readUTF());
 			PacketType type = PacketType.values()[stream.readByte()];
-			if(type == type.TileEntity)
+			if (type == type.TileEntity)
 			{
 				World world = DimensionManager.getWorld(stream.readInt());
 				int x = stream.readInt();
@@ -65,10 +66,10 @@ public class SpmodPacketHandler implements IPacketHandler
 					((IPacketReciver) tile).recivePacket(stream);
 				}
 			}
-			else if(type == type.Custom)
+			else if (type == type.Custom)
 			{
 				IPacketReciver recive = SpmodPacketHelper.getHelper().getReciverFromName(stream.readUTF());
-				if(recive != null)
+				if (recive != null)
 				{
 					recive.recivePacket(stream);
 				}
@@ -87,7 +88,7 @@ public class SpmodPacketHandler implements IPacketHandler
 		{
 			SpmodMod mod = SpmodModRegistry.getModFromName(stream.readUTF());
 			PacketType type = PacketType.values()[stream.readByte()];
-			if(type == type.TileEntity)
+			if (type == type.TileEntity)
 			{
 				World world = DimensionManager.getWorld(stream.readInt());
 				int x = stream.readInt();
@@ -100,10 +101,10 @@ public class SpmodPacketHandler implements IPacketHandler
 					((IPacketReciver) tile).recivePacket(stream);
 				}
 			}
-			else if(type == type.Custom)
+			else if (type == type.Custom)
 			{
 				IPacketReciver recive = SpmodPacketHelper.getHelper().getReciverFromName(stream.readUTF());
-				if(recive != null)
+				if (recive != null)
 				{
 					recive.recivePacket(stream);
 				}

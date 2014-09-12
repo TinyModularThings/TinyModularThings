@@ -18,6 +18,7 @@ public class TinyItems
 	public static Item tinyTank;
 	public static Item advTinyChest;
 	public static Item advTinyTank;
+	public static Item cell;
 	
 	// Carts
 	public static Item tinyStorageCart;
@@ -30,6 +31,8 @@ public class TinyItems
 	// Gates
 	public static Item gateItem;
 	
+	
+	
 	// TransportItems
 	public static Item interfaceBlock;
 	public static Item tinyHopper;
@@ -39,19 +42,16 @@ public class TinyItems
 	public static Item energyHopper;
 	public static Item advEnergyHopper;
 	
-	//Energy Items
+	// Energy Items
 	public static Item smallMJBattery;
 	public static Item mediumMJBattery;
 	public static Item bigMJBattery;
 	public static Item hugeMJBattery;
 	
-	
-	
-	//Pipes
+	// Pipes
 	public static Item emeraldPowerPipeE;
 	public static Item emeraldPowerPipe;
 	public static Item redstoneFluidPipe;
 	public static Item refinedDiamondPowerPipe;
-	
 	
 }

@@ -33,7 +33,6 @@ public class TinyConfig
 	public static boolean logging = true;
 	public static boolean pipesEnabled = true;
 	
-	
 	public void loadTinyConfig(File file)
 	{
 		config = new Configuration(file);

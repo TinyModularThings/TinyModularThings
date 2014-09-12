@@ -12,9 +12,9 @@ public class BucketHandler
 	@ForgeSubscribe
 	public void onBucketFill(FillBucketEvent evt)
 	{
-		if(evt.world.getBlockId(evt.target.blockX, evt.target.blockY, evt.target.blockZ) == APIBlocks.fluidHempResin.blockID)
+		if (evt.world.getBlockId(evt.target.blockX, evt.target.blockY, evt.target.blockZ) == APIBlocks.fluidHempResin.blockID)
 		{
-			if(evt.world.getBlockMetadata(evt.target.blockX, evt.target.blockY, evt.target.blockZ) == 0)
+			if (evt.world.getBlockMetadata(evt.target.blockX, evt.target.blockY, evt.target.blockZ) == 0)
 			{
 				evt.result = new ItemStack(APIItems.hempResinBucket);
 				evt.setResult(Result.ALLOW);

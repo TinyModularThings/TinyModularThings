@@ -31,7 +31,7 @@ public abstract class TinyItem extends Item implements LanguageItem
 	
 	public String getModID()
 	{
-		return TinyModularThingsLib.ModID;
+		return TinyModularThingsLib.ModID.toLowerCase();
 	}
 	
 }

@@ -1,14 +1,7 @@
 package speiger.src.api.hopper;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.List;
-
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagString;
 
 public class HopperRegistry
 {
@@ -21,23 +14,27 @@ public class HopperRegistry
 	
 	public static boolean canApplyUpgrade(HopperUpgrade par1, ArrayList<HopperUpgrade> par2)
 	{
+		if (par1 == null)
+		{
+			return false;
+		}
 		int maxSize = par1.getMaxStackSize();
 		int cuSize = 0;
 		
-		if(!upgrades.containsKey(par1.getNBTName()))
+		if (!upgrades.containsKey(par1.getNBTName()))
 		{
 			return false;
 		}
 		
-		for(int i = 0;i<par2.size();i++)
+		for (int i = 0; i < par2.size(); i++)
 		{
 			HopperUpgrade cu = par2.get(i);
-			if(cu.getNBTName().equalsIgnoreCase(par1.getNBTName()))
+			if (cu.getNBTName().equalsIgnoreCase(par1.getNBTName()))
 			{
 				cuSize++;
 			}
 		}
-		if(maxSize <= cuSize)
+		if (maxSize <= cuSize)
 		{
 			return false;
 		}
@@ -60,8 +57,7 @@ public class HopperRegistry
 	
 	public static enum HopperEffect
 	{
-		Speed(EffectType.Else, 0),
-		AllSlots(EffectType.Else, 0);
+		Speed(EffectType.Else, 0), AllSlots(EffectType.Else, 0);
 		
 		int number;
 		EffectType type;
@@ -87,5 +83,5 @@ public class HopperRegistry
 			Item, Fluid, Energy, Else;
 		}
 	}
-
+	
 }

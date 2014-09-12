@@ -101,6 +101,6 @@ public class APIBlocksConfig
 		RegisterProxy.RegisterTile(blocks.blockUtils, ExpStorage.class, "ExpStorage");
 		RegisterProxy.RegisterTile(blocks.blockUtils, MobMachine.class, "MobMachine");
 		config.blockIDs.updateToNextID();
-
+		
 	}
 }

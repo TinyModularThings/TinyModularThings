@@ -73,8 +73,6 @@ public class TriggerHasWork implements ITrigger
 		return false;
 	}
 	
-
-	
 	@Override
 	public String getDescription()
 	{
@@ -110,10 +108,10 @@ public class TriggerHasWork implements ITrigger
 				return !canSmelt((TileEntityFurnace) tile);
 			}
 			
-			if(tile instanceof TileEntityBrewingStand)
+			if (tile instanceof TileEntityBrewingStand)
 			{
 				TileEntityBrewingStand brew = (TileEntityBrewingStand) tile;
-				if(Active)
+				if (Active)
 				{
 					return this.canBrew(brew);
 				}
@@ -156,63 +154,62 @@ public class TriggerHasWork implements ITrigger
 			return (result <= par1.getInventoryStackLimit() && result <= itemstack.getMaxStackSize());
 		}
 	}
-
+	
 	@Override
 	public boolean requiresParameter()
 	{
 		return false;
 	}
 	
+	private boolean canBrew(TileEntityBrewingStand par1)
+	{
+		if (par1.getStackInSlot(3) != null && par1.getStackInSlot(3).stackSize > 0)
+		{
+			ItemStack itemstack = par1.getStackInSlot(3);
+			
+			if (!Item.itemsList[itemstack.itemID].isPotionIngredient())
+			{
+				return false;
+			}
+			else
+			{
+				boolean flag = false;
+				
+				for (int i = 0; i < 3; ++i)
+				{
+					if (par1.getStackInSlot(i) != null && par1.getStackInSlot(i).getItem() instanceof ItemPotion)
+					{
+						int j = par1.getStackInSlot(i).getItemDamage();
+						int k = this.getPotionResult(j, itemstack);
+						
+						if (!ItemPotion.isSplash(j) && ItemPotion.isSplash(k))
+						{
+							flag = true;
+							break;
+						}
+						
+						List list = Item.potion.getEffects(j);
+						List list1 = Item.potion.getEffects(k);
+						
+						if ((j <= 0 || list != list1) && (list == null || !list.equals(list1) && list1 != null) && j != k)
+						{
+							flag = true;
+							break;
+						}
+					}
+				}
+				
+				return flag;
+			}
+		}
+		else
+		{
+			return false;
+		}
+	}
 	
-    private boolean canBrew(TileEntityBrewingStand par1)
-    {
-        if (par1.getStackInSlot(3) != null && par1.getStackInSlot(3).stackSize > 0)
-        {
-            ItemStack itemstack = par1.getStackInSlot(3);
-
-            if (!Item.itemsList[itemstack.itemID].isPotionIngredient())
-            {
-                return false;
-            }
-            else
-            {
-                boolean flag = false;
-
-                for (int i = 0; i < 3; ++i)
-                {
-                    if (par1.getStackInSlot(i) != null && par1.getStackInSlot(i).getItem() instanceof ItemPotion)
-                    {
-                        int j = par1.getStackInSlot(i).getItemDamage();
-                        int k = this.getPotionResult(j, itemstack);
-
-                        if (!ItemPotion.isSplash(j) && ItemPotion.isSplash(k))
-                        {
-                            flag = true;
-                            break;
-                        }
-
-                        List list = Item.potion.getEffects(j);
-                        List list1 = Item.potion.getEffects(k);
-
-                        if ((j <= 0 || list != list1) && (list == null || !list.equals(list1) && list1 != null) && j != k)
-                        {
-                            flag = true;
-                            break;
-                        }
-                    }
-                }
-
-                return flag;
-            }
-        }
-        else
-        {
-            return false;
-        }
-    }
-    
-    private int getPotionResult(int par1, ItemStack par2ItemStack)
-    {
-        return par2ItemStack == null ? par1 : (Item.itemsList[par2ItemStack.itemID].isPotionIngredient() ? PotionHelper.applyIngredient(par1, Item.itemsList[par2ItemStack.itemID].getPotionEffect()) : par1);
-    }
+	private int getPotionResult(int par1, ItemStack par2ItemStack)
+	{
+		return par2ItemStack == null ? par1 : (Item.itemsList[par2ItemStack.itemID].isPotionIngredient() ? PotionHelper.applyIngredient(par1, Item.itemsList[par2ItemStack.itemID].getPotionEffect()) : par1);
+	}
 }

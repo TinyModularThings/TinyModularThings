@@ -56,7 +56,8 @@ public class ItemBlockTransport extends ItemBlockTinyChest
 			case 12:
 			case 13:
 			case 14:
-			case 15:return "TinyHopper";
+			case 15:
+				return "TinyHopper";
 			default:
 				return "";
 		}

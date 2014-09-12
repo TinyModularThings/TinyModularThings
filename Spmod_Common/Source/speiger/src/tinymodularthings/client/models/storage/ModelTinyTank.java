@@ -251,7 +251,7 @@ public class ModelTinyTank extends ModelBase
 		Cube_Bottom_Right.render(f5);
 		Cube_Bottom_Left.render(f5);
 		Cube_Bottom_Back.render(f5);
-		if(b)
+		if (b)
 		{
 			BlockedFront.render(f5);
 			BlockedBottom.render(f5);

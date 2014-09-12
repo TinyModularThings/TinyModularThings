@@ -31,7 +31,8 @@ public class BucketFillerAction implements IAction
 		return fill ? "fill.something" : "drain.something";
 	}
 	
-	Icon tex; 
+	Icon tex;
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon()

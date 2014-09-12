@@ -5,14 +5,7 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 public enum EnumIDs
 {
 	
-	Pipe(EnumType.Render, RenderingRegistry.getNextAvailableRenderId()), 
-	StorageBlock(EnumType.Render, RenderingRegistry.getNextAvailableRenderId()), 
-	LogicBlock(EnumType.Render, RenderingRegistry.getNextAvailableRenderId()), 
-	TransportBlock(EnumType.Render, RenderingRegistry.getNextAvailableRenderId()), 
-	ADVTiles(EnumType.Gui, 10), 
-	Entities(EnumType.Gui, 11), 
-	Items(EnumType.Gui, 12),
-	HopperUpgrades(EnumType.Gui, 13, 30);
+	Pipe(EnumType.Render, RenderingRegistry.getNextAvailableRenderId()), StorageBlock(EnumType.Render, RenderingRegistry.getNextAvailableRenderId()), LogicBlock(EnumType.Render, RenderingRegistry.getNextAvailableRenderId()), TransportBlock(EnumType.Render, RenderingRegistry.getNextAvailableRenderId()), ADVTiles(EnumType.Gui, 10), Entities(EnumType.Gui, 11), Items(EnumType.Gui, 12), HopperUpgrades(EnumType.Gui, 13, 30);
 	
 	EnumType type;
 	int id;
@@ -40,7 +33,6 @@ public enum EnumIDs
 	{
 		return range >= id && range <= maxID;
 	}
-	
 	
 	public EnumType getType()
 	{

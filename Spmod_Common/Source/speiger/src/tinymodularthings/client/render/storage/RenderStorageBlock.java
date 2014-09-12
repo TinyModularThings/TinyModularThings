@@ -48,20 +48,18 @@ public class RenderStorageBlock extends TileEntitySpecialRenderer
 	
 	public void renderTinyTank(TinyTank tile, double x, double y, double z)
 	{
-		if(tile.renderTank())
+		if (tile.renderTank())
 		{
 			return;
 		}
 		
-		
-		
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x + 0.5f, (float) y + 1.5f, (float) z + 0.5f);
-		if(tile instanceof AdvTinyTank)
+		if (tile instanceof AdvTinyTank)
 		{
 			AdvTinyTank tank = (AdvTinyTank) tile;
 			boolean win = tank.isTankFull();
-			if(win)
+			if (win)
 			{
 				bindTexture(advTCClosedTexture);
 			}

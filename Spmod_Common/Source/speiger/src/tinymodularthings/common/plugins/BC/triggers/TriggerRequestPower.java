@@ -62,15 +62,15 @@ public class TriggerRequestPower implements ITrigger
 	@Override
 	public boolean isTriggerActive(ForgeDirection side, TileEntity tile, ITriggerParameter parameter)
 	{
-		if(tile != null)
+		if (tile != null)
 		{
-			if(tile instanceof IPowerReceptor)
+			if (tile instanceof IPowerReceptor)
 			{
 				IPowerReceptor power = (IPowerReceptor) tile;
-				if(power.getPowerReceiver(side) != null)
+				if (power.getPowerReceiver(side) != null)
 				{
 					PowerReceiver reciver = power.getPowerReceiver(side);
-					return reciver.getEnergyStored() < (reciver.getMaxEnergyStored()- (reciver.getMaxEnergyStored() / 100));
+					return reciver.getEnergyStored() < (reciver.getMaxEnergyStored() - (reciver.getMaxEnergyStored() / 100));
 				}
 				
 			}

@@ -18,7 +18,7 @@ public interface IEssens
 	 * return the drained amount
 	 */
 	public int drainEssens(ItemStack par1, int amount);
-
+	
 	/**
 	 * return the total Amount of Charges
 	 */
@@ -35,8 +35,7 @@ public interface IEssens
 	public boolean isEssensEmpty(ItemStack par1);
 	
 	/**
-	 * return if the Essens Bottle isFull.
-	 * For better detection it is usefull!
+	 * return if the Essens Bottle isFull. For better detection it is usefull!
 	 */
 	public boolean isEssensBottleFull(ItemStack par1);
 }

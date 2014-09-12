@@ -78,13 +78,12 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		{
 			renderAdvTinyChest(0.5F, 1.5F, 0.5F, false);
 		}
-		else if(id == TinyItems.advTinyTank.itemID)
+		else if (id == TinyItems.advTinyTank.itemID)
 		{
 			renderAdvTinyTank(0.5F, 1.5F, 0.5F, false);
 		}
 	}
 	
-
 	private void handleEntityRendering(ItemStack item)
 	{
 		if (item == null)
@@ -106,7 +105,7 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		{
 			renderAdvTinyChest(0.0F, 1.5F, 0.0F, true);
 		}
-		else if(id == TinyItems.advTinyTank.itemID)
+		else if (id == TinyItems.advTinyTank.itemID)
 		{
 			renderAdvTinyTank(0.0F, 1.5F, 0.0F, true);
 		}
@@ -133,7 +132,7 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		{
 			renderAdvTinyChest(1.0F, 1.0F, 0.0F, false);
 		}
-		else if(id == TinyItems.advTinyTank.itemID)
+		else if (id == TinyItems.advTinyTank.itemID)
 		{
 			renderAdvTinyTank(1.0F, 1.0F, 0.0F, false);
 		}
@@ -160,7 +159,7 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		{
 			renderAdvTinyChest(0.0F, 1.0F, 0.0F, false);
 		}
-		else if(id == TinyItems.advTinyTank.itemID)
+		else if (id == TinyItems.advTinyTank.itemID)
 		{
 			renderAdvTinyTank(0.0F, 1.0F, 0.0F, false);
 		}
@@ -204,7 +203,6 @@ public class ItemRendererStorageBlock implements IItemRenderer
 		tinyTank.render(0.0625F, false);
 		GL11.glPopMatrix();
 	}
-
 	
 	public void renderAdvTinyChest(float x, float y, float z, boolean entity)
 	{

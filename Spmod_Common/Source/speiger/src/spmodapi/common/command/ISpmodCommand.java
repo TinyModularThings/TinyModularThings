@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.command.ICommandSender;
 
-
 public interface ISpmodCommand
 {
 	/**
@@ -25,14 +24,17 @@ public interface ISpmodCommand
 	
 	/**
 	 * @ICommandSender sender of this Command
-	 * @Boolean if the command is valid in general. Just for adding into the gui list.
+	 * @Boolean if the command is valid in general. Just for adding into the gui
+	 *          list.
 	 * @ISubCommand == null when this is not a subcommand.
-	 * @arguments. Every agrument that come from the Textfield. (like the chat in normal) is only a empty String Array when guiAdding is true.
+	 * @arguments. Every agrument that come from the Textfield. (like the chat
+	 *             in normal) is only a empty String Array when guiAdding is
+	 *             true.
 	 */
 	public boolean isCommandRunnable(ICommandSender par1, boolean guiAdding, ISubCommand sub, String[] arg);
 	
 	/**
-	 * This is the function that will run the command. 
+	 * This is the function that will run the command.
 	 */
 	public void runCommand(ICommandSender par1, ISubCommand sub, String[] arg);
 }

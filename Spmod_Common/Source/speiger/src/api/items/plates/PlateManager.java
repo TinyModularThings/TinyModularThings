@@ -72,7 +72,7 @@ public class PlateManager
 			stack.setTagInfo("Identity", text);
 			return stack;
 		}
-
+		
 		public ItemStack getStackWithIdentity(int qty)
 		{
 			ItemStack stack = new ItemStack(item, qty, metadata);

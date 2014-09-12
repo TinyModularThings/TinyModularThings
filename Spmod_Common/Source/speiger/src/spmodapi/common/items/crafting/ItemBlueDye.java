@@ -14,24 +14,24 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBlueDye extends SpmodItem
 {
-
+	
 	public ItemBlueDye(int par1)
 	{
 		super(par1);
 		OreDictionary.registerOre("dyeBlue", this);
 		this.setCreativeTab(APIUtils.tabCrafing);
 	}
-
+	
 	@Override
 	public void registerItems(int id, SpmodMod par0)
 	{
-		if(!SpmodModRegistry.areModsEqual(par0, getMod()))
+		if (!SpmodModRegistry.areModsEqual(par0, getMod()))
 		{
 			return;
 		}
 		LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, 0)), "dye.blue", par0);
 	}
-
+	
 	@Override
 	public String getDisplayName(ItemStack par1, SpmodMod par0)
 	{
@@ -42,6 +42,6 @@ public class ItemBlueDye extends SpmodItem
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		this.itemIcon = par1IconRegister.registerIcon(getModID()+":crafting/dyeBlue");
+		this.itemIcon = par1IconRegister.registerIcon(getModID() + ":crafting/dyeBlue");
 	}
 }

@@ -20,7 +20,7 @@ public abstract interface IHopper
 	 * @return xCoord of the Hopper
 	 */
 	public abstract int getXPos();
-
+	
 	/**
 	 * @return yCoord of the Hopper
 	 */
@@ -62,12 +62,14 @@ public abstract interface IHopper
 	public abstract boolean hasInventory();
 	
 	/**
-	 * @return the Hopper Inventory (can be null) and you can not change it its a fake inventory
+	 * @return the Hopper Inventory (can be null) and you can not change it its
+	 *         a fake inventory
 	 */
 	public abstract IInventory getInventory();
 	
 	/**
-	 * @return the Transferlimit of the Current hopper (items,fluids,energy) nothing == 0
+	 * @return the Transferlimit of the Current hopper (items,fluids,energy)
+	 *         nothing == 0
 	 */
 	public abstract int getTransferlimit(HopperType par1);
 	
@@ -118,18 +120,21 @@ public abstract interface IHopper
 	
 	/**
 	 * Basic Function for adding Fluid. Tring to add it to any tank.
+	 * 
 	 * @return added amount. Can be null
 	 */
 	public abstract FluidStack addFluid(FluidStack fluid);
 	
 	/**
 	 * Function for adding fluids. Choose your tankSlot.
+	 * 
 	 * @return added amount. Can be null
 	 */
 	public abstract FluidStack addFluid(FluidStack fluid, int forcedSlot);
 	
 	/**
-	 * Function for removing Fluid. 
+	 * Function for removing Fluid.
+	 * 
 	 * @Simulate If you really want to remove it. True == Draining for real
 	 * @return Removed amount. Can be null
 	 */
@@ -162,6 +167,7 @@ public abstract interface IHopper
 	
 	/**
 	 * Adding function for Hopper Effects.
+	 * 
 	 * @return Returns true if it worked. False mean alread at that state
 	 */
 	public abstract boolean applyEffect(HopperEffect par1, boolean change);
@@ -177,9 +183,9 @@ public abstract interface IHopper
 	public abstract ArrayList<EntityPlayer> getUsingPlayers();
 	
 	/**
-	 * @Note The FakePlayer Inventory Will be cleared every Tick!
-	 * Also he get Healed and potioneffects will be removed every tick!
-	 * Do not forget that.
+	 * @Note The FakePlayer Inventory Will be cleared every Tick! Also he get
+	 *       Healed and potioneffects will be removed every tick! Do not forget
+	 *       that.
 	 * @return get The FakePlayer of the Hopper.
 	 */
 	public abstract EntityPlayer getFakePlayer();
@@ -190,7 +196,9 @@ public abstract interface IHopper
 	public abstract String getOwner();
 	
 	/**
-	 * This function tells you if you can cast to IOwner Class. This interface is for more details!
+	 * This function tells you if you can cast to IOwner Class. This interface
+	 * is for more details!
+	 * 
 	 * @return provide IOwner
 	 */
 	public abstract boolean isOwnerInventory();
@@ -203,7 +211,7 @@ public abstract interface IHopper
 	/**
 	 * @return if the Upgrade got removed.
 	 */
-	public abstract boolean removeUpgrade(HopperUpgrade par1);
+	public abstract void removeUpgrade(HopperUpgrade par1);
 	
 	/**
 	 * @Return what kind of hopper it is

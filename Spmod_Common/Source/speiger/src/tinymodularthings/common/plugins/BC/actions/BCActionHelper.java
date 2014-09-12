@@ -52,7 +52,7 @@ public class BCActionHelper implements IActionProvider
 					list.add(BCVariables.changeOneTime[1]);
 				}
 			}
-			if(tile instanceof BucketFillerBasic)
+			if (tile instanceof BucketFillerBasic)
 			{
 				try
 				{

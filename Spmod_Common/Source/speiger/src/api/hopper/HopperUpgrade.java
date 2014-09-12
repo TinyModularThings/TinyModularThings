@@ -35,7 +35,8 @@ public abstract interface HopperUpgrade
 	public abstract String getNBTName();
 	
 	/**
-	 * If the Player makes a ShiftClick while he looking at the Tab this allows to you to add information.
+	 * If the Player makes a ShiftClick while he looking at the Tab this allows
+	 * to you to add information.
 	 */
 	public abstract void getInformationList(EntityPlayer player, List par2);
 	
@@ -55,13 +56,15 @@ public abstract interface HopperUpgrade
 	public abstract int getMaxStackSize();
 	
 	/**
-	 * When someone Clicks with a item that is not a wrench/emptyHand/HopperUpgrade you can make something.
-	 * Return true prevent gui opening.
+	 * When someone Clicks with a item that is not a
+	 * wrench/emptyHand/HopperUpgrade you can make something. Return true
+	 * prevent gui opening.
 	 */
 	public abstract boolean onClick(boolean sneak, EntityPlayer player, Block block, IHopper hopper, int side);
 	
 	/**
-	 * This function says for which type of the Hopper the upgrade is. Nothing does mean null. 
+	 * This function says for which type of the Hopper the upgrade is. Nothing
+	 * does mean null.
 	 */
 	public abstract HopperType getUpgradeType();
 	

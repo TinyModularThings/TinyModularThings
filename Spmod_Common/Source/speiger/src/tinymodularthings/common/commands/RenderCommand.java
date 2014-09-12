@@ -5,11 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
-
 import net.minecraft.command.ICommandSender;
 import speiger.src.api.packets.IPacketReciver;
 import speiger.src.api.packets.SpmodPacketHelper;
@@ -22,6 +17,10 @@ import speiger.src.spmodapi.common.command.commands.BasicSubCommand;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyTank;
+import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 
 public class RenderCommand implements ISpmodCommand, IPacketReciver
 {
@@ -30,7 +29,6 @@ public class RenderCommand implements ISpmodCommand, IPacketReciver
 		SpmodPacketHelper.getHelper().registerPacketReciver(this);
 		CommandRegistry.getInstance().registerCommand(this);
 	}
-	
 	
 	@Override
 	public String getCommandName()
@@ -56,22 +54,22 @@ public class RenderCommand implements ISpmodCommand, IPacketReciver
 	@Override
 	public boolean isCommandRunnable(ICommandSender par1, boolean guiAdding, ISubCommand sub, String[] arg)
 	{
-		if(guiAdding)
+		if (guiAdding)
 		{
 			return true;
 		}
 		String name = sub.getSubCommandName();
-		if(name.equalsIgnoreCase("State"))
+		if (name.equalsIgnoreCase("State"))
 		{
 			return arg.length == 1 && arg[0].equalsIgnoreCase("TinyTank");
 		}
-		else if(name.equalsIgnoreCase("Change"))
+		else if (name.equalsIgnoreCase("Change"))
 		{
-			if(arg.length == 2)
+			if (arg.length == 2)
 			{
-				if(arg[1].equalsIgnoreCase("true") || arg[1].equalsIgnoreCase("false"))
+				if (arg[1].equalsIgnoreCase("true") || arg[1].equalsIgnoreCase("false"))
 				{
-					if(arg[0].equalsIgnoreCase("TinyTank"))
+					if (arg[0].equalsIgnoreCase("TinyTank"))
 					{
 						return true;
 					}
@@ -84,20 +82,20 @@ public class RenderCommand implements ISpmodCommand, IPacketReciver
 	@Override
 	public void runCommand(ICommandSender par1, ISubCommand sub, String[] arg)
 	{
-		if(sub != null)
+		if (sub != null)
 		{
 			String name = sub.getSubCommandName();
 			int id = -1;
-			if(name.equalsIgnoreCase("State"))
+			if (name.equalsIgnoreCase("State"))
 			{
 				id = 0;
 			}
-			else if(name.equalsIgnoreCase("Change"))
+			else if (name.equalsIgnoreCase("Change"))
 			{
 				id = 1;
 			}
 			
-			if(id != -1)
+			if (id != -1)
 			{
 				ModularPacket packet = new ModularPacket(TinyModularThings.instance, PacketType.Custom, this.identifier());
 				packet.InjectNumber(id);
@@ -107,20 +105,20 @@ public class RenderCommand implements ISpmodCommand, IPacketReciver
 			
 		}
 	}
-
+	
 	@Override
 	public void recivePacket(DataInput par1)
 	{
 		try
 		{
 			int id = par1.readInt();
-			if(id == 0)
+			if (id == 0)
 			{
 				String key = par1.readUTF();
-				if(key.equalsIgnoreCase("TinyTank"))
+				if (key.equalsIgnoreCase("TinyTank"))
 				{
-					boolean active = ((TinyTank)TileIconMaker.getIconMaker().getTileEntityFromClass(TinyTank.class)).dissableRenderer;
-					if(active)
+					boolean active = ((TinyTank) TileIconMaker.getIconMaker().getTileEntityFromClass(TinyTank.class)).dissableRenderer;
+					if (active)
 					{
 						FMLClientHandler.instance().getClient().thePlayer.sendChatMessage("Fancy Models Dissabled");
 					}
@@ -130,16 +128,16 @@ public class RenderCommand implements ISpmodCommand, IPacketReciver
 					}
 				}
 			}
-			else if(id == 1)
+			else if (id == 1)
 			{
 				String key = par1.readUTF();
 				String value = par1.readUTF();
-				if(key.equalsIgnoreCase("TinyTank"))
+				if (key.equalsIgnoreCase("TinyTank"))
 				{
 					boolean par2 = Boolean.parseBoolean(value);
-					((TinyTank)TileIconMaker.getIconMaker().getTileEntityFromClass(TinyTank.class)).dissableRenderer = par2;
+					((TinyTank) TileIconMaker.getIconMaker().getTileEntityFromClass(TinyTank.class)).dissableRenderer = par2;
 					
-					FMLClientHandler.instance().getClient().thePlayer.sendChatMessage("Set Rendermode to: "+par2);
+					FMLClientHandler.instance().getClient().thePlayer.sendChatMessage("Set Rendermode to: " + par2);
 				}
 			}
 		}
@@ -148,13 +146,11 @@ public class RenderCommand implements ISpmodCommand, IPacketReciver
 			FMLClientHandler.instance().getClient().thePlayer.sendChatMessage("Something did happend on RenderChanging");
 		}
 	}
-
+	
 	@Override
 	public String identifier()
 	{
 		return "command.render";
 	}
-	
-	
 	
 }

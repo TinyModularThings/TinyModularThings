@@ -22,7 +22,7 @@ public class OreRecipes
 		PathProxy.addPressureRecipes(new ItemStack(Item.horseArmorGold), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotGold, 7), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.horseArmorDiamond), null, new ItemStack(Item.bucketLava), new ItemStack(Item.diamond, 7), false, false);
 		
-		//Armor
+		// Armor
 		PathProxy.addPressureRecipes(new ItemStack(Item.helmetDiamond), null, new ItemStack(Item.bucketLava), new ItemStack(Item.diamond, 4), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.helmetGold), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotGold, 4), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.helmetIron), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 4), false, false);
@@ -34,34 +34,33 @@ public class OreRecipes
 		PathProxy.addPressureRecipes(new ItemStack(Item.legsDiamond), null, new ItemStack(Item.bucketLava), new ItemStack(Item.diamond, 5), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.legsGold), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotGold, 5), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.legsIron), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 5), false, false);
-	
+		
 		PathProxy.addPressureRecipes(new ItemStack(Item.bootsDiamond), null, new ItemStack(Item.bucketLava), new ItemStack(Item.diamond, 3), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.bootsGold), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotGold, 3), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.bootsIron), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 3), false, false);
-	
-		//Tools
+		
+		// Tools
 		PathProxy.addPressureRecipes(new ItemStack(Item.pickaxeDiamond), null, new ItemStack(Item.bucketLava), new ItemStack(Item.diamond, 2), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.pickaxeGold), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotGold, 2), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.pickaxeIron), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 2), false, false);
-	
+		
 		PathProxy.addPressureRecipes(new ItemStack(Item.axeDiamond), null, new ItemStack(Item.bucketLava), new ItemStack(Item.diamond, 2), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.axeGold), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotGold, 2), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.axeIron), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 2), false, false);
-
+		
 		PathProxy.addPressureRecipes(new ItemStack(Item.hoeDiamond), null, new ItemStack(Item.bucketLava), new ItemStack(Item.diamond, 1), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.hoeGold), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotGold, 1), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.hoeIron), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 1), false, false);
-	
+		
 		PathProxy.addPressureRecipes(new ItemStack(Item.shovelDiamond), null, new ItemStack(Item.bucketLava), new ItemStack(Item.diamond, 1), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.shovelGold), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotGold, 1), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.shovelIron), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 1), false, false);
-	
-		//Weapon
+		
+		// Weapon
 		PathProxy.addPressureRecipes(new ItemStack(Item.swordDiamond), null, new ItemStack(Item.bucketLava), new ItemStack(Item.diamond, 1), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.swordGold), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotGold, 1), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.swordIron), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 1), false, false);
-	
-	
+		
 	}
 	
 }

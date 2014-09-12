@@ -34,17 +34,17 @@ public class WindmillRenderer extends TileEntitySpecialRenderer
 	
 	public void renderBlockRotor(WindMill tile, World world, int posX, int posY, int posZ)
 	{
-		if(CompactWindmills.sharedWindmillModel)
+		if (CompactWindmills.sharedWindmillModel)
 		{
 			if (!tile.hasRotor() || tile.getType() == null || tile.getRotor().getRenderTexture(tile.inv[0]) == null)
 			{
 				model = null;
 				return;
 			}
-			if(model == null)
+			if (model == null)
 			{
 				IRotorModel rotor = tile.getRotor().getCustomModel(tile.inv[0], tile.getType().getRadius());
-				if(rotor == null)
+				if (rotor == null)
 				{
 					model = new ModelRotor(tile.getType().getRadius());
 				}
@@ -54,7 +54,7 @@ public class WindmillRenderer extends TileEntitySpecialRenderer
 				}
 			}
 			
-			if(model == null)
+			if (model == null)
 			{
 				return;
 			}
@@ -62,9 +62,9 @@ public class WindmillRenderer extends TileEntitySpecialRenderer
 		else
 		{
 			IRotorModel rotor = this.getOrCreateIRotorModel(tile);
-			if(rotor == null)
+			if (rotor == null)
 			{
-				if(models.containsKey(tile.getPosition().getAsList()))
+				if (models.containsKey(tile.getPosition().getAsList()))
 				{
 					models.remove(tile.getPosition().getAsList());
 				}
@@ -99,7 +99,6 @@ public class WindmillRenderer extends TileEntitySpecialRenderer
 		
 		bindTexture(tile.getRotor().getRenderTexture(tile.inv[0]));
 		
-		
 		model.render(0.0625F);
 		GL11.glPopMatrix();
 	}
@@ -109,38 +108,37 @@ public class WindmillRenderer extends TileEntitySpecialRenderer
 	{
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) posX, (float) posY, (float) posZ);
-		renderBlockRotor((WindMill)tileEntity, tileEntity.worldObj, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
+		renderBlockRotor((WindMill) tileEntity, tileEntity.worldObj, tileEntity.xCoord, tileEntity.yCoord, tileEntity.zCoord);
 		GL11.glPopMatrix();
 	}
 	
-	
 	public IRotorModel getOrCreateIRotorModel(WindMill par1)
 	{
-		if(par1 == null)
+		if (par1 == null)
 		{
 			return null;
 		}
-		if(par1.getStackInSlot(0) == null)
+		if (par1.getStackInSlot(0) == null)
 		{
 			return null;
 		}
 		IRotorItem rotor = par1.getRotor();
-		if(rotor == null)
+		if (rotor == null)
 		{
 			return null;
 		}
 		BlockPosition pos = par1.getPosition();
-		if(pos == null)
+		if (pos == null)
 		{
 			return null;
 		}
 		IRotorModel Rmodel = models.get(pos.getAsList());
-		if(Rmodel != null)
+		if (Rmodel != null)
 		{
 			return Rmodel;
 		}
 		Rmodel = rotor.getCustomModel(par1.getStackInSlot(0), par1.type.getRadius());
-		if(Rmodel == null)
+		if (Rmodel == null)
 		{
 			Rmodel = new ModelRotor(par1.type.getRadius());
 		}

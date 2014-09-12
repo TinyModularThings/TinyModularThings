@@ -25,7 +25,7 @@ public class ImportItems implements HopperUpgrade
 	public void onTick(IHopper par1)
 	{
 		World world = par1.getWorld();
-		if(world.isRemote)
+		if (world.isRemote)
 		{
 			return;
 		}
@@ -34,9 +34,9 @@ public class ImportItems implements HopperUpgrade
 		int z = par1.getZPos();
 		ForgeDirection dir = ForgeDirection.getOrientation(par1.getFacing());
 		TileEntity tile = WorldReading.getTileEntity(world, x, y, z, dir.ordinal());
-		if(tile != null && tile instanceof IInventory)
+		if (tile != null && tile instanceof IInventory)
 		{
-			getItems(par1, (IInventory)tile, dir, par1.getTransferlimit(HopperType.Items));
+			getItems(par1, (IInventory) tile, dir, par1.getTransferlimit(HopperType.Items));
 		}
 		
 	}
@@ -44,16 +44,16 @@ public class ImportItems implements HopperUpgrade
 	public static void getItems(IHopper par1, IInventory par2, ForgeDirection par3, int transferlimit)
 	{
 		ITransactor trans = Transactor.getTransactorFor(par2);
-		if(trans == null)
+		if (trans == null)
 		{
 			return;
 		}
 		
 		ItemStack stack = trans.remove(new SpmodStackFilter(null), par1.getTransferlimit(HopperType.Items), par3, false);
-		if(stack != null && stack.stackSize > 0)
+		if (stack != null && stack.stackSize > 0)
 		{
 			ItemStack added = par1.addItemsToHopper(stack);
-			if(added != null && added.stackSize > 0)
+			if (added != null && added.stackSize > 0)
 			{
 				trans.remove(new SpmodStackFilter(null), added.stackSize, par3, true);
 			}

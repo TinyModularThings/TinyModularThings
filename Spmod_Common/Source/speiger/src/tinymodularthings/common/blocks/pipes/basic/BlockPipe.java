@@ -393,7 +393,5 @@ public class BlockPipe extends Block implements IBasicPipe
 	{
 		notifyNeighbors(world, i, j, k);
 	}
-
-
 	
 }

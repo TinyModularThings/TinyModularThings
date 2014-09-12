@@ -18,7 +18,7 @@ public interface IEnergySubject
 	 * @Return the used Amount
 	 */
 	public int useEnergy(int amount, boolean simulate);
-
+	
 	/**
 	 * @Return the stored Energy
 	 */

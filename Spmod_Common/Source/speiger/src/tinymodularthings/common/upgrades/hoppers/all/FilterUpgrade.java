@@ -80,10 +80,10 @@ public class FilterUpgrade implements HopperUpgrade, IUpgradeGuiProvider
 	@Override
 	public boolean onClick(boolean sneak, EntityPlayer player, Block block, IHopper hopper, int side)
 	{
-		if(!hopper.getWorld().isRemote)
+		if (!hopper.getWorld().isRemote)
 		{
 			ItemStack stack = player.getCurrentEquippedItem();
-			if(stack == null && player.isSneaking())
+			if (stack == null && player.isSneaking())
 			{
 				player.openGui(TinyModularThings.instance, HopperUpgradeIDs.Filter.getGuiID(), hopper.getWorld(), hopper.getXPos(), hopper.getYPos(), hopper.getZPos());
 				return true;
@@ -97,17 +97,17 @@ public class FilterUpgrade implements HopperUpgrade, IUpgradeGuiProvider
 	{
 		return HopperType.Nothing;
 	}
-
+	
 	@Override
 	public GuiContainer getGui(InventoryPlayer par1, IHopper par2)
 	{
 		return new FilterGui(getInventory(par1, par2));
 	}
-
+	
 	@Override
 	public Container getInventory(InventoryPlayer par1, IHopper par2)
 	{
-		return new FilterInventory(par1, ((IFilteredInventory)par2).getFilterInventory(), par2.getHopperType());
+		return new FilterInventory(par1, ((IFilteredInventory) par2).getFilterInventory(), par2.getHopperType());
 	}
 	
 }

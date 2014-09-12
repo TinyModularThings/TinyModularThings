@@ -82,17 +82,14 @@ public abstract class GuiInventoryCore extends GuiContainer
 			SpmodAPI.log.print("Slot Texture is not defined");
 		}
 	}
-
 	
 	public void drawSlots()
 	{
-		ArrayList<Slot> slotToDraw = ((AdvContainer)this.inventorySlots).getAllSlots();
+		ArrayList<Slot> slotToDraw = ((AdvContainer) this.inventorySlots).getAllSlots();
 		for (int i = 0; i < slotToDraw.size(); i++)
 		{
 			this.drawSlot(slotToDraw.get(i));
 		}
 	}
-	
-
 	
 }

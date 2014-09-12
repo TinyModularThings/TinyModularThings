@@ -80,7 +80,7 @@ public class RetroGenTickHandler implements ITickHandler
 		
 		public boolean generate()
 		{
-			if(DimensionManager.getWorld(pos.dim).isRemote)
+			if (DimensionManager.getWorld(pos.dim).isRemote)
 			{
 				return false;
 			}

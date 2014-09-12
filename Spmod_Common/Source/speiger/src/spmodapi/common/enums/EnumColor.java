@@ -1,28 +1,9 @@
 package speiger.src.spmodapi.common.enums;
 
-
-
 public enum EnumColor
 {
 	
-	
-	BLACK(15, 0, 0x333333, "black"), 
-	RED(14, 1, 0xff0000, "red"), 
-	GREEN(13, 2, 0x009900, "green"), 
-	BROWN(12, 3, 0x553300, "brown"),
-	BLUE(11, 4, 0x3333ff, "blue"),
-	PURPLE(10, 5, 0x9900ff, "purple"),
-	CYAN(9, 6, 0x00ffff, "cyan"), 
-	LIGHTGRAY(8, 7, 0x666666, "lightgray"), 
-	GRAY(7, 8, 0x434343, "gray"), 
-	PINK(6, 9, 0xe881a8, "pink"), 
-	LIME(5, 10, 0x41ff34, "lime"), 
-	YELLOW(4, 11, 0xffff00, "yellow"), 
-	LIGHTBLUE(3, 12, 0x6666ff, "lightblue"), 
-	MAGENTA(2, 13, 0xff0099, "magenta"), 
-	ORANGE(1, 14, 0xff9900, "orange"),
-	WHITE(0, 15, 0xffffff, "white"),
-	Nothing(-1, -1, 0xf0f0f0, "nothing");
+	BLACK(15, 0, 0x333333, "black"), RED(14, 1, 0xff0000, "red"), GREEN(13, 2, 0x009900, "green"), BROWN(12, 3, 0x553300, "brown"), BLUE(11, 4, 0x3333ff, "blue"), PURPLE(10, 5, 0x9900ff, "purple"), CYAN(9, 6, 0x00ffff, "cyan"), LIGHTGRAY(8, 7, 0x666666, "lightgray"), GRAY(7, 8, 0x434343, "gray"), PINK(6, 9, 0xe881a8, "pink"), LIME(5, 10, 0x41ff34, "lime"), YELLOW(4, 11, 0xffff00, "yellow"), LIGHTBLUE(3, 12, 0x6666ff, "lightblue"), MAGENTA(2, 13, 0xff0099, "magenta"), ORANGE(1, 14, 0xff9900, "orange"), WHITE(0, 15, 0xffffff, "white"), Nothing(-1, -1, 0xf0f0f0, "nothing");
 	
 	Integer hex;
 	int wool;
@@ -39,17 +20,15 @@ public enum EnumColor
 	
 	public static EnumColor getColorFromWool(int id)
 	{
-		for(EnumColor value : values())
+		for (EnumColor value : values())
 		{
-			if(value.wool == id)
+			if (value.wool == id)
 			{
 				return value;
 			}
 		}
 		return Nothing;
 	}
-
-	
 	
 	public String getName()
 	{
@@ -71,7 +50,7 @@ public enum EnumColor
 		return hex;
 	}
 	
-	//Copied from PowerCraft
+	// Copied from PowerCraft
 	public static class SpmodColor
 	{
 		public double red;
@@ -104,8 +83,7 @@ public enum EnumColor
 			blue = par1.blue;
 		}
 		
-		
-		public int getHex() 
+		public int getHex()
 		{
 			int r255 = (int) Math.round(red * 255) & 0xff;
 			int g255 = (int) Math.round(green * 255) & 0xff;
@@ -113,17 +91,17 @@ public enum EnumColor
 			return r255 << 16 | g255 << 8 | b255;
 		}
 		
-		public static double red(int hex) 
+		public static double red(int hex)
 		{
 			return (1D / 255D) * ((hex & 0xff0000) >> 16);
 		}
 		
-		public static double green(int hex) 
+		public static double green(int hex)
 		{
 			return (1D / 255D) * ((hex & 0x00ff00) >> 8);
 		}
 		
-		public static double blue(int hex) 
+		public static double blue(int hex)
 		{
 			return (1D / 255D) * ((hex & 0x0000ff));
 		}
@@ -136,14 +114,14 @@ public enum EnumColor
 			return this;
 		}
 		
-		public void setTo(double cr, double cg, double cb) 
+		public void setTo(double cr, double cg, double cb)
 		{
 			red = cr;
 			green = cg;
 			blue = cb;
 		}
 		
-		public static SpmodColor fromHex(int hex) 
+		public static SpmodColor fromHex(int hex)
 		{
 			return new SpmodColor().setTo(hex);
 		}

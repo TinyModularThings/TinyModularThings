@@ -10,28 +10,32 @@ import speiger.src.tinymodularthings.common.utils.HopperType;
 public class FilterSlot extends Slot
 {
 	HopperType type;
+	
 	public FilterSlot(IInventory par1iInventory, HopperType par1, int par2, int par3, int par4)
 	{
 		super(par1iInventory, par2, par3, par4);
 		type = par1;
 	}
+	
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack)
 	{
-		if(par1ItemStack == null)
+		if (par1ItemStack == null)
 		{
 			return false;
 		}
-		switch(type)
+		switch (type)
 		{
-			case Energy: return par1ItemStack.getItem() instanceof IBCBattery;
-			case Fluids: return FluidContainerRegistry.isContainer(par1ItemStack) && FluidContainerRegistry.isFilledContainer(par1ItemStack);
-			case Items: return true;
-			default: return false;
-			
+			case Energy:
+				return par1ItemStack.getItem() instanceof IBCBattery;
+			case Fluids:
+				return FluidContainerRegistry.isContainer(par1ItemStack) && FluidContainerRegistry.isFilledContainer(par1ItemStack);
+			case Items:
+				return true;
+			default:
+				return false;
+				
 		}
 	}
-	
-	
 	
 }

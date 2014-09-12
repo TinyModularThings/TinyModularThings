@@ -147,7 +147,7 @@ public class MultiStructureFluidInterface extends AdvTile implements
 		ItemInterfaceBlock.addBlockToInterface(stack, new BlockStack(blockID, metadata));
 		return stack;
 	}
-
+	
 	@Override
 	public ArrayList<ItemStack> onDrop(int fortune)
 	{
@@ -157,7 +157,6 @@ public class MultiStructureFluidInterface extends AdvTile implements
 		drops.add(stack);
 		return drops;
 	}
-	
 	
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
@@ -264,7 +263,6 @@ public class MultiStructureFluidInterface extends AdvTile implements
 		}
 	}
 	
-	
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
@@ -274,8 +272,6 @@ public class MultiStructureFluidInterface extends AdvTile implements
 		}
 		return null;
 	}
-	
-	
 	
 	@Override
 	public void readFromNBT(NBTTagCompound par1)

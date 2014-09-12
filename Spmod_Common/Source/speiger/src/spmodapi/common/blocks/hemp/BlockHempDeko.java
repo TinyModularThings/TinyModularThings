@@ -48,7 +48,6 @@ public class BlockHempDeko extends Block
 		}
 	}
 	
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)

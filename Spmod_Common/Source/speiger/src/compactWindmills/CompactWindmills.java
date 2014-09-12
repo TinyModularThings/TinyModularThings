@@ -37,7 +37,7 @@ import cpw.mods.fml.common.network.NetworkMod;
 public class CompactWindmills implements SpmodMod
 {
 	public static LogProxy logger;
-
+	
 	@Instance(ModID)
 	public static CompactWindmills instance;
 	
@@ -59,7 +59,7 @@ public class CompactWindmills implements SpmodMod
 		SpmodModRegistry.registerMod(this);
 		LanguageLoader loader = new LanguageLoader(this);
 		loader.registerAllAviableLanguages();
-		Configuration config = new Configuration(new File(evt.getModConfigurationDirectory().getAbsolutePath()+"/Spmod/CompactWindmills.cfg"));
+		Configuration config = new Configuration(new File(evt.getModConfigurationDirectory().getAbsolutePath() + "/Spmod/CompactWindmills.cfg"));
 		try
 		{
 			oldIC2 = Boolean.parseBoolean(config.get("General", "IC2 Vanilla WindMills", false).getString());
@@ -74,7 +74,7 @@ public class CompactWindmills implements SpmodMod
 		}
 		catch (Exception e)
 		{
-			for(StackTraceElement stack : e.getStackTrace())
+			for (StackTraceElement stack : e.getStackTrace())
 			{
 				logger.print(stack);
 			}

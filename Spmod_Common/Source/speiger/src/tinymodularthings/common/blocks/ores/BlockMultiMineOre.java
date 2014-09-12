@@ -7,7 +7,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import speiger.src.api.blocks.AdvancedPosition;
@@ -76,7 +75,6 @@ public abstract class BlockMultiMineOre extends Block implements IMultimineOre
 	{
 		return getBasicDrop(fortune, meta) != null ? getBasicDrop(fortune, meta).stackSize : 0;
 	}
-	
 	
 	@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)

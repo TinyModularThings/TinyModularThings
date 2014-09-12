@@ -13,7 +13,6 @@ import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.hopper.HopperRegistry.HopperEffect;
 import speiger.src.api.hopper.HopperUpgrade;
 import speiger.src.api.hopper.IHopper;
-import speiger.src.api.util.InventoryUtil;
 import speiger.src.spmodapi.common.lib.bc.ITransactor;
 import speiger.src.spmodapi.common.lib.bc.Transactor;
 import speiger.src.tinymodularthings.common.utils.HopperType;
@@ -25,7 +24,7 @@ public class ExportItems implements HopperUpgrade
 	public void onTick(IHopper par1)
 	{
 		World world = par1.getWorld();
-		if(world.isRemote)
+		if (world.isRemote)
 		{
 			return;
 		}
@@ -33,15 +32,15 @@ public class ExportItems implements HopperUpgrade
 		int y = par1.getYPos();
 		int z = par1.getZPos();
 		ForgeDirection head = ForgeDirection.getOrientation(par1.getRotation());
-		TileEntity tile = world.getBlockTileEntity(x+head.offsetX, y+head.offsetY, z+head.offsetZ);
-		if(tile != null && tile instanceof IInventory)
+		TileEntity tile = world.getBlockTileEntity(x + head.offsetX, y + head.offsetY, z + head.offsetZ);
+		if (tile != null && tile instanceof IInventory)
 		{
 			IInventory hopper = par1.getInventory();
-			for(int slot = 0;slot<hopper.getSizeInventory();slot++)
+			for (int slot = 0; slot < hopper.getSizeInventory(); slot++)
 			{
-				if(sendItems(par1, (IInventory)tile, head.getOpposite(), par1.removeItemsFromHopper(slot, par1.getTransferlimit(HopperType.Items))))
+				if (sendItems(par1, (IInventory) tile, head.getOpposite(), par1.removeItemsFromHopper(slot, par1.getTransferlimit(HopperType.Items))))
 				{
-					if(par1.hasEffectApplied(HopperEffect.AllSlots))
+					if (par1.hasEffectApplied(HopperEffect.AllSlots))
 					{
 						continue;
 					}
@@ -55,13 +54,13 @@ public class ExportItems implements HopperUpgrade
 	
 	public static boolean sendItems(IHopper par0, IInventory par1, ForgeDirection par2, ItemStack stack)
 	{
-		if(stack == null)
+		if (stack == null)
 		{
 			return false;
 		}
 		
 		ITransactor trans = Transactor.getTransactorFor(par1);
-		if(trans == null)
+		if (trans == null)
 		{
 			par0.addItemsToHopper(stack);
 			return false;
@@ -69,10 +68,10 @@ public class ExportItems implements HopperUpgrade
 		ItemStack copy = stack.copy();
 		ItemStack added = trans.add(stack, par2, true);
 		
-		if(added != null)
+		if (added != null)
 		{
 			copy.stackSize -= added.stackSize;
-			if(copy.stackSize > 0)
+			if (copy.stackSize > 0)
 			{
 				par0.addItemsToHopper(copy);
 			}
@@ -84,9 +83,7 @@ public class ExportItems implements HopperUpgrade
 		}
 		return false;
 	}
-		
-		
-
+	
 	@Override
 	public void onNBTWrite(NBTTagCompound nbt)
 	{

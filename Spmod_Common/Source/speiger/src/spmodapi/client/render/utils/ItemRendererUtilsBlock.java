@@ -50,7 +50,6 @@ public class ItemRendererUtilsBlock implements IItemRenderer
 	{
 		Tessellator tessellator = Tessellator.instance;
 		Block block = APIBlocks.blockUtils;
-
 		
 		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		block.setBlockBoundsForItemRender();

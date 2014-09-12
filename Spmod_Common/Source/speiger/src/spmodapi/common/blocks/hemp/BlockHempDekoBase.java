@@ -22,7 +22,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockHempDekoBase extends Block
 {
-
+	
 	public BlockHempDekoBase(int par1)
 	{
 		super(par1, Material.cloth);
@@ -37,9 +37,9 @@ public class BlockHempDekoBase extends Block
 	public boolean canCreatureSpawn(EnumCreatureType type, World world, int x, int y, int z)
 	{
 		int meta = world.getBlockMetadata(x, y, z);
-		if(meta >= 4)
+		if (meta >= 4)
 		{
-			if(type == EnumCreatureType.monster)
+			if (type == EnumCreatureType.monster)
 			{
 				return false;
 			}
@@ -47,22 +47,20 @@ public class BlockHempDekoBase extends Block
 		return true;
 	}
 	
-	
-	
 	@Override
 	public float getBlockHardness(World par1World, int par2, int par3, int par4)
 	{
 		int meta = par1World.getBlockMetadata(par2, par3, par4) % 1;
 		return meta == 0 ? 1F : 2F;
 	}
-
+	
 	@Override
 	public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
 	{
 		int meta = world.getBlockMetadata(x, y, z) % 1;
 		return meta == 0 ? 3F : 8F;
 	}
-
+	
 	@Override
 	public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
 	{
@@ -86,8 +84,6 @@ public class BlockHempDekoBase extends Block
 	
 	Icon[] textures = new Icon[4];
 	
-	
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
@@ -95,17 +91,17 @@ public class BlockHempDekoBase extends Block
 		int meta = par2 % 4;
 		return textures[meta];
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		for(int i = 0;i<4;i++)
+		for (int i = 0; i < 4; i++)
 		{
-			textures[i] = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase()+":hemp/HempBase_"+i);
+			textures[i] = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/HempBase_" + i);
 		}
 	}
-
+	
 	@Override
 	public int quantityDropped(Random par1Random)
 	{
@@ -123,17 +119,15 @@ public class BlockHempDekoBase extends Block
 	{
 		return par1;
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
-		for(int i = 0;i<8;i++)
+		for (int i = 0; i < 8; i++)
 		{
 			par3.add(new ItemStack(par1, 1, i));
 		}
 	}
-	
-	
 	
 }

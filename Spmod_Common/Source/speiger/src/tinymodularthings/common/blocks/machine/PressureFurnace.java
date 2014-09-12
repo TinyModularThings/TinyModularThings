@@ -780,7 +780,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 				var2.appendTag(var4);
 			}
 		}
-	
+		
 		nbt.setTag("Items", var2);
 		nbt.setBoolean("Valid", valid);
 		nbt.setInteger("Fuel", fuel);
@@ -855,7 +855,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		{
 			progress = val;
 		}
-		if(key == 4)
+		if (key == 4)
 		{
 			fuel = (helper | (val << 16));
 		}
@@ -956,7 +956,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	@Override
 	public boolean removeAcceptor(IAcceptor par1)
 	{
-		if(interfaces > 0)
+		if (interfaces > 0)
 		{
 			interfaces--;
 			return true;
@@ -993,6 +993,5 @@ public class PressureFurnace extends TileFacing implements IInventory,
 			TinyModularThings.log.print("Error with BC Gate Actions");
 		}
 	}
-
 	
 }

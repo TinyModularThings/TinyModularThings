@@ -28,7 +28,7 @@ public abstract class AdvContainer extends Container
 		
 		for (var3 = 0; var3 < 9; ++var3)
 		{
-			addSlotToContainer(new Slot(par1, var3, x + var3 * 18, y+58));
+			addSlotToContainer(new Slot(par1, var3, x + var3 * 18, y + 58));
 		}
 	}
 	

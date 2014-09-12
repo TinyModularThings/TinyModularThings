@@ -36,19 +36,19 @@ public class AddonForestry
 	public void loadRecipes()
 	{
 		RecipeManagers.squeezerManager.addRecipe(10, new ItemStack[] { new ItemStack(APIItems.hempSeed) }, FluidRegistry.getFluidStack("seedoil", 50));
-		RecipeManagers.squeezerManager.addRecipe(10, new ItemStack[]{new ItemStack(APIItems.hemp)}, FluidRegistry.getFluidStack("hemp.resin", 25), new ItemStack(APIItems.compressedHemp), 10);
-		RecipeManagers.squeezerManager.addRecipe(10, new ItemStack[]{new ItemStack(APIBlocks.hempStraw)}, FluidRegistry.getFluidStack("hemp.resin", 250), new ItemStack(APIItems.compressedHemp), 100);
+		RecipeManagers.squeezerManager.addRecipe(10, new ItemStack[] { new ItemStack(APIItems.hemp) }, FluidRegistry.getFluidStack("hemp.resin", 25), new ItemStack(APIItems.compressedHemp), 10);
+		RecipeManagers.squeezerManager.addRecipe(10, new ItemStack[] { new ItemStack(APIBlocks.hempStraw) }, FluidRegistry.getFluidStack("hemp.resin", 250), new ItemStack(APIItems.compressedHemp), 100);
 		try
 		{
 			RecipeUtil.injectLeveledRecipe(new ItemStack(APIItems.hemp), GameMode.getGameMode().getIntegerSetting("fermenter.yield.sapling"), "biomass");
-			RecipeUtil.injectLeveledRecipe(new ItemStack(APIBlocks.hempStraw), GameMode.getGameMode().getIntegerSetting("fermenter.yield.sapling")*10, "biomass");
+			RecipeUtil.injectLeveledRecipe(new ItemStack(APIBlocks.hempStraw), GameMode.getGameMode().getIntegerSetting("fermenter.yield.sapling") * 10, "biomass");
 		}
 		catch (Exception e)
 		{
 			
 		}
 		
-		if(SpmodConfig.forestrySeedOil)
+		if (SpmodConfig.forestrySeedOil)
 		{
 			FMLLog.getLogger().info("Start Overriding Recipes");
 			
@@ -58,15 +58,15 @@ public class AddonForestry
 			{
 				ArrayList<List<Integer>> keys = new ArrayList<List<Integer>>();
 				ArrayList<Recipe> recipesToAdd = new ArrayList<Recipe>();
-				if(stack != null)
+				if (stack != null)
 				{
 					ArrayList<Recipe> list = MachineFermenter.RecipeManager.recipes;
-					for(int i = 0;i<list.size();i++)
+					for (int i = 0; i < list.size(); i++)
 					{
 						Recipe core = list.get(i);
-						if(core.output.isFluidEqual(stack))
+						if (core.output.isFluidEqual(stack))
 						{
-							if(!contains(keys, Arrays.asList(core.resource.itemID, core.resource.getItemDamage())))
+							if (!contains(keys, Arrays.asList(core.resource.itemID, core.resource.getItemDamage())))
 							{
 								keys.add(Arrays.asList(core.resource.itemID, core.resource.getItemDamage()));
 								recipesToAdd.add(new Recipe(core.resource, core.fermentationValue, 1.5F, core.output, seed));
@@ -87,10 +87,10 @@ public class AddonForestry
 	
 	public static boolean contains(ArrayList<List<Integer>> par1, List<Integer> par2)
 	{
-		for(int i = 0;i<par1.size();i++)
+		for (int i = 0; i < par1.size(); i++)
 		{
 			List<Integer> keys = par1.get(i);
-			if(keys.get(0) == par2.get(0) && keys.get(1) == par2.get(1))
+			if (keys.get(0) == par2.get(0) && keys.get(1) == par2.get(1))
 			{
 				return true;
 			}

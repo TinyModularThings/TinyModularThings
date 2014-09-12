@@ -60,7 +60,6 @@ public abstract class TileIC2Facing extends AdvTile
 		rotation = side;
 	}
 	
-	
 	public int getRotation()
 	{
 		return rotation;
@@ -72,7 +71,6 @@ public abstract class TileIC2Facing extends AdvTile
 	}
 	
 	public abstract boolean isSixSidedFacing();
-	
 	
 	public int setNextRotation()
 	{

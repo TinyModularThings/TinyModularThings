@@ -9,21 +9,22 @@ import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 public class LampColorCopyRecipe extends ShapedRecipes
 {
 	ItemStack item;
+	
 	public LampColorCopyRecipe(ItemStack lampType)
 	{
-		super(3, 3, new ItemStack[]{lampType, new ItemStack(APIItems.colorCard), lampType, new ItemStack(APIItems.colorCard), lampType, new ItemStack(APIItems.colorCard), lampType, new ItemStack(APIItems.colorCard), lampType}, lampType);
+		super(3, 3, new ItemStack[] { lampType, new ItemStack(APIItems.colorCard), lampType, new ItemStack(APIItems.colorCard), lampType, new ItemStack(APIItems.colorCard), lampType, new ItemStack(APIItems.colorCard), lampType }, lampType);
 		item = lampType;
 	}
-
+	
 	@Override
 	public ItemStack getRecipeOutput()
 	{
 		ItemStack end = item.copy();
 		end.stackSize = 5;
-		end.setTagInfo("Recipe", new NBTTagByte("Recipe", (byte)1));
+		end.setTagInfo("Recipe", new NBTTagByte("Recipe", (byte) 1));
 		return end;
 	}
-
+	
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting par1)
 	{
@@ -32,9 +33,5 @@ public class LampColorCopyRecipe extends ShapedRecipes
 		end.stackSize = 5;
 		return end;
 	}
-	
-	
-	
-	
 	
 }

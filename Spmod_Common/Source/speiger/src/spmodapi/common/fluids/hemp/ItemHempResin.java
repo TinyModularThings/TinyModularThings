@@ -18,11 +18,11 @@ public class ItemHempResin extends SpmodItem
 	{
 		super(par1);
 	}
-
+	
 	@Override
 	public void registerItems(int id, SpmodMod par0)
 	{
-		if(!SpmodModRegistry.areModsEqual(par0, getMod()))
+		if (!SpmodModRegistry.areModsEqual(par0, getMod()))
 		{
 			return;
 		}
@@ -34,14 +34,12 @@ public class ItemHempResin extends SpmodItem
 	{
 		return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "hemp.resin", par0);
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		this.itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase()+":hemp/hemp.resin");
+		this.itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/hemp.resin");
 	}
-	
-	
 	
 }

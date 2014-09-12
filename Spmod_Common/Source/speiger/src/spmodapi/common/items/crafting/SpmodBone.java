@@ -28,11 +28,11 @@ public class SpmodBone extends ItemFood implements LanguageItem
 	
 	public SpmodBone(int itemID, int size, String Name)
 	{
-		super(itemID, 2, 4F*size, true);
+		super(itemID, 2, 4F * size, true);
 		name = Name;
 		Size = size;
 		OreDictionary.registerOre("bone", this);
-		PathProxy.addSRecipe(new ItemStack(Item.dyePowder.itemID, size, EnumColor.WHITE.getAsDye()), new Object[]{new ItemStack(this)});
+		PathProxy.addSRecipe(new ItemStack(Item.dyePowder.itemID, size, EnumColor.WHITE.getAsDye()), new Object[] { new ItemStack(this) });
 		this.setCreativeTab(APIUtils.tabCrafing);
 	}
 	
@@ -40,41 +40,39 @@ public class SpmodBone extends ItemFood implements LanguageItem
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1)
 	{
-		this.itemIcon = par1.registerIcon(SpmodAPILib.ModID.toLowerCase()+":crafting/bone_"+name);
+		this.itemIcon = par1.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":crafting/bone_" + name);
 	}
-
+	
 	@Override
 	public String getItemDisplayName(ItemStack par1)
 	{
 		return getDisplayName(par1, SpmodAPI.instance);
 	}
-
+	
 	@Override
 	public String getDisplayName(ItemStack par1, SpmodMod par0)
 	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), name+"_bone", par0);
+		return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), name + "_bone", par0);
 	}
-
+	
 	@Override
 	public void registerItems(int id, SpmodMod par0)
 	{
-		if(!SpmodModRegistry.areModsEqual(par0, SpmodAPI.instance))
+		if (!SpmodModRegistry.areModsEqual(par0, SpmodAPI.instance))
 		{
 			return;
 		}
-		LanguageRegister.getLanguageName(new DisplayItem(id), name+"_bone", par0);
+		LanguageRegister.getLanguageName(new DisplayItem(id), name + "_bone", par0);
 	}
-
+	
 	@Override
 	public ItemStack onEaten(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
 	{
-		if(!par2World.isRemote)
+		if (!par2World.isRemote)
 		{
 			par3EntityPlayer.attackEntityFrom(DamageSource.drown, 1);
 		}
 		return super.onEaten(par1ItemStack, par2World, par3EntityPlayer);
 	}
-	
-	
 	
 }

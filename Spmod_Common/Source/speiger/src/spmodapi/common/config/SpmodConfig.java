@@ -61,14 +61,13 @@ public class SpmodConfig implements IConfigHelper
 			MobMachineEggs = getBoolean(general, "MobMachine Spawn Eggs", true).setComment("Enable that MobMachine drops Spawneggs").getResult(config);
 			forestrySeedOil = getBoolean(general, "Forestry Seed Oil in Fermenter", true).setComment("Enable the usage of SeedOil in a fermenter").getResult(config);
 			
-			
 			blockIDs = new ConfigBlock(ConfigBlock.getConfig(config, blocks, 950));
 			itemIDs = new ConfigItem(ConfigItem.getConfig(config, items, 15000));
 			
 			Property tick = config.get(general, "Round Roubin Speed", "1:2:5:10:20:50", "Every number will be math as number * 5 ticks and please write it as the default with a : ");
 			String[] result = tick.getString().split(":");
 			ticks = new int[result.length];
-			for(int i = 0;i<result.length;i++)
+			for (int i = 0; i < result.length; i++)
 			{
 				ticks[i] = Integer.parseInt(result[i]);
 			}
@@ -96,11 +95,11 @@ public class SpmodConfig implements IConfigHelper
 		{
 			SpmodAPI.log.print("Config could not load. Reason: " + e.getLocalizedMessage());
 			String i = "";
-			for(StackTraceElement el: e.getStackTrace())
+			for (StackTraceElement el : e.getStackTrace())
 			{
 				i = String.format("%s%n%s", i, el);
 			}
-			SpmodAPI.log.print("Error Log: "+i);
+			SpmodAPI.log.print("Error Log: " + i);
 		}
 		finally
 		{

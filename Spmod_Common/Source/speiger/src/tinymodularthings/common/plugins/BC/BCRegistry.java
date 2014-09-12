@@ -41,20 +41,20 @@ public class BCRegistry
 			instance.overrideFurnace();
 		}
 		boolean result = TinyConfig.getBoolean(TinyConfig.general, "BuildCraft 1.4.7 PowerBackport", true).setComment("This thing set the generated power of Oil and Fuel back to 1.4.7 MC mode. That also contains Lava gen and other mods including that, Also lava on other Mods").getResult(TinyConfig.config);
-		if(result)
+		if (result)
 		{
 			instance.reload147();
 		}
 		instance.loadRecipes();
 	}
 	
-	
 	public void loadRecipes()
 	{
-		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 1), new Object[]{" X ", "YCY", " V ", 'X', BuildCraftTransport.pipeFluidsWood, 'V', BuildCraftTransport.pipeFluidsGold, 'Y', ItemGear.getGearFromType(GearType.Cobblestone), 'C', BuildCraftFactory.tankBlock});
-		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 3), new Object[]{"XXX", "CVC", "XXX", 'X', Item.bucketWater, 'C', ItemGear.getGearFromType(GearType.Diamond), 'V', BuildCraftFactory.pumpBlock});
-		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 2), new Object[]{"GEG", "EFE", "GEG", 'G', ItemGear.getGearFromType(GearType.Redstone), 'E', new ItemStack(BuildCraftEnergy.engineBlock, 1, 0), 'F', new ItemStack(TinyBlocks.machine, 1, 1)});
+		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 1), new Object[] { " X ", "YCY", " V ", 'X', BuildCraftTransport.pipeFluidsWood, 'V', BuildCraftTransport.pipeFluidsGold, 'Y', ItemGear.getGearFromType(GearType.Cobblestone), 'C', BuildCraftFactory.tankBlock });
+		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 3), new Object[] { "XXX", "CVC", "XXX", 'X', Item.bucketWater, 'C', ItemGear.getGearFromType(GearType.Diamond), 'V', BuildCraftFactory.pumpBlock });
+		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 2), new Object[] { "GEG", "EFE", "GEG", 'G', ItemGear.getGearFromType(GearType.Redstone), 'E', new ItemStack(BuildCraftEnergy.engineBlock, 1, 0), 'F', new ItemStack(TinyBlocks.machine, 1, 1) });
 	}
+	
 	public void loadTrigger()
 	{
 		ActionManager.registerTrigger(BCVariables.needFuel);
@@ -93,22 +93,22 @@ public class BCRegistry
 		Fuel oil = IronEngineFuel.fuels.get("oil");
 		Fuel fuel = IronEngineFuel.fuels.get("fuel");
 		
-		double oilmulti = (double)oil.totalBurningTime / (double)5000;
-		double fuelmulti = (double)fuel.totalBurningTime / (double)25000;
+		double oilmulti = (double) oil.totalBurningTime / (double) 5000;
+		double fuelmulti = (double) fuel.totalBurningTime / (double) 25000;
 		
-		IronEngineFuel.addFuel("oil", oil.powerPerCycle, (int) (20000*oilmulti));
-		IronEngineFuel.addFuel("fuel", fuel.powerPerCycle, (int)(100000*fuelmulti));
+		IronEngineFuel.addFuel("oil", oil.powerPerCycle, (int) (20000 * oilmulti));
+		IronEngineFuel.addFuel("fuel", fuel.powerPerCycle, (int) (100000 * fuelmulti));
 		IronEngineFuel.addFuel(FluidRegistry.LAVA, 2, 10000);
-		if(Loader.isModLoaded("Railcraft"))
+		if (Loader.isModLoaded("Railcraft"))
 		{
 			FuelManager.addBoilerFuel(fuel.liquid, 96000);
 			Fluid fluid = FluidRegistry.getFluid("bioethanol");
-			if(fluid != null)
+			if (fluid != null)
 			{
 				FuelManager.addBoilerFuel(fluid, 32000);
 			}
 			fluid = FluidRegistry.getFluid("biofuel");
-			if(fluid != null)
+			if (fluid != null)
 			{
 				FuelManager.addBoilerFuel(fluid, 32000);
 			}

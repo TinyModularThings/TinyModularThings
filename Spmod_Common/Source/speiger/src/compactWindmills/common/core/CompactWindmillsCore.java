@@ -37,10 +37,10 @@ public class CompactWindmillsCore
 			PathProxy.addRecipe(ItemRotor.createRotor(BasicRotorType.IridiumRotor), " I ", "IRI", " I ", 'I', Items.getItem("iridiumPlate"), 'R', new ItemStack(par0.rotor, 1, BasicRotorType.CarbonRotor.ordinal()));
 			PathProxy.addRecipe(ItemRotor.createRotor(BasicRotorType.WoolRotor), "SWS", "WRW", "SWS", 'S', new ItemStack(Item.silk), 'W', new ItemStack(Block.cloth, 1, OreDictionary.WILDCARD_VALUE), 'R', new ItemStack(par0.rotor, 1, BasicRotorType.WoodenRotor.ordinal()));
 			PathProxy.addRecipe(ItemRotor.createRotor(BasicRotorType.IronRotor), "XXX", "XYX", "XXX", 'Y', Items.getItem("machine"), 'X', Items.getItem("denseplateiron"));
-			if(Loader.isModLoaded("Railcraft"))
+			if (Loader.isModLoaded("Railcraft"))
 			{
 				ItemStack rotor = GameRegistry.findItemStack("Railcraft", "part.turbine.blade", 1);
-				if(rotor != null)
+				if (rotor != null)
 				{
 					PathProxy.addRecipe(ItemRotor.createRotor(BasicRotorType.IronRotor), "XXX", "XYX", "XXX", 'X', rotor, 'Y', Items.getItem("machine"));
 					rotor.stackSize = 8;

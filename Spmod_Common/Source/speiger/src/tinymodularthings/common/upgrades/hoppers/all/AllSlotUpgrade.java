@@ -15,17 +15,17 @@ public class AllSlotUpgrade implements HopperUpgrade
 	
 	@Override
 	public void onTick(IHopper par1)
-	{		
+	{
 	}
 	
 	@Override
 	public void onNBTWrite(NBTTagCompound nbt)
-	{		
+	{
 	}
 	
 	@Override
 	public void onNBTRead(NBTTagCompound nbt)
-	{		
+	{
 	}
 	
 	@Override
@@ -55,7 +55,7 @@ public class AllSlotUpgrade implements HopperUpgrade
 	
 	@Override
 	public void onRemovingUpgrade(IHopper par1)
-	{	
+	{
 		par1.applyEffect(HopperEffect.AllSlots, false);
 	}
 	

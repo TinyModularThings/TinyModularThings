@@ -19,7 +19,6 @@ public class ActionChange implements IAction
 		this.on = on;
 	}
 	
-	
 	@Override
 	public int getLegacyId()
 	{
@@ -29,7 +28,7 @@ public class ActionChange implements IAction
 	@Override
 	public String getUniqueTag()
 	{
-		if(!on)
+		if (!on)
 		{
 			return "AdvOff";
 		}
@@ -40,7 +39,7 @@ public class ActionChange implements IAction
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon()
 	{
-		if(on)
+		if (on)
 		{
 			return BuildCraftCore.actionOn.getIcon();
 		}
@@ -50,7 +49,7 @@ public class ActionChange implements IAction
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister)
-	{		
+	{
 	}
 	
 	@Override
@@ -62,14 +61,13 @@ public class ActionChange implements IAction
 	@Override
 	public String getDescription()
 	{
-		if(on)
+		if (on)
 		{
 			return LanguageRegister.getLanguageName(new InfoStack(), "gate.state.on", SpmodAPI.instance);
 		}
 		return LanguageRegister.getLanguageName(new InfoStack(), "gate.state.off", SpmodAPI.instance);
 	}
-
-
+	
 	public boolean active()
 	{
 		return on;

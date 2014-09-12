@@ -4,8 +4,7 @@ public interface SpmodMod
 {
 	
 	/**
-	 *  Mod Name
-	 * 	Has to be stable
+	 * Mod Name Has to be stable
 	 **/
 	public String getName();
 	

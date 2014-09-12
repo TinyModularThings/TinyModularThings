@@ -10,7 +10,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class TabHempDeko extends CreativeTabs
 {
-
+	
 	public TabHempDeko()
 	{
 		super("Hemp Deko");
@@ -22,20 +22,18 @@ public class TabHempDeko extends CreativeTabs
 	{
 		return true;
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public String getTranslatedTabLabel()
 	{
 		return LanguageRegister.getLanguageName(this, "hemp.deko", SpmodAPI.instance);
 	}
-
+	
 	@Override
 	public ItemStack getIconItemStack()
 	{
 		return new ItemStack(APIBlocks.hempBlock);
 	}
-	
-	
 	
 }

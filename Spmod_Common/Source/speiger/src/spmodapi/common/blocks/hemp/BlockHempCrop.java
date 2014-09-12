@@ -19,7 +19,6 @@ import powercrystals.minefactoryreloaded.api.IFactoryHarvestable;
 import powercrystals.minefactoryreloaded.api.IFactoryPlantable;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.farming.ICrop;
@@ -130,9 +129,6 @@ public class BlockHempCrop extends BlockCrops implements ICrop,
 		return false;
 	}
 	
-	
-	
-
 	@Override
 	public List<ItemStack> getDrops(World world, Random rand, Map<String, Boolean> harvesterSettings, int x, int y, int z)
 	{

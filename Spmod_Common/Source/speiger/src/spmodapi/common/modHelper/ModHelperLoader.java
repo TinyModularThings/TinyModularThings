@@ -37,7 +37,6 @@ public class ModHelperLoader
 			BCAddon.loadBC();
 		}
 		
-
 	}
 	
 }

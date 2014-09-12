@@ -19,7 +19,7 @@ public class LogProxy
 	
 	public boolean isRegistered()
 	{
-		if(SpmodModRegistry.isModRegistered(mods))
+		if (SpmodModRegistry.isModRegistered(mods))
 		{
 			return true;
 		}
@@ -33,7 +33,7 @@ public class LogProxy
 	
 	public void print(String par1)
 	{
-		if(!isRegistered())
+		if (!isRegistered())
 		{
 			return;
 		}
@@ -46,7 +46,7 @@ public class LogProxy
 	
 	public void print(Object par1)
 	{
-		if(!isRegistered())
+		if (!isRegistered())
 		{
 			return;
 		}

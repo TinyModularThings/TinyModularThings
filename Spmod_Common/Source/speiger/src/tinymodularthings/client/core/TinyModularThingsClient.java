@@ -10,6 +10,7 @@ import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.render.carts.CartItemRenderer;
 import speiger.src.tinymodularthings.client.render.carts.RenderTCarts;
+import speiger.src.tinymodularthings.client.render.items.RendererItemCell;
 import speiger.src.tinymodularthings.client.render.pipes.ItemRendererBCPipe;
 import speiger.src.tinymodularthings.client.render.pipes.ItemRendererPipe;
 import speiger.src.tinymodularthings.client.render.pipes.RenderPipe;
@@ -63,7 +64,7 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		MinecraftForgeClient.registerItemRenderer(TinyItems.tinyTank.itemID, new ItemRendererStorageBlock());
 		MinecraftForgeClient.registerItemRenderer(TinyItems.advTinyChest.itemID, new ItemRendererStorageBlock());
 		MinecraftForgeClient.registerItemRenderer(TinyItems.advTinyTank.itemID, new ItemRendererStorageBlock());
-	
+		
 		// Transport Blocks
 		ClientRegistry.bindTileEntitySpecialRenderer(TinyHopper.class, new renderTransportTile());
 		MinecraftForgeClient.registerItemRenderer(TinyBlocks.transportBlock.blockID, new ItemRenderTransportTile());
@@ -76,12 +77,13 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		MinecraftForgeClient.registerItemRenderer(TinyItems.advEnergyHopper.itemID, new ItemRenderTransportTile());
 		RenderingRegistry.registerBlockHandler(EnumIDs.TransportBlock.getId(), new RenderTransport());
 		
-		
-		
 		// Entities
 		RenderingRegistry.registerEntityRenderingHandler(TCarts.class, new RenderTCarts());
 		MinecraftForgeClient.registerItemRenderer(TinyItems.tinyStorageCart.itemID, new CartItemRenderer(false));
 		MinecraftForgeClient.registerItemRenderer(TinyItems.advTinyStorageCart.itemID, new CartItemRenderer(true));
+		
+		//Items
+		MinecraftForgeClient.registerItemRenderer(TinyItems.cell.itemID, new RendererItemCell());
 		
 		NeiRegistry.getInstance().init();
 		
@@ -98,13 +100,13 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 				if (cu != null && cu instanceof LanguageItem)
 				{
 					LanguageItem item = (LanguageItem) cu;
-					for(SpmodMod mod : SpmodModRegistry.getRegisteredMods())
+					for (SpmodMod mod : SpmodModRegistry.getRegisteredMods())
 					{
 						item.registerItems(cu.itemID, mod);
 					}
 				}
 			}
-			for(SpmodMod mod : SpmodModRegistry.getRegisteredMods())
+			for (SpmodMod mod : SpmodModRegistry.getRegisteredMods())
 			{
 				LanguageRegister.printModLanguage(mod);
 			}
@@ -117,10 +119,10 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 	{
 		try
 		{
-			Pipe pipe = (Pipe)par2.getConstructor(new Class[]{Integer.TYPE}).newInstance(new Object[]{Integer.valueOf(id)});
+			Pipe pipe = (Pipe) par2.getConstructor(new Class[] { Integer.TYPE }).newInstance(new Object[] { Integer.valueOf(id) });
 			MinecraftForgeClient.registerItemRenderer(par1.itemID, ItemRendererBCPipe.pipe);
 			
-			if(pipe != null)
+			if (pipe != null)
 			{
 				par1.setPipesIcons(pipe.getIconProvider());
 				par1.setPipeIconIndex(pipe.getIconIndex(ForgeDirection.VALID_DIRECTIONS[0]));
@@ -129,7 +131,7 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		}
 		catch (Exception e)
 		{
-		
+			
 		}
 	}
 	

@@ -22,7 +22,6 @@ public class UpgradeTransEnergy implements HopperUpgrade
 		qty = amount;
 	}
 	
-	
 	@Override
 	public void onTick(IHopper par1)
 	{
@@ -57,7 +56,7 @@ public class UpgradeTransEnergy implements HopperUpgrade
 	public void getInformationList(EntityPlayer player, List par2)
 	{
 		par2.add("Can be used 16 Times");
-		par2.add("Energy Transport Upgrade: "+qty);
+		par2.add("Energy Transport Upgrade: " + qty);
 	}
 	
 	@Override

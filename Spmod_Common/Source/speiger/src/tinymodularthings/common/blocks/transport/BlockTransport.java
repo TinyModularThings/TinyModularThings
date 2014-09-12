@@ -52,18 +52,29 @@ public class BlockTransport extends BlockContainer
 		{
 			switch (metadata)
 			{
-				case 0: return new EnderChestReader();
-				case 1: return new MultiStructureItemInterface();
-				case 2: return new MultiStructureFluidInterface();
-				case 3: return new MultiStructureEnergyInterface();
-				
-				case 10: return new TinyHopper(HopperType.Items, false);
-				case 11: return new TinyHopper(HopperType.Items, true);
-				case 12: return new TinyHopper(HopperType.Fluids, false);
-				case 13: return new TinyHopper(HopperType.Fluids, true);
-				case 14: return new TinyHopper(HopperType.Energy, false);
-				case 15: return new TinyHopper(HopperType.Energy, true);
-				default: return null;
+				case 0:
+					return new EnderChestReader();
+				case 1:
+					return new MultiStructureItemInterface();
+				case 2:
+					return new MultiStructureFluidInterface();
+				case 3:
+					return new MultiStructureEnergyInterface();
+					
+				case 10:
+					return new TinyHopper(HopperType.Items, false);
+				case 11:
+					return new TinyHopper(HopperType.Items, true);
+				case 12:
+					return new TinyHopper(HopperType.Fluids, false);
+				case 13:
+					return new TinyHopper(HopperType.Fluids, true);
+				case 14:
+					return new TinyHopper(HopperType.Energy, false);
+				case 15:
+					return new TinyHopper(HopperType.Energy, true);
+				default:
+					return null;
 			}
 		}
 		catch (Exception e)
@@ -231,19 +242,18 @@ public class BlockTransport extends BlockContainer
 		return texture[meta];
 	}
 	
-
 	@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
 	{
 		ArrayList<ItemStack> drop = new ArrayList<ItemStack>();
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if(tile != null && tile instanceof AdvTile)
+		if (tile != null && tile instanceof AdvTile)
 		{
-			drop.addAll(((AdvTile)tile).onDrop(fortune));
+			drop.addAll(((AdvTile) tile).onDrop(fortune));
 		}
 		return drop;
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1)
@@ -252,18 +262,16 @@ public class BlockTransport extends BlockContainer
 		texture[1] = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":transport/FluidTransport");
 		texture[2] = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":transport/EnergyTransport");
 	}
-
+	
 	@Override
 	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
 	{
 		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-		if(tile != null && tile instanceof AdvTile)
+		if (tile != null && tile instanceof AdvTile)
 		{
-			((AdvTile)tile).onBreaking();
+			((AdvTile) tile).onBreaking();
 		}
 		super.breakBlock(par1World, par2, par3, par4, par5, par6);
 	}
-	
-	
 	
 }

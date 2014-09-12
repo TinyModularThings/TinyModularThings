@@ -4,7 +4,6 @@ import java.util.EnumSet;
 
 import speiger.src.api.util.Ticks;
 import speiger.src.spmodapi.SpmodAPI;
-
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.relauncher.Side;

@@ -34,20 +34,13 @@ import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.common.items.ItemRotor.BasicRotorType;
 import speiger.src.compactWindmills.common.utils.WindmillFake;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageItem
+public class ItemAdvancedRotor extends ItemTool implements IRotorItem,
+		LanguageItem
 {
-	private static String[] names = new String[]{
-		"rotor.adv.wood",
-		"rotor.adv.wool",
-		"rotor.adv.iron",
-		"rotor.adv.carbon",
-		"rotor.adv.alloy",
-		"rotor.adv.iridium"
-	};
+	private static String[] names = new String[] { "rotor.adv.wood", "rotor.adv.wool", "rotor.adv.iron", "rotor.adv.carbon", "rotor.adv.alloy", "rotor.adv.iridium" };
 	
 	public ItemAdvancedRotor(int par1)
 	{
@@ -62,37 +55,37 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1, EntityPlayer par2EntityPlayer, List par3, boolean par4)
 	{
-		if(NBTHelper.nbtCheck(par1, "Rotor"))
+		if (NBTHelper.nbtCheck(par1, "Rotor"))
 		{
 			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Rotor");
 			BasicRotorType type = BasicRotorType.values()[par1.getItemDamage()];
 			int damage = nbt.getInteger("Damage");
-			int damageLeft = (type.getMaxDamage() + nbt.getInteger("ExtraLife"))  - damage;
+			int damageLeft = (type.getMaxDamage() + nbt.getInteger("ExtraLife")) - damage;
 			int eff = (int) (this.getRotorEfficeny(par1, WindmillFake.fake) * 100);
-			if(this.isInfinite(par1))
+			if (this.isInfinite(par1))
 			{
 				par3.add("Stays Infinite");
 			}
 			else
 			{
 				par3.add("Time the Rotor will stay at Least: ");
-				par3.add(MathUtils.getTicksInTime(damageLeft*64));
+				par3.add(MathUtils.getTicksInTime(damageLeft * 64));
 			}
-			par3.add("Rotor Efficency: "+eff+"%");
-			if(Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54))
+			par3.add("Rotor Efficency: " + eff + "%");
+			if (Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54))
 			{
-				par3.add("Modifires Left: "+nbt.getInteger("Modifire"));
-				if(nbt.getBoolean("Ench"))
+				par3.add("Modifires Left: " + nbt.getInteger("Modifire"));
+				if (nbt.getBoolean("Ench"))
 				{
 					par3.add("Is Enchantable");
 				}
-				par3.add("Damage: "+damage+" / "+(type.getMaxDamage()+nbt.getInteger("ExtraLife")));
-				par3.add("Efficency Boost: "+nbt.getFloat("EffBoost")+"%");
-				if(nbt.getBoolean("AutoRepair"))
+				par3.add("Damage: " + damage + " / " + (type.getMaxDamage() + nbt.getInteger("ExtraLife")));
+				par3.add("Efficency Boost: " + nbt.getFloat("EffBoost") + "%");
+				if (nbt.getBoolean("AutoRepair"))
 				{
 					par3.add("AutoRepair");
 				}
-				par3.add("Absorbing Damage: "+nbt.getInteger("AbsorbeDamage"));
+				par3.add("Absorbing Damage: " + nbt.getInteger("AbsorbeDamage"));
 			}
 		}
 	}
@@ -100,50 +93,48 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 	@Override
 	public boolean isDamaged(ItemStack stack)
 	{
-		if(NBTHelper.nbtCheck(stack, "Rotor"))
+		if (NBTHelper.nbtCheck(stack, "Rotor"))
 		{
 			int damage = stack.getTagCompound().getCompoundTag("Rotor").getInteger("Damage");
 			return damage > 0;
 		}
 		return false;
 	}
-
+	
 	@Override
 	public int getDisplayDamage(ItemStack stack)
 	{
-		if(NBTHelper.nbtCheck(stack, "Rotor"))
+		if (NBTHelper.nbtCheck(stack, "Rotor"))
 		{
 			NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Rotor");
 			int damage = nbt.getInteger("Damage");
 			BasicRotorType type = BasicRotorType.values()[stack.getItemDamage()];
-			double per = ((double)damage / ((double)type.getMaxDamage()+(double)nbt.getInteger("ExtraLife"))) * 100;
-			return (int)per;
+			double per = ((double) damage / ((double) type.getMaxDamage() + (double) nbt.getInteger("ExtraLife"))) * 100;
+			return (int) per;
 		}
 		return 0;
 	}
-
+	
 	@Override
 	public String getDisplayName(ItemStack par1, SpmodMod par0)
 	{
 		return LanguageRegister.getLanguageName(new DisplayStack(par1), names[par1.getItemDamage()], par0);
 	}
 	
-	 
-	
 	@Override
 	public String getItemDisplayName(ItemStack par1ItemStack)
 	{
 		return getDisplayName(par1ItemStack, CompactWindmills.instance);
 	}
-
+	
 	@Override
 	public void registerItems(int id, SpmodMod par0)
 	{
-		if(!SpmodModRegistry.areModsEqual(CompactWindmills.instance, par0))
+		if (!SpmodModRegistry.areModsEqual(CompactWindmills.instance, par0))
 		{
 			return;
 		}
-		for(int i = 0;i<names.length;i++)
+		for (int i = 0; i < names.length; i++)
 		{
 			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, i)), names[i], par0);
 		}
@@ -161,15 +152,13 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 		return true;
 	}
 	
-	
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
 		return CompactWindmills.rotor.getIconFromDamage(par1);
 	}
-
+	
 	@Override
 	public int getTier(ItemStack par1)
 	{
@@ -181,24 +170,24 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 	{
 		IRotorItem rotor = getRotor(par1);
 		NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Rotor");
-		if(rotor == null || nbt == null)
+		if (rotor == null || nbt == null)
 		{
 			return;
 		}
 		int unBreaking = EnchantmentHelper.getEnchantmentLevel(Enchantment.unbreaking.effectId, par1);
-		if(windmill.getWindmill().getWorldObj().rand.nextInt(10-unBreaking) == 0)
+		if (windmill.getWindmill().getWorldObj().rand.nextInt(10 - unBreaking) == 0)
 		{
-			damage-=unBreaking;
+			damage -= unBreaking;
 		}
-		if(damage <= 0)
+		if (damage <= 0)
 		{
 			return;
 		}
 		
-		if(nbt.getInteger("AbsorbeDamage") > 0 && windmill.getWindmill().getWorldObj().rand.nextInt(3) == 0)
+		if (nbt.getInteger("AbsorbeDamage") > 0 && windmill.getWindmill().getWorldObj().rand.nextInt(3) == 0)
 		{
-			int absorbeLeft = nbt.getInteger("AbsorbeDamage")-damage;
-			if(absorbeLeft < 0)
+			int absorbeLeft = nbt.getInteger("AbsorbeDamage") - damage;
+			if (absorbeLeft < 0)
 			{
 				damage = 0 - absorbeLeft;
 			}
@@ -207,12 +196,12 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 				damage = 0;
 			}
 			nbt.setInteger("AbsorbeDamage", absorbeLeft);
-
+			
 		}
 		
-		if(damage > 0)
+		if (damage > 0)
 		{
-			nbt.setInteger("Damage", nbt.getInteger("Damage")+damage);
+			nbt.setInteger("Damage", nbt.getInteger("Damage") + damage);
 			makeDamageCheck(par1, windmill);
 		}
 	}
@@ -222,7 +211,7 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 		NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Rotor");
 		BasicRotorType type = BasicRotorType.values()[par1.getItemDamage()];
 		int damage = nbt.getInteger("Damage");
-		if(damage > type.getMaxDamage() + nbt.getInteger("ExtraLife"))
+		if (damage > type.getMaxDamage() + nbt.getInteger("ExtraLife"))
 		{
 			par2.distroyRotor();
 		}
@@ -240,16 +229,16 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 	{
 		IRotorItem rotor = getRotor(item);
 		NBTTagCompound nbt = item.getTagCompound().getCompoundTag("Rotor");
-		if(rotor == null || nbt == null)
+		if (rotor == null || nbt == null)
 		{
 			return;
 		}
 		
-		if(nbt.getBoolean("AutoRepair") && world.rand.nextInt(3) == 0)
+		if (nbt.getBoolean("AutoRepair") && world.rand.nextInt(3) == 0)
 		{
-			if(nbt.getInteger("Damage") > 0)
+			if (nbt.getInteger("Damage") > 0)
 			{
-				nbt.setInteger("Damage", nbt.getInteger("Damage")-1);
+				nbt.setInteger("Damage", nbt.getInteger("Damage") - 1);
 			}
 		}
 		
@@ -267,7 +256,7 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 		nbt.setBoolean("Ench", false);
 		nbt.setBoolean("Infinite", false);
 		nbt.setBoolean("AutoRepair", false);
-		if(par1 == par1.IridiumRotor)
+		if (par1 == par1.IridiumRotor)
 		{
 			nbt.setInteger("Modifire", 0);
 		}
@@ -279,21 +268,21 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 	public float getRotorEfficeny(ItemStack par1, IWindmill par2)
 	{
 		float eff = BasicRotorType.values()[par1.getItemDamage()].getEfficeny();
-		if(par2.getFacing() == 0 || par2.getFacing() == 1)
+		if (par2.getFacing() == 0 || par2.getFacing() == 1)
 		{
 			eff = 0.01F;
 		}
-		if(NBTHelper.nbtCheck(par1, "Rotor"))
+		if (NBTHelper.nbtCheck(par1, "Rotor"))
 		{
 			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Rotor");
 			float end = nbt.getFloat("EffBoost");
-			end/=100;
-			eff+=end;
+			end /= 100;
+			eff += end;
 		}
 		int size = EnchantmentHelper.getEnchantmentLevel(Enchantment.efficiency.effectId, par1);
-		if(size > 0)
+		if (size > 0)
 		{
-			eff+=((float)(size*5)/100);
+			eff += ((float) (size * 5) / 100);
 		}
 		
 		return eff;
@@ -305,42 +294,38 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 		return true;
 	}
 	
-	
-	
 	@Override
 	public int getItemEnchantability()
 	{
 		return 100;
 	}
-
-	
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		for(BasicRotorType type : BasicRotorType.values())
+		for (BasicRotorType type : BasicRotorType.values())
 		{
 			par3List.add(createRotor(type));
 		}
 	}
-
+	
 	@Override
 	public boolean isItemTool(ItemStack par1)
 	{
-		if(NBTHelper.nbtCheck(par1, "Rotor"))
+		if (NBTHelper.nbtCheck(par1, "Rotor"))
 		{
 			return par1.getTagCompound().getCompoundTag("Rotor").getBoolean("Ench");
 		}
 		return false;
 	}
-
+	
 	@Override
 	public boolean isInfinite(ItemStack par1)
 	{
 		BasicRotorType type = BasicRotorType.values()[par1.getItemDamage()];
 		boolean flag = false;
-		if(NBTHelper.nbtCheck(par1, "Rotor"))
+		if (NBTHelper.nbtCheck(par1, "Rotor"))
 		{
 			flag = par1.getTagCompound().getCompoundTag("Rotor").getBoolean("Infinite");
 		}
@@ -352,105 +337,104 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 	{
 		return null;
 	}
-
+	
 	@Override
 	public boolean onEntityItemUpdate(EntityItem par1)
 	{
 		World world = par1.worldObj;
-		if(!world.isRemote && world.getWorldTime() % 20 == 0)
+		if (!world.isRemote && world.getWorldTime() % 20 == 0)
 		{
 			ItemStack stack = par1.getEntityItem();
 			
-			if(stack == null || getRotor(stack) == null)
+			if (stack == null || getRotor(stack) == null)
 			{
 				return super.onEntityItemUpdate(par1);
 			}
 			BasicRotorType type = BasicRotorType.values()[stack.getItemDamage()];
 			IRotorItem rotor = getRotor(stack);
 			
-			
 			int x = (int) par1.posX;
 			int y = (int) par1.posY;
 			int z = (int) par1.posZ;
-			if(world.getBlockId(x, y, z) == Block.waterStill.blockID)
+			if (world.getBlockId(x, y, z) == Block.waterStill.blockID)
 			{
 				NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Rotor");
-				if(nbt.getInteger("Modifire") > 0)
+				if (nbt.getInteger("Modifire") > 0)
 				{
-					List<EntityItem> item = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getAABBPool().getAABB(x-1, y-1, z-1, x+1, y+1, z+1));
-					if(match(item, Items.getItem("resin")))
+					List<EntityItem> item = world.getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getAABBPool().getAABB(x - 1, y - 1, z - 1, x + 1, y + 1, z + 1));
+					if (match(item, Items.getItem("resin")))
 					{
-						if(match(item, Items.getItem("iridiumPlate")) && !nbt.getBoolean("Modifire"))
+						if (match(item, Items.getItem("iridiumPlate")) && !nbt.getBoolean("Modifire"))
 						{
-							if(remove(item, Items.getItem("resin"), Items.getItem("iridiumPlate")))
+							if (remove(item, Items.getItem("resin"), Items.getItem("iridiumPlate")))
 							{
 								float eff = rotor.getRotorEfficeny(stack, WindmillFake.fake);
 								eff /= 2;
 								eff -= nbt.getFloat("EffBoost");
 								nbt.setBoolean("Infinite", true);
-								nbt.setInteger("Modifire", nbt.getInteger("Modifire")-1);
+								nbt.setInteger("Modifire", nbt.getInteger("Modifire") - 1);
 								nbt.setFloat("EffBoost", -eff);
 							}
 						}
-						else if(match(item, new ItemStack(Block.obsidian)))
+						else if (match(item, new ItemStack(Block.obsidian)))
 						{
-							if(remove(item, Items.getItem("resin"), new ItemStack(Block.obsidian)))
+							if (remove(item, Items.getItem("resin"), new ItemStack(Block.obsidian)))
 							{
-								nbt.setFloat("EffBoost", nbt.getFloat("EffBoost")-5F);
-								nbt.setInteger("ExtraLife", nbt.getInteger("ExtraLife")+40500);
-								nbt.setInteger("Modifire", nbt.getInteger("Modifire")-1);
+								nbt.setFloat("EffBoost", nbt.getFloat("EffBoost") - 5F);
+								nbt.setInteger("ExtraLife", nbt.getInteger("ExtraLife") + 40500);
+								nbt.setInteger("Modifire", nbt.getInteger("Modifire") - 1);
 							}
 						}
-						else if(match(item, new ItemStack(Item.book)) && !nbt.getBoolean("Ench"))
+						else if (match(item, new ItemStack(Item.book)) && !nbt.getBoolean("Ench"))
 						{
-							if(remove(item, Items.getItem("resin"), new ItemStack(Item.book)))
+							if (remove(item, Items.getItem("resin"), new ItemStack(Item.book)))
 							{
-								nbt.setInteger("Modifire", nbt.getInteger("Modifire")-1);
+								nbt.setInteger("Modifire", nbt.getInteger("Modifire") - 1);
 								nbt.setBoolean("Ench", true);
 							}
 						}
-						else if(match(item, new ItemStack(Block.cloth)))
+						else if (match(item, new ItemStack(Block.cloth)))
 						{
-							if(remove(item, Items.getItem("resin"), new ItemStack(Block.cloth)))
+							if (remove(item, Items.getItem("resin"), new ItemStack(Block.cloth)))
 							{
-								nbt.setInteger("Modifire", nbt.getInteger("Modifire")-1);
+								nbt.setInteger("Modifire", nbt.getInteger("Modifire") - 1);
 								nbt.setInteger("ExtraLife", (nbt.getInteger("ExtraLive") - (nbt.getInteger("ExtraLive") + type.getMaxDamage()) / 10));
-								nbt.setFloat("EffBoost", nbt.getFloat("EffBoost")+25F);
+								nbt.setFloat("EffBoost", nbt.getFloat("EffBoost") + 25F);
 							}
 						}
-						else if(match(item, Items.getItem("Plutonium")) && type.isMetal() && !nbt.getBoolean("AutoRepair"))
+						else if (match(item, Items.getItem("Plutonium")) && type.isMetal() && !nbt.getBoolean("AutoRepair"))
 						{
-							if(remove(item, Items.getItem("resin"), Items.getItem("Plutonium")))
+							if (remove(item, Items.getItem("resin"), Items.getItem("Plutonium")))
 							{
-								nbt.setInteger("Modifire", nbt.getInteger("Modifire")-1);
+								nbt.setInteger("Modifire", nbt.getInteger("Modifire") - 1);
 								nbt.setBoolean("AutoRepair", true);
-								nbt.setFloat("EffBoost", nbt.getFloat("EffBoost")-5F);
+								nbt.setFloat("EffBoost", nbt.getFloat("EffBoost") - 5F);
 							}
 						}
-						else if(match(item, Items.getItem("Uran235")) && type.isMetal())
+						else if (match(item, Items.getItem("Uran235")) && type.isMetal())
 						{
-							if(remove(item, Items.getItem("resin"), Items.getItem("Uran235")))
+							if (remove(item, Items.getItem("resin"), Items.getItem("Uran235")))
 							{
-								nbt.setInteger("Modifire", nbt.getInteger("Modifire")-1);
-								nbt.setInteger("AbsorbeDamage", nbt.getInteger("AbsorbeDamage")+200000);
+								nbt.setInteger("Modifire", nbt.getInteger("Modifire") - 1);
+								nbt.setInteger("AbsorbeDamage", nbt.getInteger("AbsorbeDamage") + 200000);
 							}
 						}
-						else if(match(item, Items.getItem("denseplateiron")))
+						else if (match(item, Items.getItem("denseplateiron")))
 						{
-							if(remove(item, Items.getItem("denseplateiron"), Items.getItem("resin")))
+							if (remove(item, Items.getItem("denseplateiron"), Items.getItem("resin")))
 							{
-								nbt.setInteger("Modifire", nbt.getInteger("Modifire")-1);
-								nbt.setInteger("ExtraLife", nbt.getInteger("ExtraLife")+MathUtils.getSekInRotorTicks(7200));
-								nbt.setFloat("EffBoost", nbt.getFloat("EffBoost")-2);
+								nbt.setInteger("Modifire", nbt.getInteger("Modifire") - 1);
+								nbt.setInteger("ExtraLife", nbt.getInteger("ExtraLife") + MathUtils.getSekInRotorTicks(7200));
+								nbt.setFloat("EffBoost", nbt.getFloat("EffBoost") - 2);
 							}
 						}
-						else if(match(item, Items.getItem("carbonPlate")))
+						else if (match(item, Items.getItem("carbonPlate")))
 						{
-							if(remove(item, Items.getItem("carbonPlate"), Items.getItem("resin")))
+							if (remove(item, Items.getItem("carbonPlate"), Items.getItem("resin")))
 							{
-								nbt.setInteger("Modifire", nbt.getInteger("Modifire")-1);
-								nbt.setInteger("ExtraLife", nbt.getInteger("ExtraLife")- MathUtils.getSekInRotorTicks(2000));
-								nbt.setFloat("EffBoost", nbt.getFloat("EffBoost")+15F);
+								nbt.setInteger("Modifire", nbt.getInteger("Modifire") - 1);
+								nbt.setInteger("ExtraLife", nbt.getInteger("ExtraLife") - MathUtils.getSekInRotorTicks(2000));
+								nbt.setFloat("EffBoost", nbt.getFloat("EffBoost") + 15F);
 							}
 						}
 					}
@@ -461,29 +445,27 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 		return super.onEntityItemUpdate(par1);
 	}
 	
-
-	
 	public IRotorItem getRotor(ItemStack par1)
 	{
-		if(par1 != null && par1.getItem() != null && par1.getItem() instanceof IRotorItem)
+		if (par1 != null && par1.getItem() != null && par1.getItem() instanceof IRotorItem)
 		{
-			return (IRotorItem)par1.getItem();
+			return (IRotorItem) par1.getItem();
 		}
 		return null;
 	}
 	
-	public boolean remove(List<EntityItem> par1, ItemStack...par2)
+	public boolean remove(List<EntityItem> par1, ItemStack... par2)
 	{
 		int removed = 0;
-		for(ItemStack item : par2)
+		for (ItemStack item : par2)
 		{
-			for(EntityItem par3 : par1)
+			for (EntityItem par3 : par1)
 			{
 				ItemStack stack = par3.getEntityItem();
-				if(stack != null && item != null && stack.isItemEqual(item) && stack.stackSize == 1)
+				if (stack != null && item != null && stack.isItemEqual(item) && stack.stackSize == 1)
 				{
 					par3.setDead();
-					if(par3.isDead)
+					if (par3.isDead)
 					{
 						removed++;
 					}
@@ -496,15 +478,15 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem, LanguageI
 	
 	public boolean match(List<EntityItem> par1, ItemStack par2)
 	{
-		if(par2 == null)
+		if (par2 == null)
 		{
 			return false;
 		}
 		
-		for(EntityItem item : par1)
+		for (EntityItem item : par1)
 		{
 			ItemStack stack = item.getEntityItem();
-			if(stack != null && stack.stackSize == 1 && stack.isItemEqual(par2))
+			if (stack != null && stack.stackSize == 1 && stack.isItemEqual(par2))
 			{
 				return true;
 			}

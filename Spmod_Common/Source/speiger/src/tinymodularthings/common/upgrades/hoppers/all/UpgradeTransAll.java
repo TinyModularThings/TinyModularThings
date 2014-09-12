@@ -65,9 +65,9 @@ public class UpgradeTransAll implements HopperUpgrade
 	{
 		par2.add("Can be used 5 Times");
 		par2.add("Transferlimit Boost:");
-		par2.add("Item: "+item);
-		par2.add("Fluid: "+fluid);
-		par2.add("Energy: "+energy);
+		par2.add("Item: " + item);
+		par2.add("Fluid: " + fluid);
+		par2.add("Energy: " + energy);
 	}
 	
 	@Override
@@ -103,7 +103,5 @@ public class UpgradeTransAll implements HopperUpgrade
 	{
 		return HopperType.Nothing;
 	}
-	
-	
 	
 }

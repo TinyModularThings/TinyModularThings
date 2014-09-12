@@ -17,7 +17,6 @@ public class PlateHandler implements PlateInterface
 	public ArrayList<String> identities = new ArrayList<String>();
 	public EntityCounter ids = new EntityCounter(0);
 	
-	
 	@Override
 	public PlateInformation registerPlate(ResourceLocation texture, String ItemTexture, String identify, String displayName)
 	{
@@ -41,29 +40,29 @@ public class PlateHandler implements PlateInterface
 		textures.remove(identifier);
 		identities.remove(identifier);
 	}
-
+	
 	@Override
 	public ResourceLocation getTexture(String identifier)
 	{
 		return textures.get(identifier);
 	}
-
+	
 	@Override
 	public PlateInformation getInfoFromIdentity(String identifier)
 	{
 		return plates.get(identifier);
 	}
-
+	
 	@Override
 	public String getIconFromIdentity(String key)
 	{
 		return itemTextures.get(key);
 	}
-
+	
 	@Override
 	public ArrayList<String> getAllIdentifiers()
 	{
 		return identities;
 	}
-
+	
 }

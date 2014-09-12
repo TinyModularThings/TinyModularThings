@@ -33,7 +33,7 @@ public class TileIconMaker
 	public static void registerIcon(Block block, IconRegister par1)
 	{
 		ArrayList<AdvTile> tiles = instance.allTiles.get(block);
-		for(AdvTile tile : tiles)
+		for (AdvTile tile : tiles)
 		{
 			tile.registerIcon(par1);
 		}
@@ -41,7 +41,7 @@ public class TileIconMaker
 	
 	public void addTileEntity(Block par1, AdvTile tile)
 	{
-		if(allTiles.get(par1) == null)
+		if (allTiles.get(par1) == null)
 		{
 			allTiles.put(par1, new ArrayList<AdvTile>());
 		}
@@ -56,9 +56,9 @@ public class TileIconMaker
 	public AdvTile getTileEntityFromClass(Block block, Class<? extends AdvTile> tile)
 	{
 		ArrayList<AdvTile> tiles = new ArrayList<AdvTile>();
-		if(block == null)
+		if (block == null)
 		{
-			for(ArrayList<AdvTile> cuTile : allTiles.values())
+			for (ArrayList<AdvTile> cuTile : allTiles.values())
 			{
 				tiles.addAll(cuTile);
 			}
@@ -68,9 +68,9 @@ public class TileIconMaker
 			tiles.addAll(allTiles.get(block));
 		}
 		
-		for(AdvTile list : tiles)
+		for (AdvTile list : tiles)
 		{
-			if(list.getClass().getSimpleName().equalsIgnoreCase(tile.getSimpleName()))
+			if (list.getClass().getSimpleName().equalsIgnoreCase(tile.getSimpleName()))
 			{
 				return list;
 			}
@@ -97,9 +97,9 @@ public class TileIconMaker
 		ArrayList<AdvTile> tiles = allTiles.get(block);
 		try
 		{
-			for(AdvTile tile : tiles)
+			for (AdvTile tile : tiles)
 			{
-				if(match(clz, tile))
+				if (match(clz, tile))
 				{
 					return tile.getIconFromSideAndMetadata(side, 0);
 				}
@@ -113,58 +113,58 @@ public class TileIconMaker
 	
 	public boolean match(Class<? extends AdvTile> tiles, AdvTile tile)
 	{
-		if(tiles.getSimpleName().equalsIgnoreCase(tile.getClass().getSimpleName()))
+		if (tiles.getSimpleName().equalsIgnoreCase(tile.getClass().getSimpleName()))
 		{
 			return true;
 		}
 		return false;
 	}
 	
-    public Icon getIconSafe(Icon par1Icon)
-    {
-        if (par1Icon == null)
-        {
-            par1Icon = ((TextureMap)Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
-        }
-
-        return (Icon)par1Icon;
-    }
+	public Icon getIconSafe(Icon par1Icon)
+	{
+		if (par1Icon == null)
+		{
+			par1Icon = ((TextureMap) Minecraft.getMinecraft().getTextureManager().getTexture(TextureMap.locationBlocksTexture)).getAtlasSprite("missingno");
+		}
+		
+		return (Icon) par1Icon;
+	}
 	
 	@ForgeSubscribe
 	@SideOnly(Side.CLIENT)
 	public void createBeforeIcon(TextureStitchEvent.Pre par1)
 	{
-		if(par1.map.textureType == 0)
+		if (par1.map.textureType == 0)
 		{
-			for(ArrayList<AdvTile> tiles : allTiles.values())
+			for (ArrayList<AdvTile> tiles : allTiles.values())
 			{
-				for(AdvTile tile : tiles)
+				for (AdvTile tile : tiles)
 				{
 					tile.registerIcon(par1.map);
 				}
 			}
-			RenderUtilsBlock.pork = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase()+":utils/pork.raw");
+			RenderUtilsBlock.pork = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/pork.raw");
 		}
-
-		((FluidHempResin)APIUtils.hempResin).registerIcon(par1.map);
+		
+		((FluidHempResin) APIUtils.hempResin).registerIcon(par1.map);
 	}
 	
 	@ForgeSubscribe
 	@SideOnly(Side.CLIENT)
 	public void createAfterIcons(TextureStitchEvent.Post par1)
 	{
-		if(par1.map.textureType == 0)
+		if (par1.map.textureType == 0)
 		{
-			for(ArrayList<AdvTile> tiles : allTiles.values())
+			for (ArrayList<AdvTile> tiles : allTiles.values())
 			{
-				for(AdvTile tile : tiles)
+				for (AdvTile tile : tiles)
 				{
 					tile.registerIcon(par1.map);
 				}
 			}
-			RenderUtilsBlock.pork = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase()+":utils/pork.raw");
+			RenderUtilsBlock.pork = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/pork.raw");
 		}
-
-		((FluidHempResin)APIUtils.hempResin).registerIcon(par1.map);
+		
+		((FluidHempResin) APIUtils.hempResin).registerIcon(par1.map);
 	}
 }

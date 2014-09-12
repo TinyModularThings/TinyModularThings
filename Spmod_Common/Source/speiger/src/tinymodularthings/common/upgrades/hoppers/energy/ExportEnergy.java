@@ -21,7 +21,7 @@ public class ExportEnergy implements HopperUpgrade
 	public void onTick(IHopper par1)
 	{
 		World world = par1.getWorld();
-		if(world.isRemote)
+		if (world.isRemote)
 		{
 			return;
 		}
@@ -30,10 +30,10 @@ public class ExportEnergy implements HopperUpgrade
 		int z = par1.getZPos();
 		ForgeDirection dir = ForgeDirection.getOrientation(par1.getRotation()).getOpposite();
 		TileEntity tile = WorldReading.getTileEntity(world, x, y, z, par1.getFacing());
-		if(tile != null)
+		if (tile != null)
 		{
 			EnergyUsageProvider provider = EnergyUsageProvider.createUsageProvider(tile, dir.ordinal());
-			if(provider != null)
+			if (provider != null)
 			{
 				exportEnergy(par1, provider, dir, par1.getTransferlimit(HopperType.Energy));
 			}
@@ -42,15 +42,15 @@ public class ExportEnergy implements HopperUpgrade
 	
 	public static void exportEnergy(IHopper par1, EnergyUsageProvider par2, ForgeDirection par3, int transferlimit)
 	{
-		if(par2 == null)
+		if (par2 == null)
 		{
 			return;
 		}
 		int added = par1.getEnergyStorage().useEnergy(transferlimit, true);
-		if(added > 0)
+		if (added > 0)
 		{
 			int used = par2.addEnergy(added);
-			if(used > 0)
+			if (used > 0)
 			{
 				par1.getEnergyStorage().useEnergy(used, false);
 			}

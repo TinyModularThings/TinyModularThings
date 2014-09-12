@@ -42,17 +42,17 @@ public class PathProxy
 		CraftingManager.getInstance().getRecipeList().add(par1);
 	}
 	
-	public static void addRecipe(ItemStack output, Object...input)
+	public static void addRecipe(ItemStack output, Object... input)
 	{
 		CraftingManager.getInstance().addRecipe(output, input);
 	}
 	
-	public static void addSRecipe(ItemStack output, Object...input)
+	public static void addSRecipe(ItemStack output, Object... input)
 	{
 		CraftingManager.getInstance().addShapelessRecipe(output, input);
 	}
 	
-	public static void addNBTRecipe(ItemStack output, Object...input)
+	public static void addNBTRecipe(ItemStack output, Object... input)
 	{
 		ShapedRecipes recipe = CraftingManager.getInstance().addRecipe(output, input);
 		CraftingManager.getInstance().getRecipeList().remove(recipe);
@@ -68,9 +68,9 @@ public class PathProxy
 	{
 		ArrayList<FluidContainerData> result = new ArrayList<FluidContainerData>();
 		FluidContainerData[] fluids = FluidContainerRegistry.getRegisteredFluidContainerData();
-		for(FluidContainerData data : fluids)
+		for (FluidContainerData data : fluids)
 		{
-			if(data.fluid.fluidID == par1.getID())
+			if (data.fluid.fluidID == par1.getID())
 			{
 				result.add(data);
 			}
@@ -82,9 +82,9 @@ public class PathProxy
 	{
 		ArrayList<ItemStack> stack = new ArrayList<ItemStack>();
 		FluidContainerData[] fluids = FluidContainerRegistry.getRegisteredFluidContainerData();
-		for(FluidContainerData data : fluids)
+		for (FluidContainerData data : fluids)
 		{
-			if(data.fluid.fluidID == par1.getID())
+			if (data.fluid.fluidID == par1.getID())
 			{
 				stack.add(data.filledContainer);
 			}
@@ -95,21 +95,21 @@ public class PathProxy
 	public static void removeRecipeS(ItemStack input, Item output)
 	{
 		List<IRecipe> crafting = CraftingManager.getInstance().getRecipeList();
-		for(int i = 0;i<crafting.size();i++)
+		for (int i = 0; i < crafting.size(); i++)
 		{
 			IRecipe recipe = crafting.get(i);
-			if(recipe != null)
+			if (recipe != null)
 			{
-				if(recipe instanceof ShapelessOreRecipe)
+				if (recipe instanceof ShapelessOreRecipe)
 				{
 					ShapelessOreRecipe ore = (ShapelessOreRecipe) recipe;
-					if(output.itemID == ore.getRecipeOutput().itemID)
+					if (output.itemID == ore.getRecipeOutput().itemID)
 					{
 						ArrayList list = (ArrayList) ore.getInput().get(0);
 						ArrayList toRemove = new ArrayList();
-						for(int z = 0;z<list.size();z++)
+						for (int z = 0; z < list.size(); z++)
 						{
-							if(input.isItemEqual((ItemStack) list.get(z)))
+							if (input.isItemEqual((ItemStack) list.get(z)))
 							{
 								toRemove.add(list.get(z));
 							}
@@ -122,13 +122,13 @@ public class PathProxy
 		}
 	}
 	
-	public static void addAssemblyRecipe(ItemStack output, int MJCost, ItemStack...input)
+	public static void addAssemblyRecipe(ItemStack output, int MJCost, ItemStack... input)
 	{
 		AssemblyRecipe recipe = new AssemblyRecipe(input, MJCost, output);
 		recipe.assemblyRecipes.add(recipe);
 	}
 	
-	public static void addAssemblyRecipe(ItemStack output, int MJCost, Object...input)
+	public static void addAssemblyRecipe(ItemStack output, int MJCost, Object... input)
 	{
 		AssemblyRecipe recipe = new AssemblyRecipe(MJCost, output, input);
 		recipe.assemblyRecipes.add(recipe);

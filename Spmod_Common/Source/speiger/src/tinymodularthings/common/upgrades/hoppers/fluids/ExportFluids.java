@@ -24,7 +24,7 @@ public class ExportFluids implements HopperUpgrade
 	public void onTick(IHopper par1)
 	{
 		World world = par1.getWorld();
-		if(world.isRemote)
+		if (world.isRemote)
 		{
 			return;
 		}
@@ -33,15 +33,15 @@ public class ExportFluids implements HopperUpgrade
 		int z = par1.getZPos();
 		ForgeDirection dir = ForgeDirection.getOrientation(par1.getRotation()).getOpposite();
 		TileEntity tile = WorldReading.getTileEntity(world, x, y, z, par1.getRotation());
-		if(tile != null && tile instanceof IFluidHandler)
+		if (tile != null && tile instanceof IFluidHandler)
 		{
 			CopiedFluidTank[] tank = par1.getFluidTank();
 			IFluidHandler target = (IFluidHandler) tile;
-			for(int i = 0;i<tank.length;i++)
+			for (int i = 0; i < tank.length; i++)
 			{
-				if(exportFluids(par1, target, dir, par1.removeFluid(par1.getTransferlimit(HopperType.Fluids), i, false), i))
+				if (exportFluids(par1, target, dir, par1.removeFluid(par1.getTransferlimit(HopperType.Fluids), i, false), i))
 				{
-					if(par1.hasEffectApplied(HopperEffect.AllSlots))
+					if (par1.hasEffectApplied(HopperEffect.AllSlots))
 					{
 						continue;
 					}
@@ -53,15 +53,15 @@ public class ExportFluids implements HopperUpgrade
 	
 	public static boolean exportFluids(IHopper par0, IFluidHandler par1, ForgeDirection par2, FluidStack fluid, int tankSlot)
 	{
-		if(par1 == null || fluid == null)
+		if (par1 == null || fluid == null)
 		{
 			return false;
 		}
 		
-		if(par1.canFill(par2, fluid.getFluid()))
+		if (par1.canFill(par2, fluid.getFluid()))
 		{
 			int added = par1.fill(par2, fluid, true);
-			if(added > 0)
+			if (added > 0)
 			{
 				par0.removeFluid(added, tankSlot, true);
 				return true;

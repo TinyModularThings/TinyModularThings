@@ -8,6 +8,7 @@ import net.minecraft.world.World;
 public class FakePlayer extends EntityPlayer
 {
 	ChunkCoordinates coords;
+	
 	public FakePlayer(World world, int x, int y, int z)
 	{
 		super(world, "[SpmodFakePlayer]");
@@ -16,7 +17,7 @@ public class FakePlayer extends EntityPlayer
 	
 	@Override
 	public void sendChatToPlayer(ChatMessageComponent chatmessagecomponent)
-	{		
+	{
 	}
 	
 	@Override
@@ -30,7 +31,5 @@ public class FakePlayer extends EntityPlayer
 	{
 		return coords;
 	}
-	
-	
 	
 }

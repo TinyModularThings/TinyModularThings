@@ -6,11 +6,13 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.power.PowerHandler.Type;
+
 /**
  * 
- * @author Speiger
- * To prevent doing the same error as BC with powerproviders i changed how energy get transfered and stuff.
- * That should allow that you can use your own ways. Just implement IEnergyProvider and IEnergySubject.
+ * @author Speiger To prevent doing the same error as BC with powerproviders i
+ *         changed how energy get transfered and stuff. That should allow that
+ *         you can use your own ways. Just implement IEnergyProvider and
+ *         IEnergySubject.
  */
 public class EnergyProvider implements IEnergySubject
 {
@@ -53,7 +55,6 @@ public class EnergyProvider implements IEnergySubject
 	 * If the transferlimit get Forced.
 	 */
 	boolean forceTransferlimit = false;
-	
 	
 	public EnergyProvider(TileEntity tile, int maxStorage)
 	{
@@ -158,12 +159,11 @@ public class EnergyProvider implements IEnergySubject
 	{
 		if (storedEnergy > 0)
 		{
-			double loss = (double)storedEnergy / (double)1000;
+			double loss = (double) storedEnergy / (double) 1000;
 			int losedPower = (int) (loss * powerloss);
 			storedEnergy -= losedPower;
 		}
 	}
-	
 	
 	public void setEnergy(int amount)
 	{
@@ -177,16 +177,16 @@ public class EnergyProvider implements IEnergySubject
 			storedEnergy = 0;
 		}
 		int limit = amount;
-		if(this.forceTransferlimit)
+		if (this.forceTransferlimit)
 		{
 			limit = Math.min(limit, transferlimit);
 		}
 		
-		if(storedEnergy + limit > this.maxStorage)
+		if (storedEnergy + limit > this.maxStorage)
 		{
 			int added = limit - ((storedEnergy + limit) - maxStorage);
 			
-			if(!simulate)
+			if (!simulate)
 			{
 				storedEnergy = this.maxStorage;
 			}
@@ -194,7 +194,7 @@ public class EnergyProvider implements IEnergySubject
 		}
 		else
 		{
-			if(!simulate)
+			if (!simulate)
 			{
 				storedEnergy += limit;
 			}
@@ -210,7 +210,7 @@ public class EnergyProvider implements IEnergySubject
 	
 	public void setTransferlimtit(int limit)
 	{
-		if(limit < 0)
+		if (limit < 0)
 		{
 			transferlimit = 0;
 			forceTransferlimit = false;
@@ -259,7 +259,7 @@ public class EnergyProvider implements IEnergySubject
 	
 	private void BCUpdate()
 	{
-		if(forceTransferlimit)
+		if (forceTransferlimit)
 		{
 			int between = maxStorage - storedEnergy;
 			int minimum = Math.min(transferlimit, between);
@@ -287,7 +287,7 @@ public class EnergyProvider implements IEnergySubject
 		}
 		return false;
 	}
-
+	
 	@Override
 	public int getStoredEnergy()
 	{

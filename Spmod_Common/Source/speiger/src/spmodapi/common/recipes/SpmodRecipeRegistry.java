@@ -17,7 +17,4 @@ public class SpmodRecipeRegistry
 		ExpRecipes.load(proxy);
 	}
 	
-
-
-
 }

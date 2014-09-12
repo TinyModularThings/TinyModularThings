@@ -50,7 +50,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	public TileLamp()
 	{
 	}
-
+	
 	@Override
 	public boolean isSixSidedFacing()
 	{
@@ -65,17 +65,17 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	
 	public int getColor()
 	{
-		return color; 
+		return color;
 	}
 	
 	public SpmodColor getFullColor()
 	{
-		if(color == 16)
+		if (color == 16)
 		{
 			return null;
 		}
 		int rc = EnumColor.values()[this.color].getAsHex().intValue();
-		if((!isActive() && !isInverted()) || (isActive() && isInverted()))
+		if ((!isActive() && !isInverted()) || (isActive() && isInverted()))
 		{
 			return SpmodColor.fromHex(rc).add(0.3D);
 		}
@@ -89,20 +89,16 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	{
 		return this.isActive;
 	}
-
-	
-	
 	
 	@Override
 	public void onTick()
 	{
-		if(worldObj.isRemote || worldObj.getWorldTime() % 2 != 0)
+		if (worldObj.isRemote || worldObj.getWorldTime() % 2 != 0)
 		{
 			return;
 		}
 		
-		
-		if(isActive != power)
+		if (isActive != power)
 		{
 			isActive = power;
 			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
@@ -112,9 +108,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		
 		boolean powered = RedstoneUtils.isBlockGettingPowered(this);
 		
-		
-	
-		if(power != powered)
+		if (power != powered)
 		{
 			this.power = powered;
 			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
@@ -123,48 +117,46 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		}
 	}
 	
-	
-
 	@Override
 	public boolean onActivated(EntityPlayer par1)
 	{
 		ItemStack current = par1.getCurrentEquippedItem();
-		if(!worldObj.isRemote)
+		if (!worldObj.isRemote)
 		{
-			if(current != null)
+			if (current != null)
 			{
-				if(current.getItem() instanceof IToolWrench && (this.allColored || this.noneColored) && ((IToolWrench)current.getItem()).canWrench(par1, xCoord, yCoord, zCoord) && !par1.isSneaking())
+				if (current.getItem() instanceof IToolWrench && (this.allColored || this.noneColored) && ((IToolWrench) current.getItem()).canWrench(par1, xCoord, yCoord, zCoord) && !par1.isSneaking())
 				{
-					if(this.roubinColor.isEmpty())
+					if (this.roubinColor.isEmpty())
 					{
 						this.refillRoundRobin();
 					}
-					if(this.roubinColor.isEmpty())
+					if (this.roubinColor.isEmpty())
 					{
 						return false;
 					}
 					this.setColor(roubinColor.remove(0).ordinal());
-					((IToolWrench)current.getItem()).wrenchUsed(par1, xCoord, yCoord, zCoord);
+					((IToolWrench) current.getItem()).wrenchUsed(par1, xCoord, yCoord, zCoord);
 				}
-				else if(current.getItem() instanceof IToolWrench && ((IToolWrench)current.getItem()).canWrench(par1, xCoord, yCoord, zCoord) && par1.isSneaking())
+				else if (current.getItem() instanceof IToolWrench && ((IToolWrench) current.getItem()).canWrench(par1, xCoord, yCoord, zCoord) && par1.isSneaking())
 				{
 					this.setFacing(this.setNextFacing());
 					this.updateBlock();
-					((IToolWrench)current.getItem()).wrenchUsed(par1, xCoord, yCoord, zCoord);
+					((IToolWrench) current.getItem()).wrenchUsed(par1, xCoord, yCoord, zCoord);
 				}
-				else if(current.itemID == Item.dyePowder.itemID)
+				else if (current.itemID == Item.dyePowder.itemID)
 				{
 					int meta = current.getItemDamage();
-					if(this.noneColored)
+					if (this.noneColored)
 					{
 						boolean consume = this.validColors.contains(EnumColor.values()[meta]);
-						if(this.addColor(EnumColor.values()[meta]) && !consume)
+						if (this.addColor(EnumColor.values()[meta]) && !consume)
 						{
 							par1.getCurrentEquippedItem().stackSize--;
 						}
 						return false;
 					}
-					else if(this.allColored)
+					else if (this.allColored)
 					{
 						this.setColor(meta);
 					}
@@ -182,12 +174,12 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		}
 		return false;
 	}
-
+	
 	public void setColor(int color)
 	{
 		boolean change = this.color != color;
 		this.color = color;
-		if(change)
+		if (change)
 		{
 			updateBlock();
 			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 30, this.worldObj.provider.dimensionId, getDescriptionPacket());
@@ -196,9 +188,9 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	
 	public boolean addColor(EnumColor par1)
 	{
-		if(this.validColors.contains(par1))
+		if (this.validColors.contains(par1))
 		{
-			if(color != par1.ordinal())
+			if (color != par1.ordinal())
 			{
 				this.setColor(par1.ordinal());
 				return true;
@@ -207,7 +199,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		else
 		{
 			validColors.add(par1);
-			if(color != par1.ordinal())
+			if (color != par1.ordinal())
 			{
 				this.setColor(par1.ordinal());
 				return true;
@@ -216,7 +208,6 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		
 		return false;
 	}
-	
 	
 	public void setInverted()
 	{
@@ -242,7 +233,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	
 	public void setType(int mode)
 	{
-		this.lampType = EnumLampType.values()[mode];	
+		this.lampType = EnumLampType.values()[mode];
 	}
 	
 	public EnumLampType getType()
@@ -255,7 +246,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		this.roubinColor.clear();
 		this.roubinColor.addAll(validColors);
 	}
-
+	
 	public void setMetadata(int meta)
 	{
 		this.meta = meta;
@@ -266,10 +257,10 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	{
 		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
 		ItemStack drop = new ItemStack(APIBlocks.hempLamp, 1, meta);
-		if(this.noneColored)
+		if (this.noneColored)
 		{
 			NBTTagList list = new NBTTagList();
-			for(EnumColor color : this.validColors)
+			for (EnumColor color : this.validColors)
 			{
 				NBTTagInt cuColor = new NBTTagInt("Color", color.ordinal());
 				list.appendTag(cuColor);
@@ -280,15 +271,15 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		drops.add(drop);
 		return drops;
 	}
-
+	
 	@Override
 	public ItemStack pickBlock(MovingObjectPosition target)
 	{
-		if(this.noneColored)
+		if (this.noneColored)
 		{
 			ItemStack drop = new ItemStack(APIBlocks.hempLamp, 1, meta);
 			NBTTagList list = new NBTTagList();
-			for(EnumColor color : this.validColors)
+			for (EnumColor color : this.validColors)
 			{
 				NBTTagInt cuColor = new NBTTagInt("Color", color.ordinal());
 				list.appendTag(cuColor);
@@ -298,7 +289,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		}
 		return new ItemStack(this.getBlockType(), 1, meta);
 	}
-
+	
 	@Override
 	public Packet getDescriptionPacket()
 	{
@@ -306,13 +297,13 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		this.writeToNBT(nbt);
 		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
 	}
-
+	
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
 	{
 		this.readFromNBT(pkt.data);
 	}
-
+	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
@@ -326,19 +317,19 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		meta = nbt.getInteger("Meta");
 		color = nbt.getInteger("Color");
 		NBTTagList round = nbt.getTagList("Round");
-		for(int i = 0;i<round.tagCount();i++)
+		for (int i = 0; i < round.tagCount(); i++)
 		{
 			NBTTagInt ints = (NBTTagInt) round.tagAt(i);
 			roubinColor.add(EnumColor.values()[ints.data]);
 		}
 		NBTTagList valids = nbt.getTagList("Colors");
-		for(int i = 0;i<valids.tagCount();i++)
+		for (int i = 0; i < valids.tagCount(); i++)
 		{
 			NBTTagInt ints = (NBTTagInt) valids.tagAt(i);
 			this.validColors.add(EnumColor.values()[ints.data]);
 		}
 	}
-
+	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
@@ -352,86 +343,76 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		nbt.setInteger("Meta", meta);
 		nbt.setInteger("Color", color);
 		NBTTagList round = new NBTTagList();
-		for(EnumColor color : this.roubinColor)
+		for (EnumColor color : this.roubinColor)
 		{
 			NBTTagInt ints = new NBTTagInt("Color", color.ordinal());
 			round.appendTag(ints);
 		}
 		nbt.setTag("Round", round);
 		NBTTagList valids = new NBTTagList();
-		for(EnumColor color : this.validColors)
+		for (EnumColor color : this.validColors)
 		{
 			NBTTagInt ints = new NBTTagInt("Color", color.ordinal());
 			valids.appendTag(ints);
 		}
 		nbt.setTag("Colors", valids);
 	}
-
-
+	
 	public void changeAndSendColor(int colorID)
 	{
-		if(this.allColored)
+		if (this.allColored)
 		{
-			if(this.color != colorID)
+			if (this.color != colorID)
 			{
 				this.setColor(colorID);
-				for(ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+				for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 				{
-					if(lampType == lampType.RP2CAGELAMP)
+					if (lampType == lampType.RP2CAGELAMP)
 					{
-						if(side.ordinal() != this.getFacing())
+						if (side.ordinal() != this.getFacing())
 						{
 							continue;
 						}
 					}
-					TileEntity tile = worldObj.getBlockTileEntity(xCoord+side.offsetX, yCoord+side.offsetY, zCoord+side.offsetZ);
-					if(tile != null && tile instanceof TileLamp && tile.getBlockType().isBlockSolidOnSide(worldObj, tile.xCoord, tile.yCoord, tile.zCoord, side.getOpposite()))
+					TileEntity tile = worldObj.getBlockTileEntity(xCoord + side.offsetX, yCoord + side.offsetY, zCoord + side.offsetZ);
+					if (tile != null && tile instanceof TileLamp && tile.getBlockType().isBlockSolidOnSide(worldObj, tile.xCoord, tile.yCoord, tile.zCoord, side.getOpposite()))
 					{
-						((TileLamp)tile).changeAndSendColor(colorID);
+						((TileLamp) tile).changeAndSendColor(colorID);
 					}
 				}
 			}
 		}
-		if(this.noneColored)
+		if (this.noneColored)
 		{
-			if(validColors.contains(EnumColor.values()[colorID]))
+			if (validColors.contains(EnumColor.values()[colorID]))
 			{
-				if(this.color != colorID)
+				if (this.color != colorID)
 				{
 					this.setColor(colorID);
-					for(ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+					for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 					{
-						TileEntity tile = worldObj.getBlockTileEntity(xCoord+side.offsetX, yCoord+side.offsetY, zCoord+side.offsetZ);
-						if(lampType == lampType.RP2CAGELAMP)
+						TileEntity tile = worldObj.getBlockTileEntity(xCoord + side.offsetX, yCoord + side.offsetY, zCoord + side.offsetZ);
+						if (lampType == lampType.RP2CAGELAMP)
 						{
-							if(side.ordinal() != this.getFacing())
+							if (side.ordinal() != this.getFacing())
 							{
 								continue;
 							}
 						}
 						
-						if(tile != null && tile instanceof TileLamp && tile.getBlockType().isBlockSolidOnSide(worldObj, tile.xCoord, tile.yCoord, tile.zCoord, side.getOpposite()))
+						if (tile != null && tile instanceof TileLamp && tile.getBlockType().isBlockSolidOnSide(worldObj, tile.xCoord, tile.yCoord, tile.zCoord, side.getOpposite()))
 						{
-							((TileLamp)tile).changeAndSendColor(colorID);
+							((TileLamp) tile).changeAndSendColor(colorID);
 						}
 					}
 				}
 			}
 		}
 	}
-
-
-
-
-
-
-
-
+	
 	public static enum EnumLampType
 	{
-		FULL(new ResourceLocation(SpmodAPILib.ModID.toLowerCase()+":textures/models/blocks/ModelFullLamp.png"), 0, "Full", false),
-		RP2CAGELAMP(new ResourceLocation(SpmodAPILib.ModID.toLowerCase()+":textures/models/blocks/ModelCageLamp.png"), 1, "RPCageLamp", true),
-		Nothing();
+		FULL(new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/blocks/ModelFullLamp.png"), 0, "Full", false), RP2CAGELAMP(new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/blocks/ModelCageLamp.png"), 1, "RPCageLamp", true), Nothing();
 		
 		ResourceLocation texture;
 		int render;
@@ -468,71 +449,66 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		{
 			return render;
 		}
-
+		
 		public boolean hasFacing()
 		{
 			return facing;
 		}
 	}
-
-
-
-
+	
 	public void changeActiveState(boolean par1)
 	{
-		if(power == par1)
+		if (power == par1)
 		{
 			return;
 		}
 		this.isActive = par1;
 		power = par1;
-		for(ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+		for (ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
 		{
-			TileEntity tile = worldObj.getBlockTileEntity(xCoord+side.offsetX, yCoord+side.offsetY, zCoord+side.offsetZ);
-			if(lampType == lampType.RP2CAGELAMP)
+			TileEntity tile = worldObj.getBlockTileEntity(xCoord + side.offsetX, yCoord + side.offsetY, zCoord + side.offsetZ);
+			if (lampType == lampType.RP2CAGELAMP)
 			{
-				if(side.ordinal() != this.getFacing())
+				if (side.ordinal() != this.getFacing())
 				{
 					continue;
 				}
 			}
-			if(tile != null && tile instanceof TileLamp && tile.getBlockType().isBlockSolidOnSide(worldObj, tile.xCoord, tile.yCoord, tile.zCoord, side.getOpposite()))
+			if (tile != null && tile instanceof TileLamp && tile.getBlockType().isBlockSolidOnSide(worldObj, tile.xCoord, tile.yCoord, tile.zCoord, side.getOpposite()))
 			{
-				((TileLamp)tile).changeActiveState(par1);
+				((TileLamp) tile).changeActiveState(par1);
 			}
 		}
 		this.updateBlock();
 		this.updateLight();
 	}
-
-
-
+	
 	@Override
 	public void actionActivated(IAction action)
 	{
-		if(action != null && !worldObj.isRemote)
+		if (action != null && !worldObj.isRemote)
 		{
 			try
 			{
-				if(action == BuildCraftCore.actionOff)
+				if (action == BuildCraftCore.actionOff)
 				{
 					this.isActive = false;
 					power = true;
 				}
-				else if(action == BuildCraftCore.actionOn)
+				else if (action == BuildCraftCore.actionOn)
 				{
 					this.isActive = true;
 					power = true;
 				}
-				else if(action instanceof ActionChange)
+				else if (action instanceof ActionChange)
 				{
 					ActionChange change = (ActionChange) action;
 					this.changeActiveState(change.active());
 				}
-				else if(action instanceof ColorChangeAdv)
+				else if (action instanceof ColorChangeAdv)
 				{
-					ColorChangeAdv colors = (ColorChangeAdv)action;
-					if(colors.adv)
+					ColorChangeAdv colors = (ColorChangeAdv) action;
+					if (colors.adv)
 					{
 						this.changeAndSendColor(colors.color.ordinal());
 					}
@@ -541,26 +517,26 @@ public class TileLamp extends TileFacing implements IActionReceptor
 						this.setColor(colors.color.ordinal());
 					}
 				}
-				else if(action instanceof ActionAdvLoop)
+				else if (action instanceof ActionAdvLoop)
 				{
 					ActionAdvLoop loop = (ActionAdvLoop) action;
-					if(loop.allBlocks())
+					if (loop.allBlocks())
 					{
-						if(worldObj.getWorldTime() % loop.getTickRate() == 0)
+						if (worldObj.getWorldTime() % loop.getTickRate() == 0)
 						{
-							if(this.roubinColor.isEmpty())
+							if (this.roubinColor.isEmpty())
 							{
 								this.refillRoundRobin();
 							}
-							if(this.roubinColor.isEmpty())
+							if (this.roubinColor.isEmpty())
 							{
 								return;
 							}
-							if(this.roubinColor.get(0).ordinal() != this.color)
+							if (this.roubinColor.get(0).ordinal() != this.color)
 							{
 								this.changeAndSendColor(this.roubinColor.remove(0).ordinal());
 							}
-							else if(this.roubinColor.size() == 1)
+							else if (this.roubinColor.size() == 1)
 							{
 								this.refillRoundRobin();
 							}
@@ -573,21 +549,21 @@ public class TileLamp extends TileFacing implements IActionReceptor
 					else
 					{
 						
-						if(worldObj.getWorldTime() % loop.getTickRate() == 0)
+						if (worldObj.getWorldTime() % loop.getTickRate() == 0)
 						{
-							if(this.roubinColor.isEmpty())
+							if (this.roubinColor.isEmpty())
 							{
 								this.refillRoundRobin();
 							}
-							if(this.roubinColor.isEmpty())
+							if (this.roubinColor.isEmpty())
 							{
 								return;
 							}
-							if(this.roubinColor.get(0).ordinal() != this.color)
+							if (this.roubinColor.get(0).ordinal() != this.color)
 							{
 								this.setColor(this.roubinColor.remove(0).ordinal());
 							}
-							else if(this.roubinColor.size() == 1)
+							else if (this.roubinColor.size() == 1)
 							{
 								this.refillRoundRobin();
 							}
@@ -598,24 +574,24 @@ public class TileLamp extends TileFacing implements IActionReceptor
 						}
 					}
 				}
-				else if(action instanceof ActionRandomLoop)
+				else if (action instanceof ActionRandomLoop)
 				{
 					ActionRandomLoop loop = (ActionRandomLoop) action;
-					if(loop.randOnly)
+					if (loop.randOnly)
 					{
-						if(worldObj.getWorldTime() % loop.getDelay() == 0)
+						if (worldObj.getWorldTime() % loop.getDelay() == 0)
 						{
 							int id = worldObj.rand.nextInt(validColors.size());
 							EnumColor colors = this.validColors.get(id);
-							if(this.color != colors.ordinal())
+							if (this.color != colors.ordinal())
 							{
-								if(loop.allBlocks())
+								if (loop.allBlocks())
 								{
 									this.changeAndSendColor(colors.ordinal());
 								}
 								else
 								{
-									this.color = colors.ordinal();	
+									this.color = colors.ordinal();
 								}
 								
 							}
@@ -623,31 +599,31 @@ public class TileLamp extends TileFacing implements IActionReceptor
 					}
 					else
 					{
-						if(worldObj.getWorldTime() % loop.getDelay() == 0)
+						if (worldObj.getWorldTime() % loop.getDelay() == 0)
 						{
-							if(this.roubinColor.size() == 0)
+							if (this.roubinColor.size() == 0)
 							{
 								this.refillRoundRobin();
 							}
-							if(this.roubinColor.isEmpty())
+							if (this.roubinColor.isEmpty())
 							{
 								return;
 							}
 							
 							int id = worldObj.rand.nextInt(roubinColor.size());
 							EnumColor colors = this.roubinColor.get(id);
-							if(this.color != colors.ordinal())
+							if (this.color != colors.ordinal())
 							{
-								if(loop.allBlocks())
+								if (loop.allBlocks())
 								{
 									this.changeAndSendColor(colors.ordinal());
 								}
 								else
 								{
-									this.color = colors.ordinal();	
+									this.color = colors.ordinal();
 								}
 							}
-							else if(this.roubinColor.size() == 1)
+							else if (this.roubinColor.size() == 1)
 							{
 								this.refillRoundRobin();
 							}
@@ -665,8 +641,5 @@ public class TileLamp extends TileFacing implements IActionReceptor
 			}
 		}
 	}
-	
-
-
 	
 }

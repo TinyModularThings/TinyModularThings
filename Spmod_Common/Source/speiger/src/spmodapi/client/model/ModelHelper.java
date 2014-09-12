@@ -7,7 +7,7 @@ import net.minecraft.client.model.ModelRenderer;
 
 public class ModelHelper
 {
-	//Models and renderer
+	// Models and renderer
 	ArrayList<ModelRenderer[]> models = new ArrayList<ModelRenderer[]>();
 	ArrayList<boolean[]> basicInfo = new ArrayList<boolean[]>();
 	
@@ -56,7 +56,7 @@ public class ModelHelper
 	{
 		ModelRenderer[] model = new ModelRenderer[parts.size()];
 		boolean[] first = new boolean[parts.size()];
-		for(int i = 0;i<parts.size();i++)
+		for (int i = 0; i < parts.size(); i++)
 		{
 			ModelPart part = parts.get(i);
 			model[i] = part.finishModelPart();
@@ -76,9 +76,9 @@ public class ModelHelper
 	{
 		
 		boolean[] allow = this.basicInfo.get(b);
-		for(int i = 0;i<allow.length;i++)
+		for (int i = 0; i < allow.length; i++)
 		{
-			if(allow[i])
+			if (allow[i])
 			{
 				this.models.get(b)[i].render(par1);
 			}
@@ -88,20 +88,14 @@ public class ModelHelper
 	public void renderEnd(float par1, int b)
 	{
 		boolean[] allow = this.basicInfo.get(b);
-		for(int i = 0;i<allow.length;i++)
+		for (int i = 0; i < allow.length; i++)
 		{
-			if(!allow[i])
+			if (!allow[i])
 			{
-				 this.models.get(b)[i].render(par1);
+				this.models.get(b)[i].render(par1);
 			}
 		}
 	}
-	
-	
-	
-	
-	
-	
 	
 	public static class ModelPart
 	{

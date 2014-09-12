@@ -10,15 +10,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.World;
-import speiger.src.api.util.Ticks;
-import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine.DropType;
 import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.common.registry.VillagerRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 public class CountdownTick implements ITickHandler
 {
@@ -34,17 +31,15 @@ public class CountdownTick implements ITickHandler
 	public void tickEnd(EnumSet<TickType> type, Object... tickData)
 	{
 		EntityPlayer player = (EntityPlayer) tickData[0];
-				
-		if(!loadedRecipes)
+		
+		if (!loadedRecipes)
 		{
 			loadedRecipes = true;
 			World world = player.worldObj;
 			loadRecipes(player);
-
 			
 			MobMachine.addDrops(22, DropType.Common, ItemRandomTrade.getAllTrades());
-		
-
+			
 		}
 		
 		NBTTagCompound playerNBT = player.getEntityData();
@@ -70,7 +65,6 @@ public class CountdownTick implements ITickHandler
 			}
 		}
 		
-		
 	}
 	
 	@Override
@@ -85,7 +79,7 @@ public class CountdownTick implements ITickHandler
 		Collection<Integer> recipes = VillagerRegistry.getRegisteredVillagers();
 		ArrayList<MerchantRecipe> recipe = new ArrayList<MerchantRecipe>();
 		VillagerHelper.loadVillagerRecipes(recipe);
-		for(Integer ints : recipes)
+		for (Integer ints : recipes)
 		{
 			MerchantRecipeList cu = new MerchantRecipeList();
 			EntityVillager villager = new EntityVillager(world, ints.intValue());
@@ -93,7 +87,7 @@ public class CountdownTick implements ITickHandler
 			VillagerRegistry.manageVillagerTrades(cu, villager, ints.intValue(), world.rand);
 			recipe.addAll(cu);
 		}
-		for(int i = 0;i<6;i++)
+		for (int i = 0; i < 6; i++)
 		{
 			MerchantRecipeList cu = new MerchantRecipeList();
 			EntityVillager villager = new EntityVillager(world, i);
@@ -102,10 +96,8 @@ public class CountdownTick implements ITickHandler
 			recipe.addAll(cu);
 		}
 		
-		
 		ItemRandomTrade.addRecipes(recipe);
 	}
-
 	
 	@Override
 	public String getLabel()

@@ -72,16 +72,15 @@ public class Registry
 		OreDictionary.registerOre("gearBone", ItemGear.getGearFromType(GearType.Bone));
 	}
 	
-	
 	@ForgeSubscribe
 	public void onOreRegister(OreRegisterEvent par0)
 	{
-		if(par0.Name.equalsIgnoreCase("gearStone"))
+		if (par0.Name.equalsIgnoreCase("gearStone"))
 		{
 			
 			try
 			{
-				if(par0.Ore.itemID == BuildCraftCore.stoneGearItem.itemID)
+				if (par0.Ore.itemID == BuildCraftCore.stoneGearItem.itemID)
 				{
 					OreDictionary.getOres(par0.Name).remove(par0.Ore);
 				}
@@ -91,6 +90,5 @@ public class Registry
 			}
 		}
 	}
-	
 	
 }

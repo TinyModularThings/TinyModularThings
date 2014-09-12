@@ -21,9 +21,11 @@ import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import cpw.mods.fml.common.ICraftingHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 
-public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHandler
+public class ColorCardRecipe extends ShapelessOreRecipe implements
+		ICraftingHandler
 {
 	public HashMap<List<Integer>, EnumColor> colors = new HashMap<List<Integer>, EnumColor>();
+	
 	public ColorCardRecipe()
 	{
 		super(new ItemStack(APIItems.colorCard, 1, 0), new ItemStack(APIItems.colorCard, 1, 0));
@@ -96,13 +98,12 @@ public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHand
 		GameRegistry.registerCraftingHandler(this);
 	}
 	
-	
 	public void removeCard(ArrayList<ItemStack> list)
 	{
 		ArrayList<ItemStack> remove = new ArrayList<ItemStack>();
-		for(ItemStack stack : list)
+		for (ItemStack stack : list)
 		{
-			if(stack != null && stack.itemID == APIItems.colorCard.itemID)
+			if (stack != null && stack.itemID == APIItems.colorCard.itemID)
 			{
 				remove.add(stack);
 			}
@@ -112,27 +113,24 @@ public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHand
 	
 	public void addColors(ArrayList<ItemStack> par1, EnumColor par2)
 	{
-		for(ItemStack item : par1)
+		for (ItemStack item : par1)
 		{
 			colors.put(Arrays.asList(item.itemID, item.getItemDamage()), par2);
 		}
 	}
-
-
-
-
+	
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting par1)
 	{
 		ItemStack output = this.getRecipeOutput().copy();
 		ItemStack input = null;
 		ItemStack card = null;
-		for(int i = 0;i<par1.getSizeInventory();i++)
+		for (int i = 0; i < par1.getSizeInventory(); i++)
 		{
 			ItemStack item = par1.getStackInSlot(i);
-			if(item != null)
+			if (item != null)
 			{
-				if(item.itemID != APIItems.colorCard.itemID)
+				if (item.itemID != APIItems.colorCard.itemID)
 				{
 					input = item;
 				}
@@ -140,23 +138,20 @@ public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHand
 				{
 					card = item;
 				}
-
+				
 			}
 		}
 		
-		if(input == null)
+		if (input == null)
 		{
 			return null;
 		}
-		output.setItemDamage(colors.get(Arrays.asList(input.itemID, input.getItemDamage())).getAsWool()+1);		
+		output.setItemDamage(colors.get(Arrays.asList(input.itemID, input.getItemDamage())).getAsWool() + 1);
 		output.stackSize = card.stackSize;
 		
 		return output;
 	}
-
-
-
-
+	
 	@Override
 	public ItemStack getRecipeOutput()
 	{
@@ -164,48 +159,46 @@ public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHand
 		stack.stackTagCompound = new NBTTagCompound();
 		return stack;
 	}
-
-	
 	
 	@Override
 	public void onCrafting(EntityPlayer player, ItemStack item, IInventory inv)
 	{
-		if(!player.worldObj.isRemote)
+		if (!player.worldObj.isRemote)
 		{
 			int l = 0;
-			for(int i = 0;i<inv.getSizeInventory();i++)
+			for (int i = 0; i < inv.getSizeInventory(); i++)
 			{
 				ItemStack stack = inv.getStackInSlot(i);
-				if(stack != null)
+				if (stack != null)
 				{
 					l++;
 				}
 			}
-			if(item.itemID != APIItems.colorCard.itemID || l != 2)
+			if (item.itemID != APIItems.colorCard.itemID || l != 2)
 			{
 				return;
 			}
-			for(int i = 0;i<inv.getSizeInventory();i++)
+			for (int i = 0; i < inv.getSizeInventory(); i++)
 			{
 				ItemStack stack = inv.getStackInSlot(i);
-				if(stack != null)
+				if (stack != null)
 				{
-					if(stack.itemID == APIItems.colorCard.itemID)
+					if (stack.itemID == APIItems.colorCard.itemID)
 					{
 						inv.setInventorySlotContents(i, null);
 					}
 					else
 					{
 						boolean stop = false;
-						for(FluidContainerData con : PathProxy.getDataFromFluid(FluidRegistry.WATER))
+						for (FluidContainerData con : PathProxy.getDataFromFluid(FluidRegistry.WATER))
 						{
-							if(con.filledContainer.isItemEqual(stack))
+							if (con.filledContainer.isItemEqual(stack))
 							{
 								stop = true;
 							}
 						}
 						ItemStack cop = stack;
-						if(!stop)
+						if (!stop)
 						{
 							InventoryUtil.dropItem(player, cop);
 							inv.setInventorySlotContents(i, null);
@@ -215,14 +208,11 @@ public class ColorCardRecipe extends ShapelessOreRecipe implements ICraftingHand
 			}
 		}
 	}
-
-
+	
 	@Override
 	public void onSmelting(EntityPlayer player, ItemStack item)
 	{
 		
 	}
-	
-	
 	
 }

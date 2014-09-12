@@ -21,7 +21,7 @@ public class ImportEnergy implements HopperUpgrade
 	public void onTick(IHopper par1)
 	{
 		World world = par1.getWorld();
-		if(world.isRemote)
+		if (world.isRemote)
 		{
 			return;
 		}
@@ -30,10 +30,10 @@ public class ImportEnergy implements HopperUpgrade
 		int z = par1.getZPos();
 		ForgeDirection dir = ForgeDirection.getOrientation(par1.getRotation()).getOpposite();
 		TileEntity tile = WorldReading.getTileEntity(world, x, y, z, par1.getFacing());
-		if(tile != null)
+		if (tile != null)
 		{
 			EnergyUsageProvider provider = EnergyUsageProvider.createUsageProvider(tile, dir.ordinal());
-			if(provider != null)
+			if (provider != null)
 			{
 				importEnergy(par1, provider, dir, par1.getTransferlimit(HopperType.Energy));
 			}
@@ -42,15 +42,15 @@ public class ImportEnergy implements HopperUpgrade
 	
 	public static void importEnergy(IHopper par0, EnergyUsageProvider par1, ForgeDirection par2, int energyTransferlimit)
 	{
-		if(par1 == null)
+		if (par1 == null)
 		{
 			return;
 		}
 		int usedEnergy = par1.useEnergy(energyTransferlimit);
-		if(usedEnergy > 0)
+		if (usedEnergy > 0)
 		{
 			int addedEnergy = usedEnergy - par1.addEnergy(usedEnergy);
-			if(addedEnergy > 0)
+			if (addedEnergy > 0)
 			{
 				par1.addEnergy(addedEnergy);
 			}
@@ -59,12 +59,12 @@ public class ImportEnergy implements HopperUpgrade
 	
 	@Override
 	public void onNBTWrite(NBTTagCompound nbt)
-	{		
+	{
 	}
 	
 	@Override
 	public void onNBTRead(NBTTagCompound nbt)
-	{		
+	{
 		
 	}
 	
@@ -94,7 +94,7 @@ public class ImportEnergy implements HopperUpgrade
 	
 	@Override
 	public void onRemovingUpgrade(IHopper par1)
-	{		
+	{
 	}
 	
 	@Override

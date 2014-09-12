@@ -57,7 +57,6 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	public boolean changed = false;
 	public boolean active = false;
 	
-	
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
@@ -68,10 +67,6 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 		return null;
 	}
 	
-	
-	
-
-
 	@Override
 	public ItemStack pickBlock(MovingObjectPosition target)
 	{
@@ -79,7 +74,7 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 		ItemInterfaceBlock.addBlockToInterface(stack, new BlockStack(blockID, metadata));
 		return stack;
 	}
-
+	
 	public boolean hasTarget()
 	{
 		return target != null;
@@ -113,8 +108,6 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 		
 	}
 	
-	
-	
 	@Override
 	public void onBreaking()
 	{
@@ -123,11 +116,7 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 		EntityItem item = new EntityItem(worldObj, xCoord, yCoord, zCoord, stack);
 		worldObj.spawnEntityInWorld(item);
 	}
-
-
-
-
-
+	
 	public void updateInventory()
 	{
 		if ((x == 0 && y == 0 && z == 0) || !doesExsist() || (doesExsist() && target == null))
@@ -149,9 +138,9 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	
 	private void removeInventory()
 	{
-		if(target != null)
+		if (target != null)
 		{
-			((InterfaceAcceptor)target).removeAcceptor(this);
+			((InterfaceAcceptor) target).removeAcceptor(this);
 		}
 		target = null;
 		x = 0;
@@ -509,11 +498,7 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 			}
 		}
 	}
-
-
-
-
-
+	
 	@Override
 	public String identifier()
 	{

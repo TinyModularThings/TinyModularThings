@@ -49,7 +49,7 @@ public class ItemBlockHempDeko extends ItemBlock implements LanguageItem
 	public String getDisplayName(ItemStack par1, SpmodMod par0)
 	{
 		HempBlockInformation infos = getHempInfo(new BlockStack(par1));
-		return LanguageRegister.getLanguageName(new InfoStack(), EnumColor.values()[par1.getItemDamage()].getName(), par0)+ " "+ LanguageRegister.getLanguageName(new BlockStack(par1), "hemp." + infos.getName(), par0);
+		return LanguageRegister.getLanguageName(new InfoStack(), EnumColor.values()[par1.getItemDamage()].getName(), par0) + " " + LanguageRegister.getLanguageName(new BlockStack(par1), "hemp." + infos.getName(), par0);
 	}
 	
 	@Override

@@ -7,8 +7,7 @@ package speiger.src.api.language;
  */
 public enum EnumLanguage
 {
-	Deutsch("de_DE"), 
-	Englisch("en_US");
+	Deutsch("de_DE"), Englisch("en_US");
 	
 	private String languageName;
 	

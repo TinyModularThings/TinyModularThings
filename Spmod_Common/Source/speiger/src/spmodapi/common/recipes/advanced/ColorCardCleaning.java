@@ -12,17 +12,17 @@ public class ColorCardCleaning extends ShapelessOreRecipe
 	{
 		super(new ItemStack(APIItems.colorCard), new ItemStack(APIItems.colorCard, 1, PathProxy.getRecipeBlankValue()), item);
 	}
-
+	
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting var1)
 	{
 		ItemStack output = this.getRecipeOutput().copy();
 		ItemStack input = null;
 		
-		for(int i = 0;i<var1.getSizeInventory();i++)
+		for (int i = 0; i < var1.getSizeInventory(); i++)
 		{
 			ItemStack cu = var1.getStackInSlot(i);
-			if(cu != null && cu.itemID == APIItems.colorCard.itemID)
+			if (cu != null && cu.itemID == APIItems.colorCard.itemID)
 			{
 				input = cu;
 				break;
@@ -32,6 +32,5 @@ public class ColorCardCleaning extends ShapelessOreRecipe
 		
 		return output;
 	}
-	
 	
 }

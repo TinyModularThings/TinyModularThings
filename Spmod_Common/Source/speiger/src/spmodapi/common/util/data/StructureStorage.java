@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.server.MinecraftServer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
@@ -33,7 +32,7 @@ public class StructureStorage implements INBTReciver
 	public void registerStorage(BlockPosition core, BlockPosition pos)
 	{
 		structures.put(pos.getAsList(), core.getAsList());
-		if(cores.get(core.getAsList()) == null)
+		if (cores.get(core.getAsList()) == null)
 		{
 			ArrayList<List<Integer>> lists = new ArrayList<List<Integer>>();
 			lists.add(pos.getAsList());
@@ -73,16 +72,10 @@ public class StructureStorage implements INBTReciver
 		return new BlockPosition(list.get(0), list.get(1), list.get(2), list.get(3));
 	}
 	
-	
 	public void removePosition(BlockPosition pos)
 	{
 		structures.remove(pos.getAsList());
 	}
-	
-	
-	
-	
-	
 	
 	@ForgeSubscribe
 	public void onClickBlock(PlayerInteractEvent evt)
@@ -113,21 +106,19 @@ public class StructureStorage implements INBTReciver
 		}
 	}
 	
-
 	public static void registerForgeEvent()
 	{
 		MinecraftForge.EVENT_BUS.register(instance);
 		DataStorage.registerNBTReciver(instance);
 	}
 	
-	
-	//Loading and Writing to data
+	// Loading and Writing to data
 	private void addStructure(List<Integer> key, List<Integer> val)
 	{
-		if(key != null && val != null && key.size() == 4 && val.size() == 4)
+		if (key != null && val != null && key.size() == 4 && val.size() == 4)
 		{
 			structures.put(val, key);
-			if(cores.get(key) == null)
+			if (cores.get(key) == null)
 			{
 				ArrayList<List<Integer>> lists = new ArrayList<List<Integer>>();
 				lists.add(val);
@@ -138,9 +129,6 @@ public class StructureStorage implements INBTReciver
 		}
 	}
 	
-
-
-
 	@Override
 	public void loadFromNBT(NBTTagCompound par1)
 	{
@@ -155,7 +143,7 @@ public class StructureStorage implements INBTReciver
 		
 		NBTTagList list = par1.getTagList("Structures");
 		
-		for(int i = 0;i<list.tagCount();i++)
+		for (int i = 0; i < list.tagCount(); i++)
 		{
 			NBTTagCompound tag = (NBTTagCompound) list.tagAt(i);
 			int[] key = tag.getIntArray("Key");
@@ -164,38 +152,39 @@ public class StructureStorage implements INBTReciver
 			addStructure(Arrays.asList(key[0], key[1], key[2], key[3]), Arrays.asList(value[0], value[1], value[2], value[3]));
 		}
 	}
-
+	
 	@Override
 	public void saveToNBT(NBTTagCompound nbt)
 	{
 		Iterator<Entry<List<Integer>, List<Integer>>> keys = structures.entrySet().iterator();
 		NBTTagList tags = new NBTTagList();
-		while(keys.hasNext())
+		while (keys.hasNext())
 		{
 			Entry<List<Integer>, List<Integer>> cu = keys.next();
 			NBTTagCompound cuNBT = new NBTTagCompound();
-			//Switching around because of the reading is the same. Shouldnt be happening but who cares!
-			int[] key = new int[]{cu.getValue().get(0), cu.getValue().get(1), cu.getValue().get(2), cu.getValue().get(3)};
-			int[] val = new int[]{cu.getKey().get(0), cu.getKey().get(1), cu.getKey().get(2), cu.getKey().get(3)};
+			// Switching around because of the reading is the same. Shouldnt be
+			// happening but who cares!
+			int[] key = new int[] { cu.getValue().get(0), cu.getValue().get(1), cu.getValue().get(2), cu.getValue().get(3) };
+			int[] val = new int[] { cu.getKey().get(0), cu.getKey().get(1), cu.getKey().get(2), cu.getKey().get(3) };
 			cuNBT.setIntArray("Key", key);
 			cuNBT.setIntArray("Value", val);
 			tags.appendTag(cuNBT);
 		}
-		nbt.setTag("Structures", tags);		
+		nbt.setTag("Structures", tags);
 	}
-
+	
 	@Override
 	public SpmodMod getOwner()
 	{
 		return SpmodAPI.instance;
 	}
-
+	
 	@Override
 	public String getID()
 	{
 		return "Structure.Storage";
 	}
-
+	
 	@Override
 	public void finishLoading()
 	{

@@ -46,10 +46,10 @@ public class ConfigBlock
 	{
 		int endID = ID - startID;
 		ConfigCategory cot = config.getCategory(cat);
-		if(cot != null && cot.containsKey("Block Start ID"))
+		if (cot != null && cot.containsKey("Block Start ID"))
 		{
 			Property items = cot.get("Block Start ID");
-			items.comment = String.format("%s%n%s%n%s", items.comment, "You need to Hold "+endID+" BlockIDs Free", "(From: "+startID+" BlockID To: "+ID+" BlockID)");
+			items.comment = String.format("%s%n%s%n%s", items.comment, "You need to Hold " + endID + " BlockIDs Free", "(From: " + startID + " BlockID To: " + ID + " BlockID)");
 			cot.put("Block Start ID", items);
 		}
 	}

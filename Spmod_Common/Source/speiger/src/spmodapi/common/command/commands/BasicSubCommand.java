@@ -26,7 +26,7 @@ public class BasicSubCommand implements ISubCommand
 	public List<String> getSubCommandDescription()
 	{
 		ArrayList<String> text = new ArrayList<String>();
-		for(String par1 : par3)
+		for (String par1 : par3)
 		{
 			text.add(par1);
 		}

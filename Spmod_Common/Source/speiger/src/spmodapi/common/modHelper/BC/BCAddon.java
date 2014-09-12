@@ -38,7 +38,7 @@ public class BCAddon
 			FacadeManager.addFacade(new ItemStack(APIBlocks.savedHempBrickPlated, 1, i));
 		}
 		
-		PathProxy.addRecipe(new ItemStack(BuildCraftTransport.pipeWaterproof, 16), new Object[]{"XXX", "XYX", "XXX", 'X', APIItems.hemp, 'Y', Item.slimeBall });
+		PathProxy.addRecipe(new ItemStack(BuildCraftTransport.pipeWaterproof, 16), new Object[] { "XXX", "XYX", "XXX", 'X', APIItems.hemp, 'Y', Item.slimeBall });
 		PathProxy.removeRecipeS(new ItemStack(APIItems.colorCard, 1, EnumColor.GREEN.getAsDye()), BuildCraftTransport.pipeWaterproof);
 		
 		int ticks = SpmodConfig.ticks.length;
@@ -52,13 +52,13 @@ public class BCAddon
 		ActionManager.registerAction(deactive[0] = new ActionChange(false));
 		ActionManager.registerAction(deactive[1] = new ActionChange(true));
 		
-		for(int i = 0;i<16;i++)
+		for (int i = 0; i < 16; i++)
 		{
 			ActionManager.registerAction(colorBlocks[i] = new ColorChangeAdv(EnumColor.values()[i], false));
 			ActionManager.registerAction(colorAllBlocks[i] = new ColorChangeAdv(EnumColor.values()[i], true));
 		}
 		
-		for(int i = 0;i<ticks;i++)
+		for (int i = 0; i < ticks; i++)
 		{
 			int tick = SpmodConfig.ticks[i];
 			ActionManager.registerAction(loopRandom[i] = new ActionRandomLoop(false, tick));
@@ -68,8 +68,6 @@ public class BCAddon
 			ActionManager.registerAction(loop[i] = new ActionAdvLoop(false, tick));
 			ActionManager.registerAction(loopAll[i] = new ActionAdvLoop(true, tick));
 		}
-		
-		
 		
 		ActionManager.registerActionProvider(new SpmodActionHelper());
 	}

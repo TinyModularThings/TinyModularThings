@@ -66,7 +66,7 @@ public class BlockPosition
 	
 	public boolean doesBlockExsist()
 	{
-		if(worldID.blockExists(xCoord, yCoord, zCoord))
+		if (worldID.blockExists(xCoord, yCoord, zCoord))
 		{
 			return getBlockID() > 0;
 		}
@@ -97,11 +97,11 @@ public class BlockPosition
 	
 	public boolean isThisPosition(BlockPosition par1)
 	{
-		if(par1 != null)
+		if (par1 != null)
 		{
-			if(this.worldID.provider.dimensionId == par1.worldID.provider.dimensionId)
+			if (this.worldID.provider.dimensionId == par1.worldID.provider.dimensionId)
 			{
-				if(xCoord == par1.xCoord && yCoord == par1.yCoord && par1.zCoord == zCoord)
+				if (xCoord == par1.xCoord && yCoord == par1.yCoord && par1.zCoord == zCoord)
 				{
 					return true;
 				}
@@ -144,7 +144,7 @@ public class BlockPosition
 	{
 		return worldID;
 	}
-
+	
 	public void remove()
 	{
 		worldID.setBlockToAir(xCoord, yCoord, zCoord);
@@ -158,24 +158,24 @@ public class BlockPosition
 	
 	public BlockPosition getPosFromFSide(ForgeDirection direction)
 	{
-		return new BlockPosition(worldID, xCoord+direction.offsetX, yCoord+direction.offsetY, zCoord+direction.offsetZ);
-
+		return new BlockPosition(worldID, xCoord + direction.offsetX, yCoord + direction.offsetY, zCoord + direction.offsetZ);
+		
 	}
-
+	
 	public boolean isBlockAir()
 	{
 		BlockStack stack = this.getAsBlockStack();
-		if(stack != null && stack.getBlock() != null && stack.getBlock().isAirBlock(worldID, xCoord, yCoord, zCoord))
+		if (stack != null && stack.getBlock() != null && stack.getBlock().isAirBlock(worldID, xCoord, yCoord, zCoord))
 		{
 			return true;
 		}
 		return false;
 	}
-
+	
 	public boolean isBlockFull()
 	{
 		BlockStack stack = this.getAsBlockStack();
-		if(stack != null && stack.getBlock() != null && stack.getBlock().isOpaqueCube())
+		if (stack != null && stack.getBlock() != null && stack.getBlock().isOpaqueCube())
 		{
 			return false;
 		}

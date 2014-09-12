@@ -11,6 +11,7 @@ import speiger.src.spmodapi.common.util.slot.AdvContainer;
 public class TinyHopperInventory extends AdvContainer
 {
 	IHopperInventory tile;
+	
 	public TinyHopperInventory(InventoryPlayer par1, IHopperInventory par2)
 	{
 		tile = par2;

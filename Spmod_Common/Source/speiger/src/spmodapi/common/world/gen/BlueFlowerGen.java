@@ -13,7 +13,6 @@ import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 
 public class BlueFlowerGen implements ISpmodWorldGen
 {
-
 	
 	@Override
 	public boolean doGenerate(boolean retroGen)
@@ -24,15 +23,19 @@ public class BlueFlowerGen implements ISpmodWorldGen
 	@Override
 	public void generate(World world, int chunkX, int chunkZ, Random rand, boolean retrogen)
 	{
-		BiomeGenBase biom = world.getWorldChunkManager().getBiomeGenAt(chunkX*16+16, chunkZ*16+16);
+		BiomeGenBase biom = world.getWorldChunkManager().getBiomeGenAt(chunkX * 16 + 16, chunkZ * 16 + 16);
 		int tries = 0;
-	    if (biom == BiomeGenBase.jungle) tries = 1;
-	    else if (biom == BiomeGenBase.jungleHills) tries = 1;
-	    else if (biom == BiomeGenBase.forest) tries = 1;
-	    else if (biom == BiomeGenBase.plains) tries = 4;
-
-		for(int i = 0;i<tries;i++)
-		{      
+		if (biom == BiomeGenBase.jungle)
+			tries = 1;
+		else if (biom == BiomeGenBase.jungleHills)
+			tries = 1;
+		else if (biom == BiomeGenBase.forest)
+			tries = 1;
+		else if (biom == BiomeGenBase.plains)
+			tries = 4;
+		
+		for (int i = 0; i < tries; i++)
+		{
 			int x = chunkX * 16 + rand.nextInt(16) + 8;
 			int y = rand.nextInt(128);
 			int z = chunkZ * 16 + rand.nextInt(16) + 8;
@@ -51,10 +54,10 @@ public class BlueFlowerGen implements ISpmodWorldGen
 	{
 		return SpmodAPI.instance;
 	}
-
+	
 	@Override
 	public void onMinecraftStart(IConfigHelper config)
-	{		
+	{
 	}
 	
 }

@@ -17,12 +17,13 @@ import speiger.src.spmodapi.common.lib.SpmodAPILib;
 public class GuiTrade extends GuiInventoryCore
 {
 	MerchantRecipe recipe;
+	
 	public GuiTrade(InventoryPlayer par1, IItemGui item)
 	{
 		super(item.getContainer(par1, par1.player.getCurrentEquippedItem()));
-		recipe = ((TradeInventory)this.inventorySlots).getCurrentTrade();
+		recipe = ((TradeInventory) this.inventorySlots).getCurrentTrade();
 	}
-
+	
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
@@ -46,51 +47,46 @@ public class GuiTrade extends GuiInventoryCore
 		this.drawSlotPros(100, 25, 27, 16);
 		
 		GL11.glPushMatrix();
-        ItemStack itemstack = recipe.getItemToBuy();
-        ItemStack itemstack1 = recipe.getSecondItemToBuy();
-        ItemStack itemstack2 = recipe.getItemToSell();
-        RenderHelper.enableGUIStandardItemLighting();
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL12.GL_RESCALE_NORMAL);
-        GL11.glEnable(GL11.GL_COLOR_MATERIAL);
-        GL11.glEnable(GL11.GL_LIGHTING);
-        
+		ItemStack itemstack = recipe.getItemToBuy();
+		ItemStack itemstack1 = recipe.getSecondItemToBuy();
+		ItemStack itemstack2 = recipe.getItemToSell();
+		RenderHelper.enableGUIStandardItemLighting();
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL12.GL_RESCALE_NORMAL);
+		GL11.glEnable(GL11.GL_COLOR_MATERIAL);
+		GL11.glEnable(GL11.GL_LIGHTING);
 		
-        itemRenderer.zLevel = 100.0F;
-        itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack, k + 30, l + 24);
-        itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack, k + 30, l + 24);
-
-        if (itemstack1 != null)
-        {
-            itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack1, k + 70, l + 24);
-            itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack1, k + 70, l + 24);
-        }
-
-        itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack2, k + 135, l + 24);
-        itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack2, k + 135, l + 24);
-        itemRenderer.zLevel = 0.0F;
-        
-        if (this.isPointInRegion(30, 24, 16, 16, par2, par3))
-        {
-            this.drawItemStackTooltip(itemstack, par2, par3);
-        }
-        else if (itemstack1 != null && this.isPointInRegion(70, 24, 16, 16, par2, par3))
-        {
-            this.drawItemStackTooltip(itemstack1, par2, par3);
-        }
-        else if (this.isPointInRegion(135, 24, 16, 16, par2, par3))
-        {
-            this.drawItemStackTooltip(itemstack2, par2, par3);
-        }
-        
-        GL11.glDisable(GL11.GL_LIGHTING);
-        GL11.glPopMatrix();
-        GL11.glEnable(GL11.GL_LIGHTING);
-        GL11.glEnable(GL11.GL_DEPTH_TEST);
+		itemRenderer.zLevel = 100.0F;
+		itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack, k + 30, l + 24);
+		itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack, k + 30, l + 24);
+		
+		if (itemstack1 != null)
+		{
+			itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack1, k + 70, l + 24);
+			itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack1, k + 70, l + 24);
+		}
+		
+		itemRenderer.renderItemAndEffectIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack2, k + 135, l + 24);
+		itemRenderer.renderItemOverlayIntoGUI(this.fontRenderer, this.mc.getTextureManager(), itemstack2, k + 135, l + 24);
+		itemRenderer.zLevel = 0.0F;
+		
+		if (this.isPointInRegion(30, 24, 16, 16, par2, par3))
+		{
+			this.drawItemStackTooltip(itemstack, par2, par3);
+		}
+		else if (itemstack1 != null && this.isPointInRegion(70, 24, 16, 16, par2, par3))
+		{
+			this.drawItemStackTooltip(itemstack1, par2, par3);
+		}
+		else if (this.isPointInRegion(135, 24, 16, 16, par2, par3))
+		{
+			this.drawItemStackTooltip(itemstack2, par2, par3);
+		}
+		
+		GL11.glDisable(GL11.GL_LIGHTING);
+		GL11.glPopMatrix();
+		GL11.glEnable(GL11.GL_LIGHTING);
+		GL11.glEnable(GL11.GL_DEPTH_TEST);
 	}
-	
-	
-
-	
 	
 }

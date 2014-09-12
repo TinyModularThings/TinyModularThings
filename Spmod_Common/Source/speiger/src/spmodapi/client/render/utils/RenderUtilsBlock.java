@@ -21,7 +21,7 @@ public class RenderUtilsBlock implements ISimpleBlockRenderingHandler
 	public boolean renderWorldBlock(IBlockAccess world, int x, int y, int z, Block block, int modelId, RenderBlocks renderer)
 	{
 		int meta = world.getBlockMetadata(x, y, z);
-		if(meta != 3)
+		if (meta != 3)
 		{
 			renderer.renderStandardBlock(block, x, y, z);
 		}

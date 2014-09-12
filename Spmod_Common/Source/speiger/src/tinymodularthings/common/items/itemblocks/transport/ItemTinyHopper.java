@@ -28,17 +28,13 @@ public class ItemTinyHopper extends TinyItem
 		setCreativeTab(CreativeTabs.tabFood);
 	}
 	
-	
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
 	{
-		par3List.add(type+" Hopper");
+		par3List.add(type + " Hopper");
 	}
-
-
-
+	
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
@@ -111,7 +107,7 @@ public class ItemTinyHopper extends TinyItem
 			return false;
 		}
 		
-		if (par3World.setBlock(par4, par5, par6, TinyBlocks.transportBlock.blockID, 10+type.ordinal(), 3))
+		if (par3World.setBlock(par4, par5, par6, TinyBlocks.transportBlock.blockID, 10 + type.ordinal(), 3))
 		{
 			TileEntity tile = par3World.getBlockTileEntity(par4, par5, par6);
 			if ((tile != null) && ((tile instanceof TinyHopper)))
@@ -133,11 +129,6 @@ public class ItemTinyHopper extends TinyItem
 	
 	public static enum HopperType
 	{
-		Items,
-		AdvItems,
-		Fluids,
-		AdvFluids,
-		Energy,
-		AdvancedEnergy;
+		Items, AdvItems, Fluids, AdvFluids, Energy, AdvancedEnergy;
 	}
 }

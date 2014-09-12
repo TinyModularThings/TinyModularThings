@@ -10,15 +10,15 @@ public class Ticks
 	
 	public static void tick(SpmodMod sender, Side side)
 	{
-		if(!SpmodModRegistry.isModRegistered(sender))
+		if (!SpmodModRegistry.isModRegistered(sender))
 		{
 			return;
 		}
 		try
 		{
-			for(ITickReader tick : ticks)
+			for (ITickReader tick : ticks)
 			{
-				if(SpmodModRegistry.isModRegistered(tick.getOwner()))
+				if (SpmodModRegistry.isModRegistered(tick.getOwner()))
 				{
 					tick.onTick(sender, side);
 				}
@@ -31,13 +31,11 @@ public class Ticks
 	
 	public static void registerTickReciver(ITickReader par1)
 	{
-		if(SpmodModRegistry.isModRegistered(par1.getOwner()))
+		if (SpmodModRegistry.isModRegistered(par1.getOwner()))
 		{
 			ticks.add(par1);
 		}
 	}
-	
-
 	
 	public static interface ITickReader
 	{

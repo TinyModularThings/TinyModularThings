@@ -1,6 +1,5 @@
 package speiger.src.tinymodularthings.common.plugins;
 
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.TinyConfig;
 import speiger.src.tinymodularthings.common.config.TinyItemsConfig;
 import speiger.src.tinymodularthings.common.plugins.BC.BCRegistry;
@@ -17,30 +16,29 @@ public class ModularModLoader
 			BCRegistry.load();
 			try
 			{
-				if(TinyConfig.pipesEnabled)
+				if (TinyConfig.pipesEnabled)
 				{
 					TinyItemsConfig.onPipeLoad();
 				}
 			}
 			catch (Exception e)
 			{
-				FMLLog.getLogger().info("Loading failed: "+e);
-				for(StackTraceElement el : e.getStackTrace())
+				FMLLog.getLogger().info("Loading failed: " + e);
+				for (StackTraceElement el : e.getStackTrace())
 				{
-					FMLLog.getLogger().info(""+el);
+					FMLLog.getLogger().info("" + el);
 				}
 			}
 		}
 		
-		
-		if(Loader.isModLoaded("Forestry"))
+		if (Loader.isModLoaded("Forestry"))
 		{
 			ForestryPlugin.initForestryStuff();
 		}
 		
 		try
 		{
-//			RecipeOverrider.loadTransmutationRecipes();
+			// RecipeOverrider.loadTransmutationRecipes();
 		}
 		catch (Exception e)
 		{

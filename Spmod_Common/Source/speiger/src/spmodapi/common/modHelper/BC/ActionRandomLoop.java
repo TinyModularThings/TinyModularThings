@@ -60,7 +60,7 @@ public class ActionRandomLoop implements IAction
 	public String getUniqueTag()
 	{
 		String alls = all ? "all" : "";
-		return randOnly ? "rand.rand"+delay+alls : "rand.roundRoubin"+delay+alls;
+		return randOnly ? "rand.rand" + delay + alls : "rand.roundRoubin" + delay + alls;
 	}
 	
 	@Override
@@ -85,13 +85,13 @@ public class ActionRandomLoop implements IAction
 	@Override
 	public String getDescription()
 	{
-		if(randOnly)
+		if (randOnly)
 		{
-			return LanguageRegister.getLanguageName(new InfoStack(), "action.random.color.change", SpmodAPI.instance)+" "+delay+" Ticks";
+			return LanguageRegister.getLanguageName(new InfoStack(), "action.random.color.change", SpmodAPI.instance) + " " + delay + " Ticks";
 		}
 		else
 		{
-			return LanguageRegister.getLanguageName(new InfoStack(), "action.randRoubin.color.change", SpmodAPI.instance)+" "+delay+" Ticks";
+			return LanguageRegister.getLanguageName(new InfoStack(), "action.randRoubin.color.change", SpmodAPI.instance) + " " + delay + " Ticks";
 		}
 	}
 	

@@ -2,7 +2,6 @@ package speiger.src.tinymodularthings.client.gui.transport;
 
 import java.util.ArrayList;
 
-import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -20,9 +19,6 @@ import speiger.src.api.inventory.TankSlot;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
-import speiger.src.tinymodularthings.common.blocks.transport.TinyHopperInventory;
-import speiger.src.tinymodularthings.common.upgrades.hoppers.all.FilterUpgrade;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 
 public class TinyHopperGui extends GuiInventoryCore
@@ -39,10 +35,7 @@ public class TinyHopperGui extends GuiInventoryCore
 		tile = par2;
 		inv = par1;
 	}
-
-
-
-
+	
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
@@ -57,7 +50,7 @@ public class TinyHopperGui extends GuiInventoryCore
 			fontRenderer.drawString("Stored Energy:", 50, 15, 4210752);
 			fontRenderer.drawString(text, 50, 25, 4210752);
 		}
-
+		
 	}
 	
 	@Override
@@ -153,12 +146,5 @@ public class TinyHopperGui extends GuiInventoryCore
 		mc.renderEngine.bindTexture(furnaceGuiTextures);
 		drawTexturedModalRect(j + col, k + line, 197, 25, 16, 60);
 	}
-
-
-
-
-
-	
-	
 	
 }

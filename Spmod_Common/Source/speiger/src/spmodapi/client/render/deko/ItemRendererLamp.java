@@ -63,18 +63,18 @@ public class ItemRendererLamp implements IItemRenderer
 	public void renderLamp(float x, float y, float z, ItemStack item)
 	{
 		int meta = item.getItemDamage();
-		ItemBlockLightDekoBlock block = (ItemBlockLightDekoBlock)item.getItem();
+		ItemBlockLightDekoBlock block = (ItemBlockLightDekoBlock) item.getItem();
 		boolean inverted = block.inverted(meta);
 		EnumLampType type = EnumLampType.values()[block.type(meta)];
 		int Color = block.color(meta);
-		if(Color > 15)
+		if (Color > 15)
 		{
 			Color = 16;
 		}
 		
 		FMLClientHandler.instance().getClient().renderEngine.bindTexture(type.getTexture());
 		SpmodColor color = new SpmodColor(EnumColor.values()[Color].getAsHex().intValue());
-		if(!inverted)
+		if (!inverted)
 		{
 			color = color.add(0.3D);
 		}
@@ -85,7 +85,7 @@ public class ItemRendererLamp implements IItemRenderer
 		GL11.glPushMatrix();
 		GL11.glTranslatef((float) x, (float) y, (float) z);
 		GL11.glRotatef(180, 1, 0, 0);
-		if(Color != 16)
+		if (Color != 16)
 		{
 			GL11.glColor4d(color.red, color.green, color.blue, 1.0D);
 		}

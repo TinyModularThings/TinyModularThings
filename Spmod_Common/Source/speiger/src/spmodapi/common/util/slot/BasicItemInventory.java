@@ -19,64 +19,64 @@ public class BasicItemInventory implements IInventory
 		return inv.length;
 	}
 	
-    public ItemStack getStackInSlot(int par1)
-    {
-        return this.inv[par1];
-    }
-
-    public ItemStack decrStackSize(int par1, int par2)
-    {
-        if (this.inv[par1] != null)
-        {
-            ItemStack itemstack;
-
-            if (this.inv[par1].stackSize <= par2)
-            {
-                itemstack = this.inv[par1];
-                this.inv[par1] = null;
-                return itemstack;
-            }
-            else
-            {
-                itemstack = this.inv[par1].splitStack(par2);
-
-                if (this.inv[par1].stackSize == 0)
-                {
-                    this.inv[par1] = null;
-                }
-
-                return itemstack;
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public ItemStack getStackInSlotOnClosing(int par1)
-    {
-        if (this.inv[par1] != null)
-        {
-            ItemStack itemstack = this.inv[par1];
-            this.inv[par1] = null;
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-    {
-        this.inv[par1] = par2ItemStack;
-
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-        {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
-        }
-    }
+	public ItemStack getStackInSlot(int par1)
+	{
+		return this.inv[par1];
+	}
+	
+	public ItemStack decrStackSize(int par1, int par2)
+	{
+		if (this.inv[par1] != null)
+		{
+			ItemStack itemstack;
+			
+			if (this.inv[par1].stackSize <= par2)
+			{
+				itemstack = this.inv[par1];
+				this.inv[par1] = null;
+				return itemstack;
+			}
+			else
+			{
+				itemstack = this.inv[par1].splitStack(par2);
+				
+				if (this.inv[par1].stackSize == 0)
+				{
+					this.inv[par1] = null;
+				}
+				
+				return itemstack;
+			}
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	public ItemStack getStackInSlotOnClosing(int par1)
+	{
+		if (this.inv[par1] != null)
+		{
+			ItemStack itemstack = this.inv[par1];
+			this.inv[par1] = null;
+			return itemstack;
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+	{
+		this.inv[par1] = par2ItemStack;
+		
+		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+		{
+			par2ItemStack.stackSize = this.getInventoryStackLimit();
+		}
+	}
 	
 	@Override
 	public String getInvName()

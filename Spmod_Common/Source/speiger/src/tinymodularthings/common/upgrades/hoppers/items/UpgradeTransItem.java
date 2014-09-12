@@ -56,7 +56,7 @@ public class UpgradeTransItem implements HopperUpgrade
 	public void getInformationList(EntityPlayer player, List par2)
 	{
 		par2.add("Can be used 16 Times");
-		par2.add("Item Transport Upgrade: "+qty);
+		par2.add("Item Transport Upgrade: " + qty);
 	}
 	
 	@Override

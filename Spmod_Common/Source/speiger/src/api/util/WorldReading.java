@@ -2,8 +2,6 @@ package speiger.src.api.util;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.inventory.IInventory;
@@ -151,14 +149,14 @@ public class WorldReading
 		int maxX = xCoord + range;
 		int maxY = yCoord + range;
 		int maxZ = zCoord + range;
-		for(int x = minX;x<maxX;x++)
+		for (int x = minX; x < maxX; x++)
 		{
-			for(int y = minY;y<maxY;y++)
+			for (int y = minY; y < maxY; y++)
 			{
-				for(int z = minZ;z<maxZ;z++)
+				for (int z = minZ; z < maxZ; z++)
 				{
 					BlockPosition pos = new BlockPosition(world, x, y, z);
-					if(pos.doesBlockExsist() && pos.isThisBlock(new BlockStack(blockID, meta), true) && pos.hasTileEntity())
+					if (pos.doesBlockExsist() && pos.isThisBlock(new BlockStack(blockID, meta), true) && pos.hasTileEntity())
 					{
 						tile.add(pos.getTileEntity());
 					}
@@ -168,25 +166,25 @@ public class WorldReading
 		
 		return tile;
 	}
-
+	
 	public static AdvTile getAdvTile(IBlockAccess par1, int par2, int par3, int par4)
 	{
 		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
-		if(tile == null)
+		if (tile == null)
 		{
 			return null;
 		}
-		if(!(tile instanceof AdvTile))
+		if (!(tile instanceof AdvTile))
 		{
 			return null;
 		}
 		
-		return (AdvTile)tile;
+		return (AdvTile) tile;
 	}
-
+	
 	public static boolean isBlockBlocked(World world, int xCoord, int yCoord, int zCoord, boolean optional)
 	{
-		for(int i = 0;i<ForgeDirection.VALID_DIRECTIONS.length;i++)
+		for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++)
 		{
 			ForgeDirection cu = ForgeDirection.VALID_DIRECTIONS[i];
 			int x = xCoord + cu.offsetX;
@@ -194,15 +192,15 @@ public class WorldReading
 			int z = zCoord + cu.offsetZ;
 			int id = world.getBlockId(x, y, z);
 			Block block = Block.blocksList[id];
-			if(block == null)
+			if (block == null)
 			{
 				return false;
 			}
-			if(block.isAirBlock(world, x, y, z))
+			if (block.isAirBlock(world, x, y, z))
 			{
 				return false;
 			}
-			if(!block.isOpaqueCube() && !optional)
+			if (!block.isOpaqueCube() && !optional)
 			{
 				return false;
 			}
@@ -211,39 +209,39 @@ public class WorldReading
 		return true;
 	}
 	
-	public static boolean isSorunded(IBlockAccess world, int xCoord, int yCoord, int zCoord, Class<? extends TileEntity>...tile)
+	public static boolean isSorunded(IBlockAccess world, int xCoord, int yCoord, int zCoord, Class<? extends TileEntity>... tile)
 	{
 		
-		for(int i = 0;i<ForgeDirection.VALID_DIRECTIONS.length;i++)
+		for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++)
 		{
 			ForgeDirection cu = ForgeDirection.getOrientation(i);
-			int x = xCoord+cu.offsetX;
-			int y = yCoord+cu.offsetY;
-			int z = zCoord+cu.offsetZ;
+			int x = xCoord + cu.offsetX;
+			int y = yCoord + cu.offsetY;
+			int z = zCoord + cu.offsetZ;
 			int id = world.getBlockId(x, y, z);
 			Block block = Block.blocksList[id];
-			if(block == null)
+			if (block == null)
 			{
 				return false;
 			}
 			
-			if(world.getBlockTileEntity(x, y, z) != null)
+			if (world.getBlockTileEntity(x, y, z) != null)
 			{
 				
 				TileEntity tiles = world.getBlockTileEntity(x, y, z);
-				if(tiles != null)
+				if (tiles != null)
 				{
 					String name = tiles.getClass().getSimpleName();
 					boolean tileMatch = false;
-					for(Class<? extends TileEntity> key : tile)
+					for (Class<? extends TileEntity> key : tile)
 					{
-						if(name.equalsIgnoreCase(key.getSimpleName()))
+						if (name.equalsIgnoreCase(key.getSimpleName()))
 						{
 							tileMatch = true;
 							break;
 						}
 					}
-					if(!tileMatch)
+					if (!tileMatch)
 					{
 						return false;
 					}
@@ -251,11 +249,11 @@ public class WorldReading
 			}
 			else
 			{
-				if(world.isAirBlock(x, y, z))
+				if (world.isAirBlock(x, y, z))
 				{
 					return false;
 				}
-				if(!block.isOpaqueCube())
+				if (!block.isOpaqueCube())
 				{
 					return false;
 				}
@@ -264,14 +262,14 @@ public class WorldReading
 		
 		return true;
 	}
-
+	
 	public static ForgeDirection[] getHDirections()
 	{
-		return new ForgeDirection[]{ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST};
+		return new ForgeDirection[] { ForgeDirection.NORTH, ForgeDirection.SOUTH, ForgeDirection.WEST, ForgeDirection.EAST };
 	}
 	
 	public static ForgeDirection[] getVDirections()
 	{
-		return new ForgeDirection[]{ForgeDirection.DOWN, ForgeDirection.UP};
+		return new ForgeDirection[] { ForgeDirection.DOWN, ForgeDirection.UP };
 	}
 }

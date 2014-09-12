@@ -12,7 +12,7 @@ import speiger.src.spmodapi.SpmodAPI;
 
 public class CommandExecuter implements IPacketReciver
 {
-
+	
 	@Override
 	public void recivePacket(DataInput par1)
 	{
@@ -20,35 +20,34 @@ public class CommandExecuter implements IPacketReciver
 		try
 		{
 			World world = DimensionManager.getWorld(par1.readInt());
-			if(world != null && !world.isRemote)
+			if (world != null && !world.isRemote)
 			{
 				EntityPlayer player = world.getPlayerEntityByName(par1.readUTF());
-				if(player != null)
+				if (player != null)
 				{
 					boolean sub = par1.readByte() == 1;
 					int commandID = par1.readInt();
 					int subCommandID = par1.readInt();
 					String[] text = new String[par1.readInt()];
-					for(int i = 0;i<text.length;i++)
+					for (int i = 0; i < text.length; i++)
 					{
 						text[i] = par1.readUTF();
 					}
 					
-					
-					if(sub)
+					if (sub)
 					{
 						ArrayList<ISpmodCommand> list = new ArrayList<ISpmodCommand>();
-						if(!reg.getCommands(player).isEmpty())
+						if (!reg.getCommands(player).isEmpty())
 						{
 							list.addAll(reg.getCommands(player));
 						}
-						if(list != null && !list.isEmpty())
+						if (list != null && !list.isEmpty())
 						{
 							ISpmodCommand com = list.get(commandID);
 							ArrayList<ISubCommand> subCom = CommandRegistry.getInstance().getSubCommands(player, com);
-							if(!subCom.isEmpty())
+							if (!subCom.isEmpty())
 							{
-								if(com.isCommandRunnable(player, false, subCom.get(subCommandID), text))
+								if (com.isCommandRunnable(player, false, subCom.get(subCommandID), text))
 								{
 									com.runCommand(player, subCom.get(subCommandID), text);
 									return;
@@ -64,12 +63,12 @@ public class CommandExecuter implements IPacketReciver
 					else
 					{
 						ArrayList<ISpmodCommand> list = reg.getCommands(player);
-						if(!list.isEmpty())
+						if (!list.isEmpty())
 						{
 							ISpmodCommand com = list.get(commandID);
-							if(com.isCommandRunnable(player, false, (ISubCommand)null, text))
+							if (com.isCommandRunnable(player, false, (ISubCommand) null, text))
 							{
-								com.runCommand(player, (ISubCommand)null, text);
+								com.runCommand(player, (ISubCommand) null, text);
 								return;
 							}
 						}
@@ -83,7 +82,7 @@ public class CommandExecuter implements IPacketReciver
 			SpmodAPI.log.print("Could not execute a command");
 		}
 	}
-
+	
 	@Override
 	public String identifier()
 	{

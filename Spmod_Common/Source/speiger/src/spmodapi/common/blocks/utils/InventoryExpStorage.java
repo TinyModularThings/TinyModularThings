@@ -14,6 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class InventoryExpStorage extends AdvContainer
 {
 	AdvTile tile;
+	
 	public InventoryExpStorage(InventoryPlayer par1, ExpStorage par2)
 	{
 		super(par1);
@@ -29,10 +30,7 @@ public class InventoryExpStorage extends AdvContainer
 		return true;
 	}
 	
-	
-	
-	
-    @Override
+	@Override
 	public void detectAndSendChanges()
 	{
 		super.detectAndSendChanges();
@@ -42,67 +40,67 @@ public class InventoryExpStorage extends AdvContainer
 			tile.onSendingGuiInfo(this, icrafting);
 		}
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void updateProgressBar(int par1, int par2)
 	{
 		tile.onReciveGuiInfo(par1, par2);
 	}
-
+	
 	public ItemStack transferStackInSlot(EntityPlayer par1EntityPlayer, int par2)
-    {
-        ItemStack var3 = null;
-        Slot var4 = (Slot)this.inventorySlots.get(par2);
-
-        if (var4 != null && var4.getHasStack())
-        {
-            ItemStack var5 = var4.getStack();
-            var3 = var5.copy();
-
-            if (par2 != 1 && par2 != 0)
-            {
-                if (var5.getItem() instanceof IExpBottle)
-                {
-                    if (!this.mergeItemStack(var5, 0, 1, false))
-                    {
-                        return null;
-                    }
-                }
-                else if (var5.getItem() instanceof IExpBottle)
-                {
-                    if (!this.mergeItemStack(var5, 1, 2, false))
-                    {
-                        return null;
-                    }
-                }
-                else if (par2 >= 30 && par2 < 39 && !this.mergeItemStack(var5, 3, 30, false))
-                {
-                    return null;
-                }
-            }
-            else if (!this.mergeItemStack(var5, 3, 39, false))
-            {
-                return null;
-            }
-
-            if (var5.stackSize == 0)
-            {
-                var4.putStack((ItemStack)null);
-            }
-            else
-            {
-                var4.onSlotChanged();
-            }
-
-            if (var5.stackSize == var3.stackSize)
-            {
-                return null;
-            }
-
-            var4.onPickupFromSlot(par1EntityPlayer, var5);
-        }
-
-        return var3;
-    }
+	{
+		ItemStack var3 = null;
+		Slot var4 = (Slot) this.inventorySlots.get(par2);
+		
+		if (var4 != null && var4.getHasStack())
+		{
+			ItemStack var5 = var4.getStack();
+			var3 = var5.copy();
+			
+			if (par2 != 1 && par2 != 0)
+			{
+				if (var5.getItem() instanceof IExpBottle)
+				{
+					if (!this.mergeItemStack(var5, 0, 1, false))
+					{
+						return null;
+					}
+				}
+				else if (var5.getItem() instanceof IExpBottle)
+				{
+					if (!this.mergeItemStack(var5, 1, 2, false))
+					{
+						return null;
+					}
+				}
+				else if (par2 >= 30 && par2 < 39 && !this.mergeItemStack(var5, 3, 30, false))
+				{
+					return null;
+				}
+			}
+			else if (!this.mergeItemStack(var5, 3, 39, false))
+			{
+				return null;
+			}
+			
+			if (var5.stackSize == 0)
+			{
+				var4.putStack((ItemStack) null);
+			}
+			else
+			{
+				var4.onSlotChanged();
+			}
+			
+			if (var5.stackSize == var3.stackSize)
+			{
+				return null;
+			}
+			
+			var4.onPickupFromSlot(par1EntityPlayer, var5);
+		}
+		
+		return var3;
+	}
 }

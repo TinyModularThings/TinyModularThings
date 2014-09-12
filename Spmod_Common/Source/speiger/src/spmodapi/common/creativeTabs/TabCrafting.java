@@ -11,13 +11,12 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class TabCrafting extends CreativeTabs
 {
-
+	
 	public TabCrafting()
 	{
 		super("Crafting");
-//		setBackgroundImageName("item_search.png");
+		// setBackgroundImageName("item_search.png");
 	}
-	
 	
 	@Override
 	public boolean hasSearchBar()

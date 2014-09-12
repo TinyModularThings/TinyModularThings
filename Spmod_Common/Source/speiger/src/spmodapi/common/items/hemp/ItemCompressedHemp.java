@@ -21,7 +21,7 @@ public class ItemCompressedHemp extends SpmodItem implements LanguageItem
 		super(par1);
 		this.setCreativeTab(APIUtils.tabHemp);
 	}
-
+	
 	@Override
 	public String getDisplayName(ItemStack par1, SpmodMod par0)
 	{
@@ -30,22 +30,19 @@ public class ItemCompressedHemp extends SpmodItem implements LanguageItem
 	
 	@Override
 	public void registerItems(int id, SpmodMod par0)
-	{	
-		if(!SpmodModRegistry.areModsEqual(par0, getMod()))
+	{
+		if (!SpmodModRegistry.areModsEqual(par0, getMod()))
 		{
 			return;
 		}
 		LanguageRegister.getLanguageName(new DisplayItem(id), "hemp.compressed", par0);
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{
-		this.itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase()+":hemp/compressedHemp");
+		this.itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/compressedHemp");
 	}
-	
-	
-	
 	
 }

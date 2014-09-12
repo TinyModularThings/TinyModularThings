@@ -8,7 +8,7 @@ public interface IBCBattery
 	 * @Return Stored MJ
 	 */
 	public int getStoredMJ(ItemStack par1);
-
+	
 	/**
 	 * @Return Max Space
 	 */
@@ -54,12 +54,9 @@ public interface IBCBattery
 	 */
 	public int getStoredMJInPercent(ItemStack par1);
 	
-	
 	public static enum BatteryType
 	{
-		Machine(true, false),
-		Battery(true, true),
-		Generator(false, true);
+		Machine(true, false), Battery(true, true), Generator(false, true);
 		
 		boolean provide;
 		boolean recive;

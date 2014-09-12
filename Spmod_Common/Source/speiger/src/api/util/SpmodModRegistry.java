@@ -31,7 +31,8 @@ public class SpmodModRegistry
 	
 	public static boolean areModsEqual(SpmodMod par1, SpmodMod par2)
 	{
-		if(!isModRegistered(par1) || isModRegistered(par2))return false;
+		if (!isModRegistered(par1) || isModRegistered(par2))
+			return false;
 		
 		return par1.getName().equalsIgnoreCase(par2.getName());
 	}
@@ -40,7 +41,7 @@ public class SpmodModRegistry
 	{
 		return addons.get(name);
 	}
-
+	
 	public static Collection<SpmodMod> getRegisteredMods()
 	{
 		return addons.values();

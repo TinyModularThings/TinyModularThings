@@ -78,7 +78,7 @@ public class LanguageRegister
 		{
 			object = "tile";
 		}
-		else if(par1 instanceof CreativeTabs)
+		else if (par1 instanceof CreativeTabs)
 		{
 			object = "tab";
 		}
@@ -134,7 +134,7 @@ public class LanguageRegister
 	{
 		ArrayList<String> list = new ArrayList<String>();
 		ArrayList<String> everything = new ArrayList<String>();
-		if(strings.get(par1) != null)
+		if (strings.get(par1) != null)
 		{
 			list.addAll(strings.get(par1));
 			everything.addAll(strings.get(par1));
@@ -156,17 +156,17 @@ public class LanguageRegister
 					{
 						lang.createNewFile();
 					}
-					FMLLog.getLogger().info("Before: "+list.size());
+					FMLLog.getLogger().info("Before: " + list.size());
 					Scanner scan = new Scanner(lang);
-					while(scan.hasNext())
+					while (scan.hasNext())
 					{
 						String next = scan.nextLine();
-						next = next.substring(0, next.length()-1);
-						if(next.equalsIgnoreCase("NEW"))
+						next = next.substring(0, next.length() - 1);
+						if (next.equalsIgnoreCase("NEW"))
 						{
 							continue;
 						}
-						if(list.contains(next))
+						if (list.contains(next))
 						{
 							list.remove(next);
 						}
@@ -176,16 +176,16 @@ public class LanguageRegister
 						}
 					}
 					scan.close();
-					FMLLog.getLogger().info("After: "+list.size());
+					FMLLog.getLogger().info("After: " + list.size());
 					Collections.sort(everything);
-					if(list.size() > 0)
+					if (list.size() > 0)
 					{
 						FMLLog.getLogger().info("Found new things to print");
 						Formatter format = new Formatter(lang);
 						
 						for (String s : everything)
 						{
-							if(list.contains(s))
+							if (list.contains(s))
 							{
 								String finals = s + "=";
 								format.format("%s%n%s%n", "NEW!", finals);

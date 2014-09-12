@@ -8,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Tuple;
 import net.minecraft.village.MerchantRecipe;
-import cpw.mods.fml.common.FMLLog;
 
 public class VillagerHelper
 {
@@ -74,19 +73,18 @@ public class VillagerHelper
 		recipe.addAll(getRecipeFromSize(new ItemStack(Item.porkCooked), true));
 		recipe.addAll(getRecipeFromSize(new ItemStack(Item.beefCooked), true));
 		
-		for(int i = 4;i<6;i++)
+		for (int i = 4; i < 6; i++)
 		{
 			recipe.add(new MerchantRecipe(new ItemStack(Block.gravel, 10), new ItemStack(Item.emerald), new ItemStack(Item.flint.itemID, i, 0)));
 		}
 		
-
 	}
 	
 	private static ArrayList<MerchantRecipe> getRecipeFromSize(ItemStack par1, boolean par2)
 	{
 		ArrayList<MerchantRecipe> recipes = new ArrayList<MerchantRecipe>();
-		if(par2)
-		{	
+		if (par2)
+		{
 			Tuple par3 = (Tuple) EntityVillager.blacksmithSellingList.get(Integer.valueOf(par1.itemID));
 			int key = (Integer) par3.getFirst();
 			int value = (Integer) par3.getSecond();
@@ -94,13 +92,13 @@ public class VillagerHelper
 			ItemStack itemKey = null;
 			ItemStack itemValue = null;
 			
-			if(key < 0 && value < 0)
+			if (key < 0 && value < 0)
 			{
 				key = -key;
 				value = -value;
 				
 				itemKey = new ItemStack(Item.emerald, 1, 0);
-				for(int i = value;i<key;i++)
+				for (int i = value; i < key; i++)
 				{
 					itemValue = new ItemStack(par1.getItem(), i, par1.getItemDamage());
 					recipes.add(new MerchantRecipe(itemKey, itemValue));
@@ -109,7 +107,7 @@ public class VillagerHelper
 			else
 			{
 				itemValue = new ItemStack(par1.getItem(), 1, par1.getItemDamage());
-				for(int i = key;i<value;i++)
+				for (int i = key; i < value; i++)
 				{
 					itemKey = new ItemStack(Item.emerald, i, 0);
 					recipes.add(new MerchantRecipe(itemKey, itemValue));
@@ -119,17 +117,17 @@ public class VillagerHelper
 		}
 		else
 		{
-			Tuple par3 = (Tuple)EntityVillager.villagerStockList.get(Integer.valueOf(par1.itemID));
+			Tuple par3 = (Tuple) EntityVillager.villagerStockList.get(Integer.valueOf(par1.itemID));
 			int key = (Integer) par3.getFirst();
 			int value = (Integer) par3.getSecond();
 			
-			if(key == value)
+			if (key == value)
 			{
 				recipes.add(new MerchantRecipe(new ItemStack(par1.getItem(), key, par1.getItemDamage()), new ItemStack(Item.emerald)));
 			}
 			else
 			{
-				for(int i = key;i<value;i++)
+				for (int i = key; i < value; i++)
 				{
 					recipes.add(new MerchantRecipe(new ItemStack(par1.getItem(), i, par1.getItemDamage()), new ItemStack(Item.emerald)));
 				}

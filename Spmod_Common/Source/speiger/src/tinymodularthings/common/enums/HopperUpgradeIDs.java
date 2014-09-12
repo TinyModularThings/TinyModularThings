@@ -15,9 +15,9 @@ public enum HopperUpgradeIDs
 	
 	public int getGuiID()
 	{
-		return EnumIDs.HopperUpgrades.getId()+id;
+		return EnumIDs.HopperUpgrades.getId() + id;
 	}
-
+	
 	public String getUpgradeClass()
 	{
 		return className;

@@ -16,52 +16,51 @@ public class TinyRecipes
 		pp.addRecipe(new ShapedOreRecipe(new ItemStack(TinyItems.tinyChest, 1, 0), "XXX", "XYX", "XXX", 'X', GearType.Wood.getItem(), 'Y', "slabWood"));
 		pp.addRecipe(new ShapedOreRecipe(new ItemStack(TinyItems.tinyTank, 1, 0), "XXX", "XYX", "XXX", 'Y', Item.bucketEmpty, 'X', GearType.Wood.getItem()));
 		
-		
-		for(int i = 0;i<8;i++)
+		for (int i = 0; i < 8; i++)
 		{
-			pp.addRecipe(new ItemStack(TinyItems.tinyChest, 1, i+1), new Object[]{"XXX", "XYX", "XXX", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.tinyChest, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.advTinyChest, 1, i+1), new Object[]{"XXX", "XYX", "XXX", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.advTinyChest, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.tinyTank, 1, i+1), new Object[]{"XXX", "XYX", "XXX", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.tinyTank, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.tinyStorageCart, 1, i+1), new Object[]{"XXX", "XYX", "XXX", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.tinyStorageCart, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i+1), new Object[]{"XXX", "XYX", "XXX", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.advTinyStorageCart, 1, i)});
+			pp.addRecipe(new ItemStack(TinyItems.tinyChest, 1, i + 1), new Object[] { "XXX", "XYX", "XXX", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.tinyChest, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.advTinyChest, 1, i + 1), new Object[] { "XXX", "XYX", "XXX", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.advTinyChest, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.tinyTank, 1, i + 1), new Object[] { "XXX", "XYX", "XXX", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.tinyTank, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.tinyStorageCart, 1, i + 1), new Object[] { "XXX", "XYX", "XXX", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.tinyStorageCart, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i + 1), new Object[] { "XXX", "XYX", "XXX", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.advTinyStorageCart, 1, i) });
 		}
 		
-		for(int i = 0;i<7;i++)
+		for (int i = 0; i < 7; i++)
 		{
-			pp.addRecipe(new ItemStack(TinyItems.tinyChest, 1, i+2), new Object[]{"XXX", "XYX", "XXX", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.tinyChest, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.advTinyChest, 1, i+2), new Object[]{"XXX", "XYX", "XXX", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.advTinyChest, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.tinyTank, 1, i+2), new Object[]{"XXX", "XYX", "XXX", 'X', GearType.Iron.getItem(), 'Y', new ItemStack(TinyItems.tinyTank, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.tinyStorageCart, 1, i+2), new Object[]{"XXX", "XYX", "XXX", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.tinyStorageCart, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i+2), new Object[]{"XXX", "XYX", "XXX", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.advTinyStorageCart, 1, i)});
+			pp.addRecipe(new ItemStack(TinyItems.tinyChest, 1, i + 2), new Object[] { "XXX", "XYX", "XXX", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.tinyChest, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.advTinyChest, 1, i + 2), new Object[] { "XXX", "XYX", "XXX", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.advTinyChest, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.tinyTank, 1, i + 2), new Object[] { "XXX", "XYX", "XXX", 'X', GearType.Iron.getItem(), 'Y', new ItemStack(TinyItems.tinyTank, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.tinyStorageCart, 1, i + 2), new Object[] { "XXX", "XYX", "XXX", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.tinyStorageCart, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i + 2), new Object[] { "XXX", "XYX", "XXX", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.advTinyStorageCart, 1, i) });
 		}
 		
-		for(int i = 0;i<9;i++)
+		for (int i = 0; i < 9; i++)
 		{
 			pp.addSRecipe(new ItemStack(TinyItems.tinyStorageCart, 1, i), new Object[] { new ItemStack(TinyItems.tinyChest, 1, i), Item.minecartEmpty });
 			pp.addSRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i), new Object[] { new ItemStack(TinyItems.advTinyChest, 1, i), Item.minecartEmpty });
-			pp.addRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i), new Object[]{"XYX", "CVC", "XBX", 'X', GearType.Redstone.getItem(), 'C', Block.torchRedstoneActive, 'Y', Block.stoneButton, 'B', Block.pressurePlateStone, 'V', new ItemStack(TinyItems.tinyStorageCart, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.advTinyChest, 1, i), new Object[]{"XYX", "CVC", "XBX", 'X', GearType.Redstone.getItem(), 'C', Block.torchRedstoneActive, 'Y', Block.stoneButton, 'B', Block.pressurePlateStone, 'V', new ItemStack(TinyItems.tinyChest, 1, i)});
+			pp.addRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i), new Object[] { "XYX", "CVC", "XBX", 'X', GearType.Redstone.getItem(), 'C', Block.torchRedstoneActive, 'Y', Block.stoneButton, 'B', Block.pressurePlateStone, 'V', new ItemStack(TinyItems.tinyStorageCart, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.advTinyChest, 1, i), new Object[] { "XYX", "CVC", "XBX", 'X', GearType.Redstone.getItem(), 'C', Block.torchRedstoneActive, 'Y', Block.stoneButton, 'B', Block.pressurePlateStone, 'V', new ItemStack(TinyItems.tinyChest, 1, i) });
 		}
-		pp.addRecipe(new ItemStack(TinyBlocks.transportBlock, 4, 0), new Object[] { "XXX", "XYX", "XXX", 'X', Item.blazePowder, 'Y', Item.enderPearl});
-		pp.addRecipe(new ItemStack(TinyBlocks.machine), new Object[]{"XXX", "XYX", "XXX", 'X', Block.cobblestone, 'Y', new ItemStack(Item.coal, 1, pp.getRecipeBlankValue())});
+		pp.addRecipe(new ItemStack(TinyBlocks.transportBlock, 4, 0), new Object[] { "XXX", "XYX", "XXX", 'X', Item.blazePowder, 'Y', Item.enderPearl });
+		pp.addRecipe(new ItemStack(TinyBlocks.machine), new Object[] { "XXX", "XYX", "XXX", 'X', Block.cobblestone, 'Y', new ItemStack(Item.coal, 1, pp.getRecipeBlankValue()) });
 		pp.addRecipe(new ShapedOreRecipe(new ItemStack(TinyBlocks.machine), "XXX", "XYX", "XXX", 'X', Block.cobblestone, 'Y', "logWood"));
 		
-		for(int i = 8;i>0;i--)
+		for (int i = 8; i > 0; i--)
 		{
-			pp.addRecipe(new ItemStack(TinyItems.tinyChest, 1, i-1), new Object[]{" X ", "XYX", " X ", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.tinyChest, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.advTinyChest, 1, i-1), new Object[]{" X ", "XYX", " X ", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.advTinyChest, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.tinyTank, 1, i-1), new Object[]{" X ", "XYX", " X ", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.tinyTank, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.tinyStorageCart, 1, i-1), new Object[]{" X ", "XYX", " X ", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.tinyStorageCart, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i-1), new Object[]{" X ", "XYX", " X ", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.advTinyStorageCart, 1, i)});
+			pp.addRecipe(new ItemStack(TinyItems.tinyChest, 1, i - 1), new Object[] { " X ", "XYX", " X ", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.tinyChest, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.advTinyChest, 1, i - 1), new Object[] { " X ", "XYX", " X ", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.advTinyChest, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.tinyTank, 1, i - 1), new Object[] { " X ", "XYX", " X ", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.tinyTank, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.tinyStorageCart, 1, i - 1), new Object[] { " X ", "XYX", " X ", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.tinyStorageCart, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i - 1), new Object[] { " X ", "XYX", " X ", 'X', GearType.Wood.getItem(), 'Y', new ItemStack(TinyItems.advTinyStorageCart, 1, i) });
 		}
 		
-		for(int i = 8;i>1;i--)
+		for (int i = 8; i > 1; i--)
 		{
-			pp.addRecipe(new ItemStack(TinyItems.tinyChest, 1, i-2), new Object[]{" X ", "XYX", " X ", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.tinyChest, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.advTinyChest, 1, i-2), new Object[]{" X ", "XYX", " X ", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.advTinyChest, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.tinyTank, 1, i-2), new Object[]{" X ", "XYX", " X ", 'X', GearType.Iron.getItem(), 'Y', new ItemStack(TinyItems.tinyTank, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.tinyStorageCart, 1, i-2), new Object[]{" X ", "XYX", " X ", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.tinyStorageCart, 1, i)});
-			pp.addRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i-2), new Object[]{" X ", "XYX", " X ", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.advTinyStorageCart, 1, i)});
+			pp.addRecipe(new ItemStack(TinyItems.tinyChest, 1, i - 2), new Object[] { " X ", "XYX", " X ", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.tinyChest, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.advTinyChest, 1, i - 2), new Object[] { " X ", "XYX", " X ", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.advTinyChest, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.tinyTank, 1, i - 2), new Object[] { " X ", "XYX", " X ", 'X', GearType.Iron.getItem(), 'Y', new ItemStack(TinyItems.tinyTank, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.tinyStorageCart, 1, i - 2), new Object[] { " X ", "XYX", " X ", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.tinyStorageCart, 1, i) });
+			pp.addRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i - 2), new Object[] { " X ", "XYX", " X ", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.advTinyStorageCart, 1, i) });
 		}
 	}
 }

@@ -18,6 +18,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemMobMachineHelper extends SpmodItem
 {
 	private MobMachine mobs;
+	
 	public ItemMobMachineHelper(int par1)
 	{
 		super(par1);
@@ -25,22 +26,18 @@ public class ItemMobMachineHelper extends SpmodItem
 		this.setHasSubtypes(true);
 		this.setCreativeTab(APIUtils.tabCrafing);
 	}
-
-	
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
 		HashMap<Integer, String> names = mobs.names;
-		for(Integer ints : names.keySet())
+		for (Integer ints : names.keySet())
 		{
 			par3List.add(new ItemStack(par1, 1, ints.intValue()));
 		}
 	}
-
-
-
+	
 	@Override
 	public void registerItems(int id, SpmodMod par0)
 	{
@@ -51,28 +48,26 @@ public class ItemMobMachineHelper extends SpmodItem
 	{
 		return "MobMachine Modul";
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
 	{
-		par3.add("Type: "+mobs.getName(par1.getItemDamage()));
+		par3.add("Type: " + mobs.getName(par1.getItemDamage()));
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getSpriteNumber()
 	{
 		return 0;
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
 		return mobs.textures[par1][1];
 	}
-	
-	
 	
 }

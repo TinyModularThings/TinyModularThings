@@ -20,7 +20,6 @@ import speiger.src.spmodapi.common.command.CommandRegistry;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 
 public class CommandServerTimer implements ISpmodCommand, ITickReader
@@ -60,31 +59,31 @@ public class CommandServerTimer implements ISpmodCommand, ITickReader
 	@Override
 	public boolean isCommandRunnable(ICommandSender par1, boolean guiAdding, ISubCommand sub, String[] arg)
 	{
-		if(guiAdding)
+		if (guiAdding)
 		{
 			return true;
 		}
 		
-		if(sub != null)
+		if (sub != null)
 		{
 			String name = sub.getSubCommandName();
-			if(name.equalsIgnoreCase("Remove"))
+			if (name.equalsIgnoreCase("Remove"))
 			{
-				if(isActive)
+				if (isActive)
 				{
-					if((password.equalsIgnoreCase("")) || (!password.equalsIgnoreCase("") && arg.length == 1 && password.equalsIgnoreCase(arg[0])))
+					if ((password.equalsIgnoreCase("")) || (!password.equalsIgnoreCase("") && arg.length == 1 && password.equalsIgnoreCase(arg[0])))
 					{
 						return true;
 					}
 				}
 			}
-			else if(name.equalsIgnoreCase("Info"))
+			else if (name.equalsIgnoreCase("Info"))
 			{
 				return true;
 			}
-			else if(name.equalsIgnoreCase("Set"))
+			else if (name.equalsIgnoreCase("Set"))
 			{
-				if(arg.length > 0 && arg.length <= 4)
+				if (arg.length > 0 && arg.length <= 4)
 				{
 					return true;
 				}
@@ -98,16 +97,16 @@ public class CommandServerTimer implements ISpmodCommand, ITickReader
 	public void runCommand(ICommandSender par1, ISubCommand sub, String[] arg)
 	{
 		ServerConfigurationManager manager = FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager();
-
-		if(sub != null && manager.isPlayerOpped(par1.getCommandSenderName()))
+		
+		if (sub != null && manager.isPlayerOpped(par1.getCommandSenderName()))
 		{
 			String name = sub.getSubCommandName();
-
-			if(name.equalsIgnoreCase("Set"))
+			
+			if (name.equalsIgnoreCase("Set"))
 			{
 				int setup = 0;
 				String key = "";
-				switch(arg.length)
+				switch (arg.length)
 				{
 					case 1:
 						setup = Integer.parseInt(arg[0]);
@@ -131,39 +130,39 @@ public class CommandServerTimer implements ISpmodCommand, ITickReader
 						break;
 				}
 				
-				if(setup > 0)
+				if (setup > 0)
 				{
 					time = setup;
 					password = key;
 					isActive = true;
-					manager.sendChatMsg(LanguageRegister.createChatMessage(par1.getCommandSenderName()+" Setted up a Shutdown timer: "+MathUtils.getTicksInTime(setup)));
+					manager.sendChatMsg(LanguageRegister.createChatMessage(par1.getCommandSenderName() + " Setted up a Shutdown timer: " + MathUtils.getTicksInTime(setup)));
 					Set players = manager.getOps();
 					
-					if(players != null)
+					if (players != null)
 					{
 						Iterator iter = players.iterator();
-						for(;iter.hasNext();)
+						for (; iter.hasNext();)
 						{
 							EntityPlayerMP mp = manager.getPlayerForUsername((String) iter.next());
-							if(mp != null)
+							if (mp != null)
 							{
-								if(key.equalsIgnoreCase(""))
+								if (key.equalsIgnoreCase(""))
 								{
-									mp.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(LanguageRegister.createChatMessage("No Password was setted Up") ,true));
+									mp.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(LanguageRegister.createChatMessage("No Password was setted Up"), true));
 								}
 								else
 								{
-									mp.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(LanguageRegister.createChatMessage("Password: "+key), true));
+									mp.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(LanguageRegister.createChatMessage("Password: " + key), true));
 								}
 							}
 						}
 					}
 				}
 			}
-			else if(name.equalsIgnoreCase("Remove"))
+			else if (name.equalsIgnoreCase("Remove"))
 			{
 				boolean flag = false;
-				if(password.equalsIgnoreCase(""))
+				if (password.equalsIgnoreCase(""))
 				{
 					isActive = false;
 					password = "";
@@ -172,7 +171,7 @@ public class CommandServerTimer implements ISpmodCommand, ITickReader
 				}
 				else
 				{
-					if(arg.length == 1 && password.equalsIgnoreCase(arg[0]))
+					if (arg.length == 1 && password.equalsIgnoreCase(arg[0]))
 					{
 						isActive = false;
 						password = "";
@@ -180,19 +179,19 @@ public class CommandServerTimer implements ISpmodCommand, ITickReader
 						flag = true;
 					}
 				}
-				if(flag)
+				if (flag)
 				{
-					manager.sendChatMsg(LanguageRegister.createChatMessage(par1.getCommandSenderName()+" Removed Timer"));
+					manager.sendChatMsg(LanguageRegister.createChatMessage(par1.getCommandSenderName() + " Removed Timer"));
 				}
 			}
-			else if(name.equalsIgnoreCase("Info"))
+			else if (name.equalsIgnoreCase("Info"))
 			{
-				if(isActive)
+				if (isActive)
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Time left: "+MathUtils.getTicksInTime(time)));
-					if(manager.isPlayerOpped(par1.getCommandSenderName()))
+					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Time left: " + MathUtils.getTicksInTime(time)));
+					if (manager.isPlayerOpped(par1.getCommandSenderName()))
 					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Password: "+password));
+						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Password: " + password));
 					}
 				}
 				else
@@ -201,30 +200,29 @@ public class CommandServerTimer implements ISpmodCommand, ITickReader
 				}
 			}
 		}
-			
-
+		
 	}
-
+	
 	@Override
 	public void onTick(SpmodMod sender, Side side)
 	{
-		if(side != side.SERVER)
+		if (side != side.SERVER)
 		{
 			return;
 		}
 		
 		long t = System.currentTimeMillis();
-		if(t - lastTime < 50)
+		if (t - lastTime < 50)
 		{
 			return;
 		}
 		lastTime = t;
-		if(isActive)
+		if (isActive)
 		{
-			if(time > 0)
+			if (time > 0)
 			{
 				time--;
-				if(time <= 0)
+				if (time <= 0)
 				{
 					MinecraftServer server = FMLCommonHandler.instance().getMinecraftServerInstance();
 					server.initiateShutdown();
@@ -232,7 +230,7 @@ public class CommandServerTimer implements ISpmodCommand, ITickReader
 			}
 		}
 	}
-
+	
 	@Override
 	public SpmodMod getOwner()
 	{

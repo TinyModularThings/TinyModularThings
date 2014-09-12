@@ -8,11 +8,11 @@ import cpw.mods.fml.client.registry.ClientRegistry;
 
 public class CompactWindmillsClient extends CompactWindmillsCore
 {
-
+	
 	@Override
 	public void onClientLoad(CompactWindmills par0)
 	{
-		if(par0.specailRenderer)
+		if (par0.specailRenderer)
 		{
 			ClientRegistry.bindTileEntitySpecialRenderer(WindMill.class, new WindmillRenderer());
 		}

@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TileIconMaker;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class RegisterProxy
@@ -55,7 +54,7 @@ public class RegisterProxy
 			TileIconMaker.getIconMaker().addTileEntity(block, regist);
 		}
 	}
-
+	
 	public static void RegisterTile(Class<? extends TileEntity> claz, String string)
 	{
 		RegisterTile(null, claz, string);

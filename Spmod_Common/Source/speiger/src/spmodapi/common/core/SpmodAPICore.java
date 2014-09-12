@@ -36,38 +36,39 @@ public class SpmodAPICore implements IGuiHandler
 	{
 		return 0;
 	}
-
+	
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		if(ID == EnumGuiIDs.WorkBench.getID())
+		if (ID == EnumGuiIDs.WorkBench.getID())
 		{
 			return new InventoryCrafter(player.inventory, world, x, y, z);
 		}
-		else if(ID == EnumGuiIDs.Tiles.getID())
+		else if (ID == EnumGuiIDs.Tiles.getID())
 		{
 			TileEntity tile = world.getBlockTileEntity(x, y, z);
-			if(tile != null && tile instanceof AdvTile)
+			if (tile != null && tile instanceof AdvTile)
 			{
-				return ((AdvTile)tile).getInventory(player.inventory);
+				return ((AdvTile) tile).getInventory(player.inventory);
 			}
 		}
-		else if(ID == EnumGuiIDs.Commands.getID())
+		else if (ID == EnumGuiIDs.Commands.getID())
 		{
-			AdvContainer con = new AdvContainer(player.inventory){
-
+			AdvContainer con = new AdvContainer(player.inventory)
+			{
+				
 				@Override
 				public boolean canInteractWith(EntityPlayer entityplayer)
 				{
 					return true;
 				}
 			};
-			if(con != null)
+			if (con != null)
 			{
 				return con;
 			}
 		}
-		else if(ID == EnumGuiIDs.Items.getID())
+		else if (ID == EnumGuiIDs.Items.getID())
 		{
 			ItemStack stack = player.getCurrentEquippedItem();
 			if (stack != null && stack.getItem() instanceof IItemGui)
@@ -81,27 +82,27 @@ public class SpmodAPICore implements IGuiHandler
 		}
 		return null;
 	}
-
+	
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		if(ID == EnumGuiIDs.WorkBench.getID())
+		if (ID == EnumGuiIDs.WorkBench.getID())
 		{
 			return new GuiCrafting(player.inventory, world, x, y, z);
 		}
-		else if(ID == EnumGuiIDs.Tiles.getID())
+		else if (ID == EnumGuiIDs.Tiles.getID())
 		{
 			TileEntity tile = world.getBlockTileEntity(x, y, z);
-			if(tile != null && tile instanceof AdvTile)
+			if (tile != null && tile instanceof AdvTile)
 			{
-				return ((AdvTile)tile).getGui(player.inventory);
+				return ((AdvTile) tile).getGui(player.inventory);
 			}
 		}
-		else if(ID == EnumGuiIDs.Commands.getID())
+		else if (ID == EnumGuiIDs.Commands.getID())
 		{
 			return new GuiCommands(player.inventory);
 		}
-		else if(ID == EnumGuiIDs.Items.getID())
+		else if (ID == EnumGuiIDs.Items.getID())
 		{
 			ItemStack stack = player.getCurrentEquippedItem();
 			if (stack != null && stack.getItem() instanceof IItemGui)

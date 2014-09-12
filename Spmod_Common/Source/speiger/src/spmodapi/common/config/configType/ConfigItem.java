@@ -26,7 +26,7 @@ public class ConfigItem
 	{
 		if (Item.itemsList[ID + 256] != null)
 		{
-			int end = ID+256;
+			int end = ID + 256;
 			throw new IndexOutOfBoundsException("ItemID is already used: " + end);
 		}
 		return ID;
@@ -50,10 +50,10 @@ public class ConfigItem
 		int startIDs = startID + 256;
 		int IDs = ID + 256;
 		ConfigCategory cot = config.getCategory(cat);
-		if(cot != null && cot.containsKey("Item StartID"))
+		if (cot != null && cot.containsKey("Item StartID"))
 		{
 			Property items = cot.get("Item StartID");
-			items.comment = String.format("%s%n%s%n%s", items.comment, "You need to Hold "+endID+" ItemIDs Free", "(From: "+startIDs+" ItemID To: "+IDs+" ItemID)");
+			items.comment = String.format("%s%n%s%n%s", items.comment, "You need to Hold " + endID + " ItemIDs Free", "(From: " + startIDs + " ItemID To: " + IDs + " ItemID)");
 			cot.put("Item StartID", items);
 		}
 	}

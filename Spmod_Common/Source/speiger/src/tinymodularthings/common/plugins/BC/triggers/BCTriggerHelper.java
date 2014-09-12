@@ -30,7 +30,7 @@ public class BCTriggerHelper implements ITriggerProvider
 				triggers.add(BCVariables.needFuel);
 			}
 			
-			if(tile instanceof TileEntityBrewingStand)
+			if (tile instanceof TileEntityBrewingStand)
 			{
 				triggers.add(BCVariables.hasWork);
 				triggers.add(BCVariables.noWork);
@@ -38,7 +38,7 @@ public class BCTriggerHelper implements ITriggerProvider
 			
 			try
 			{
-				if(tile instanceof IPowerReceptor)
+				if (tile instanceof IPowerReceptor)
 				{
 					triggers.add(BCVariables.requestPower);
 				}

@@ -67,20 +67,18 @@ public class BlockStorage extends BlockContainer
 		return 0;
 	}
 	
-	
-	
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
 		ItemStack stack = new ItemStack(world.getBlockId(x, y, z), 1, world.getBlockMetadata(x, y, z));
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if(tile != null && tile instanceof AdvTile)
+		if (tile != null && tile instanceof AdvTile)
 		{
-			stack = ((AdvTile)tile).pickBlock(target);
+			stack = ((AdvTile) tile).pickBlock(target);
 		}
 		return stack;
 	}
-
+	
 	@Override
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5, ItemStack par6)
 	{
@@ -285,18 +283,16 @@ public class BlockStorage extends BlockContainer
 		return false;
 	}
 	
-	
-	
 	@Override
 	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side)
 	{
-		if(side == side.DOWN)
+		if (side == side.DOWN)
 		{
 			return false;
 		}
 		return true;
 	}
-
+	
 	@Override
 	public boolean shouldCheckWeakPower(World world, int x, int y, int z, int side)
 	{
@@ -309,38 +305,36 @@ public class BlockStorage extends BlockContainer
 	}
 	
 	public void updateTick(World world, int i, int j, int k, Random random)
-    {
+	{
 		notifyNeighbors(world, i, j, k);
 		world.scheduleBlockUpdate(i, j, k, blockID, tickRate(world));
-    }
+	}
 	
 	public void onBlockDestroyedByPlayer(World world, int i, int j, int k, int l)
-    {
+	{
 		notifyNeighbors(world, i, j, k);
-    }
+	}
 	
 	public void notifyNeighbors(World world, int i, int j, int k)
 	{
 		world.notifyBlocksOfNeighborChange(i, j, k, blockID);
 		world.notifyBlocksOfNeighborChange(i, j - 1, k, blockID);
-        world.notifyBlocksOfNeighborChange(i, j + 1, k, blockID);
-        world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
-        world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
-        world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
-        world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
+		world.notifyBlocksOfNeighborChange(i, j + 1, k, blockID);
+		world.notifyBlocksOfNeighborChange(i - 1, j, k, blockID);
+		world.notifyBlocksOfNeighborChange(i + 1, j, k, blockID);
+		world.notifyBlocksOfNeighborChange(i, j, k - 1, blockID);
+		world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
 	}
 	
-	
 	public void onBlockAdded(World world, int i, int j, int k)
-    {        
+	{
 		world.scheduleBlockUpdate(i, j, k, blockID, tickRate(world));
-    }
-
+	}
+	
 	@Override
 	public int tickRate(World par1World)
 	{
 		return 5;
 	}
-	
 	
 }

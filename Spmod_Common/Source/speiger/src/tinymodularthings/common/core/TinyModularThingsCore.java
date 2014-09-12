@@ -25,7 +25,6 @@ import speiger.src.tinymodularthings.common.items.tools.ItemNetherCrystal;
 import speiger.src.tinymodularthings.common.upgrades.hoppers.all.FilterUpgrade;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -86,19 +85,19 @@ public class TinyModularThingsCore implements IGuiHandler
 				}
 			}
 		}
-		else if(EnumIDs.HopperUpgrades.isInRange(ID))
+		else if (EnumIDs.HopperUpgrades.isInRange(ID))
 		{
-			if(tile != null && tile instanceof TinyHopper)
+			if (tile != null && tile instanceof TinyHopper)
 			{
 				TinyHopper hopper = (TinyHopper) tile;
 				int left = ID - EnumIDs.HopperUpgrades.getId();
 				HopperUpgradeIDs upgrade = HopperUpgradeIDs.values()[left];
 				HopperUpgrade iUpgrade = HopperRegistry.getHopperUpgradeFromNBT(upgrade.getUpgradeClass());
-				if(iUpgrade != null)
+				if (iUpgrade != null)
 				{
-					if(iUpgrade instanceof IUpgradeGuiProvider)
+					if (iUpgrade instanceof IUpgradeGuiProvider)
 					{
-						return ((IUpgradeGuiProvider)iUpgrade).getInventory(player.inventory, hopper);
+						return ((IUpgradeGuiProvider) iUpgrade).getInventory(player.inventory, hopper);
 					}
 				}
 			}
@@ -150,19 +149,19 @@ public class TinyModularThingsCore implements IGuiHandler
 				}
 			}
 		}
-		else if(EnumIDs.HopperUpgrades.isInRange(ID))
+		else if (EnumIDs.HopperUpgrades.isInRange(ID))
 		{
-			if(tile != null && tile instanceof IHopper)
+			if (tile != null && tile instanceof IHopper)
 			{
 				IHopper hopper = (IHopper) tile;
 				int left = ID - EnumIDs.HopperUpgrades.getId();
 				HopperUpgradeIDs upgrade = HopperUpgradeIDs.values()[left];
 				HopperUpgrade iUpgrade = HopperRegistry.getHopperUpgradeFromNBT(upgrade.getUpgradeClass());
-				if(iUpgrade != null)
+				if (iUpgrade != null)
 				{
-					if(iUpgrade instanceof IUpgradeGuiProvider)
+					if (iUpgrade instanceof IUpgradeGuiProvider)
 					{
-						return ((IUpgradeGuiProvider)iUpgrade).getGui(player.inventory, hopper);
+						return ((IUpgradeGuiProvider) iUpgrade).getGui(player.inventory, hopper);
 					}
 				}
 			}
@@ -174,11 +173,11 @@ public class TinyModularThingsCore implements IGuiHandler
 	{
 		GameRegistry.registerCraftingHandler(new TinyCraftingHandler());
 		FuelHandler.init();
-		DataStorage.registerNBTReciver((ItemNetherCrystal)TinyItems.netherCrystal);
+		DataStorage.registerNBTReciver((ItemNetherCrystal) TinyItems.netherCrystal);
 		new RenderCommand();
 		initHopperUpgrades();
 	}
-
+	
 	public void loadPipe(ItemPipe par1, int id, Class<? extends Pipe> par2)
 	{
 		

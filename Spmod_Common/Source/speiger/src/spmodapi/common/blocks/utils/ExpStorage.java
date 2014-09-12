@@ -38,7 +38,8 @@ import speiger.src.spmodapi.common.tile.AdvTile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IExpProvider
+public class ExpStorage extends AdvTile implements IInventory, IFluidHandler,
+		IExpProvider
 {
 	public static Icon[] textures = new Icon[2];
 	
@@ -57,21 +58,21 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	@Override
 	public void registerIcon(IconRegister par1)
 	{
-		textures[1] = par1.registerIcon(SpmodAPILib.ModID.toLowerCase()+":utils/expBench.side");
-		textures[0] = par1.registerIcon(SpmodAPILib.ModID.toLowerCase()+":utils/expBench.top");
+		textures[1] = par1.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/expBench.side");
+		textures[0] = par1.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/expBench.top");
 	}
 	
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
 	{
-		if(FluidUtils.MFRExp())
+		if (FluidUtils.MFRExp())
 		{
-			if(resource.fluidID == FluidUtils.getMobEssens().getID())
+			if (resource.fluidID == FluidUtils.getMobEssens().getID())
 			{
-				if(resource.amount > 10)
+				if (resource.amount > 10)
 				{
 					int drain = resource.amount / 10;
-					if(doFill)
+					if (doFill)
 					{
 						this.addExp(drain);
 					}
@@ -79,14 +80,14 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 				}
 			}
 		}
-		if(FluidUtils.OpenBlocksExp())
+		if (FluidUtils.OpenBlocksExp())
 		{
-			if(resource.fluidID == FluidUtils.getLiquidExp().getID())
+			if (resource.fluidID == FluidUtils.getLiquidExp().getID())
 			{
-				if(resource.amount > 20)
+				if (resource.amount > 20)
 				{
 					int drain = resource.amount / 20;
-					if(doFill)
+					if (doFill)
 					{
 						this.addExp(drain);
 					}
@@ -112,7 +113,7 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	{
 		int total = exp;
 		this.exp -= exp;
-		if(this.exp < 0)
+		if (this.exp < 0)
 		{
 			total += this.exp;
 			exp = 0;
@@ -123,11 +124,11 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	public int requestExp(int exp, boolean doUse)
 	{
 		int canGive = Math.min(this.exp, exp);
-		if(doUse)
+		if (doUse)
 		{
 			this.exp -= canGive;
 		}
-		if(this.exp < 0)
+		if (this.exp < 0)
 		{
 			this.exp = 0;
 		}
@@ -138,16 +139,16 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
 	{
 		boolean flag = false;
-		if(FluidUtils.MFRExp())
+		if (FluidUtils.MFRExp())
 		{
-			if(FluidUtils.getMobEssens().getID() == resource.fluidID)
+			if (FluidUtils.getMobEssens().getID() == resource.fluidID)
 			{
 				flag = true;
 			}
 		}
-		if(FluidUtils.OpenBlocksExp())
+		if (FluidUtils.OpenBlocksExp())
 		{
-			if(FluidUtils.getLiquidExp().getID() == resource.fluidID)
+			if (FluidUtils.getLiquidExp().getID() == resource.fluidID)
 			{
 				flag = true;
 			}
@@ -161,76 +162,72 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 		boolean mobEssens = FluidUtils.MFRExp();
 		boolean liquidExp = FluidUtils.OpenBlocksExp();
 		
-		if(!mobEssens && !liquidExp)
+		if (!mobEssens && !liquidExp)
 		{
 			return null;
 		}
 		
 		FluidStack fluid = null;
-		if(mobEssens && liquidExp)
+		if (mobEssens && liquidExp)
 		{
-			if(RedstoneUtils.isBlockGettingPowered(this))
+			if (RedstoneUtils.isBlockGettingPowered(this))
 			{
 				fluid = new FluidStack(FluidUtils.getMobEssens(), this.requestExp(maxDrain, doDrain));
 			}
 			else
 			{
-				fluid = new FluidStack(FluidUtils.getLiquidExp(), this.requestExp(maxDrain, doDrain)*20);
+				fluid = new FluidStack(FluidUtils.getLiquidExp(), this.requestExp(maxDrain, doDrain) * 20);
 			}
 		}
-		else if(mobEssens || liquidExp)
+		else if (mobEssens || liquidExp)
 		{
-			if(mobEssens)
+			if (mobEssens)
 			{
 				fluid = new FluidStack(FluidUtils.getMobEssens(), this.requestExp(maxDrain, doDrain));
 			}
-			else if(liquidExp)
+			else if (liquidExp)
 			{
-				fluid = new FluidStack(FluidUtils.getLiquidExp(), this.requestExp(maxDrain, doDrain)*20);
+				fluid = new FluidStack(FluidUtils.getLiquidExp(), this.requestExp(maxDrain, doDrain) * 20);
 			}
 		}
 		
 		return fluid;
 	}
 	
-	
-	
-	
-	
 	@Override
 	public void onTick()
 	{
 		super.onTick();
-		if(!worldObj.isRemote)
+		if (!worldObj.isRemote)
 		{
-			if(inv[0] != null)
+			if (inv[0] != null)
 			{
-				if(inv[0].getItem() instanceof IExpBottle && ((IExpBottle)inv[0].getItem()).hasExp(inv[0]))
+				if (inv[0].getItem() instanceof IExpBottle && ((IExpBottle) inv[0].getItem()).hasExp(inv[0]))
 				{
 					IExpBottle bottle = (IExpBottle) inv[0].getItem();
 					this.addExp(bottle.discharge(inv[0], bottle.getTransferlimit(inv[0])));
 				}
-				else if(inv[0].itemID == Item.expBottle.itemID)
+				else if (inv[0].itemID == Item.expBottle.itemID)
 				{
 					int i = 3 + this.worldObj.rand.nextInt(5) + this.worldObj.rand.nextInt(5);
 					this.addExp(i);
 					inv[0].stackSize--;
-					if(inv[0].stackSize <= 0)
+					if (inv[0].stackSize <= 0)
 					{
 						inv[0] = null;
 					}
 				}
 			}
-			if(inv[1] != null)
+			if (inv[1] != null)
 			{
-				if(inv[1].getItem() instanceof IExpBottle && ((IExpBottle)inv[1].getItem()).needExp(inv[1]))
+				if (inv[1].getItem() instanceof IExpBottle && ((IExpBottle) inv[1].getItem()).needExp(inv[1]))
 				{
 					IExpBottle bottle = (IExpBottle) inv[1].getItem();
 					bottle.charge(inv[1], this.requestExp(bottle.getTransferlimit(inv[1]), true));
 				}
-				else if(inv[1].itemID == Item.glassBottle.itemID && inv[1].stackSize == 1)
+				else if (inv[1].itemID == Item.glassBottle.itemID && inv[1].stackSize == 1)
 				{
-					if(this.requestExp(10, false) == 10)
+					if (this.requestExp(10, false) == 10)
 					{
 						inv[1] = new ItemStack(Item.expBottle);
 						this.removeExp(10);
@@ -238,7 +235,7 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 				}
 			}
 			
-			if(worldObj.getWorldTime() % 20 == 0)
+			if (worldObj.getWorldTime() % 20 == 0)
 			{
 				this.importExp();
 			}
@@ -248,38 +245,45 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	public void importExp()
 	{
 		List<EntityXPOrb> hitList = worldObj.getEntitiesWithinAABB(EntityXPOrb.class, AxisAlignedBB.getBoundingBox(xCoord, yCoord, zCoord, xCoord + 1, yCoord + 1, zCoord + 1).expand(10.0D, 10.0D, 10.0D));
-
-		if (hitList.size() > 0) {
-			Loop:
-			for (EntityXPOrb orb : hitList) {
-				if (orb.isDead) {
+		
+		if (hitList.size() > 0)
+		{
+			Loop: for (EntityXPOrb orb : hitList)
+			{
+				if (orb.isDead)
+				{
 					continue Loop;
 					
 				}
-
+				
 				int oldxp = exp;
 				worldObj.playSoundAtEntity(orb, "random.orb", 0.1F, 0.5F * ((rand.nextFloat() - rand.nextFloat()) * 0.7F + 1.8F));
 				exp += orb.getXpValue();
 				orb.setDead();
-				if (oldxp == 0 && exp > 0) {
+				if (oldxp == 0 && exp > 0)
+				{
 					notifyChange();
-				} else {
+				}
+				else
+				{
 					notifyResize();
 				}
 			}
 		}
 	}
 	
-	private void notifyChange() {
+	private void notifyChange()
+	{
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
 		worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord - 1, zCoord, getBlockType().blockID);
 		notifyResize();
 	}
-
-	private void notifyResize() {
+	
+	private void notifyResize()
+	{
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
-
+	
 	@Override
 	public boolean canFill(ForgeDirection from, Fluid fluid)
 	{
@@ -306,65 +310,65 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 		return 2;
 	}
 	
-    public ItemStack getStackInSlot(int par1)
-    {
-        return this.inv[par1];
-    }
-
-    public ItemStack decrStackSize(int par1, int par2)
-    {
-        if (this.inv[par1] != null)
-        {
-            ItemStack itemstack;
-
-            if (this.inv[par1].stackSize <= par2)
-            {
-                itemstack = this.inv[par1];
-                this.inv[par1] = null;
-                return itemstack;
-            }
-            else
-            {
-                itemstack = this.inv[par1].splitStack(par2);
-
-                if (this.inv[par1].stackSize == 0)
-                {
-                    this.inv[par1] = null;
-                }
-
-                return itemstack;
-            }
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public ItemStack getStackInSlotOnClosing(int par1)
-    {
-        if (this.inv[par1] != null)
-        {
-            ItemStack itemstack = this.inv[par1];
-            this.inv[par1] = null;
-            return itemstack;
-        }
-        else
-        {
-            return null;
-        }
-    }
-
-    public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-    {
-        this.inv[par1] = par2ItemStack;
-
-        if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-        {
-            par2ItemStack.stackSize = this.getInventoryStackLimit();
-        }
-    }
-    
+	public ItemStack getStackInSlot(int par1)
+	{
+		return this.inv[par1];
+	}
+	
+	public ItemStack decrStackSize(int par1, int par2)
+	{
+		if (this.inv[par1] != null)
+		{
+			ItemStack itemstack;
+			
+			if (this.inv[par1].stackSize <= par2)
+			{
+				itemstack = this.inv[par1];
+				this.inv[par1] = null;
+				return itemstack;
+			}
+			else
+			{
+				itemstack = this.inv[par1].splitStack(par2);
+				
+				if (this.inv[par1].stackSize == 0)
+				{
+					this.inv[par1] = null;
+				}
+				
+				return itemstack;
+			}
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	public ItemStack getStackInSlotOnClosing(int par1)
+	{
+		if (this.inv[par1] != null)
+		{
+			ItemStack itemstack = this.inv[par1];
+			this.inv[par1] = null;
+			return itemstack;
+		}
+		else
+		{
+			return null;
+		}
+	}
+	
+	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
+	{
+		this.inv[par1] = par2ItemStack;
+		
+		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+		{
+			par2ItemStack.stackSize = this.getInventoryStackLimit();
+		}
+	}
+	
 	@Override
 	public String getInvName()
 	{
@@ -404,13 +408,14 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
-		if(itemstack != null)
+		if (itemstack != null)
 		{
-			if(itemstack != null && itemstack.getItem() instanceof IExpBottle)
+			if (itemstack != null && itemstack.getItem() instanceof IExpBottle)
 			{
 				return true;
 			}
-			else if(itemstack != null && itemstack.itemID == Item.expBottle.itemID);
+			else if (itemstack != null && itemstack.itemID == Item.expBottle.itemID)
+				;
 			{
 				return true;
 			}
@@ -418,47 +423,47 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 		return false;
 		
 	}
-
+	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-        NBTTagList nbttaglist = nbt.getTagList("Items");
-        this.inv = new ItemStack[this.getSizeInventory()];
-        for (int i = 0; i < nbttaglist.tagCount(); ++i)
-        {
-            NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
-            byte b0 = nbttagcompound1.getByte("Slot");
-
-            if (b0 >= 0 && b0 < this.inv.length)
-            {
-                this.inv[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-            }
-        }
-        exp = nbt.getInteger("Exp");
-        canAbsorbDeath = nbt.getBoolean("DEAD");
+		NBTTagList nbttaglist = nbt.getTagList("Items");
+		this.inv = new ItemStack[this.getSizeInventory()];
+		for (int i = 0; i < nbttaglist.tagCount(); ++i)
+		{
+			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
+			byte b0 = nbttagcompound1.getByte("Slot");
+			
+			if (b0 >= 0 && b0 < this.inv.length)
+			{
+				this.inv[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
+			}
+		}
+		exp = nbt.getInteger("Exp");
+		canAbsorbDeath = nbt.getBoolean("DEAD");
 	}
-
+	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-        NBTTagList nbttaglist = new NBTTagList();
-        for (int i = 0; i < this.inv.length; ++i)
-        {
-            if (this.inv[i] != null)
-            {
-                NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-                nbttagcompound1.setByte("Slot", (byte)i);
-                this.inv[i].writeToNBT(nbttagcompound1);
-                nbttaglist.appendTag(nbttagcompound1);
-            }
-        }
-        nbt.setTag("Items", nbttaglist);
-        nbt.setInteger("Exp", exp);
-        nbt.setBoolean("DEAD", canAbsorbDeath);
+		NBTTagList nbttaglist = new NBTTagList();
+		for (int i = 0; i < this.inv.length; ++i)
+		{
+			if (this.inv[i] != null)
+			{
+				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
+				nbttagcompound1.setByte("Slot", (byte) i);
+				this.inv[i].writeToNBT(nbttagcompound1);
+				nbttaglist.appendTag(nbttagcompound1);
+			}
+		}
+		nbt.setTag("Items", nbttaglist);
+		nbt.setInteger("Exp", exp);
+		nbt.setBoolean("DEAD", canAbsorbDeath);
 	}
-
+	
 	@Override
 	public Packet getDescriptionPacket()
 	{
@@ -466,18 +471,19 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 		this.writeToNBT(nbt);
 		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
 	}
-
+	
 	@Override
 	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
 	{
 		readFromNBT(pkt.data);
 	}
-
+	
 	int helper = 0;
+	
 	@Override
 	public void onReciveGuiInfo(int key, int val)
 	{
-		switch(key)
+		switch (key)
 		{
 			case 0:
 				helper = this.upcastShort(val);
@@ -487,7 +493,7 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 				break;
 		}
 	}
-
+	
 	@Override
 	public void onSendingGuiInfo(Container par1, ICrafting par2)
 	{
@@ -500,49 +506,49 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	{
 		return true;
 	}
-
+	
 	@Override
 	public Container getInventory(InventoryPlayer par1)
 	{
 		return new InventoryExpStorage(par1, this);
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public GuiContainer getGui(InventoryPlayer par1)
 	{
 		return new GuiExpBottle(par1, this);
 	}
-
+	
 	@Override
 	public boolean onActivated(EntityPlayer par1)
 	{
-		if(!this.canAbsorbDeath && par1.getCurrentEquippedItem() != null && par1.getCurrentEquippedItem().itemID == Item.diamond.itemID)
+		if (!this.canAbsorbDeath && par1.getCurrentEquippedItem() != null && par1.getCurrentEquippedItem().itemID == Item.diamond.itemID)
 		{
 			par1.addChatMessage("Machine absorbs now from dieing entities exp");
 			par1.getCurrentEquippedItem().stackSize--;
 			canAbsorbDeath = true;
 		}
-		if(hasContainer())
+		if (hasContainer())
 		{
 			par1.openGui(SpmodAPI.instance, EnumGuiIDs.Tiles.getID(), worldObj, xCoord, yCoord, zCoord);
 			return true;
 		}
 		return false;
 	}
-
+	
 	@Override
 	public void onBreaking()
 	{
-		if(!worldObj.isRemote)
+		if (!worldObj.isRemote)
 		{
-			while(exp > 0)
+			while (exp > 0)
 			{
 				EntityXPOrb orb = new EntityXPOrb(worldObj, xCoord, yCoord, zCoord, this.requestExp(EntityXPOrb.getXPSplit(exp), true));
 				worldObj.spawnEntityInWorld(orb);
 			}
 			
-			if(this.canAbsorbDeath)
+			if (this.canAbsorbDeath)
 			{
 				EntityItem item = new EntityItem(worldObj, xCoord, yCoord, zCoord, new ItemStack(Item.diamond));
 				item.delayBeforeCanPickup = 10;
@@ -550,29 +556,23 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 			}
 		}
 	}
-
+	
 	@Override
 	public int getExpStored()
 	{
 		return exp;
 	}
-
+	
 	@Override
 	public int getMaxStoredExp()
 	{
 		return Integer.MAX_VALUE;
 	}
-
+	
 	@Override
 	public boolean absorbDeath()
 	{
 		return this.canAbsorbDeath;
 	}
-
-
-
-	
-	
-	
 	
 }
