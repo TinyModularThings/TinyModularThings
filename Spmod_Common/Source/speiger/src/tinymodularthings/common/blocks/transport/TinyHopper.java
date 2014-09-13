@@ -46,9 +46,11 @@ import speiger.src.api.util.InventoryUtil;
 import speiger.src.spmodapi.common.handler.FakePlayer;
 import speiger.src.spmodapi.common.tile.AdvancedFluidTank;
 import speiger.src.spmodapi.common.tile.TileFacing;
+import speiger.src.spmodapi.common.util.TickHelper;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.transport.TinyHopperGui;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
+import speiger.src.tinymodularthings.common.utils.HopperBackupSystem;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 import speiger.src.tinymodularthings.common.utils.slot.InventoryFilter;
 import speiger.src.tinymodularthings.common.utils.slot.InventoryHopperUpgrades;
@@ -57,14 +59,12 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.tools.IToolWrench;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class TinyHopper extends TileFacing implements IFluidHandler, IHopper,
-		ISidedInventory, IPowerReceptor, IHopperInventory,
-		IAdvancedPipeProvider, IFilteredInventory, IPowerEmitter,
-		IOwnerProvider
+public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, ISidedInventory, IPowerReceptor, IHopperInventory, IAdvancedPipeProvider, IFilteredInventory, IPowerEmitter,IOwnerProvider
 {
 	public HopperType type;
 	public boolean redstone;
@@ -106,6 +106,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper,
 	{
 		setFacing(facing);
 		setRotation(ForgeDirection.getOrientation(facing).getOpposite().ordinal());
+		HopperBackupSystem.getSystem().backupData(this);
 	}
 	
 	public void setMode(int Mode)
@@ -605,6 +606,24 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper,
 			return;
 		}
 		
+		if(worldObj.getWorldTime() % 900 == 0)
+		{
+			if(TickHelper.getInstance().isCloseToBackup())
+			{
+				HopperBackupSystem.getSystem().backupData(this);
+			}
+		}
+		
+		if(this.InventoryMode <= 0)
+		{
+			if(worldObj.getWorldTime() % 40 == 0)
+			{
+				FMLLog.getLogger().info("Request Data");
+				HopperBackupSystem.getSystem().requestReloadFromBackup(this);
+			}
+			return;
+		}
+		
 		if (worldObj.getWorldTime() % 10 == 0)
 		{
 			this.updateBlock();
@@ -1098,5 +1117,15 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper,
 	{
 		return filter;
 	}
+
+	@Override
+	public void onBreaking()
+	{
+		HopperBackupSystem.getSystem().removeBackupData(this);
+	}
+
+	
+	
+	
 	
 }

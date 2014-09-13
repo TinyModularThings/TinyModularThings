@@ -421,7 +421,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		
 		private EnumLampType()
 		{
-			texture = TextureMap.locationBlocksTexture;
+			texture = new ResourceLocation("", "");
 			render = -1;
 			name = "";
 			facing = false;

@@ -1,12 +1,15 @@
 package speiger.src.tinymodularthings.client.core;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.items.LanguageItem;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.render.carts.CartItemRenderer;
 import speiger.src.tinymodularthings.client.render.carts.RenderTCarts;
@@ -88,6 +91,7 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		NeiRegistry.getInstance().init();
 		
 		registerLanguage();
+		
 	}
 	
 	private void registerLanguage()

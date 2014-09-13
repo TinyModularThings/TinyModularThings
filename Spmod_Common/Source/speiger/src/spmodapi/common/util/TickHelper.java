@@ -23,6 +23,11 @@ public class TickHelper implements ITickReader
 	
 	public ArrayList<OreReplacer> regainOre = new ArrayList<OreReplacer>();
 	
+	public boolean isCloseToBackup()
+	{
+		return cDelay + 1000 >= SpmodConfig.savingDelay;
+	}
+	
 	public void tick()
 	{
 		for (int i = 0; i < regainOre.size(); i++)

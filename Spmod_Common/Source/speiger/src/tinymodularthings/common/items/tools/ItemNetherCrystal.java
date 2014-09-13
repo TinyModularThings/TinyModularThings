@@ -46,7 +46,14 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 	static HashMap<String, BlockPositionList> replace = new HashMap<String, BlockPositionList>();
 	public static DataType dataLoaded = DataType.NotLoaded;
 	
-	public String[] names = new String[] { "nether.crystal", "nether.crystal.charging", "nether.crystal.charging", "nether.crystal.charged", "nether.crystal.used", "nether.crystal.broken" };
+	public String[] names = new String[] {
+			"nether.crystal", 
+			"nether.crystal.charging", 
+			"nether.crystal.charging", 
+			"nether.crystal.charged", 
+			"nether.crystal.used", 
+			"nether.crystal.broken" 
+	};
 	
 	public ItemNetherCrystal(int par1)
 	{
@@ -489,9 +496,10 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 	{
 		this.texture[0] = par1.registerIcon(this.getModID().toLowerCase() + ":tools/NetherCrystal");
 		this.texture[1] = par1.registerIcon(this.getModID().toLowerCase() + ":tools/NetherCrystal_Charged");
+		this.texture[2] = par1.registerIcon(this.getModID()+":tools/netherCrystal_discharged");
 	}
 	
-	Icon[] texture = new Icon[2];
+	Icon[] texture = new Icon[3];
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -500,6 +508,10 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 		if (par1 == 3)
 		{
 			return texture[1];
+		}
+		else if(par1 == 5)
+		{
+			return texture[2];
 		}
 		return texture[0];
 	}

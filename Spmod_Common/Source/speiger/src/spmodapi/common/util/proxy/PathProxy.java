@@ -19,6 +19,8 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import speiger.src.api.recipe.pressureFurnace.PressureRecipe;
 import speiger.src.api.recipe.pressureFurnace.helper.PressureRecipeList;
 import buildcraft.api.recipes.AssemblyRecipe;
+import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.common.FMLLog;
 
 public class PathProxy
 {
@@ -68,9 +70,9 @@ public class PathProxy
 	{
 		ArrayList<FluidContainerData> result = new ArrayList<FluidContainerData>();
 		FluidContainerData[] fluids = FluidContainerRegistry.getRegisteredFluidContainerData();
-		for (FluidContainerData data : fluids)
+		for(FluidContainerData data : fluids)
 		{
-			if (data.fluid.fluidID == par1.getID())
+			if(data.fluid.fluidID == par1.getID())
 			{
 				result.add(data);
 			}
@@ -82,9 +84,9 @@ public class PathProxy
 	{
 		ArrayList<ItemStack> stack = new ArrayList<ItemStack>();
 		FluidContainerData[] fluids = FluidContainerRegistry.getRegisteredFluidContainerData();
-		for (FluidContainerData data : fluids)
+		for(FluidContainerData data : fluids)
 		{
-			if (data.fluid.fluidID == par1.getID())
+			if(data.fluid.fluidID == par1.getID())
 			{
 				stack.add(data.filledContainer);
 			}
@@ -95,27 +97,48 @@ public class PathProxy
 	public static void removeRecipeS(ItemStack input, Item output)
 	{
 		List<IRecipe> crafting = CraftingManager.getInstance().getRecipeList();
-		for (int i = 0; i < crafting.size(); i++)
+		for(int i = 0;i < crafting.size();i++)
 		{
 			IRecipe recipe = crafting.get(i);
-			if (recipe != null)
+			if(recipe != null)
 			{
-				if (recipe instanceof ShapelessOreRecipe)
+				if(recipe instanceof ShapelessOreRecipe)
 				{
-					ShapelessOreRecipe ore = (ShapelessOreRecipe) recipe;
-					if (output.itemID == ore.getRecipeOutput().itemID)
+					ShapelessOreRecipe ore = (ShapelessOreRecipe)recipe;
+					if(output.itemID == ore.getRecipeOutput().itemID)
 					{
-						ArrayList list = (ArrayList) ore.getInput().get(0);
+						ArrayList list = (ArrayList)ore.getInput().get(0);
 						ArrayList toRemove = new ArrayList();
-						for (int z = 0; z < list.size(); z++)
+						for(int z = 0;z < list.size();z++)
 						{
-							if (input.isItemEqual((ItemStack) list.get(z)))
+							if(input.isItemEqual((ItemStack)list.get(z)))
 							{
 								toRemove.add(list.get(z));
 							}
 						}
 						list.removeAll(toRemove);
 						break;
+					}
+				}
+			}
+		}
+	}
+	
+	public static void removeRecipe(ItemStack resultItem)
+	{
+		List<IRecipe> recipes = CraftingManager.getInstance().getRecipeList();
+		for(int i = 0;i < recipes.size();i++)
+		{
+			IRecipe tmpRecipe = recipes.get(i);
+			ItemStack recipeResult = tmpRecipe.getRecipeOutput();
+			if(recipeResult != null)
+			{
+				if(resultItem.itemID == recipeResult.itemID && resultItem.getItemDamage() == recipeResult.getItemDamage())
+				{
+					FMLLog.getLogger().info("Test: " + System.currentTimeMillis());
+					if(recipes.remove(recipeResult))
+					{
+						return;
 					}
 				}
 			}
@@ -139,6 +162,11 @@ public class PathProxy
 		ItemStack result = Items.getItem(name);
 		result.stackSize = Math.min(result.getMaxStackSize(), qty);
 		return result;
+	}
+	
+	public static boolean isSingelPlayer()
+	{
+		return FMLCommonHandler.instance().getMinecraftServerInstance() != null;
 	}
 	
 }

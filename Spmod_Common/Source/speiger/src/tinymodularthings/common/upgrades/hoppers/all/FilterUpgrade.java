@@ -18,6 +18,8 @@ import speiger.src.tinymodularthings.common.enums.HopperUpgradeIDs;
 import speiger.src.tinymodularthings.common.upgrades.hoppers.guis.FilterGui;
 import speiger.src.tinymodularthings.common.upgrades.hoppers.guis.FilterInventory;
 import speiger.src.tinymodularthings.common.utils.HopperType;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class FilterUpgrade implements HopperUpgrade, IUpgradeGuiProvider
 {
@@ -99,6 +101,7 @@ public class FilterUpgrade implements HopperUpgrade, IUpgradeGuiProvider
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public GuiContainer getGui(InventoryPlayer par1, IHopper par2)
 	{
 		return new FilterGui(getInventory(par1, par2));

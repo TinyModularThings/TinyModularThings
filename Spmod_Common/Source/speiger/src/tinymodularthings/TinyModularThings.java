@@ -17,6 +17,7 @@ import speiger.src.tinymodularthings.common.core.TinyModularThingsCore;
 import speiger.src.tinymodularthings.common.entity.EntityRegister;
 import speiger.src.tinymodularthings.common.plugins.ModularModLoader;
 import speiger.src.tinymodularthings.common.recipes.RecipesCore;
+import speiger.src.tinymodularthings.common.utils.HopperBackupSystem;
 import speiger.src.tinymodularthings.common.world.WorldRegister;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -65,6 +66,7 @@ public class TinyModularThings implements SpmodMod
 		core.registerRenderer();
 		core.registerServer();
 		EntityRegister.getInstance().registerEntities();
+		HopperBackupSystem.getSystem();
 	}
 	
 	@EventHandler
