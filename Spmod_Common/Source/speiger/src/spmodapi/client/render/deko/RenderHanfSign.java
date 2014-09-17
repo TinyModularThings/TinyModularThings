@@ -34,7 +34,6 @@ public class RenderHanfSign extends TileEntitySpecialRenderer
 					case 0:
 						GL11.glRotatef(180, 0.0F, 0.0F, 1.0F);
 						GL11.glTranslatef(0.0F, 2.0F, 0.0F);
-						
 						break;
 					case 1:
 						GL11.glRotatef(90, 0.0F, 0.0F, 1.0F);

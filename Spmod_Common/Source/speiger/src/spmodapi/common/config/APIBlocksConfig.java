@@ -1,11 +1,14 @@
 package speiger.src.spmodapi.common.config;
 
 import speiger.src.spmodapi.common.blocks.deko.BlockBlueFlower;
+import speiger.src.spmodapi.common.blocks.deko.BlockKyrokaTheFox;
 import speiger.src.spmodapi.common.blocks.deko.BlockLightDeko;
 import speiger.src.spmodapi.common.blocks.deko.BlockMutliPlate;
 import speiger.src.spmodapi.common.blocks.deko.ItemBlockFlower;
+import speiger.src.spmodapi.common.blocks.deko.ItemBlockKyrokaTheFox;
 import speiger.src.spmodapi.common.blocks.deko.ItemBlockLightDekoBlock;
 import speiger.src.spmodapi.common.blocks.deko.ItemBlockMultiPlate;
+import speiger.src.spmodapi.common.blocks.deko.KyrokaTheFox;
 import speiger.src.spmodapi.common.blocks.deko.MultiPlate;
 import speiger.src.spmodapi.common.blocks.deko.TileLamp;
 import speiger.src.spmodapi.common.blocks.hemp.BlockHempCrop;
@@ -101,6 +104,12 @@ public class APIBlocksConfig
 		RegisterProxy.RegisterTile(blocks.blockUtils, ExpStorage.class, "ExpStorage");
 		RegisterProxy.RegisterTile(blocks.blockUtils, MobMachine.class, "MobMachine");
 		config.blockIDs.updateToNextID();
+		
+		blocks.statues = new BlockKyrokaTheFox(config.blockIDs.getCurrentID());
+		RegisterProxy.RegisterBlock(blocks.statues, ItemBlockKyrokaTheFox.class, "Statue");
+		RegisterProxy.RegisterTile(blocks.statues, KyrokaTheFox.class, "Kyroka");
+		config.blockIDs.updateToNextID();
+		
 		
 	}
 }

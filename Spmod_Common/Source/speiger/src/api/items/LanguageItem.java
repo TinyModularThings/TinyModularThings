@@ -26,5 +26,5 @@ public interface LanguageItem
 	 * @param par0
 	 *            Mod which want to request that
 	 */
-	void registerItems(int id, SpmodMod par0);
+	void registerItems(int par1, SpmodMod par0);
 }

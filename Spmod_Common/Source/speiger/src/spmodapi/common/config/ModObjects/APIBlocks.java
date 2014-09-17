@@ -28,5 +28,6 @@ public class APIBlocks
 	public static Block multiPlate;
 	
 	public static Block blockUtils;
+	public static Block statues;
 	
 }

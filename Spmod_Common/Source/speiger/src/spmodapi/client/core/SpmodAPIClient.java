@@ -2,9 +2,12 @@ package speiger.src.spmodapi.client.core;
 
 import net.minecraftforge.client.MinecraftForgeClient;
 import speiger.src.spmodapi.client.render.deko.ItemRendererLamp;
+import speiger.src.spmodapi.client.render.deko.ItemRendererStatue;
+import speiger.src.spmodapi.client.render.deko.RenderKyroka;
 import speiger.src.spmodapi.client.render.deko.RenderLamp;
 import speiger.src.spmodapi.client.render.utils.ItemRendererUtilsBlock;
 import speiger.src.spmodapi.client.render.utils.RenderUtilsBlock;
+import speiger.src.spmodapi.common.blocks.deko.KyrokaTheFox;
 import speiger.src.spmodapi.common.blocks.deko.TileLamp;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.core.SpmodAPICore;
@@ -25,6 +28,10 @@ public class SpmodAPIClient extends SpmodAPICore
 		// Utils
 		RenderingRegistry.registerBlockHandler(RenderUtilsBlock.renderID, new RenderUtilsBlock());
 		MinecraftForgeClient.registerItemRenderer(APIBlocks.blockUtils.blockID, new ItemRendererUtilsBlock());
+	
+		// Kyroka
+		MinecraftForgeClient.registerItemRenderer(APIBlocks.statues.blockID, new ItemRendererStatue());
+		ClientRegistry.bindTileEntitySpecialRenderer(KyrokaTheFox.class, new RenderKyroka());
 	}
 	
 	@Override
