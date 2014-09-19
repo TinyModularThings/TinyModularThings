@@ -32,6 +32,8 @@ public class TinyItems
 	public static Item gateItem;
 	
 	
+	public static Item potionBag;
+	
 	
 	// TransportItems
 	public static Item interfaceBlock;
@@ -53,5 +55,6 @@ public class TinyItems
 	public static Item emeraldPowerPipe;
 	public static Item redstoneFluidPipe;
 	public static Item refinedDiamondPowerPipe;
+	
 	
 }

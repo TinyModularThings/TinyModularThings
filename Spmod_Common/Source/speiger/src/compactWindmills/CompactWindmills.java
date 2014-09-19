@@ -20,6 +20,7 @@ import speiger.src.compactWindmills.common.blocks.BlockWindmill;
 import speiger.src.compactWindmills.common.blocks.ItemBlockWindmill;
 import speiger.src.compactWindmills.common.blocks.WindMill;
 import speiger.src.compactWindmills.common.core.CompactWindmillsCore;
+import speiger.src.compactWindmills.common.items.IceRotor;
 import speiger.src.compactWindmills.common.items.ItemAdvancedRotor;
 import speiger.src.compactWindmills.common.items.ItemRotor;
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
@@ -51,6 +52,7 @@ public class CompactWindmills implements SpmodMod
 	public static Block windmill;
 	public static Item rotor;
 	public static Item advRotor;
+	public static Item iceRotor; 
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt)
@@ -68,6 +70,7 @@ public class CompactWindmills implements SpmodMod
 			windmill = new BlockWindmill(Integer.parseInt(config.getBlock("Windmill", 2790).getString()));
 			rotor = new ItemRotor(Integer.parseInt(config.getItem("Rotor Item", 27900).getString()));
 			advRotor = new ItemAdvancedRotor(Integer.parseInt(config.getItem("Advanced Rotor Item", 27901).getString()));
+			iceRotor = new IceRotor(Integer.parseInt(config.getItem("IceRotor", 27902).getString()));
 			RegisterProxy.RegisterBlock(windmill, ItemBlockWindmill.class, "Windmill");
 			RegisterProxy.RegisterTile(windmill, WindMill.class, "WindmillType");
 			RegisterProxy.RegisterItem(ModID, "Windmill", rotor);

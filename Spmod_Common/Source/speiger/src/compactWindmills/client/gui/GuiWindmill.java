@@ -28,8 +28,14 @@ public class GuiWindmill extends GuiInventoryCore
 		String s = LanguageRegister.getLanguageName(this, "wind.mill", CompactWindmills.instance);
 		this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
-		this.fontRenderer.drawString("Rotor:", 40, 14, 0x404040);
-		this.fontRenderer.drawSplitString(LanguageRegister.getLanguageName(this, "output", CompactWindmills.instance) + " " + mill.cuOutput + "EU", 95, 15, 70, 0x404040);
+		this.fontRenderer.drawString("Rotor:", 44, 30, 0x404040);
+		String eu = String.valueOf(mill.cuOutput);
+		if(eu.length() > 4)
+		{
+			int size = eu.substring(eu.indexOf(".")).length();
+			eu = eu.substring(0, eu.indexOf(".")+ (size < 3 ? size : 3));
+		}
+		this.fontRenderer.drawSplitString(LanguageRegister.getLanguageName(this, "output", CompactWindmills.instance) + " " + eu + "EU", 105, 15, 70, 0x404040);
 	}
 	
 	private static final ResourceLocation furnaceGuiTextures = new ResourceLocation(CWPreference.ModID.toLowerCase() + ":textures/gui/GuiWindmill.png");

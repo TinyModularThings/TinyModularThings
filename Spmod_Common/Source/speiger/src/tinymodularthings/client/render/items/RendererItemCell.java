@@ -95,12 +95,12 @@ public class RendererItemCell implements IItemRenderer
 				int h;
 				if (fluid_stack.getFluid().isGaseous())
 				{
-					alpha = fluid_stack.amount * 250 / FluidContainerRegistry.BUCKET_VOLUME;
+					alpha = fluid_stack.amount * 250 / item.capacity;
 					h = 10;
 				}
 				else
 				{
-					h = fluid_stack.amount * 10 / FluidContainerRegistry.BUCKET_VOLUME;
+					h = fluid_stack.amount * 10 / item.capacity;
 					alpha = 255;
 				}
 				if (h > 0)

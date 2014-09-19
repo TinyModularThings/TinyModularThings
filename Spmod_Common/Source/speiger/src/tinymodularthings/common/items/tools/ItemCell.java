@@ -178,218 +178,220 @@ public class ItemCell extends TinyItem implements IFluidContainerItem
 	@Override
 	public ItemStack onItemRightClick(ItemStack stack, World world, EntityPlayer player)
 	{
-		FluidStack fluid = getFluid(stack);
-		MovingObjectPosition obj = getMovingObjectPositionFromPlayer(world, player, fluid == null || fluid.amount == 0);
+		if(!world.isRemote)
+		{
+			FluidStack fluid = getFluid(stack);
+			MovingObjectPosition obj = getMovingObjectPositionFromPlayer(world, player, true);
 
-		if (!NBTHelper.nbtCheck(stack, "Transport"))
-		{
-			NBTTagCompound nbt = new NBTTagCompound();
-			nbt.setInteger("Size", 3);
-			stack.setTagInfo("Transport", nbt);
-		}
-		
-		if (obj == null)
-		{
-			if (player.isSneaking())
+			if (!NBTHelper.nbtCheck(stack, "Transport"))
 			{
-				int size = NBTHelper.getTag(stack, "Transport").getInteger("Size");
-				if(size+1 >= array.length)
-				{
-					size = 0;
-				}
-				else
-				{
-					size++;
-				}
-				NBTHelper.getTag(stack, "Transport").setInteger("Size", size);
+				NBTTagCompound nbt = new NBTTagCompound();
+				nbt.setInteger("Size", 3);
+				stack.setTagInfo("Transport", nbt);
 			}
-			return stack;
-		}
-		if (obj.typeOfHit == EnumMovingObjectType.TILE)
-		{
-			int size = array[NBTHelper.getTag(stack, "Transport").getInteger("Size")];
-			int x = obj.blockX;
-			int y = obj.blockY;
-			int z = obj.blockZ;
-			
-			TileEntity entity = world.getBlockTileEntity(x, y, z);
-			
-			if (entity instanceof IFluidHandler)
+			if (obj == null)
 			{
-				IFluidHandler handler = (IFluidHandler) entity;
-				ForgeDirection side = ForgeDirection.getOrientation(obj.sideHit);
 				if (player.isSneaking())
 				{
+					int size = NBTHelper.getTag(stack, "Transport").getInteger("Size");
+					if(size+1 >= array.length)
+					{
+						size = 0;
+					}
+					else
+					{
+						size++;
+					}
+					NBTHelper.getTag(stack, "Transport").setInteger("Size", size);
+				}
+				return stack;
+			}
+			if (obj.typeOfHit == EnumMovingObjectType.TILE)
+			{
+				int size = array[NBTHelper.getTag(stack, "Transport").getInteger("Size")];
+				int x = obj.blockX;
+				int y = obj.blockY;
+				int z = obj.blockZ;
+				
+				TileEntity entity = world.getBlockTileEntity(x, y, z);
+				
+				if (entity instanceof IFluidHandler)
+				{
+					IFluidHandler handler = (IFluidHandler) entity;
+					ForgeDirection side = ForgeDirection.getOrientation(obj.sideHit);
+					if (player.isSneaking())
+					{
+						
+						FluidStack drained = drain(stack, size, false);
+						if (drained == null || drained.amount == 0)
+						{
+							return stack;
+						}
+						int filled = handler.fill(side, drained, false);
+						if (filled == 0)
+						{
+							return stack;
+						}
+						drained.amount = filled;
+						
+						drain(stack, filled, true);
+						handler.fill(side, drained, true);
+					}
+					else
+					{
+						
+						FluidStack drained = handler.drain(side, size, false);
+						if (drained == null || drained.amount == 0)
+						{
+							return stack;
+						}
+						int filled = fill(stack, drained, false, true);
+						if (filled == 0)
+						{
+							return stack;
+						}
+						if (!InventoryUtil.addItemToPlayer(stack, player))
+						{
+							return stack;
+						}
+						drained.amount = filled;
+						handler.drain(side, filled, true);
+						fill(stack, drained, true, false);
+					}
 					
-					FluidStack drained = drain(stack, size, false);
-					if (drained == null || drained.amount == 0)
+					return stack;
+				}
+				if (!world.canMineBlock(player, x, y, z))
+				{
+					return stack;
+				}
+				
+				
+				if (player.isSneaking())
+				{
+					switch (obj.sideHit)
+					{
+						case 0:
+							--y;
+							break;
+						case 1:
+							++y;
+							break;
+						case 2:
+							--z;
+							break;
+						case 3:
+							++z;
+							break;
+						case 4:
+							--x;
+							break;
+						case 5:
+							++x;
+							break;
+					}
+					
+					if (!player.canPlayerEdit(x, y, z, obj.sideHit, stack))
 					{
 						return stack;
 					}
-					int filled = handler.fill(side, drained, false);
-					if (filled == 0)
+					
+					Material material = world.getBlockMaterial(x, y, z);
+					
+					if (world.isAirBlock(x, y, z) || !material.isSolid())
 					{
+						
+						FluidStack drained = drain(stack, FluidContainerRegistry.BUCKET_VOLUME, false);
+						if (drained != null && drained.getFluid().canBePlacedInWorld() && drained.amount == FluidContainerRegistry.BUCKET_VOLUME)
+						{
+							drain(stack, FluidContainerRegistry.BUCKET_VOLUME, true);
+							if (!world.isRemote && !material.isLiquid())
+							{
+								world.destroyBlock(x, y, z, true);
+							}
+							int id = drained.getFluid().getBlockID();
+							if (id == Block.waterStill.blockID)
+							{
+								id = Block.waterMoving.blockID;
+							}
+							if (id == Block.lavaStill.blockID)
+							{
+								id = Block.lavaMoving.blockID;
+							}
+							world.setBlock(x, y, z, id, 0, 3);
+						}
 						return stack;
 					}
-					drained.amount = filled;
 					
-					drain(stack, filled, true);
-					handler.fill(side, drained, true);
 				}
 				else
 				{
+					if (!player.canPlayerEdit(x, y, z, obj.sideHit, stack))
+					{
+						return stack;
+					}
 					
-					FluidStack drained = handler.drain(side, size, false);
-					if (drained == null || drained.amount == 0)
-					{
-						return stack;
-					}
-					int filled = fill(stack, drained, false, true);
-					if (filled == 0)
-					{
-						return stack;
-					}
-					if (!InventoryUtil.addItemToPlayer(stack, player))
-					{
-						return stack;
-					}
-					drained.amount = filled;
-					handler.drain(side, filled, true);
-					fill(stack, drained, true, false);
-				}
-				
-				return stack;
-			}
-			
-			if (!world.canMineBlock(player, x, y, z))
-			{
-				return stack;
-			}
-			
-			if (player.isSneaking())
-			{
-				switch (obj.sideHit)
-				{
-					case 0:
-						--y;
-						break;
-					case 1:
-						++y;
-						break;
-					case 2:
-						--z;
-						break;
-					case 3:
-						++z;
-						break;
-					case 4:
-						--x;
-						break;
-					case 5:
-						++x;
-						break;
-				}
-				
-				if (!player.canPlayerEdit(x, y, z, obj.sideHit, stack))
-				{
-					return stack;
-				}
-				
-				Material material = world.getBlockMaterial(x, y, z);
-				
-				if (world.isAirBlock(x, y, z) || !material.isSolid())
-				{
+					Block block = Block.blocksList[world.getBlockId(x, y, z)];
 					
-					FluidStack drained = drain(stack, FluidContainerRegistry.BUCKET_VOLUME, false);
-					if (drained != null && drained.getFluid().canBePlacedInWorld() && drained.amount == FluidContainerRegistry.BUCKET_VOLUME)
+					if (block instanceof IFluidBlock)
 					{
-						drain(stack, FluidContainerRegistry.BUCKET_VOLUME, true);
-						if (!world.isRemote && !material.isLiquid())
+						IFluidBlock fluid_block = (IFluidBlock) block;
+						if (!fluid_block.canDrain(world, x, y, z))
 						{
-							world.destroyBlock(x, y, z, true);
+							return stack;
 						}
-						int id = drained.getFluid().getBlockID();
-						if (id == Block.waterStill.blockID)
+						FluidStack drained = fluid_block.drain(world, x, y, z, false);
+						if (drained == null)
 						{
-							id = Block.waterMoving.blockID;
+							return stack;
 						}
-						if (id == Block.lavaStill.blockID)
+						int filled = fill(stack, drained, false, true);
+						if (filled != drained.amount)
 						{
-							id = Block.lavaMoving.blockID;
+							return stack;
 						}
-						world.setBlock(x, y, z, id, 0, 3);
-					}
-					return stack;
-				}
-				
-			}
-			else
-			{
-				
-				if (!player.canPlayerEdit(x, y, z, obj.sideHit, stack))
-				{
-					return stack;
-				}
-				
-				Block block = Block.blocksList[world.getBlockId(x, y, z)];
-				
-				if (block instanceof IFluidBlock)
-				{
-					IFluidBlock fluid_block = (IFluidBlock) block;
-					if (!fluid_block.canDrain(world, x, y, z))
-					{
-						return stack;
-					}
-					FluidStack drained = fluid_block.drain(world, x, y, z, false);
-					if (drained == null)
-					{
-						return stack;
-					}
-					int filled = fill(stack, drained, false, true);
-					if (filled != drained.amount)
-					{
-						return stack;
-					}
-					if (!InventoryUtil.addItemToPlayer(stack, player))
-					{
-						return stack;
-					}
-					fluid_block.drain(world, x, y, z, true);
-					fill(stack, drained, true, false);
-					
-					return stack;
-				}
-				
-				if (world.getBlockMaterial(x, y, z) == Material.water && world.getBlockMetadata(x, y, z) == 0)
-				{
-					FluidStack fill = new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME);
-					if (fill(stack, fill, false, true) == FluidContainerRegistry.BUCKET_VOLUME)
-					{
 						if (!InventoryUtil.addItemToPlayer(stack, player))
 						{
 							return stack;
 						}
-						fill(stack, fill, true, false);
-						world.setBlockToAir(x, y, z);
+						fluid_block.drain(world, x, y, z, true);
+						fill(stack, drained, true, false);
+						
+						return stack;
 					}
 					
-					return stack;
-				}
-				
-				if (world.getBlockMaterial(x, y, z) == Material.lava && world.getBlockMetadata(x, y, z) == 0)
-				{
-					FluidStack fill = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
-					if (fill(stack, fill, false, true) == FluidContainerRegistry.BUCKET_VOLUME)
+					if (world.getBlockMaterial(x, y, z) == Material.water && world.getBlockMetadata(x, y, z) == 0)
 					{
-						if (!InventoryUtil.addItemToPlayer(stack, player))
+						FluidStack fill = new FluidStack(FluidRegistry.WATER, FluidContainerRegistry.BUCKET_VOLUME);
+						if (fill(stack, fill, false, true) == FluidContainerRegistry.BUCKET_VOLUME)
 						{
-							return stack;
+							if (!InventoryUtil.addItemToPlayer(stack, player))
+							{
+								return stack;
+							}
+							fill(stack, fill, true, false);
+							world.setBlockToAir(x, y, z);
 						}
-						fill(stack, fill, true, false);
-						world.setBlockToAir(x, y, z);
+						
+						return stack;
 					}
 					
-					return stack;
+					if (world.getBlockMaterial(x, y, z) == Material.lava && world.getBlockMetadata(x, y, z) == 0)
+					{
+						FluidStack fill = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
+						if (fill(stack, fill, false, true) == FluidContainerRegistry.BUCKET_VOLUME)
+						{
+							FMLLog.getLogger().info("Test");
+							if (!InventoryUtil.addItemToPlayer(stack, player))
+							{
+								return stack;
+							}
+							fill(stack, fill, true, false);
+							world.setBlockToAir(x, y, z);
+						}
+						
+						return stack;
+					}
 				}
 			}
 		}
@@ -508,8 +510,17 @@ public class ItemCell extends TinyItem implements IFluidContainerItem
 		}
 		else
 		{
+			if(capacity == storedFluid.amount)
+			{
+				return 0;
+			}
+			if(capacity < storedFluid.amount + fluid.amount)
+			{
+				return fluid.amount - (storedFluid.amount + fluid.amount - capacity);
+			}
+			
 			int newFluid = Math.min(capacity, storedFluid.amount + fluid.amount);
-			int added = storedFluid.amount - (fluid.amount - storedFluid.amount);
+			int added = storedFluid.amount + (fluid.amount - storedFluid.amount);
 			if (do_fill)
 			{
 				storedFluid.amount = newFluid;

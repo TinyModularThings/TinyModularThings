@@ -43,5 +43,11 @@ public class WindmillFake implements IWindmill
 	{
 		return -1;
 	}
+
+	@Override
+	public boolean isFake()
+	{
+		return true;
+	}
 	
 }

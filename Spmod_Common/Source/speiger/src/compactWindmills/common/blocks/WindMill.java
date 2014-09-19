@@ -45,7 +45,7 @@ public class WindMill extends TileIC2Facing implements IInventory,
 	public boolean loaded = false;
 	public boolean damageActive = false;
 	public WindmillType type;
-	public int cuOutput = 0;
+	public double cuOutput = 0;
 	
 	public WindMill()
 	{
@@ -270,7 +270,7 @@ public class WindMill extends TileIC2Facing implements IInventory,
 				
 				if (worldObj.getWorldTime() % 64 == 0)
 				{
-					int oldOutput = cuOutput;
+					double oldOutput = cuOutput;
 					((IRotorItem) inv[0].getItem()).onRotorTick(this, this.worldObj, inv[0]);
 					cuOutput = getCurrentOutput();
 					// FMLLog.getLogger().info("Damage: ");
@@ -282,7 +282,7 @@ public class WindMill extends TileIC2Facing implements IInventory,
 			}
 			else
 			{
-				int oldOutput = cuOutput;
+				double oldOutput = cuOutput;
 				cuOutput = 0;
 				if (oldOutput != cuOutput)
 				{
@@ -292,7 +292,7 @@ public class WindMill extends TileIC2Facing implements IInventory,
 		}
 	}
 	
-	public int getCurrentOutput()
+	public double getCurrentOutput()
 	{
 		int blocks = getNoneAirBlocks();
 		float weather = getWeather();
@@ -317,7 +317,7 @@ public class WindMill extends TileIC2Facing implements IInventory,
 		{
 			return 0;
 		}
-		return (int) energy;
+		return energy;
 	}
 	
 	public float rotorUpdate()
@@ -556,7 +556,7 @@ public class WindMill extends TileIC2Facing implements IInventory,
 				this.inv[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
 			}
 		}
-		cuOutput = nbt.getInteger("Output");
+		cuOutput = nbt.getDouble("Output");
 		damageActive = nbt.getBoolean("Damage");
 		type = WindmillType.values()[nbt.getInteger("Type")];
 	}
@@ -577,7 +577,7 @@ public class WindMill extends TileIC2Facing implements IInventory,
 			}
 		}
 		nbt.setTag("Items", nbttaglist);
-		nbt.setInteger("Output", cuOutput);
+		nbt.setDouble("Output", cuOutput);
 		nbt.setBoolean("Damage", damageActive);
 		nbt.setInteger("Type", type.ordinal());
 	}
@@ -608,6 +608,12 @@ public class WindMill extends TileIC2Facing implements IInventory,
 	public ItemStack getWrenchDrop(EntityPlayer entityPlayer)
 	{
 		return new BlockStack(this).asItemStack();
+	}
+
+	@Override
+	public boolean isFake()
+	{
+		return false;
 	}
 	
 }

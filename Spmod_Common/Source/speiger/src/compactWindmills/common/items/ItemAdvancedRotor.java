@@ -2,6 +2,7 @@ package speiger.src.compactWindmills.common.items;
 
 import ic2.api.item.Items;
 
+import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -88,6 +89,23 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem,
 				par3.add("Absorbing Damage: " + nbt.getInteger("AbsorbeDamage"));
 			}
 		}
+		
+		par3.add("Press Ctrl to get Crafting infos");
+		
+		if(Keyboard.isKeyDown(Keyboard.KEY_LCONTROL))
+		{
+			par3.remove(par3.size()-1);
+			par3.add("");
+			par3.addAll(Arrays.asList("Crafting works like this:", "Throw the Rotor and StickyResin (IC2) and the the Requirement item in Water", "StackSize has to be 1", "It will combine automaticly if it finds everything"));
+			par3.add("");
+			par3.add("Crafting Items and Effects:");
+			par3.addAll(Arrays.asList("IridiumPlate: Efficeny: -1/2 , Unbreakable", "Obsidian: Efficeny: -5%, Extra Damage: 40500 Points", 
+					"Book: Allow Enchanting, (Only 1 Time Possible)", 
+					"Wool: Efficeny: +25%, ExtraLife: -1/10", "Plutonium: Efficeny: -5%, Activate Autorepair (Rotor still can break,"," Only 1 Time Possible and works only with Metal Rotors)", 
+					"Uran235: DamageAbsorbtion: 200000 Points","(Does absorb damage randomly, Works only with Metal Rotors)",
+					"DensedIronPlate: Efficey: -2%, Extra Damage: 2250 Points", 
+					"Carbon Plate: Extra Damage: -625 Points, Efficeny: +15%"));
+		}
 	}
 	
 	@Override
@@ -126,6 +144,8 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem,
 	{
 		return getDisplayName(par1ItemStack, CompactWindmills.instance);
 	}
+	
+	
 	
 	@Override
 	public void registerItems(int id, SpmodMod par0)
@@ -272,6 +292,11 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem,
 		{
 			eff = 0.01F;
 		}
+		if(!par2.isFake() && par2.getWindmill().getWorldObj().provider.isHellWorld)
+		{
+			return 0.01F;
+		}
+		
 		if (NBTHelper.nbtCheck(par1, "Rotor"))
 		{
 			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Rotor");

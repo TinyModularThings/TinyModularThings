@@ -38,4 +38,9 @@ public interface IWindmill
 	 * @Return the Facing of the Rotor
 	 */
 	public short getFacing();
+	
+	/**
+	 * if you return true then he do not try to get data.
+	 */
+	public boolean isFake();
 }

@@ -26,6 +26,7 @@ import speiger.src.tinymodularthings.common.items.minecarts.TinyChestCart;
 import speiger.src.tinymodularthings.common.items.study.ItemInformationBook;
 import speiger.src.tinymodularthings.common.items.tools.ItemCell;
 import speiger.src.tinymodularthings.common.items.tools.ItemNetherCrystal;
+import speiger.src.tinymodularthings.common.items.tools.ItemPotionBag;
 import speiger.src.tinymodularthings.common.items.tools.ItemTinyInfo;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import speiger.src.tinymodularthings.common.pipes.FluidRegstonePipe;
@@ -143,8 +144,12 @@ public class TinyItemsConfig
 		RegisterItem(items.advEnergyHopper, "AdvancedEnergyHopper");
 		config.item.updateToNextID();
 		
-		items.cell = new ItemCell(config.item.getCurrentID(), 1000);
+		items.cell = new ItemCell(config.item.getCurrentID(), 5000);
 		RegisterItem(items.cell, "SmallCell");
+		config.item.updateToNextID();
+		
+		items.potionBag = new ItemPotionBag(config.item.getCurrentID());
+		RegisterItem(items.potionBag, "PotionBag");
 		config.item.updateToNextID();
 		
 	}
