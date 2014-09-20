@@ -22,17 +22,19 @@ import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.common.core.CWPreference;
 import speiger.src.compactWindmills.common.items.ItemRotor.BasicRotorType;
 import speiger.src.spmodapi.common.enums.EnumColor;
+import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.items.SpmodItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class IceRotor extends SpmodItem implements IRotorItem
 {
-	public static ResourceLocation texture = new ResourceLocation(CWPreference.ModID.toLowerCase()+"textures/renders/rotor.base.ice.png");
+	public static ResourceLocation texture = new ResourceLocation(CWPreference.ModID.toLowerCase()+":textures/renders/rotor.base.ice.png");
 	public IceRotor(int par1)
 	{
 		super(par1);
 		this.setMaxDamage(Short.MAX_VALUE);
+		this.setMaxStackSize(1);
 	}
 
 	@Override
@@ -167,7 +169,7 @@ public class IceRotor extends SpmodItem implements IRotorItem
 	@SideOnly(Side.CLIENT)
 	public int getColorFromItemStack(ItemStack par1ItemStack, int par2)
 	{
-		return EnumColor.LIGHTBLUE.getAsHex();
+		return SpmodColor.fromHex(EnumColor.LIGHTBLUE.getAsHex()).mixWith(SpmodColor.fromHex(EnumColor.WHITE.getAsHex())).getHex();
 	}
 
 	@Override

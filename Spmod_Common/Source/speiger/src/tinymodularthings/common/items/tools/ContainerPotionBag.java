@@ -9,6 +9,7 @@ import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.common.utils.slot.SlotPotion;
+import speiger.src.tinymodularthings.common.utils.slot.SlotPotionFilter;
 
 public class ContainerPotionBag extends AdvContainer
 {
@@ -16,13 +17,17 @@ public class ContainerPotionBag extends AdvContainer
 	public ContainerPotionBag(InventoryPlayer par1, IInventory par2)
 	{
 		inv = par2;
-		
+		int slot = 0;
 		for(int x = 0;x<4;x++)
 		{
 			for(int y = 0;y<9;y++)
 			{
-				this.addSpmodSlotToContainer(new SlotPotion(par2, y + x * 9, 8 + y * 18, 18 + x * 18));
+				this.addSpmodSlotToContainer(new SlotPotion(par2, slot++, 8 + y * 18, 18 + x * 18));
 			}
+		}
+		for(int i = 0;i<9;i++)
+		{
+			this.addSpmodSlotToContainer(new SlotPotionFilter(par2, slot++, 8 + i * 18, 100));
 		}
 		
 		this.setInventory(par1, 8, 140);
@@ -34,7 +39,10 @@ public class ContainerPotionBag extends AdvContainer
 		return true;
 	}
 	
-	
+	public void saveInventory()
+	{
+		inv.closeChest();
+	}
 
 	@Override
 	public void onContainerClosed(EntityPlayer par1)
@@ -60,17 +68,17 @@ public class ContainerPotionBag extends AdvContainer
             ItemStack itemstack1 = slot.getStack();
             itemstack = itemstack1.copy();
 
-            if (par2 >= 36)
+            if (par2 >= 45)
             {
             	if(itemstack1.itemID == Item.glassBottle.itemID || itemstack1.getItem() instanceof ItemPotion)
             	{
-                    if (!this.mergeItemStack(itemstack1, 0, 36, false))
+                    if (!this.mergeItemStack(itemstack1, 0, 45, false))
                     {
                         return null;
                     }
             	}
             }
-            else if (!this.mergeItemStack(itemstack1, 36, 72, true))
+            else if (!this.mergeItemStack(itemstack1, 45, 81, true))
             {
                 return null;
             }

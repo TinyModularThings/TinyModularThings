@@ -3,7 +3,23 @@ package speiger.src.spmodapi.common.enums;
 public enum EnumColor
 {
 	
-	BLACK(15, 0, 0x333333, "black"), RED(14, 1, 0xff0000, "red"), GREEN(13, 2, 0x009900, "green"), BROWN(12, 3, 0x553300, "brown"), BLUE(11, 4, 0x3333ff, "blue"), PURPLE(10, 5, 0x9900ff, "purple"), CYAN(9, 6, 0x00ffff, "cyan"), LIGHTGRAY(8, 7, 0x666666, "lightgray"), GRAY(7, 8, 0x434343, "gray"), PINK(6, 9, 0xe881a8, "pink"), LIME(5, 10, 0x41ff34, "lime"), YELLOW(4, 11, 0xffff00, "yellow"), LIGHTBLUE(3, 12, 0x6666ff, "lightblue"), MAGENTA(2, 13, 0xff0099, "magenta"), ORANGE(1, 14, 0xff9900, "orange"), WHITE(0, 15, 0xffffff, "white"), Nothing(-1, -1, 0xf0f0f0, "nothing");
+	BLACK(15, 0, 0x333333, "black"),
+	RED(14, 1, 0xff0000, "red"),
+	GREEN(13, 2, 0x009900, "green"),
+	BROWN(12, 3, 0x553300, "brown"),
+	BLUE(11, 4, 0x3333ff, "blue"),
+	PURPLE(10, 5, 0x9900ff, "purple"),
+	CYAN(9, 6, 0x00ffff, "cyan"),
+	LIGHTGRAY(8, 7, 0x666666, "lightgray"),
+	GRAY(7, 8, 0x434343, "gray"),
+	PINK(6, 9, 0xe881a8, "pink"),
+	LIME(5, 10, 0x41ff34, "lime"),
+	YELLOW(4, 11, 0xffff00, "yellow"),
+	LIGHTBLUE(3, 12, 0x6666ff, "lightblue"),
+	MAGENTA(2, 13, 0xff0099, "magenta"),
+	ORANGE(1, 14, 0xff9900, "orange"),
+	WHITE(0, 15, 0xffffff, "white"),
+	Nothing(-1, -1, 0xf0f0f0, "nothing");
 	
 	Integer hex;
 	int wool;
@@ -20,9 +36,9 @@ public enum EnumColor
 	
 	public static EnumColor getColorFromWool(int id)
 	{
-		for (EnumColor value : values())
+		for(EnumColor value : values())
 		{
-			if (value.wool == id)
+			if(value.wool == id)
 			{
 				return value;
 			}
@@ -85,9 +101,9 @@ public enum EnumColor
 		
 		public int getHex()
 		{
-			int r255 = (int) Math.round(red * 255) & 0xff;
-			int g255 = (int) Math.round(green * 255) & 0xff;
-			int b255 = (int) Math.round(blue * 255) & 0xff;
+			int r255 = (int)Math.round(red * 255) & 0xff;
+			int g255 = (int)Math.round(green * 255) & 0xff;
+			int b255 = (int)Math.round(blue * 255) & 0xff;
 			return r255 << 16 | g255 << 8 | b255;
 		}
 		
@@ -132,6 +148,11 @@ public enum EnumColor
 			green *= par0;
 			blue *= par0;
 			return this;
+		}
+		
+		public SpmodColor mixWith(SpmodColor color)
+		{
+			return new SpmodColor((red + color.red) / 2D, (green + color.green) / 2D, (blue + color.blue) / 2D);
 		}
 	}
 	
