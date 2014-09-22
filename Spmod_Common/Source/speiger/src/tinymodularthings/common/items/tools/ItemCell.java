@@ -52,7 +52,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemCell extends TinyItem implements IFluidContainerItem
 {
 	
-	Icon[] icon = new Icon[4];
+	Icon[] icon = new Icon[3];
 	public int[] array = new int[]{1,5,10,50,100,500,1000};
 	public final int capacity;
 	
@@ -71,10 +71,9 @@ public class ItemCell extends TinyItem implements IFluidContainerItem
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister register)
 	{
-		icon[0] = register.registerIcon(this.getModID() + ":tools/cell_foreground");
-		icon[1] = register.registerIcon(this.getModID() + ":tools/cell_background");
-		icon[2] = register.registerIcon(this.getModID() + ":tools/cell_def_empty");
-		icon[3] = register.registerIcon(this.getModID() + ":tools/cell_def_full");
+		icon[0] = register.registerIcon(this.getModID() + ":tools/tinyCell_fg");
+		icon[1] = register.registerIcon(this.getModID() + ":tools/tinyCell_bg");
+		icon[2] = register.registerIcon(this.getModID() + ":tools/tinyCell_empty");
 	}
 	
 	@Override
@@ -203,6 +202,7 @@ public class ItemCell extends TinyItem implements IFluidContainerItem
 						size++;
 					}
 					NBTHelper.getTag(stack, "Transport").setInteger("Size", size);
+					player.sendChatToPlayer(LanguageRegister.createChatMessage("Transferlimit Changed to: "+array[size]+"mB"));
 				}
 				return stack;
 			}

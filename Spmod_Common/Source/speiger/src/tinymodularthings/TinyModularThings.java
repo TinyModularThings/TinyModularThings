@@ -44,7 +44,7 @@ public class TinyModularThings implements SpmodMod
 	
 	public static LogProxy log;
 	
-	public static boolean LanguagePrint = false;
+	public static boolean LanguagePrint = true;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt)

@@ -25,6 +25,7 @@ import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import speiger.src.tinymodularthings.common.utils.HopperType;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -253,7 +254,7 @@ public class BlockTransport extends BlockContainer
 		}
 		return drop;
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1)

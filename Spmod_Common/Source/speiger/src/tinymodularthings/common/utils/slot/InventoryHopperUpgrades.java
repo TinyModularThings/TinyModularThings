@@ -137,7 +137,7 @@ public class InventoryHopperUpgrades implements IInventory
 			}
 			else if (items[i] != null && upgrades[i] == null)
 			{
-				HopperUpgrade up = ((IHopperUpgradeItem) items[i].getItem()).getUpgrade(items[i]);
+				HopperUpgrade up = ((IHopperUpgradeItem) items[i].getItem()).getUpgrade(items[i], hopper);
 				if (hopper.addUpgrade(up))
 				{
 					upgrades[i] = up;
@@ -215,7 +215,7 @@ public class InventoryHopperUpgrades implements IInventory
 		{
 			if (stack != null)
 			{
-				upgrade.add(((IHopperUpgradeItem) stack.getItem()).getUpgrade(stack));
+				upgrade.add(((IHopperUpgradeItem) stack.getItem()).getUpgrade(stack, hopper));
 			}
 		}
 		return upgrade;

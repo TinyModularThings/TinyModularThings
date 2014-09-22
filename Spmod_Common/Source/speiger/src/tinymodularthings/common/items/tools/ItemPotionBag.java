@@ -1,13 +1,16 @@
 package speiger.src.tinymodularthings.common.items.tools;
 
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -15,6 +18,7 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import speiger.src.api.items.DisplayItem;
 import speiger.src.api.items.IItemGui;
 import speiger.src.api.language.LanguageRegister;
+import speiger.src.api.nbt.NBTHelper;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.tinymodularthings.TinyModularThings;
@@ -28,7 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemPotionBag extends TinyItem implements IItemGui
 {
 	
-	
+	public static Icon[] textures = new Icon[3];
 	
 	public ItemPotionBag(int par1)
 	{
@@ -73,11 +77,58 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 	{
 		return true;
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+		textures[0] = par1IconRegister.registerIcon(this.getModID()+":tools/potionBag");
+		textures[1] = par1IconRegister.registerIcon(this.getModID()+":tools/potionBag_noPotions");
+		textures[2] = par1IconRegister.registerIcon(this.getModID()+":tools/potionBag_inactive");
+	}
+	
+	@Override
+	public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
+	{
+		return getIcon(stack, renderPass);
+	}
+
+	@Override
+	public Icon getIcon(ItemStack stack, int pass)
+	{
+		NBTTagCompound nbt = NBTHelper.getTag(stack, "Bag");
+		NBTTagCompound data = nbt.getCompoundTag("BagData");
+		if(!data.getBoolean("Active"))
+		{
+			return textures[2];
+		}
+		
+		PotionInventory inv = new PotionInventory(null, stack);
+		if(!inv.hasPotions())
+		{
+			return textures[1];
+		}
+		
+		return textures[0];
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresMultipleRenderPasses()
+	{
+		return true;
+	}
+	
+	@Override
+	public int getRenderPasses(int metadata)
+	{
+		return 1;
+	}
 
 	@Override
 	public Container getContainer(InventoryPlayer par1, ItemStack par2)
 	{
-		return new ContainerPotionBag(par1, new PotionInventory(par1, par2));
+		return new ContainerPotionBag(par1, new PotionInventory(par1.player, par2));
 	}
 	
 	
@@ -88,9 +139,13 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 		super.onUpdate(par1, par2, par3, par4, par5);
 		if(!par2.isRemote && par3 != null && par3 instanceof EntityPlayer)
 		{
-			PotionInventory inv = new PotionInventory(((EntityPlayer)par3).inventory, par1);
-			inv.onTick(par1);
-			inv.onInventoryChanged();
+			boolean active = NBTHelper.getTag(par1, "Bag").getCompoundTag("BagData").getBoolean("Active");
+			if(active)
+			{
+				PotionInventory inv = new PotionInventory(((EntityPlayer)par3), par1);
+				inv.onTick(par1);
+				inv.onInventoryChanged();
+			}
 		}
 	}
 
@@ -101,7 +156,8 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 		{
 			if(par3.isSneaking())
 			{
-				
+				NBTTagCompound nbt = NBTHelper.getTag(par1, "Bag").getCompoundTag("BagData");
+				nbt.setBoolean("Active", !nbt.getBoolean("Active"));
 			}
 			else
 			{
@@ -119,7 +175,9 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 		stack.setTagInfo("Bag", nbt);
 		return stack;
 	}
+	
 	public static boolean delay = false;
+	
 	@ForgeSubscribe
 	public void onDrop(ItemTossEvent evt)
 	{
@@ -140,5 +198,6 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 			}
 		}
 	}
+	
 	
 }

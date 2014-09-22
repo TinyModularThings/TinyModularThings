@@ -2,8 +2,6 @@ package speiger.src.tinymodularthings.common.items.tools;
 
 import java.util.List;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
@@ -22,10 +20,10 @@ public class PotionInventory extends BasicItemInventory
 	EntityPlayer player;
 	String id;
 	
-	public PotionInventory(InventoryPlayer par1, ItemStack par2)
+	public PotionInventory(EntityPlayer par1, ItemStack par2)
 	{
 		super(45);
-		player = par1.player;
+		player = par1;
 		id = NBTHelper.getTag(par2, "Bag").getString("ID");
 		readFromNBT(NBTHelper.getTag(par2, "Bag").getCompoundTag("Inventory"));
 	}
@@ -219,7 +217,7 @@ public class PotionInventory extends BasicItemInventory
 			}
 			else if(potion == potion.heal)
 			{
-				return player.getHealth() < player.getMaxHealth() - (4<<par1.getAmplifier());
+				return player.getHealth() <= player.getMaxHealth() - (4<<par1.getAmplifier());
 			}
 			return true;
 		}
@@ -259,5 +257,16 @@ public class PotionInventory extends BasicItemInventory
 		return null;
 	}
 	
-	
+	public boolean hasPotions()
+	{
+		for(int i = 0;i<36;i++)
+		{
+			ItemStack stack = this.getStackInSlot(i);
+			if(stack != null && stack.getItem() instanceof ItemPotion)
+			{
+				return true;
+			}
+		}
+		return false;
+	}
 }

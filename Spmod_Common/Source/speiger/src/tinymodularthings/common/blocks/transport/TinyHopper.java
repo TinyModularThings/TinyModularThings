@@ -377,7 +377,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 					IHopperUpgradeItem upgrade = (IHopperUpgradeItem) item.getItem();
 					if (upgrade != null)
 					{
-						HopperUpgrade hopper = upgrade.getUpgrade(item);
+						HopperUpgrade hopper = upgrade.getUpgrade(item, this);
 						if (this.addUpgrade(hopper))
 						{
 							installedUpgrades.addUpgrade(item, hopper);
