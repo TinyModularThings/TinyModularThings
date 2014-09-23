@@ -49,7 +49,7 @@ public interface IRotorItem
 	ResourceLocation getRenderTexture(ItemStack par1);
 	
 	/**
-	 * This is the Rotor tick. Happens every 60 Ticks (3 Sek) This happens
+	 * This is the Rotor tick. Happens every 64 Ticks (3,2 Sek) This happens
 	 * Before everything else in requesting Stuff.
 	 * 
 	 * @IWindMill Windmill Itself.

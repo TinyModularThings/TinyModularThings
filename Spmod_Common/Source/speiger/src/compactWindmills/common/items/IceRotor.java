@@ -24,6 +24,7 @@ import speiger.src.compactWindmills.common.items.ItemRotor.BasicRotorType;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.items.SpmodItem;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -68,7 +69,6 @@ public class IceRotor extends SpmodItem implements IRotorItem
 	@Override
 	public void damageRotor(ItemStack par1, int damage, IWindmill windmill)
 	{
-
 		par1.setItemDamage(par1.getItemDamage()+damage);
 		if(par1.getItemDamage() > par1.getMaxDamage())
 		{
@@ -78,16 +78,6 @@ public class IceRotor extends SpmodItem implements IRotorItem
 	
 	
 	
-	@Override
-	public int getDamage(ItemStack stack)
-	{
-		if(!NBTHelper.nbtCheck(stack, "Rotor"))
-		{
-			stack.setTagInfo("Rotor", new NBTTagCompound());
-		}
-		return NBTHelper.getTag(stack, "Rotor").getInteger("Damage");
-	}
-	
 	public static ItemStack getRotor(int id)
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
@@ -95,17 +85,6 @@ public class IceRotor extends SpmodItem implements IRotorItem
 		nbt.setFloat("Eff", 0.2F);
 		ItemStack item = new ItemStack(id, 1, 0);
 		return item;
-	}
-
-	@Override
-	public void setDamage(ItemStack stack, int damage)
-	{
-		if(!NBTHelper.nbtCheck(stack, "Rotor"))
-		{
-			stack.setTagInfo("Rotor", new NBTTagCompound());
-		}
-		
-		NBTHelper.getTag(stack, "Rotor").setInteger("Damage", damage);
 	}
 	
 	
@@ -140,21 +119,11 @@ public class IceRotor extends SpmodItem implements IRotorItem
 	}
 
 	@Override
-	public int getDisplayDamage(ItemStack stack)
-	{
-		int damage = getDamage(stack);
-		double per = ((double) damage / (double) this.getMaxDamage());
-		return (int)per;
-	}
-
-	@Override
 	@SideOnly(Side.CLIENT)
 	public ResourceLocation getRenderTexture(ItemStack par1)
 	{
 		return texture;
 	}
-	
-	
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -162,8 +131,6 @@ public class IceRotor extends SpmodItem implements IRotorItem
 	{
 		return CompactWindmills.rotor.getIconFromDamage(BasicRotorType.IridiumRotor.ordinal());
 	}
-	
-	
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -250,7 +217,7 @@ public class IceRotor extends SpmodItem implements IRotorItem
 	@Override
 	public String getDisplayName(ItemStack par1, SpmodMod par0)
 	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "rotor.ice", par0);
+		return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "rotor.ice", CompactWindmills.instance);
 	}
 	
 }

@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import speiger.src.compactWindmills.CompactWindmills;
+import speiger.src.compactWindmills.common.items.IceRotor;
 import speiger.src.compactWindmills.common.items.ItemAdvancedRotor;
 import speiger.src.compactWindmills.common.items.ItemRotor;
 import speiger.src.compactWindmills.common.items.ItemRotor.BasicRotorType;
@@ -54,6 +55,7 @@ public class CompactWindmillsCore
 			PathProxy.addAssemblyRecipe(ItemAdvancedRotor.createRotor(BasicRotorType.AlloyRotor), 25000, Items.getItem("machine"), PathProxy.getIC2Item("advancedAlloy", 8));
 			PathProxy.addAssemblyRecipe(ItemAdvancedRotor.createRotor(BasicRotorType.IronRotor), 25000, Items.getItem("machine"), PathProxy.getIC2Item("denseplateiron", 8));
 			PathProxy.addAssemblyRecipe(ItemAdvancedRotor.createRotor(BasicRotorType.IridiumRotor), 25000, new ItemStack(par0.advRotor, 1, BasicRotorType.CarbonRotor.ordinal()), PathProxy.getIC2Item("iridiumPlate", 4));
+			PathProxy.addRecipe(IceRotor.getRotor(CompactWindmills.iceRotor.itemID), new Object[]{"XXX", "XCX", "XXX", 'C', Items.getItem("reactorVentDiamond"), 'X', Block.ice});
 			
 		}
 	}

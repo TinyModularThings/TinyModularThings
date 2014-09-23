@@ -259,6 +259,21 @@ public class PotionInventory extends BasicItemInventory
 	
 	public boolean hasPotions()
 	{
+		boolean flag = false;
+		for(int i = 0;i<9;i++)
+		{
+			ItemStack stack = this.getPotionStackFromFilter(i);
+			if(stack != null)
+			{
+				flag = true;
+			}
+		}
+		
+		if(!flag)
+		{
+			return false;
+		}
+		
 		for(int i = 0;i<36;i++)
 		{
 			ItemStack stack = this.getStackInSlot(i);

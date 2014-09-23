@@ -267,7 +267,6 @@ public class WindMill extends TileIC2Facing implements IInventory,
 		{
 			if (inv[0] != null)
 			{
-				
 				if (worldObj.getWorldTime() % 64 == 0)
 				{
 					double oldOutput = cuOutput;
