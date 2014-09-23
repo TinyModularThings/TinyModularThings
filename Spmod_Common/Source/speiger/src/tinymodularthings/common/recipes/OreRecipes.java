@@ -61,6 +61,11 @@ public class OreRecipes
 		PathProxy.addPressureRecipes(new ItemStack(Item.swordGold), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotGold, 1), false, false);
 		PathProxy.addPressureRecipes(new ItemStack(Item.swordIron), null, new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 1), false, false);
 		
+		PathProxy.addFurnaceRecipe(new ItemStack(TinyBlocks.ores, 1, 0), EnumIngots.Copper.getIngot(), 0.5F);
+		PathProxy.addFurnaceRecipe(new ItemStack(TinyBlocks.ores, 1, 3), EnumIngots.Lead.getIngot(), 0.5F);
+		PathProxy.addFurnaceRecipe(new ItemStack(TinyBlocks.ores, 1, 2), EnumIngots.Silver.getIngot(), 0.5F);
+		PathProxy.addFurnaceRecipe(new ItemStack(TinyBlocks.ores, 1, 1), EnumIngots.Tin.getIngot(), 0.5F);
+		
 	}
 	
 }
