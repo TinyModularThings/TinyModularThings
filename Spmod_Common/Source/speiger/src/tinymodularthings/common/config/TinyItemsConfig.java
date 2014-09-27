@@ -23,7 +23,6 @@ import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemTinyH
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemTinyHopper.HopperType;
 import speiger.src.tinymodularthings.common.items.minecarts.AdvTinyChestCart;
 import speiger.src.tinymodularthings.common.items.minecarts.TinyChestCart;
-import speiger.src.tinymodularthings.common.items.study.ItemInformationBook;
 import speiger.src.tinymodularthings.common.items.tools.ItemCell;
 import speiger.src.tinymodularthings.common.items.tools.ItemNetherCrystal;
 import speiger.src.tinymodularthings.common.items.tools.ItemPotionBag;
@@ -63,8 +62,8 @@ public class TinyItemsConfig
 		RegisterItem(items.bauxitDust, "BaxitDust");
 		config.item.updateToNextID();
 		
-		items.informationBook = new ItemInformationBook(config.item.getCurrentID());
-		RegisterItem(items.informationBook, "ForschungsInfoBuch");
+		//Free ID Slot.
+		
 		config.item.updateToNextID();
 		
 		items.tinyChest = new ItemTinyChest(config.item.getCurrentID());

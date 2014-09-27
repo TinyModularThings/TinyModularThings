@@ -1,16 +1,16 @@
 package speiger.src.tinymodularthings.common.items.tools;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import speiger.src.api.blocks.BlockHelper;
-import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.nbt.NBTHelper;
 import speiger.src.api.util.SpmodMod;
-import speiger.src.tinymodularthings.TinyModularThings;
+import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 
 public class ItemTinyInfo extends TinyItem
@@ -32,75 +32,39 @@ public class ItemTinyInfo extends TinyItem
 	@Override
 	public String getDisplayName(ItemStack par1, SpmodMod Start)
 	{
-		return "Player Editor";
+		return "Debug Tool";
 	}
-	
+
 	@Override
-	public ItemStack onItemRightClick(ItemStack par1, World par2, EntityPlayer par3)
+	public boolean onItemUseFirst(ItemStack stack, EntityPlayer player, World world, int x, int y, int z, int side, float hitX, float hitY, float hitZ)
 	{
-		if (!par2.isRemote)
+		if(!world.isRemote)
 		{
-			NBTTagCompound nbt = NBTHelper.getTinyChestTagCompound(par1);
-			
-			if (par3.isSneaking())
+			TileEntity tile = world.getBlockTileEntity(x, y, z);
+			if(tile != null && tile instanceof AdvTile)
 			{
-				int mode = nbt.getInteger("Mode");
-				
-				mode++;
-				
-				if (mode >= getMaxMode())
+				AdvTile adv = (AdvTile)tile;
+				List<String> data = new ArrayList<String>();
+				adv.loadInformation(data);
+				if(data.size() > 0)
 				{
-					mode = 0;
-				}
-				nbt.setInteger("Mode", mode);
-				par3.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(new InfoStack(), getModeFromKey(mode), TinyModularThings.instance)));
-			}
-			else
-			{
-				int mode = nbt.getInteger("Mode");
-				NBTTagCompound player = par3.getEntityData();
-				NBTTagCompound data = NBTHelper.getTinyChestTagCompound(player);
-				
-				switch (mode)
-				{
-				
-					case 0:
+					player.sendChatToPlayer(LanguageRegister.createChatMessage("Following infos:"));
+					for(String key : data)
 					{
-						int placer = data.getInteger(NBTHelper.getPlayerNBTStringFromMode(mode));
-						placer++;
-						if (placer >= BlockHelper.getMaxPlaceingModes())
-						{
-							placer = 0;
-						}
-						
-						data.setInteger(NBTHelper.getPlayerNBTStringFromMode(mode), placer);
-						par3.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(new InfoStack(), BlockHelper.getPlacingMode(placer), TinyModularThings.instance)));
-						break;
+						player.sendChatToPlayer(LanguageRegister.createChatMessage(key));
 					}
-					
+					return true;
 				}
-				
-				NBTHelper.setTinyChestData(data, player);
+				else
+				{
+					player.sendChatToPlayer(LanguageRegister.createChatMessage("No Problems / Debug Infos"));
+				}
 			}
 		}
 		
-		return par1;
+		return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
 	}
 	
-	public String getModeFromKey(int mode)
-	{
-		switch (mode)
-		{
-			case 0:
-				return "config.pipe.placement";
-			default:
-				return "error.nothing";
-		}
-	}
 	
-	public int getMaxMode()
-	{
-		return 1;
-	}
 	
 }

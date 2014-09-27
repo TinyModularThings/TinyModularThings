@@ -1,8 +1,10 @@
 package speiger.src.spmodapi.common.core;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 import speiger.src.api.items.InfoStack;
@@ -10,6 +12,7 @@ import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
+import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.entity.EntityOverridenEnderman;
 import speiger.src.spmodapi.common.handler.ChatHandler;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
@@ -40,6 +43,7 @@ public class Registry
 		SpmodRecipeRegistry.loadRecipes();
 		EntityRegistry.registerModEntity(EntityOverridenEnderman.class, "newEndermann", 1, SpmodAPI.instance, 256, 3, true);
 		MinecraftForge.EVENT_BUS.register(ChatHandler.getInstance());
+		FluidContainerRegistry.registerFluidContainer(APIUtils.hempResin, new ItemStack(APIItems.hempResinBucket), new ItemStack(Item.bucketEmpty));
 		MobMachineLoader.initMobMachines();
 	}
 	

@@ -2,6 +2,7 @@ package speiger.src.spmodapi.client.render.utils;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
@@ -46,6 +47,7 @@ public class RenderUtilsBlock implements ISimpleBlockRenderingHandler
 	
 	public void loadEntityCatcher(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks blocks)
 	{
+		
 		blocks.setOverrideBlockTexture(blocks.getIconSafe(pork));
 		blocks.renderCrossedSquares(block, x, y, z);
 		blocks.clearOverrideBlockTexture();

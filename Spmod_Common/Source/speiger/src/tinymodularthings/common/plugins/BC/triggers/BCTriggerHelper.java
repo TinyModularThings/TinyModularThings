@@ -6,6 +6,7 @@ import net.minecraft.block.Block;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.tinymodularthings.common.plugins.BC.BCVariables;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerProvider;
@@ -34,6 +35,13 @@ public class BCTriggerHelper implements ITriggerProvider
 			{
 				triggers.add(BCVariables.hasWork);
 				triggers.add(BCVariables.noWork);
+			}
+			
+			if(tile instanceof IFluidHandler)
+			{
+				triggers.add(BCVariables.storedFluid[0]);
+				triggers.add(BCVariables.storedFluid[1]);
+				triggers.add(BCVariables.storedFluid[2]);
 			}
 			
 			try

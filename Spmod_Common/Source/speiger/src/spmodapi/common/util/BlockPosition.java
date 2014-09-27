@@ -54,6 +54,11 @@ public class BlockPosition
 		zCoord = z;
 	}
 	
+	public BlockPosition(TileEntity tile)
+	{
+		this(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord);
+	}
+
 	public BlockStack getAsBlockStack()
 	{
 		return new BlockStack(worldID, xCoord, yCoord, zCoord);
@@ -93,6 +98,11 @@ public class BlockPosition
 		{
 			return getBlockID() == block.getBlockID();
 		}
+	}
+	
+	public boolean isAirBlock()
+	{
+		return worldID.isAirBlock(xCoord, yCoord, zCoord);
 	}
 	
 	public boolean isThisPosition(BlockPosition par1)

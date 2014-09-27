@@ -139,6 +139,12 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 		super.onUpdate(par1, par2, par3, par4, par5);
 		if(!par2.isRemote && par3 != null && par3 instanceof EntityPlayer)
 		{
+			if(!NBTHelper.getTag(par1, "Bag").hasKey("BagData"))
+			{
+				NBTTagCompound data = new NBTTagCompound();
+				data.setBoolean("Active", true);
+				NBTHelper.getTag(par1, "Bag").setCompoundTag("BagData", data);
+			}
 			boolean active = NBTHelper.getTag(par1, "Bag").getCompoundTag("BagData").getBoolean("Active");
 			if(active)
 			{

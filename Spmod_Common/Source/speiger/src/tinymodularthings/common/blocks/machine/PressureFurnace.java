@@ -1,6 +1,7 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
 import java.util.LinkedList;
+import java.util.List;
 import java.util.Random;
 
 import mods.railcraft.common.items.firestone.ItemFirestoneRefined;
@@ -64,6 +65,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	public ItemStack[] inv = new ItemStack[7];
 	public int interfaces = 0;
 	public boolean paused = false;
+	public int matches = 0;
 	
 	public boolean hasFuel()
 	{
@@ -373,7 +375,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 					
 					BlockStack item = new BlockStack(TinyBlocks.transportBlock, 1);
 					
-					if (realBlock.getBlock() != null && realBlock.getBlock().isAirBlock(worldObj, posX, posY, posZ))
+					if (realBlock.getBlock() != null && worldObj.isAirBlock(posX, posY, posZ))
 					{
 						realBlock = new BlockStack();
 					}
@@ -413,7 +415,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		}
 		
 		boolean save = valid;
-		
+		matches = match;
 		if (match == 27)
 		{
 			addToStorage();
@@ -786,6 +788,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		nbt.setInteger("Fuel", fuel);
 		nbt.setInteger("Heat", heat);
 		nbt.setInteger("Progress", progress);
+		nbt.setInteger("Matches", matches);
 		nbt.setBoolean("Paused", paused);
 	}
 	
@@ -811,6 +814,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		fuel = nbt.getInteger("Fuel");
 		heat = nbt.getInteger("Heat");
 		progress = nbt.getInteger("Progress");
+		matches = nbt.getInteger("Matches");
 		paused = nbt.getBoolean("Paused");
 	}
 	
@@ -924,7 +928,6 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		boolean ore = name.contains("Ore") || name.contains("ore");
 		if ((!ore && (name.contains("cobble") || name.contains("sandStone") || name.contains("brick") || name.contains("stone"))))
 		{
-			par1.getType();
 			return par1.getType() == AcceptorType.Items;
 		}
 		return false;
@@ -993,5 +996,36 @@ public class PressureFurnace extends TileFacing implements IInventory,
 			TinyModularThings.log.print("Error with BC Gate Actions");
 		}
 	}
+
+	@Override
+	public void loadInformation(List par1)
+	{
+		if(!valid)
+		{
+			if(interfaces > 3)
+			{
+				par1.add("To Many Interfaces");
+			}
+			BlockPosition pos = this.getPosition().getPosFromFSide(ForgeDirection.getOrientation(facing).getOpposite());
+			if(!pos.isAirBlock())
+			{
+				par1.add("The Core Block is not a Air Block: "+pos.getAsBlockStack().getHiddenName());
+				par1.add("Real Block Name: "+pos.getAsBlockStack().getBlockDisplayName());
+			}
+			if(matches == 26 && !pos.isAirBlock())
+			{
+				
+			}
+			else if(matches != 27)
+			{
+				par1.add("Structure is not valid: out of 27 blocks only "+matches+" match");
+			}
+			
+
+		}
+		
+	}
+	
+	
 	
 }
