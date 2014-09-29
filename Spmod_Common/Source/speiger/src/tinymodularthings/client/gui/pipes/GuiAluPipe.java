@@ -144,7 +144,8 @@ public class GuiAluPipe extends GuiContainer
 		modul.InjectNumber(Integer.parseInt(text.getText()));
 		
 		PacketDispatcher.sendPacketToServer(modul.finishPacket());
-		
+		this.mc.thePlayer.sendChatToPlayer(LanguageRegister.createChatMessage("Setted up extracting: "+Integer.parseInt(text.getText())+"mB "));
+		this.mc.thePlayer.sendChatToPlayer(LanguageRegister.createChatMessage(loop ? "AutoLoop Active" : "AutoLoop Deactive"));
 		this.mc.thePlayer.closeScreen();
 	}
 	

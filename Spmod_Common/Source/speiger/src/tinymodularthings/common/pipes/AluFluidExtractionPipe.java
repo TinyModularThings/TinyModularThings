@@ -192,7 +192,10 @@ public class AluFluidExtractionPipe extends Pipe<PipeTransportFluids> implements
 				if(powered && !RedstoneUtils.isBlockGettingPowered(getContainer()))
 				{
 					powered = false;
-					todos++;
+					if(todos < 100)
+					{
+						todos++;
+					}
 				}
 				else if(!powered && RedstoneUtils.isBlockGettingPowered(getContainer()))
 				{
