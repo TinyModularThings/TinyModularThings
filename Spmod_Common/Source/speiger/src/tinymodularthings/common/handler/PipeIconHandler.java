@@ -11,7 +11,15 @@ public class PipeIconHandler implements IIconProvider
 {
 	public enum PipeTypes
 	{
-		EmeraldPipe(modID() + ":pipes/bc/EmeraldPowerPipe"), EmeraldExtractorPipe(modID() + ":pipes/bc/EmeraldPowerPipeFull"), RedstoneFluidPipeOff(modID() + ":pipes/bc/RedstonePipeFluidOff"), RedstoneFluidPipeOn(modID() + ":pipes/bc/RedstonePipeFluidOn");
+		EmeraldPipe(modID() + ":pipes/bc/EmeraldPowerPipe"),
+		EmeraldExtractorPipe(modID() + ":pipes/bc/EmeraldPowerPipeFull"),
+		RedstoneFluidPipeOff(modID() + ":pipes/bc/RedstonePipeFluidOff"),
+		RedstoneFluidPipeOn(modID() + ":pipes/bc/RedstonePipeFluidOn"),
+		RedstoneItemPipeOff(modID() + ":pipes/bc/RedstonePipeItemOff"),
+		RedstoneItemPipeOn(modID() + ":pipes/bc/RedstonePipeItemOn"),
+		AluminiumPipeFluidEmpty(modID() + ":pipes/bc/AluminiumPipeFluid"),
+		AluminiumPipeFluidFull(modID() + ":pipes/bc/AluminiumPipeFluidFull");
+		
 		String name;
 		Icon icon;
 		
@@ -46,7 +54,7 @@ public class PipeIconHandler implements IIconProvider
 		{
 			return PipeTypes.values()[iconIndex].getIcon();
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 			return null;
 		}
@@ -57,7 +65,7 @@ public class PipeIconHandler implements IIconProvider
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister iconRegister)
 	{
-		for (int i = 0; i < PipeTypes.values().length; i++)
+		for(int i = 0;i < PipeTypes.values().length;i++)
 		{
 			PipeTypes.values()[i].registerIcon(iconRegister);
 		}

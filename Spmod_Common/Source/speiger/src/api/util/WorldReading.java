@@ -34,6 +34,15 @@ public class WorldReading
 		return hasTileEntity(world, x, y, z) && world.getBlockTileEntity(x, y, z) instanceof IFluidHandler;
 	}
 	
+	public static boolean hasTank(TileEntity tile, int side)
+	{
+		ForgeDirection dir = ForgeDirection.getOrientation(side);
+		int x = dir.offsetX + tile.xCoord;
+		int y = dir.offsetY + tile.yCoord;
+		int z = dir.offsetZ + tile.zCoord;
+		return hasTank(tile.getWorldObj(), x, y, z);
+	}
+	
 	public static boolean hasPowerProvider(World world, int x, int y, int z)
 	{
 		return hasTileEntity(world, x, y, z) && (world.getBlockTileEntity(x, y, z) instanceof IEnergyProvider || world.getBlockTileEntity(x, y, z) instanceof IPowerReceptor);
@@ -47,6 +56,15 @@ public class WorldReading
 	public static IFluidHandler getFluidTank(World world, int x, int y, int z)
 	{
 		return ((IFluidHandler) world.getBlockTileEntity(x, y, z));
+	}
+	
+	public static IFluidHandler getFluidTank(TileEntity tile, int side)
+	{
+		ForgeDirection dir = ForgeDirection.getOrientation(side);
+		int x = dir.offsetX + tile.xCoord;
+		int y = dir.offsetY + tile.yCoord;
+		int z = dir.offsetZ + tile.zCoord;
+		return getFluidTank(tile.getWorldObj(), x, y, z);
 	}
 	
 	public static int getBlockId(World par0, int par1, int par2, int par3, int side)
@@ -272,4 +290,6 @@ public class WorldReading
 	{
 		return new ForgeDirection[] { ForgeDirection.DOWN, ForgeDirection.UP };
 	}
+
+
 }

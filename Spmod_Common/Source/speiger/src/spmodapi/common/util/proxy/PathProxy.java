@@ -160,7 +160,7 @@ public class PathProxy
 	public static ItemStack getIC2Item(String name, int qty)
 	{
 		ItemStack result = Items.getItem(name);
-		result.stackSize = Math.min(result.getMaxStackSize(), qty);
+		result.stackSize = qty;
 		return result;
 	}
 	

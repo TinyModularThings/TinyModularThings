@@ -55,6 +55,8 @@ public class TinyItems
 	public static Item emeraldPowerPipe;
 	public static Item redstoneFluidPipe;
 	public static Item refinedDiamondPowerPipe;
+	public static Item redstoneItemPipe;
+	public static Item aluPipe;
 	
 	
 }

@@ -1,69 +1,62 @@
 package speiger.src.tinymodularthings.common.pipes;
 
+import speiger.src.tinymodularthings.common.handler.PipeIconHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.tinymodularthings.common.handler.PipeIconHandler;
 import buildcraft.api.core.IIconProvider;
 import buildcraft.core.network.TileNetworkData;
 import buildcraft.transport.Pipe;
-import buildcraft.transport.PipeTransportFluids;
+import buildcraft.transport.PipeTransportItems;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class FluidRegstonePipe extends Pipe<PipeTransportFluids>
+public class ItemRedstonePipe extends Pipe<PipeTransportItems>
 {
 	@TileNetworkData
-	public boolean isFull = false;
+	public boolean powering = false;
 	
-	public FluidRegstonePipe(int itemID)
+	public ItemRedstonePipe(int itemID)
 	{
-		super(new PipeTransportFluids(), itemID);
-		transport.flowRate = 40;
-		transport.travelDelay = 4;
+		super(new PipeTransportItems(), itemID);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public IIconProvider getIconProvider()
 	{
 		return PipeIconHandler.getIcons();
 	}
-	
+
 	@Override
 	public int getIconIndex(ForgeDirection direction)
 	{
-		if (isFull)
+		if(powering)
 		{
-			return 3;
+			return 5;
 		}
-		return 2;
+		return 4;
 	}
-	
+
 	@Override
 	public void updateEntity()
 	{
 		super.updateEntity();
-		if (!this.getWorld().isRemote)
+		if(((PipeTransportItems)this.transport).items.size() == 0 && this.powering)
 		{
-			int i = ((PipeTransportFluids) this.transport).internalTanks[ForgeDirection.UNKNOWN.ordinal()].getAvailable();
-			if (i < 250 && isFull)
-			{
-				isFull = false;
-				this.updateNeighbors(true);
-			}
-			else if (!isFull && !(i < 250))
-			{
-				isFull = true;
-				this.updateNeighbors(true);
-			}
+			powering = false;
+			this.updateNeighbors(true);
 		}
-		
+		else if(((PipeTransportItems)this.transport).items.size() > 0 && !this.powering)
+		{
+			powering = true;
+			this.updateNeighbors(true);
+		}
 	}
 	
 	@Override
 	public int isPoweringTo(int side)
 	{
-		if (isFull)
+		if (powering)
 		{
 			return 15;
 		}
@@ -75,23 +68,20 @@ public class FluidRegstonePipe extends Pipe<PipeTransportFluids>
 	{
 		return isPoweringTo(l);
 	}
-
+	
+	
 	@Override
 	public void readFromNBT(NBTTagCompound data)
 	{
 		super.readFromNBT(data);
-		isFull = data.getBoolean("isFilled");
+		powering = data.getBoolean("isFilled");
 	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound data)
 	{
 		super.writeToNBT(data);
-		data.setBoolean("IsFilled", isFull);
+		data.setBoolean("IsFilled", powering);
 	}
-	
-	
-	
-	
 	
 }

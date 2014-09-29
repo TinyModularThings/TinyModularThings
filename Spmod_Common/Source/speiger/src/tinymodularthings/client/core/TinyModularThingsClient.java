@@ -129,7 +129,7 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 			if (pipe != null)
 			{
 				par1.setPipesIcons(pipe.getIconProvider());
-				par1.setPipeIconIndex(pipe.getIconIndex(ForgeDirection.VALID_DIRECTIONS[0]));
+				par1.setPipeIconIndex(pipe.getIconIndex(ForgeDirection.UNKNOWN));
 				
 			}
 		}

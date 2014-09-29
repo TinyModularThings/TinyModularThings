@@ -32,8 +32,6 @@ public class PipeEmeraldExtractionPower extends Pipe<PipeTransportPower>
 		powerHandler = new PowerHandler(this, Type.PIPE);
 		this.initPowerProvider();
 		this.transport.initFromPipe(this.getClass());
-		PipeConnectionBans.banConnection(this.getClass());
-		PipeConnectionBans.banConnection(this.getClass(), PipePowerWood.class);
 	}
 	
 	private void initPowerProvider()

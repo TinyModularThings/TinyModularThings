@@ -13,7 +13,6 @@ import speiger.src.api.hopper.IUpgradeGuiProvider;
 import speiger.src.api.items.IItemGui;
 import speiger.src.api.nbt.DataStorage;
 import speiger.src.spmodapi.common.tile.AdvTile;
-import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 import speiger.src.tinymodularthings.common.commands.RenderCommand;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
@@ -22,14 +21,14 @@ import speiger.src.tinymodularthings.common.enums.HopperUpgradeIDs;
 import speiger.src.tinymodularthings.common.handler.FuelHandler;
 import speiger.src.tinymodularthings.common.handler.TinyCraftingHandler;
 import speiger.src.tinymodularthings.common.interfaces.IEntityGuiProvider;
+import speiger.src.tinymodularthings.common.interfaces.IPipeGuiProvider;
 import speiger.src.tinymodularthings.common.items.tools.ItemNetherCrystal;
 import speiger.src.tinymodularthings.common.upgrades.hoppers.all.FilterUpgrade;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
-import cpw.mods.fml.common.FMLCommonHandler;
+import buildcraft.transport.TileGenericPipe;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
-import cpw.mods.fml.relauncher.Side;
 
 public class TinyModularThingsCore implements IGuiHandler
 {
@@ -105,6 +104,24 @@ public class TinyModularThingsCore implements IGuiHandler
 				}
 			}
 		}
+		else if(ID == EnumIDs.BCPipes.getId())
+		{
+			try
+			{
+				if(tile != null && tile instanceof TileGenericPipe)
+				{
+					TileGenericPipe pipe = (TileGenericPipe)tile;
+					if(pipe.pipe != null && pipe.pipe instanceof IPipeGuiProvider)
+					{
+						return ((IPipeGuiProvider)pipe.pipe).getInventory(player.inventory);
+					}
+				}
+			}
+			catch(Exception e)
+			{
+				
+			}
+		}
 		
 		return null;
 	}
@@ -167,6 +184,24 @@ public class TinyModularThingsCore implements IGuiHandler
 						return ((IUpgradeGuiProvider) iUpgrade).getGui(player.inventory, hopper);
 					}
 				}
+			}
+		}
+		else if(ID == EnumIDs.BCPipes.getId())
+		{
+			try
+			{
+				if(tile != null && tile instanceof TileGenericPipe)
+				{
+					TileGenericPipe pipe = (TileGenericPipe)tile;
+					if(pipe.pipe != null && pipe.pipe instanceof IPipeGuiProvider)
+					{
+						return ((IPipeGuiProvider)pipe.pipe).getGui(player.inventory);
+					}
+				}
+			}
+			catch(Exception e)
+			{
+				
 			}
 		}
 		return null;
