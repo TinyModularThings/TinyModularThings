@@ -275,19 +275,19 @@ public class MobMachine extends TileFacing implements ISidedInventory
 						eP -= totalTicks;
 						handleExp();
 					}
-					if (cP >= totalTicks)
+					if (cP >= totalTicks * 2)
 					{
-						cP -= totalTicks;
+						cP -= totalTicks * 2;
 						this.handleDrops(DropType.Common);
 					}
-					if (rP >= totalTicks * 3)
+					if (rP >= totalTicks * 5)
 					{
-						rP -= totalTicks * 3;
+						rP -= totalTicks * 5;
 						this.handleDrops(DropType.Rare);
 					}
-					if (lP >= totalTicks * 7)
+					if (lP >= totalTicks * 9)
 					{
-						lP -= totalTicks * 7;
+						lP -= totalTicks * 9;
 						this.handleDrops(DropType.Legendary);
 					}
 				}
@@ -454,7 +454,7 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	{
 		if (isValid() && inv[9] != null)
 		{
-			return this.foodList.get(Integer.valueOf(type)).get(Arrays.asList(inv[9].itemID, inv[9].getItemDamage())) > 0;
+			return this.foodList.get(Integer.valueOf(type)).get(Arrays.asList(inv[9].itemID, inv[9].getItemDamage())) != null && this.foodList.get(Integer.valueOf(type)).get(Arrays.asList(inv[9].itemID, inv[9].getItemDamage())) > 0;
 		}
 		return false;
 	}

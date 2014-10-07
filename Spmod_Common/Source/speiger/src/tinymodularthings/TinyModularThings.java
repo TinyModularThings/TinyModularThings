@@ -12,6 +12,8 @@ import speiger.src.api.language.LanguageLoader;
 import speiger.src.api.util.LogProxy;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.api.util.Ticks;
+import speiger.src.spmodapi.common.util.TickHelper;
 import speiger.src.tinymodularthings.common.config.TinyConfig;
 import speiger.src.tinymodularthings.common.core.TinyModularThingsCore;
 import speiger.src.tinymodularthings.common.entity.EntityRegister;
@@ -67,6 +69,7 @@ public class TinyModularThings implements SpmodMod
 		core.registerServer();
 		EntityRegister.getInstance().registerEntities();
 		HopperBackupSystem.getSystem();
+		Ticks.registerTickReciver(TickHelper.getInstance());
 	}
 	
 	@EventHandler

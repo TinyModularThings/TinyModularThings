@@ -11,6 +11,7 @@ public class APIUtils
 	public static EnumArmorMaterial hempArmor;
 	public static Fluid hempResin;
 	public static Fluid fluidPotionSteam;
+	public static Fluid animalGas;
 	
 	public static CreativeTabs tabHemp;
 	public static CreativeTabs tabHempDeko;
