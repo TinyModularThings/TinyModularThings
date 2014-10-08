@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -25,19 +23,21 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.util.WorldReading;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.render.utils.RenderUtilsBlock;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.entity.EntityOverridenEnderman;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
-import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockUtils extends BlockContainer
+public class BlockUtils extends SpmodBlockContainerBase
 {
 	
 	public BlockUtils(int par1)
@@ -213,7 +213,7 @@ public class BlockUtils extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
-		Icon[] texture = textures.get(par2);
+		Icon[] texture = TextureEngine.getIcon(this, par2);
 		switch (par2)
 		{
 			case 0:
@@ -234,7 +234,7 @@ public class BlockUtils extends BlockContainer
 	public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
 	{
 		int meta = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
-		Icon[] texture = textures.get(meta);
+		Icon[] texture = TextureEngine.getIcon(this, meta);
 		AdvTile tile = WorldReading.getAdvTile(par1iBlockAccess, par2, par3, par4);
 		switch (meta)
 		{
@@ -250,19 +250,18 @@ public class BlockUtils extends BlockContainer
 		}
 	}
 	
-	HashMap<Integer, Icon[]> textures = new HashMap<Integer, Icon[]>();
+	
+	
+	
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerTextures(TextureEngine par1)
 	{
+		par1.setCurrentPath("utils");
+		par1.registerTexture(new BlockStack(this, 0), "cobble.bench.top", "cobble.bench.side");
 		TileIconMaker.registerIcon(this, par1);
-		Icon[] texture = new Icon[2];
-		texture[0] = par1.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/cobble.bench.top");
-		texture[1] = par1.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/cobble.bench.side");
-		textures.put(0, texture);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)

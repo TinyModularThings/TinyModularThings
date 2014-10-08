@@ -7,6 +7,7 @@ import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemSeeds;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
 import speiger.src.api.items.DisplayItem;
@@ -19,6 +20,7 @@ import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -60,13 +62,15 @@ public class ItemHempSeed extends ItemSeeds implements LanguageItem
 		LanguageRegister.getLanguageName(new DisplayItem(id), "hemp.seed", par0);
 	}
 	
+	
+	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public Icon getIconFromDamage(int par1)
 	{
-		itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID + ":hemp/HempSeeds");
+		return TextureEngine.getTextures().getTexture(this, 0);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)

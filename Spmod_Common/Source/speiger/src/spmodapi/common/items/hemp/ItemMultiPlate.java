@@ -3,7 +3,6 @@ package speiger.src.spmodapi.common.items.hemp;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -19,6 +18,8 @@ import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.handler.PlateHandler;
 import speiger.src.spmodapi.common.items.SpmodItem;
+import speiger.src.spmodapi.common.util.TextureEngine;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -44,19 +45,22 @@ public class ItemMultiPlate extends SpmodItem
 		return textures[par1];
 	}
 	
-	Icon[] textures = new Icon[0];
+	
+	
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerTexture(TextureEngine par1)
 	{
-		textures = new Icon[PlateManager.plates.getAllIdentifiers().size()];
-		for (int i = 0; i < textures.length; i++)
+		String[] mods = new String[PlateManager.plates.getAllIdentifiers().size()];
+		String[] plates = new String[mods.length];
+		for(int i = 0;i<plates.length;i++)
 		{
-			textures[i] = par1.registerIcon(PlateManager.plates.getIconFromIdentity(PlateManager.plates.getAllIdentifiers().get(i)));
+			String cu = PlateManager.plates.getIconFromIdentity(PlateManager.plates.getAllIdentifiers().get(i));
+			String[] textures = cu.split(":");
+			FMLLog.getLogger().info("Key: "+textures[0]+" Value: "+textures[1]);
 		}
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)

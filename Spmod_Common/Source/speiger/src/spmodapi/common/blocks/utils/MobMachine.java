@@ -9,7 +9,6 @@ import java.util.Map.Entry;
 import java.util.Set;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -22,15 +21,18 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.Icon;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.items.IEssens;
 import speiger.src.api.items.IExpBottle;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.InventoryUtil;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
+import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.tile.TileFacing;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -38,7 +40,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class MobMachine extends TileFacing implements ISidedInventory
 {
 	// Static variables
-	public static Icon[][] textures;
 	public static HashMap<Integer, HashMap<DropType, List<ItemStack>>> allDrops = new HashMap<Integer, HashMap<DropType, List<ItemStack>>>();
 	public static HashMap<Integer, HashMap<List<Integer>, Integer>> foodList = new HashMap<Integer, HashMap<List<Integer>, Integer>>();
 	public static HashMap<Integer, Boolean> needExp = new HashMap<Integer, Boolean>();
@@ -170,29 +171,30 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
+		Icon[] array = TextureEngine.getIcon(APIBlocks.blockUtils, 2);
 		if (renderPass == 0)
 		{
 			if (side == 5)
 			{
-				return textures[0][1];
+				return array[1];
 			}
-			return textures[0][0];
+			return array[0];
 		}
 		if (side == this.getFacing())
 		{
-			return textures[type][1];
+			return array[(type*2)+1];
 		}
-		return textures[type][0];
+		return array[type*2];
 	}
 	
 	@Override
-	public void registerIcon(IconRegister par1)
+	public void registerIcon(TextureEngine par1)
 	{
-		textures = new Icon[getBiggestNumber(texture.keySet())][2];
+		par1.setCurrentPath("mobmachine");
 		for (Entry<Integer, String[]> par2 : texture.entrySet())
 		{
-			textures[par2.getKey()][0] = par1.registerIcon(par2.getValue()[0]);
-			textures[par2.getKey()][1] = par1.registerIcon(par2.getValue()[1]);
+			String[] array = par2.getValue();
+			par1.registerTexture(new BlockStack(APIBlocks.blockUtils, 2), array);
 		}
 	}
 	

@@ -9,6 +9,7 @@ import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.fluids.hemp.ItemHempResin;
+import speiger.src.spmodapi.common.items.SpmodItem;
 import speiger.src.spmodapi.common.items.armor.HempArmor;
 import speiger.src.spmodapi.common.items.crafting.ItemBlueDye;
 import speiger.src.spmodapi.common.items.crafting.ItemColorCard;
@@ -23,6 +24,7 @@ import speiger.src.spmodapi.common.items.hemp.ItemHempSeed;
 import speiger.src.spmodapi.common.items.hemp.ItemMultiPlate;
 import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
 
 public class APIItemsConfig
@@ -32,35 +34,45 @@ public class APIItemsConfig
 	
 	public static void loadItems()
 	{
+		TextureEngine engine = TextureEngine.getTextures();
+		
 		Item.enderPearl.setMaxStackSize(64);
 		Item.egg.setMaxStackSize(64);
 		
 		items.hempSeed = new ItemHempSeed(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.hempSeed);
+		engine.setCurrentPath("hemp");
+		engine.registerTexture(items.hempSeed, "HempSeeds");
 		config.itemIDs.updateToNextID();
 		
 		items.hemp = new ItemHemp(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.hemp);
+		engine.registerTexture(items.hemp, "hempDrop");
 		config.itemIDs.updateToNextID();
 		
 		items.hempBoots = new HempArmor(config.itemIDs.getCurrentID(), 3);
 		RegisterProxy.RegisterItem(items.hempBoots);
+		engine.registerTexture(items.hempBoots, "hemp_boots");
 		config.itemIDs.updateToNextID();
 		
 		items.hempLeggings = new HempArmor(config.itemIDs.getCurrentID(), 2);
 		RegisterProxy.RegisterItem(items.hempLeggings);
+		engine.registerTexture(items.hempLeggings, "hemp_leggings");
 		config.itemIDs.updateToNextID();
 		
 		items.hempChestPlate = new HempArmor(config.itemIDs.getCurrentID(), 1);
 		RegisterProxy.RegisterItem(items.hempChestPlate);
+		engine.registerTexture(items.hempChestPlate, "hemp_chestplate");
 		config.itemIDs.updateToNextID();
 		
 		items.hempHelmet = new HempArmor(config.itemIDs.getCurrentID(), 0);
 		RegisterProxy.RegisterItem(items.hempHelmet);
+		engine.registerTexture(items.hempHelmet, "hemp_helmet");
 		config.itemIDs.updateToNextID();
 		
 		items.compressedHemp = new ItemCompressedHemp(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.compressedHemp);
+		engine.registerTexture(items.compressedHemp, "compressedHemp");
 		config.itemIDs.updateToNextID();
 		
 		items.hempResin = new ItemHempResin(config.itemIDs.getCurrentID());
@@ -69,10 +81,12 @@ public class APIItemsConfig
 		
 		items.gears = new ItemGear(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.gears);
+		((SpmodItem)items.gears).registerTexture(engine);
 		config.itemIDs.updateToNextID();
 		
 		items.blueDye = new ItemBlueDye(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.blueDye);
+		engine.registerTexture(items.blueDye, "dyeBlue");
 		config.itemIDs.updateToNextID();
 		
 		items.multiPlate = new ItemMultiPlate(config.itemIDs.getCurrentID());

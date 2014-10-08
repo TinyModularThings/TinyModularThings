@@ -9,6 +9,8 @@ import speiger.src.api.util.config.IConfigHelper;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.configType.ConfigBlock;
 import speiger.src.spmodapi.common.config.configType.ConfigItem;
+import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 
 public class SpmodConfig implements IConfigHelper
@@ -73,7 +75,7 @@ public class SpmodConfig implements IConfigHelper
 			}
 			Property sDelay = config.get(general, "Structure Storage Backup Delay", 24000, String.format("%s%n%s%n%s%n%s", "This delay says how long the game waits until he make a backup.", "This is required to save all Multistructures", "To prevent that on game/Server Crash that all structure data get lost.", "This is required to let the Multistructure interface be work when the game restarts"));
 			savingDelay = Integer.parseInt(sDelay.getString());
-			
+			TextureEngine.getTextures().setCurrentMod(SpmodAPILib.ModID.toLowerCase());
 			SpmodAPI.log.print("Load Utils");
 			APIUtilsConfig.register();
 			SpmodAPI.log.print("Utils Loaded");
@@ -86,6 +88,8 @@ public class SpmodConfig implements IConfigHelper
 			SpmodAPI.log.print("Register WorldGen");
 			SpmodWorldGen.getWorldGen().init(this);
 			SpmodAPI.log.print("WorldGen Registered");
+			TextureEngine.getTextures().removePath();
+			TextureEngine.getTextures().finishMod();
 			
 			blockIDs.setEnd(config, blocks.toLowerCase());
 			itemIDs.setEnd(config, items.toLowerCase());

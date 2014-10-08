@@ -84,11 +84,4 @@ public class BlockFluidHempResin extends BlockFluidClassic
 		}
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
-	{
-		this.blockIcon = par1.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/hemp.resin");
-	}
-	
 }

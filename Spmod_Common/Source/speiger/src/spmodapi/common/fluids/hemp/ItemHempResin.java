@@ -2,12 +2,15 @@ package speiger.src.spmodapi.common.fluids.hemp;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import speiger.src.api.items.DisplayItem;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.items.SpmodItem;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -34,12 +37,23 @@ public class ItemHempResin extends SpmodItem
 	{
 		return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "hemp.resin", par0);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public int getSpriteNumber()
 	{
-		this.itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/hemp.resin");
+		return 0;
 	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getIconFromDamage(int par1)
+	{
+		return TextureEngine.getTextures().getTexture(APIBlocks.fluidHempResin, 0);
+	}
+	
+	
+
+	
 	
 }

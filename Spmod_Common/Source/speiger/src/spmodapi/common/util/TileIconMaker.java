@@ -5,7 +5,6 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.Icon;
 import net.minecraftforge.client.event.TextureStitchEvent;
@@ -30,7 +29,7 @@ public class TileIconMaker
 		return instance;
 	}
 	
-	public static void registerIcon(Block block, IconRegister par1)
+	public static void registerIcon(Block block, TextureEngine par1)
 	{
 		ArrayList<AdvTile> tiles = instance.allTiles.get(block);
 		for (AdvTile tile : tiles)
@@ -134,18 +133,7 @@ public class TileIconMaker
 	@SideOnly(Side.CLIENT)
 	public void createBeforeIcon(TextureStitchEvent.Pre par1)
 	{
-		if (par1.map.textureType == 0)
-		{
-			for (ArrayList<AdvTile> tiles : allTiles.values())
-			{
-				for (AdvTile tile : tiles)
-				{
-					tile.registerIcon(par1.map);
-				}
-			}
-			RenderUtilsBlock.pork = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/pork.raw");
-		}
-		
+		RenderUtilsBlock.pork = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/pork.raw");
 		((FluidHempResin) APIUtils.hempResin).registerIcon(par1.map);
 	}
 	
@@ -153,18 +141,7 @@ public class TileIconMaker
 	@SideOnly(Side.CLIENT)
 	public void createAfterIcons(TextureStitchEvent.Post par1)
 	{
-		if (par1.map.textureType == 0)
-		{
-			for (ArrayList<AdvTile> tiles : allTiles.values())
-			{
-				for (AdvTile tile : tiles)
-				{
-					tile.registerIcon(par1.map);
-				}
-			}
-			RenderUtilsBlock.pork = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/pork.raw");
-		}
-		
+		RenderUtilsBlock.pork = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/pork.raw");
 		((FluidHempResin) APIUtils.hempResin).registerIcon(par1.map);
 	}
 }

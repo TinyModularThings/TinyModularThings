@@ -285,8 +285,8 @@ public class MobMachineLoader
 	private static String[] getMobMachineTextures(String name)
 	{
 		String[] tex = new String[2];
-		tex[0] = SpmodAPILib.ModID.toLowerCase() + ":mobmachine/MobMachine_" + name + "_Side";
-		tex[1] = SpmodAPILib.ModID.toLowerCase() + ":mobmachine/MobMachine_" + name + "_Front";
+		tex[0] = "MobMachine_" + name + "_Side";
+		tex[1] = "MobMachine_" + name + "_Front";
 		return tex;
 	}
 	

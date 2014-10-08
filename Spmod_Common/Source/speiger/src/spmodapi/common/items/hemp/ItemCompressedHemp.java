@@ -38,11 +38,4 @@ public class ItemCompressedHemp extends SpmodItem implements LanguageItem
 		LanguageRegister.getLanguageName(new DisplayItem(id), "hemp.compressed", par0);
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
-	{
-		this.itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/compressedHemp");
-	}
-	
 }

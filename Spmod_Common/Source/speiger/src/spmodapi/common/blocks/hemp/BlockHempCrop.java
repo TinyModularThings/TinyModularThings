@@ -19,6 +19,7 @@ import powercrystals.minefactoryreloaded.api.IFactoryHarvestable;
 import powercrystals.minefactoryreloaded.api.IFactoryPlantable;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.farming.ICrop;
@@ -31,13 +32,12 @@ public class BlockHempCrop extends BlockCrops implements ICrop,
 		super(par1);
 	}
 	
-	Icon[] textures = new Icon[8];
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
-		return textures[par2];
+		return TextureEngine.getTextures().getTexture(this, par2);
 	}
 	
 	@Override
@@ -67,16 +67,6 @@ public class BlockHempCrop extends BlockCrops implements ICrop,
 			}
 		}
 		return list;
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
-	{
-		for (int i = 1; i < 9; i++)
-		{
-			textures[i - 1] = par1.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/HempCrop_" + i);
-		}
 	}
 	
 	@Override

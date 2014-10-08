@@ -1,5 +1,6 @@
 package speiger.src.spmodapi.common.config;
 
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.blocks.deko.BlockBlueFlower;
 import speiger.src.spmodapi.common.blocks.deko.BlockKyrokaTheFox;
 import speiger.src.spmodapi.common.blocks.deko.BlockLightDeko;
@@ -28,6 +29,7 @@ import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumHempBlocks;
 import speiger.src.spmodapi.common.fluids.hemp.BlockFluidHempResin;
 import speiger.src.spmodapi.common.fluids.hemp.ItemBlockFluidHempResin;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
 
 public class APIBlocksConfig
@@ -37,52 +39,67 @@ public class APIBlocksConfig
 	
 	public static void loadBlocks()
 	{
-		APIBlocks.hempCrop = new BlockHempCrop(SpmodConfig.blockIDs.getCurrentID());
-		RegisterProxy.RegisterBlock(APIBlocks.hempCrop, ItemBlockHempCrop.class, "Hemp Crop");
-		SpmodConfig.blockIDs.updateToNextID();
+		TextureEngine engine = TextureEngine.getTextures();
 		
-		APIBlocks.hempStraw = new BlockHempStraw(SpmodConfig.blockIDs.getCurrentID());
-		RegisterProxy.RegisterBlock(APIBlocks.hempStraw, ItemBlockHempStraw.class, "Hemp Straw");
-		SpmodConfig.blockIDs.updateToNextID();
+		blocks.hempCrop = new BlockHempCrop(config.blockIDs.getCurrentID());
+		RegisterProxy.RegisterBlock(blocks.hempCrop, ItemBlockHempCrop.class, "Hemp Crop");
+		engine.setCurrentPath("hemp");
+		engine.registerTexture(blocks.hempCrop, "HempCrop_1", "HempCrop_2", "HempCrop_3", "HempCrop_4", "HempCrop_5", "HempCrop_6", "HempCrop_7", "HempCrop_8");
+		config.blockIDs.updateToNextID();
+		
+		blocks.hempStraw = new BlockHempStraw(config.blockIDs.getCurrentID());
+		RegisterProxy.RegisterBlock(blocks.hempStraw, ItemBlockHempStraw.class, "Hemp Straw");
+		engine.registerTexture(blocks.hempStraw, "HempStraw");
+		config.blockIDs.updateToNextID();
 		
 		blocks.hempBlockBase = new BlockHempDekoBase(config.blockIDs.getCurrentID());
 		RegisterProxy.RegisterBlock(blocks.hempBlockBase, ItemBlockHempDekoBase.class, "HempDekoBase");
+		engine.registerTexture(blocks.hempBlockBase, "HempBase_0", "HempBase_1", "HempBase_2", "HempBase_3");
 		config.blockIDs.updateToNextID();
 		
-		APIBlocks.hempBlock = new BlockHempDeko(SpmodConfig.blockIDs.getCurrentID(), EnumHempBlocks.BasicHemp.getInfos());
-		RegisterProxy.RegisterBlock(APIBlocks.hempBlock, ItemBlockHempDeko.class, "HempBlockDeko");
-		SpmodConfig.blockIDs.updateToNextID();
+		blocks.hempBlock = new BlockHempDeko(config.blockIDs.getCurrentID(), EnumHempBlocks.BasicHemp.getInfos());
+		RegisterProxy.RegisterBlock(blocks.hempBlock, ItemBlockHempDeko.class, "HempBlockDeko");
+		((SpmodBlockBase)blocks.hempBlock).registerTextures(engine);
+		config.blockIDs.updateToNextID();
 		
-		APIBlocks.hempBrick = new BlockHempDeko(SpmodConfig.blockIDs.getCurrentID(), EnumHempBlocks.BrickHemp.getInfos());
-		RegisterProxy.RegisterBlock(APIBlocks.hempBrick, ItemBlockHempDeko.class, "HempBrickDeko");
-		SpmodConfig.blockIDs.updateToNextID();
+		blocks.hempBrick = new BlockHempDeko(config.blockIDs.getCurrentID(), EnumHempBlocks.BrickHemp.getInfos());
+		RegisterProxy.RegisterBlock(blocks.hempBrick, ItemBlockHempDeko.class, "HempBrickDeko");
+		((SpmodBlockBase)blocks.hempBlock).registerTextures(engine);
+		config.blockIDs.updateToNextID();
 		
-		APIBlocks.hempBlockPlated = new BlockHempDeko(SpmodConfig.blockIDs.getCurrentID(), EnumHempBlocks.PlatedHemp.getInfos());
-		RegisterProxy.RegisterBlock(APIBlocks.hempBlockPlated, ItemBlockHempDeko.class, "PlatedHempBlockDeko");
-		SpmodConfig.blockIDs.updateToNextID();
+		blocks.hempBlockPlated = new BlockHempDeko(config.blockIDs.getCurrentID(), EnumHempBlocks.PlatedHemp.getInfos());
+		RegisterProxy.RegisterBlock(blocks.hempBlockPlated, ItemBlockHempDeko.class, "PlatedHempBlockDeko");
+		((SpmodBlockBase)blocks.hempBlock).registerTextures(engine);
+		config.blockIDs.updateToNextID();
 		
-		APIBlocks.hempBrickPlated = new BlockHempDeko(SpmodConfig.blockIDs.getCurrentID(), EnumHempBlocks.PlatedHempBrick.getInfos());
-		RegisterProxy.RegisterBlock(APIBlocks.hempBrickPlated, ItemBlockHempDeko.class, "PlatedHempBrickDeko");
-		SpmodConfig.blockIDs.updateToNextID();
+		blocks.hempBrickPlated = new BlockHempDeko(config.blockIDs.getCurrentID(), EnumHempBlocks.PlatedHempBrick.getInfos());
+		RegisterProxy.RegisterBlock(blocks.hempBrickPlated, ItemBlockHempDeko.class, "PlatedHempBrickDeko");
+		((SpmodBlockBase)blocks.hempBlock).registerTextures(engine);
+		config.blockIDs.updateToNextID();
 		
-		APIBlocks.savedHempBlock = new BlockHempDeko(SpmodConfig.blockIDs.getCurrentID(), EnumHempBlocks.SaveBasicHemp.getInfos());
-		RegisterProxy.RegisterBlock(APIBlocks.savedHempBlock, ItemBlockHempDeko.class, "SaveHempBlockDeko");
-		SpmodConfig.blockIDs.updateToNextID();
+		blocks.savedHempBlock = new BlockHempDeko(config.blockIDs.getCurrentID(), EnumHempBlocks.SaveBasicHemp.getInfos());
+		RegisterProxy.RegisterBlock(blocks.savedHempBlock, ItemBlockHempDeko.class, "SaveHempBlockDeko");
+		((SpmodBlockBase)blocks.hempBlock).registerTextures(engine);
+		config.blockIDs.updateToNextID();
 		
-		APIBlocks.savedHempBrick = new BlockHempDeko(SpmodConfig.blockIDs.getCurrentID(), EnumHempBlocks.SaveBrickHemp.getInfos());
-		RegisterProxy.RegisterBlock(APIBlocks.savedHempBrick, ItemBlockHempDeko.class, "SaveHempBrickDeko");
-		SpmodConfig.blockIDs.updateToNextID();
+		blocks.savedHempBrick = new BlockHempDeko(config.blockIDs.getCurrentID(), EnumHempBlocks.SaveBrickHemp.getInfos());
+		RegisterProxy.RegisterBlock(blocks.savedHempBrick, ItemBlockHempDeko.class, "SaveHempBrickDeko");
+		((SpmodBlockBase)blocks.hempBlock).registerTextures(engine);
+		config.blockIDs.updateToNextID();
 		
-		APIBlocks.savedHempBlockPlated = new BlockHempDeko(SpmodConfig.blockIDs.getCurrentID(), EnumHempBlocks.SavePlatedHemp.getInfos());
-		RegisterProxy.RegisterBlock(APIBlocks.savedHempBlockPlated, ItemBlockHempDeko.class, "SavePlatedHempBlockDeko");
-		SpmodConfig.blockIDs.updateToNextID();
+		blocks.savedHempBlockPlated = new BlockHempDeko(config.blockIDs.getCurrentID(), EnumHempBlocks.SavePlatedHemp.getInfos());
+		RegisterProxy.RegisterBlock(blocks.savedHempBlockPlated, ItemBlockHempDeko.class, "SavePlatedHempBlockDeko");
+		((SpmodBlockBase)blocks.hempBlock).registerTextures(engine);
+		config.blockIDs.updateToNextID();
 		
-		APIBlocks.savedHempBrickPlated = new BlockHempDeko(SpmodConfig.blockIDs.getCurrentID(), EnumHempBlocks.SavePlatedHempBrick.getInfos());
-		RegisterProxy.RegisterBlock(APIBlocks.savedHempBrickPlated, ItemBlockHempDeko.class, "SavePlatedHempBrickDeko");
-		SpmodConfig.blockIDs.updateToNextID();
+		blocks.savedHempBrickPlated = new BlockHempDeko(config.blockIDs.getCurrentID(), EnumHempBlocks.SavePlatedHempBrick.getInfos());
+		RegisterProxy.RegisterBlock(blocks.savedHempBrickPlated, ItemBlockHempDeko.class, "SavePlatedHempBrickDeko");
+		((SpmodBlockBase)blocks.hempBlock).registerTextures(engine);
+		config.blockIDs.updateToNextID();
 		
 		blocks.fluidHempResin = new BlockFluidHempResin(config.blockIDs.getCurrentID(), APIUtils.hempResin);
 		RegisterProxy.RegisterBlock(blocks.fluidHempResin, ItemBlockFluidHempResin.class, "FluidHempResin");
+		engine.registerTexture(blocks.fluidHempResin, "hemp.resin");
 		config.blockIDs.updateToNextID();
 		
 		blocks.hempLamp = new BlockLightDeko(config.blockIDs.getCurrentID());
@@ -92,6 +109,8 @@ public class APIBlocksConfig
 		
 		blocks.blueFlower = new BlockBlueFlower(config.blockIDs.getCurrentID());
 		RegisterProxy.RegisterBlock(blocks.blueFlower, ItemBlockFlower.class, "IngoDye");
+		engine.setCurrentPath("flowers");
+		engine.registerTexture(blocks.blueFlower, "IngoFlower");
 		config.blockIDs.updateToNextID();
 		
 		blocks.multiPlate = new BlockMutliPlate(config.blockIDs.getCurrentID());
@@ -103,13 +122,12 @@ public class APIBlocksConfig
 		RegisterProxy.RegisterBlock(blocks.blockUtils, ItemBlockUtils.class, "Utils Block");
 		RegisterProxy.RegisterTile(blocks.blockUtils, ExpStorage.class, "ExpStorage");
 		RegisterProxy.RegisterTile(blocks.blockUtils, MobMachine.class, "MobMachine");
+		((SpmodBlockBase)blocks.blockUtils).registerTextures(engine);
 		config.blockIDs.updateToNextID();
 		
 		blocks.statues = new BlockKyrokaTheFox(config.blockIDs.getCurrentID());
 		RegisterProxy.RegisterBlock(blocks.statues, ItemBlockKyrokaTheFox.class, "Statue");
 		RegisterProxy.RegisterTile(blocks.statues, KyrokaTheFox.class, "Kyroka");
 		config.blockIDs.updateToNextID();
-		
-		
 	}
 }

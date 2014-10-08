@@ -14,12 +14,14 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockHempDeko extends Block
+public class BlockHempDeko extends SpmodBlockBase
 {
 	HempBlockInformation info;
 	
@@ -36,23 +38,22 @@ public class BlockHempDeko extends Block
 		return info;
 	}
 	
-	Icon[] textures = new Icon[16];
-	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerTextures(TextureEngine par1)
 	{
-		for (int i = 0; i < textures.length; i++)
+		String[] textures = new String[16];
+		for(int i = 0;i<16;i++)
 		{
-			textures[i] = par1.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/" + info.getTexture() + "_" + i);
+			textures[i] = info.getTexture()+"_"+i;
 		}
+		par1.registerTexture(this, textures);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
-		return textures[par2];
+		return TextureEngine.getTextures().getTexture(this, par2);
 	}
 	
 	@Override
@@ -93,7 +94,7 @@ public class BlockHempDeko extends Block
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		for (int i = 0; i < textures.length; i++)
+		for (int i = 0; i < 16; i++)
 		{
 			par3List.add(new ItemStack(par1, 1, i));
 		}

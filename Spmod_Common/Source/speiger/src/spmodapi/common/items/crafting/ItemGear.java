@@ -2,7 +2,6 @@ package speiger.src.spmodapi.common.items.crafting;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -13,7 +12,7 @@ import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.items.SpmodItem;
-import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -31,7 +30,7 @@ public class ItemGear extends SpmodItem
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		for (GearType type : GearType.values())
+		for(GearType type : GearType.values())
 		{
 			par3List.add(getGearFromType(type));
 		}
@@ -40,11 +39,11 @@ public class ItemGear extends SpmodItem
 	@Override
 	public void registerItems(int id, SpmodMod par0)
 	{
-		if (!SpmodModRegistry.areModsEqual(par0, getMod()))
+		if(!SpmodModRegistry.areModsEqual(par0, getMod()))
 		{
 			return;
 		}
-		for (int i = 0; i < textures.length; i++)
+		for(int i = 0;i < GearType.values().length;i++)
 		{
 			LanguageRegister.getLanguageName(new DisplayItem(id), "gear." + GearType.values()[i].getName(), par0);
 		}
@@ -56,16 +55,16 @@ public class ItemGear extends SpmodItem
 		return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "gear." + GearType.values()[par1.getItemDamage()].getName(), par0);
 	}
 	
-	Icon[] textures = new Icon[GearType.values().length];
-	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public void registerTexture(TextureEngine par1)
 	{
-		for (int i = 0; i < textures.length; i++)
+		par1.setCurrentPath("crafting");
+		String[] textures = new String[GearType.values().length];
+		for(int i = 0;i < textures.length;i++)
 		{
-			this.textures[i] = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":crafting/gear." + GearType.values()[i].getName());
+			textures[i] = "gear." + GearType.values()[i].getName();
 		}
+		par1.registerTexture(this, textures);
 	}
 	
 	public static ItemStack getGearFromType(GearType par1)
@@ -82,12 +81,24 @@ public class ItemGear extends SpmodItem
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
-		return textures[par1];
+		return TextureEngine.getTextures().getTexture(this, par1);
 	}
 	
 	public static enum GearType
 	{
-		Wood("wood"), Cobblestone("cobble"), Stone("stone"), Iron("iron"), Gold("gold"), Diamond("diamond"), Redstone("redstone"), Bone("bone"), WoodenRing("part.ring.wood"), CobbleRing("part.ring.cobble"), StoneRing("part.ring.stone"), StoneCorner("part.corner.stone"), WoodenCorner("part.corner.wood");
+		Wood("wood"),
+		Cobblestone("cobble"),
+		Stone("stone"),
+		Iron("iron"),
+		Gold("gold"),
+		Diamond("diamond"),
+		Redstone("redstone"),
+		Bone("bone"),
+		WoodenRing("part.ring.wood"),
+		CobbleRing("part.ring.cobble"),
+		StoneRing("part.ring.stone"),
+		StoneCorner("part.corner.stone"),
+		WoodenCorner("part.corner.wood");
 		
 		String name;
 		

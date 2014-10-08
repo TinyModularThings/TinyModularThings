@@ -2,7 +2,9 @@ package speiger.src.spmodapi.common.blocks.deko;
 
 import net.minecraft.block.BlockFlower;
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.util.Icon;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -15,12 +17,14 @@ public class BlockBlueFlower extends BlockFlower
 		setHardness(0.0F);
 		setStepSound(soundGrassFootstep);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public Icon getIcon(int par1, int par2)
 	{
-		this.blockIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":flowers/IngoFlower");
+		return TextureEngine.getTextures().getTexture(this, 0);
 	}
+	
+	
 	
 }

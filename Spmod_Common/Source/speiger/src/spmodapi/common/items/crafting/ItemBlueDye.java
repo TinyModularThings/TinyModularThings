@@ -38,10 +38,4 @@ public class ItemBlueDye extends SpmodItem
 		return LanguageRegister.getLanguageName(new DisplayStack(par1), "dye.blue", par0);
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
-	{
-		this.itemIcon = par1IconRegister.registerIcon(getModID() + ":crafting/dyeBlue");
-	}
 }

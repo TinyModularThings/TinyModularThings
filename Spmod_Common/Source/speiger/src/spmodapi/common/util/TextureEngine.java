@@ -37,7 +37,50 @@ public class TextureEngine
 	HashMap<BlockData, Icon[]> blockTextures = new HashMap<BlockData, Icon[]>();
 	HashMap<ItemData, Icon[]> itemTextures = new HashMap<ItemData, Icon[]>();
 	
+	String currentMod = "";
+	String currentPath = "";
 	
+	ArrayList<RequestData> requestLaterRegistration = new ArrayList<RequestData>();
+	
+	public void setCurrentMod(String modID)
+	{
+		if(currentMod != "")
+		{
+			finishMod();
+		}
+		currentMod = modID;
+	}
+	
+	public void finishMod()
+	{
+		currentMod = "";
+	}
+	
+	public void setCurrentPath(String path)
+	{
+		if(currentPath != "")
+		{
+			removePath();
+		}
+		currentPath = path+"/";
+	}
+	
+	public void removePath()
+	{
+		currentPath = "";
+	}
+	
+	
+	
+	public void registerTexture(Block par1, String...par2)
+	{
+		registerTexture(par1, 0, par2);
+	}
+	
+	public void registerTexture(Item par1, String...par2)
+	{
+		registerTexture(par1, 0, par2);
+	}
 	
 	public void registerTexture(BlockStack par1, String...par2)
 	{
@@ -63,7 +106,7 @@ public class TextureEngine
 		}
 		for(String key : par3)
 		{
-			textures.add(key);
+			textures.add(currentMod+":"+currentPath+key);
 		}
 		
 		itemString.put(data, textures.toArray(new String[textures.size()]));
@@ -83,7 +126,7 @@ public class TextureEngine
 		}
 		for(String key : par3)
 		{
-			textures.add(key);
+			textures.add(currentMod+":"+currentPath+key);
 		}
 		blockString.put(data, textures.toArray(new String[textures.size()]));
 	}
@@ -294,6 +337,11 @@ public class TextureEngine
 			}
 			return true;
 		}
+	}
+	
+	public static class RequestData
+	{
+		
 	}
 	
 	

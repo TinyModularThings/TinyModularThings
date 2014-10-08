@@ -2,20 +2,17 @@ package speiger.src.spmodapi.common.blocks.deko;
 
 import java.util.HashMap;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.network.PacketDispatcher;
-
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
-import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.tile.TileFacing;
+import speiger.src.spmodapi.common.util.TextureEngine;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class KyrokaTheFox extends TileFacing
 {
@@ -23,6 +20,10 @@ public class KyrokaTheFox extends TileFacing
 	
 	public static HashMap<Integer, ResourceLocation> textures = new HashMap<Integer, ResourceLocation>();
 	
+	public KyrokaTheFox()
+	{
+		
+	}
 	
 	public KyrokaTheFox(World world)
 	{
@@ -60,7 +61,7 @@ public class KyrokaTheFox extends TileFacing
 
 
 	@Override
-	public void registerIcon(IconRegister par1)
+	public void registerIcon(TextureEngine par1)
 	{
 		textures.put(0, new ResourceLocation(SpmodAPILib.ModID.toLowerCase()+":textures/models/armor/ModelKyrokaTheFox.png"));
 		textures.put(1, new ResourceLocation(SpmodAPILib.ModID.toLowerCase()+":textures/models/armor/ModelKyrokaTheFoxDark.png"));
@@ -71,7 +72,6 @@ public class KyrokaTheFox extends TileFacing
 		ResourceLocation texture = textures.get(type);
 		if(texture == null)
 		{
-			registerIcon(null);
 			texture = textures.get(0);
 		}
 		

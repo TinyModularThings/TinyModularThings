@@ -4,7 +4,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,22 +25,22 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.items.IExpBottle;
 import speiger.src.api.tiles.IExpProvider;
 import speiger.src.api.util.FluidUtils;
 import speiger.src.api.util.RedstoneUtils;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.utils.GuiExpBottle;
+import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
-import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ExpStorage extends AdvTile implements IInventory, IFluidHandler,
-		IExpProvider
+public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IExpProvider
 {
-	public static Icon[] textures = new Icon[2];
 	
 	public ItemStack[] inv = new ItemStack[2];
 	
@@ -52,14 +51,13 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler,
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
-		return side < 2 ? textures[0] : textures[1];
+		return TextureEngine.getTextures().getTexture(APIBlocks.blockUtils, 1, side < 2 ? 1 : 0);
 	}
 	
 	@Override
-	public void registerIcon(IconRegister par1)
+	public void registerIcon(TextureEngine par1)
 	{
-		textures[1] = par1.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/expBench.side");
-		textures[0] = par1.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/expBench.top");
+		par1.registerTexture(new BlockStack(APIBlocks.blockUtils, 1), ":utils/expBench.side",":utils/expBench.top");
 	}
 	
 	@Override

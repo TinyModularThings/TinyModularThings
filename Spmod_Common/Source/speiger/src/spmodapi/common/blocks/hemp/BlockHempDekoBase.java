@@ -3,9 +3,7 @@ package speiger.src.spmodapi.common.blocks.hemp;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
@@ -15,12 +13,13 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
-import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockHempDekoBase extends Block
+public class BlockHempDekoBase extends SpmodBlockBase
 {
 	
 	public BlockHempDekoBase(int par1)
@@ -82,25 +81,15 @@ public class BlockHempDekoBase extends Block
 		return meta == 0;
 	}
 	
-	Icon[] textures = new Icon[4];
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
 		int meta = par2 % 4;
-		return textures[meta];
+		return TextureEngine.getTextures().getTexture(this, meta);
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
-	{
-		for (int i = 0; i < 4; i++)
-		{
-			textures[i] = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/HempBase_" + i);
-		}
-	}
 	
 	@Override
 	public int quantityDropped(Random par1Random)

@@ -39,11 +39,4 @@ public class ItemHemp extends SpmodItem
 		return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), "hemp", par0);
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
-	{
-		itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/hempDrop");
-	}
-	
 }

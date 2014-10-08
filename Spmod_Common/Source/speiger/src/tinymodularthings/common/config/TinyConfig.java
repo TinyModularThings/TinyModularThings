@@ -6,7 +6,9 @@ import net.minecraftforge.common.Configuration;
 import speiger.src.api.util.config.ConfigBoolean;
 import speiger.src.spmodapi.common.config.configType.ConfigBlock;
 import speiger.src.spmodapi.common.config.configType.ConfigItem;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.TinyModularThings;
+import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import speiger.src.tinymodularthings.common.plugins.BC.BCRegistry;
 
 public class TinyConfig
@@ -53,8 +55,11 @@ public class TinyConfig
 			item = new ConfigItem(ConfigItem.getConfig(config, items, 13000));
 			pipes = new ConfigItem(ConfigItem.getConfig(config, "Pipe StartID", items, 12000));
 			
+			TextureEngine.getTextures().setCurrentMod(TinyModularThingsLib.ModID.toLowerCase());
 			TinyBlocksConfig.initBlocks();
 			TinyItemsConfig.initItems();
+			TextureEngine.getTextures().removePath();
+			TextureEngine.getTextures().finishMod();
 			
 			block.setEnd(config, blocks.toLowerCase());
 			item.setEnd(config, items.toLowerCase());

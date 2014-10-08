@@ -73,7 +73,7 @@ public class CompactWindmills implements SpmodMod
 			iceRotor = new IceRotor(Integer.parseInt(config.getItem("IceRotor", 27902).getString()));
 			RegisterProxy.RegisterBlock(windmill, ItemBlockWindmill.class, "Windmill");
 			RegisterProxy.RegisterTile(windmill, WindMill.class, "WindmillType");
-			RegisterProxy.RegisterItem(ModID, "Windmill", rotor);
+			RegisterProxy.RegisterItem(ModID, "BasicRotors", rotor);
 		}
 		catch (Exception e)
 		{

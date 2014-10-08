@@ -18,6 +18,7 @@ import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
 import speiger.src.api.items.DisplayItem;
@@ -28,6 +29,7 @@ import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -61,29 +63,15 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 		return SpmodAPILib.ModID.toLowerCase() + ":textures/models/armor/hemp_layer_1.png";
 	}
 	
+	
+	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public Icon getIconFromDamage(int par1)
 	{
-		itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/hemp_" + getNameFromType());
+		return TextureEngine.getTextures().getTexture(this, 0);
 	}
-	
-	String getNameFromType()
-	{
-		switch (type)
-		{
-			case 0:
-				return "helmet";
-			case 1:
-				return "chestplate";
-			case 2:
-				return "leggings";
-			case 3:
-				return "boots";
-			default:
-				return "";
-		}
-	}
+
 	
 	@Override
 	public ArmorProperties getProperties(EntityLivingBase player, ItemStack armor, DamageSource source, double damage, int slot)
@@ -181,6 +169,7 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 								if (live.getDistanceSqToEntity(player) < 1.5D)
 								{
 									player.inventory.damageArmor(1);
+									return;
 								}
 							}
 						}
@@ -329,6 +318,7 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 					}
 				}
 			}
+			
 			par1.setTagCompound(nbt);
 			
 		}
@@ -426,9 +416,7 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 	
 	@Override
 	public void registerItems(int id, SpmodMod par0)
-	{
-		// TODO Auto-generated method stub
-		
+	{		
 	}
 	
 }

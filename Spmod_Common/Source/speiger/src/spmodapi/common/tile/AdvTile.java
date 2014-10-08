@@ -7,7 +7,6 @@ import java.util.logging.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.StepSound;
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -23,6 +22,7 @@ import net.minecraft.world.Explosion;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.util.BlockPosition;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -240,7 +240,7 @@ public abstract class AdvTile extends TileEntity
 		return false;
 	}
 	
-	public void registerIcon(IconRegister par1)
+	public void registerIcon(TextureEngine par1)
 	{
 		
 	}
