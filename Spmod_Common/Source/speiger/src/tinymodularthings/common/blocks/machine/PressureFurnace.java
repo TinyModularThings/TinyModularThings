@@ -30,6 +30,7 @@ import speiger.src.api.recipe.pressureFurnace.helper.PressureRecipeList;
 import speiger.src.api.util.InventoryUtil;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.BlockPosition;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.data.StructureStorage;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.machine.PressureFurnaceGui;
@@ -551,11 +552,9 @@ public class PressureFurnace extends TileFacing implements IInventory,
 					
 					if (StructureStorage.instance.isRegisteredToMe(here, end))
 					{
-						FMLLog.getLogger().info("Test1");
 						StructureStorage.instance.removePosition(end);
 						if (end.doesBlockExsist() && end.hasTileEntity() && end.getTileEntity() instanceof IAcceptor)
 						{
-							FMLLog.getLogger().info("Test2");
 							IAcceptor acept = (IAcceptor) end.getTileEntity();
 							acept.targetLeave(this);
 						}
@@ -610,29 +609,19 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
+		TextureEngine engine = TextureEngine.getTextures();
+		
 		if (side == getFacing())
 		{
-			if (BCRegistry.overrideVanilla)
+			if(valid)
 			{
-				if (valid)
-				{
-					return Block.blocksList[62].getIcon(3, 2);
-				}
-				else
-				{
-					return Block.blocksList[61].getIcon(3, 2);
-				}
+				return engine.getTexture(TinyBlocks.machine, 2);
 			}
-			if (valid)
-			{
-				return Block.blocksList[62].getIcon(2, 2);
-			}
-			else
-			{
-				return Block.blocksList[61].getIcon(2, 2);
-			}
+			return engine.getTexture(TinyBlocks.machine, 1);
 		}
-		return Block.cobblestone.getBlockTextureFromSide(0);
+		return engine.getTexture(TinyBlocks.machine, 0);
+		
+		
 	}
 	
 	@Override

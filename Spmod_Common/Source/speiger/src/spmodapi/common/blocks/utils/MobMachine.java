@@ -31,13 +31,16 @@ import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
+import speiger.src.spmodapi.common.interfaces.ITextureRequester;
+import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class MobMachine extends TileFacing implements ISidedInventory
+public class MobMachine extends TileFacing implements ISidedInventory, ITextureRequester
 {
 	// Static variables
 	public static HashMap<Integer, HashMap<DropType, List<ItemStack>>> allDrops = new HashMap<Integer, HashMap<DropType, List<ItemStack>>>();
@@ -190,12 +193,25 @@ public class MobMachine extends TileFacing implements ISidedInventory
 	@Override
 	public void registerIcon(TextureEngine par1)
 	{
+		par1.markForDelay(this);
+	}
+	
+
+	@Override
+	public boolean onTextureAfterRegister(TextureEngine par1)
+	{
+		boolean flag = false;
+		par1.setCurrentMod(SpmodAPILib.ModID.toLowerCase());
 		par1.setCurrentPath("mobmachine");
 		for (Entry<Integer, String[]> par2 : texture.entrySet())
 		{
 			String[] array = par2.getValue();
 			par1.registerTexture(new BlockStack(APIBlocks.blockUtils, 2), array);
+			flag = true;
 		}
+		par1.removePath();
+		par1.finishMod();
+		return flag;
 	}
 	
 	public static int getBiggestNumber(Set<Integer> par1)
@@ -765,5 +781,6 @@ public class MobMachine extends TileFacing implements ISidedInventory
 			}
 		}
 	}
+
 	
 }

@@ -21,6 +21,7 @@ import speiger.src.spmodapi.common.core.Registry;
 import speiger.src.spmodapi.common.core.SpmodAPICore;
 import speiger.src.spmodapi.common.handler.SpmodPacketHandler;
 import speiger.src.spmodapi.common.modHelper.ModHelperLoader;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 import speiger.src.spmodapi.common.world.WorldLoader;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -32,7 +33,7 @@ import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStartingEvent;
-import cpw.mods.fml.common.event.FMLServerStoppedEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;
 
@@ -58,13 +59,13 @@ public class SpmodAPI implements SpmodMod
 	{
 		SpmodModRegistry.registerMod(this);
 		log = new LogProxy(this);
+		TextureEngine.getTextures();
 		LanguageLoader language = new LanguageLoader(this);
 		language.registerAllAviableLanguages();
 		SpmodConfig.getInstance().loadSpmodCondig(new File(evt.getModConfigurationDirectory().getAbsolutePath() + "/Spmod/SpmodAPIBeta.cfg"));
 		NetworkRegistry.instance().registerChannel(new SpmodPacketHandler(), "Spmod");
 		instance = this;
 		NetworkRegistry.instance().registerGuiHandler(instance, core);
-		
 	}
 	
 	@EventHandler
@@ -91,7 +92,7 @@ public class SpmodAPI implements SpmodMod
 	}
 	
 	@EventHandler
-	public void onServerStopped(FMLServerStoppedEvent evt)
+	public void onServerStopped(FMLServerStoppingEvent evt)
 	{
 		DataStorage.write(FMLCommonHandler.instance().getMinecraftServerInstance(), true);
 	}

@@ -83,13 +83,6 @@ public class ItemColorCard extends SpmodItem
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
-	{
-		this.itemIcon = par1IconRegister.registerIcon(getModID() + ":crafting/colorCard");
-	}
-	
-	@Override
 	public ItemStack onItemRightClick(ItemStack par1, World par2, EntityPlayer par3)
 	{
 		if (!par2.isRemote)

@@ -31,6 +31,7 @@ import speiger.src.api.nbt.INBTReciver;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.common.util.BlockPosition;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.data.BlockPositionList;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
@@ -490,21 +491,14 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 		return item;
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
-	{
-		this.texture[0] = par1.registerIcon(this.getModID().toLowerCase() + ":tools/NetherCrystal");
-		this.texture[1] = par1.registerIcon(this.getModID().toLowerCase() + ":tools/NetherCrystal_Charged");
-		this.texture[2] = par1.registerIcon(this.getModID()+":tools/netherCrystal_discharged");
-	}
+
 	
-	Icon[] texture = new Icon[3];
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
+		Icon[] texture = TextureEngine.getIcon(this, 0);
 		if (par1 == 3)
 		{
 			return texture[1];

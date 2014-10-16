@@ -6,14 +6,17 @@ import net.minecraft.util.Icon;
 import speiger.src.api.items.LanguageItem;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class SpmodItem extends Item implements LanguageItem
+public abstract class SpmodItem extends Item implements LanguageItem, ITextureRequester
 {
 	
+
+
 	public SpmodItem(int par1)
 	{
 		super(par1);
@@ -42,7 +45,7 @@ public abstract class SpmodItem extends Item implements LanguageItem
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
-		return TextureEngine.getTextures().getTexture(this, 0);
+		return TextureEngine.getTextures().getTexture(this, par1);
 	}
 	
 	public void registerTexture(TextureEngine par1)
@@ -50,6 +53,10 @@ public abstract class SpmodItem extends Item implements LanguageItem
 		
 	}
 	
-	
+	@Override
+	public boolean onTextureAfterRegister(TextureEngine par1)
+	{
+		return true;
+	}
 	
 }

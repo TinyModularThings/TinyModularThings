@@ -38,11 +38,7 @@ public class ItemMultiPlate extends SpmodItem
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
-		if (par1 >= textures.length)
-		{
-			return this.itemIcon;
-		}
-		return textures[par1];
+		return TextureEngine.getTextures().getTexture(this, par1, 0);
 	}
 	
 	
@@ -51,14 +47,28 @@ public class ItemMultiPlate extends SpmodItem
 	@Override
 	public void registerTexture(TextureEngine par1)
 	{
+		par1.markForDelay(this);
+	}
+	
+	
+
+	@Override
+	public boolean onTextureAfterRegister(TextureEngine par1)
+	{
+		boolean flag = false;
 		String[] mods = new String[PlateManager.plates.getAllIdentifiers().size()];
 		String[] plates = new String[mods.length];
+		par1.removePath();
 		for(int i = 0;i<plates.length;i++)
 		{
 			String cu = PlateManager.plates.getIconFromIdentity(PlateManager.plates.getAllIdentifiers().get(i));
 			String[] textures = cu.split(":");
-			FMLLog.getLogger().info("Key: "+textures[0]+" Value: "+textures[1]);
+			par1.setCurrentMod(textures[0]);
+			par1.registerTexture(new ItemStack(this, 1, i), textures[1]);
+			par1.finishMod();
+			flag = true;
 		}
+		return flag;
 	}
 
 	@Override

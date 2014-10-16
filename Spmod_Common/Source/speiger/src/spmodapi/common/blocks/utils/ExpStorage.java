@@ -57,7 +57,7 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	@Override
 	public void registerIcon(TextureEngine par1)
 	{
-		par1.registerTexture(new BlockStack(APIBlocks.blockUtils, 1), ":utils/expBench.side",":utils/expBench.top");
+		par1.registerTexture(new BlockStack(APIBlocks.blockUtils, 1), "expBench.side","expBench.top");
 	}
 	
 	@Override

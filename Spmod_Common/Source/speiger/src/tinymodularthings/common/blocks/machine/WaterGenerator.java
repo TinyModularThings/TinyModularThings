@@ -17,6 +17,8 @@ import speiger.src.api.energy.IEnergyProvider;
 import speiger.src.api.util.WorldReading;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.tile.AdvancedFluidTank;
+import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
@@ -106,7 +108,7 @@ public class WaterGenerator extends AdvTile implements IFluidHandler,
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
-		return null;
+		return TextureEngine.getTextures().getTexture(TinyBlocks.machine, 3, side == 0 ? 1 : side == 1 ? 0 : 2);
 	}
 	
 	@Override

@@ -13,6 +13,7 @@ import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -48,20 +49,12 @@ public class ItemHempBucket extends ItemBucket implements LanguageItem
 		LanguageRegister.getLanguageName(new DisplayItem(id), "bucket.liquid.hemp", par0);
 	}
 	
-	Icon texture;
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
-	{
-		texture = this.itemIcon = par1.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/hemp.resin.bucket");
-	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
-		return texture;
+		return TextureEngine.getTextures().getTexture(this, 0);
 	}
 	
 }

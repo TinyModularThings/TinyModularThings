@@ -26,6 +26,7 @@ import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.WorldReading;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
@@ -45,16 +46,8 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	public int tankMode = -1;
 	public int renderLiquid = 1;
 	public boolean BCTank = false;
-	public static Icon texture = null;
 	public boolean renderTank = false;
-	
 	public static boolean dissableRenderer = false;
-	
-	@Override
-	public void registerIcon(IconRegister par1)
-	{
-		texture = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":storage/TinyTank");
-	}
 	
 	public void setTankMode(int tankMode)
 	{
@@ -69,7 +62,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
-		return texture;
+		return TextureEngine.getTextures().getTexture(getBlockType());
 	}
 	
 	@Override

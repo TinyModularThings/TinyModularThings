@@ -20,6 +20,8 @@ import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.energy.IEnergyProvider;
 import speiger.src.api.pipes.IAdvancedPipeProvider;
 import speiger.src.api.pipes.IBasicPipeProvider;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.interfaces.IBasicPipe;
@@ -29,16 +31,18 @@ import buildcraft.api.transport.IPipeTile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockPipe extends Block implements IBasicPipe
+public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 {
 	
 	public PipeInformation info;
 	
-	public BlockPipe(int par1, PipeInformation par2)
+	public BlockPipe(int par1, PipeInformation par2, TextureEngine par3)
 	{
 		super(par1, Material.iron);
 		setCreativeTab(CreativeTabs.tabFood);
 		info = par2;
+		info.injectBlock(this);
+		par2.updateIcon(par3);
 		setLightOpacity(0);
 	}
 	
@@ -134,13 +138,8 @@ public class BlockPipe extends Block implements IBasicPipe
 		return 0;
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
-	{
-		info.updateIcon(par1IconRegister);
-	}
 	
+
 	@Override
 	public boolean isOpaqueCube()
 	{

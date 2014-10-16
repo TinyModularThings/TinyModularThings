@@ -106,7 +106,10 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	{
 		setFacing(facing);
 		setRotation(ForgeDirection.getOrientation(facing).getOpposite().ordinal());
-		HopperBackupSystem.getSystem().backupData(this);
+		if(worldObj != null)
+		{
+			HopperBackupSystem.getSystem().backupData(this);
+		}
 	}
 	
 	public void setMode(int Mode)

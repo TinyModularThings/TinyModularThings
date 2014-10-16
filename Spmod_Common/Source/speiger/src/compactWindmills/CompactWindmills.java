@@ -19,10 +19,13 @@ import speiger.src.api.util.config.ConfigBoolean;
 import speiger.src.compactWindmills.common.blocks.BlockWindmill;
 import speiger.src.compactWindmills.common.blocks.ItemBlockWindmill;
 import speiger.src.compactWindmills.common.blocks.WindMill;
+import speiger.src.compactWindmills.common.core.CWPreference;
 import speiger.src.compactWindmills.common.core.CompactWindmillsCore;
 import speiger.src.compactWindmills.common.items.IceRotor;
 import speiger.src.compactWindmills.common.items.ItemAdvancedRotor;
 import speiger.src.compactWindmills.common.items.ItemRotor;
+import speiger.src.compactWindmills.common.utils.WindmillType;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -86,6 +89,11 @@ public class CompactWindmills implements SpmodMod
 		{
 			config.save();
 		}
+		
+		TextureEngine engine = TextureEngine.getTextures();
+		engine.setCurrentMod(CWPreference.ModID.toLowerCase());
+		WindmillType.registerTextures(engine);
+		engine.finishMod();
 	}
 	
 	@EventHandler

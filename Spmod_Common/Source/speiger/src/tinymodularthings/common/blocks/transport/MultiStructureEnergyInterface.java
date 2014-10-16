@@ -19,7 +19,9 @@ import speiger.src.api.inventory.IAcceptor;
 import speiger.src.api.inventory.InterfaceAcceptor;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.BlockPosition;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.data.StructureStorage;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInterfaceBlock;
 import buildcraft.api.power.IPowerReceptor;
@@ -46,6 +48,11 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
+		if(renderPass == 1)
+		{
+			return TextureEngine.getTextures().getTexture(TinyBlocks.transportBlock, 2);
+		}
+		
 		if (blockID != -1 && metadata != -1)
 		{
 			return new BlockStack(blockID, metadata).getTexture(side);

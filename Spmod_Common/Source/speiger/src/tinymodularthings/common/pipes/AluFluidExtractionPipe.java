@@ -284,6 +284,7 @@ public class AluFluidExtractionPipe extends Pipe<PipeTransportFluids> implements
 	}
 	
 	@Override
+	@SideOnly(Side.CLIENT)
 	public GuiContainer getGui(InventoryPlayer par1)
 	{
 		return new GuiAluPipe(this);

@@ -6,6 +6,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.DamageSource;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.api.items.DisplayItem;
@@ -17,6 +18,7 @@ import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -24,25 +26,28 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class SpmodBone extends ItemFood implements LanguageItem
 {
 	String name;
-	int Size;
 	
-	public SpmodBone(int itemID, int size, String Name)
+	public SpmodBone(int itemID, int size, String Name, TextureEngine par1)
 	{
 		super(itemID, 2, 4F * size, true);
 		name = Name;
-		Size = size;
 		OreDictionary.registerOre("bone", this);
 		PathProxy.addSRecipe(new ItemStack(Item.dyePowder.itemID, size, EnumColor.WHITE.getAsDye()), new Object[] { new ItemStack(this) });
 		this.setCreativeTab(APIUtils.tabCrafing);
+		par1.registerTexture(this, "bone_"+Name);
 	}
+	
+	
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public Icon getIconFromDamage(int par1)
 	{
-		this.itemIcon = par1.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":crafting/bone_" + name);
+		return TextureEngine.getTextures().getTexture(this);
 	}
-	
+
+
+
 	@Override
 	public String getItemDisplayName(ItemStack par1)
 	{

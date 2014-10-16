@@ -33,11 +33,19 @@ import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.core.TinyModularThingsCore;
 import speiger.src.tinymodularthings.common.entity.minecarts.TCarts;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
+import speiger.src.tinymodularthings.common.pipes.AluFluidExtractionPipe;
+import speiger.src.tinymodularthings.common.pipes.FluidRegstonePipe;
+import speiger.src.tinymodularthings.common.pipes.ItemRedstonePipe;
+import speiger.src.tinymodularthings.common.pipes.PipeEmeraldExtractionPower;
+import speiger.src.tinymodularthings.common.pipes.PipeEmeraldPower;
+import speiger.src.tinymodularthings.common.pipes.RefinedDiamondPowerPipe;
 import speiger.src.tinymodularthings.common.utils.nei.NeiRegistry;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
+import buildcraft.transport.PipeToolTipManager;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
+import cpw.mods.fml.common.Loader;
 
 public class TinyModularThingsClient extends TinyModularThingsCore
 {
@@ -92,6 +100,21 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		
 		registerLanguage();
 		
+		if(Loader.isModLoaded("BuildCraft|Core"))
+		{
+			loadPipeToolTips();
+		}
+		
+	}
+	
+	private void loadPipeToolTips()
+	{
+		PipeToolTipManager.addToolTip(PipeEmeraldExtractionPower.class, "Transferlimit: 2048");
+		PipeToolTipManager.addToolTip(PipeEmeraldPower.class, "Transferlimit: 2048");
+		PipeToolTipManager.addToolTip(FluidRegstonePipe.class, "Fluid Redstone Pipe. Emit if full");
+		PipeToolTipManager.addToolTip(RefinedDiamondPowerPipe.class, "Powerloss free Pipe 512 MJ Transferlimit");
+		PipeToolTipManager.addToolTip(ItemRedstonePipe.class, "Emits a Signal when Items go through it");
+		PipeToolTipManager.addToolTip(AluFluidExtractionPipe.class, "Adjustable Fluid Extraction Pipe");
 	}
 	
 	private void registerLanguage()

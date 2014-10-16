@@ -5,12 +5,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 
 public class FluidHempResin extends Fluid
 {
-	Icon itemIcon;
 	
 	public FluidHempResin()
 	{
@@ -22,24 +23,19 @@ public class FluidHempResin extends Fluid
 	@Override
 	public Icon getStillIcon()
 	{
-		return itemIcon;
+		return TextureEngine.getTextures().getTexture(APIBlocks.fluidHempResin);
 	}
 	
 	@Override
 	public Icon getFlowingIcon()
 	{
-		return itemIcon;
+		return TextureEngine.getTextures().getTexture(APIBlocks.fluidHempResin);
 	}
 	
 	@Override
 	public String getLocalizedName()
 	{
 		return APIItems.hempResin.getItemDisplayName(new ItemStack(APIItems.hempResin));
-	}
-	
-	public void registerIcon(IconRegister par1)
-	{
-		this.itemIcon = par1.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":hemp/hemp.resin");
 	}
 	
 }

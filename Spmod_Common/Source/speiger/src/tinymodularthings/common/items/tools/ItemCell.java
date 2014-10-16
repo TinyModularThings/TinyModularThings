@@ -38,6 +38,7 @@ import speiger.src.api.nbt.NBTHelper;
 import speiger.src.api.util.InventoryUtil;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
@@ -52,7 +53,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemCell extends TinyItem implements IFluidContainerItem
 {
 	
-	Icon[] icon = new Icon[3];
 	public int[] array = new int[]{1,5,10,50,100,500,1000};
 	public final int capacity;
 	
@@ -67,30 +67,22 @@ public class ItemCell extends TinyItem implements IFluidContainerItem
 		MinecraftForge.EVENT_BUS.register(this);
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister register)
-	{
-		icon[0] = register.registerIcon(this.getModID() + ":tools/tinyCell_fg");
-		icon[1] = register.registerIcon(this.getModID() + ":tools/tinyCell_bg");
-		icon[2] = register.registerIcon(this.getModID() + ":tools/tinyCell_empty");
-	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int dmg)
 	{
-		return icon[2];
+		return TextureEngine.getTextures().getTexture(this, 2);
 	}
 	
 	public Icon getBackgroundIcon()
 	{
-		return icon[1];
+		return TextureEngine.getTextures().getTexture(this, 1);
 	}
 	
 	public Icon getFrontgroundIcon()
 	{
-		return icon[0];
+		return TextureEngine.getTextures().getTexture(this, 0);
 	}
 	
 	@ForgeSubscribe

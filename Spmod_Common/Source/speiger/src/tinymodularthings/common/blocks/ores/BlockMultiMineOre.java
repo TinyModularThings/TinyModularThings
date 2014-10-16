@@ -3,37 +3,25 @@ package speiger.src.tinymodularthings.common.blocks.ores;
 import java.util.ArrayList;
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import speiger.src.api.blocks.AdvancedPosition;
 import speiger.src.api.blocks.BlockStack;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.util.TickHelper;
 import speiger.src.spmodapi.common.world.retrogen.RetroGenTickHandler.OreReplacer;
 import speiger.src.tinymodularthings.common.interfaces.IMultimineOre;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class BlockMultiMineOre extends Block implements IMultimineOre
+public abstract class BlockMultiMineOre extends SpmodBlockBase implements IMultimineOre
 {
-	String texture;
 	int maxMine;
 	
-	public BlockMultiMineOre(int par1, Material par2Material, String par3, int par4)
+	public BlockMultiMineOre(int par1, Material par2Material, int par4)
 	{
 		super(par1, par2Material);
 		maxMine = par4;
-		texture = par3;
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
-	{
-		blockIcon = par1IconRegister.registerIcon(texture);
 	}
 	
 	@Override
@@ -123,5 +111,8 @@ public abstract class BlockMultiMineOre extends Block implements IMultimineOre
 	{
 		par0.setBlock(x, y, z, blockID, new Random().nextInt(maxMine), 3);
 	}
+
+	
+	
 	
 }

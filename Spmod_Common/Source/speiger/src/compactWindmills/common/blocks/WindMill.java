@@ -9,7 +9,6 @@ import ic2.api.tile.IWrenchable;
 import java.util.HashMap;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -33,6 +32,7 @@ import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.client.gui.GuiWindmill;
 import speiger.src.compactWindmills.common.utils.WindmillType;
 import speiger.src.spmodapi.common.tile.TileIC2Facing;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -40,7 +40,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class WindMill extends TileIC2Facing implements IInventory,
 		IEnergySource, IWindmill, IWrenchable
 {
-	private static HashMap<WindmillType, Icon[]> textures = new HashMap<WindmillType, Icon[]>();
 	public ItemStack[] inv = new ItemStack[1];
 	public boolean loaded = false;
 	public boolean damageActive = false;
@@ -66,24 +65,18 @@ public class WindMill extends TileIC2Facing implements IInventory,
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
-		Icon[] tex = textures.get(type);
-		if (tex != null)
+		TextureEngine engine = TextureEngine.getTextures();
+		if(side == 0 && side != getFacing())
 		{
-			if (type == null || type == type.Nothing)
-			{
-				return null;
-			}
-			if (side == 0 && getFacing() != 0)
-			{
-				return tex[1];
-			}
-			if (side == getFacing())
-			{
-				return tex[0];
-			}
-			return tex[2];
+			return engine.getTexture(CompactWindmills.windmill, type.ordinal(), 0);
 		}
-		return null;
+		
+		if(side == getFacing())
+		{
+			return engine.getTexture(CompactWindmills.windmill, type.ordinal(), 1);
+		}
+		
+		return engine.getTexture(CompactWindmills.windmill, type.ordinal(), 2);
 	}
 	
 	@Override
@@ -120,20 +113,6 @@ public class WindMill extends TileIC2Facing implements IInventory,
 	public GuiContainer getGui(InventoryPlayer par1)
 	{
 		return new GuiWindmill(par1, this);
-	}
-	
-	@Override
-	public void registerIcon(IconRegister par1)
-	{
-		Icon[] tex;
-		for (WindmillType type : WindmillType.getValidValues())
-		{
-			tex = new Icon[3];
-			tex[0] = par1.registerIcon(ModID.toLowerCase() + ":" + type.getTextureName() + "_front");
-			tex[1] = par1.registerIcon(ModID.toLowerCase() + ":" + type.getTextureName() + "_bottom");
-			tex[2] = par1.registerIcon(ModID.toLowerCase() + ":" + type.getTextureName() + "_side");
-			textures.put(type, tex);
-		}
 	}
 	
 	@Override

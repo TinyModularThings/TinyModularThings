@@ -11,6 +11,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Icon;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.world.World;
 import speiger.src.api.items.DisplayStack;
@@ -53,13 +54,15 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 		return LanguageRegister.getLanguageName(new DisplayStack(par1), "trade.random", par0);
 	}
 	
+	
+	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
+	public Icon getIconFromDamage(int par1)
 	{
-		this.itemIcon = par1IconRegister.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":crafting/random_Trade");
+		return super.getIconFromDamage(0);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)

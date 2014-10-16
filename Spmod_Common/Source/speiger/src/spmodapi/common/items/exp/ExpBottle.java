@@ -16,6 +16,7 @@ import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.items.SpmodItem;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -65,9 +66,9 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 		if (stack.hasTagCompound())
 		{
 			NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Exp");
-			return icons[nbt.getInteger("ID")];
+			return TextureEngine.getTextures().getTexture(this, nbt.getInteger("ID"));
 		}
-		return icons[0];
+		return TextureEngine.getTextures().getTexture(this, 0);
 	}
 	
 	@Override
@@ -76,23 +77,25 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 		if (stack.hasTagCompound())
 		{
 			NBTTagCompound nbt = stack.getTagCompound().getCompoundTag("Exp");
-			return icons[nbt.getInteger("ID")];
+			return TextureEngine.getTextures().getTexture(this, nbt.getInteger("ID"));
 		}
-		return icons[0];
+		return TextureEngine.getTextures().getTexture(this, 0);
 	}
 	
-	Icon[] icons = new Icon[5];
+	
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerTexture(TextureEngine par1)
 	{
-		for (int i = 0; i < icons.length; i++)
+		par1.setCurrentPath("exp");
+		String[] array = new String[exp.length];
+		for(int i = 0;i<exp.length;i++)
 		{
-			icons[i] = par1.registerIcon(this.getModID() + ":exp/bottle_" + exp[i]);
+			array[i] = "bottle_" + exp[i];
 		}
+		par1.registerTexture(this, array);
 	}
-	
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1, World par2, EntityPlayer par3)
 	{

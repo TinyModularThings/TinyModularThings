@@ -2,10 +2,11 @@ package speiger.src.tinymodularthings.common.utils;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.block.Block;
 import net.minecraft.util.Icon;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 
@@ -39,7 +40,7 @@ public class PipeInformation
 	/**
 	 * Texture of the pipe and the Texture of the Pipe with the Arrow
 	 */
-	Icon[] pipeTexture = new Icon[2];
+	public Block block;
 	
 	public PipeInformation()
 	{
@@ -57,6 +58,11 @@ public class PipeInformation
 		item = itemT;
 		name = nameT;
 		texture = textureT;
+	}
+	
+	public void injectBlock(Block par1)
+	{
+		block = par1;
 	}
 	
 	public int getEnergyTransferlimit()
@@ -90,18 +96,17 @@ public class PipeInformation
 	
 	public Icon getDirectionIcon()
 	{
-		return pipeTexture[1];
+		return TextureEngine.getTextures().getTexture(block, 1);
 	}
 	
 	public Icon getPipeIcon()
 	{
-		return pipeTexture[0];
+		return TextureEngine.getTextures().getTexture(block, 0);
 	}
 	
-	public void updateIcon(IconRegister par1)
+	public void updateIcon(TextureEngine par1)
 	{
-		pipeTexture[0] = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":pipes/" + texture);
-		pipeTexture[1] = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":pipes/" + texture + "_face");
+		par1.registerTexture(block, texture, texture+"_face");
 	}
 	
 }

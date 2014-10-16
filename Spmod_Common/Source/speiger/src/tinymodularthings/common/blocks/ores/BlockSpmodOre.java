@@ -3,7 +3,6 @@ package speiger.src.tinymodularthings.common.blocks.ores;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,12 +12,14 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.oredict.OreDictionary;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.utils.TinyTextureHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockSpmodOre extends Block
+public class BlockSpmodOre extends SpmodBlockBase
 {
 	
 	public BlockSpmodOre(int par1)
@@ -78,27 +79,21 @@ public class BlockSpmodOre extends Block
 		return 4.0F;
 	}
 	
-	Icon[] oreTexture = new Icon[6];
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
-		return oreTexture[par2];
+		return TextureEngine.getTextures().getTexture(this, par2);
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
+	public void registerTextures(TextureEngine par1)
 	{
-		oreTexture[0] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ores/oreCopper"));
-		oreTexture[1] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ores/oreTin"));
-		oreTexture[2] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ores/oreSilver"));
-		oreTexture[3] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ores/oreLead"));
-		oreTexture[4] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ores/oreBauxit"));
-		oreTexture[5] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ores/oreIridium"));
+		String[] textures = new String[]{"oreCopper", "oreTin", "oreSilver", "oreLead", "oreBauxit", "oreIridium"};
+		par1.registerTexture(this, textures);
 	}
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3)

@@ -31,6 +31,7 @@ import speiger.src.api.packets.IPacketReciver;
 import speiger.src.api.util.InventoryUtil;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.tile.AdvancedFluidTank;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.machine.BucketFillerGui;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
@@ -160,7 +161,7 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 			{
 				cuRecipe = findRecipe();
 			}
-			if (worldObj.getWorldTime() % 10 == 0)
+			if (worldObj.getWorldTime() % 40 == 0)
 			{
 				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 			}
@@ -661,7 +662,7 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
-		return null;
+		return TextureEngine.getTextures().getTexture(TinyBlocks.machine, 1, side == 0 ? 1 : side == 1 ? 0 : 2);
 	}
 	
 	@Override

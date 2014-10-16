@@ -17,6 +17,7 @@ import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
@@ -48,7 +49,6 @@ public class ItemInterfaceBlock extends TinyItem
 		
 	}
 	
-	Icon[] texture = new Icon[3];
 	
 	public static ItemStack getBlockFromInterface(ItemStack par1)
 	{
@@ -80,15 +80,6 @@ public class ItemInterfaceBlock extends TinyItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
-	{
-		texture[0] = par1.registerIcon(getModID() + ":transport/ItemTransport");
-		texture[1] = par1.registerIcon(getModID() + ":transport/FluidTransport");
-		texture[2] = par1.registerIcon(getModID() + ":transport/EnergyTransport");
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
 		for (int i = 0; i < 3; i++)
@@ -114,9 +105,18 @@ public class ItemInterfaceBlock extends TinyItem
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
-		return texture[par1];
+		return TextureEngine.getTextures().getTexture(TinyBlocks.transportBlock, par1);
 	}
 	
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getSpriteNumber()
+	{
+		return 0;
+	}
+
 	@Override
 	public String getDisplayName(ItemStack par1, SpmodMod par0)
 	{

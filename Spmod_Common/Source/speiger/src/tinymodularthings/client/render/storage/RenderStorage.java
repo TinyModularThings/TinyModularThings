@@ -40,19 +40,8 @@ public class RenderStorage implements ISimpleBlockRenderingHandler
 			Fluid fluid = stack.getFluid();
 			Icon icon = fluid.getIcon(stack);
 			
-			double amount = (stack.amount / (tile.tank.getCapacity() * 0.114)) / 10;
+			double amount = (stack.amount / tile.tank.getCapacity());
 			
-			if (amount < 0.125)
-			{
-				double amountb = 0.13 - amount;
-				amount += amountb;
-			}
-			if (amount > 0.875)
-			{
-				amount = 0.875;
-			}
-			
-			fluid.getLuminosity(stack);
 			
 			render.setRenderBounds(0.125, 0.125, 0.125, 0.875, amount, 0.875);
 			render.setOverrideBlockTexture(icon);

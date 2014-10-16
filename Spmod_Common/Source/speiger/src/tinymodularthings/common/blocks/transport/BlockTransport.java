@@ -4,10 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,17 +16,17 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.tile.TileFacing;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
-import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import speiger.src.tinymodularthings.common.utils.HopperType;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockTransport extends BlockContainer
+public class BlockTransport extends SpmodBlockContainerBase
 {
 	
 	public BlockTransport(int par1)
@@ -84,6 +81,16 @@ public class BlockTransport extends BlockContainer
 		}
 	}
 	
+	
+	
+	@Override
+	public void registerTextures(TextureEngine par1)
+	{
+		par1.setCurrentPath("transport");
+		par1.registerTexture(this, "ItemTransport", "FluidTransport", "EnergyTransport");
+		par1.removePath();
+	}
+
 	@Override
 	public boolean isOpaqueCube()
 	{
@@ -209,38 +216,21 @@ public class BlockTransport extends BlockContainer
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
-		if (par2 == 0)
-		{
-			return Block.endPortal.getIcon(0, 0);
-		}
-		return null;
+		return TileIconMaker.getIconMaker().getIconFromTile(this, par2, par1);
 	}
 	
-	Icon[] texture = new Icon[3];
+	
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getBlockTexture(IBlockAccess par1, int par2, int par3, int par4, int par5)
 	{
-		int meta = par1.getBlockMetadata(par2, par3, par4);
-		if (meta == 0)
+		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
+		if(tile != null && tile instanceof AdvTile)
 		{
-			return getIcon(0, 0);
+			return ((AdvTile)tile).getIconFromSideAndMetadata(par5, 0);
 		}
-		else
-		{
-			TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
-			if (tile != null && tile instanceof AdvTile)
-			{
-				return TileIconMaker.getIconMaker().getIconSafe(((AdvTile) tile).getIconFromSideAndMetadata(par5, 0));
-			}
-		}
-		return null;
-	}
-	
-	public Icon getTextureFromMeta(int meta)
-	{
-		return texture[meta];
+		return TileIconMaker.getIconMaker().getIconSafe(null);
 	}
 	
 	@Override
@@ -253,15 +243,6 @@ public class BlockTransport extends BlockContainer
 			drop.addAll(((AdvTile) tile).onDrop(fortune));
 		}
 		return drop;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
-	{
-		texture[0] = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":transport/ItemTransport");
-		texture[1] = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":transport/FluidTransport");
-		texture[2] = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":transport/EnergyTransport");
 	}
 	
 	@Override

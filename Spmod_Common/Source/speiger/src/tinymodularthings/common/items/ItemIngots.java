@@ -65,25 +65,7 @@ public class ItemIngots extends TinyItem
 		}
 		
 	}
+
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int par1)
-	{
-		return ingotTextures[par1];
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1)
-	{
-		ingotTextures[0] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ingots/IngotCopper"));
-		ingotTextures[1] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ingots/IngotTin"));
-		ingotTextures[2] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ingots/IngotAluminium"));
-		ingotTextures[3] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ingots/IngotSilver"));
-		ingotTextures[4] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ingots/IngotLead"));
-		ingotTextures[5] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ingots/IngotBronze"));
-		ingotTextures[6] = par1.registerIcon(TinyTextureHelper.getTextureStringFromName("ingots/IngotIridium"));
-	}
 	
 }

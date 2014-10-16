@@ -10,10 +10,9 @@ import net.minecraft.util.Icon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import speiger.src.spmodapi.client.render.utils.RenderUtilsBlock;
-import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
-import speiger.src.spmodapi.common.fluids.hemp.FluidHempResin;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.TextureEngine.BlockData;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -21,6 +20,7 @@ public class TileIconMaker
 {
 	
 	private HashMap<Block, ArrayList<AdvTile>> allTiles = new HashMap<Block, ArrayList<AdvTile>>();
+	private HashMap<BlockData, Class<? extends AdvTile>> classes = new HashMap<BlockData, Class<? extends AdvTile>>();
 	
 	private static TileIconMaker instance = new TileIconMaker();
 	
@@ -38,13 +38,16 @@ public class TileIconMaker
 		}
 	}
 	
-	public void addTileEntity(Block par1, AdvTile tile)
+	public void addTileEntity(Block par1, int meta, AdvTile tile)
 	{
 		if (allTiles.get(par1) == null)
 		{
 			allTiles.put(par1, new ArrayList<AdvTile>());
 		}
+		tile.onPlaced(4);
 		allTiles.get(par1).add(tile);
+		
+		classes.put(new BlockData(par1, meta), tile.getClass());
 	}
 	
 	public AdvTile getTileEntityFromClass(Class<? extends AdvTile> tile)
@@ -86,6 +89,7 @@ public class TileIconMaker
 		return allTiles;
 	}
 	
+	
 	public static Icon getIconFromTile(Block block, Class<? extends AdvTile> clz, int side)
 	{
 		return instance.getIconSafe(instance.getIconFromTileEntity(block, clz, side));
@@ -107,7 +111,12 @@ public class TileIconMaker
 		catch (Exception e)
 		{
 		}
-		return null;
+		return this.getIconSafe(null);
+	}
+	
+	public Icon getIconFromTile(Block block, int meta, int side)
+	{
+		return getIconFromTileEntity(block, classes.get(new BlockData(block, meta)), side);
 	}
 	
 	public boolean match(Class<? extends AdvTile> tiles, AdvTile tile)
@@ -134,7 +143,7 @@ public class TileIconMaker
 	public void createBeforeIcon(TextureStitchEvent.Pre par1)
 	{
 		RenderUtilsBlock.pork = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/pork.raw");
-		((FluidHempResin) APIUtils.hempResin).registerIcon(par1.map);
+//		((FluidHempResin) APIUtils.hempResin).registerIcon(par1.map);
 	}
 	
 	@ForgeSubscribe
@@ -142,6 +151,6 @@ public class TileIconMaker
 	public void createAfterIcons(TextureStitchEvent.Post par1)
 	{
 		RenderUtilsBlock.pork = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/pork.raw");
-		((FluidHempResin) APIUtils.hempResin).registerIcon(par1.map);
+//		((FluidHempResin) APIUtils.hempResin).registerIcon(par1.map);
 	}
 }

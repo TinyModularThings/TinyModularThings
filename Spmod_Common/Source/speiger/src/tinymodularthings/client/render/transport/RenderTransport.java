@@ -54,7 +54,7 @@ public class RenderTransport implements ISimpleBlockRenderingHandler
 	{
 		renderer.renderStandardBlock(block, x, y, z);
 		int meta = world.getBlockMetadata(x, y, z) - 1;
-		renderer.setOverrideBlockTexture(renderer.getIconSafe(((BlockTransport) block).getTextureFromMeta(meta)));
+		renderer.setOverrideBlockTexture(renderer.getIconSafe(tile.getIconFromSideAndMetadata(0, 1)));
 		renderer.renderStandardBlock(block, x, y, z);
 		renderer.clearOverrideBlockTexture();
 	}

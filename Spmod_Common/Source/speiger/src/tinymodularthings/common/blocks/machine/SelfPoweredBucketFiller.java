@@ -1,9 +1,11 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.energy.EnergyProvider;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 
@@ -44,5 +46,13 @@ public class SelfPoweredBucketFiller extends BucketFillerBasic
 	{
 		return new ItemStack(TinyBlocks.machine, 1, this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
 	}
+
+	@Override
+	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	{
+		return TextureEngine.getTextures().getTexture(TinyBlocks.machine, 2, side == 0 ? 1 : side == 1 ? 0 : 2);
+	}
+	
+	
 	
 }

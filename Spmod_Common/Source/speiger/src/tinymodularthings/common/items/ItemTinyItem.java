@@ -15,13 +15,11 @@ public class ItemTinyItem extends TinyItem
 {
 	
 	String Name;
-	String Texture;
 	
-	public ItemTinyItem(int par1, String name, String texture)
+	public ItemTinyItem(int par1, String name)
 	{
 		super(par1);
 		Name = name;
-		Texture = texture;
 		setCreativeTab(CreativeTabs.tabFood);
 	}
 	
@@ -29,13 +27,6 @@ public class ItemTinyItem extends TinyItem
 	public String getDisplayName(ItemStack par1, SpmodMod Start)
 	{
 		return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), Name, Start);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
-	{
-		itemIcon = par1IconRegister.registerIcon(Texture);
 	}
 	
 	@Override

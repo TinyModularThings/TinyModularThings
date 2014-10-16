@@ -49,7 +49,7 @@ public class ItemHempResin extends SpmodItem
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
-		return TextureEngine.getTextures().getTexture(APIBlocks.fluidHempResin, 0);
+		return TextureEngine.getTextures().getTexture(APIBlocks.fluidHempResin);
 	}
 	
 	

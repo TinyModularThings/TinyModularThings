@@ -23,10 +23,12 @@ import speiger.src.api.inventory.InterfaceAcceptor;
 import speiger.src.api.packets.IPacketReciver;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.BlockPosition;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.data.StructureStorage;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.transport.ItemInterfaceGui;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInterfaceBlock;
@@ -60,6 +62,11 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
+		if(renderPass == 1)
+		{
+			return TextureEngine.getTextures().getTexture(TinyBlocks.transportBlock, 0);
+		}
+		
 		if (blockID != -1 && metadata != -1)
 		{
 			return new BlockStack(blockID, metadata).getTexture(side);

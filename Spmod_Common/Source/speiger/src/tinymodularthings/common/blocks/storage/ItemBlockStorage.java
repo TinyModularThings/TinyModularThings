@@ -20,7 +20,7 @@ public class ItemBlockStorage extends ItemBlockTinyChest
 	@Override
 	public int getMetadata(int par1)
 	{
-		return par1;
+		return par1 > 3 ? 3 : par1;
 	}
 	
 	@Override

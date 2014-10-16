@@ -5,7 +5,9 @@ import java.util.ArrayList;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 
@@ -16,6 +18,12 @@ public class AdvTinyTank extends TinyTank
 	public boolean canConnectToWire()
 	{
 		return true;
+	}
+	
+	@Override
+	public Icon getIconFromSideAndMetadata(int side, int renderPass)
+	{
+		return TextureEngine.getTextures().getTexture(getBlockType(), 1);
 	}
 	
 	@Override
@@ -112,12 +120,6 @@ public class AdvTinyTank extends TinyTank
 			return true;
 		}
 		return false;
-	}
-	
-	@Override
-	public void registerIcon(IconRegister par1)
-	{
-		texture = par1.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":storage/AdvTinyTank");
 	}
 	
 }

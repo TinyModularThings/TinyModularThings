@@ -13,12 +13,14 @@ import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import speiger.src.api.blocks.BlockStack;
+import speiger.src.spmodapi.common.interfaces.ITextureRequester;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class TextureEngine
 {
-	private static TextureEngine instance = new TextureEngine();
+	private static TextureEngine instance;
 	
 	private TextureEngine()
 	{
@@ -27,6 +29,10 @@ public class TextureEngine
 	
 	public static TextureEngine getTextures()
 	{
+		if(instance == null)
+		{
+			instance = new TextureEngine();
+		}
 		return instance;
 	}
 	
@@ -70,6 +76,12 @@ public class TextureEngine
 		currentPath = "";
 	}
 	
+	public void markForDelay(ITextureRequester par1)
+	{
+		RequestData data = new RequestData();
+		data.data = par1;
+		this.requestLaterRegistration.add(data);
+	}
 	
 	
 	public void registerTexture(Block par1, String...par2)
@@ -108,7 +120,7 @@ public class TextureEngine
 		{
 			textures.add(currentMod+":"+currentPath+key);
 		}
-		
+
 		itemString.put(data, textures.toArray(new String[textures.size()]));
 	}
 	
@@ -137,7 +149,20 @@ public class TextureEngine
 	@ForgeSubscribe
 	@SideOnly(Side.CLIENT)
 	public void createAfterIcons(TextureStitchEvent.Post par1)
-	{
+	{	
+		ArrayList<RequestData> remove = new ArrayList<RequestData>();
+		for(RequestData data : requestLaterRegistration)
+		{
+			if(data.data.onTextureAfterRegister(this))
+			{
+				remove.add(data);
+			}
+		}
+		if(!this.requestLaterRegistration.isEmpty() && !remove.isEmpty())
+		{
+			this.requestLaterRegistration.removeAll(remove);
+		}
+		
 		if(par1.map.textureType == 0)
 		{
 			Iterator<Entry<BlockData, String[]>> iter = blockString.entrySet().iterator();
@@ -172,6 +197,18 @@ public class TextureEngine
 	@SideOnly(Side.CLIENT)
 	public void createBeforeIcon(TextureStitchEvent.Pre par1)
 	{
+		ArrayList<RequestData> remove = new ArrayList<RequestData>();
+		for(RequestData data : requestLaterRegistration)
+		{
+			if(data.data.onTextureAfterRegister(this))
+			{
+				remove.add(data);
+			}
+		}
+		if(!this.requestLaterRegistration.isEmpty() && !remove.isEmpty())
+		{
+			this.requestLaterRegistration.removeAll(remove);
+		}
 		if(par1.map.textureType == 0)
 		{
 			Iterator<Entry<BlockData, String[]>> iter = blockString.entrySet().iterator();
@@ -200,10 +237,19 @@ public class TextureEngine
 				itemTextures.put(texture.getKey(), icons);
 			}
 		}
+
 	}
 	
 	
+	public Icon getTexture(Block par1)
+	{
+		return getTexture(par1, 0);
+	}
 	
+	public Icon getTexture(Item par1)
+	{
+		return getTexture(par1, 0);
+	}
 	
 	public Icon getTexture(Block par1, int key)
 	{
@@ -296,7 +342,11 @@ public class TextureEngine
 			}
 			return true;
 		}
-		
+		@Override
+		public int hashCode()
+		{
+			return item.itemID + meta;
+		}
 		
 		
 	}
@@ -337,11 +387,17 @@ public class TextureEngine
 			}
 			return true;
 		}
+		@Override
+		public int hashCode()
+		{
+			return block.blockID + meta;
+		}
+		
 	}
 	
 	public static class RequestData
 	{
-		
+		ITextureRequester data;
 	}
 	
 	

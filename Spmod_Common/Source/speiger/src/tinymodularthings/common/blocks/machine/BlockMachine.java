@@ -3,10 +3,7 @@ package speiger.src.tinymodularthings.common.blocks.machine;
 import java.util.List;
 import java.util.Random;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
@@ -20,14 +17,17 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
+import speiger.src.api.blocks.BlockStack;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
-import speiger.src.tinymodularthings.common.plugins.BC.BCRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockMachine extends BlockContainer
+public class BlockMachine extends SpmodBlockContainerBase
 {
 	
 	public BlockMachine(int par1)
@@ -89,6 +89,20 @@ public class BlockMachine extends BlockContainer
 			TinyModularThings.log.print("Could not Load TileEntityMeta: " + metadata + " Reason: " + e.getLocalizedMessage());
 			return null;
 		}
+	}
+	
+	@Override
+	public void registerTextures(TextureEngine par1)
+	{
+		par1.removePath();
+		par1.finishMod();
+		par1.registerTexture(this, "cobblestone", "furnace_front_off", "furnace_front_on");
+		par1.setCurrentMod(TinyModularThingsLib.ModID.toLowerCase());
+		par1.setCurrentPath("machine");
+		par1.registerTexture(new BlockStack(this, 1), "basicBucketFiller_top", "basicBucketFiller_bottom", "basicBucketFiller_side");
+		par1.registerTexture(new BlockStack(this, 2), "SelfPoweredBucketFiller_top", "SelfPoweredBucketFiller_bottom", "SelfPoweredBucketFiller_side");
+		par1.registerTexture(new BlockStack(this, 3), "waterGenerator_top", "waterGenerator_bottom", "waterGenerator_side");
+	
 	}
 	
 	@Override
@@ -176,87 +190,24 @@ public class BlockMachine extends BlockContainer
 	{
 		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
 		int meta = par1.getBlockMetadata(par2, par3, par4);
-		if (tile != null && tile instanceof AdvTile && ((AdvTile) tile).getIconFromSideAndMetadata(par5, 0) != null)
+		if (tile != null && tile instanceof AdvTile)
 		{
-			return ((AdvTile) tile).getIconFromSideAndMetadata(par5, 0);
+			return ((AdvTile)tile).getIconFromSideAndMetadata(par5, 0);
 		}
-		return getIcon(par5, meta);
+		return TileIconMaker.getIconMaker().getIconSafe(null);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
-		switch (par2)
-		{
-			case 0:
-			{
-				if (par1 == 3)
-				{
-					if (BCRegistry.overrideVanilla)
-					{
-						return Block.blocksList[61].getIcon(3, 2);
-					}
-					else
-					{
-						return Block.blocksList[61].getIcon(2, 2);
-					}
-				}
-				return Block.cobblestone.getBlockTextureFromSide(0);
-			}
-			case 1:
-			{
-				if (par1 < 2)
-				{
-					return textures[0][par1];
-				}
-				return textures[0][2];
-			}
-			case 2:
-			{
-				if (par1 < 2)
-				{
-					return textures[1][par1];
-				}
-				return textures[1][2];
-			}
-			case 3:
-			{
-				if (par1 < 2)
-				{
-					if (par1 == 1)
-					{
-						par1 = 0;
-					}
-					else if (par1 == 0)
-					{
-						par1 = 1;
-					}
-					return textures[2][par1];
-				}
-				return textures[2][2];
-			}
-			default:
-				return null;
-		}
+		return TileIconMaker.getIconMaker().getIconFromTile(this, par2, par1);
 	}
 	
-	Icon[][] textures = new Icon[3][3];
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
-	{
-		String[] names = new String[] { "top", "bottom", "side" };
-		for (int i = 0; i < names.length; i++)
-		{
-			textures[0][i] = par1IconRegister.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":machine/basicBucketFiller_" + names[i]);
-			textures[1][i] = par1IconRegister.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":machine/SelfPoweredBucketFiller_" + names[i]);
-			textures[2][i] = par1IconRegister.registerIcon(TinyModularThingsLib.ModID.toLowerCase() + ":machine/waterGenerator_" + names[i]);
-			
-		}
-	}
 	
+	
+
 	@Override
 	public void updateTick(World world, int i, int j, int k, Random random)
 	{

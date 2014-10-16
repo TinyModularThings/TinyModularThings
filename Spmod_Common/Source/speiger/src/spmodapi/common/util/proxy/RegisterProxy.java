@@ -34,7 +34,7 @@ public class RegisterProxy
 		GameRegistry.registerBlock(block, itemclass, name);
 	}
 	
-	public static void RegisterTile(Block block, Class<? extends TileEntity> claz, String name)
+	public static void RegisterTile(Block block, int meta, Class<? extends TileEntity> claz, String name)
 	{
 		TileEntity.addMapping(claz, name);
 		TileEntity tile = null;
@@ -51,13 +51,18 @@ public class RegisterProxy
 		if (block != null && tile != null && tile instanceof AdvTile)
 		{
 			AdvTile regist = (AdvTile) tile;
-			TileIconMaker.getIconMaker().addTileEntity(block, regist);
+			TileIconMaker.getIconMaker().addTileEntity(block, meta, regist);
 		}
+	}
+	
+	public static void RegisterTile(Block block, Class<? extends TileEntity> claz, String name)
+	{
+		RegisterTile(block, 0, claz, name);
 	}
 	
 	public static void RegisterTile(Class<? extends TileEntity> claz, String string)
 	{
-		RegisterTile(null, claz, string);
+		RegisterTile(null, 0, claz, string);
 	}
 	
 }

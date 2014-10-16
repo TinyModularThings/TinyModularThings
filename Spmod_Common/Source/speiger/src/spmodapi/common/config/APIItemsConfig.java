@@ -91,50 +91,57 @@ public class APIItemsConfig
 		
 		items.multiPlate = new ItemMultiPlate(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.multiPlate);
+		((SpmodItem)items.multiPlate).registerTexture(engine);
 		config.itemIDs.updateToNextID();
 		
 		items.colorCard = new ItemColorCard(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.colorCard);
+		engine.registerTexture(items.colorCard, "colorCard");
 		config.itemIDs.updateToNextID();
 		
 		items.hempResinBucket = new ItemHempBucket(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.hempResinBucket);
+		engine.setCurrentPath("hemp");
+		engine.registerTexture(items.hempResinBucket, "hemp.resin.bucket");
 		config.itemIDs.updateToNextID();
 		
 		items.expBottles = new ExpBottle(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.expBottles);
+		((SpmodItem)items.expBottles).registerTexture(engine);
 		config.itemIDs.updateToNextID();
 		
 		items.mobMachineHelper = new ItemMobMachineHelper(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.mobMachineHelper);
 		config.itemIDs.updateToNextID();
 		
-		items.boneChicken = new SpmodBone(config.itemIDs.getCurrentID(), 1, "chicken");
+		engine.setCurrentPath("crafting");
+		items.boneChicken = new SpmodBone(config.itemIDs.getCurrentID(), 1, "chicken", engine);
 		RegisterProxy.RegisterItem(items.boneChicken);
 		config.itemIDs.updateToNextID();
 		
-		items.boneSheep = new SpmodBone(config.itemIDs.getCurrentID(), 2, "sheep");
+		items.boneSheep = new SpmodBone(config.itemIDs.getCurrentID(), 2, "sheep", engine);
 		RegisterProxy.RegisterItem(items.boneSheep);
 		config.itemIDs.updateToNextID();
 		
-		items.bonePig = new SpmodBone(config.itemIDs.getCurrentID(), 4, "pig");
+		items.bonePig = new SpmodBone(config.itemIDs.getCurrentID(), 4, "pig", engine);
 		RegisterProxy.RegisterItem(items.bonePig);
 		config.itemIDs.updateToNextID();
 		
-		items.boneCow = new SpmodBone(config.itemIDs.getCurrentID(), 5, "cow");
+		items.boneCow = new SpmodBone(config.itemIDs.getCurrentID(), 5, "cow", engine);
 		RegisterProxy.RegisterItem(items.boneCow);
 		config.itemIDs.updateToNextID();
 		
-		items.boneMooshroom = new SpmodBone(config.itemIDs.getCurrentID(), 5, "mushroom");
+		items.boneMooshroom = new SpmodBone(config.itemIDs.getCurrentID(), 5, "mushroom", engine);
 		RegisterProxy.RegisterItem(items.boneMooshroom);
 		config.itemIDs.updateToNextID();
 		
-		items.boneHorse = new SpmodBone(config.itemIDs.getCurrentID(), 6, "horse");
+		items.boneHorse = new SpmodBone(config.itemIDs.getCurrentID(), 6, "horse", engine);
 		RegisterProxy.RegisterItem(items.boneHorse);
 		config.itemIDs.updateToNextID();
 		
 		items.trades = new ItemRandomTrade(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.trades);
+		engine.registerTexture(items.trades, "random_Trade");
 		config.itemIDs.updateToNextID();
 		
 		initHempPlates();

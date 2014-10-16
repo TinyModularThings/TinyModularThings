@@ -21,6 +21,7 @@ import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.nbt.NBTHelper;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.items.GuiPotionBag;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
@@ -32,7 +33,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemPotionBag extends TinyItem implements IItemGui
 {
 	
-	public static Icon[] textures = new Icon[3];
 	
 	public ItemPotionBag(int par1)
 	{
@@ -79,15 +79,6 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void registerIcons(IconRegister par1IconRegister)
-	{
-		textures[0] = par1IconRegister.registerIcon(this.getModID()+":tools/potionBag");
-		textures[1] = par1IconRegister.registerIcon(this.getModID()+":tools/potionBag_noPotions");
-		textures[2] = par1IconRegister.registerIcon(this.getModID()+":tools/potionBag_inactive");
-	}
-	
-	@Override
 	public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
 	{
 		return getIcon(stack, renderPass);
@@ -100,16 +91,15 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 		NBTTagCompound data = nbt.getCompoundTag("BagData");
 		if(!data.getBoolean("Active"))
 		{
-			return textures[2];
+			return TextureEngine.getTextures().getTexture(this, 2);
 		}
 		
 		PotionInventory inv = new PotionInventory(null, stack);
 		if(!inv.hasPotions())
 		{
-			return textures[1];
+			return TextureEngine.getTextures().getTexture(this, 1);
 		}
-		
-		return textures[0];
+		return TextureEngine.getTextures().getTexture(this, 0);
 	}
 	
 	@Override
