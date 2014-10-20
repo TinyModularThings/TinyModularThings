@@ -13,6 +13,7 @@ import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.recipes.advanced.ColorCardCleaning;
 import speiger.src.spmodapi.common.recipes.advanced.ColorCardRecipe;
+import speiger.src.spmodapi.common.recipes.advanced.ShapedColorCardRecipe;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 
 public class BasicRecipes
@@ -43,7 +44,7 @@ public class BasicRecipes
 		pp.addRecipe(ItemGear.getGearFromType(GearType.Redstone), new Object[] { " X ", "XYX", " X ", 'X', Item.redstone, 'Y', ItemGear.getGearFromType(GearType.Gold) });
 		pp.addFurnaceRecipe(ItemGear.getGearFromType(GearType.Cobblestone), ItemGear.getGearFromType(GearType.Stone), 0.35F);
 		
-		pp.addRecipe(new ShapedOreRecipe(new ItemStack(APIItems.colorCard, 8), "XYX", "CVD", "XBX", 'X', "plankWood", 'V', "stickWood", 'Y', "dyeWhite", 'C', "dyeGreen", 'D', "dyeBlue", 'B', "dyeRed"));
+		pp.addRecipe(new ShapedColorCardRecipe(new ItemStack(APIItems.colorCard, 8), "XYX", "CVD", "XBX", 'X', "plankWood", 'V', "stickWood", 'Y', "dyeWhite", 'C', "dyeGreen", 'D', "dyeBlue", 'B', "dyeRed"));
 		pp.addRecipe(new ColorCardRecipe());
 		for (FluidContainerData data : PathProxy.getDataFromFluid(FluidRegistry.WATER))
 		{

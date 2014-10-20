@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
+import net.minecraft.client.gui.ScaledResolution;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITaskEntry;
@@ -22,7 +24,10 @@ import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.FoodStats;
+import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.FOVUpdateEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -31,12 +36,14 @@ import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import speiger.src.api.tiles.IExpProvider;
 import speiger.src.api.util.WorldReading;
+import speiger.src.spmodapi.client.core.RenderHelper;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.entity.EntityOverridenEnderman;
 import speiger.src.spmodapi.common.entity.ai.EntityAiAutoFeed;
 import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
+import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -54,6 +61,35 @@ public class LivingHandler
 		{
 			double space = jump.getAttributeValue() - jump.getBaseValue();
 			entity.motionY += 0.1 * space;
+		}
+	}
+	
+	@ForgeSubscribe
+	@SideOnly(Side.CLIENT)
+	public void onIngameRender(RenderGameOverlayEvent.Post evt)
+	{
+		if(evt.type == evt.type.FOOD)
+		{
+			if(!Loader.isModLoaded("SpiceOfLife"))
+			{
+				Minecraft mc = Minecraft.getMinecraft();
+				EntityPlayer thePlayer = mc.thePlayer;
+				if(!thePlayer.isDead && !thePlayer.capabilities.isCreativeMode)
+				{
+					FoodStats food = thePlayer.getFoodStats();
+					int extraHunger = (int)food.getSaturationLevel();
+					if(extraHunger > 0)
+					{
+					    ScaledResolution scale = evt.resolution;
+
+					    int left = scale.getScaledWidth() / 2 + 91;
+					    int top = scale.getScaledHeight() - GuiIngameForge.right_height + 10;
+
+					      RenderHelper.drawSaturationOverlay(0.0F, food.getSaturationLevel(), mc, left, top, 1.0F);
+					}
+				}
+			}
+			
 		}
 	}
 	

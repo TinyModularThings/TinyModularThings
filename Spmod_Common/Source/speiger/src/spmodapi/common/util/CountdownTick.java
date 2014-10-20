@@ -1,21 +1,12 @@
 package speiger.src.spmodapi.common.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.EnumSet;
 
-import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.village.MerchantRecipe;
-import net.minecraft.village.MerchantRecipeList;
-import net.minecraft.world.World;
-import speiger.src.spmodapi.common.blocks.utils.MobMachine;
-import speiger.src.spmodapi.common.blocks.utils.MobMachine.DropType;
-import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
+import speiger.src.spmodapi.common.entity.SpmodFoodStats;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
-import cpw.mods.fml.common.registry.VillagerRegistry;
 
 public class CountdownTick implements ITickHandler
 {
@@ -24,14 +15,20 @@ public class CountdownTick implements ITickHandler
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{
-		
+		EntityPlayer player = (EntityPlayer) tickData[0];
+		if(SpmodFoodStats.hardcorePeacefull.get(player.username) != null && SpmodFoodStats.hardcorePeacefull.get(player.username))
+		{
+			if(player.ticksExisted % 20 * 12 == 0)
+			{
+				player.ticksExisted++;
+			}
+		}
 	}
 	
 	@Override
 	public void tickEnd(EnumSet<TickType> type, Object... tickData)
 	{
 		EntityPlayer player = (EntityPlayer) tickData[0];
-		
 		
 		NBTTagCompound playerNBT = player.getEntityData();
 		

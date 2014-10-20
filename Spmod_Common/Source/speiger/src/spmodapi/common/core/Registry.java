@@ -9,12 +9,15 @@ import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
+import speiger.src.api.nbt.DataStorage;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.entity.EntityOverridenEnderman;
+import speiger.src.spmodapi.common.entity.SpmodFoodStats;
 import speiger.src.spmodapi.common.handler.ChatHandler;
+import speiger.src.spmodapi.common.handler.PlayerHandler;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.recipes.SpmodRecipeRegistry;
@@ -23,6 +26,7 @@ import speiger.src.spmodapi.common.util.ForgeRegister;
 import buildcraft.BuildCraftCore;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.EntityRegistry;
+import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
 
 public class Registry
@@ -40,7 +44,9 @@ public class Registry
 		MinecraftForge.addGrassPlant(APIBlocks.blueFlower, 0, 10);
 		instance.registerText();
 		instance.initOres();
+		GameRegistry.registerPlayerTracker(new PlayerHandler());
 		SpmodRecipeRegistry.loadRecipes();
+		DataStorage.registerNBTReciver(SpmodFoodStats.food);
 		EntityRegistry.registerModEntity(EntityOverridenEnderman.class, "newEndermann", 1, SpmodAPI.instance, 256, 3, true);
 		MinecraftForge.EVENT_BUS.register(ChatHandler.getInstance());
 		FluidContainerRegistry.registerFluidContainer(APIUtils.hempResin, new ItemStack(APIItems.hempResinBucket), new ItemStack(Item.bucketEmpty));

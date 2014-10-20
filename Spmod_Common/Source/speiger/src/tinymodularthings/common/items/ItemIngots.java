@@ -9,6 +9,7 @@ import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.api.items.DisplayStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.SpmodMod;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import cpw.mods.fml.relauncher.Side;
@@ -62,6 +63,13 @@ public class ItemIngots extends TinyItem
 			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, i)), ingots[i], par0);
 		}
 		
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getIconFromDamage(int par1)
+	{
+		return super.getIconFromDamage(par1);
 	}
 
 	

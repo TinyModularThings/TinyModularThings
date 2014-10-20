@@ -46,7 +46,7 @@ public abstract class SpmodItem extends Item implements LanguageItem, ITextureRe
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
-		return TextureEngine.getTextures().getTexture(this);
+		return TextureEngine.getTextures().getTexture(this, par1);
 	}
 	
 	public void registerTexture(TextureEngine par1)
