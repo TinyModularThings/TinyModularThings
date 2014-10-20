@@ -2,14 +2,12 @@ package speiger.src.tinymodularthings.common.blocks.storage;
 
 import java.util.ArrayList;
 
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
-import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 
 public class AdvTinyTank extends TinyTank
 {

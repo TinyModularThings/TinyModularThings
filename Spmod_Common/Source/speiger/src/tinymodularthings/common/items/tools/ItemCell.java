@@ -1,17 +1,12 @@
 package speiger.src.tinymodularthings.common.items.tools;
 
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -32,7 +27,6 @@ import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.items.DisplayStack;
-import speiger.src.api.items.IItemGui;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.nbt.NBTHelper;
 import speiger.src.api.util.InventoryUtil;
@@ -40,7 +34,6 @@ import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -373,7 +366,6 @@ public class ItemCell extends TinyItem implements IFluidContainerItem
 						FluidStack fill = new FluidStack(FluidRegistry.LAVA, FluidContainerRegistry.BUCKET_VOLUME);
 						if (fill(stack, fill, false, true) == FluidContainerRegistry.BUCKET_VOLUME)
 						{
-							FMLLog.getLogger().info("Test");
 							if (!InventoryUtil.addItemToPlayer(stack, player))
 							{
 								return stack;
@@ -502,6 +494,11 @@ public class ItemCell extends TinyItem implements IFluidContainerItem
 		}
 		else
 		{
+			if(!storedFluid.isFluidEqual(fluid))
+			{
+				return 0;
+			}
+			
 			if(capacity == storedFluid.amount)
 			{
 				return 0;

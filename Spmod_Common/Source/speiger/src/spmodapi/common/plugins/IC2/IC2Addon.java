@@ -1,4 +1,4 @@
-package speiger.src.spmodapi.common.modHelper.IC2;
+package speiger.src.spmodapi.common.plugins.IC2;
 
 import ic2.api.crops.Crops;
 import ic2.core.block.crop.IC2Crops;

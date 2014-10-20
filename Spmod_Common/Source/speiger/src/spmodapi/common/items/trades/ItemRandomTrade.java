@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -25,8 +24,9 @@ import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.items.SpmodItem;
-import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.CountdownTick;
+import speiger.src.spmodapi.common.util.TickHelper;
+import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -101,7 +101,7 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 			if (!secondTry)
 			{
 				secondTry = true;
-				CountdownTick.loadRecipes(par2);
+				TickHelper.loadRecipes(par2);
 			}
 			par3.add("No Trades Aviable");
 			return;
@@ -190,6 +190,11 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 			return recipeList.get(par1.getItemDamage());
 		}
 		return new MerchantRecipe((ItemStack) null, (ItemStack) null);
+	}
+
+	public static ItemStack getRandomTrade()
+	{
+		return new ItemStack(APIItems.trades, 1, CodeProxy.getRandom().nextInt(recipeList.size()));
 	}
 	
 }

@@ -54,4 +54,40 @@ public class SlotCoal extends Slot
 		
 	}
 	
+	public static boolean isFuel(ItemStack par1)
+	{
+		if (par1 == null)
+		{
+			return false;
+		}
+		int i = par1.itemID;
+		
+		if (i == Item.coal.itemID || i == Block.coalBlock.blockID)
+		{
+			return true;
+		}
+		
+		try
+		{
+			if (par1.getItem() instanceof ItemFirestoneRefined)
+			{
+				return true;
+			}
+			else if (ItemRegistry.getItem("railcraft.cube.coke", 1) != null && i == ItemRegistry.getItem("railcraft.cube.coke", 1).itemID)
+			{
+				return true;
+			}
+			else if (ItemRegistry.getItem("railcraft.fuel.coke", 1) != null && i == ItemRegistry.getItem("railcraft.fuel.coke", 1).itemID)
+			{
+				return true;
+			}
+		}
+		catch (Exception e)
+		{
+			
+		}
+		
+		return false;
+	}
+	
 }

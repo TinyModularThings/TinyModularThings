@@ -1,10 +1,6 @@
 package speiger.src.spmodapi;
 
-import static speiger.src.spmodapi.common.lib.SpmodAPILib.Client;
-import static speiger.src.spmodapi.common.lib.SpmodAPILib.Core;
-import static speiger.src.spmodapi.common.lib.SpmodAPILib.ModID;
-import static speiger.src.spmodapi.common.lib.SpmodAPILib.Name;
-import static speiger.src.spmodapi.common.lib.SpmodAPILib.Version;
+import static speiger.src.spmodapi.common.lib.SpmodAPILib.*;
 
 import java.io.File;
 
@@ -20,7 +16,7 @@ import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.core.Registry;
 import speiger.src.spmodapi.common.core.SpmodAPICore;
 import speiger.src.spmodapi.common.handler.SpmodPacketHandler;
-import speiger.src.spmodapi.common.modHelper.ModHelperLoader;
+import speiger.src.spmodapi.common.plugins.PluginLoader;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 import speiger.src.spmodapi.common.world.WorldLoader;
@@ -46,8 +42,12 @@ import cpw.mods.fml.common.network.NetworkRegistry;
 @NetworkMod(clientSideRequired = true, serverSideRequired = false, channels = "Spmod", packetHandler = SpmodPacketHandler.class)
 public class SpmodAPI implements SpmodMod
 {
+
 	@SidedProxy(clientSide = Client, serverSide = Core)
 	public static SpmodAPICore core;
+	
+	@SidedProxy(clientSide = ClientMods, serverSide = CoreMods)
+	public static PluginLoader plugins;
 	
 	@Instance(ModID)
 	public static SpmodAPI instance;
@@ -81,7 +81,7 @@ public class SpmodAPI implements SpmodMod
 	{
 		WorldLoader.getInstance().registerOres();
 		SpmodWorldGen.getWorldGen().init(SpmodConfig.getInstance());
-		ModHelperLoader.loadModAdditions();
+		plugins.loadModAdditions();
 		CommandRegistry.init();
 	}
 	

@@ -6,7 +6,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import speiger.src.api.inventory.IAcceptor;
 import speiger.src.spmodapi.common.tile.AdvTile;
-import speiger.src.tinymodularthings.common.blocks.transport.BlockTransport;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class RenderTransport implements ISimpleBlockRenderingHandler

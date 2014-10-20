@@ -1,5 +1,6 @@
 package speiger.src.spmodapi.common.items;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -45,7 +46,7 @@ public abstract class SpmodItem extends Item implements LanguageItem, ITextureRe
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
-		return TextureEngine.getTextures().getTexture(this, par1);
+		return TextureEngine.getTextures().getTexture(this);
 	}
 	
 	public void registerTexture(TextureEngine par1)
@@ -53,6 +54,14 @@ public abstract class SpmodItem extends Item implements LanguageItem, ITextureRe
 		
 	}
 	
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+	}
+
 	@Override
 	public boolean onTextureAfterRegister(TextureEngine par1)
 	{

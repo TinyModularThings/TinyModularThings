@@ -1,4 +1,4 @@
-package speiger.src.spmodapi.common.modHelper.forestry;
+package speiger.src.spmodapi.common.plugins.forestry;
 
 import java.util.ArrayList;
 import java.util.Arrays;

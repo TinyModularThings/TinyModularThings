@@ -8,7 +8,6 @@ import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.TinyModularThings;
-import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 
 public class PipeInformation
 {

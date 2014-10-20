@@ -1,4 +1,4 @@
-package speiger.src.spmodapi.common.modHelper.BC;
+package speiger.src.spmodapi.common.plugins.BC;
 
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;

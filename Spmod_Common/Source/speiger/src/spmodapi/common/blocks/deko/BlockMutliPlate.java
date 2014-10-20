@@ -218,5 +218,11 @@ public class BlockMutliPlate extends BlockContainer
 		}
 		return true;
 	}
+
+	@Override
+	public int getRenderType()
+	{
+		return -1;
+	}
 	
 }

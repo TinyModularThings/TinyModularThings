@@ -2,7 +2,6 @@ package speiger.src.tinymodularthings.common.items;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -12,7 +11,6 @@ import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
-import speiger.src.tinymodularthings.common.utils.TinyTextureHelper;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

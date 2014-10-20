@@ -1,6 +1,5 @@
 package speiger.src.spmodapi.common.items.crafting;
 
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -17,7 +16,6 @@ import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumColor;
-import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import cpw.mods.fml.relauncher.Side;

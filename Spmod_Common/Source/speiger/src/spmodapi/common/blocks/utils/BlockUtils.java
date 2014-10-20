@@ -1,6 +1,5 @@
 package speiger.src.spmodapi.common.blocks.utils;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -185,12 +184,13 @@ public class BlockUtils extends SpmodBlockContainerBase
 	@Override
 	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
 	{
+		if (par5EntityPlayer.isSneaking())
+		{
+			return false;
+		}
 		if (!par1World.isRemote)
 		{
-			if (par5EntityPlayer.isSneaking())
-			{
-				return false;
-			}
+
 			int meta = par1World.getBlockMetadata(par2, par3, par4);
 			if (meta == 0)
 			{
@@ -206,7 +206,7 @@ public class BlockUtils extends SpmodBlockContainerBase
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 	
 	@Override

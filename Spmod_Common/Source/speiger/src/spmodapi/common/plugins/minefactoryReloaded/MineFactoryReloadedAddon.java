@@ -1,4 +1,4 @@
-package speiger.src.spmodapi.common.modHelper.minefactoryReloaded;
+package speiger.src.spmodapi.common.plugins.minefactoryReloaded;
 
 import powercrystals.minefactoryreloaded.api.FactoryRegistry;
 import speiger.src.spmodapi.common.blocks.hemp.BlockHempCrop;

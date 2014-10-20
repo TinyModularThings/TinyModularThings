@@ -22,8 +22,10 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.energy.EnergyProvider;
 import speiger.src.api.energy.IEnergyProvider;
@@ -35,6 +37,7 @@ import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.machine.BucketFillerGui;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.plugins.BC.actions.BucketFillerAction;
 import buildcraft.api.gates.IAction;
@@ -149,6 +152,10 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 				start = true;
 				for (FluidContainerData cu : FluidContainerRegistry.getRegisteredFluidContainerData())
 				{
+					if(cu.filledContainer != null && cu.filledContainer.itemID == TinyItems.netherCrystal.itemID)
+					{
+						continue;
+					}
 					this.recipes.add(cu);
 				}
 			}
@@ -161,75 +168,182 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 			{
 				cuRecipe = findRecipe();
 			}
-			if (worldObj.getWorldTime() % 40 == 0)
+			if (worldObj.getWorldTime() % 20 == 0)
 			{
 				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 			}
 			
-			if (cuRecipe != null && provider.getStoredEnergy() > 10 && canWork())
+			if(provider.getStoredEnergy() > 10)
 			{
-				provider.useEnergy(10, false);
-				progress++;
-				if (progress >= max)
+				if (cuRecipe != null && canWork())
 				{
-					progress = 0;
-					if (drain)
+					provider.useEnergy(10, false);
+					progress++;
+					if (progress >= max)
 					{
-						ItemStack output = cuRecipe.emptyContainer.copy();
-						tank.fill(cuRecipe.fluid, true);
-						
-						if (inv[0].getItem().hasContainerItem())
+						progress = 0;
+						if (drain)
 						{
-							output = inv[0].getItem().getContainerItemStack(inv[0]);
+							ItemStack output = cuRecipe.emptyContainer.copy();
+							tank.fill(cuRecipe.fluid, true);
+							
+							if (inv[0].getItem().hasContainerItem())
+							{
+								output = inv[0].getItem().getContainerItemStack(inv[0]);
+							}
+							
+							if (inv[1] == null)
+							{
+								inv[1] = output;
+							}
+							else if (inv[1] != null)
+							{
+								inv[1].stackSize++;
+							}
+							
+							inv[0].stackSize--;
+							if (inv[0].stackSize <= 0)
+							{
+								inv[0] = null;
+							}
 						}
-						
-						if (inv[1] == null)
+						else
 						{
-							inv[1] = output;
+							ItemStack output = cuRecipe.filledContainer.copy();
+							tank.drain(cuRecipe.fluid.amount, true);
+							
+							if (inv[1] == null)
+							{
+								inv[1] = output;
+							}
+							else if (inv[1] != null)
+							{
+								inv[1].stackSize++;
+							}
+							
+							inv[0].stackSize--;
+							if (inv[0].stackSize <= 0)
+							{
+								inv[0] = null;
+							}
 						}
-						else if (inv[1] != null)
+						this.onInventoryChanged();
+						this.updateBlock();
+					}
+				}
+				else if(cuRecipe == null && inv[0] != null)
+				{
+					if(inv[0].getItem() instanceof IFluidContainerItem)
+					{
+						progress = 0;
+						IFluidContainerItem fluid = (IFluidContainerItem)inv[0].getItem();
+						if(drain)
 						{
-							inv[1].stackSize++;
+							if(canFillFluid(fluid.getFluid(inv[0])))
+							{
+								FluidStack fill = fluid.drain(inv[0], 100, false);
+								if((fill == null || fill.amount <= 0) && inv[1] == null)
+								{
+									inv[1] = inv[0].copy();
+									inv[0] = null;
+									return;
+								}
+								int amount = this.tank.fill(fill, true);
+								fluid.drain(inv[0], amount, true);
+								provider.useEnergy(10, false);
+							}
+							else if(fluid.getFluid(inv[0]) == null && inv[1] == null)
+							{
+								inv[1] = inv[0].copy();
+								inv[0] = null;
+							}
 						}
-						
-						inv[0].stackSize--;
-						if (inv[0].stackSize <= 0)
+						else
 						{
+							FluidStack drained = tank.drain(100, false);
+							if(drained != null && drained.amount > 0)
+							{
+								int filled = fluid.fill(inv[0], drained, true);
+								if(filled <= 0 && inv[1] == null)
+								{
+									inv[1] = inv[0].copy();
+									inv[0] = null;
+									return;
+								}
+								tank.drain(filled, true);
+								provider.useEnergy(10, false);
+							}
+							else if(inv[1] == null)
+							{
+								inv[1] = inv[0].copy();
+								inv[0] = null;
+							}
+						}
+					}
+					else if(inv[0].itemID == TinyItems.netherCrystal.itemID && drain)
+					{
+						if(inv[0].getItemDamage() == 3)
+						{
+							if(tank.getFluid() == null || (tank.getFluid().isFluidEqual(new FluidStack(FluidRegistry.LAVA, 1)) && tank.fill(new FluidStack(FluidRegistry.LAVA, 1000), false) == 1000))
+							{
+								progress++;
+								provider.useEnergy(10, false);
+								if(progress >= this.max)
+								{
+									progress = 0;
+									tank.fill(new FluidStack(FluidRegistry.LAVA, 1000), true);
+									inv[0] = inv[0].getItem().getContainerItemStack(inv[0]);
+									if(inv[0].getItemDamage() != 3 && inv[1] == null)
+									{
+										inv[1] = inv[0].copy();
+										inv[0] = null;
+									}
+								}
+							}
+						}
+						else
+						{
+							inv[1] = inv[0].copy();
 							inv[0] = null;
+							progress = 0;
 						}
+
 					}
 					else
 					{
-						ItemStack output = cuRecipe.filledContainer.copy();
-						tank.drain(cuRecipe.fluid.amount, true);
-						
-						if (inv[1] == null)
-						{
-							inv[1] = output;
-						}
-						else if (inv[1] != null)
-						{
-							inv[1].stackSize++;
-						}
-						
-						inv[0].stackSize--;
-						if (inv[0].stackSize <= 0)
-						{
-							inv[0] = null;
-						}
+						this.progress = 0;
 					}
-					this.onInventoryChanged();
-					this.updateBlock();
 				}
+				else if(inv[0] != null && inv[1] == null)
+				{
+					inv[1] = inv[0].copy();
+					inv[0] = null;
+					progress = 0;
+				}
+				else
+				{
+					this.progress = 0;
+				}
+				
 			}
-			else
-			{
-				this.progress = 0;
-			}
-			
 		}
 	}
 	
+	private boolean canFillFluid(FluidStack fluid)
+	{
+		if(fluid == null)
+		{
+			return false;
+		}
+		
+		if(this.tank.getFluid() != null && !this.tank.getFluid().isFluidEqual(fluid))
+		{
+			return false;
+		}
+		
+		return true;
+	}
+
 	public boolean canWork()
 	{
 		if (drain)

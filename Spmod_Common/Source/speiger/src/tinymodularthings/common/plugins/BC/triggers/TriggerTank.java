@@ -8,6 +8,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import buildcraft.BuildCraftCore;
 import buildcraft.api.gates.ITrigger;
@@ -47,7 +48,7 @@ public class TriggerTank implements ITrigger
 			case 0: return BuildCraftCore.triggerInventoryBelow25.getIcon();
 			case 1: return BuildCraftCore.triggerInventoryBelow50.getIcon();
 			case 2: return BuildCraftCore.triggerInventoryBelow75.getIcon();
-			default: return TileIconMaker.getIconMaker().getIconSafe(null);
+			default: return TextureEngine.getTextures().getIconSafe();
 		}
 	}
 	

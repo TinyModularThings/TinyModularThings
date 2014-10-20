@@ -6,7 +6,6 @@ import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.spmodapi.common.blocks.deko.KyrokaTheFox;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import cpw.mods.fml.client.FMLClientHandler;
 

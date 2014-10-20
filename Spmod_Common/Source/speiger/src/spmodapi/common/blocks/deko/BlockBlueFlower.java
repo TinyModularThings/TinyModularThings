@@ -1,9 +1,7 @@
 package speiger.src.spmodapi.common.blocks.deko;
 
 import net.minecraft.block.BlockFlower;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

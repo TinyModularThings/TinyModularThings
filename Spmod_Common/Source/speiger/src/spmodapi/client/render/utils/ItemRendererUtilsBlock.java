@@ -1,14 +1,18 @@
 package speiger.src.spmodapi.client.render.utils;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 
 import org.lwjgl.opengl.GL11;
 
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class ItemRendererUtilsBlock implements IItemRenderer
 {
@@ -82,8 +86,11 @@ public class ItemRendererUtilsBlock implements IItemRenderer
 		tessellator.draw();
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(1.0F, 1.0F, 0.0F);
-		render.renderFaceXPos(block, -0.5D, 0.0D, 0.0D, render.getIconSafe(RenderUtilsBlock.pork));
+		Minecraft mc = FMLClientHandler.instance().getClient();
+		mc.renderEngine.bindTexture(TextureMap.locationItemsTexture);
+		render.renderFaceXPos(block, -0.5D, 0.0D, 0.0D, render.getIconSafe(Item.porkRaw.getIconFromDamage(0)));
 		tessellator.draw();
+		mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		

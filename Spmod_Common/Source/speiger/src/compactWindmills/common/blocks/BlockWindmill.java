@@ -19,6 +19,7 @@ import speiger.src.compactWindmills.common.utils.WindmillType;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -62,9 +63,9 @@ public class BlockWindmill extends BlockContainer
 		{
 			mill.type = WindmillType.values()[par2];
 			mill.setFacing((short) 3);
-			return TileIconMaker.getIconMaker().getIconSafe(mill.getIconFromSideAndMetadata(par1, 0));
+			return TextureEngine.getTextures().getIconSafe(mill.getIconFromSideAndMetadata(par1, 0));
 		}
-		return TileIconMaker.getIconMaker().getIconSafe(null);
+		return TextureEngine.getTextures().getIconSafe();
 	}
 	
 	@Override
@@ -116,7 +117,7 @@ public class BlockWindmill extends BlockContainer
 		{
 			return ((AdvTile) tile).getIconFromSideAndMetadata(par5, 0);
 		}
-		return TileIconMaker.getIconMaker().getIconSafe(null);
+		return TextureEngine.getTextures().getIconSafe();
 	}
 	
 	@Override

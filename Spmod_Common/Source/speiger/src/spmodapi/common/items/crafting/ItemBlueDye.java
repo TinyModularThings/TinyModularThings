@@ -1,6 +1,5 @@
 package speiger.src.spmodapi.common.items.crafting;
 
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.api.items.DisplayStack;
@@ -9,8 +8,6 @@ import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.items.SpmodItem;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBlueDye extends SpmodItem
 {

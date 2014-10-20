@@ -1,5 +1,8 @@
 package speiger.src.tinymodularthings.client.gui.machine;
 
+import java.util.Arrays;
+import java.util.List;
+
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
@@ -47,8 +50,36 @@ public class BucketFillerGui extends GuiInventoryCore
 		int k = (this.width - this.xSize) / 2;
 		int l = (this.height - this.ySize) / 2;
 		this.buttonList.add(new GuiButton(0, k + 15, l + 35, 30, 20, basic.drain ? "Drain" : "Fill"));
+		
+		int textID = getText(par1 - k, par2 - l);
+		if(textID == 1)
+		{
+			FluidStack fluid = basic.tank.getFluid();
+			List<String> text = Arrays.asList("");
+			if(fluid == null)
+			{
+				text = Arrays.asList("Empty Tank", "0mB / "+basic.tank.getCapacity()+"mB");
+			}
+			else
+			{
+				String fluidName = fluid.getFluid().getName();
+				String first = fluidName.substring(0, 1);
+				fluidName = first.toUpperCase() + fluidName.substring(1);
+				text = Arrays.asList("Stored Fluid: "+fluidName, fluid.amount+"mB / "+basic.tank.getCapacity()+"mB");
+			}
+			this.drawHoveringText(text, par1-k-80, par2-l+25, this.fontRenderer);
+		}
 	}
 	
+	private int getText(int x, int y)
+	{
+		if(x >= 122 && x <= 139 && y >= 18 && y <= 77)
+		{
+			return 1;
+		}
+		return 0;
+	}
+
 	private static final ResourceLocation gui = new ResourceLocation(TinyModularThingsLib.ModID.toLowerCase() + ":textures/gui/machine/bucket_filler_gui.png");
 	private static final ResourceLocation BLOCK_TEXTURE = TextureMap.locationBlocksTexture;
 	

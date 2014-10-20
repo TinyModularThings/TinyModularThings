@@ -24,7 +24,6 @@ import speiger.src.compactWindmills.common.items.ItemRotor.BasicRotorType;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.items.SpmodItem;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

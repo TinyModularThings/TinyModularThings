@@ -1,4 +1,4 @@
-package speiger.src.spmodapi.common.modHelper.BC;
+package speiger.src.spmodapi.common.plugins.BC;
 
 import java.util.Arrays;
 import java.util.LinkedList;

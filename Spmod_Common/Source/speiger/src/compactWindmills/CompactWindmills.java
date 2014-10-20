@@ -77,6 +77,8 @@ public class CompactWindmills implements SpmodMod
 			RegisterProxy.RegisterBlock(windmill, ItemBlockWindmill.class, "Windmill");
 			RegisterProxy.RegisterTile(windmill, WindMill.class, "WindmillType");
 			RegisterProxy.RegisterItem(ModID, "BasicRotors", rotor);
+			RegisterProxy.RegisterItem(ModID, "advrotor", advRotor);
+			RegisterProxy.RegisterItem(ModID, "icerotor", iceRotor);
 		}
 		catch (Exception e)
 		{
@@ -92,6 +94,9 @@ public class CompactWindmills implements SpmodMod
 		
 		TextureEngine engine = TextureEngine.getTextures();
 		engine.setCurrentMod(CWPreference.ModID.toLowerCase());
+		engine.setCurrentPath("rotors");
+		engine.registerTexture(rotor, "rotor.basic.wood", "rotor.basic.wool", "rotor.basic.iron", "rotor.basic.carbon", "rotor.basic.alloy", "rotor.basic.iridium");
+		engine.removePath();
 		WindmillType.registerTextures(engine);
 		engine.finishMod();
 	}

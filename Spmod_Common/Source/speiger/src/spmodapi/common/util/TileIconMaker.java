@@ -7,14 +7,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.Icon;
-import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.event.ForgeSubscribe;
-import speiger.src.spmodapi.client.render.utils.RenderUtilsBlock;
-import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine.BlockData;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class TileIconMaker
 {
@@ -92,7 +86,7 @@ public class TileIconMaker
 	
 	public static Icon getIconFromTile(Block block, Class<? extends AdvTile> clz, int side)
 	{
-		return instance.getIconSafe(instance.getIconFromTileEntity(block, clz, side));
+		return TextureEngine.getTextures().getIconSafe(instance.getIconFromTileEntity(block, clz, side));
 	}
 	
 	public Icon getIconFromTileEntity(Block block, Class<? extends AdvTile> clz, int side)
@@ -111,7 +105,7 @@ public class TileIconMaker
 		catch (Exception e)
 		{
 		}
-		return this.getIconSafe(null);
+		return TextureEngine.getTextures().getIconSafe();
 	}
 	
 	public Icon getIconFromTile(Block block, int meta, int side)
@@ -137,20 +131,5 @@ public class TileIconMaker
 		
 		return (Icon) par1Icon;
 	}
-	
-	@ForgeSubscribe
-	@SideOnly(Side.CLIENT)
-	public void createBeforeIcon(TextureStitchEvent.Pre par1)
-	{
-		RenderUtilsBlock.pork = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/pork.raw");
-//		((FluidHempResin) APIUtils.hempResin).registerIcon(par1.map);
-	}
-	
-	@ForgeSubscribe
-	@SideOnly(Side.CLIENT)
-	public void createAfterIcons(TextureStitchEvent.Post par1)
-	{
-		RenderUtilsBlock.pork = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase() + ":utils/pork.raw");
-//		((FluidHempResin) APIUtils.hempResin).registerIcon(par1.map);
-	}
+
 }

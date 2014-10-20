@@ -36,7 +36,6 @@ import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.machine.PressureFurnaceGui;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
-import speiger.src.tinymodularthings.common.plugins.BC.BCRegistry;
 import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerFuel;
 import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerHasWork;
 import buildcraft.BuildCraftCore;
@@ -44,7 +43,6 @@ import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionReceptor;
 import buildcraft.api.gates.IOverrideDefaultTriggers;
 import buildcraft.api.gates.ITrigger;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -57,12 +55,11 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	public boolean valid = false;
 	public boolean firstTime = true;
 	public final int MaxHeat = 1200;
-	public final int MaxProgress = 300;
+	public final int MaxProgress = 200;
 	public int heat = 0;
 	public int fuel = 0;
 	public int progress = 0;
 	public PressureRecipe currentRecipe = null;
-	public static boolean loadRecipes = false;
 	public ItemStack[] inv = new ItemStack[7];
 	public int interfaces = 0;
 	public boolean paused = false;
@@ -88,11 +85,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	{
 		super.onTick();
 		
-		if (!loadRecipes)
-		{
-			loadRecipes = true;
-			PressureRecipeList.getInstance().addFurnaceRecipes();
-		}
+		
 		
 		if (!worldObj.isRemote)
 		{

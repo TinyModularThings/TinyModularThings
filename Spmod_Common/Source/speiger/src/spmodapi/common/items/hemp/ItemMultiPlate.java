@@ -19,7 +19,6 @@ import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.handler.PlateHandler;
 import speiger.src.spmodapi.common.items.SpmodItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -163,7 +162,7 @@ public class ItemMultiPlate extends SpmodItem
 				if (tile != null && tile instanceof MultiPlate)
 				{
 					MultiPlate plate = (MultiPlate) tile;
-					plate.setFacing(ForgeDirection.OPPOSITES[par7]);
+					plate.setFacing(ForgeDirection.getOrientation(par7).ordinal());
 					PlateInterface info = PlateManager.plates;
 					if (info != null && info.getAllIdentifiers().size() > 0 && info.getAllIdentifiers().size() > par1ItemStack.getItemDamage())
 					{

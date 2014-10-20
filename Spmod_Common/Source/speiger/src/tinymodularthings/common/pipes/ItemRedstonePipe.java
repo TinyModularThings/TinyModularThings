@@ -1,8 +1,8 @@
 package speiger.src.tinymodularthings.common.pipes;
 
-import speiger.src.tinymodularthings.common.handler.PipeIconHandler;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.tinymodularthings.common.handler.PipeIconHandler;
 import buildcraft.api.core.IIconProvider;
 import buildcraft.core.network.TileNetworkData;
 import buildcraft.transport.Pipe;

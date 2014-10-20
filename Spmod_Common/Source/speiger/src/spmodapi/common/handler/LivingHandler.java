@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITaskEntry;
 import net.minecraft.entity.ai.attributes.AttributeInstance;
+import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.EntityAnimal;
 import net.minecraft.entity.passive.EntityChicken;
@@ -17,6 +18,7 @@ import net.minecraft.entity.passive.EntityHorse;
 import net.minecraft.entity.passive.EntityMooshroom;
 import net.minecraft.entity.passive.EntityPig;
 import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -34,6 +36,7 @@ import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.entity.EntityOverridenEnderman;
 import speiger.src.spmodapi.common.entity.ai.EntityAiAutoFeed;
+import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -59,6 +62,9 @@ public class LivingHandler
 	{
 		if (par0.entity != null)
 		{
+
+			
+			
 			if (par0.entity instanceof EntityLivingBase)
 			{
 				EntityLivingBase entity = (EntityLivingBase) par0.entity;
@@ -130,6 +136,11 @@ public class LivingHandler
 				EntityHorse killed = (EntityHorse) entity;
 				killed.dropItem(APIItems.boneHorse.itemID, rand.nextInt(3));
 				
+			}
+			if(entity instanceof EntityVillager)
+			{
+				EntityItem item = new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, ItemRandomTrade.getRandomTrade());
+				entity.worldObj.spawnEntityInWorld(item);
 			}
 			
 		}

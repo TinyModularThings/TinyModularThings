@@ -19,7 +19,7 @@ import cpw.mods.fml.common.registry.VillagerRegistry;
 
 public class CountdownTick implements ITickHandler
 {
-	private static boolean loadedRecipes = false;
+	
 	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
@@ -32,15 +32,6 @@ public class CountdownTick implements ITickHandler
 	{
 		EntityPlayer player = (EntityPlayer) tickData[0];
 		
-		if (!loadedRecipes)
-		{
-			loadedRecipes = true;
-			World world = player.worldObj;
-			loadRecipes(player);
-			
-			MobMachine.addDrops(22, DropType.Common, ItemRandomTrade.getAllTrades());
-			
-		}
 		
 		NBTTagCompound playerNBT = player.getEntityData();
 		
@@ -73,32 +64,7 @@ public class CountdownTick implements ITickHandler
 		return EnumSet.of(TickType.PLAYER);
 	}
 	
-	public static void loadRecipes(EntityPlayer player)
-	{
-		World world = player.worldObj;
-		Collection<Integer> recipes = VillagerRegistry.getRegisteredVillagers();
-		ArrayList<MerchantRecipe> recipe = new ArrayList<MerchantRecipe>();
-		VillagerHelper.loadVillagerRecipes(recipe);
-		for (Integer ints : recipes)
-		{
-			MerchantRecipeList cu = new MerchantRecipeList();
-			EntityVillager villager = new EntityVillager(world, ints.intValue());
-			cu.addAll(villager.getRecipes(player));
-			VillagerRegistry.manageVillagerTrades(cu, villager, ints.intValue(), world.rand);
-			recipe.addAll(cu);
-		}
-		for (int i = 0; i < 6; i++)
-		{
-			MerchantRecipeList cu = new MerchantRecipeList();
-			EntityVillager villager = new EntityVillager(world, i);
-			cu.addAll(villager.getRecipes(player));
-			VillagerRegistry.manageVillagerTrades(cu, villager, i, world.rand);
-			recipe.addAll(cu);
-		}
-		
-		ItemRandomTrade.addRecipes(recipe);
-	}
-	
+
 	@Override
 	public String getLabel()
 	{

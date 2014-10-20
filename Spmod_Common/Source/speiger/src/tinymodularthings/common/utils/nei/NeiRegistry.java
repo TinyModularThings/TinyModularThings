@@ -20,7 +20,7 @@ public class NeiRegistry
 		{
 			API.registerRecipeHandler(new NeiPressureFurnace());
 			API.registerUsageHandler(new NeiPressureFurnace());
-			API.registerGuiOverlay(PressureFurnaceGui.class, "smelting", -5, 0);
+//			API.registerGuiOverlay(PressureFurnaceGui.class, "smelting", -5, 0);
 			API.hideItem(TinyBlocks.storageBlock.blockID);
 			API.hideItem(APIBlocks.multiPlate.blockID);
 		}

@@ -6,6 +6,9 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -14,6 +17,7 @@ import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
+import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -36,6 +40,8 @@ public class TextureEngine
 		return instance;
 	}
 	
+	Icon[] missingTexture = new Icon[2];
+	private TextureMap map;
 	HashMap<BlockData, String[]> blockString = new HashMap<BlockData, String[]>();
 	HashMap<ItemData, String[]> itemString = new HashMap<ItemData, String[]>();
 	
@@ -163,11 +169,13 @@ public class TextureEngine
 			this.requestLaterRegistration.removeAll(remove);
 		}
 		
+		
 		if(par1.map.textureType == 0)
 		{
 			Iterator<Entry<BlockData, String[]>> iter = blockString.entrySet().iterator();
 			for(;iter.hasNext();)
 			{
+				this.missingTexture[0] = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase()+":missingTexture");
 				Entry<BlockData, String[]> texture = iter.next();
 				Icon[] icons = new Icon[texture.getValue().length];
 				for(int i = 0;i<icons.length;i++)
@@ -179,6 +187,7 @@ public class TextureEngine
 		}
 		else
 		{
+			this.missingTexture[0] = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase()+":missingTexture");
 			Iterator<Entry<ItemData, String[]>> iter = itemString.entrySet().iterator();
 			for(;iter.hasNext();)
 			{
@@ -197,6 +206,8 @@ public class TextureEngine
 	@SideOnly(Side.CLIENT)
 	public void createBeforeIcon(TextureStitchEvent.Pre par1)
 	{
+		map = par1.map;
+		
 		ArrayList<RequestData> remove = new ArrayList<RequestData>();
 		for(RequestData data : requestLaterRegistration)
 		{
@@ -209,8 +220,12 @@ public class TextureEngine
 		{
 			this.requestLaterRegistration.removeAll(remove);
 		}
+		
+		
+		
 		if(par1.map.textureType == 0)
 		{
+			this.missingTexture[0] = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase()+":missingTexture");
 			Iterator<Entry<BlockData, String[]>> iter = blockString.entrySet().iterator();
 			for(;iter.hasNext();)
 			{
@@ -225,6 +240,7 @@ public class TextureEngine
 		}
 		else
 		{
+			this.missingTexture[0] = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase()+":missingTexture");
 			Iterator<Entry<ItemData, String[]>> iter = itemString.entrySet().iterator();
 			for(;iter.hasNext();)
 			{
@@ -268,7 +284,7 @@ public class TextureEngine
 		{
 			return texture[key];
 		}
-		return TileIconMaker.getIconMaker().getIconSafe(null);
+		return getIconSafe();
 	}
 	
 	public Icon getTexture(Item par1, int meta, int key)
@@ -276,9 +292,10 @@ public class TextureEngine
 		Icon[] texture = itemTextures.get(new ItemData(par1, meta));
 		if(texture != null && texture.length > key)
 		{
+			
 			return texture[key];
 		}
-		return TileIconMaker.getIconMaker().getIconSafe(null);
+		return getIconSafe();
 	}
 	
 	public static Icon[] getIcon(Block par1, int par2)
@@ -286,7 +303,7 @@ public class TextureEngine
 		Icon[] texture = instance.blockTextures.get(new BlockData(par1, par2));
 		if(texture == null)
 		{
-			texture = new Icon[0];
+			texture = new Icon[]{instance.getIconSafe()};
 		}
 		return texture;
 	}
@@ -296,11 +313,28 @@ public class TextureEngine
 		Icon[] texture = instance.itemTextures.get(new ItemData(par1, par2));
 		if(texture == null)
 		{
-			texture = new Icon[0];
+			texture = new Icon[]{instance.getIconSafe()};
 		}
 		return texture;
 	}
 	
+	public Icon getIconSafe(Icon par1)
+	{
+		if(par1 == null)
+		{
+			par1 = getIconSafe();
+		}
+		return par1;
+	}
+	
+	public Icon getIconSafe()
+	{
+		if(map != null)
+		{
+			return this.missingTexture[map.textureType];
+		}
+		return TileIconMaker.getIconMaker().getIconSafe(missingTexture[1]);
+	}
 	
 	
 	

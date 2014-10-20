@@ -1,4 +1,4 @@
-package speiger.src.spmodapi.common.modHelper.BC;
+package speiger.src.spmodapi.common.plugins.BC;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;

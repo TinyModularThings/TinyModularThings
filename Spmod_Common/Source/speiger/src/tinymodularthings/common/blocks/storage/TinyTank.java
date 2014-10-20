@@ -5,7 +5,6 @@ import ic2.api.tile.IWrenchable;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -30,7 +29,6 @@ import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
-import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
 import buildcraft.BuildCraftFactory;
 import buildcraft.api.tools.IToolWrench;

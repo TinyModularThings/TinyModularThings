@@ -3,11 +3,13 @@ package speiger.src.spmodapi.client.core;
 import net.minecraftforge.client.MinecraftForgeClient;
 import speiger.src.spmodapi.client.render.deko.ItemRendererLamp;
 import speiger.src.spmodapi.client.render.deko.ItemRendererStatue;
+import speiger.src.spmodapi.client.render.deko.RenderHanfSign;
 import speiger.src.spmodapi.client.render.deko.RenderKyroka;
 import speiger.src.spmodapi.client.render.deko.RenderLamp;
 import speiger.src.spmodapi.client.render.utils.ItemRendererUtilsBlock;
 import speiger.src.spmodapi.client.render.utils.RenderUtilsBlock;
 import speiger.src.spmodapi.common.blocks.deko.KyrokaTheFox;
+import speiger.src.spmodapi.common.blocks.deko.MultiPlate;
 import speiger.src.spmodapi.common.blocks.deko.TileLamp;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.core.SpmodAPICore;
@@ -23,6 +25,7 @@ public class SpmodAPIClient extends SpmodAPICore
 		ForgeRegister.regsiterClient();
 		// Deko
 		ClientRegistry.bindTileEntitySpecialRenderer(TileLamp.class, new RenderLamp());
+		ClientRegistry.bindTileEntitySpecialRenderer(MultiPlate.class, new RenderHanfSign());
 		MinecraftForgeClient.registerItemRenderer(APIBlocks.hempLamp.blockID, new ItemRendererLamp());
 		
 		// Utils

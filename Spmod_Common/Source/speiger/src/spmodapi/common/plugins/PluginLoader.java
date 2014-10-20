@@ -1,15 +1,15 @@
-package speiger.src.spmodapi.common.modHelper;
+package speiger.src.spmodapi.common.plugins;
 
-import speiger.src.spmodapi.common.modHelper.BC.BCAddon;
-import speiger.src.spmodapi.common.modHelper.IC2.IC2Addon;
-import speiger.src.spmodapi.common.modHelper.forestry.AddonForestry;
-import speiger.src.spmodapi.common.modHelper.minefactoryReloaded.MineFactoryReloadedAddon;
+import speiger.src.spmodapi.common.plugins.BC.BCAddon;
+import speiger.src.spmodapi.common.plugins.IC2.IC2Addon;
+import speiger.src.spmodapi.common.plugins.forestry.AddonForestry;
+import speiger.src.spmodapi.common.plugins.minefactoryReloaded.MineFactoryReloadedAddon;
 import speiger.src.spmodapi.common.recipes.helper.RecipeOverrider;
 import cpw.mods.fml.common.Loader;
 
-public class ModHelperLoader
+public class PluginLoader
 {
-	public static void loadModAdditions()
+	public void loadModAdditions()
 	{
 		try
 		{

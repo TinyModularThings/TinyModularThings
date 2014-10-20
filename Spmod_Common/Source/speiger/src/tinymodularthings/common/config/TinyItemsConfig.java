@@ -38,14 +38,12 @@ import speiger.src.tinymodularthings.common.pipes.PipeEmeraldExtractionPower;
 import speiger.src.tinymodularthings.common.pipes.PipeEmeraldPower;
 import speiger.src.tinymodularthings.common.pipes.RefinedDiamondPowerPipe;
 import speiger.src.tinymodularthings.common.pipes.SpmodPipe;
-import speiger.src.tinymodularthings.common.utils.TinyTextureHelper;
 import buildcraft.BuildCraftSilicon;
 import buildcraft.BuildCraftTransport;
 import buildcraft.api.recipes.AssemblyRecipe;
 import buildcraft.transport.BlockGenericPipe;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
-import buildcraft.transport.PipeToolTipManager;
 import buildcraft.transport.PipeTransportPower;
 import cpw.mods.fml.common.FMLLog;
 

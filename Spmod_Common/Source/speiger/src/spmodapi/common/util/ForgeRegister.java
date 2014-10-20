@@ -38,7 +38,6 @@ public class ForgeRegister
 	
 	public static void regsiterClient()
 	{
-		regist(TileIconMaker.getIconMaker());
 		regist(SoundRegistry.getInstance());
 	}
 	

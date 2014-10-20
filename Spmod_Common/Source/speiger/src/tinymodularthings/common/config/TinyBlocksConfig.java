@@ -6,7 +6,6 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
 import speiger.src.tinymodularthings.common.blocks.machine.BlockMachine;
 import speiger.src.tinymodularthings.common.blocks.machine.BucketFillerBasic;
@@ -36,7 +35,6 @@ import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.enums.EnumPipes;
-import speiger.src.tinymodularthings.common.utils.TinyTextureHelper;
 
 public class TinyBlocksConfig
 {

@@ -194,7 +194,7 @@ public class BlockMachine extends SpmodBlockContainerBase
 		{
 			return ((AdvTile)tile).getIconFromSideAndMetadata(par5, 0);
 		}
-		return TileIconMaker.getIconMaker().getIconSafe(null);
+		return TextureEngine.getTextures().getIconSafe();
 	}
 	
 	@Override

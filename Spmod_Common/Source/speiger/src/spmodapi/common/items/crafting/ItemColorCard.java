@@ -3,9 +3,9 @@ package speiger.src.spmodapi.common.items.crafting;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
@@ -18,6 +18,7 @@ import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.items.SpmodItem;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -111,5 +112,14 @@ public class ItemColorCard extends SpmodItem
 		}
 		return par1;
 	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getIconFromDamage(int par1)
+	{
+		return TextureEngine.getTextures().getTexture(this);
+	}
+	
+	
 	
 }

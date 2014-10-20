@@ -10,14 +10,13 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
-
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.packets.SpmodPacketHelper.ModularPacket;
 import speiger.src.api.packets.SpmodPacketHelper.PacketType;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import speiger.src.tinymodularthings.common.pipes.AluFluidExtractionPipe;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 
 public class GuiAluPipe extends GuiContainer

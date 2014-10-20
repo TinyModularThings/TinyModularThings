@@ -1,6 +1,5 @@
 package speiger.src.spmodapi.common.items.hemp;
 
-import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.items.DisplayItem;
 import speiger.src.api.items.LanguageItem;
@@ -9,9 +8,6 @@ import speiger.src.api.util.SpmodMod;
 import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.items.SpmodItem;
-import speiger.src.spmodapi.common.lib.SpmodAPILib;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemCompressedHemp extends SpmodItem implements LanguageItem
 {

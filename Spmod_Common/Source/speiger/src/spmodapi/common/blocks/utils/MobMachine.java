@@ -2,7 +2,9 @@ package speiger.src.spmodapi.common.blocks.utils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
@@ -24,8 +26,11 @@ import net.minecraft.util.Icon;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.items.IEssens;
 import speiger.src.api.items.IExpBottle;
+import speiger.src.api.items.ItemList;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.InventoryUtil;
+import speiger.src.api.util.MathUtils;
+import speiger.src.api.util.config.EntityCounter;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
@@ -35,12 +40,14 @@ import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class MobMachine extends TileFacing implements ISidedInventory, ITextureRequester
+public class MobMachine extends TileFacing implements ISidedInventory,
+		ITextureRequester
 {
 	// Static variables
 	public static HashMap<Integer, HashMap<DropType, List<ItemStack>>> allDrops = new HashMap<Integer, HashMap<DropType, List<ItemStack>>>();
@@ -89,9 +96,9 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public static void addActivators(int id, ItemStack... par1)
 	{
-		for (ItemStack cu : par1)
+		for(ItemStack cu : par1)
 		{
-			if (cu != null)
+			if(cu != null)
 			{
 				addActivator(id, cu);
 			}
@@ -107,7 +114,7 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	public static void addFood(int id, ItemStack par1, int foodValue)
 	{
 		HashMap<List<Integer>, Integer> list = foodList.get(Integer.valueOf(id));
-		if (list == null)
+		if(list == null)
 		{
 			list = new HashMap<List<Integer>, Integer>();
 		}
@@ -117,20 +124,20 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public static void addFood(int id, ItemStack[] par1, int[] par2)
 	{
-		if (par2.length != par1.length && par2.length != 1)
+		if(par2.length != par1.length && par2.length != 1)
 		{
 			return;
 		}
-		if (par2.length == 1)
+		if(par2.length == 1)
 		{
-			for (ItemStack item : par1)
+			for(ItemStack item : par1)
 			{
 				addFood(id, item, par2[0]);
 			}
 		}
 		else
 		{
-			for (int i = 0; i < par1.length; i++)
+			for(int i = 0;i < par1.length;i++)
 			{
 				addFood(id, par1[i], par2[i]);
 			}
@@ -141,17 +148,17 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	{
 		HashMap<DropType, List<ItemStack>> droplist = allDrops.get(Integer.valueOf(id));
 		boolean flag = false;
-		if (droplist == null)
+		if(droplist == null)
 		{
 			droplist = new HashMap<DropType, List<ItemStack>>();
 			flag = true;
 		}
-		if (droplist.get(type) == null)
+		if(droplist.get(type) == null)
 		{
 			droplist.put(type, new ArrayList<ItemStack>());
 		}
 		droplist.get(type).add(drop);
-		if (flag)
+		if(flag)
 		{
 			allDrops.put(Integer.valueOf(id), droplist);
 		}
@@ -159,10 +166,185 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public static void addDrops(int id, DropType type, ItemStack... drop)
 	{
-		for (ItemStack par2 : drop)
+		for(ItemStack par2 : drop)
 		{
 			addDrops(id, type, par2);
 		}
+	}
+	
+	public static int[] getMobMachineResultItem(ItemStack par1)
+	{
+		ArrayList<Integer> ints = new ArrayList<Integer>();
+		Iterator<Entry<Integer, HashMap<DropType, List<ItemStack>>>> iter = allDrops.entrySet().iterator();
+		for(;iter.hasNext();)
+		{
+			Entry<Integer, HashMap<DropType, List<ItemStack>>> entry = iter.next();
+			Integer key = entry.getKey();
+			Collection<List<ItemStack>> value = entry.getValue().values();
+			boolean got = false;
+			Iterator<List<ItemStack>> stacks = value.iterator();
+			for(;!got && stacks.hasNext();)
+			{
+				for(ItemStack stack : stacks.next())
+				{
+					if(InventoryUtil.isItemEqual(stack, par1))
+					{
+						ints.add(key);
+						got = true;
+						break;
+					}
+				}
+			}
+		}
+		
+
+		return MathUtils.getArrayFromList(ints);
+	}
+	
+	public static int[] getMobMachineFromFoodItem(ItemStack par1)
+	{
+		ArrayList<Integer> ints = new ArrayList<Integer>();
+		Iterator<Entry<Integer, HashMap<List<Integer>, Integer>>> foodIter = foodList.entrySet().iterator();
+		for(;foodIter.hasNext();)
+		{
+			Entry<Integer, HashMap<List<Integer>, Integer>> entry = foodIter.next();
+			Integer key = entry.getKey();
+			Set<List<Integer>> value = entry.getValue().keySet();
+			boolean got = false;
+			Iterator<List<Integer>> items = value.iterator();
+			for(;!got && items.hasNext();)
+			{
+				List<Integer> item = items.next();
+				if(InventoryUtil.isItemEqual(new ItemStack(item.get(0), 1, item.get(1)), par1))
+				{
+					got = true;
+					ints.add(key);
+				}
+			}
+		}
+		return MathUtils.getArrayFromList(ints);
+	}
+	
+	public static ArrayList<ItemStack> getResults(int MobMachineType)
+	{
+		ArrayList<ItemStack> stacks = new ArrayList<ItemStack>();
+		
+		HashMap<DropType, List<ItemStack>> type = allDrops.get(Integer.valueOf(MobMachineType));
+		if(type != null)
+		{
+			List<ItemStack> drops = type.get(DropType.Common);
+			if(drops != null && drops.size() > 0)
+			{
+				ItemList between = new ItemList();
+				between.addAll(drops);
+				HashMap<Integer, EntityCounter> types = new HashMap<Integer, EntityCounter>();
+				for(int i = 0;i<between.size();i++)
+				{
+					ItemStack par1 = between.get(i);
+					if(types.get(par1.itemID) == null)
+					{
+						types.put(par1.itemID, new EntityCounter());
+					}
+					else
+					{
+						types.get(par1.itemID).updateToNextID();
+						between.markForRemove();
+					}
+				}
+				between.remove();
+				for(ItemStack stack : between)
+				{
+					int size = types.get(stack.itemID).getCurrentID();
+					List<String> list = Arrays.asList("Common Drop");
+					if(size > 1)
+					{
+						list = Arrays.asList("Common Drop", size+" Differend Types of this Item");
+					}
+					stacks.add(LangProxy.getItemStackWithInfo(stack.copy(), list));
+				}
+				
+			}
+			drops = type.get(DropType.Rare);
+			if(drops != null && drops.size() > 0)
+			{
+				ItemList between = new ItemList();
+				between.addAll(drops);
+				HashMap<Integer, EntityCounter> types = new HashMap<Integer, EntityCounter>();
+				for(int i = 0;i<between.size();i++)
+				{
+					ItemStack par1 = between.get(i);
+					if(types.get(par1.itemID) == null)
+					{
+						types.put(par1.itemID, new EntityCounter());
+					}
+					else
+					{
+						types.get(par1.itemID).updateToNextID();
+						between.markForRemove();
+					}
+				}
+				between.remove();
+				for(ItemStack stack : between)
+				{
+					int size = types.get(stack.itemID).getCurrentID();
+					List<String> list = Arrays.asList("Rare Drop");
+					if(size > 1)
+					{
+						list = Arrays.asList("Rare Drop", size+" Differend Types of this Item");
+					}
+					stacks.add(LangProxy.getItemStackWithInfo(stack.copy(), list));
+				}
+			}
+			drops = type.get(DropType.Legendary);
+			if(drops != null && drops.size() > 0)
+			{
+				ItemList between = new ItemList();
+				between.addAll(drops);
+				HashMap<Integer, EntityCounter> types = new HashMap<Integer, EntityCounter>();
+				for(int i = 0;i<between.size();i++)
+				{
+					ItemStack par1 = between.get(i);
+					if(types.get(par1.itemID) == null)
+					{
+						types.put(par1.itemID, new EntityCounter());
+					}
+					else
+					{
+						types.get(par1.itemID).updateToNextID();
+						between.markForRemove();
+					}
+				}
+				between.remove();
+				for(ItemStack stack : between)
+				{
+					int size = types.get(stack.itemID).getCurrentID();
+					List<String> list = Arrays.asList("Legendary Drop");
+					if(size > 1)
+					{
+						list = Arrays.asList("Legendary Drop", size+" Differend Types of this Item");
+					}
+					stacks.add(LangProxy.getItemStackWithInfo(stack.copy(), list));
+				}
+			}
+		}
+		return stacks;
+	}
+	
+	public static ArrayList<ItemStack> getAllFoodItems(int MobMachineType)
+	{
+		ArrayList<ItemStack> stack = new ArrayList<ItemStack>();
+		HashMap<List<Integer>, Integer> food = foodList.get(MobMachineType);
+		if(food != null)
+		{
+			Iterator<List<Integer>> iter = food.keySet().iterator();
+			for(;iter.hasNext();)
+			{
+				List<Integer> key = iter.next();
+				stack.add(new ItemStack(key.get(0), 1, key.get(1)));
+			}
+		}
+		
+		return stack;
 	}
 	
 	@Override
@@ -175,19 +357,19 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		Icon[] array = TextureEngine.getIcon(APIBlocks.blockUtils, 2);
-		if (renderPass == 0)
+		if(renderPass == 0)
 		{
-			if (side == 5)
+			if(side == 5)
 			{
 				return array[1];
 			}
 			return array[0];
 		}
-		if (side == this.getFacing())
+		if(side == this.getFacing())
 		{
-			return array[(type*2)+1];
+			return array[(type * 2) + 1];
 		}
-		return array[type*2];
+		return array[type * 2];
 	}
 	
 	@Override
@@ -196,19 +378,22 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 		par1.markForDelay(this);
 	}
 	
-
 	@Override
 	public boolean onTextureAfterRegister(TextureEngine par1)
 	{
 		boolean flag = false;
 		par1.setCurrentMod(SpmodAPILib.ModID.toLowerCase());
 		par1.setCurrentPath("mobmachine");
-		for (Entry<Integer, String[]> par2 : texture.entrySet())
+		ArrayList<String> textures = new ArrayList<String>();
+		for(int i = 0;i<texture.size();i++)
 		{
-			String[] array = par2.getValue();
-			par1.registerTexture(new BlockStack(APIBlocks.blockUtils, 2), array);
+			String[] array = texture.get(i);
+			
+			textures.add(array[0]);
+			textures.add(array[1]);
 			flag = true;
 		}
+		par1.registerTexture(new BlockStack(APIBlocks.blockUtils, 2), textures.toArray(new String[0]));
 		par1.removePath();
 		par1.finishMod();
 		return flag;
@@ -217,7 +402,7 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	public static int getBiggestNumber(Set<Integer> par1)
 	{
 		int total = 0;
-		for (Integer id : par1)
+		for(Integer id : par1)
 		{
 			total = Math.max(id, total);
 		}
@@ -242,7 +427,7 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public void sortInventory()
 	{
-		if (!worldObj.isRemote && worldObj.getWorldTime() % 10 == 0)
+		if(!worldObj.isRemote && worldObj.getWorldTime() % 10 == 0)
 		{
 			this.transferItem(0, 8, true);
 			this.transferItem(0, 7, true);
@@ -272,13 +457,13 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	@Override
 	public void onTick()
 	{
-		if (!worldObj.isRemote)
+		if(!worldObj.isRemote)
 		{
-			if (isValid())
+			if(isValid())
 			{
-				if (canWork())
+				if(canWork())
 				{
-					if (worldObj.getWorldTime() % 20 == 0)
+					if(worldObj.getWorldTime() % 20 == 0)
 					{
 						food--;
 					}
@@ -288,22 +473,22 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 					cP++;
 					rP++;
 					lP++;
-					if (eP >= totalTicks)
+					if(eP >= totalTicks)
 					{
 						eP -= totalTicks;
 						handleExp();
 					}
-					if (cP >= totalTicks * 2)
+					if(cP >= totalTicks * 2)
 					{
 						cP -= totalTicks * 2;
 						this.handleDrops(DropType.Common);
 					}
-					if (rP >= totalTicks * 5)
+					if(rP >= totalTicks * 5)
 					{
 						rP -= totalTicks * 5;
 						this.handleDrops(DropType.Rare);
 					}
-					if (lP >= totalTicks * 9)
+					if(lP >= totalTicks * 7)
 					{
 						lP -= totalTicks * 9;
 						this.handleDrops(DropType.Legendary);
@@ -313,14 +498,14 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 				tryRefuelLifeEssens();
 				tryHandleExp();
 				emptyArray();
-				if (worldObj.getWorldTime() % 10 == 0)
+				if(worldObj.getWorldTime() % 10 == 0)
 				{
 					this.sortInventory();
 				}
 				
 			}
 			
-			if (worldObj.getWorldTime() % 10 == 0)
+			if(worldObj.getWorldTime() % 10 == 0)
 			{
 				this.updateBlock();
 				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
@@ -333,21 +518,21 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	{
 		boolean needExp = this.needExp.get(Integer.valueOf(type));
 		
-		if (needExp)
+		if(needExp)
 		{
-			if (Exp < 100)
+			if(Exp < 100)
 			{
 				int needed = 500 - Exp;
-				if (inv[11] != null && inv[11].getItem() instanceof IExpBottle)
+				if(inv[11] != null && inv[11].getItem() instanceof IExpBottle)
 				{
-					IExpBottle exp = (IExpBottle) inv[11].getItem();
+					IExpBottle exp = (IExpBottle)inv[11].getItem();
 					Exp += exp.discharge(inv[11], needed);
 				}
 			}
 		}
 		else
 		{
-			if (Exp > 100)
+			if(Exp > 100)
 			{
 				Exp -= 100;
 				drops.add(new ItemStack(Item.expBottle));
@@ -357,13 +542,13 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public void tryRefuelFood()
 	{
-		if (food < 10)
+		if(food < 10)
 		{
-			if (isValidFood())
+			if(isValidFood())
 			{
 				food += this.foodList.get(type).get(Arrays.asList(inv[9].itemID, inv[9].getItemDamage()));
 				this.inv[9].stackSize--;
-				if (inv[9].stackSize <= 0)
+				if(inv[9].stackSize <= 0)
 				{
 					inv[9] = null;
 				}
@@ -373,12 +558,12 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public void tryRefuelLifeEssens()
 	{
-		if (lifeEssens < 100)
+		if(lifeEssens < 100)
 		{
-			if (inv[10] != null && inv[10].getItem() instanceof IEssens)
+			if(inv[10] != null && inv[10].getItem() instanceof IEssens)
 			{
-				IEssens es = (IEssens) inv[10].getItem();
-				if (es != null && !es.isEssensEmpty(inv[10]))
+				IEssens es = (IEssens)inv[10].getItem();
+				if(es != null && !es.isEssensEmpty(inv[10]))
 				{
 					lifeEssens += es.getEssensValue(inv[10]);
 					es.drainEssens(inv[10], 1);
@@ -389,9 +574,9 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public void emptyArray()
 	{
-		if (inv[0] == null && !drops.isEmpty())
+		if(inv[0] == null && !drops.isEmpty())
 		{
-			if (!worldObj.isRemote)
+			if(!worldObj.isRemote)
 			{
 				ItemStack stack = drops.removeFirst();
 				this.inv[0] = stack.copy();
@@ -402,7 +587,7 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public void handleExp()
 	{
-		if (this.needExp.get(Integer.valueOf(type)))
+		if(this.needExp.get(Integer.valueOf(type)))
 		{
 			Exp -= neededExp.get(Integer.valueOf(type));
 		}
@@ -416,14 +601,19 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	{
 		HashMap<DropType, List<ItemStack>> dropTypes = this.allDrops.get(Integer.valueOf(type));
 		List<ItemStack> drop = null;
-		if (dropTypes != null && dropTypes.get(types) != null)
+		if(dropTypes != null && dropTypes.get(types) != null)
 		{
 			drop = dropTypes.get(types);
 		}
 		
-		if (drop == null || drop.isEmpty())
+		if(this.worldObj.rand.nextInt(100) <= types.getChance())
 		{
-			switch (types)
+			return;
+		}
+		
+		if(drop == null || drop.isEmpty())
+		{
+			switch(types)
 			{
 				case Common:
 					rP += totalTicks / 2;
@@ -453,15 +643,15 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public boolean canWork()
 	{
-		if (lifeEssens == 0)
+		if(lifeEssens == 0)
 		{
 			lifeEssens = 1000;
 		}
-		if (inv[0] != null)
+		if(inv[0] != null)
 		{
 			return false;
 		}
-		if (isValid())
+		if(isValid())
 		{
 			return food > 0 && (needExp.get(Integer.valueOf(type)) ? Exp > 0 : Exp >= 0) && lifeEssens > 0;
 		}
@@ -470,7 +660,7 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public boolean isValidFood()
 	{
-		if (isValid() && inv[9] != null)
+		if(isValid() && inv[9] != null)
 		{
 			return this.foodList.get(Integer.valueOf(type)).get(Arrays.asList(inv[9].itemID, inv[9].getItemDamage())) != null && this.foodList.get(Integer.valueOf(type)).get(Arrays.asList(inv[9].itemID, inv[9].getItemDamage())) > 0;
 		}
@@ -479,7 +669,20 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public static enum DropType
 	{
-		Common, Rare, Legendary;
+		Common(90),
+		Rare(50),
+		Legendary(25);
+		int chance;
+		
+		private DropType(int chance)
+		{
+			this.chance = chance;
+		}
+		
+		public int getChance()
+		{
+			return this.chance;
+		}
 	}
 	
 	@Override
@@ -495,11 +698,11 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public ItemStack decrStackSize(int par1, int par2)
 	{
-		if (this.inv[par1] != null)
+		if(this.inv[par1] != null)
 		{
 			ItemStack itemstack;
 			
-			if (this.inv[par1].stackSize <= par2)
+			if(this.inv[par1].stackSize <= par2)
 			{
 				itemstack = this.inv[par1];
 				this.inv[par1] = null;
@@ -509,7 +712,7 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 			{
 				itemstack = this.inv[par1].splitStack(par2);
 				
-				if (this.inv[par1].stackSize == 0)
+				if(this.inv[par1].stackSize == 0)
 				{
 					this.inv[par1] = null;
 				}
@@ -525,7 +728,7 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public ItemStack getStackInSlotOnClosing(int par1)
 	{
-		if (this.inv[par1] != null)
+		if(this.inv[par1] != null)
 		{
 			ItemStack itemstack = this.inv[par1];
 			this.inv[par1] = null;
@@ -541,7 +744,7 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	{
 		this.inv[par1] = par2ItemStack;
 		
-		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+		if(par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
 		{
 			par2ItemStack.stackSize = this.getInventoryStackLimit();
 		}
@@ -590,11 +793,11 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1)
 	{
-		if (!this.isValid())
+		if(!this.isValid())
 		{
 			return new int[0];
 		}
-		return new int[] { 0, 1, 2, 3, 4, 5, 6, 7, 8 };
+		return new int[] {0, 1, 2, 3, 4, 5, 6, 7, 8 };
 	}
 	
 	@Override
@@ -612,9 +815,9 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	@Override
 	public boolean onActivated(EntityPlayer par1)
 	{
-		if (!worldObj.isRemote)
+		if(!worldObj.isRemote)
 		{
-			if (this.isValid())
+			if(this.isValid())
 			{
 				par1.openGui(SpmodAPI.instance, EnumGuiIDs.Tiles.getID(), worldObj, xCoord, yCoord, zCoord);
 				return true;
@@ -622,10 +825,10 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 			else
 			{
 				ItemStack current = par1.getCurrentEquippedItem();
-				if (current != null)
+				if(current != null)
 				{
 					List<Integer> key = Arrays.asList(current.itemID, current.getItemDamage());
-					if (activators.containsKey(key))
+					if(activators.containsKey(key))
 					{
 						this.type = activators.get(key);
 						current.stackSize--;
@@ -636,7 +839,7 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 						PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 40, worldObj.provider.dimensionId, getDescriptionPacket());
 						return true;
 					}
-					else if (current.itemID == APIItems.mobMachineHelper.itemID)
+					else if(current.itemID == APIItems.mobMachineHelper.itemID)
 					{
 						type = current.getItemDamage();
 						current.stackSize--;
@@ -650,6 +853,7 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 					else
 					{
 						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Not a valid init Item/Block"));
+						return true;
 					}
 				}
 				else
@@ -658,7 +862,7 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -692,12 +896,12 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 		super.readFromNBT(nbt);
 		NBTTagList nbttaglist = nbt.getTagList("Items");
 		this.inv = new ItemStack[this.getSizeInventory()];
-		for (int i = 0; i < nbttaglist.tagCount(); ++i)
+		for(int i = 0;i < nbttaglist.tagCount();++i)
 		{
-			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
+			NBTTagCompound nbttagcompound1 = (NBTTagCompound)nbttaglist.tagAt(i);
 			byte b0 = nbttagcompound1.getByte("Slot");
 			
-			if (b0 >= 0 && b0 < this.inv.length)
+			if(b0 >= 0 && b0 < this.inv.length)
 			{
 				this.inv[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
 			}
@@ -717,12 +921,12 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	{
 		super.writeToNBT(nbt);
 		NBTTagList nbttaglist = new NBTTagList();
-		for (int i = 0; i < this.inv.length; ++i)
+		for(int i = 0;i < this.inv.length;++i)
 		{
-			if (this.inv[i] != null)
+			if(this.inv[i] != null)
 			{
 				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("Slot", (byte) i);
+				nbttagcompound1.setByte("Slot", (byte)i);
 				this.inv[i].writeToNBT(nbttagcompound1);
 				nbttaglist.appendTag(nbttagcompound1);
 			}
@@ -740,16 +944,16 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	
 	public void transferItem(int slot0, int slot1, boolean nbt)
 	{
-		if (inv[slot0] != null)
+		if(inv[slot0] != null)
 		{
-			if (inv[slot1] == null)
+			if(inv[slot1] == null)
 			{
 				inv[slot1] = inv[slot0].copy();
 				inv[slot0] = null;
 			}
-			else if (inv[slot1] != null && inv[slot1].isItemEqual(inv[slot0]) && (!nbt || (nbt && ItemStack.areItemStackTagsEqual(inv[slot0], inv[slot1]))))
+			else if(inv[slot1] != null && inv[slot1].isItemEqual(inv[slot0]) && (!nbt || (nbt && ItemStack.areItemStackTagsEqual(inv[slot0], inv[slot1]))))
 			{
-				if (inv[slot1].stackSize + inv[slot0].stackSize <= inv[slot1].getMaxStackSize())
+				if(inv[slot1].stackSize + inv[slot0].stackSize <= inv[slot1].getMaxStackSize())
 				{
 					inv[slot1].stackSize += inv[slot0].stackSize;
 					inv[slot0] = null;
@@ -759,7 +963,7 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 					int stacksize = (inv[slot1].stackSize + inv[slot0].stackSize) - inv[slot1].getMaxStackSize();
 					inv[slot1].stackSize = inv[slot1].getMaxStackSize();
 					inv[slot0].stackSize = stacksize;
-					if (inv[slot0].stackSize <= 0)
+					if(inv[slot0].stackSize <= 0)
 					{
 						inv[slot0] = null;
 					}
@@ -771,16 +975,15 @@ public class MobMachine extends TileFacing implements ISidedInventory, ITextureR
 	@Override
 	public void onBreaking()
 	{
-		if (!worldObj.isRemote)
+		if(!worldObj.isRemote)
 		{
 			InventoryUtil.dropInventory(worldObj, xCoord, yCoord, zCoord, this);
-			if (this.isValid())
+			if(this.isValid())
 			{
 				ItemStack item = new ItemStack(APIItems.mobMachineHelper, 1, type);
 				InventoryUtil.dropItem(this, item);
 			}
 		}
 	}
-
 	
 }

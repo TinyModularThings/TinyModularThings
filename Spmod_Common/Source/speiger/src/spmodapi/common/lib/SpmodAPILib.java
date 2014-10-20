@@ -17,4 +17,8 @@ public class SpmodAPILib
 	
 	public static final String Client = "speiger.src.spmodapi.client.core.SpmodAPIClient";
 	
+	public static final String ClientMods = "speiger.src.spmodapi.client.plugins.PluginLoaderClient";
+	
+	public static final String CoreMods = "speiger.src.spmodapi.common.plugins.PluginLoader";
+	
 }

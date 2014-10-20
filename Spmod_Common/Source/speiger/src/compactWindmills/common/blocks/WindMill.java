@@ -1,13 +1,9 @@
 package speiger.src.compactWindmills.common.blocks;
 
-import static speiger.src.compactWindmills.common.core.CWPreference.ModID;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySource;
 import ic2.api.tile.IWrenchable;
-
-import java.util.HashMap;
-
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
