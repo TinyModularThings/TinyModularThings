@@ -80,7 +80,7 @@ public class BucketFillerGui extends GuiInventoryCore
 		return 0;
 	}
 
-	private static final ResourceLocation gui = new ResourceLocation(TinyModularThingsLib.ModID.toLowerCase() + ":textures/gui/machine/bucket_filler_gui.png");
+	public static final ResourceLocation gui = new ResourceLocation(TinyModularThingsLib.ModID.toLowerCase() + ":textures/gui/machine/bucket_filler_gui.png");
 	private static final ResourceLocation BLOCK_TEXTURE = TextureMap.locationBlocksTexture;
 	
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)

@@ -13,6 +13,7 @@ public enum EnumIDs
 	Entities(EnumType.Gui, 11),
 	Items(EnumType.Gui, 12),
 	BCPipes(EnumType.Gui, 13),
+	BlockGui(EnumType.Gui, 14),
 	HopperUpgrades(EnumType.Gui, 150, 180);
 	
 	EnumType type;

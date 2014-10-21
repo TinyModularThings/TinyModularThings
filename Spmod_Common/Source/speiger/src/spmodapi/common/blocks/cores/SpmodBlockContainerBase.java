@@ -4,6 +4,7 @@ import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import speiger.src.spmodapi.common.tile.AdvTile;
 
 public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEntityProvider
 {
@@ -27,6 +28,11 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
     
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
+    	TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
+    	if(tile != null && tile instanceof AdvTile)
+    	{
+    		((AdvTile)tile).onBreaking();
+    	}
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
         par1World.removeBlockTileEntity(par2, par3, par4);
     }

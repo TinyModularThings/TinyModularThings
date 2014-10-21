@@ -7,6 +7,9 @@ import net.minecraft.item.ItemStack;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
+import speiger.src.tinymodularthings.common.blocks.crafting.BlockCrafting;
+import speiger.src.tinymodularthings.common.blocks.crafting.ItemBlockCrafting;
+import speiger.src.tinymodularthings.common.blocks.crafting.OreCrafter;
 import speiger.src.tinymodularthings.common.blocks.machine.BlockMachine;
 import speiger.src.tinymodularthings.common.blocks.machine.BucketFillerBasic;
 import speiger.src.tinymodularthings.common.blocks.machine.ItemBlockMachine;
@@ -137,6 +140,11 @@ public class TinyBlocksConfig
 		RegisterProxy.RegisterTile(MultiStructureEnergyInterface.class, "EnergyInterface");
 		RegisterProxy.RegisterTile(TinyHopper.class, "ModularTinyHopper");
 		((SpmodBlockBase)blocks.transportBlock).registerTextures(engine);
+		config.block.updateToNextID();
+		
+		blocks.craftingBlock = new BlockCrafting(config.block.getCurrentID());
+		RegisterProxy.RegisterBlock(blocks.craftingBlock, ItemBlockCrafting.class, "CraftingBlock");
+		RegisterProxy.RegisterTile(OreCrafter.class, "OreCrafter");
 		config.block.updateToNextID();
 		
 	}

@@ -24,6 +24,9 @@ public class TinyBlocks
 	// Storage
 	public static Block storageBlock;
 	
+	//Crafting
+	public static Block craftingBlock;
+	
 	// Logic
 	public static Block logicBlock;
 	

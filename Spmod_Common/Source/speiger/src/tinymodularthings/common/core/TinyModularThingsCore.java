@@ -20,6 +20,7 @@ import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.enums.HopperUpgradeIDs;
 import speiger.src.tinymodularthings.common.handler.FuelHandler;
 import speiger.src.tinymodularthings.common.handler.TinyCraftingHandler;
+import speiger.src.tinymodularthings.common.interfaces.IBlockGui;
 import speiger.src.tinymodularthings.common.interfaces.IEntityGuiProvider;
 import speiger.src.tinymodularthings.common.interfaces.IPipeGuiProvider;
 import speiger.src.tinymodularthings.common.items.tools.ItemNetherCrystal;
@@ -122,6 +123,16 @@ public class TinyModularThingsCore implements IGuiHandler
 				
 			}
 		}
+		else if(ID == EnumIDs.BlockGui.getId())
+		{
+			int meta = world.getBlockMetadata(x, y, z);
+			Block block = Block.blocksList[world.getBlockId(x, y, z)];
+			if(block != null && block instanceof IBlockGui)
+			{
+				IBlockGui gui = (IBlockGui)block;
+				return gui.getInventory(meta, player.inventory);
+			}
+		}
 		
 		return null;
 	}
@@ -202,6 +213,16 @@ public class TinyModularThingsCore implements IGuiHandler
 			catch(Exception e)
 			{
 				
+			}
+		}
+		else if(ID == EnumIDs.BlockGui.getId())
+		{
+			int meta = world.getBlockMetadata(x, y, z);
+			Block block = Block.blocksList[world.getBlockId(x, y, z)];
+			if(block != null && block instanceof IBlockGui)
+			{
+				IBlockGui gui = (IBlockGui)block;
+				return gui.getGui(meta, player.inventory);
 			}
 		}
 		return null;

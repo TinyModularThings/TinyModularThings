@@ -55,7 +55,7 @@ public class GuiCommands extends GuiInventoryCore
 		});
 		sender = par1.player;
 		this.ySize = 224;
-		this.xSize = 200;
+		this.xSize = 210;
 	}
 	
 	@Override
@@ -244,7 +244,7 @@ public class GuiCommands extends GuiInventoryCore
 		
 	}
 	
-	private static final ResourceLocation furnaceGuiTextures = new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/gui/commands/CommandsGui.png");
+	public static final ResourceLocation furnaceGuiTextures = new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/gui/commands/CommandsGui.png");
 	
 	@Override
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)

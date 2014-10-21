@@ -28,7 +28,7 @@ public class GuiMobMachine extends GuiInventoryCore
 		this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 	}
 	
-	ResourceLocation texture = new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/gui/utils/mobMachine.png");
+	public static ResourceLocation texture = new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/gui/utils/mobMachine.png");
 	
 	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
 	{

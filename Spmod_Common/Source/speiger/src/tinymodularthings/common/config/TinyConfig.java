@@ -3,10 +3,12 @@ package speiger.src.tinymodularthings.common.config;
 import java.io.File;
 
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.Property;
 import speiger.src.api.util.config.ConfigBoolean;
 import speiger.src.spmodapi.common.config.configType.ConfigBlock;
 import speiger.src.spmodapi.common.config.configType.ConfigItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.data.OreDictonaryLister;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import speiger.src.tinymodularthings.common.plugins.BC.BCRegistry;
@@ -31,6 +33,8 @@ public class TinyConfig
 	public static ConfigBlock block;
 	public static ConfigItem item;
 	public static ConfigItem pipes;
+	public static OreDictonaryLister allowedOres = new OreDictonaryLister();
+	
 	
 	public static boolean logging = true;
 	public static boolean pipesEnabled = true;
@@ -54,6 +58,15 @@ public class TinyConfig
 			block = new ConfigBlock(ConfigBlock.getConfig(config, blocks, 1300));
 			item = new ConfigItem(ConfigItem.getConfig(config, items, 13000));
 			pipes = new ConfigItem(ConfigItem.getConfig(config, "Pipe StartID", items, 12000));
+			
+			Property allowed = config.get(general, "OreDictonary Whitelist for OreDictonaryCrafter", "");
+			allowed.comment = "Let it empty to allow everything, Splitting multible ids with ':'";
+			
+			Property notAllowed = config.get(general, "Ore", "dyeBlue:logWood:plankWood:slabWood:stairWood:treeSapling:treeLeaves:record");
+			notAllowed.comment = "Add a oreName for excluding a ore. please split it with ':'";
+			
+			allowedOres.addWhiteList(allowed.getString().split(":"));
+			allowedOres.addBlackList(notAllowed.getString().split(":"));
 			
 			TextureEngine.getTextures().setCurrentMod(TinyModularThingsLib.ModID.toLowerCase());
 			TinyBlocksConfig.initBlocks();
