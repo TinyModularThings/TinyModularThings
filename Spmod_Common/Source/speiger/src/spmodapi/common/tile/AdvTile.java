@@ -22,6 +22,7 @@ import net.minecraft.world.Explosion;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.blocks.BlockPosition;
 import speiger.src.spmodapi.common.config.SpmodConfig;
+import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
@@ -35,6 +36,12 @@ public abstract class AdvTile extends TileEntity
 		
 	}
 	
+	@SideOnly(Side.CLIENT)
+	public SpmodColor getColor()
+	{
+		return new SpmodColor(16777215);
+	}
+	
 	public StepSound getStepSound()
 	{
 		return getBlockType().stepSound;
@@ -45,12 +52,22 @@ public abstract class AdvTile extends TileEntity
 		return getBlockType().blockHardness;
 	}
 	
+	public float getExplosionResistance(Entity par1)
+	{
+		return getBlockType().getExplosionResistance(par1);
+	}
+	
 	public int getBlockLightLevel()
 	{
 		return 0;
 	}
 	
-	public AxisAlignedBB getColidingBoxes()
+	public int getLightOpactiy()
+	{
+		return 0;
+	}
+	
+	public ArrayList<AxisAlignedBB> getColidingBoxes(Entity par2)
 	{
 		return null;
 	}
@@ -96,11 +113,7 @@ public abstract class AdvTile extends TileEntity
 	{
 		return false;
 	}
-	
-	public boolean onSpecialClick(boolean sneak, EntityPlayer par1, Block par2, int side, float xSideHit, float ySideHit, float zSideHit)
-	{
-		return false;
-	}
+
 	
 	public void onBreaking()
 	{
@@ -171,11 +184,6 @@ public abstract class AdvTile extends TileEntity
 		return false;
 	}
 	
-	public boolean isBurning()
-	{
-		return false;
-	}
-	
 	public boolean isAir()
 	{
 		return false;
@@ -186,19 +194,14 @@ public abstract class AdvTile extends TileEntity
 		return true;
 	}
 	
-	public int getBurnability()
+	public int getFireBurnLenght(ForgeDirection side)
 	{
 		return 0;
 	}
 	
-	public boolean isBurnable()
+	public int getFireSpreadSpeed(ForgeDirection side)
 	{
-		return getBurnability() > 0;
-	}
-	
-	public boolean isFireSource(ForgeDirection side)
-	{
-		return false;
+		return 0;
 	}
 	
 	public ArrayList<ItemStack> onDrop(int fortune)
@@ -216,7 +219,7 @@ public abstract class AdvTile extends TileEntity
 		return true;
 	}
 	
-	public boolean canConnectToWire()
+	public boolean canConnectToWire(int side)
 	{
 		return false;
 	}
@@ -231,7 +234,7 @@ public abstract class AdvTile extends TileEntity
 		return true;
 	}
 	
-	public boolean shouldCheckWeakPower()
+	public boolean shouldCheckWeakPower(int side)
 	{
 		return false;
 	}
@@ -320,5 +323,12 @@ public abstract class AdvTile extends TileEntity
 			value += 65536;
 		return value;
 	}
+
+	public boolean isFireSource(ForgeDirection side)
+	{
+		return false;
+	}
+
+
 	
 }
