@@ -138,5 +138,28 @@ public class BlockStack
 	{
 		return world.setBlock(x, y, z, blocks.blockID, meta, 3);
 	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(obj == null)
+		{
+			return false;
+		}
+		if(!(obj instanceof BlockStack))
+		{
+			return false;
+		}
+		BlockStack stack = (BlockStack)obj;
+		return stack.match(this);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return this.getBlockID() + this.getMeta();
+	}
+	
+	
 	
 }

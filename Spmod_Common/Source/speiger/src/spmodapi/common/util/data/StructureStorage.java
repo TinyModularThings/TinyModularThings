@@ -15,12 +15,12 @@ import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
+import speiger.src.api.blocks.BlockPosition;
 import speiger.src.api.nbt.DataStorage;
 import speiger.src.api.nbt.INBTReciver;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.tile.AdvTile;
-import speiger.src.spmodapi.common.util.BlockPosition;
 
 public class StructureStorage implements INBTReciver
 {

@@ -13,6 +13,8 @@ import speiger.src.api.hopper.IUpgradeGuiProvider;
 import speiger.src.api.items.IItemGui;
 import speiger.src.api.nbt.DataStorage;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.TileIconMaker;
+import speiger.src.tinymodularthings.common.blocks.machine.OilGenerator;
 import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 import speiger.src.tinymodularthings.common.commands.RenderCommand;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
@@ -233,6 +235,7 @@ public class TinyModularThingsCore implements IGuiHandler
 		GameRegistry.registerCraftingHandler(new TinyCraftingHandler());
 		FuelHandler.init();
 		DataStorage.registerNBTReciver((ItemNetherCrystal) TinyItems.netherCrystal);
+		DataStorage.registerNBTReciver((OilGenerator)TileIconMaker.getIconMaker().getTileEntityFromClass(OilGenerator.class));
 		new RenderCommand();
 		initHopperUpgrades();
 	}

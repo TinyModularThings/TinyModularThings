@@ -11,10 +11,10 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
+import speiger.src.api.blocks.BlockPosition;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.energy.IEnergyProvider;
 import speiger.src.spmodapi.common.tile.AdvTile;
-import speiger.src.spmodapi.common.util.BlockPosition;
 import buildcraft.api.power.IPowerReceptor;
 
 public class WorldReading

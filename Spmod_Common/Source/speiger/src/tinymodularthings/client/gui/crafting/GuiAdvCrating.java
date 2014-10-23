@@ -12,7 +12,6 @@ import org.lwjgl.opengl.GL11;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import speiger.src.tinymodularthings.client.gui.machine.BucketFillerGui;
 import speiger.src.tinymodularthings.common.interfaces.IBlockGui;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 

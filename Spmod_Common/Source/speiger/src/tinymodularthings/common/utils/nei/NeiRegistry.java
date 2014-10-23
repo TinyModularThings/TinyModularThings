@@ -1,7 +1,6 @@
 package speiger.src.tinymodularthings.common.utils.nei;
 
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
-import speiger.src.tinymodularthings.client.gui.machine.PressureFurnaceGui;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import codechicken.nei.api.API;
 

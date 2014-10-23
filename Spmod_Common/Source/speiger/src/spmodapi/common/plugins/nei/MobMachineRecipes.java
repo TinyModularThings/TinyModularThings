@@ -21,10 +21,7 @@ import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import codechicken.core.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
-import codechicken.nei.api.IOverlayHandler;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import codechicken.nei.recipe.TemplateRecipeHandler.RecipeTransferRect;
-import cpw.mods.fml.common.FMLLog;
 
 public class MobMachineRecipes extends TemplateRecipeHandler
 {

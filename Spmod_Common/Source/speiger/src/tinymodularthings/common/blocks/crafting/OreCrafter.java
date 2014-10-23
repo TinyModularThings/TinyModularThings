@@ -17,7 +17,6 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.Icon;
-import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.api.packets.IPacketReciver;
 import speiger.src.api.util.InventoryUtil;

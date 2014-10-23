@@ -24,7 +24,6 @@ import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.items.SpmodItem;
-import speiger.src.spmodapi.common.util.CountdownTick;
 import speiger.src.spmodapi.common.util.TickHelper;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import cpw.mods.fml.relauncher.Side;

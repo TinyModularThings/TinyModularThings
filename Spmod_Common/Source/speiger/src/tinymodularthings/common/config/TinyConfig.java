@@ -81,6 +81,10 @@ public class TinyConfig
 		catch (Exception e)
 		{
 			TinyModularThings.log.print("Could not Load TinyModularThings Config");
+			for(StackTraceElement el : e.getStackTrace())
+			{
+				TinyModularThings.log.print(""+el);
+			}
 		}
 		finally
 		{

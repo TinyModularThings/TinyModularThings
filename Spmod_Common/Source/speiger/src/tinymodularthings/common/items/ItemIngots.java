@@ -9,7 +9,6 @@ import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.api.items.DisplayStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.util.SpmodMod;
-import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import cpw.mods.fml.relauncher.Side;

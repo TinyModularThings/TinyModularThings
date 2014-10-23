@@ -20,8 +20,8 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.api.blocks.BlockPosition;
 import speiger.src.spmodapi.common.config.SpmodConfig;
-import speiger.src.spmodapi.common.util.BlockPosition;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
@@ -100,10 +100,6 @@ public abstract class AdvTile extends TileEntity
 	public boolean onSpecialClick(boolean sneak, EntityPlayer par1, Block par2, int side, float xSideHit, float ySideHit, float zSideHit)
 	{
 		return false;
-	}
-	
-	public void onPlayerDistroyed()
-	{
 	}
 	
 	public void onBreaking()

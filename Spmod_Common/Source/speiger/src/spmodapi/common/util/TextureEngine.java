@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.Minecraft;
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -18,7 +16,6 @@ import net.minecraftforge.event.ForgeSubscribe;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

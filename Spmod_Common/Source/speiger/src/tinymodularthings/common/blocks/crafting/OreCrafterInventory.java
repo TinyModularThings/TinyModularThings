@@ -1,8 +1,5 @@
 package speiger.src.tinymodularthings.common.blocks.crafting;
 
-import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
@@ -13,6 +10,7 @@ import speiger.src.api.packets.SpmodPacketHelper;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.utils.slot.SlotOre;
+import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class OreCrafterInventory extends AdvContainer
 {

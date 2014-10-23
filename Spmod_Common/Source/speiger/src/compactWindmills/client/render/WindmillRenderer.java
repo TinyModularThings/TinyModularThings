@@ -11,11 +11,11 @@ import net.minecraft.world.World;
 
 import org.lwjgl.opengl.GL11;
 
+import speiger.src.api.blocks.BlockPosition;
 import speiger.src.api.items.IRotorItem;
 import speiger.src.api.items.IRotorItem.IRotorModel;
 import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.common.blocks.WindMill;
-import speiger.src.spmodapi.common.util.BlockPosition;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

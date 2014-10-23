@@ -56,7 +56,6 @@ public class TinyItemsConfig
 	{
 		TextureEngine engine = TextureEngine.getTextures();
 		
-		
 		engine.setCurrentPath("ingots");
 		items.ingots = new ItemIngots(config.item.getCurrentID());
 		RegisterItem(items.ingots, "Ingots");
@@ -75,7 +74,6 @@ public class TinyItemsConfig
 		config.item.updateToNextID();
 		
 		//Free ID Slot.
-		
 		config.item.updateToNextID();
 		
 		items.tinyChest = new ItemTinyChest(config.item.getCurrentID());
@@ -132,7 +130,7 @@ public class TinyItemsConfig
 		items.bigMJBattery = new Batteries(config.item.getCurrentID(), "big", BatterieType.Big);
 		RegisterItem(items.bigMJBattery, "BigMJBattery");
 		config.item.updateToNextID();
-
+		
 		items.hugeMJBattery = new Batteries(config.item.getCurrentID(), "huge", BatterieType.Huge);
 		RegisterItem(items.hugeMJBattery, "HugeMJBattery");
 		BatterieType.registerTextures(engine);
@@ -149,11 +147,11 @@ public class TinyItemsConfig
 		items.advFluidHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvFluids);
 		RegisterItem(items.advFluidHopper, "AdvancedFluidHopper");
 		config.item.updateToNextID();
-
+		
 		items.energyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.Energy);
 		RegisterItem(items.energyHopper, "EnergyHopper");
 		config.item.updateToNextID();
-
+		
 		items.advEnergyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvancedEnergy);
 		RegisterItem(items.advEnergyHopper, "AdvancedEnergyHopper");
 		config.item.updateToNextID();

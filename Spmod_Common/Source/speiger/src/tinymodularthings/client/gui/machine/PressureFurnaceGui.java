@@ -44,7 +44,7 @@ public class PressureFurnaceGui extends GuiInventoryCore
 		{
 			if (tile.getRecipeModeFromInventory(tile.inv) > 0)
 			{
-				int progress = tile.progress / 3;
+				int progress = tile.progress / 2;
 				String done = LanguageRegister.getLanguageName(this, "furnace.progress", getCore());
 				fontRenderer.drawString(done + ": " + progress + "%", 80, 67, 4210752);
 			}

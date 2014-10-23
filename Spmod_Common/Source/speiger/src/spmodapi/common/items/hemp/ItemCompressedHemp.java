@@ -9,7 +9,7 @@ import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.items.SpmodItem;
 
-public class ItemCompressedHemp extends SpmodItem implements LanguageItem
+public class ItemCompressedHemp extends SpmodItem
 {
 	
 	public ItemCompressedHemp(int par1)

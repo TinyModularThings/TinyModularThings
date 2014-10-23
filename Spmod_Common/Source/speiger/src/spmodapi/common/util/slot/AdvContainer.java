@@ -2,8 +2,6 @@ package speiger.src.spmodapi.common.util.slot;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.Slot;

@@ -56,7 +56,7 @@ public class BucketFillerGui extends GuiInventoryCore
 		{
 			FluidStack fluid = basic.tank.getFluid();
 			List<String> text = Arrays.asList("");
-			if(fluid == null)
+			if(fluid == null || fluid.getFluid() == null)
 			{
 				text = Arrays.asList("Empty Tank", "0mB / "+basic.tank.getCapacity()+"mB");
 			}

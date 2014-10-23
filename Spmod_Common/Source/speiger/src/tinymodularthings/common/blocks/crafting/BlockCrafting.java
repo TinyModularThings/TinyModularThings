@@ -5,6 +5,7 @@ import java.util.List;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -27,9 +28,35 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 	{
 		super(par1, Material.piston);
 		this.setCreativeTab(CreativeTabs.tabFood);
+		this.setHardness(2F);
 	}
 	
 	
+	
+
+	@Override
+	public float getBlockHardness(World par1World, int par2, int par3, int par4)
+	{
+		int meta = par1World.getBlockMetadata(par2, par3, par4);
+		if(meta == 0)
+		{
+			return 1.0F;
+		}
+		
+		return 2.0F;
+	}
+
+	@Override
+	public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+	{
+		int meta = world.getBlockMetadata(x, y, z);
+		if(meta == 0)
+		{
+			return 2.0F;
+		}
+		
+		return 4.0F;
+	}
 
 	@Override
 	public TileEntity createTileEntity(World world, int meta)

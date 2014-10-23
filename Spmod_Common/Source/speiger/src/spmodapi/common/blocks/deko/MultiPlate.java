@@ -1,6 +1,5 @@
 package speiger.src.spmodapi.common.blocks.deko;
 
-import cpw.mods.fml.common.FMLLog;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import speiger.src.api.items.plates.PlateManager;

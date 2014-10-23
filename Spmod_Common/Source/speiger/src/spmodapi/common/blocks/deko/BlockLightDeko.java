@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
@@ -19,6 +18,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import speiger.src.api.util.InventoryUtil;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.blocks.deko.TileLamp.EnumLampType;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumColor;
@@ -27,7 +27,7 @@ import speiger.src.spmodapi.common.tile.AdvTile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockLightDeko extends BlockContainer
+public class BlockLightDeko extends SpmodBlockContainerBase
 {
 	
 	double[][] sizes = new double[][] { { 0.125D, 0D, 0.125D, 0.875D, 0.735D, 0.875D }, { 0.125D, 0.265D, 0.125D, 0.875D, 1D, 0.875D }, { 0.125D, 0.125D, 0D, 0.875D, 0.875D, 0.735D }, { 0.125D, 0.125D, 0.265D, 0.875D, 0.875D, 1D }, { 0D, 0.125D, 0.125D, 0.735D, 0.875D, 0.875D }, { 0.265D, 0.125D, 0.125D, 1D, 0.875D, 0.875D } };

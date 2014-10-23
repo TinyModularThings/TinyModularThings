@@ -10,11 +10,11 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import speiger.src.api.blocks.BlockPosition;
 import speiger.src.api.items.InfoStack;
 import speiger.src.api.language.LanguageRegister;
 import speiger.src.api.packets.SpmodPacketHelper;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
-import speiger.src.spmodapi.common.util.BlockPosition;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.common.blocks.transport.MultiStructureItemInterface;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;

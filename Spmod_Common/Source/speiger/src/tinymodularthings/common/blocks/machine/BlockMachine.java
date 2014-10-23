@@ -42,7 +42,7 @@ public class BlockMachine extends SpmodBlockContainerBase
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			par3.add(new ItemStack(par1, 1, i));
 		}
@@ -80,6 +80,8 @@ public class BlockMachine extends SpmodBlockContainerBase
 					return new SelfPoweredBucketFiller();
 				case 3:
 					return new WaterGenerator();
+				case 4:
+					return new OilGenerator();
 				default:
 					return null;
 			}
@@ -103,18 +105,6 @@ public class BlockMachine extends SpmodBlockContainerBase
 		par1.registerTexture(new BlockStack(this, 2), "SelfPoweredBucketFiller_top", "SelfPoweredBucketFiller_bottom", "SelfPoweredBucketFiller_side");
 		par1.registerTexture(new BlockStack(this, 3), "waterGenerator_top", "waterGenerator_bottom", "waterGenerator_side");
 	
-	}
-	
-	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
-	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-		if (tile != null && tile instanceof AdvTile)
-		{
-			((AdvTile) tile).onBreaking();
-		}
-		
-		super.breakBlock(par1World, par2, par3, par4, par5, par6);
 	}
 	
 	@Override

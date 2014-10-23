@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import mods.railcraft.api.core.items.TagList;
 import mods.railcraft.common.plugins.forge.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -26,7 +25,6 @@ import codechicken.core.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 
 public class NeiPressureFurnace extends TemplateRecipeHandler

@@ -1,7 +1,5 @@
 package speiger.src.spmodapi.common.tile;
 
-import java.util.HashMap;
-import java.util.List;
 import java.util.Random;
 
 import net.minecraft.block.Block;

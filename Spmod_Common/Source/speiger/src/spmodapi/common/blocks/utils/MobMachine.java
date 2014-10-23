@@ -41,7 +41,6 @@ import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

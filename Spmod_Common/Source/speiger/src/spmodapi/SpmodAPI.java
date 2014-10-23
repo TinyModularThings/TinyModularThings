@@ -1,6 +1,12 @@
 package speiger.src.spmodapi;
 
-import static speiger.src.spmodapi.common.lib.SpmodAPILib.*;
+import static speiger.src.spmodapi.common.lib.SpmodAPILib.Client;
+import static speiger.src.spmodapi.common.lib.SpmodAPILib.ClientMods;
+import static speiger.src.spmodapi.common.lib.SpmodAPILib.Core;
+import static speiger.src.spmodapi.common.lib.SpmodAPILib.CoreMods;
+import static speiger.src.spmodapi.common.lib.SpmodAPILib.ModID;
+import static speiger.src.spmodapi.common.lib.SpmodAPILib.Name;
+import static speiger.src.spmodapi.common.lib.SpmodAPILib.Version;
 
 import java.io.File;
 

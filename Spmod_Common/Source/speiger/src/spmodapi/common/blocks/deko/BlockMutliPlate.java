@@ -2,7 +2,6 @@ package speiger.src.spmodapi.common.blocks.deko;
 
 import java.util.Random;
 
-import net.minecraft.block.BlockContainer;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
@@ -10,8 +9,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.api.items.plates.PlateManager;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
+import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 
-public class BlockMutliPlate extends BlockContainer
+public class BlockMutliPlate extends SpmodBlockContainerBase
 {
 	
 	public BlockMutliPlate(int par1)
@@ -98,8 +100,7 @@ public class BlockMutliPlate extends BlockContainer
 				par0.setBlock(par1, par2, par3, 0);
 				if (!par0.isRemote)
 				{
-					// this.dropBlockAsItem_do(par0, par1, par2, par3,
-					// APIItems.multiSign.getItemStackFromString(tile.getName()));
+					 this.dropBlockAsItem_do(par0, par1, par2, par3, PlateManager.plates.getInfoFromIdentity(tile.getIdentity()).getItemStack());
 				}
 				par0.markTileEntityForDespawn(tile);
 			}

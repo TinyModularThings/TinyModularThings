@@ -1,13 +1,14 @@
-package speiger.src.spmodapi.common.util;
+package speiger.src.api.blocks;
 
 import java.util.Arrays;
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.blocks.BlockStack;
 
 public class BlockPosition
 {
@@ -28,6 +29,11 @@ public class BlockPosition
 	public BlockPosition(List<Integer> par1)
 	{
 		this(par1.get(0), par1.get(1), par1.get(2), par1.get(3));
+	}
+	
+	public BlockPosition(NBTTagCompound par1)
+	{
+		this(par1.getInteger("World"), par1.getInteger("xCoord"), par1.getInteger("yCoord"), par1.getInteger("zCoord"));
 	}
 	
 	public BlockPosition(int dimID, int x, int y, int z)
@@ -120,6 +126,11 @@ public class BlockPosition
 		return false;
 	}
 	
+	public void setBlock(BlockStack par1)
+	{
+		this.worldID.setBlock(xCoord, yCoord, zCoord, par1.getBlockID(), par1.getMeta(), 3);
+	}
+	
 	public boolean hasTileEntity()
 	{
 		return getTileEntity() != null;
@@ -160,6 +171,14 @@ public class BlockPosition
 		worldID.setBlockToAir(xCoord, yCoord, zCoord);
 	}
 	
+	public void writeToNBT(NBTTagCompound par1)
+	{
+		par1.setInteger("World", worldID.provider.dimensionId);
+		par1.setInteger("xCoord", xCoord);
+		par1.setInteger("yCoord", yCoord);
+		par1.setInteger("zCoord", zCoord);
+	}
+	
 	public BlockPosition getPosFromSide(int side)
 	{
 		ForgeDirection direction = ForgeDirection.getOrientation(side);
@@ -196,4 +215,58 @@ public class BlockPosition
 	{
 		return new BlockPosition(worldID, xCoord, yCoord, zCoord);
 	}
+	
+	public int getDimensionID()
+	{
+		return worldID.provider.dimensionId;
+	}
+	
+	public boolean worldPositionMatch(BlockPosition par1)
+	{
+		if(getDimensionID() == par1.getDimensionID())
+		{
+			if(getXCoord() == par1.getXCoord() && getZCoord() == par1.getZCoord())
+			{
+				return true;
+			}
+		}
+		return false;
+	}
+
+	@Override
+	public boolean equals(Object obj)
+	{
+		if(obj == null)
+		{
+			return false;
+		}
+		if(!(obj instanceof BlockPosition))
+		{
+			return false;
+		}
+		BlockPosition pos = (BlockPosition)obj;
+		return this.isThisPosition(pos);
+	}
+
+	@Override
+	public int hashCode()
+	{
+		return worldID.provider.dimensionId + xCoord + yCoord + zCoord;
+	}
+
+	public Block getBlock()
+	{
+		return Block.blocksList[this.getBlockID()];
+	}
+
+	public BlockPosition add(int x, int y, int z)
+	{
+		BlockPosition pos = copy();
+		pos.xCoord += x;
+		pos.yCoord += y;
+		pos.zCoord += z;
+		return pos;
+	}
+	
+	
 }

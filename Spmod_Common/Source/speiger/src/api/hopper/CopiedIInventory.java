@@ -26,6 +26,11 @@ public class CopiedIInventory implements IInventory
 		this.inventory = ((ItemStack[]) par1.clone());
 	}
 	
+	public CopiedIInventory()
+	{
+		inventory = new ItemStack[0];
+	}
+	
 	public int getSizeInventory()
 	{
 		return this.inventory.length;

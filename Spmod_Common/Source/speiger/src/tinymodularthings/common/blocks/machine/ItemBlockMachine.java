@@ -11,7 +11,7 @@ import speiger.src.tinymodularthings.common.items.core.ItemBlockTinyChest;
 public class ItemBlockMachine extends ItemBlockTinyChest
 {
 	
-	String[] names = new String[] { "pressureFurnace", "basicBucketFiller", "selfpoweredBucketfiller", "water.generator" };
+	String[] names = new String[] { "pressureFurnace", "basicBucketFiller", "selfpoweredBucketfiller", "water.generator", "Oil Generator"};
 	
 	public ItemBlockMachine(int par1)
 	{

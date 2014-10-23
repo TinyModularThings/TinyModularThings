@@ -245,15 +245,4 @@ public class BlockTransport extends SpmodBlockContainerBase
 		return drop;
 	}
 	
-	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
-	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-		if (tile != null && tile instanceof AdvTile)
-		{
-			((AdvTile) tile).onBreaking();
-		}
-		super.breakBlock(par1World, par2, par3, par4, par5, par6);
-	}
-	
 }

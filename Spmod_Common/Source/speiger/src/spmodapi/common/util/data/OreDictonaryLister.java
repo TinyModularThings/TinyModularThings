@@ -1,6 +1,5 @@
 package speiger.src.spmodapi.common.util.data;
 
-import cpw.mods.fml.common.FMLLog;
 
 public class OreDictonaryLister
 {

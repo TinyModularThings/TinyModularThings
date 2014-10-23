@@ -272,17 +272,6 @@ public class BlockUtils extends SpmodBlockContainerBase
 		}
 	}
 	
-	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
-	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-		if (tile != null && tile instanceof AdvTile)
-		{
-			((AdvTile) tile).onBreaking();
-		}
-		super.breakBlock(par1World, par2, par3, par4, par5, par6);
-	}
-	
 	public void updateTick(World world, int i, int j, int k, Random random)
 	{
 		if (!world.isRemote)

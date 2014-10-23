@@ -9,7 +9,6 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.spmodapi.common.util.TileIconMaker;
 import buildcraft.BuildCraftCore;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerParameter;

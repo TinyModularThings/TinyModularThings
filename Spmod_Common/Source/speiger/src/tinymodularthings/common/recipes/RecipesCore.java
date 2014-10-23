@@ -13,5 +13,6 @@ public class RecipesCore
 		PipeRecipes.loadPipeRecipes();
 		PreRecipes.initRecipes();
 		TinyRecipes.init(proxy);
+		WCraftingRecipes.init();
 	}
 }

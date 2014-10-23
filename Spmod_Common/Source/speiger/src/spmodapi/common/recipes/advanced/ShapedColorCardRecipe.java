@@ -1,11 +1,11 @@
 package speiger.src.spmodapi.common.recipes.advanced;
 
-import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 
 public class ShapedColorCardRecipe extends ShapedOreRecipe implements IRecipe
 {
