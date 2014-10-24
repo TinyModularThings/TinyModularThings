@@ -16,6 +16,7 @@ import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraftforge.common.ForgeDirection;
 import speiger.src.spmodapi.common.interfaces.ISharedInventory;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.tinymodularthings.TinyModularThings;
@@ -45,6 +46,18 @@ public class TinyChest extends TileFacing implements IInventory,
 		return null;
 	}
 	
+	
+	
+	@Override
+	public boolean SolidOnSide(ForgeDirection side)
+	{
+		if(side == ForgeDirection.DOWN)
+		{
+			return true;
+		}
+		return super.SolidOnSide(side);
+	}
+
 	@Override
 	public boolean isEntity()
 	{

@@ -29,6 +29,8 @@ public class BlockHempDeko extends SpmodBlockBase
 		info = par2;
 		setCreativeTab(APIUtils.tabHempDeko);
 		par2.registerToForge(this);
+		if(!par2.canMonsterSpawn())
+			setMonsterSpawnSave();
 	}
 	
 	public HempBlockInformation getInfos()
@@ -52,16 +54,6 @@ public class BlockHempDeko extends SpmodBlockBase
 	public Icon getIcon(int par1, int par2)
 	{
 		return TextureEngine.getTextures().getTexture(this, par2);
-	}
-	
-	@Override
-	public boolean canCreatureSpawn(EnumCreatureType type, World world, int x, int y, int z)
-	{
-		if (type == EnumCreatureType.monster)
-		{
-			return info.canMonsterSpawn();
-		}
-		return super.canCreatureSpawn(type, world, x, y, z);
 	}
 	
 	@Override

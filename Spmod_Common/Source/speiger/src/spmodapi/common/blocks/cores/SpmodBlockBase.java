@@ -7,10 +7,10 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EnumCreatureType;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
@@ -23,15 +23,89 @@ public class SpmodBlockBase extends Block implements ITextureRequester
 {
 	public boolean[] ignoreRightClick = new boolean[16];
 	public boolean[] removeBasicDrops = new boolean[16];
+	public boolean[] canSilkHarvestme = new boolean[16];
+	public boolean[] monsterSpawnSave = new boolean[16];
+	public boolean[] isARenderedBlock = new boolean[16];
 	
 	public SpmodBlockBase(int par1, Material par2Material)
 	{
 		super(par1, par2Material);
+		this.setHardness(4.0F);
+		this.setResistance(4.0F);
+	}
+	
+	public SpmodBlockBase setIsAbnormal()
+	{
+		for(int i = 0;i<16;i++)
+		{
+			this.isARenderedBlock[i] = true;
+		}
+		return this;
+	}
+	
+	public SpmodBlockBase setIsAbnormal(int meta)
+	{
+		this.isARenderedBlock[meta] = true;
+		return this;
+	}
+	
+	public SpmodBlockBase dissableDrops()
+	{
+		for(int i = 0;i<16;i++)
+		{
+			removeBasicDrops[i] = true;
+		}
+		return this;
+	}
+	
+	public SpmodBlockBase dissableDrops(int meta)
+	{
+		this.removeBasicDrops[meta] = true;
+		return this;
+	}
+	
+	public SpmodBlockBase setMonsterSpawnSave()
+	{
+		for(int i = 0;i<16;i++)
+		{
+			this.monsterSpawnSave[i] = true;
+		}
+		return this;
 	}
 	
 	public SpmodBlockBase setIgnoreRightClick(int meta)
 	{
 		ignoreRightClick[meta] = true;
+		return this;
+	}
+	
+	public SpmodBlockBase setSilkEffect(int meta)
+	{
+		canSilkHarvestme[meta] = true;
+		return this;
+	}
+	
+	public SpmodBlockBase setMonsterSpawnSave(int meta)
+	{
+		monsterSpawnSave[meta] = true;
+		return this;
+	}
+	
+	public SpmodBlockBase setIgnoreRighClick()
+	{
+		for(int i = 0;i<16;i++)
+		{
+			this.ignoreRightClick[i] = true;
+		}
+		return this;
+	}
+	
+	public SpmodBlockBase setSilkEffect()
+	{
+		for(int i = 0;i<16;i++)
+		{
+			this.canSilkHarvestme[i] = true;
+		}
 		return this;
 	}
 		
@@ -40,6 +114,33 @@ public class SpmodBlockBase extends Block implements ITextureRequester
 		
 	}
 	
+	
+
+	@Override
+	public boolean isBlockNormalCube(World world, int x, int y, int z)
+	{
+		int meta = world.getBlockMetadata(x, y, z);
+		return !this.isARenderedBlock[meta];
+	}
+
+	@Override
+	public boolean canCreatureSpawn(EnumCreatureType type, World world, int x, int y, int z)
+	{
+		int meta = world.getBlockMetadata(x, y, z);
+		if(type == EnumCreatureType.monster && this.monsterSpawnSave[meta])
+		{
+			return false;
+		}
+		return super.canCreatureSpawn(type, world, x, y, z);
+	}
+
+	@Override
+	public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
+	{
+		int meta = world.getBlockMetadata(x, y, z);
+		return canSilkHarvestme[meta];
+	}
+
 	public boolean onTextureAfterRegister(TextureEngine par1)
 	{
 		return true;

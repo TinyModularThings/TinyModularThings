@@ -30,20 +30,10 @@ public class BlockHempDekoBase extends SpmodBlockBase
 		MinecraftForge.setBlockHarvestLevel(this, 1, "pickaxe", 0);
 		MinecraftForge.setBlockHarvestLevel(this, 2, "axe", 0);
 		MinecraftForge.setBlockHarvestLevel(this, 3, "pickaxe", 0);
-	}
-	
-	@Override
-	public boolean canCreatureSpawn(EnumCreatureType type, World world, int x, int y, int z)
-	{
-		int meta = world.getBlockMetadata(x, y, z);
-		if (meta >= 4)
-		{
-			if (type == EnumCreatureType.monster)
-			{
-				return false;
-			}
-		}
-		return true;
+		this.setMonsterSpawnSave(4);
+		this.setMonsterSpawnSave(5);
+		this.setMonsterSpawnSave(6);
+		this.setMonsterSpawnSave(7);
 	}
 	
 	@Override

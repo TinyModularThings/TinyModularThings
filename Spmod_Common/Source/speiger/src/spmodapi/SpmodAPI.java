@@ -10,6 +10,8 @@ import static speiger.src.spmodapi.common.lib.SpmodAPILib.Version;
 
 import java.io.File;
 
+import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import speiger.src.api.language.LanguageLoader;
 import speiger.src.api.nbt.DataStorage;
 import speiger.src.api.util.LogProxy;
@@ -24,6 +26,7 @@ import speiger.src.spmodapi.common.core.SpmodAPICore;
 import speiger.src.spmodapi.common.handler.SpmodPacketHandler;
 import speiger.src.spmodapi.common.plugins.PluginLoader;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 import speiger.src.spmodapi.common.world.WorldLoader;
 import cpw.mods.fml.common.FMLCommonHandler;

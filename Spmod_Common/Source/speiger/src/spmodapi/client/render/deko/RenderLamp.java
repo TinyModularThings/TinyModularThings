@@ -70,7 +70,7 @@ public class RenderLamp extends TileEntitySpecialRenderer
 		this.bindTexture(type.getTexture());
 		GL11.glTranslatef(0, -f, 0);
 		
-		SpmodColor color = Lamp.getFullColor();
+		SpmodColor color = Lamp.getColor();
 		if (color != null)
 		{
 			GL11.glColor4d(color.red, color.green, color.blue, 1.0D);

@@ -29,7 +29,7 @@ public class SpmodActionHelper implements IActionProvider
 					actions.add(BuildCraftCore.actionOn);
 					actions.add(BuildCraftCore.actionOff);
 					actions.addAll(Arrays.asList(BCAddon.deactive));
-					if (lamp.allColored)
+					if (lamp.isAllColored)
 					{
 						actions.addAll(Arrays.asList(BCAddon.colorBlocks));
 						actions.addAll(Arrays.asList(BCAddon.colorAllBlocks));
@@ -40,9 +40,9 @@ public class SpmodActionHelper implements IActionProvider
 						actions.addAll(Arrays.asList(BCAddon.loop));
 						actions.addAll(Arrays.asList(BCAddon.loopAll));
 					}
-					else if (lamp.noneColored)
+					else if (lamp.isNoneColored)
 					{
-						for (EnumColor color : lamp.validColors)
+						for (EnumColor color : lamp.installedColor)
 						{
 							actions.add(BCAddon.colorBlocks[color.ordinal()]);
 							actions.add(BCAddon.colorAllBlocks[color.ordinal()]);

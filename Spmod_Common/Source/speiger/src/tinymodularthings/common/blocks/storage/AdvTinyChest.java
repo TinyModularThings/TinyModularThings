@@ -426,7 +426,7 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 	}
 	
 	@Override
-	public boolean canConnectToWire()
+	public boolean canConnectToWire(int side)
 	{
 		return true;
 	}
@@ -444,9 +444,21 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 	}
 	
 	@Override
-	public boolean shouldCheckWeakPower()
+	public boolean shouldCheckWeakPower(int side)
 	{
 		return true;
 	}
+
+	@Override
+	public boolean SolidOnSide(ForgeDirection side)
+	{
+		if(side == ForgeDirection.DOWN)
+		{
+			return false;
+		}
+		return super.SolidOnSide(side);
+	}
+	
+	
 	
 }

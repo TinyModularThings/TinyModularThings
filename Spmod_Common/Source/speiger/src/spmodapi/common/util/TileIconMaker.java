@@ -98,7 +98,7 @@ public class TileIconMaker
 			{
 				if (match(clz, tile))
 				{
-					return tile.getIconFromSideAndMetadata(side, 0);
+					return this.getIconSafe(tile.getIconFromSideAndMetadata(side, 0));
 				}
 			}
 		}

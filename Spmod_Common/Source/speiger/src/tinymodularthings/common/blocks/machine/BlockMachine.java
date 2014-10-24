@@ -202,7 +202,7 @@ public class BlockMachine extends SpmodBlockContainerBase
 	public void updateTick(World world, int i, int j, int k, Random random)
 	{
 		notifyNeighbors(world, i, j, k);
-		world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
+		world.scheduleBlockUpdate(i, j, k, blockID, tickRate(world));
 	}
 	
 	public void notifyNeighbors(World world, int i, int j, int k)
@@ -217,17 +217,6 @@ public class BlockMachine extends SpmodBlockContainerBase
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
-	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-		if (tile != null && tile instanceof AdvTile)
-		{
-			((AdvTile) tile).onClientTick();
-		}
-	}
-	
-	@Override
 	public void onBlockDestroyedByPlayer(World world, int i, int j, int k, int l)
 	{
 		notifyNeighbors(world, i, j, k);
@@ -236,10 +225,10 @@ public class BlockMachine extends SpmodBlockContainerBase
 	@Override
 	public void onBlockAdded(World world, int i, int j, int k)
 	{
-		world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
+		world.scheduleBlockUpdate(i, j, k, blockID, tickRate(world));
 	}
 	
-	public int tickRate()
+	public int tickRate(World worl)
 	{
 		return 5;
 	}

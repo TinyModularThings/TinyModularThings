@@ -28,16 +28,14 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockLightDeko extends SpmodBlockContainerBase
-{
-	
-	double[][] sizes = new double[][] { { 0.125D, 0D, 0.125D, 0.875D, 0.735D, 0.875D }, { 0.125D, 0.265D, 0.125D, 0.875D, 1D, 0.875D }, { 0.125D, 0.125D, 0D, 0.875D, 0.875D, 0.735D }, { 0.125D, 0.125D, 0.265D, 0.875D, 0.875D, 1D }, { 0D, 0.125D, 0.125D, 0.735D, 0.875D, 0.875D }, { 0.265D, 0.125D, 0.125D, 1D, 0.875D, 0.875D } };
-	
+{	
 	public BlockLightDeko(int par1)
 	{
 		super(par1, Material.redstoneLight);
 		setCreativeTab(APIUtils.tabHempDeko);
-		this.setHardness(4.0F);
-		this.setResistance(4.0F);
+		this.dissableDrops();
+		this.setIsAbnormal();
+		this.setIgnoreRighClick();
 		MinecraftForge.setBlockHarvestLevel(this, "pickaxe", 0);
 	}
 	
@@ -48,200 +46,9 @@ public class BlockLightDeko extends SpmodBlockContainerBase
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
-	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-		if (tile != null && tile instanceof TileLamp && ((TileLamp) tile).getType() != null)
-		{
-			TileLamp lamp = (TileLamp) tile;
-			EnumLampType type = lamp.getType();
-			int facing = lamp.getFacing();
-			switch (type)
-			{
-				case FULL:
-					return AxisAlignedBB.getAABBPool().getAABB(par2, par3, par4, par2 + 1, par3 + 1, par4 + 1);
-				case RP2CAGELAMP:
-					
-					double[] array = sizes[facing];
-					return AxisAlignedBB.getAABBPool().getAABB(par2 + array[0], par3 + array[1], par4 + array[2], par2 + array[3], par3 + array[4], par4 + array[5]);
-				default:
-					break;
-			}
-		}
-		return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
-	}
-	
-	@Override
-	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
-	{
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-		if (tile != null && tile instanceof TileLamp && ((TileLamp) tile).getType() != null)
-		{
-			TileLamp lamp = (TileLamp) tile;
-			EnumLampType type = lamp.getType();
-			int facing = lamp.getFacing();
-			
-			switch (type)
-			{
-				case FULL:
-					return AxisAlignedBB.getAABBPool().getAABB(par2, par3, par4, par2 + 1, par3 + 1, par4 + 1);
-				case RP2CAGELAMP:
-					double[] array = sizes[facing];
-					return AxisAlignedBB.getAABBPool().getAABB(par2 + array[0], par3 + array[1], par4 + array[2], par2 + array[3], par3 + array[4], par4 + array[5]);
-				default:
-					break;
-			}
-		}
-		return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
-	}
-	
-	@Override
-	public int quantityDropped(Random par1Random)
-	{
-		return 0;
-	}
-	
-	@Override
-	public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4)
-	{
-		TileEntity tile = par1iBlockAccess.getBlockTileEntity(par2, par3, par4);
-		if (tile != null && tile instanceof TileLamp)
-		{
-			TileLamp lamp = (TileLamp) tile;
-			EnumLampType type = lamp.getType();
-			int facing = lamp.getFacing();
-			if (type == EnumLampType.RP2CAGELAMP)
-			{
-				switch (facing)
-				{
-					case 0:
-						this.setBlockBounds(0.125F, 0F, 0.125F, 0.875F, 0.735F, 0.875F);
-						break;
-					case 1:
-						this.setBlockBounds(0.125F, 0.265F, 0.125F, 0.875F, 1F, 0.875F);
-						break;
-					case 2:
-						this.setBlockBounds(0.125F, 0.125F, 0F, 0.875F, 0.875F, 0.735F);
-						break;
-					case 3:
-						this.setBlockBounds(0.125F, 0.125F, 0.265F, 0.875F, 0.875F, 1F);
-						break;
-					case 4:
-						this.setBlockBounds(0F, 0.125F, 0.125F, 0.735F, 0.875F, 0.875F);
-						break;
-					case 5:
-						this.setBlockBounds(0.265F, 0.125F, 0.125F, 1F, 0.875F, 0.875F);
-						break;
-					default:
-						this.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
-				}
-			}
-			else
-			{
-				this.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
-			}
-			
-		}
-	}
-	
-	@Override
 	public void setBlockBoundsForItemRender()
 	{
 		this.setBlockBounds(0F, 0F, 0F, 1F, 1F, 1F);
-	}
-	
-	@Override
-	public int idDropped(int par1, Random par2Random, int par3)
-	{
-		return 0;
-	}
-	
-	@Override
-	public int damageDropped(int par1)
-	{
-		return 0;
-	}
-	
-	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
-	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if (tile != null && tile instanceof AdvTile)
-		{
-			AdvTile adv = (AdvTile) tile;
-			return adv.onDrop(fortune);
-		}
-		return super.getBlockDropped(world, x, y, z, metadata, fortune);
-	}
-	
-	@Override
-	public void onBlockHarvested(World par1World, int par2, int par3, int par4, int par5, EntityPlayer par6EntityPlayer)
-	{
-		if (par6EntityPlayer == null || par6EntityPlayer.capabilities.isCreativeMode)
-		{
-			return;
-		}
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-		if (tile != null && tile instanceof AdvTile)
-		{
-			InventoryUtil.dropInventory(par1World, par2, par3, par4, ((AdvTile) tile).onDrop(0));
-		}
-	}
-	
-	@Override
-	public int getLightValue(IBlockAccess world, int x, int y, int z)
-	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if (tile != null && tile instanceof TileLamp)
-		{
-			TileLamp lamp = (TileLamp) tile;
-			if ((lamp.isActive() && !lamp.isInverted()) || (!lamp.isActive() && lamp.isInverted()))
-			{
-				return 15;
-			}
-		}
-		return 0;
-	}
-	
-	@Override
-	public boolean shouldCheckWeakPower(World world, int x, int y, int z, int side)
-	{
-		return false;
-	}
-	
-	@Override
-	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side)
-	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if (tile != null && tile instanceof TileLamp)
-		{
-			TileLamp lamp = (TileLamp) tile;
-			EnumLampType type = lamp.getType();
-			if (type != null)
-			{
-				if (type == type.FULL)
-				{
-					return true;
-				}
-				else if (type == type.RP2CAGELAMP)
-				{
-					return side.ordinal() == lamp.getFacing();
-				}
-			}
-		}
-		return super.isBlockSolidOnSide(world, x, y, z, side);
-	}
-	
-	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if (tile != null && tile instanceof AdvTile)
-		{
-			return ((AdvTile) tile).pickBlock(target);
-		}
-		return super.getPickBlock(target, world, x, y, z);
 	}
 	
 	@Override
@@ -254,7 +61,7 @@ public class BlockLightDeko extends SpmodBlockContainerBase
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
-		return Block.leaves.getIcon(0, 0);
+		return Block.redstoneLampActive.getIcon(0, 0);
 	}
 	
 	@Override
@@ -263,57 +70,6 @@ public class BlockLightDeko extends SpmodBlockContainerBase
 	public int getRenderColor(int par1)
 	{
 		return EnumColor.values()[par1].getAsHex().intValue();
-	}
-	
-	@Override
-	public int getLightOpacity(World world, int x, int y, int z)
-	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if (tile != null && tile instanceof TileLamp)
-		{
-			TileLamp lamp = (TileLamp) tile;
-			EnumLampType type = lamp.getType();
-			if (type != null)
-			{
-				if (type == type.FULL)
-				{
-					return 255;
-				}
-			}
-		}
-		return 0;
-	}
-	
-	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
-	{
-		if (!par1World.isRemote)
-		{
-			
-			TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-			if (tile != null && tile instanceof AdvTile)
-			{
-				return ((AdvTile) tile).onActivated(par5EntityPlayer);
-			}
-		}
-		return super.onBlockActivated(par1World, par2, par3, par4, par5EntityPlayer, par6, par7, par8, par9);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int colorMultiplier(IBlockAccess par1iBlockAccess, int par2, int par3, int par4)
-	{
-		TileEntity tile = par1iBlockAccess.getBlockTileEntity(par2, par3, par4);
-		if (tile != null && tile instanceof TileLamp)
-		{
-			SpmodColor color = ((TileLamp) tile).getFullColor();
-			if (color != null)
-			{
-				return color.getHex();
-			}
-			
-		}
-		return EnumColor.WHITE.getAsHex().intValue();
 	}
 	
 	@Override

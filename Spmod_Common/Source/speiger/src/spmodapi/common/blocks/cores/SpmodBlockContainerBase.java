@@ -3,22 +3,28 @@ package speiger.src.spmodapi.common.blocks.cores;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Random;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
+import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.blocks.BlockPosition;
 import speiger.src.api.util.WorldReading;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.TileIconMaker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -40,6 +46,148 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	}
 	
     @Override
+	public boolean isBlockNormalCube(World world, int x, int y, int z)
+	{
+		AdvTile tile = this.getAdvTile(world, x, y, z);
+		if(tile != null)
+		{
+			return tile.isNormalCube();
+		}
+		return super.isBlockNormalCube(world, x, y, z);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
+	{
+		AdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
+		if(tile != null)
+		{
+			return tile.shouldCheckWeakPower(par5);
+		}
+		return super.shouldSideBeRendered(par1iBlockAccess, par2, par3, par4, par5);
+	}
+	
+	
+
+	@Override
+	public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4)
+	{
+		AdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
+		if(tile != null)
+		{
+			tile.setBoundsOnState(this);
+		}
+	}
+
+	@Override
+	public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4, Explosion par5Explosion)
+	{
+		AdvTile tile = this.getAdvTile(par1World, par2, par3, par4);
+		if(tile != null)
+		{
+			tile.onDistroyedByExplosion(par5Explosion);
+		}
+		super.onBlockDestroyedByExplosion(par1World, par2, par3, par4, par5Explosion);
+	}
+
+	@Override
+	public void onEntityWalking(World par1World, int par2, int par3, int par4, Entity par5Entity)
+	{
+		AdvTile tile = this.getAdvTile(par1World, par2, par3, par4);
+		if(tile != null)
+		{
+			tile.onEntityWalk(par5Entity);
+		}
+		super.onEntityWalking(par1World, par2, par3, par4, par5Entity);
+	}
+
+	@Override
+	public int isProvidingWeakPower(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
+	{
+		AdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
+		if(tile != null)
+		{
+			return tile.isIndirectlyPowering(par5);
+		}
+		return super.isProvidingWeakPower(par1iBlockAccess, par2, par3, par4, par5);
+	}
+
+	@Override
+	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
+	{
+		AdvTile tile = this.getAdvTile(par1World, par2, par3, par4);
+		if(tile != null)
+		{
+			tile.onColide(par5Entity);
+		}
+		super.onEntityCollidedWithBlock(par1World, par2, par3, par4, par5Entity);
+	}
+
+	@Override
+	public int isProvidingStrongPower(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
+	{
+		AdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
+		if(tile != null)
+		{
+			return tile.isPowering(par5);
+		}
+		return super.isProvidingStrongPower(par1iBlockAccess, par2, par3, par4, par5);
+	}
+
+	@Override
+	public void onFallenUpon(World par1World, int par2, int par3, int par4, Entity par5Entity, float par6)
+	{
+		AdvTile tile = this.getAdvTile(par1World, par2, par3, par4);
+		if(tile != null)
+		{
+			tile.onFallen(par5Entity);
+		}
+		super.onFallenUpon(par1World, par2, par3, par4, par5Entity, par6);
+	}
+
+	@Override
+	public boolean isBlockReplaceable(World world, int x, int y, int z)
+	{
+		AdvTile tile = this.getAdvTile(world, x, y, z);
+		if(tile != null)
+		{
+			return tile.canBeReplaced();
+		}
+		return super.isBlockReplaceable(world, x, y, z);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
+	{
+		AdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
+		if(tile != null)
+		{
+			return tile.getIconFromSideAndMetadata(par5, 0);
+		}
+		return TextureEngine.getTextures().getIconSafe();
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getIcon(int par1, int par2)
+	{
+		return TileIconMaker.getIconMaker().getIconFromTile(this, par2, par1);
+	}
+
+	@Override
+	public boolean canEntityDestroy(World world, int x, int y, int z, Entity entity)
+	{
+		AdvTile tile = this.getAdvTile(world, x, y, z);
+		if(tile != null)
+		{
+			return tile.canEntityDistroyMe(entity);
+		}
+		return super.canEntityDestroy(world, x, y, z, entity);
+	}
+
+	@Override
 	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5, ItemStack par6ItemStack)
 	{
     	int facing = WorldReading.getLookingDirectionFromEnitty(par5);
@@ -53,8 +201,6 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
     		}
     	}
 	}
-    
-    
     
 	@Override
 	public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
@@ -78,6 +224,19 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		super.addCollisionBoxesToList(par1World, par2, par3, par4, par5AxisAlignedBB, par6List, par7Entity);
 	}
 	
+	
+	
+	@Override
+	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
+	{
+		AdvTile tile = getAdvTile(par1World, par2, par3, par4);
+		if(tile != null)
+		{
+			return tile.getColidingBox();
+		}
+		return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
@@ -93,8 +252,6 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		}
 		return super.getSelectedBoundingBoxFromPool(par1World, par2, par3, par4);
 	}
-	
-	
 
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z)
@@ -107,8 +264,6 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		return super.getBlockHardness(world, x, y, z);
 	}
 	
-	
-
 	@Override
 	public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
 	{
@@ -149,8 +304,6 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		return super.getLightValue(world, x, y, z);
 	}
 	
-	
-	
 	@Override
 	public int getLightOpacity(World world, int x, int y, int z)
 	{
@@ -184,8 +337,6 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		return super.isBlockSolidOnSide(world, x, y, z, side);
 	}
 	
-	
-	
 	@Override
 	public boolean onBlockActivated(World par1, int par2, int par3, int par4, EntityPlayer par5, int par6, float par7, float par8, float par9)
 	{
@@ -211,7 +362,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 	@Override
@@ -252,8 +403,6 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		return super.canConnectRedstone(world, x, y, z, side);
 	}
 	
-	
-
 	@Override
 	public int getFireSpreadSpeed(World world, int x, int y, int z, int metadata, ForgeDirection face)
 	{
@@ -264,8 +413,6 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		}
 		return super.getFireSpreadSpeed(world, x, y, z, metadata, face);
 	}
-	
-	
 	
 	@Override
 	public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
@@ -299,8 +446,6 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		}
 		return super.isAirBlock(world, x, y, z);
 	}
-	
-	
 
 	@Override
 	public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
@@ -311,6 +456,39 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 			return tile.canPlacedOnSide(ForgeDirection.getOrientation(par5));
 		}
 		return super.canPlaceBlockOnSide(par1World, par2, par3, par4, par5);
+	}
+	
+	@Override
+	public boolean canCreatureSpawn(EnumCreatureType type, World world, int x, int y, int z)
+	{
+		AdvTile tile = getAdvTile(world, x, y, z);
+		if(tile != null)
+		{
+			return tile.canMonsterSpawn(type);
+		}
+		return super.canCreatureSpawn(type, world, x, y, z);
+	}
+
+	@Override
+	public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
+	{
+		AdvTile tile = getAdvTile(world, x, y, z);
+		if(tile != null)
+		{
+			return tile.isSilkHarvestable(player);
+		}
+		return super.canSilkHarvest(world, player, x, y, z, metadata);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
+	{
+		AdvTile tile = getAdvTile(par1World, par2, par3, par4);
+		if(tile != null)
+		{
+			tile.onClientTick();
+		}
 	}
 
 	public void onBlockAdded(World par1World, int par2, int par3, int par4)

@@ -185,6 +185,11 @@ public class WorldReading
 		return tile;
 	}
 	
+	public static AdvTile getAdvTile(IBlockAccess par1, int par2, int par3, int par4, ForgeDirection par5)
+	{
+		return getAdvTile(par1, par2+par5.offsetX, par3+par5.offsetY, par4+par5.offsetZ);
+	}
+	
 	public static AdvTile getAdvTile(IBlockAccess par1, int par2, int par3, int par4)
 	{
 		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);

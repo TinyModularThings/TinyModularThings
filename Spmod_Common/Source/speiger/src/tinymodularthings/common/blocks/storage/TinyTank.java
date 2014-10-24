@@ -57,6 +57,8 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 		return tankMode;
 	}
 	
+	
+	
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{

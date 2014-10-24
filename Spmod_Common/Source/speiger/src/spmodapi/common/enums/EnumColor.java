@@ -46,6 +46,18 @@ public enum EnumColor
 		return Nothing;
 	}
 	
+	public static EnumColor getFromHex(int hex)
+	{
+		for(EnumColor value : values())
+		{
+			if(value.hex.intValue() == hex)
+			{
+				return value;
+			}
+		}
+		return Nothing;
+	}
+	
 	public String getName()
 	{
 		return name;
@@ -140,6 +152,11 @@ public enum EnumColor
 		public static SpmodColor fromHex(int hex)
 		{
 			return new SpmodColor().setTo(hex);
+		}
+		
+		public EnumColor getColor()
+		{
+			return EnumColor.getFromHex(getHex());
 		}
 		
 		public SpmodColor add(double par0)

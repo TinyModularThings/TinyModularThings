@@ -13,10 +13,12 @@ public class AdvTinyTank extends TinyTank
 {
 	
 	@Override
-	public boolean canConnectToWire()
+	public boolean canConnectToWire(int side)
 	{
 		return true;
 	}
+	
+	
 	
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
@@ -106,7 +108,7 @@ public class AdvTinyTank extends TinyTank
 	}
 	
 	@Override
-	public boolean shouldCheckWeakPower()
+	public boolean shouldCheckWeakPower(int side)
 	{
 		return true;
 	}

@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import buildcraft.BuildCraftTransport;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.StepSound;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -21,6 +23,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.blocks.BlockPosition;
+import speiger.src.api.util.RedstoneUtils;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.util.TextureEngine;
@@ -34,6 +37,12 @@ public abstract class AdvTile extends TileEntity
 	public void loadInformation(List par1)
 	{
 		
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public boolean shouldSideBeRendered(int side)
+	{
+		return true;
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -67,14 +76,43 @@ public abstract class AdvTile extends TileEntity
 		return 0;
 	}
 	
+	public void updateNeighbors(boolean needSelf)
+	{
+		if(needSelf)
+		{
+			worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
+		}
+		for(ForgeDirection side : ForgeDirection.VALID_DIRECTIONS)
+		{
+			notifyBlocksOfNeighborChange(side);
+		}
+	}
+	
+	protected void notifyBlocksOfNeighborChange(ForgeDirection side)
+	{
+		worldObj.notifyBlocksOfNeighborChange(xCoord + side.offsetX, yCoord + side.offsetY, zCoord + side.offsetZ, getBlockType().blockID);
+	}
+	
 	public ArrayList<AxisAlignedBB> getColidingBoxes(Entity par2)
 	{
 		return null;
 	}
 	
+	public boolean isPowered()
+	{
+		return RedstoneUtils.isBlockGettingPowered(this);
+	}
+	
 	public AxisAlignedBB getSelectedBoxes()
 	{
-		return null;
+		Block par1 = this.getBlockType();
+		return AxisAlignedBB.getAABBPool().getAABB((double)xCoord + par1.getBlockBoundsMinX(), (double)yCoord + par1.getBlockBoundsMinY(), (double)zCoord + par1.getBlockBoundsMinZ(), (double)xCoord + par1.getBlockBoundsMaxX(), (double)yCoord + par1.getBlockBoundsMaxY(), (double)zCoord + par1.getBlockBoundsMaxZ());
+	}
+	
+	public AxisAlignedBB getColidingBox()
+	{
+		Block par1 = this.getBlockType();
+		return AxisAlignedBB.getAABBPool().getAABB((double)xCoord + par1.getBlockBoundsMinX(), (double)yCoord + par1.getBlockBoundsMinY(), (double)zCoord + par1.getBlockBoundsMinZ(), (double)xCoord + par1.getBlockBoundsMaxX(), (double)yCoord + par1.getBlockBoundsMaxY(), (double)zCoord + par1.getBlockBoundsMaxZ());
 	}
 	
 	@Override
@@ -82,7 +120,7 @@ public abstract class AdvTile extends TileEntity
 	{
 		super.updateEntity();
 		
-		if (!SpmodConfig.loadTiles)
+		if(!SpmodConfig.loadTiles)
 		{
 			return;
 		}
@@ -93,7 +131,7 @@ public abstract class AdvTile extends TileEntity
 	public void updateBlock()
 	{
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		if (worldObj.blockExists(xCoord, yCoord, zCoord))
+		if(worldObj.blockExists(xCoord, yCoord, zCoord))
 		{
 			worldObj.getChunkFromBlockCoords(xCoord, zCoord).setChunkModified();
 		}
@@ -113,7 +151,6 @@ public abstract class AdvTile extends TileEntity
 	{
 		return false;
 	}
-
 	
 	public void onBreaking()
 	{
@@ -209,7 +246,7 @@ public abstract class AdvTile extends TileEntity
 		return new ArrayList<ItemStack>();
 	}
 	
-	public boolean isSilkHarvestable()
+	public boolean isSilkHarvestable(EntityPlayer player)
 	{
 		return false;
 	}
@@ -292,14 +329,14 @@ public abstract class AdvTile extends TileEntity
 		
 	}
 	
-	public void setBoundingBoxes()
-	{
-		
-	}
-	
 	public ItemStack pickBlock(MovingObjectPosition target)
 	{
 		return new ItemStack(worldObj.getBlockId(xCoord, yCoord, zCoord), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
+	}
+	
+	public void setBoundsOnState(Block par1)
+	{
+		par1.setBlockBounds(0, 0, 0, 1, 1, 1);
 	}
 	
 	public void onClientTick()
@@ -319,16 +356,24 @@ public abstract class AdvTile extends TileEntity
 	
 	public int upcastShort(int value)
 	{
-		if (value < 0)
+		if(value < 0)
 			value += 65536;
 		return value;
 	}
-
+	
 	public boolean isFireSource(ForgeDirection side)
 	{
 		return false;
 	}
-
-
+	
+	public boolean isNormalCube()
+	{
+		return true;
+	}
+	
+	public void onFallen(Entity par5Entity)
+	{
+		
+	}
 	
 }
