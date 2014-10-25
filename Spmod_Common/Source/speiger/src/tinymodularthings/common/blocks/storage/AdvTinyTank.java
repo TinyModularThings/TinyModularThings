@@ -11,6 +11,8 @@ import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 
 public class AdvTinyTank extends TinyTank
 {
+	public boolean full = false;
+	public boolean isEmpty = false;
 	
 	@Override
 	public boolean canConnectToWire(int side)
@@ -18,14 +20,35 @@ public class AdvTinyTank extends TinyTank
 		return true;
 	}
 	
-	
-	
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		return TextureEngine.getTextures().getTexture(getBlockType(), 1);
 	}
 	
+	
+	
+	@Override
+	public void onTick()
+	{
+		super.onTick();
+		if(!worldObj.isRemote && worldObj.getWorldTime() % 10 == 0)
+		{
+			boolean before = isEmpty;
+			isEmpty = this.isTankEmpty();
+			if(before != isEmpty)
+			{
+				this.updateNeighbors(true);
+			}
+			before = full;
+			full = this.isTankFull();
+			if(before != full)
+			{
+				this.updateNeighbors(true);
+			}
+		}
+	}
+
 	@Override
 	public ArrayList<ItemStack> onDrop(int fortune)
 	{
@@ -121,5 +144,23 @@ public class AdvTinyTank extends TinyTank
 		}
 		return false;
 	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound nbt)
+	{
+		super.readFromNBT(nbt);
+		this.isEmpty = nbt.getBoolean("IsEmpty");
+		this.full = nbt.getBoolean("IsFull");
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound nbt)
+	{
+		super.writeToNBT(nbt);
+		nbt.setBoolean("IsEmpty", isEmpty);
+		nbt.setBoolean("IsFull", full);
+	}
+	
+	
 	
 }

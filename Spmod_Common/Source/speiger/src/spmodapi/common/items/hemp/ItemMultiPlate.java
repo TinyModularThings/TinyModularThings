@@ -13,6 +13,7 @@ import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.items.plates.PlateInterface;
 import speiger.src.api.items.plates.PlateManager;
 import speiger.src.api.util.SpmodMod;
+import speiger.src.api.util.WorldReading;
 import speiger.src.spmodapi.common.blocks.deko.MultiPlate;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
@@ -141,6 +142,10 @@ public class ItemMultiPlate extends SpmodItem
 				++par4;
 			}
 		}
+		else if(!Block.blocksList[i1].isBlockSolidOnSide(par3World, par4, par5, par6, ForgeDirection.getOrientation(par7).getOpposite()))
+		{
+			return false;
+		}
 		
 		if (par1ItemStack.stackSize == 0)
 		{
@@ -150,7 +155,7 @@ public class ItemMultiPlate extends SpmodItem
 		{
 			return false;
 		}
-		else if (par5 == 255 && Block.blocksList[APIBlocks.multiPlate.blockID].blockMaterial.isSolid())
+		else if (par5 == 255 && Block.blocksList[i1].blockMaterial.isSolid())
 		{
 			return false;
 		}
@@ -163,10 +168,16 @@ public class ItemMultiPlate extends SpmodItem
 				{
 					MultiPlate plate = (MultiPlate) tile;
 					plate.setFacing(ForgeDirection.getOrientation(par7).ordinal());
+					if(!plate.canPlacedOnSide(ForgeDirection.getOrientation(par7).getOpposite()))
+					{
+						par3World.setBlockToAir(par4, par5, par6);
+						return false;
+					}
 					PlateInterface info = PlateManager.plates;
 					if (info != null && info.getAllIdentifiers().size() > 0 && info.getAllIdentifiers().size() > par1ItemStack.getItemDamage())
 					{
 						plate.setIdentity(info.getAllIdentifiers().get(par1ItemStack.getItemDamage()));
+						plate.setupUser(par2EntityPlayer);
 						par1ItemStack.stackSize--;
 						return true;
 					}

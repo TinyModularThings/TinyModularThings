@@ -30,6 +30,12 @@ public class EnderChestReader extends AdvTile implements IInventory
 		owner = player.username;
 	}
 	
+	@Override
+	public boolean dropNormalBlock()
+	{
+		return true;
+	}
+
 	public InventoryEnderChest findEnderChest()
 	{
 		for (int i = 0; i < ForgeDirection.VALID_DIRECTIONS.length; i++)
@@ -120,6 +126,8 @@ public class EnderChestReader extends AdvTile implements IInventory
 	{
 		
 	}
+	
+	
 	
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)

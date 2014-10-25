@@ -1,5 +1,6 @@
 package speiger.src.spmodapi.common.items.crafting;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
@@ -37,6 +38,14 @@ public class SpmodBone extends ItemFood implements LanguageItem
 	
 	
 	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+	}
+
+
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)

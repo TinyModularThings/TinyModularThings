@@ -1,13 +1,15 @@
 package speiger.src.spmodapi.common.core;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import speiger.src.api.blocks.BlockPosition;
+import speiger.src.api.blocks.IBlockGui;
 import speiger.src.api.items.IItemGui;
 import speiger.src.spmodapi.client.gui.commands.GuiCommands;
-import speiger.src.spmodapi.common.blocks.utils.InventoryCrafter;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.ForgeRegister;
@@ -40,9 +42,16 @@ public class SpmodAPICore implements IGuiHandler
 	@Override
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		if (ID == EnumGuiIDs.WorkBench.getID())
+		if (ID == EnumGuiIDs.BlockGui.getID())
 		{
-			return new InventoryCrafter(player.inventory, world, x, y, z);
+			int meta = world.getBlockMetadata(x, y, z);
+			Block block = Block.blocksList[world.getBlockId(x, y, z)];
+			BlockPosition pos = new BlockPosition(world, x, y, z);
+			if(block != null && block instanceof IBlockGui)
+			{
+				IBlockGui gui = (IBlockGui)block;
+				return gui.getInventory(meta, player.inventory, pos);
+			}
 		}
 		else if (ID == EnumGuiIDs.Tiles.getID())
 		{
@@ -86,9 +95,16 @@ public class SpmodAPICore implements IGuiHandler
 	@Override
 	public Object getClientGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
-		if (ID == EnumGuiIDs.WorkBench.getID())
+		if (ID == EnumGuiIDs.BlockGui.getID())
 		{
-			return new GuiCrafting(player.inventory, world, x, y, z);
+			int meta = world.getBlockMetadata(x, y, z);
+			Block block = Block.blocksList[world.getBlockId(x, y, z)];
+			BlockPosition pos = new BlockPosition(world, x, y, z);
+			if(block != null && block instanceof IBlockGui)
+			{
+				IBlockGui gui = (IBlockGui)block;
+				return gui.getGui(meta, player.inventory, pos);
+			}
 		}
 		else if (ID == EnumGuiIDs.Tiles.getID())
 		{

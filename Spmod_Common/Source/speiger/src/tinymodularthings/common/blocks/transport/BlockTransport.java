@@ -35,6 +35,7 @@ public class BlockTransport extends SpmodBlockContainerBase
 		setCreativeTab(CreativeTabs.tabFood);
 		this.setHardness(4.0F);
 		this.setResistance(4.0F);
+		this.dissableDrops();
 	}
 	
 	@Override
@@ -44,40 +45,28 @@ public class BlockTransport extends SpmodBlockContainerBase
 	}
 	
 	@Override
+	public boolean hasTileDrops(int meta)
+	{
+		return true;
+	}
+
+	@Override
 	public TileEntity createTileEntity(World world, int metadata)
 	{
-		try
+		switch (metadata)
 		{
-			switch (metadata)
-			{
-				case 0:
-					return new EnderChestReader();
-				case 1:
-					return new MultiStructureItemInterface();
-				case 2:
-					return new MultiStructureFluidInterface();
-				case 3:
-					return new MultiStructureEnergyInterface();
-					
-				case 10:
-					return new TinyHopper(HopperType.Items, false);
-				case 11:
-					return new TinyHopper(HopperType.Items, true);
-				case 12:
-					return new TinyHopper(HopperType.Fluids, false);
-				case 13:
-					return new TinyHopper(HopperType.Fluids, true);
-				case 14:
-					return new TinyHopper(HopperType.Energy, false);
-				case 15:
-					return new TinyHopper(HopperType.Energy, true);
-				default:
-					return null;
-			}
-		}
-		catch (Exception e)
-		{
-			return null;
+			case 0: return new EnderChestReader();
+			case 1: return new MultiStructureItemInterface();
+			case 2: return new MultiStructureFluidInterface();
+			case 3: return new MultiStructureEnergyInterface();
+				
+			case 10: return new TinyHopper(HopperType.Items, false);
+			case 11: return new TinyHopper(HopperType.Items, true);
+			case 12: return new TinyHopper(HopperType.Fluids, false);
+			case 13: return new TinyHopper(HopperType.Fluids, true);
+			case 14: return new TinyHopper(HopperType.Energy, false);
+			case 15: return new TinyHopper(HopperType.Energy, true);
+			default: return null;
 		}
 	}
 	
@@ -98,151 +87,9 @@ public class BlockTransport extends SpmodBlockContainerBase
 	}
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		par3List.add(new ItemStack(par1, 1, 0));
-	}
-	
-	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5, ItemStack par6ItemStack)
-	{
-		int direction = 2;
-		int facing = MathHelper.floor_double(par5.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		int var8 = Math.round(par5.rotationPitch);
-		if (var8 > 57)
-		{
-			direction = ForgeDirection.UP.ordinal();
-		}
-		else if (var8 < -57)
-		{
-			direction = ForgeDirection.DOWN.ordinal();
-		}
-		else
-		{
-			if (facing == 0)
-			{
-				direction = ForgeDirection.NORTH.ordinal();
-			}
-			else if (facing == 1)
-			{
-				direction = ForgeDirection.EAST.ordinal();
-			}
-			else if (facing == 2)
-			{
-				direction = ForgeDirection.SOUTH.ordinal();
-			}
-			else if (facing == 3)
-			{
-				direction = ForgeDirection.WEST.ordinal();
-			}
-		}
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-		if (tile != null && tile instanceof AdvTile)
-		{
-			((AdvTile) tile).onPlaced(direction);
-			if (par5 instanceof EntityPlayer)
-			{
-				((AdvTile) tile).setupUser((EntityPlayer) par5);
-			}
-		}
-	}
-	
-	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
-	{
-		if (!par1World.isRemote)
-		{
-			TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-			
-			if (tile instanceof TileFacing)
-			{
-				if (((AdvTile) tile).onClick(par5EntityPlayer.isSneaking(), par5EntityPlayer, this, par6))
-				{
-					return true;
-				}
-			}
-			
-			if (par5EntityPlayer.isSneaking())
-			{
-				return false;
-			}
-			
-			if (tile != null && tile instanceof AdvTile)
-			{
-				return ((AdvTile) tile).onActivated(par5EntityPlayer);
-			}
-		}
-		
-		return true;
-	}
-	
-	@Override
 	public int getRenderType()
 	{
 		return EnumIDs.TransportBlock.getId();
-	}
-	
-	@Override
-	public int idDropped(int par1, Random par2Random, int par3)
-	{
-		return 0;
-	}
-	
-	@Override
-	public int damageDropped(int par1)
-	{
-		return 0;
-	}
-	
-	@Override
-	public int quantityDropped(Random random)
-	{
-		return 0;
-	}
-	
-	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-	{
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if (tile != null && tile instanceof AdvTile)
-		{
-			return ((AdvTile) tile).pickBlock(target);
-		}
-		return super.getPickBlock(target, world, x, y, z);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
-	{
-		return TileIconMaker.getIconMaker().getIconFromTile(this, par2, par1);
-	}
-	
-	
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Icon getBlockTexture(IBlockAccess par1, int par2, int par3, int par4, int par5)
-	{
-		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
-		if(tile != null && tile instanceof AdvTile)
-		{
-			return ((AdvTile)tile).getIconFromSideAndMetadata(par5, 0);
-		}
-		return TextureEngine.getTextures().getIconSafe();
-	}
-	
-	@Override
-	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
-	{
-		ArrayList<ItemStack> drop = new ArrayList<ItemStack>();
-		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if (tile != null && tile instanceof AdvTile)
-		{
-			drop.addAll(((AdvTile) tile).onDrop(fortune));
-		}
-		return drop;
 	}
 	
 }

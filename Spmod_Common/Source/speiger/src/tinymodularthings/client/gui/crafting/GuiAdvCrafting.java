@@ -9,17 +9,18 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import speiger.src.api.blocks.BlockPosition;
+import speiger.src.api.blocks.IBlockGui;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import speiger.src.tinymodularthings.common.interfaces.IBlockGui;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 
-public class GuiAdvCrating extends GuiInventoryCore
+public class GuiAdvCrafting extends GuiInventoryCore
 {
-	public GuiAdvCrating(IBlockGui par1, int par2, InventoryPlayer par3)
+	public GuiAdvCrafting(IBlockGui par1, int par2, InventoryPlayer par3, BlockPosition par4)
 	{
-		super(par1.getInventory(par2, par3));
+		super(par1.getInventory(par2, par3, par4));
 	} 
 	
 	private static final ResourceLocation furnaceGuiTextures = new ResourceLocation(TinyModularThingsLib.ModID.toLowerCase() + ":textures/gui/storage/StorageGui.png");

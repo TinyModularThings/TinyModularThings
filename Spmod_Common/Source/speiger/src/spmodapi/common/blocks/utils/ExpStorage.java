@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.item.EntityXPOrb;
 import net.minecraft.entity.player.EntityPlayer;
@@ -52,6 +53,18 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		return TextureEngine.getTextures().getTexture(APIBlocks.blockUtils, 1, side < 2 ? 1 : 0);
+	}
+	
+	@Override
+	public float getBlockHardness()
+	{
+		return 5F;
+	}
+	
+	@Override
+	public float getExplosionResistance(Entity par1)
+	{
+		return 3F;
 	}
 	
 	@Override
@@ -460,20 +473,6 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 		nbt.setTag("Items", nbttaglist);
 		nbt.setInteger("Exp", exp);
 		nbt.setBoolean("DEAD", canAbsorbDeath);
-	}
-	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
-	}
-	
-	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		readFromNBT(pkt.data);
 	}
 	
 	int helper = 0;

@@ -155,7 +155,7 @@ public class APIItemsConfig
 		items.hempPlates = new ItemStack[models.length];
 		for (int i = 0; i < items.hempPlates.length; i++)
 		{
-			items.hempPlates[i] = PlateManager.plates.registerPlate(models[i], textures[i], identifiers[i], getDisplayName(identifiers[i])).getItemStack();
+			items.hempPlates[i] = PlateManager.plates.registerPlate(models[i], textures[i], identifiers[i], getDisplayName(identifiers[i]), 0.2F).getItemStack();
 		}
 	}
 	

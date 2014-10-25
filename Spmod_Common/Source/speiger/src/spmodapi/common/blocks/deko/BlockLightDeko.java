@@ -93,5 +93,12 @@ public class BlockLightDeko extends SpmodBlockContainerBase
 	{
 		return false;
 	}
+
+	@Override
+	public boolean hasTileDrops(int meta)
+	{
+		return true;
+	}
+	
 	
 }

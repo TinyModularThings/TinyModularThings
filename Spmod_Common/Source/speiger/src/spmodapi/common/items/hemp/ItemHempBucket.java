@@ -1,5 +1,6 @@
 package speiger.src.spmodapi.common.items.hemp;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemBucket;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -54,5 +55,10 @@ public class ItemHempBucket extends ItemBucket implements LanguageItem
 	{
 		return TextureEngine.getTextures().getTexture(this, 0);
 	}
-	
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+	}
 }

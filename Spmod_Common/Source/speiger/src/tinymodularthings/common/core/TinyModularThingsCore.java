@@ -6,6 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import speiger.src.api.blocks.BlockPosition;
+import speiger.src.api.blocks.IBlockGui;
 import speiger.src.api.hopper.HopperRegistry;
 import speiger.src.api.hopper.HopperUpgrade;
 import speiger.src.api.hopper.IHopper;
@@ -22,7 +24,6 @@ import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.enums.HopperUpgradeIDs;
 import speiger.src.tinymodularthings.common.handler.FuelHandler;
 import speiger.src.tinymodularthings.common.handler.TinyCraftingHandler;
-import speiger.src.tinymodularthings.common.interfaces.IBlockGui;
 import speiger.src.tinymodularthings.common.interfaces.IEntityGuiProvider;
 import speiger.src.tinymodularthings.common.interfaces.IPipeGuiProvider;
 import speiger.src.tinymodularthings.common.items.tools.ItemNetherCrystal;
@@ -129,10 +130,11 @@ public class TinyModularThingsCore implements IGuiHandler
 		{
 			int meta = world.getBlockMetadata(x, y, z);
 			Block block = Block.blocksList[world.getBlockId(x, y, z)];
+			BlockPosition pos = new BlockPosition(world, x, y, z);
 			if(block != null && block instanceof IBlockGui)
 			{
 				IBlockGui gui = (IBlockGui)block;
-				return gui.getInventory(meta, player.inventory);
+				return gui.getInventory(meta, player.inventory, pos);
 			}
 		}
 		
@@ -221,10 +223,11 @@ public class TinyModularThingsCore implements IGuiHandler
 		{
 			int meta = world.getBlockMetadata(x, y, z);
 			Block block = Block.blocksList[world.getBlockId(x, y, z)];
+			BlockPosition pos = new BlockPosition(world, x, y, z);
 			if(block != null && block instanceof IBlockGui)
 			{
 				IBlockGui gui = (IBlockGui)block;
-				return gui.getGui(meta, player.inventory);
+				return gui.getGui(meta, player.inventory, pos);
 			}
 		}
 		return null;

@@ -1,5 +1,6 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
@@ -7,6 +8,7 @@ import java.util.Random;
 import mods.railcraft.common.items.firestone.ItemFirestoneRefined;
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -19,6 +21,7 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntityFurnace;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.blocks.BlockPosition;
@@ -84,9 +87,6 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	public void onTick()
 	{
 		super.onTick();
-		
-		
-		
 		if (!worldObj.isRemote)
 		{
 			if ((firstTime && worldObj.getWorldTime() % 5 == 0) || (!firstTime && worldObj.getWorldTime() % 50 == 0))
@@ -111,7 +111,6 @@ public class PressureFurnace extends TileFacing implements IInventory,
 					{
 						heat--;
 					}
-					
 				}
 				doWork();
 			}
@@ -130,9 +129,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 				updateBlock();
 				update = false;
 			}
-			
 		}
-		
 	}
 	
 	public void refuel()
@@ -318,7 +315,6 @@ public class PressureFurnace extends TileFacing implements IInventory,
 							}
 							
 							output.stackSize *= maxConsume;
-							
 							inv[1] = currentRecipe.consumeItem(inv[1], maxConsume);
 							inv[2] = currentRecipe.consumeItem(inv[2], maxConsume);
 							if (currentRecipe.useCombiner())
@@ -341,9 +337,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 				{
 					progress = 0;
 				}
-				
 			}
-			
 		}
 	}
 	
@@ -362,11 +356,8 @@ public class PressureFurnace extends TileFacing implements IInventory,
 					int posX = pos.getXCoord() + x;
 					int posY = pos.getYCoord() + y;
 					int posZ = pos.getZCoord() + z;
-					
 					BlockStack cuBlock = getBlockFromCoords(x, y, z);
-					
 					BlockStack realBlock = new BlockStack(worldObj, posX, posY, posZ);
-					
 					BlockStack item = new BlockStack(TinyBlocks.transportBlock, 1);
 					
 					if (realBlock.getBlock() != null && worldObj.isAirBlock(posX, posY, posZ))
@@ -380,7 +371,6 @@ public class PressureFurnace extends TileFacing implements IInventory,
 						{
 							inter++;
 						}
-						
 						match++;
 					}
 					else if (realBlock.getBlock() != null && cuBlock.getBlock() != null && cuBlock.getBlockID() == Block.cobblestone.blockID)
@@ -613,8 +603,6 @@ public class PressureFurnace extends TileFacing implements IInventory,
 			return engine.getTexture(TinyBlocks.machine, 1);
 		}
 		return engine.getTexture(TinyBlocks.machine, 0);
-		
-		
 	}
 	
 	@Override
@@ -623,6 +611,20 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		return valid;
 	}
 	
+	
+	
+	@Override
+	public float getBlockHardness()
+	{
+		return 6F;
+	}
+
+	@Override
+	public float getExplosionResistance(Entity par1)
+	{
+		return 10F;
+	}
+
 	@Override
 	public Container getInventory(InventoryPlayer par1)
 	{

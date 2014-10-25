@@ -12,19 +12,7 @@ public abstract class TileFacing extends AdvTile implements IRotation
 	public int facing = 0;
 	public int rotation = 0;
 	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
-	}
-	
-	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		readFromNBT(pkt.data);
-	}
+
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)

@@ -58,26 +58,17 @@ public class BlockSpmodOre extends SpmodBlockBase
 	}
 	
 	@Override
-	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
-	{
-		int id = world.getBlockId(x, y, z);
-		int meta = world.getBlockMetadata(x, y, z);
-		return new ItemStack(id, 1, meta);
-	}
-	
-	@Override
 	public int quantityDropped(int meta, int fortune, Random random)
 	{
 		return 1;
 	}
 	
 	@Override
-	public float getBlockHardness(World par1World, int par2, int par3, int par4)
+	public float getBlockHardness(int meta)
 	{
-		return 4.0F;
+		return 4F;
 	}
-	
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)

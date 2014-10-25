@@ -18,7 +18,7 @@ public class PlateHandler implements PlateInterface
 	public EntityCounter ids = new EntityCounter(0);
 	
 	@Override
-	public PlateInformation registerPlate(ResourceLocation texture, String ItemTexture, String identify, String displayName)
+	public PlateInformation registerPlate(ResourceLocation texture, String ItemTexture, String identify, String displayName, float hardness)
 	{
 		PlateInformation info = new PlateInformation();
 		info.setMetadata(ids.getCurrentID());
@@ -26,6 +26,7 @@ public class PlateHandler implements PlateInterface
 		info.setItem(APIItems.multiPlate);
 		info.setIdentity(identify);
 		info.setDisplayName(displayName);
+		info.setHardness(hardness);
 		plates.put(identify, info);
 		textures.put(identify, texture);
 		itemTextures.put(identify, ItemTexture);

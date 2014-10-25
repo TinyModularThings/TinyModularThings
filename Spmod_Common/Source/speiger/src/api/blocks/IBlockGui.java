@@ -1,4 +1,4 @@
-package speiger.src.tinymodularthings.common.interfaces;
+package speiger.src.api.blocks;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -9,7 +9,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public interface IBlockGui
 {
 	@SideOnly(Side.CLIENT)
-	public GuiContainer getGui(int meta, InventoryPlayer par1);
+	public GuiContainer getGui(int meta, InventoryPlayer par1, BlockPosition par2);
 	
-	public Container getInventory(int meta, InventoryPlayer par1);
+	public Container getInventory(int meta, InventoryPlayer par1, BlockPosition par2);
 }

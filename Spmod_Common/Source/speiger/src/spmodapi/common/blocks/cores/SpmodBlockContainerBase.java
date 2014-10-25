@@ -20,11 +20,13 @@ import net.minecraft.world.Explosion;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import net.minecraftforge.common.ForgeHooks;
 import speiger.src.api.blocks.BlockPosition;
 import speiger.src.api.util.WorldReading;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -69,6 +71,16 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	}
 	
 	
+
+	@Override
+	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
+	{
+		AdvTile tile = getAdvTile(par1World, par2, par3, par4);
+		if(tile != null)
+		{
+			tile.onBlockChange(this, par5);
+		}
+	}
 
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4)
@@ -166,13 +178,18 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		{
 			return tile.getIconFromSideAndMetadata(par5, 0);
 		}
-		return TextureEngine.getTextures().getIconSafe();
+		int meta = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
+		return getIcon(par5, meta);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
+		if(!this.hasTileEntity(par2))
+		{
+			return getTexture(TextureEngine.getTextures(), par2, par1);
+		}
 		return TileIconMaker.getIconMaker().getIconFromTile(this, par2, par1);
 	}
 
@@ -283,7 +300,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		{
 			if(tile.removeAbleByPlayer(par1EntityPlayer))
 			{
-				return tile.getHardnessForPlayer(par1EntityPlayer);
+				return ForgeHooks.blockStrength(this, par1EntityPlayer, par2World, par3, par4, par5);
 			}
 			else
 			{
@@ -362,7 +379,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 				}
 			}
 		}
-		return false;
+		return super.onBlockActivated(par1, par2, par3, par4, par5, par6, par7, par8, par9);
 	}
 
 	@Override
@@ -529,7 +546,6 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		{
 			drops.addAll(tileDrops.get(pos));
 		}
-		
 		return drops;
 	}
     
@@ -546,6 +562,11 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
     		return (AdvTile)tile;
     	}
     	return null;
+    }
+    
+    public Icon getTexture(TextureEngine par1, int meta, int side)
+    {
+    	return par1.getIconSafe();
     }
     
 }

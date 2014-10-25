@@ -7,7 +7,7 @@ import speiger.src.api.items.plates.PlateManager.PlateInformation;
 
 public interface PlateInterface
 {
-	public abstract PlateInformation registerPlate(ResourceLocation texture, String ItemTexture, String identify, String displayName);
+	public abstract PlateInformation registerPlate(ResourceLocation texture, String ItemTexture, String identify, String displayName, float hardness);
 	
 	public abstract void removePlate(String identifier);
 	

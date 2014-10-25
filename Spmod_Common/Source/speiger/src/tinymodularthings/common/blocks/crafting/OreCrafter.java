@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -46,6 +47,18 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 		return null;
 	}
 	
+	@Override
+	public float getBlockHardness()
+	{
+		return 3F;
+	}
+
+	@Override
+	public float getExplosionResistance(Entity par1)
+	{
+		return 5F;
+	}
+
 	public void oreUpdate()
 	{
 		if(inv[13] == null)

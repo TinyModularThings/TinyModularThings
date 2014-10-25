@@ -90,6 +90,13 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		return type;
 	}
 	
+	
+	@Override
+	public float getBlockHardness()
+	{
+		return 4F;
+	}
+
 	public boolean isInverted()
 	{
 		return isInverted;
@@ -329,6 +336,29 @@ public class TileLamp extends TileFacing implements IActionReceptor
 
 		}
 		return super.onClick(sneak, par1, par2, side);
+	}
+
+	@Override
+	public ArrayList<ItemStack> onDrop(int fortune)
+	{
+		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
+		if(isNoneColored)
+		{
+			ItemStack drop = new ItemStack(APIBlocks.hempLamp, 1, meta);
+			NBTTagList list = new NBTTagList();
+			for (EnumColor color : this.installedColor)
+			{
+				NBTTagInt cuColor = new NBTTagInt("Color", color.ordinal());
+				list.appendTag(cuColor);
+			}
+			drop.setTagInfo("Colors", list);
+			drops.add(drop);
+		}
+		else
+		{
+			drops.add(new ItemStack(APIBlocks.hempLamp, 1, meta));
+		}
+		return drops;
 	}
 
 	@Override

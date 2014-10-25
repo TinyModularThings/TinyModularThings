@@ -14,6 +14,8 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.api.util.SpmodMod;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
@@ -108,6 +110,8 @@ public class SpmodBlockBase extends Block implements ITextureRequester
 		}
 		return this;
 	}
+	
+	
 		
 	public void registerTextures(TextureEngine par1)
 	{
@@ -115,6 +119,41 @@ public class SpmodBlockBase extends Block implements ITextureRequester
 	}
 	
 	
+
+	@Override
+	public boolean onBlockActivated(World par1, int par2, int par3, int par4, EntityPlayer par5, int par6, float par7, float par8, float par9)
+	{
+		int meta = par1.getBlockMetadata(par2, par3, par4);
+		if(par5.isSneaking() && !this.ignoreRightClick[meta])
+		{
+			return false;
+		}
+		if(!par1.isRemote)
+		{
+			int guiID = getGuiIDForMeta(meta);
+			if(guiID != -1)
+			{
+				SpmodMod mod = getModInstance(meta);
+				if(mod == null)
+				{
+					mod = SpmodAPI.instance;
+				}
+				par5.openGui(mod, guiID, par1, par2, par3, par4);
+				return true;
+			}
+		}
+		return super.onBlockActivated(par1, par2, par3, par4, par5, par6, par7, par8, par9);
+	}
+	
+	public int getGuiIDForMeta(int meta)
+	{
+		return -1;
+	}
+	
+	public SpmodMod getModInstance(int meta)
+	{
+		return null;
+	}
 
 	@Override
 	public boolean isBlockNormalCube(World world, int x, int y, int z)

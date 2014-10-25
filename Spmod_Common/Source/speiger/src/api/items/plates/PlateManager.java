@@ -14,10 +14,21 @@ public class PlateManager
 		public int metadata;
 		public String identity;
 		public String displayName;
+		public float hardness;
 		
 		public void setDisplayName(String displayName)
 		{
 			this.displayName = displayName;
+		}
+		
+		public float getHardness()
+		{
+			return hardness;
+		}
+		
+		public void setHardness(float hardness)
+		{
+			this.hardness = hardness;
 		}
 		
 		public String getDisplayName()

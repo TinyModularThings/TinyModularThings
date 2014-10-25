@@ -32,6 +32,7 @@ public class BlockStorage extends SpmodBlockContainerBase
 		super(par1, Material.iron);
 		setHardness(4.0F);
 		setCreativeTab(CreativeTabs.tabFood);
+		this.setIgnoreRighClick();
 		MinecraftForge.setBlockHarvestLevel(this, 0, "pickaxe", 0);
 		MinecraftForge.setBlockHarvestLevel(this, 0, "axe", 0);
 		MinecraftForge.setBlockHarvestLevel(this, 1, "pickaxe", 0);
@@ -50,34 +51,21 @@ public class BlockStorage extends SpmodBlockContainerBase
 	}
 	
 	@Override
-	public TileEntity createNewTileEntity(World world)
+	public boolean hasTileDrops(int meta)
 	{
-		return null;
+		return true;
 	}
-	
+
 	@Override
 	public TileEntity createTileEntity(World world, int metadata)
 	{
-		try
+		switch (metadata)
 		{
-			switch (metadata)
-			{
-				case 0:
-					return new TinyChest();
-				case 1:
-					return new TinyTank();
-				case 2:
-					return new AdvTinyChest();
-				case 3:
-					return new AdvTinyTank();
-				default:
-					return null;
-			}
-		}
-		catch (Exception e)
-		{
-			TinyModularThings.log.print("Could not Load TileEntity for meta: " + metadata + " Please call the ModAuthor to let it fix");
-			return null;
+			case 0: return new TinyChest();
+			case 1: return new TinyTank();
+			case 2: return new AdvTinyChest();
+			case 3: return new AdvTinyTank();
+			default: return null;
 		}
 	}
 	

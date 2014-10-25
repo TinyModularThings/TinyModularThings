@@ -2,7 +2,10 @@ package speiger.src.spmodapi.common.enums;
 
 public enum EnumGuiIDs
 {
-	WorkBench(10), Tiles(11), Commands(12), Items(13);
+	BlockGui(10),
+	Tiles(11),
+	Commands(12),
+	Items(13);
 	
 	int id;
 	

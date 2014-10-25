@@ -309,7 +309,6 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 				updateBlock();
 				return true;
 			}
-			
 		}
 		return false;
 	}
@@ -335,20 +334,6 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 	}
 	
 	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
-	}
-	
-	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		readFromNBT(pkt.data);
-	}
-	
-	@Override
 	public void onTick()
 	{
 		super.onTick();
@@ -365,6 +350,7 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 			if (worldObj.getWorldTime() % 20 == 0)
 			{
 				updateRedstone();
+				this.updateNeighbors(true);
 			}
 		}
 	}
@@ -440,7 +426,7 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
-		return null;
+		return Block.bedrock.getIcon(0, 0);
 	}
 	
 	@Override

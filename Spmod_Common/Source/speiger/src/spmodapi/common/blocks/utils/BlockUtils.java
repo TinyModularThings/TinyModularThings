@@ -5,84 +5,64 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.ai.EntityAITaskEntry;
 import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityMob;
-import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
+import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
+import speiger.src.api.blocks.BlockPosition;
 import speiger.src.api.blocks.BlockStack;
-import speiger.src.api.util.WorldReading;
-import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.api.blocks.IBlockGui;
 import speiger.src.spmodapi.client.render.utils.RenderUtilsBlock;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.entity.EntityOverridenEnderman;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
-import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BlockUtils extends SpmodBlockContainerBase
+public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 {
 	
 	public BlockUtils(int par1)
 	{
 		super(par1, Material.rock);
 		this.setCreativeTab(APIUtils.tabCrafing);
-		this.setResistance(4F);
-		this.setHardness(4.0F);
 	}
 	
 	@Override
-	public float getBlockHardness(World par1World, int par2, int par3, int par4)
+	public float getBlockHardness(int meta)
 	{
-		int meta = par1World.getBlockMetadata(par2, par3, par4);
-		if (meta == 0)
+		switch(meta)
 		{
-			return 3F;
+			case 0: return 3F;
+			case 3: return 1F;
 		}
-		else if (meta == 1)
-		{
-			return 5F;
-		}
-		else if (meta == 3)
-		{
-			return 1F;
-		}
-		return super.getBlockHardness(par1World, par2, par3, par4);
+		return super.getBlockHardness(meta);
 	}
-	
+
 	@Override
-	public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+	public float getBlockResistance(Entity par1, int meta)
 	{
-		int meta = world.getBlockMetadata(x, y, z);
-		if (meta == 0)
+		switch(meta)
 		{
-			return 8F;
+			case 0: return 8F;
+			case 3: return 1F;
 		}
-		else if (meta == 1)
-		{
-			return 3F;
-		}
-		else if (meta == 3)
-		{
-			return 1F;
-		}
-		return super.getExplosionResistance(par1Entity, world, x, y, z, explosionX, explosionY, explosionZ);
+		return super.getBlockResistance(par1, meta);
 	}
 	
 	@Override
@@ -94,18 +74,10 @@ public class BlockUtils extends SpmodBlockContainerBase
 	@Override
 	public TileEntity createTileEntity(World world, int meta)
 	{
-		try
+		switch (meta)
 		{
-			switch (meta)
-			{
-				case 1:
-					return new ExpStorage();
-				case 2:
-					return new MobMachine();
-			}
-		}
-		catch (Exception e)
-		{
+			case 1: return new ExpStorage();
+			case 2: return new MobMachine();
 		}
 		return null;
 	}
@@ -114,13 +86,6 @@ public class BlockUtils extends SpmodBlockContainerBase
 	public int getRenderType()
 	{
 		return RenderUtilsBlock.renderID;
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
-	{
-		
 	}
 	
 	@Override
@@ -142,117 +107,35 @@ public class BlockUtils extends SpmodBlockContainerBase
 	}
 	
 	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5, ItemStack par6ItemStack)
+	public int getGuiIDForMeta(int meta)
 	{
-		int facing = 0;
-		int rotation = 0;
-		int var7 = MathHelper.floor_double(par5.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-		int var8 = Math.round(par5.rotationPitch);
-		if (var8 > 57)
+		switch(meta)
 		{
-			rotation = ForgeDirection.UP.ordinal();
+			case 0: return EnumGuiIDs.BlockGui.getID();
 		}
-		else if (var8 < -57)
-		{
-			rotation = ForgeDirection.DOWN.ordinal();
-		}
-		
-		if (var7 == 0)
-		{
-			facing = ForgeDirection.NORTH.ordinal();
-		}
-		else if (var7 == 1)
-		{
-			facing = ForgeDirection.EAST.ordinal();
-		}
-		else if (var7 == 2)
-		{
-			facing = ForgeDirection.SOUTH.ordinal();
-		}
-		else if (var7 == 3)
-		{
-			facing = ForgeDirection.WEST.ordinal();
-		}
-		
-		TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-		if (tile != null && tile instanceof AdvTile)
-		{
-			((AdvTile) tile).onAdvPlacing(rotation, facing);
-		}
+		return super.getGuiIDForMeta(meta);
 	}
-	
-	@Override
-	public boolean onBlockActivated(World par1World, int par2, int par3, int par4, EntityPlayer par5EntityPlayer, int par6, float par7, float par8, float par9)
-	{
-		if (par5EntityPlayer.isSneaking())
-		{
-			return false;
-		}
-		if (!par1World.isRemote)
-		{
 
-			int meta = par1World.getBlockMetadata(par2, par3, par4);
-			if (meta == 0)
-			{
-				par5EntityPlayer.openGui(SpmodAPI.instance, EnumGuiIDs.WorkBench.getID(), par1World, par2, par3, par4);
-				return true;
-			}
-			else
-			{
-				TileEntity tile = par1World.getBlockTileEntity(par2, par3, par4);
-				if (tile != null && tile instanceof AdvTile)
-				{
-					return ((AdvTile) tile).onActivated(par5EntityPlayer);
-				}
-			}
-		}
-		return true;
-	}
-	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public int getLightOpacity(int meta)
 	{
-		Icon[] texture = TextureEngine.getIcon(this, par2);
-		switch (par2)
+		switch(meta)
 		{
-			case 0:
-				return par1 < 2 ? texture[0] : texture[1];
-			case 1:
-				return TileIconMaker.getIconFromTile(this, ExpStorage.class, par1);
-			case 2:
-				return TileIconMaker.getIconFromTile(this, MobMachine.class, par1);
-			case 3:
-				return Block.glass.getBlockTextureFromSide(0);
-			default:
-				return null;
+			case 3: return 255;
 		}
+		return super.getLightOpacity(meta);
 	}
-	
+
 	@Override
-	@SideOnly(Side.CLIENT)
-	public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
+	public Icon getTexture(TextureEngine par1, int meta, int side)
 	{
-		int meta = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
-		Icon[] texture = TextureEngine.getIcon(this, meta);
-		AdvTile tile = WorldReading.getAdvTile(par1iBlockAccess, par2, par3, par4);
-		switch (meta)
+		switch(meta)
 		{
-			case 0:
-				return par5 < 2 ? texture[0] : texture[1];
-			case 1:
-			case 2:
-				return tile.getIconFromSideAndMetadata(par5, 1);
-			case 3:
-				return Block.glass.getBlockTextureFromSide(0);
-			default:
-				return null;
+			case 0: return par1.getTexture(this, side < 2 ? 0 : 1);
+			case 3: return Block.glass.getIcon(0, 0);
 		}
+		return super.getTexture(par1, meta, side);
 	}
-	
-	
-	
-	
 	
 	@Override
 	public void registerTextures(TextureEngine par1)
@@ -304,22 +187,10 @@ public class BlockUtils extends SpmodBlockContainerBase
 					}
 				}
 			}
-			
 			notifyNeighbors(world, i, j, k);
 			world.scheduleBlockUpdate(i, j, k, blockID, tickRate());
 		}
 		
-	}
-	
-	@Override
-	public int getLightOpacity(World world, int x, int y, int z)
-	{
-		int meta = world.getBlockMetadata(x, y, z);
-		if (meta == 3)
-		{
-			return 0;
-		}
-		return super.getLightOpacity(world, x, y, z);
 	}
 	
 	public void onBlockDestroyedByPlayer(World world, int i, int j, int k, int l)
@@ -362,5 +233,25 @@ public class BlockUtils extends SpmodBlockContainerBase
 		}
 		return false;
 	}
-	
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public GuiContainer getGui(int meta, InventoryPlayer par1, BlockPosition par2)
+	{
+		if(meta == 0)
+		{
+			return new GuiCrafting(par1, par2.getWorld(), par2.getXCoord(), par2.getYCoord(), par2.getZCoord());
+		}
+		return null;
+	}
+
+	@Override
+	public Container getInventory(int meta, InventoryPlayer par1, BlockPosition par2)
+	{
+		if(meta == 0)
+		{
+			return new InventoryCrafter(par1, par2.getWorld(), par2.getXCoord(), par2.getYCoord(), par2.getZCoord());
+		}
+		return null;
+	}
 }

@@ -2,6 +2,7 @@ package speiger.src.tinymodularthings.common.blocks.transport;
 
 import java.io.DataInput;
 import java.io.IOException;
+import java.util.ArrayList;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.item.EntityItem;
@@ -119,11 +120,16 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	public void onBreaking()
 	{
 		this.removeInventory();
-		ItemStack stack = ItemInterfaceBlock.addBlockToInterface(new ItemStack(TinyItems.interfaceBlock, 1, 0), this.getBlock());
-		EntityItem item = new EntityItem(worldObj, xCoord, yCoord, zCoord, stack);
-		worldObj.spawnEntityInWorld(item);
 	}
 	
+	@Override
+	public ArrayList<ItemStack> onDrop(int fortune)
+	{
+		ArrayList<ItemStack> drop = new ArrayList<ItemStack>();
+		drop.add(ItemInterfaceBlock.addBlockToInterface(new ItemStack(TinyItems.interfaceBlock, 1, 0), this.getBlock()));
+		return drop;
+	}
+
 	public void updateInventory()
 	{
 		if ((x == 0 && y == 0 && z == 0) || !doesExsist() || (doesExsist() && target == null))
@@ -407,20 +413,6 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 		par1.setInteger("Slot", choosenSlot);
 		par1.setBoolean("Active", active);
 		par1.setBoolean("Changed", changed);
-	}
-	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
-	}
-	
-	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		readFromNBT(pkt.data);
 	}
 	
 	@Override

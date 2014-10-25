@@ -266,18 +266,4 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 		par1.setIntArray("Coords", new int[] { x, y, z });
 	}
 	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
-	}
-	
-	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		readFromNBT(pkt.data);
-	}
-	
 }

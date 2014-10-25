@@ -4,6 +4,7 @@ import java.io.DataInput;
 import java.util.ArrayList;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -70,6 +71,18 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 	public boolean hasContainer()
 	{
 		return true;
+	}
+	
+	@Override
+	public float getBlockHardness()
+	{
+		return 3.5F;
+	}
+	
+	@Override
+	public float getExplosionResistance(Entity par1)
+	{
+		return 6F;
 	}
 	
 	@Override

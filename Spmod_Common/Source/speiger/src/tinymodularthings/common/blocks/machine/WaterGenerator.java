@@ -1,5 +1,6 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
+import net.minecraft.entity.Entity;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
@@ -54,10 +55,21 @@ public class WaterGenerator extends AdvTile implements IFluidHandler,
 		}
 	}
 	
+	@Override
+	public float getBlockHardness()
+	{
+		return 7F;
+	}
+
+	@Override
+	public float getExplosionResistance(Entity par1)
+	{
+		return 20F;
+	}
+
 	public void sendWater()
 	{
 		FluidStack toSend = tank.drain(50000, false);
-		
 		if (toSend != null)
 		{
 			FluidStack copySend = toSend.copy();

@@ -16,6 +16,10 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.INetworkManager;
+import net.minecraft.network.packet.Packet;
+import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
@@ -87,7 +91,21 @@ public abstract class AdvTile extends TileEntity
 			notifyBlocksOfNeighborChange(side);
 		}
 	}
+
+	@Override
+	public Packet getDescriptionPacket()
+	{
+		NBTTagCompound nbt = new NBTTagCompound();
+		writeToNBT(nbt);
+		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
+	}
 	
+	@Override
+	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
+	{
+		readFromNBT(pkt.data);
+	}
+
 	protected void notifyBlocksOfNeighborChange(ForgeDirection side)
 	{
 		worldObj.notifyBlocksOfNeighborChange(xCoord + side.offsetX, yCoord + side.offsetY, zCoord + side.offsetZ, getBlockType().blockID);
@@ -243,7 +261,17 @@ public abstract class AdvTile extends TileEntity
 	
 	public ArrayList<ItemStack> onDrop(int fortune)
 	{
-		return new ArrayList<ItemStack>();
+		ArrayList<ItemStack> drop = new ArrayList<ItemStack>();
+		if(dropNormalBlock())
+		{
+			drop.add(new ItemStack(this.getBlockType(), 1, this.getBlockMetadata()));
+		}
+		return drop;
+	}
+	
+	public boolean dropNormalBlock()
+	{
+		return false;
 	}
 	
 	public boolean isSilkHarvestable(EntityPlayer player)
@@ -372,6 +400,11 @@ public abstract class AdvTile extends TileEntity
 	}
 	
 	public void onFallen(Entity par5Entity)
+	{
+		
+	}
+
+	public void onBlockChange(Block par1, int par2)
 	{
 		
 	}

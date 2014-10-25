@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.items.armor;
 
 import java.util.List;
 
+import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
@@ -52,6 +53,14 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 		return getDisplayName(par1ItemStack, SpmodAPI.instance);
 	}
 	
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void registerIcons(IconRegister par1IconRegister)
+	{
+	}
+
 	@Override
 	public String getArmorTexture(ItemStack stack, Entity entity, int slot, String type)
 	{
