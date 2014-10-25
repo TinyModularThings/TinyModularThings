@@ -57,7 +57,11 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 		return tankMode;
 	}
 	
-	
+	@Override
+	public boolean dropNormalBlock()
+	{
+		return false;
+	}
 	
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
@@ -367,175 +371,182 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 		return false;
 	}
 	
+	
+	
 	@Override
-	public boolean onClick(boolean sneak, EntityPlayer par1, Block par2, int side)
+	public boolean onActivated(EntityPlayer par1)
 	{
-		if(!worldObj.isRemote)
+		boolean sneak = par1.isSneaking();
+		if (sneak)
 		{
-			if (sneak)
+			ItemStack cu = par1.getCurrentEquippedItem();
+			if (cu == null)
 			{
-				ItemStack cu = par1.getCurrentEquippedItem();
-				if (cu == null)
+				this.renderLiquid++;
+				if (renderLiquid > 2)
 				{
-					this.renderLiquid++;
-					if (renderLiquid > 2)
+					renderLiquid = 0;
+				}
+				this.sendMessage(renderLiquid, par1);
+				return true;
+			}
+			else
+			{
+				if (cu.getItem() instanceof IToolWrench)
+				{
+					IToolWrench wrench = (IToolWrench) cu.getItem();
+					if (wrench.canWrench(par1, xCoord, yCoord, zCoord))
 					{
-						renderLiquid = 0;
+						this.wrench = true;
+						worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+						wrench.wrenchUsed(par1, xCoord, yCoord, zCoord);
+						return true;
 					}
-					this.sendMessage(renderLiquid, par1);
-					return true;
+				}
+			}
+			
+		}
+		else
+		{
+			ItemStack current = par1.getCurrentEquippedItem();
+			if (current != null)
+			{
+				if (FluidContainerRegistry.isContainer(current) || FluidContainerRegistry.isBucket(current))
+				{
+					FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(current);
+					
+					if (liquid != null)
+					{
+						int qty = fill(ForgeDirection.UNKNOWN, liquid, true);
+						
+						if (qty != 0 && !par1.capabilities.isCreativeMode)
+						{
+							par1.inventory.setInventorySlotContents(par1.inventory.currentItem, consumeItem(current));
+						}
+						
+						return true;
+						
+					}
+					else
+					{
+						
+						FluidStack available = getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;
+						if (available != null)
+						{
+							ItemStack filled = FluidContainerRegistry.fillFluidContainer(available, current);
+							
+							liquid = FluidContainerRegistry.getFluidForFilledItem(filled);
+							
+							if (liquid != null)
+							{
+								if (!par1.capabilities.isCreativeMode)
+								{
+									if (current.stackSize > 1)
+									{
+										if (!par1.inventory.addItemStackToInventory(filled))
+										{
+											return false;
+										}
+										else
+										{
+											par1.inventory.setInventorySlotContents(par1.inventory.currentItem, consumeItem(current));
+										}
+									}
+									else
+									{
+										par1.inventory.setInventorySlotContents(par1.inventory.currentItem, consumeItem(current));
+										par1.inventory.setInventorySlotContents(par1.inventory.currentItem, filled);
+									}
+								}
+								drain(ForgeDirection.UNKNOWN, liquid.amount, true);
+								return true;
+							}
+						}
+					}
 				}
 				else
 				{
-					if (cu.getItem() instanceof IToolWrench)
+					try
 					{
-						IToolWrench wrench = (IToolWrench) cu.getItem();
-						if (wrench.canWrench(par1, xCoord, yCoord, zCoord))
+						if (!this.BCTank && current.itemID == BuildCraftFactory.tankBlock.blockID)
 						{
-							this.wrench = true;
-							worldObj.setBlockToAir(xCoord, yCoord, zCoord);
-							wrench.wrenchUsed(par1, xCoord, yCoord, zCoord);
+							TinyTank bottom = this.getBottomTank();
+							TinyTank top = this.getHighestTank();
+							this.BCTank = true;
+							par1.sendChatToPlayer(LanguageRegister.createChatMessage("Inited Tank to BuildCraft Compatiblity"));
+							if (bottom.hasBCTank(false) && !bottom.BCTank)
+							{
+								par1.sendChatToPlayer(LanguageRegister.createChatMessage("Found at the Bottom Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
+							}
+							
+							if (top.hasBCTank(true) && !top.BCTank)
+							{
+								par1.sendChatToPlayer(LanguageRegister.createChatMessage("Found at the Top Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
+							}
+							
 							return true;
 						}
+					}
+					catch (Exception e)
+					{
 					}
 				}
 				
 			}
 			else
 			{
-				ItemStack current = par1.getCurrentEquippedItem();
-				if (current != null)
+				String name = "Nothing";
+				int amount = 0;
+				
+				if (tank.getFluid() != null && tank.getFluid().amount > 0 && tank.getFluid().getFluid() != null)
 				{
-					if (FluidContainerRegistry.isContainer(current) || FluidContainerRegistry.isBucket(current))
+					Fluid fluid = tank.getFluid().getFluid();
+					if (fluid.getBlockID() != -1)
 					{
-						FluidStack liquid = FluidContainerRegistry.getFluidForFilledItem(current);
+						BlockStack stack = new BlockStack(fluid.getBlockID());
+						name = stack.getBlockDisplayName();
 						
-						if (liquid != null)
-						{
-							int qty = fill(ForgeDirection.UNKNOWN, liquid, true);
-							
-							if (qty != 0 && !par1.capabilities.isCreativeMode)
-							{
-								par1.inventory.setInventorySlotContents(par1.inventory.currentItem, consumeItem(current));
-							}
-							
-							return true;
-							
-						}
-						else
-						{
-							
-							FluidStack available = getTankInfo(ForgeDirection.UNKNOWN)[0].fluid;
-							if (available != null)
-							{
-								ItemStack filled = FluidContainerRegistry.fillFluidContainer(available, current);
-								
-								liquid = FluidContainerRegistry.getFluidForFilledItem(filled);
-								
-								if (liquid != null)
-								{
-									if (!par1.capabilities.isCreativeMode)
-									{
-										if (current.stackSize > 1)
-										{
-											if (!par1.inventory.addItemStackToInventory(filled))
-											{
-												return false;
-											}
-											else
-											{
-												par1.inventory.setInventorySlotContents(par1.inventory.currentItem, consumeItem(current));
-											}
-										}
-										else
-										{
-											par1.inventory.setInventorySlotContents(par1.inventory.currentItem, consumeItem(current));
-											par1.inventory.setInventorySlotContents(par1.inventory.currentItem, filled);
-										}
-									}
-									drain(ForgeDirection.UNKNOWN, liquid.amount, true);
-									return true;
-								}
-							}
-						}
+					}
+					else if (fluid.getBlockID() == -1 && !fluid.getLocalizedName().startsWith("tile"))
+					{
+						name = fluid.getLocalizedName();
 					}
 					else
 					{
-						try
-						{
-							if (!this.BCTank && current.itemID == BuildCraftFactory.tankBlock.blockID)
-							{
-								TinyTank bottom = this.getBottomTank();
-								TinyTank top = this.getHighestTank();
-								this.BCTank = true;
-								par1.sendChatToPlayer(LanguageRegister.createChatMessage("Inited Tank to BuildCraft Compatiblity"));
-								if (bottom.hasBCTank(false) && !bottom.BCTank)
-								{
-									par1.sendChatToPlayer(LanguageRegister.createChatMessage("Found at the Bottom Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
-								}
-								
-								if (top.hasBCTank(true) && !top.BCTank)
-								{
-									par1.sendChatToPlayer(LanguageRegister.createChatMessage("Found at the Top Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
-								}
-								
-								return true;
-							}
-						}
-						catch (Exception e)
-						{
-						}
+						name = "Unknowen Fluid";
 					}
+					amount = tank.getFluid().amount;
+					
+				}
+				
+				if (name.equals("Nothing"))
+				{
+					par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(new InfoStack(), "tank.stored.nothing", TinyModularThings.instance)));
+				}
+				else if (name.equals("Unknowen Fluid"))
+				{
+					String tank = LanguageRegister.getLanguageName(new InfoStack(), "tank.stored", TinyModularThings.instance);
+					par1.sendChatToPlayer(LanguageRegister.createChatMessage(tank + ": " + LangProxy.UFluid(TinyModularThings.instance) + " " + LangProxy.getAmount(TinyModularThings.instance) + ": " + amount + "mB / " + this.tank.getCapacity() + "mB"));
 					
 				}
 				else
 				{
-					String name = "Nothing";
-					int amount = 0;
-					
-					if (tank.getFluid() != null && tank.getFluid().amount > 0 && tank.getFluid().getFluid() != null)
-					{
-						Fluid fluid = tank.getFluid().getFluid();
-						if (fluid.getBlockID() != -1)
-						{
-							BlockStack stack = new BlockStack(fluid.getBlockID());
-							name = stack.getBlockDisplayName();
-							
-						}
-						else if (fluid.getBlockID() == -1 && !fluid.getLocalizedName().startsWith("tile"))
-						{
-							name = fluid.getLocalizedName();
-						}
-						else
-						{
-							name = "Unknowen Fluid";
-						}
-						amount = tank.getFluid().amount;
-						
-					}
-					
-					if (name.equals("Nothing"))
-					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(new InfoStack(), "tank.stored.nothing", TinyModularThings.instance)));
-					}
-					else if (name.equals("Unknowen Fluid"))
-					{
-						String tank = LanguageRegister.getLanguageName(new InfoStack(), "tank.stored", TinyModularThings.instance);
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage(tank + ": " + LangProxy.UFluid(TinyModularThings.instance) + " " + LangProxy.getAmount(TinyModularThings.instance) + ": " + amount + "mB / " + this.tank.getCapacity() + "mB"));
-						
-					}
-					else
-					{
-						String tank = LanguageRegister.getLanguageName(new InfoStack(), "tank.stored", TinyModularThings.instance);
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage(tank + ": " + name + " " + LangProxy.getAmount(TinyModularThings.instance) + ": " + amount + "mB / " + this.tank.getCapacity() + "mB"));
-					}
+					String tank = LanguageRegister.getLanguageName(new InfoStack(), "tank.stored", TinyModularThings.instance);
+					par1.sendChatToPlayer(LanguageRegister.createChatMessage(tank + ": " + name + " " + LangProxy.getAmount(TinyModularThings.instance) + ": " + amount + "mB / " + this.tank.getCapacity() + "mB"));
 				}
 			}
 		}
-			
+		return false;
+	}
+
+	
+	
+	@Override
+	public boolean hasContainer()
+	{
 		return true;
 	}
-	
+
 	public void sendMessage(int id, EntityPlayer par1)
 	{
 		switch (id)

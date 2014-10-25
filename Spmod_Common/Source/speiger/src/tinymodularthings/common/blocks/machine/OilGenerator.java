@@ -126,6 +126,8 @@ public class OilGenerator extends AdvTile implements ISidedInventory, INBTRecive
 	{
 		return new int[]{0};
 	}
+
+
 	
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemstack, int j)

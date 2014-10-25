@@ -31,6 +31,7 @@ import speiger.src.tinymodularthings.common.upgrades.hoppers.all.FilterUpgrade;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
 import buildcraft.transport.TileGenericPipe;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -51,7 +52,6 @@ public class TinyModularThingsCore implements IGuiHandler
 	public Object getServerGuiElement(int ID, EntityPlayer player, World world, int x, int y, int z)
 	{
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		
 		if (ID == EnumIDs.ADVTiles.getId())
 		{
 			if (tile instanceof AdvTile)
@@ -130,10 +130,11 @@ public class TinyModularThingsCore implements IGuiHandler
 		{
 			int meta = world.getBlockMetadata(x, y, z);
 			Block block = Block.blocksList[world.getBlockId(x, y, z)];
-			BlockPosition pos = new BlockPosition(world, x, y, z);
 			if(block != null && block instanceof IBlockGui)
 			{
 				IBlockGui gui = (IBlockGui)block;
+				
+				BlockPosition pos = new BlockPosition(world, x, y, z);
 				return gui.getInventory(meta, player.inventory, pos);
 			}
 		}

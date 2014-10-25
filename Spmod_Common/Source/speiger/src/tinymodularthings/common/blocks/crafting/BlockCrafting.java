@@ -6,18 +6,18 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import speiger.src.api.blocks.BlockPosition;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.blocks.IBlockGui;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
-import speiger.src.spmodapi.common.enums.EnumGuiIDs;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.crafting.GuiAdvCrafting;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
@@ -33,6 +33,8 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 		this.setCreativeTab(CreativeTabs.tabFood);
 		this.setHardness(2F);
 		this.setResistance(4F);
+		this.dissableDrops(1);
+		this.dissableDrops(2);
 	}
 	
 	@Override
@@ -46,6 +48,27 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 	}
 
 	@Override
+	public Icon getTexture(TextureEngine par1, int meta, int side)
+	{
+		switch(meta)
+		{
+			case 0:
+			case 2: return side == 0 ? par1.getTexture(this, 0) : side == 1 ? par1.getTexture(this, 1) : par1.getTexture(this, 2);
+		}
+		return super.getTexture(par1, meta, side);
+	}
+	
+	@Override
+	public boolean hasTileEntity(int metadata)
+	{
+		switch(metadata)
+		{
+			case 0: return false;
+		}
+		return super.hasTileEntity(metadata);
+	}
+
+	@Override
 	public float getBlockResistance(Entity par1, int meta)
 	{
 		switch(meta)
@@ -56,11 +79,20 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 	}
 
 	@Override
+	public void registerTextures(TextureEngine par1)
+	{
+		par1.setCurrentPath("crafting");
+		par1.registerTexture(new BlockStack(this, 0), "craftingTableBottom", "craftingTableTop", "craftingTableSide");
+		par1.removePath();
+	}
+	
+	@Override
 	public TileEntity createTileEntity(World world, int meta)
 	{
-		if(meta == 1)
+		switch(meta)
 		{
-			return new OreCrafter();
+			case 1: return new OreCrafter();
+			case 2: return new CraftingStation();
 		}
 		return null;
 	}
@@ -70,7 +102,7 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 	{
 		switch(meta)
 		{
-			case 0: return EnumGuiIDs.BlockGui.getID();
+			case 0: return EnumIDs.BlockGui.getId();
 		}
 		return super.getGuiIDForMeta(meta);
 	}
@@ -89,7 +121,7 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		for(int i = 0;i<2;i++)
+		for(int i = 0;i<3;i++)
 		{
 			par3List.add(new ItemStack(par1, 1, i));
 		}
@@ -104,6 +136,17 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 			return new GuiAdvCrafting(this, meta, par1, par2);
 		}
 		return null;
+	}
+
+	@Override
+	public boolean hasTileDrops(int meta)
+	{
+		switch(meta)
+		{
+			case 1:
+			case 2: return true;
+		}
+		return super.hasTileDrops(meta);
 	}
 
 	@Override

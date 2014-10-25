@@ -837,20 +837,6 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 	}
 	
 	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
-	}
-	
-	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		this.readFromNBT(pkt.data);
-	}
-	
-	@Override
 	public void onReciveGuiInfo(int key, int val)
 	{
 		switch (key)
@@ -878,6 +864,22 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 		}
 	}
 	
+	
+	
+	@Override
+	public ArrayList<ItemStack> onDrop(int fortune)
+	{
+		ArrayList<ItemStack> drop = super.onDrop(fortune);
+		for(ItemStack stack : this.inv)
+		{
+			if(stack != null)
+			{
+				drop.add(stack);
+			}
+		}
+		return drop;
+	}
+
 	@Override
 	public void onSendingGuiInfo(Container par1, ICrafting par2)
 	{
@@ -889,12 +891,6 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 	public String identifier()
 	{
 		return null;
-	}
-	
-	@Override
-	public ItemStack pickBlock(MovingObjectPosition target)
-	{
-		return new ItemStack(TinyBlocks.machine, 1, this.worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
 	}
 	
 	@Override

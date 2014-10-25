@@ -46,7 +46,11 @@ public class TinyChest extends TileFacing implements IInventory,
 		return null;
 	}
 	
-	
+	@Override
+	public boolean dropNormalBlock()
+	{
+		return false;
+	}
 	
 	@Override
 	public boolean SolidOnSide(ForgeDirection side)

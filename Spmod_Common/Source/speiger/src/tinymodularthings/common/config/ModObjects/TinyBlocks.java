@@ -1,36 +1,37 @@
 package speiger.src.tinymodularthings.common.config.ModObjects;
 
 import net.minecraft.block.Block;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.tinymodularthings.common.blocks.ores.BlockMultiMineOre;
 
 public class TinyBlocks
 {
 	// Ores
-	public static Block ores;
-	public static BlockMultiMineOre bauxitOre;
+	public static SpmodBlockBase ores;
+	public static SpmodBlockBase bauxitOre;
 	
 	// Pipes
-	public static Block smallPipe;
-	public static Block normalPipe;
-	public static Block mediumPipe;
-	public static Block bigPipe;
-	public static Block biggerPipe;
-	public static Block largePipe;
-	public static Block hugePipe;
+	public static SpmodBlockBase smallPipe;
+	public static SpmodBlockBase normalPipe;
+	public static SpmodBlockBase mediumPipe;
+	public static SpmodBlockBase bigPipe;
+	public static SpmodBlockBase biggerPipe;
+	public static SpmodBlockBase largePipe;
+	public static SpmodBlockBase hugePipe;
 	
 	// BasicMachines
-	public static Block machine;
+	public static SpmodBlockBase machine;
 	
 	// Storage
-	public static Block storageBlock;
+	public static SpmodBlockBase storageBlock;
 	
 	//Crafting
-	public static Block craftingBlock;
+	public static SpmodBlockBase craftingBlock;
 	
 	// Logic
-	public static Block logicBlock;
+	public static SpmodBlockBase logicBlock;
 	
 	// Transport
-	public static Block transportBlock;
+	public static SpmodBlockBase transportBlock;
 	
 }

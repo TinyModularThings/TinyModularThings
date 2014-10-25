@@ -18,6 +18,7 @@ import speiger.src.api.util.SpmodMod;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -142,7 +143,7 @@ public class SpmodBlockBase extends Block implements ITextureRequester
 				return true;
 			}
 		}
-		return super.onBlockActivated(par1, par2, par3, par4, par5, par6, par7, par8, par9);
+		return true;
 	}
 	
 	public int getGuiIDForMeta(int meta)

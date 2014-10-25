@@ -264,14 +264,14 @@ public abstract class AdvTile extends TileEntity
 		ArrayList<ItemStack> drop = new ArrayList<ItemStack>();
 		if(dropNormalBlock())
 		{
-			drop.add(new ItemStack(this.getBlockType(), 1, this.getBlockMetadata()));
+			drop.add(new ItemStack(this.getBlockType(), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord)));
 		}
 		return drop;
 	}
 	
 	public boolean dropNormalBlock()
 	{
-		return false;
+		return true;
 	}
 	
 	public boolean isSilkHarvestable(EntityPlayer player)

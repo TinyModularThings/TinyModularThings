@@ -176,7 +176,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		AdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
 		if(tile != null)
 		{
-			return tile.getIconFromSideAndMetadata(par5, 0);
+			return TextureEngine.getTextures().getIconSafe(tile.getIconFromSideAndMetadata(par5, 0));
 		}
 		int meta = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
 		return getIcon(par5, meta);
@@ -372,7 +372,6 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 				{
 					return true;
 				}
-				
 				if(tile.hasContainer())
 				{
 					return tile.onActivated(par5);

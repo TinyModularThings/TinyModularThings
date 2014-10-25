@@ -54,6 +54,14 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 		return mode;
 	}
 	
+	
+	
+	@Override
+	public boolean dropNormalBlock()
+	{
+		return false;
+	}
+
 	public boolean isValidMode()
 	{
 		return mode != -1;

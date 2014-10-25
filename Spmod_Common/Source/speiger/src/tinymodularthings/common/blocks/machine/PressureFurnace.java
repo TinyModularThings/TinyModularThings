@@ -863,9 +863,24 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	public void onBreaking()
 	{
 		removeFromStorage();
-		InventoryUtil.dropInventory(worldObj, xCoord, yCoord, zCoord);
 	}
 	
+	
+	
+	@Override
+	public ArrayList<ItemStack> onDrop(int fortune)
+	{
+		ArrayList<ItemStack> drop = super.onDrop(fortune);
+		for(ItemStack stack : inv)
+		{
+			if(stack != null)
+			{
+				drop.add(stack);
+			}
+		}
+		return drop;
+	}
+
 	@Override
 	public void onClientTick()
 	{

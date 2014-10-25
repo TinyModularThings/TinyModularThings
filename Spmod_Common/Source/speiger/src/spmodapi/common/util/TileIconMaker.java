@@ -98,7 +98,7 @@ public class TileIconMaker
 			{
 				if (match(clz, tile))
 				{
-					return this.getIconSafe(tile.getIconFromSideAndMetadata(side, 0));
+					return TextureEngine.getTextures().getIconSafe(tile.getIconFromSideAndMetadata(side, 0));
 				}
 			}
 		}
@@ -110,7 +110,7 @@ public class TileIconMaker
 	
 	public Icon getIconFromTile(Block block, int meta, int side)
 	{
-		return getIconFromTileEntity(block, classes.get(new BlockData(block, meta)), side);
+		return TextureEngine.getTextures().getIconSafe(getIconFromTileEntity(block, classes.get(new BlockData(block, meta)), side));
 	}
 	
 	public boolean match(Class<? extends AdvTile> tiles, AdvTile tile)

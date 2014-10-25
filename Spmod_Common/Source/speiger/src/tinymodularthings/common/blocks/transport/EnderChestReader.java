@@ -29,12 +29,6 @@ public class EnderChestReader extends AdvTile implements IInventory
 	{
 		owner = player.username;
 	}
-	
-	@Override
-	public boolean dropNormalBlock()
-	{
-		return true;
-	}
 
 	public InventoryEnderChest findEnderChest()
 	{

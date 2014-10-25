@@ -25,6 +25,7 @@ public class ItemBlockCrafting extends ItemBlock
 		{
 			case 0: return "Advanced Workbench";
 			case 1: return "Oredictionary Crafter";
+			case 2: return "Advanced Crafting Station";
 			default: return "";
 		}
 	}

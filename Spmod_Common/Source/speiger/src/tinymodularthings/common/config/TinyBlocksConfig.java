@@ -8,6 +8,7 @@ import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
 import speiger.src.tinymodularthings.common.blocks.crafting.BlockCrafting;
+import speiger.src.tinymodularthings.common.blocks.crafting.CraftingStation;
 import speiger.src.tinymodularthings.common.blocks.crafting.ItemBlockCrafting;
 import speiger.src.tinymodularthings.common.blocks.crafting.OreCrafter;
 import speiger.src.tinymodularthings.common.blocks.machine.BlockMachine;
@@ -52,7 +53,7 @@ public class TinyBlocksConfig
 		engine.setCurrentPath("ores");
 		blocks.ores = new BlockSpmodOre(config.block.getCurrentID());
 		RegisterProxy.RegisterBlock(blocks.ores, ItemBlockSpmodOre.class, "TinyOres");
-		((SpmodBlockBase)blocks.ores).registerTextures(engine);
+		blocks.ores.registerTextures(engine);
 		config.block.updateToNextID();
 		
 		
@@ -121,7 +122,7 @@ public class TinyBlocksConfig
 		RegisterProxy.RegisterTile(blocks.machine, 2, SelfPoweredBucketFiller.class, "SelfBucketFiller");
 		RegisterProxy.RegisterTile(blocks.machine, 3, WaterGenerator.class, "WaterGen");
 		RegisterProxy.RegisterTile(blocks.machine, 4, OilGenerator.class, "OilGenerator");
-		((SpmodBlockBase)blocks.machine).registerTextures(engine);
+		blocks.machine.registerTextures(engine);
 		config.block.updateToNextID();
 		
 		blocks.storageBlock = new BlockStorage(config.block.getCurrentID());
@@ -141,12 +142,14 @@ public class TinyBlocksConfig
 		RegisterProxy.RegisterTile(MultiStructureFluidInterface.class, "FluidInterface");
 		RegisterProxy.RegisterTile(MultiStructureEnergyInterface.class, "EnergyInterface");
 		RegisterProxy.RegisterTile(TinyHopper.class, "ModularTinyHopper");
-		((SpmodBlockBase)blocks.transportBlock).registerTextures(engine);
+		blocks.transportBlock.registerTextures(engine);
 		config.block.updateToNextID();
 		
 		blocks.craftingBlock = new BlockCrafting(config.block.getCurrentID());
 		RegisterProxy.RegisterBlock(blocks.craftingBlock, ItemBlockCrafting.class, "CraftingBlock");
-		RegisterProxy.RegisterTile(OreCrafter.class, "OreCrafter");
+		RegisterProxy.RegisterTile(blocks.craftingBlock, 1, OreCrafter.class, "OreCrafter");
+		RegisterProxy.RegisterTile(blocks.craftingBlock, 2, CraftingStation.class, "CraftingStation");
+		blocks.craftingBlock.registerTextures(engine);
 		config.block.updateToNextID();
 		
 	}

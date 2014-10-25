@@ -34,6 +34,7 @@ public class BlockMachine extends SpmodBlockContainerBase
 	{
 		super(par1, Material.iron);
 		setHardness(4.0F);
+		this.dissableDrops();
 		MinecraftForge.setBlockHarvestLevel(this, "pickaxe", 1);
 		setCreativeTab(CreativeTabs.tabFood);
 	}
@@ -62,6 +63,14 @@ public class BlockMachine extends SpmodBlockContainerBase
 		}
 	}
 	
+	
+	
+	@Override
+	public boolean hasTileDrops(int meta)
+	{
+		return true;
+	}
+
 	@Override
 	public void registerTextures(TextureEngine par1)
 	{

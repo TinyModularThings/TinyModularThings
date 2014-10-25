@@ -8,25 +8,24 @@ import net.minecraft.inventory.Slot;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.blocks.BlockPosition;
-import speiger.src.api.blocks.IBlockGui;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
+import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.client.gui.storage.GuiTinyChest;
 
-public class GuiAdvCrafting extends GuiInventoryCore
+public class CraftingStationGui extends GuiInventoryCore
 {
-	public GuiAdvCrafting(IBlockGui par1, int par2, InventoryPlayer par3, BlockPosition par4)
+	
+	public CraftingStationGui(InventoryPlayer par1, AdvTile par2)
 	{
-		super(par1.getInventory(par2, par3, par4));
-	} 
-	
-	
+		super(par2.getInventory(par1));
+	}
+
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		String s = "Advanced CraftingTable";
+		String s = "Advanced Crafting Station";
 		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
 		fontRenderer.drawString(I18n.getString("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}
@@ -48,5 +47,4 @@ public class GuiAdvCrafting extends GuiInventoryCore
 		mc.getTextureManager().bindTexture(GuiMobMachine.texture);
 		this.drawTexturedModalRect(k + 73, l + 35, 176, 64, 30, 16);
 	}
-	
 }
