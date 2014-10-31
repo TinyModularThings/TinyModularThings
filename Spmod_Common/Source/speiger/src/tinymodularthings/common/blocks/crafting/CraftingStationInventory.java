@@ -23,7 +23,7 @@ public class CraftingStationInventory extends AdvContainer
 	public CraftingStationInventory(InventoryPlayer par1, CraftingStation par2)
 	{
 		world = par2.getWorldObj();
-		inv = par2.getInventoryFromPlayer(par1.player);
+		inv = par2.getInventoryFromPlayer(par1.player, this);
 		
 		for(int x = 0;x<3;x++)
 		{
@@ -79,7 +79,7 @@ public class CraftingStationInventory extends AdvContainer
 			}
 			else
 			{
-				inv.setInventorySlotContents(9+0, null);
+				inv.setInventorySlotContents(9+i, null);
 			}
 		}
 		

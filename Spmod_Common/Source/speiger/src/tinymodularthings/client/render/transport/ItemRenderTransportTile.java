@@ -73,7 +73,7 @@ public class ItemRenderTransportTile implements IItemRenderer
 		int id = item.itemID;
 		int damage = item.getItemDamage();
 		
-		if (id == TinyBlocks.transportBlock.blockID && damage == 0)
+		if (id == TinyBlocks.transportBlock.blockID && (damage == 0 || damage == 4))
 		{
 			renderEnderProxy((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f);
 		}
@@ -97,7 +97,7 @@ public class ItemRenderTransportTile implements IItemRenderer
 		
 		int id = item.itemID;
 		int damage = item.getItemDamage();
-		if (id == TinyBlocks.transportBlock.blockID && damage == 0)
+		if (id == TinyBlocks.transportBlock.blockID && (damage == 0 || damage == 4))
 		{
 			renderEnderProxy((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f);
 		}
@@ -121,7 +121,7 @@ public class ItemRenderTransportTile implements IItemRenderer
 		int id = item.itemID;
 		int damage = item.getItemDamage();
 		
-		if (id == TinyBlocks.transportBlock.blockID && damage == 0)
+		if (id == TinyBlocks.transportBlock.blockID && (damage == 0 || damage == 4))
 		{
 			renderEnderProxy((RenderBlocks) data[0], -0.4f, 0.50f, 0.35f);
 		}
@@ -145,7 +145,7 @@ public class ItemRenderTransportTile implements IItemRenderer
 		int id = item.itemID;
 		int damage = item.getItemDamage();
 		
-		if (id == TinyBlocks.transportBlock.blockID && damage == 0)
+		if (id == TinyBlocks.transportBlock.blockID && (damage == 0 || damage == 4))
 		{
 			renderEnderProxy((RenderBlocks) data[0], -0.5f, -0.5f, -0.5f);
 		}

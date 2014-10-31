@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
-import buildcraft.BuildCraftTransport;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.StepSound;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -17,6 +15,8 @@ import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
+import net.minecraft.nbt.NBTTagString;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
@@ -37,6 +37,33 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class AdvTile extends TileEntity
 {
+	public ArrayList<String> users = new ArrayList<String>();
+	
+	public void onPlayerOpenContainer(EntityPlayer par1)
+	{
+		if(!users.contains(par1.username))
+		{
+			users.add(par1.username);
+		}
+	}
+	
+	public boolean hasUsers()
+	{
+		return !users.isEmpty();
+	}
+	
+	public void onPlayerCloseContainer(EntityPlayer par1)
+	{
+		if(users.contains(par1.username))
+		{
+			users.remove(par1.username);
+		}
+	}
+	
+	public int getUserSize()
+	{
+		return users.size();
+	}
 	
 	public void loadInformation(List par1)
 	{
@@ -123,14 +150,12 @@ public abstract class AdvTile extends TileEntity
 	
 	public AxisAlignedBB getSelectedBoxes()
 	{
-		Block par1 = this.getBlockType();
-		return AxisAlignedBB.getAABBPool().getAABB((double)xCoord + par1.getBlockBoundsMinX(), (double)yCoord + par1.getBlockBoundsMinY(), (double)zCoord + par1.getBlockBoundsMinZ(), (double)xCoord + par1.getBlockBoundsMaxX(), (double)yCoord + par1.getBlockBoundsMaxY(), (double)zCoord + par1.getBlockBoundsMaxZ());
+		return AxisAlignedBB.getAABBPool().getAABB((double)xCoord, (double)yCoord, (double)zCoord, (double)xCoord+1, (double)yCoord+1, (double)zCoord+1);
 	}
 	
 	public AxisAlignedBB getColidingBox()
 	{
-		Block par1 = this.getBlockType();
-		return AxisAlignedBB.getAABBPool().getAABB((double)xCoord + par1.getBlockBoundsMinX(), (double)yCoord + par1.getBlockBoundsMinY(), (double)zCoord + par1.getBlockBoundsMinZ(), (double)xCoord + par1.getBlockBoundsMaxX(), (double)yCoord + par1.getBlockBoundsMaxY(), (double)zCoord + par1.getBlockBoundsMaxZ());
+		return AxisAlignedBB.getAABBPool().getAABB((double)xCoord, (double)yCoord, (double)zCoord, (double)xCoord+1, (double)yCoord+1, (double)zCoord+1);
 	}
 	
 	@Override
@@ -191,7 +216,7 @@ public abstract class AdvTile extends TileEntity
 	
 	public boolean canPlacedOnSide(ForgeDirection side)
 	{
-		return canPlaced();
+		return side == side.UNKNOWN ? false : canPlaced();
 	}
 	
 	public boolean canPlaced()
@@ -202,6 +227,16 @@ public abstract class AdvTile extends TileEntity
 	public boolean onActivated(EntityPlayer par1)
 	{
 		return false;
+	}
+	
+	public boolean onActivated(EntityPlayer par1, int side)
+	{
+		return onActivated(par1);
+	}
+	
+	public boolean onOpened(EntityPlayer par1, int side)
+	{
+		return onActivated(par1, side);
 	}
 	
 	public void onEntityWalk(Entity par1)
@@ -264,7 +299,13 @@ public abstract class AdvTile extends TileEntity
 		ArrayList<ItemStack> drop = new ArrayList<ItemStack>();
 		if(dropNormalBlock())
 		{
-			drop.add(new ItemStack(this.getBlockType(), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord)));
+			try
+			{
+				drop.add(new ItemStack(this.getBlockType(), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord)));
+			}
+			catch(Exception e)
+			{
+			}
 		}
 		return drop;
 	}
@@ -396,7 +437,8 @@ public abstract class AdvTile extends TileEntity
 	
 	public boolean isNormalCube()
 	{
-		return true;
+		Block block = this.getBlockType();
+		return block.blockMaterial.isOpaque() && block.renderAsNormalBlock() && !block.canProvidePower();
 	}
 	
 	public void onFallen(Entity par5Entity)
@@ -408,5 +450,32 @@ public abstract class AdvTile extends TileEntity
 	{
 		
 	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound par1)
+	{
+		users.clear();
+		super.readFromNBT(par1);
+		NBTTagList list = par1.getTagList("Users");
+		for(int i = 0;i<list.tagCount();i++)
+		{
+			NBTTagString text = (NBTTagString)list.tagAt(i);
+			users.add(text.data);
+		}
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound par1)
+	{
+		super.writeToNBT(par1);
+		NBTTagList list = new NBTTagList();
+		for(String user : users)
+		{
+			list.appendTag(new NBTTagString("Key", user));
+		}
+		par1.setTag("Users", list);
+	}
+	
+	
 	
 }

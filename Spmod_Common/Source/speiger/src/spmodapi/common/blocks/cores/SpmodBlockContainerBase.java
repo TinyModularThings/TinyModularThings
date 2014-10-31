@@ -57,6 +57,19 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		}
 		return super.isBlockNormalCube(world, x, y, z);
 	}
+    
+    
+
+	@Override
+	public boolean canBeReplacedByLeaves(World world, int x, int y, int z)
+	{
+		AdvTile tile = this.getAdvTile(world, x, y, z);
+		if(tile != null)
+		{
+			return tile.canBeReplaced();
+		}
+		return super.canBeReplacedByLeaves(world, x, y, z);
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -184,13 +197,14 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public Icon getIcon(int par1, int par2)
+	public Icon getIcon(int side, int meta)
 	{
-		if(!this.hasTileEntity(par2))
+		
+		if(!this.hasTileEntity(meta))
 		{
-			return getTexture(TextureEngine.getTextures(), par2, par1);
+			return getTexture(TextureEngine.getTextures(), meta, side);
 		}
-		return TileIconMaker.getIconMaker().getIconFromTile(this, par2, par1);
+		return TileIconMaker.getIconMaker().getIconFromTile(this, meta, side);
 	}
 
 	@Override
@@ -363,21 +377,19 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 			return false;
 		}
 		
-		if(!par1.isRemote)
+		AdvTile tile = getAdvTile(par1, par2, par3, par4);
+		if(tile != null)
 		{
-			AdvTile tile = getAdvTile(par1, par2, par3, par4);
-			if(tile != null)
+			if(tile.onClick(par5.isSneaking(), par5, this, par6))
 			{
-				if(tile.onClick(par5.isSneaking(), par5, this, par6))
-				{
-					return true;
-				}
-				if(tile.hasContainer())
-				{
-					return tile.onActivated(par5);
-				}
+				return true;
+			}
+			if(tile.hasContainer())
+			{
+				return tile.onOpened(par5, par6);
 			}
 		}
+		
 		return super.onBlockActivated(par1, par2, par3, par4, par5, par6, par7, par8, par9);
 	}
 
@@ -544,6 +556,14 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		if(tileDrops.containsKey(pos))
 		{
 			drops.addAll(tileDrops.get(pos));
+		}
+		else
+		{
+			AdvTile tile = getAdvTile(pos.getWorld(), pos.getXCoord(), pos.getYCoord(), pos.getZCoord());
+			if(tile != null)
+			{
+				drops.addAll(tile.onDrop(0));
+			}
 		}
 		return drops;
 	}

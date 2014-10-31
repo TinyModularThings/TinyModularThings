@@ -31,7 +31,6 @@ import speiger.src.tinymodularthings.common.upgrades.hoppers.all.FilterUpgrade;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
 import buildcraft.transport.TileGenericPipe;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.IGuiHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -239,7 +238,7 @@ public class TinyModularThingsCore implements IGuiHandler
 		GameRegistry.registerCraftingHandler(new TinyCraftingHandler());
 		FuelHandler.init();
 		DataStorage.registerNBTReciver((ItemNetherCrystal) TinyItems.netherCrystal);
-		DataStorage.registerNBTReciver((OilGenerator)TileIconMaker.getIconMaker().getTileEntityFromClass(OilGenerator.class));
+		DataStorage.registerNBTReciver(TileIconMaker.getIconMaker().getTileEntityFromClass(OilGenerator.class));
 		new RenderCommand();
 		initHopperUpgrades();
 	}

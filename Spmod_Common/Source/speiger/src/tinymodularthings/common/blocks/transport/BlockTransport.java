@@ -1,24 +1,13 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.EntityLivingBase;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
-import net.minecraft.util.MathHelper;
-import net.minecraft.util.MovingObjectPosition;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
-import speiger.src.spmodapi.common.tile.AdvTile;
-import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
@@ -44,6 +33,16 @@ public class BlockTransport extends SpmodBlockContainerBase
 		return null;
 	}
 	
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3)
+	{
+		par3.add(new ItemStack(par1, 1, 0));
+		par3.add(new ItemStack(par1, 1, 4));
+	}
+
 	@Override
 	public boolean hasTileDrops(int meta)
 	{
@@ -59,6 +58,7 @@ public class BlockTransport extends SpmodBlockContainerBase
 			case 1: return new MultiStructureItemInterface();
 			case 2: return new MultiStructureFluidInterface();
 			case 3: return new MultiStructureEnergyInterface();
+			case 4: return new AdvancedEnderChestReader();
 				
 			case 10: return new TinyHopper(HopperType.Items, false);
 			case 11: return new TinyHopper(HopperType.Items, true);
@@ -76,7 +76,10 @@ public class BlockTransport extends SpmodBlockContainerBase
 	public void registerTextures(TextureEngine par1)
 	{
 		par1.setCurrentPath("transport");
-		par1.registerTexture(this, "ItemTransport", "FluidTransport", "EnergyTransport");
+		par1.registerTexture(this, 1, "ItemTransport");
+		par1.registerTexture(this, 2, "FluidTransport");
+		par1.registerTexture(this, 3, "EnergyTransport");
+		TileIconMaker.registerIcon(this, par1);
 		par1.removePath();
 	}
 

@@ -51,6 +51,7 @@ public class ItemBlockTransport extends ItemBlockTinyChest
 				return LanguageRegister.getLanguageName(new BlockStack(par1), "interface.fluid", par0);
 			case 3:
 				return LanguageRegister.getLanguageName(new BlockStack(par1), "interface.energy", par0);
+			case 4: return "Advanced EnderChest Proxy";
 			case 10:
 			case 11:
 			case 12:

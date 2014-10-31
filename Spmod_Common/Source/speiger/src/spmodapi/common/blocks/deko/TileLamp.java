@@ -82,6 +82,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		{
 			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 			this.updateLight();
+			this.updateBlock();
 		}
 	}
 	

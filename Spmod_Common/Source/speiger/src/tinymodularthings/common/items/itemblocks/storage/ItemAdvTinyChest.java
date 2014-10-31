@@ -18,6 +18,7 @@ import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyChest;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -97,7 +98,6 @@ public class ItemAdvTinyChest extends TinyItem
 				++par4;
 			}
 		}
-		
 		if (par1ItemStack.stackSize == 0)
 		{
 			return false;

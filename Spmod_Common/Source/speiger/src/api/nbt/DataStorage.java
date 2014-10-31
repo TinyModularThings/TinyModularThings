@@ -33,7 +33,6 @@ public class DataStorage
 				nbts = new ArrayList<INBTReciver>();
 			}
 			nbts.add(par1);
-			
 			nbtStorage.put(par1.getOwner(), nbts);
 		}
 	}
@@ -96,7 +95,6 @@ public class DataStorage
 					NBTTagCompound nbt = (NBTTagCompound) NBTBase.readNamedTag(stream);
 					
 					SpmodMod fileMod = SpmodModRegistry.getModFromName(nbt.getString("Key"));
-					
 					if (SpmodModRegistry.areModsEqual(mod, fileMod) && SpmodModRegistry.isModRegistered(mod))
 					{
 						NBTTagList list = nbt.getTagList("Value");
@@ -131,9 +129,11 @@ public class DataStorage
 		}
 		catch (Exception e)
 		{
+			FMLLog.getLogger().info("Could not load Data.");
+			e.fillInStackTrace();
 		}
 		
-		FMLLog.getLogger().info("Start Loading Data");
+		FMLLog.getLogger().info("Finish Loading Data");
 	}
 	
 	public static void write(MinecraftServer server, boolean forceAll)

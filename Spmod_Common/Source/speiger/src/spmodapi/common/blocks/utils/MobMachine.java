@@ -513,6 +513,21 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 		
 	}
 	
+	@Override
+	public ArrayList<ItemStack> onDrop(int fortune)
+	{
+		ArrayList<ItemStack> stack = super.onDrop(fortune);
+		for(ItemStack data : inv)
+		{
+			if(data != null)
+			{
+				stack.add(data);
+			}
+		}
+		stack.add(new ItemStack(APIItems.mobMachineHelper, 1, type));
+		return stack;
+	}
+	
 	public void tryHandleExp()
 	{
 		boolean needExp = this.needExp.get(Integer.valueOf(type));

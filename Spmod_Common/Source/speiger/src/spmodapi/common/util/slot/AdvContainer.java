@@ -2,10 +2,16 @@ package speiger.src.spmodapi.common.util.slot;
 
 import java.util.ArrayList;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import speiger.src.api.inventory.TankSlot;
+import speiger.src.spmodapi.common.tile.AdvTile;
 
 public abstract class AdvContainer extends Container
 {
@@ -13,6 +19,17 @@ public abstract class AdvContainer extends Container
 	private ArrayList<Slot> slots = new ArrayList<Slot>();
 	private ArrayList<Slot> fakeSlots = new ArrayList<Slot>();
 	private ArrayList<TankSlot> tanks = new ArrayList<TankSlot>();
+	private AdvTile tile = null;
+	
+	public void setTile(AdvTile par1)
+	{
+		tile = par1;
+	}
+	
+	public AdvTile getTile()
+	{
+		return tile;
+	}
 	
 	public AdvContainer(InventoryPlayer par1, int x, int y)
 	{
@@ -76,14 +93,20 @@ public abstract class AdvContainer extends Container
 		{
 			for (int var4 = 0; var4 < 9; ++var4)
 			{
-				addSlotToContainer(new Slot(par1, var4 + var3 * 9 + 9, x + var4 * 18, y + var3 * 18));
+				addSpmodSlotToContainer(new Slot(par1, var4 + var3 * 9 + 9, x + var4 * 18, y + var3 * 18));
 			}
 		}
 		
 		for (var3 = 0; var3 < 9; ++var3)
 		{
-			addSlotToContainer(new Slot(par1, var3, x + var3 * 18, y+58));
+			addSpmodSlotToContainer(new Slot(par1, var3, x + var3 * 18, y+58));
 		}
+	}
+	
+	public AdvContainer(InventoryPlayer par1, AdvTile par2)
+	{
+		par2.onPlayerOpenContainer(par1.player);
+		tile = par2;
 	}
 	
 	public AdvContainer()
@@ -121,6 +144,44 @@ public abstract class AdvContainer extends Container
 		return fakeSlots;
 	}
 	
+	
+	
+	@Override
+	public void onContainerClosed(EntityPlayer par1EntityPlayer)
+	{
+		super.onContainerClosed(par1EntityPlayer);
+		if(tile != null)
+		{
+			tile.onPlayerCloseContainer(par1EntityPlayer);
+		}
+	}
+	
+	
+
+	@Override
+	public void detectAndSendChanges()
+	{
+		super.detectAndSendChanges();
+		if(tile != null)
+		{
+			for(int i = 0;i<this.crafters.size();i++)
+			{
+				ICrafting craft = (ICrafting)crafters.get(i);
+				tile.onSendingGuiInfo(this, craft);
+			}
+		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void updateProgressBar(int par1, int par2)
+	{
+		if(tile != null)
+		{
+			tile.onReciveGuiInfo(par1, par2);
+		}
+	}
+
 	public void clearInventory()
 	{
 		fakeSlots.clear();

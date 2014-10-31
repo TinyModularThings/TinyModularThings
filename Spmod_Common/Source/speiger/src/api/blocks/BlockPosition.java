@@ -3,9 +3,12 @@ package speiger.src.api.blocks;
 import java.util.Arrays;
 import java.util.List;
 
+import com.google.common.primitives.Doubles;
+
 import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
@@ -72,6 +75,10 @@ public class BlockPosition
 	
 	public List<Integer> getAsList()
 	{
+		if(worldID == null)
+		{
+			return Arrays.asList(0, 0, -1, 0);
+		}
 		return Arrays.asList(worldID.provider.dimensionId, xCoord, yCoord, zCoord);
 	}
 	
@@ -266,6 +273,27 @@ public class BlockPosition
 		pos.yCoord += y;
 		pos.zCoord += z;
 		return pos;
+	}
+	
+    public int getDistanceSq(BlockPosition pos)
+    {
+        int d3 = this.xCoord - pos.xCoord;
+        int d4 = this.yCoord - pos.yCoord;
+        int d5 = this.zCoord - pos.zCoord;
+        return d3 * d3 + d4 * d4 + d5 * d5;
+    }
+    
+    public int getDistance(BlockPosition pos)
+    {
+        int d3 = this.xCoord - pos.xCoord;
+        int d4 = this.yCoord - pos.yCoord;
+        int d5 = this.zCoord - pos.zCoord;
+        return new Double((double)MathHelper.sqrt_double(d3 * d3 + d4 * d4 + d5 * d5)).intValue();
+    }
+
+	public BlockPosition add(ForgeDirection dir)
+	{
+		return add(dir.offsetX, dir.offsetY, dir.offsetZ);
 	}
 	
 	

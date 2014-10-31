@@ -270,7 +270,7 @@ public class MultiStructureFluidInterface extends AdvTile implements
 	{
 		if(renderPass == 1)
 		{
-			return TextureEngine.getTextures().getTexture(TinyBlocks.transportBlock, 1);
+			return TextureEngine.getTextures().getTexture(TinyBlocks.transportBlock, 2, 0);
 		}
 		
 		if (blockID != -1 && metadata != -1 && renderPass == 1)

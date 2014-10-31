@@ -26,7 +26,7 @@ public class GuiAdvCrafting extends GuiInventoryCore
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		String s = "Advanced CraftingTable";
+		String s = "Advanced Workbench";
 		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
 		fontRenderer.drawString(I18n.getString("container.inventory"), 8, ySize - 96 + 2, 4210752);
 	}

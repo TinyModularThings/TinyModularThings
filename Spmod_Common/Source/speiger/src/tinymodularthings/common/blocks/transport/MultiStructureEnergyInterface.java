@@ -50,7 +50,7 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 	{
 		if(renderPass == 1)
 		{
-			return TextureEngine.getTextures().getTexture(TinyBlocks.transportBlock, 2);
+			return TextureEngine.getTextures().getTexture(TinyBlocks.transportBlock, 3, 0);
 		}
 		
 		if (blockID != -1 && metadata != -1)

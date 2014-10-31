@@ -1,9 +1,8 @@
 package speiger.src.spmodapi.common.util.proxy;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Random;
-
-import cpw.mods.fml.common.FMLLog;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -19,6 +18,37 @@ public class CodeProxy
 		Field field = class1.getDeclaredFields()[fieldIndex];
 		field.setAccessible(true);
 		return (T) field.get(instance);
+	}
+	
+	public static <T> T getField(Class<?> class1, Class<T> fieldType, Object instance, String fieldName) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException
+	{
+		Field field = class1.getDeclaredField(fieldName);
+		field.setAccessible(true);
+		return (T)field.get(instance);
+	}
+	
+	public static <T> T getField(Class<T> fieldType, Object instance, String fieldName) throws Exception
+	{
+		Field field = instance.getClass().getDeclaredField(fieldName);
+		field.setAccessible(true);
+		return (T)field.get(instance);
+	}
+	
+	public static <T> T getMethode(Class<T> fieldType, Object instance, String fieldName, Object key) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
+	{
+		return (T)instance.getClass().getMethod(fieldName, Object.class).invoke(null, key);
+	}
+	
+	public static <T> T getMethode(Class<T> fieldType, Object instance, int type, Object arg) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, SecurityException
+	{
+		return (T)instance.getClass().getMethods()[type].invoke(null, arg);
+	}
+	
+	public static <T> T getField(Class<T> fieldType, Object instance, int index) throws IllegalArgumentException, IllegalAccessException
+	{
+		Field field = instance.getClass().getDeclaredFields()[index];
+		field.setAccessible(true);
+		return (T)field.get(instance);
 	}
 	
 	public static void setField(Class<?> class1, Object instance, int fieldIndex, Object value) throws IllegalArgumentException, IllegalAccessException

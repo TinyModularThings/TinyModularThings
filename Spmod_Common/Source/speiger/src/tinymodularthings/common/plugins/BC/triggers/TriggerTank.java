@@ -66,7 +66,7 @@ public class TriggerTank implements ITrigger
 	@Override
 	public boolean requiresParameter()
 	{
-		return false;
+		return true;
 	}
 	
 	@Override

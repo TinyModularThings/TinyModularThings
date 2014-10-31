@@ -28,5 +28,8 @@ public class PreRecipes
 		PathProxy.addRecipe(new ItemStack(TinyItems.cell, 4, 0), new Object[]{" X ", "XYX", " X ", 'X', EnumIngots.Aluminum.getIngot(), 'Y', Block.glass});
 		PathProxy.addRecipe(ItemPotionBag.createEmptyPotionBag(TinyItems.potionBag.itemID), new Object[]{"XYX", "CVC", "BNB", 'C', Block.chest, 'V', new ItemStack(TinyItems.cell, 1, 0), 'B', Block.pistonStickyBase, 'X', Item.leather, 'Y', Item.silk, 'N', new ItemStack(TinyItems.advTinyChest, 1, 8)});
 		PathProxy.addRecipe(new ItemStack(TinyBlocks.craftingBlock, 1, 1), new Object[]{"YXY", "VFV", "DCD", 'V', Block.enderChest, 'F', GearType.Diamond.getItem(), 'D', GearType.Redstone.getItem(),  'C', Block.chest, 'X', Block.blockIron, 'Y', new ItemStack(TinyItems.advTinyChest, 1, 4)});
+		PathProxy.addSRecipe(new ItemStack(TinyBlocks.transportBlock, 1, 4), new Object[]{TinyBlocks.transportBlock, new ItemStack(Item.nameTag)});
+		PathProxy.addAssemblyRecipe(new ItemStack(TinyBlocks.transportBlock, 1, 4), 100000, new ItemStack(TinyBlocks.transportBlock, 1, 0));
+		PathProxy.addSRecipe(new ItemStack(TinyBlocks.craftingBlock, 1, 2), new Object[] {TinyBlocks.craftingBlock, Block.enderChest});
 	}
 }

@@ -645,9 +645,9 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 	@Override
 	public void loadFromNBT(NBTTagCompound par1)
 	{
+		todo.clear();
 		dataLoaded = DataType.Loading;
 		NBTTagList first = par1.getTagList("Todo");
-		todo.clear();
 		for (int i = 0; i < first.tagCount(); i++)
 		{
 			NBTTagCompound nbt = (NBTTagCompound) first.tagAt(i);

@@ -16,6 +16,8 @@ import net.minecraftforge.event.ForgeSubscribe;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine.BlockData;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -85,7 +87,24 @@ public class TextureEngine
 		data.data = par1;
 		this.requestLaterRegistration.add(data);
 	}
+
+	public String[] getTextureNames(BlockData data)
+	{
+		if(blockString.containsKey(data))
+		{
+			return blockString.get(data);
+		}
+		return new String[]{"No Texture Key There"};
+	}
 	
+	public String[] getTextureNames(ItemData data)
+	{
+		if(itemString.containsKey(data))
+		{
+			return itemString.get(data);
+		}
+		return new String[]{"No Texture Key There"};
+	}
 	
 	public void registerTexture(Block par1, String...par2)
 	{
@@ -170,21 +189,25 @@ public class TextureEngine
 		if(par1.map.textureType == 0)
 		{
 			Iterator<Entry<BlockData, String[]>> iter = blockString.entrySet().iterator();
+			this.missingTexture[0] = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase()+":missingTexture");
 			for(;iter.hasNext();)
 			{
-				this.missingTexture[0] = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase()+":missingTexture");
 				Entry<BlockData, String[]> texture = iter.next();
 				Icon[] icons = new Icon[texture.getValue().length];
 				for(int i = 0;i<icons.length;i++)
 				{
 					icons[i] = par1.map.registerIcon(texture.getValue()[i]);
+					if(!isTextureRegistered(icons[i], map))
+					{
+						icons[i] = this.getIconSafe(missingTexture[0]);
+					}
 				}
 				blockTextures.put(texture.getKey(), icons);
 			}
 		}
 		else
 		{
-			this.missingTexture[0] = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase()+":missingTexture");
+			this.missingTexture[1] = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase()+":missingTexture");
 			Iterator<Entry<ItemData, String[]>> iter = itemString.entrySet().iterator();
 			for(;iter.hasNext();)
 			{
@@ -193,6 +216,10 @@ public class TextureEngine
 				for(int i = 0;i<icons.length;i++)
 				{
 					icons[i] = par1.map.registerIcon(texture.getValue()[i]);
+					if(!isTextureRegistered(icons[i], map))
+					{
+						icons[i] = this.getIconSafe(missingTexture[1]);
+					}
 				}
 				itemTextures.put(texture.getKey(), icons);
 			}
@@ -231,13 +258,17 @@ public class TextureEngine
 				for(int i = 0;i<icons.length;i++)
 				{
 					icons[i] = par1.map.registerIcon(texture.getValue()[i]);
+					if(icons[i].getIconName().equalsIgnoreCase("missingno"))
+					{
+						icons[i] = this.getIconSafe(missingTexture[0]);
+					}
 				}
 				blockTextures.put(texture.getKey(), icons);
 			}
 		}
 		else
 		{
-			this.missingTexture[0] = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase()+":missingTexture");
+			this.missingTexture[1] = par1.map.registerIcon(SpmodAPILib.ModID.toLowerCase()+":missingTexture");
 			Iterator<Entry<ItemData, String[]>> iter = itemString.entrySet().iterator();
 			for(;iter.hasNext();)
 			{
@@ -246,11 +277,25 @@ public class TextureEngine
 				for(int i = 0;i<icons.length;i++)
 				{
 					icons[i] = par1.map.registerIcon(texture.getValue()[i]);
+					if(icons[i].getIconName().equalsIgnoreCase("missingno"))
+					{
+						icons[i] = this.getIconSafe(missingTexture[1]);
+					}
 				}
 				itemTextures.put(texture.getKey(), icons);
 			}
 		}
 
+	}
+	
+	public boolean isTextureRegistered(Icon par1, TextureMap par2)
+	{
+		Icon result = par2.getAtlasSprite(par1.getIconName());
+		if(result.getIconName().equalsIgnoreCase("missingno"))
+		{
+			return false;
+		}
+		return true;
 	}
 	
 	
@@ -272,6 +317,16 @@ public class TextureEngine
 	public Icon getTexture(Item par1, int key)
 	{
 		return getTexture(par1, 0, key);
+	}
+	
+	public Icon getTexture(BlockStack par1, int key)
+	{
+		return getTexture(par1.getBlock(), par1.getMeta(), key);
+	}
+	
+	public Icon getTexture(ItemStack par1, int key)
+	{
+		return getTexture(par1.getItem(), par1.getItemDamage(), key);
 	}
 	
 	public Icon getTexture(Block par1, int meta, int key)
@@ -333,9 +388,27 @@ public class TextureEngine
 		return TileIconMaker.getIconMaker().getIconSafe(missingTexture[1]);
 	}
 	
+	public boolean isMissingTexture(Icon par1)
+	{
+		if(par1 == null)
+		{
+			return true;
+		}
+		if(par1.getIconName().equalsIgnoreCase(getIconSafe().getIconName()))
+		{
+			return true;
+		}
+		if(par1.getIconName().equalsIgnoreCase(TileIconMaker.getIconMaker().getIconSafe(null).getIconName()))
+		{
+			return true;
+		}
+		
+		return false;
+	}
 	
 	
-	public static class ItemData
+	
+	public static class ItemData implements StackInfo
 	{
 		Item item;
 		int meta;
@@ -349,6 +422,11 @@ public class TextureEngine
 		{
 			item = par1;
 			meta = par2;
+		}
+		
+		public ItemData(Item par1)
+		{
+			this(par1, 0);
 		}
 
 		@Override
@@ -378,11 +456,17 @@ public class TextureEngine
 		{
 			return item.itemID + meta;
 		}
+
+		@Override
+		public ItemStack getResult()
+		{
+			return new ItemStack(item, 1, meta);
+		}
 		
 		
 	}
 	
-	public static class BlockData
+	public static class BlockData implements StackInfo
 	{
 		Block block;
 		int meta;
@@ -396,6 +480,12 @@ public class TextureEngine
 			block = par1;
 			meta = par2;
 		}
+		
+		public BlockData(Block par1)
+		{
+			this(par1, 0);
+		}
+		
 		@Override
 		public boolean equals(Object arg0)
 		{
@@ -423,6 +513,11 @@ public class TextureEngine
 		{
 			return block.blockID + meta;
 		}
+		@Override
+		public ItemStack getResult()
+		{
+			return new ItemStack(block, 1, meta);
+		}
 		
 	}
 	
@@ -430,6 +525,12 @@ public class TextureEngine
 	{
 		ITextureRequester data;
 	}
+	
+	public static interface StackInfo
+	{
+		ItemStack getResult();
+	}
+
 	
 	
 	

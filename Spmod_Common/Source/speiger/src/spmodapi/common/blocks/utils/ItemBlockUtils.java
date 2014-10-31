@@ -11,7 +11,7 @@ import speiger.src.spmodapi.SpmodAPI;
 
 public class ItemBlockUtils extends ItemBlock implements LanguageItem
 {
-	String[] names = new String[] { "cobble.workbench", "exp.storage", "mob.machine", "entity.lurer" };
+	String[] names = new String[] { "cobble.workbench", "exp.storage", "mob.machine", "entity.lurer", "Inventory Accesser"};
 	
 	public ItemBlockUtils(int par1)
 	{

@@ -50,7 +50,7 @@ public class TriggerRequestPower implements ITrigger
 	@Override
 	public boolean requiresParameter()
 	{
-		return false;
+		return true;
 	}
 	
 	@Override

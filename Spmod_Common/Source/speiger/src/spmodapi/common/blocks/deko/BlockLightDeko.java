@@ -36,6 +36,7 @@ public class BlockLightDeko extends SpmodBlockContainerBase
 		this.dissableDrops();
 		this.setIsAbnormal();
 		this.setIgnoreRighClick();
+		this.setRightClickDoesNothing();
 		MinecraftForge.setBlockHarvestLevel(this, "pickaxe", 0);
 	}
 	
@@ -98,6 +99,13 @@ public class BlockLightDeko extends SpmodBlockContainerBase
 	public boolean hasTileDrops(int meta)
 	{
 		return true;
+	}
+
+	@Override
+	public int getLightValue(IBlockAccess world, int x, int y, int z)
+	{
+		int meta = world.getBlockMetadata(x, y, z);
+		return meta == 1 ? 15 : 0;
 	}
 	
 	

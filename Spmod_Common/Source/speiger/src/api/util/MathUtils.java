@@ -1,6 +1,7 @@
 package speiger.src.api.util;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class MathUtils
 {
@@ -67,12 +68,22 @@ public class MathUtils
 		return result;
 	}
 
-	public static int[] getArrayFromList(ArrayList<Integer> ints)
+	public static int[] getArrayFromList(List<Integer> ints)
 	{
 		int[] result = new int[ints.size()];
 		for(int i = 0;i<result.length;i++)
 		{
 			result[i] = ints.get(i).intValue();
+		}
+		return result;
+	}
+
+	public static List<Integer> getListFromArray(int[] par1)
+	{
+		ArrayList<Integer> result = new ArrayList<Integer>();
+		for(int i : par1)
+		{
+			result.add(i);
 		}
 		return result;
 	}

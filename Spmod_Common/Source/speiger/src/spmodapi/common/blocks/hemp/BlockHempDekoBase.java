@@ -26,6 +26,7 @@ public class BlockHempDekoBase extends SpmodBlockBase
 	{
 		super(par1, Material.cloth);
 		this.setCreativeTab(APIUtils.tabHempDeko);
+		this.setRightClickDoesNothing();
 		MinecraftForge.setBlockHarvestLevel(this, 0, "axe", 0);
 		MinecraftForge.setBlockHarvestLevel(this, 1, "pickaxe", 0);
 		MinecraftForge.setBlockHarvestLevel(this, 2, "axe", 0);

@@ -6,6 +6,8 @@ import net.minecraft.command.ICommandSender;
 import speiger.src.api.packets.SpmodPacketHelper;
 import speiger.src.spmodapi.common.command.commands.ButcherCommand;
 import speiger.src.spmodapi.common.command.commands.ClearItems;
+import speiger.src.spmodapi.common.command.commands.CommandAccesser;
+import speiger.src.spmodapi.common.command.commands.CommandReadTexture;
 import speiger.src.spmodapi.common.command.commands.SpeigerCommand;
 import speiger.src.spmodapi.common.command.commands.TimerCommand;
 
@@ -62,6 +64,8 @@ public class CommandRegistry
 		reg.registerCommand(new TimerCommand());
 		reg.registerCommand(new ButcherCommand());
 		reg.registerCommand(new SpeigerCommand());
+		reg.registerCommand(new CommandReadTexture());
+		reg.registerCommand(new CommandAccesser());
 	}
 	
 }

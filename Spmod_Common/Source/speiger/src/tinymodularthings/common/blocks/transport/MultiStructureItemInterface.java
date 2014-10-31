@@ -65,7 +65,7 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	{
 		if(renderPass == 1)
 		{
-			return TextureEngine.getTextures().getTexture(TinyBlocks.transportBlock, 0);
+			return TextureEngine.getTextures().getTexture(TinyBlocks.transportBlock, 1, 0);
 		}
 		
 		if (blockID != -1 && metadata != -1)

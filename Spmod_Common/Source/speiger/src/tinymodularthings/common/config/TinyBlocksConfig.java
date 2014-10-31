@@ -30,6 +30,7 @@ import speiger.src.tinymodularthings.common.blocks.storage.BlockStorage;
 import speiger.src.tinymodularthings.common.blocks.storage.ItemBlockStorage;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyChest;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyTank;
+import speiger.src.tinymodularthings.common.blocks.transport.AdvancedEnderChestReader;
 import speiger.src.tinymodularthings.common.blocks.transport.BlockTransport;
 import speiger.src.tinymodularthings.common.blocks.transport.EnderChestReader;
 import speiger.src.tinymodularthings.common.blocks.transport.ItemBlockTransport;
@@ -142,6 +143,7 @@ public class TinyBlocksConfig
 		RegisterProxy.RegisterTile(MultiStructureFluidInterface.class, "FluidInterface");
 		RegisterProxy.RegisterTile(MultiStructureEnergyInterface.class, "EnergyInterface");
 		RegisterProxy.RegisterTile(TinyHopper.class, "ModularTinyHopper");
+		RegisterProxy.RegisterTile(blocks.transportBlock, 4, AdvancedEnderChestReader.class, "AdvEnderChestProxy");
 		blocks.transportBlock.registerTextures(engine);
 		config.block.updateToNextID();
 		

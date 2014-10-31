@@ -10,7 +10,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityEnderChest;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import cpw.mods.fml.common.FMLCommonHandler;
 
 public class EnderChestReader extends AdvTile implements IInventory
@@ -21,7 +24,13 @@ public class EnderChestReader extends AdvTile implements IInventory
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
-		return Block.endPortal.getIcon(0, 0);
+		TextureEngine engine = TextureEngine.getTextures();
+		Icon result = engine.getTexture(new BlockStack(TinyBlocks.transportBlock, 0), 0);
+		if(engine.isMissingTexture(result))
+		{
+			result = Block.portal.getIcon(0, 0);
+		}
+		return result;
 	}
 	
 	@Override
@@ -51,6 +60,12 @@ public class EnderChestReader extends AdvTile implements IInventory
 		return null;
 	}
 	
+	@Override
+	public void registerIcon(TextureEngine par1)
+	{
+		par1.registerTexture(TinyBlocks.transportBlock, "enderChestReader");
+	}
+
 	@Override
 	public int getSizeInventory()
 	{

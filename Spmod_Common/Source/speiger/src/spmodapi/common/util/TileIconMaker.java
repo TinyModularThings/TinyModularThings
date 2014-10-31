@@ -44,12 +44,12 @@ public class TileIconMaker
 		classes.put(new BlockData(par1, meta), tile.getClass());
 	}
 	
-	public AdvTile getTileEntityFromClass(Class<? extends AdvTile> tile)
+	public <T> T getTileEntityFromClass(Class<T> tile)
 	{
 		return this.getTileEntityFromClass(null, tile);
 	}
 	
-	public AdvTile getTileEntityFromClass(Block block, Class<? extends AdvTile> tile)
+	public <T> T getTileEntityFromClass(Block block, Class<T> tile)
 	{
 		ArrayList<AdvTile> tiles = new ArrayList<AdvTile>();
 		if (block == null)
@@ -68,7 +68,7 @@ public class TileIconMaker
 		{
 			if (list.getClass().getSimpleName().equalsIgnoreCase(tile.getSimpleName()))
 			{
-				return list;
+				return (T)list;
 			}
 		}
 		

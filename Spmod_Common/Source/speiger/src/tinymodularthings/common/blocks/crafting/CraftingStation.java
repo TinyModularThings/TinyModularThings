@@ -32,18 +32,18 @@ public class CraftingStation extends AdvTile
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
-		TextureEngine par1 = TextureEngine.getTextures();
-		return side == 0 ? par1.getTexture(TinyBlocks.craftingBlock, 0) : side == 1 ? par1.getTexture(TinyBlocks.craftingBlock, 1) : par1.getTexture(TinyBlocks.craftingBlock, 2);
+		Icon[] par1 = TextureEngine.getIcon(TinyBlocks.craftingBlock, 2);
+		return side < 2 ? par1[side] : par1[2];
 	}
 	
-	public CraftingInventory getInventoryFromPlayer(EntityPlayer par1)
+	public CraftingInventory getInventoryFromPlayer(EntityPlayer par1, Container par2)
 	{
 		if(!iinv.containsKey(par1.username))
 		{
 			CraftingInventory inv = new CraftingInventory(this);
 			iinv.put(par1.username, inv);
 		}
-		return iinv.get(par1.username);
+		return iinv.get(par1.username).setContainer(par2);
 	}
 	
 	@Override
@@ -88,6 +88,12 @@ public class CraftingStation extends AdvTile
 
 	
 	
+	@Override
+	public void registerIcon(TextureEngine par1)
+	{
+		par1.registerTexture(TinyBlocks.craftingBlock, 2, "CraftingStation_Bottom", "CraftingStation_Top", "CraftingStation_Side");
+	}
+
 	@Override
 	public boolean onActivated(EntityPlayer par1)
 	{
@@ -136,22 +142,22 @@ public class CraftingStation extends AdvTile
 	{
 		ItemStack[] inv = new ItemStack[18];
 		TileEntity owner;
-		private static Container event;
+		Container event;
 		
 		public CraftingInventory(TileEntity tile)
 		{
-			super(event, 3, 3);
+			super(null, 3, 3);
 			owner = tile;
 		}
-		
-		public void setContainer(Container par1)
-		{
-			event = par1;
-		}
-		
 		public void leaveContainer()
 		{
 			event = null;
+		}
+		
+		public CraftingInventory setContainer(Container par1)
+		{
+			event = par1;
+			return this;
 		}
 		
 		@Override
@@ -225,9 +231,12 @@ public class CraftingStation extends AdvTile
 		public void setInventorySlotContents(int var1, ItemStack var2)
 		{
 			inv[var1] = var2;
-			if(event != null)
+			if(var1 < 9)
 			{
-				event.onCraftMatrixChanged(this);
+				if(event != null)
+				{
+					event.onCraftMatrixChanged(this);
+				}
 			}
 		}
 

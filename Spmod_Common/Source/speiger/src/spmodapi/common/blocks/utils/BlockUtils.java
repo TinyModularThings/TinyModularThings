@@ -78,6 +78,7 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 		{
 			case 1: return new ExpStorage();
 			case 2: return new MobMachine();
+			case 4: return new InventoryAccesser();
 		}
 		return null;
 	}
@@ -129,6 +130,7 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 	@Override
 	public Icon getTexture(TextureEngine par1, int meta, int side)
 	{
+		
 		switch(meta)
 		{
 			case 0: return par1.getTexture(this, side < 2 ? 0 : 1);
@@ -145,11 +147,24 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 		TileIconMaker.registerIcon(this, par1);
 	}
 
+	
+	
+	@Override
+	public boolean hasTileEntity(int meta)
+	{
+		switch(meta)
+		{
+			case 0:
+			case 3: return false;
+		}
+		return true;
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		for (int i = 0; i < 4; i++)
+		for (int i = 0; i < 5; i++)
 		{
 			par3List.add(new ItemStack(par1, 1, i));
 		}

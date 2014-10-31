@@ -1,5 +1,6 @@
 package speiger.src.spmodapi.common.blocks.hemp;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -27,6 +28,7 @@ public class BlockHempStraw extends SpmodBlockBase
 		super(par1, Material.plants);
 		setHardness(4.0F);
 		this.setCreativeTab(APIUtils.tabHemp);
+		this.dissableDrops();
 		setTickRandomly(true);
 		MinecraftForge.setBlockHarvestLevel(this, "axe", 0);
 	}
@@ -52,6 +54,17 @@ public class BlockHempStraw extends SpmodBlockBase
 	
 	
 	
+	@Override
+	public ArrayList<ItemStack> onDrop(int meta, int fortune)
+	{
+		if(meta == 0)
+		{
+			ArrayList<ItemStack> stack = new ArrayList<ItemStack>();
+			stack.add(new ItemStack(this, 1, meta));
+		}
+		return super.onDrop(meta, fortune);
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
@@ -168,23 +181,6 @@ public class BlockHempStraw extends SpmodBlockBase
 		}
 	}
 	
-	@Override
-	public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
-	{
-		int meta = par1World.getBlockMetadata(par2, par3, par4);
-		if (meta == 0)
-		{
-			dropBlockAsItem_do(par1World, par2, par3, par4, new ItemStack(this));
-		}
-		
-		super.breakBlock(par1World, par2, par3, par4, par5, par6);
-	}
-	
-	@Override
-	public int quantityDropped(Random par1Random)
-	{
-		return 0;
-	}
 	
 	public void damageBlock(World par1, int x, int y, int z)
 	{

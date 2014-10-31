@@ -15,7 +15,9 @@ import speiger.src.spmodapi.common.items.crafting.ItemBlueDye;
 import speiger.src.spmodapi.common.items.crafting.ItemColorCard;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemMobMachineHelper;
+import speiger.src.spmodapi.common.items.crafting.RedstoneCable;
 import speiger.src.spmodapi.common.items.crafting.SpmodBone;
+import speiger.src.spmodapi.common.items.debug.ItemAccessAdder;
 import speiger.src.spmodapi.common.items.exp.ExpBottle;
 import speiger.src.spmodapi.common.items.hemp.ItemCompressedHemp;
 import speiger.src.spmodapi.common.items.hemp.ItemHemp;
@@ -142,6 +144,17 @@ public class APIItemsConfig
 		items.trades = new ItemRandomTrade(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.trades);
 		engine.registerTexture(items.trades, "random_Trade");
+		config.itemIDs.updateToNextID();
+		
+		items.redstoneCable = new RedstoneCable(config.itemIDs.getCurrentID());
+		RegisterProxy.RegisterItem(items.redstoneCable);
+		engine.registerTexture(items.redstoneCable, "redstonecable");
+		config.itemIDs.updateToNextID();
+		
+		items.accessDebug = new ItemAccessAdder(config.itemIDs.getCurrentID());
+		RegisterProxy.RegisterItem(items.accessDebug);
+		engine.setCurrentPath("debug");
+		engine.registerTexture(items.accessDebug, "accesserTool");
 		config.itemIDs.updateToNextID();
 		
 		initHempPlates();

@@ -1,5 +1,7 @@
 package speiger.src.api.blocks;
 
+import java.util.ArrayList;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
@@ -8,6 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 
 /**
  * 
@@ -80,6 +83,34 @@ public class BlockStack
 		return new ItemStack(blocks, 1, meta);
 	}
 	
+	public ItemStack getAsDroppedStack()
+	{
+		if(blocks == null)
+		{
+			return null;
+		}
+		int id = blocks.idDropped(meta, CodeProxy.getRandom(), 0);
+		if(id <= 0)
+		{
+			return null;
+		}
+		return new ItemStack(id, 1, blocks.damageDropped(meta));
+	}
+	
+	public ItemStack getAsDroppedStack(BlockPosition par1)
+	{
+		if(blocks == null)
+		{
+			return asItemStack();
+		}
+		ArrayList<ItemStack> stack = blocks.getBlockDropped(par1.getWorld(), par1.getXCoord(), par1.getYCoord(), par1.getZCoord(), meta, 0);
+		if(stack == null)
+		{
+			return asItemStack();
+		}
+		return stack.get(0);
+	}
+	
 	public Block getBlock()
 	{
 		return blocks;
@@ -113,6 +144,40 @@ public class BlockStack
 		ItemStack stack = new ItemStack(blocks, 1, meta);
 		Item item = stack.getItem();
 		return item.getItemDisplayName(stack);
+	}
+	
+	public String getDroppedBlockDisplayName()
+	{
+		if(blocks == null)
+		{
+			return "No Block!";
+		}
+		int id = blocks.idDropped(meta, CodeProxy.getRandom(), 0);
+		if(id <= 0)
+		{
+			return "No Block!";
+		}
+		ItemStack result = new ItemStack(id, 1, blocks.damageDropped(meta));
+		return result.getDisplayName();
+	}
+	
+	public String getDroppedBlockDisplayName(BlockPosition par1)
+	{
+		if(blocks == null || par1 == null)
+		{
+			return "No Block!";
+		}
+		ArrayList<ItemStack> drops = blocks.getBlockDropped(par1.getWorld(), par1.getXCoord(), par1.getYCoord(), par1.getZCoord(), meta, 0);
+		if(drops == null || drops.size() <= 0)
+		{
+			return "No Block!";
+		}
+		ItemStack stack = drops.get(0);
+		if(stack == null)
+		{
+			return "No Block!";
+		}
+		return stack.getDisplayName();
 	}
 	
 	public String getHiddenName()

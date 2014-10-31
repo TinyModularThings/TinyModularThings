@@ -1,5 +1,6 @@
 package speiger.src.spmodapi.common.blocks.utils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -146,6 +147,22 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 		return canGive;
 	}
 	
+	
+	
+	@Override
+	public ArrayList<ItemStack> onDrop(int fortune)
+	{
+		ArrayList<ItemStack> stack = super.onDrop(fortune);
+		for(ItemStack data : inv)
+		{
+			if(data != null)
+			{
+				stack.add(data);
+			}
+		}
+		return stack;
+	}
+
 	@Override
 	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
 	{
@@ -525,13 +542,14 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 			par1.addChatMessage("Machine absorbs now from dieing entities exp");
 			par1.getCurrentEquippedItem().stackSize--;
 			canAbsorbDeath = true;
+			return false;
 		}
 		if (hasContainer())
 		{
 			par1.openGui(SpmodAPI.instance, EnumGuiIDs.Tiles.getID(), worldObj, xCoord, yCoord, zCoord);
 			return true;
 		}
-		return false;
+		return true;
 	}
 	
 	@Override

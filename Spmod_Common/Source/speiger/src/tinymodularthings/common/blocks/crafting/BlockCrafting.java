@@ -18,6 +18,7 @@ import speiger.src.api.blocks.IBlockGui;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.crafting.GuiAdvCrafting;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
@@ -83,6 +84,7 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 	{
 		par1.setCurrentPath("crafting");
 		par1.registerTexture(new BlockStack(this, 0), "craftingTableBottom", "craftingTableTop", "craftingTableSide");
+		TileIconMaker.registerIcon(this, par1);
 		par1.removePath();
 	}
 	

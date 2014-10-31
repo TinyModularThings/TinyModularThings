@@ -14,9 +14,15 @@ public class RenderTransport implements ISimpleBlockRenderingHandler
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
 	{
-		if (block != null && metadata == 0)
+		if (block != null)
 		{
-			renderer.renderBlockAsItem(block, metadata, 0);
+			switch(metadata)
+			{
+				case 0:
+				case 4: 
+					renderer.renderBlockAsItem(block, metadata, 0);
+					break;
+			}
 		}
 	}
 	
@@ -26,7 +32,7 @@ public class RenderTransport implements ISimpleBlockRenderingHandler
 		if (block != null)
 		{
 			int meta = world.getBlockMetadata(x, y, z);
-			if (meta == 0)
+			if (meta == 0 || meta == 4)
 			{
 				handleEnderChest(world, x, y, z, block, modelId, renderer);
 			}

@@ -29,6 +29,7 @@ public class BlockHempDeko extends SpmodBlockBase
 		info = par2;
 		setCreativeTab(APIUtils.tabHempDeko);
 		par2.registerToForge(this);
+		this.setRightClickDoesNothing();
 		if(!par2.canMonsterSpawn())
 			setMonsterSpawnSave();
 	}

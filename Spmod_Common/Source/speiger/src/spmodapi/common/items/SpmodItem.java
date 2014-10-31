@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.common.items;
 
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -16,7 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public abstract class SpmodItem extends Item implements LanguageItem, ITextureRequester
 {
 	
-
+	public boolean isMissingTexture = false;
 
 	public SpmodItem(int par1)
 	{
@@ -53,9 +54,7 @@ public abstract class SpmodItem extends Item implements LanguageItem, ITextureRe
 	{
 		
 	}
-	
-	
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)

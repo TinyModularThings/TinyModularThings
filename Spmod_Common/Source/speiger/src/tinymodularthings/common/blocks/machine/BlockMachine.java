@@ -35,6 +35,7 @@ public class BlockMachine extends SpmodBlockContainerBase
 		super(par1, Material.iron);
 		setHardness(4.0F);
 		this.dissableDrops();
+		this.setIgnoreRightClick(4);
 		MinecraftForge.setBlockHarvestLevel(this, "pickaxe", 1);
 		setCreativeTab(CreativeTabs.tabFood);
 	}
@@ -82,6 +83,6 @@ public class BlockMachine extends SpmodBlockContainerBase
 		par1.registerTexture(new BlockStack(this, 1), "basicBucketFiller_top", "basicBucketFiller_bottom", "basicBucketFiller_side");
 		par1.registerTexture(new BlockStack(this, 2), "SelfPoweredBucketFiller_top", "SelfPoweredBucketFiller_bottom", "SelfPoweredBucketFiller_side");
 		par1.registerTexture(new BlockStack(this, 3), "waterGenerator_top", "waterGenerator_bottom", "waterGenerator_side");
-	
+		par1.registerTexture(new BlockStack(this, 4), "oilGeneratorBottom", "oilGeneratorTop_off", "oilGeneratorTop_on", "oilGeneratorFront_off", "oilGeneratorFront_on");
 	}
 }

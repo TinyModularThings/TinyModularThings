@@ -14,17 +14,17 @@ import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.Icon;
 import net.minecraftforge.oredict.OreDictionary;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.packets.IPacketReciver;
 import speiger.src.api.util.InventoryUtil;
 import speiger.src.spmodapi.common.tile.TileFacing;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.tinymodularthings.client.gui.crafting.GuiOreCrafter;
 import speiger.src.tinymodularthings.common.config.TinyConfig;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -41,10 +41,19 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 		return false;
 	}
 	
+	
+	
+	@Override
+	public void registerIcon(TextureEngine par1)
+	{
+		par1.registerTexture(new BlockStack(TinyBlocks.craftingBlock, 1), "OreCrafter_Top", "OreCrafter_Side");
+	}
+	
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
-		return null;
+		Icon[] texture = TextureEngine.getIcon(TinyBlocks.craftingBlock, 1);
+		return side < 2 ? texture[0] : texture[1];
 	}
 	
 	@Override
@@ -53,6 +62,21 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 		return 3F;
 	}
 
+	@Override
+	public ArrayList<ItemStack> onDrop(int fortune)
+	{
+		ArrayList<ItemStack> stack = super.onDrop(fortune);
+		for(int i = 10;i<inv.length;i++)
+		{
+			ItemStack data = getStackInSlot(i);
+			if(data != null)
+			{
+				stack.add(data);
+			}
+		}
+		return stack;
+	}
+	
 	@Override
 	public float getExplosionResistance(Entity par1)
 	{
@@ -249,19 +273,6 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 		}
 	}
 
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
-	}
-
-	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-	this.readFromNBT(pkt.data);
-	}
 
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)

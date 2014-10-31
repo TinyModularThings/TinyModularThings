@@ -208,6 +208,7 @@ public class SpmodFoodStats extends FoodStats implements INBTReciver
 	@Override
 	public void loadFromNBT(NBTTagCompound par1)
 	{
+		hardcorePeacefull.clear();
 		NBTTagList list = par1.getTagList("FoodStats");
 		for(int i = 0;i<list.tagCount();i++)
 		{

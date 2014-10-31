@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.config.ModObjects;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import speiger.src.spmodapi.common.items.SpmodItem;
 
 public class APIItems
 {
@@ -23,6 +24,7 @@ public class APIItems
 	public static Item colorCard;
 	public static Item multiPlate;
 	public static Item trades;
+	public static Item redstoneCable;
 	
 	public static ItemStack[] hempPlates;
 	public static Item hempResinBucket;
@@ -40,5 +42,6 @@ public class APIItems
 	public static Item boneMooshroom;
 	public static Item boneSheep;
 	public static Item boneHorse;
+	public static SpmodItem accessDebug;
 	
 }

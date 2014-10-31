@@ -22,6 +22,7 @@ import speiger.src.spmodapi.common.blocks.hemp.ItemBlockHempDekoBase;
 import speiger.src.spmodapi.common.blocks.hemp.ItemBlockHempStraw;
 import speiger.src.spmodapi.common.blocks.utils.BlockUtils;
 import speiger.src.spmodapi.common.blocks.utils.ExpStorage;
+import speiger.src.spmodapi.common.blocks.utils.InventoryAccesser;
 import speiger.src.spmodapi.common.blocks.utils.ItemBlockUtils;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
@@ -120,8 +121,9 @@ public class APIBlocksConfig
 		
 		blocks.blockUtils = new BlockUtils(config.blockIDs.getCurrentID());
 		RegisterProxy.RegisterBlock(blocks.blockUtils, ItemBlockUtils.class, "Utils Block");
-		RegisterProxy.RegisterTile(blocks.blockUtils, ExpStorage.class, "ExpStorage");
-		RegisterProxy.RegisterTile(blocks.blockUtils, MobMachine.class, "MobMachine");
+		RegisterProxy.RegisterTile(blocks.blockUtils, 1, ExpStorage.class, "ExpStorage");
+		RegisterProxy.RegisterTile(blocks.blockUtils, 2, MobMachine.class, "MobMachine");
+		RegisterProxy.RegisterTile(blocks.blockUtils, 4, InventoryAccesser.class, "InventoryAccesser");
 		((SpmodBlockBase)blocks.blockUtils).registerTextures(engine);
 		config.blockIDs.updateToNextID();
 		

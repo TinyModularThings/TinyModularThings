@@ -45,4 +45,15 @@ public class ModularModLoader
 			
 		}
 	}
+
+	public static void LoadAddonsSave()
+	{
+		try
+		{
+			LoadAddons();
+		}
+		catch(Exception e)
+		{
+		}
+	}
 }

@@ -132,12 +132,6 @@ public class StructureStorage implements INBTReciver
 	@Override
 	public void loadFromNBT(NBTTagCompound par1)
 	{
-		HashMap<List<Integer>, List<Integer>> backupStructures = new HashMap<List<Integer>, List<Integer>>();
-		HashMap<List<Integer>, ArrayList<List<Integer>>> backupCores = new HashMap<List<Integer>, ArrayList<List<Integer>>>();
-		
-		backupStructures.putAll(structures);
-		backupCores.putAll(cores);
-		
 		structures.clear();
 		cores.clear();
 		

@@ -198,18 +198,4 @@ public class WaterGenerator extends AdvTile implements IFluidHandler,
 		this.provider.writeToNBT(par1nbtTagCompound);
 	}
 	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, nbt);
-	}
-	
-	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		this.readFromNBT(pkt.data);
-	}
-	
 }

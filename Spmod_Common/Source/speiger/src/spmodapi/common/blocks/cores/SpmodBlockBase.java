@@ -29,12 +29,28 @@ public class SpmodBlockBase extends Block implements ITextureRequester
 	public boolean[] canSilkHarvestme = new boolean[16];
 	public boolean[] monsterSpawnSave = new boolean[16];
 	public boolean[] isARenderedBlock = new boolean[16];
+	public boolean[] ItemNoRightClick = new boolean[16];
 	
 	public SpmodBlockBase(int par1, Material par2Material)
 	{
 		super(par1, par2Material);
 		this.setHardness(4.0F);
 		this.setResistance(4.0F);
+	}
+	
+	public SpmodBlockBase setRightClickDoesNothing()
+	{
+		for(int i = 0;i<16;i++)
+		{
+			this.ItemNoRightClick[i] = true;
+		}
+		return this;
+	}
+	
+	public SpmodBlockBase setRightClickDoesNothing(int meta)
+	{
+		this.ItemNoRightClick[meta] = true;
+		return this;
 	}
 	
 	public SpmodBlockBase setIsAbnormal()
@@ -129,6 +145,11 @@ public class SpmodBlockBase extends Block implements ITextureRequester
 		{
 			return false;
 		}
+		if(this.ItemNoRightClick[meta])
+		{
+			return false;
+		}
+		
 		if(!par1.isRemote)
 		{
 			int guiID = getGuiIDForMeta(meta);
@@ -143,7 +164,7 @@ public class SpmodBlockBase extends Block implements ITextureRequester
 				return true;
 			}
 		}
-		return true;
+		return false;
 	}
 	
 	public int getGuiIDForMeta(int meta)
