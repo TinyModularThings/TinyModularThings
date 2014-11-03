@@ -82,13 +82,15 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 		}
 		return null;
 	}
+
+	
 	
 	@Override
 	public int getRenderType()
 	{
 		return RenderUtilsBlock.renderID;
 	}
-	
+
 	@Override
 	public int damageDropped(int par1)
 	{
@@ -122,7 +124,7 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 	{
 		switch(meta)
 		{
-			case 3: return 255;
+			case 3:	return 255;
 		}
 		return super.getLightOpacity(meta);
 	}

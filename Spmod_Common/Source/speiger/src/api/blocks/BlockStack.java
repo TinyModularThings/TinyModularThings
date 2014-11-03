@@ -8,6 +8,8 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MovingObjectPosition;
+import net.minecraft.util.Vec3;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
@@ -161,6 +163,11 @@ public class BlockStack
 		return result.getDisplayName();
 	}
 	
+	public String getPickedBlockDisplayName(BlockPosition pos, int side)
+	{
+		return this.getPicketBlock(pos, side).getDisplayName();
+	}
+	
 	public String getDroppedBlockDisplayName(BlockPosition par1)
 	{
 		if(blocks == null || par1 == null)
@@ -203,6 +210,11 @@ public class BlockStack
 	{
 		return world.setBlock(x, y, z, blocks.blockID, meta, 3);
 	}
+	
+	public ItemStack getPicketBlock(BlockPosition pos, int side)
+	{
+		return blocks.getPickBlock(new MovingObjectPosition(pos.getXCoord(), pos.getYCoord(), pos.getZCoord(), side, Vec3.createVectorHelper(pos.getXCoord(), pos.getYCoord(), pos.getZCoord())), pos.getWorld(), pos.getXCoord(), pos.getYCoord(), pos.getZCoord());
+	}
 
 	@Override
 	public boolean equals(Object obj)
@@ -224,7 +236,5 @@ public class BlockStack
 	{
 		return this.getBlockID() + this.getMeta();
 	}
-	
-	
 	
 }

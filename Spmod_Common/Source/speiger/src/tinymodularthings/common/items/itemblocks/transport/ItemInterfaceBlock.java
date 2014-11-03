@@ -104,7 +104,7 @@ public class ItemInterfaceBlock extends TinyItem
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
-		return TextureEngine.getTextures().getTexture(TinyBlocks.transportBlock, par1);
+		return TextureEngine.getTextures().getTexture(new BlockStack(TinyBlocks.transportBlock, par1+1), par1);
 	}
 	
 	

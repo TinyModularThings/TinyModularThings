@@ -102,6 +102,12 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	}
 	
 	@Override
+	public void onIconMakerLoading()
+	{
+		this.setFacing(4);
+	}
+
+	@Override
 	public void onPlaced(int facing)
 	{
 		setFacing(facing);

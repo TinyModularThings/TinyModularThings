@@ -58,6 +58,13 @@ public class CodeProxy
 		field.set(instance, value);
 	}
 	
+	public static void setField(int i,Class<?> class1, Object instance, int fieldIndex, Object value) throws IllegalArgumentException, IllegalAccessException
+	{
+		Field field = class1.getFields()[fieldIndex];
+		field.setAccessible(true);
+		field.set(instance, value);
+	}
+	
 	public static Random getRandom()
 	{
 		return random;

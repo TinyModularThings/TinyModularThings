@@ -61,9 +61,7 @@ public class GuiInventoryAccesser extends GuiInventoryCore
 			}
 			BlockPosition pos = tile.getTarget(choosenTarget);
 			
-			ItemStack stack = pos.getAsBlockStack().getAsDroppedStack();
-			if(stack == null)stack = pos.getAsBlockStack().getAsDroppedStack(pos);
-			if(stack == null) stack = pos.getAsBlockStack().asItemStack();
+			ItemStack stack = pos.getAsBlockStack().getPicketBlock(pos, tile.getSideFromPlayer(mc.thePlayer.username));
 			
 			this.renderItem(stack, 60, 20);
 			
@@ -95,28 +93,17 @@ public class GuiInventoryAccesser extends GuiInventoryCore
 					return;
 				}
 				BlockPosition pos = tile.getTarget((page*6)+i);
-				String name = pos.getAsBlockStack().getDroppedBlockDisplayName();
-				if(name.equalsIgnoreCase("No Block!"))
-				{
-					name = pos.getAsBlockStack().getDroppedBlockDisplayName(pos);
-				}
-				if(name.equalsIgnoreCase("No Block!"))
-				{
-					name = pos.getAsBlockStack().getBlockDisplayName();
-				}
+				String name = pos.getAsBlockStack().getPickedBlockDisplayName(pos, tile.getSideFromPlayer(mc.thePlayer.username));
+				
 				if(tile.hasCustomName(pos.getAsList()))
 				{
 					name = tile.getCustomName(pos.getAsList());
 				}
 				buttonList.add(new GuiButton(i, k, l+25+20*i, 145, 20, name));
-				ItemStack stack = pos.getAsBlockStack().getAsDroppedStack();
+				ItemStack stack = pos.getAsBlockStack().getPicketBlock(pos, tile.getSideFromPlayer(mc.thePlayer.username));
 				if(stack == null)
 				{
-					stack = pos.getAsBlockStack().getAsDroppedStack(pos);
-				}
-				if(stack == null)
-				{
-					stack = pos.getAsBlockStack().asItemStack();
+					continue;
 				}
 				this.renderItem(stack, -17, 28+(20*i));
 			}

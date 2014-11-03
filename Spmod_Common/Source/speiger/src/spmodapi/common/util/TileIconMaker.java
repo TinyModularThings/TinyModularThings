@@ -38,7 +38,7 @@ public class TileIconMaker
 		{
 			allTiles.put(par1, new ArrayList<AdvTile>());
 		}
-		tile.onPlaced(4);
+		tile.onIconMakerLoading();
 		allTiles.get(par1).add(tile);
 		
 		classes.put(new BlockData(par1, meta), tile.getClass());

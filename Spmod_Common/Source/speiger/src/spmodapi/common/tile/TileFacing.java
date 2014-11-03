@@ -1,9 +1,12 @@
 package speiger.src.spmodapi.common.tile;
 
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import speiger.src.spmodapi.common.interfaces.IRotation;
 import speiger.src.spmodapi.common.util.FacingUtil;
 
@@ -47,9 +50,14 @@ public abstract class TileFacing extends AdvTile implements IRotation
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		
 		facing = nbt.getInteger("facing");
 		rotation = nbt.getInteger("rotation");
+		NBTTagList list = nbt.getTagList("Opened");
+		for(int i = 0;i<list.tagCount();i++)
+		{
+			NBTTagCompound data = (NBTTagCompound)list.tagAt(i);
+			this.sideOpened.put(data.getString("Key"), data.getInteger("Value"));
+		}
 	}
 	
 	/**
@@ -61,6 +69,17 @@ public abstract class TileFacing extends AdvTile implements IRotation
 		super.writeToNBT(nbt);
 		nbt.setInteger("facing", facing);
 		nbt.setInteger("rotation", rotation);
+		NBTTagList list = new NBTTagList();
+		Iterator<Entry<String, Integer>> iter = this.sideOpened.entrySet().iterator();
+		for(;iter.hasNext();)
+		{
+			Entry<String, Integer> entry = iter.next();
+			NBTTagCompound data = new NBTTagCompound();
+			data.setInteger("Value", entry.getValue());
+			data.setString("Key", entry.getKey());
+		}
+		
+		nbt.setTag("Opened", list);
 	}
 	
 	@Override

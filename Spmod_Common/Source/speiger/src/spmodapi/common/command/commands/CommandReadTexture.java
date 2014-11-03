@@ -28,8 +28,8 @@ public class CommandReadTexture implements ISpmodCommand
 	{
 		return Arrays.asList("Laest dich Texturen Namen sehen",
 				"<ID(Zahl), Meta(Zahl), Block/Item (Text)>",
-				"Block/Item einfach so  schreiben. Damit ich weiﬂ wonach du suchst",
-				"Fals die Meta groeﬂer als 0 ist (auch wenn das Item eine groeﬂere Meta hat)",
+				"Block/Item einfach so  schreiben. Damit ich weis wonach du suchst",
+				"Fals die Meta groeser als 0 ist (auch wenn das Item eine groessere Meta hat)",
 				"Trage dann stattdessen 0 ein da alle Texturen in dieser Meta gespeichert wurden.");
 	}
 	
@@ -82,7 +82,7 @@ public class CommandReadTexture implements ISpmodCommand
 			}
 			else
 			{
-				par1.sendChatToPlayer(LanguageRegister.createChatMessage("argument 3 heiﬂt nicht Block oder Item"));
+				par1.sendChatToPlayer(LanguageRegister.createChatMessage("argument 3 heist nicht Block oder Item"));
 			}
 		}
 		else

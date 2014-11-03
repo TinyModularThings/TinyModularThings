@@ -22,8 +22,6 @@ public class PluginLoader
 		{
 			
 		}
-		AccessConfig config = new AccessConfig(SpmodConfig.getInstance());
-		config.loadLaterData();
 		
 		if (Loader.isModLoaded("Forestry"))
 		{
@@ -41,7 +39,11 @@ public class PluginLoader
 		{
 			BCAddon.loadBC();
 		}
-		
+
 	}
+	
+	
+	
+	
 	
 }

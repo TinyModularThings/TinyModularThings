@@ -200,6 +200,12 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 		return MathUtils.getArrayFromList(ints);
 	}
 	
+	@Override
+	public void onIconMakerLoading()
+	{
+		this.setFacing(5);
+	}
+
 	public static int[] getMobMachineFromFoodItem(ItemStack par1)
 	{
 		ArrayList<Integer> ints = new ArrayList<Integer>();
@@ -356,14 +362,6 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		Icon[] array = TextureEngine.getIcon(APIBlocks.blockUtils, 2);
-		if(renderPass == 0)
-		{
-			if(side == 5)
-			{
-				return array[1];
-			}
-			return array[0];
-		}
 		if(side == this.getFacing())
 		{
 			return array[(type * 2) + 1];
@@ -879,12 +877,14 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 		return true;
 	}
 	
+	
+	
 	@Override
-	public void onAdvPlacing(int rotation, int facing)
+	public void onPlaced(int facing)
 	{
 		this.setFacing(facing);
 	}
-	
+
 	@Override
 	public boolean hasContainer()
 	{

@@ -132,4 +132,8 @@ public class SpmodAPICore implements IGuiHandler
 		}
 		return null;
 	}
+
+	public void onEngineLoad()
+	{		
+	}
 }

@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 import net.minecraft.block.Block;
 import net.minecraft.block.StepSound;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -27,6 +28,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.blocks.BlockPosition;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.util.RedstoneUtils;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
@@ -118,7 +120,7 @@ public abstract class AdvTile extends TileEntity
 			notifyBlocksOfNeighborChange(side);
 		}
 	}
-
+	
 	@Override
 	public Packet getDescriptionPacket()
 	{
@@ -279,6 +281,11 @@ public abstract class AdvTile extends TileEntity
 		return false;
 	}
 	
+	public void onIconMakerLoading()
+	{
+		
+	}
+	
 	public boolean removeAbleByPlayer(EntityPlayer player)
 	{
 		return true;
@@ -410,7 +417,6 @@ public abstract class AdvTile extends TileEntity
 	
 	public void onClientTick()
 	{
-		
 	}
 	
 	public BlockPosition getPosition()
@@ -450,7 +456,18 @@ public abstract class AdvTile extends TileEntity
 	{
 		
 	}
+	
+	@SideOnly(Side.CLIENT)
+	public void onRender(RenderBlocks render, BlockStack stack, int renderPass)
+	{
+		
+	}
 
+	public boolean dissableRenderer()
+	{
+		return false;
+	}
+	
 	@Override
 	public void readFromNBT(NBTTagCompound par1)
 	{
@@ -475,7 +492,5 @@ public abstract class AdvTile extends TileEntity
 		}
 		par1.setTag("Users", list);
 	}
-	
-	
 	
 }

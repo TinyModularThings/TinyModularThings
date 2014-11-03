@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.client.core;
 
 import net.minecraftforge.client.MinecraftForgeClient;
+import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore;
 import speiger.src.spmodapi.client.render.deko.ItemRendererLamp;
 import speiger.src.spmodapi.client.render.deko.ItemRendererStatue;
 import speiger.src.spmodapi.client.render.deko.RenderHanfSign;
@@ -14,6 +15,7 @@ import speiger.src.spmodapi.common.blocks.deko.TileLamp;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.core.SpmodAPICore;
 import speiger.src.spmodapi.common.util.ForgeRegister;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 
@@ -35,6 +37,10 @@ public class SpmodAPIClient extends SpmodAPICore
 		// Kyroka
 		MinecraftForgeClient.registerItemRenderer(APIBlocks.statues.blockID, new ItemRendererStatue());
 		ClientRegistry.bindTileEntitySpecialRenderer(KyrokaTheFox.class, new RenderKyroka());
+	
+		RenderingRegistry.registerBlockHandler(new BlockRendererSpmodCore());
+		
+	
 	}
 	
 	@Override
@@ -42,4 +48,11 @@ public class SpmodAPIClient extends SpmodAPICore
 	{
 		return RenderingRegistry.addNewArmourRendererPrefix(type);
 	}
+
+	@Override
+	public void onEngineLoad()
+	{
+	}
+	
+	
 }

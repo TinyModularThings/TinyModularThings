@@ -149,7 +149,7 @@ public class BlockHempStraw extends SpmodBlockBase
 			}
 		}
 	}
-	
+
 	public boolean feedAnimal(EntityAnimal var1)
 	{
 		Random rand = new Random();

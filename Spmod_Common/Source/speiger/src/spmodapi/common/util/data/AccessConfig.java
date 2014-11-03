@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.common.util.data;
 
 import ic2.bcIntegration.core.TileEntityPersonalChestBc32x;
+import ic2.core.block.machine.tileentity.TileEntityIronFurnace;
 import ic2.core.block.machine.tileentity.TileEntityPump;
 import ic2.core.block.personal.TileEntityEnergyOMat;
 import ic2.core.block.personal.TileEntityPersonalChest;
@@ -39,6 +40,7 @@ import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import speiger.src.tinymodularthings.common.blocks.machine.SelfPoweredBucketFiller;
 import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyChest;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyChest;
+import speiger.src.tinymodularthings.common.plugins.BC.TileEntityModifiedFurnace;
 import appeng.me.tile.TileChest;
 import appeng.me.tile.TileCraftingMonitor;
 import appeng.me.tile.TileCraftingTerminal;
@@ -52,6 +54,7 @@ import buildcraft.silicon.TileAdvancedCraftingTable;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.common.ObfuscationReflectionHelper;
+import forestry.apiculture.gadgets.TileApiaristChest;
 import forestry.apiculture.gadgets.TileApiary;
 import forestry.apiculture.gadgets.TileBeehouse;
 import forestry.arboriculture.gadgets.TileArboristChest;
@@ -87,7 +90,11 @@ public class AccessConfig
 		ArrayList<String> list = new ArrayList<String>();
 		for(Class clz : teMappings.values())
 		{
-			list.add(clz.getSimpleName());
+			
+			if(clz != null)
+			{
+				list.add(clz.getSimpleName());
+			}
 		}
 		tileMaps.addAll(list);
 		for(String cu : tileEntities)
@@ -127,7 +134,7 @@ public class AccessConfig
 			if(Loader.isModLoaded("TinyModularThings"))
 			{
 				list.addAll(Arrays.asList(TinyChest.class.getSimpleName(), AdvTinyChest.class.getSimpleName(), CraftingStation.class.getSimpleName(), OreCrafter.class.getSimpleName(),
-						BucketFillerBasic.class.getSimpleName(), PressureFurnace.class.getSimpleName(), SelfPoweredBucketFiller.class.getSimpleName()));
+						BucketFillerBasic.class.getSimpleName(), PressureFurnace.class.getSimpleName(), SelfPoweredBucketFiller.class.getSimpleName(), TileEntityModifiedFurnace.class.getSimpleName()));
 
 			}
 			
@@ -143,14 +150,14 @@ public class AccessConfig
 			}
 			if(Loader.isModLoaded("Forestry"))
 			{
-				list.addAll(Arrays.asList(TileApiary.class.getSimpleName(), TileBeehouse.class.getSimpleName(), TileArboristChest.class.getSimpleName(), EngineBronze.class.getSimpleName(), EngineCopper.class.getSimpleName(),
+				list.addAll(Arrays.asList(TileApiary.class.getSimpleName(), TileBeehouse.class.getSimpleName(), TileArboristChest.class.getSimpleName(), EngineBronze.class.getSimpleName(), EngineCopper.class.getSimpleName(), TileApiaristChest.class.getSimpleName(),
 						EngineTin.class.getSimpleName(), MachineGenerator.class.getSimpleName(), TileWorktable.class.getSimpleName(), MachineRaintank.class.getSimpleName(), MachineCarpenter.class.getSimpleName(), TileLepidopteristChest.class.getSimpleName(),
 						MachineMailbox.class.getSimpleName(), MachineTrader.class.getSimpleName()));
 			}
 			if(Loader.isModLoaded("IC2"))
 			{
 				list.addAll(Arrays.asList(TileEntityTradeOMat.class.getSimpleName(), TileEntityEnergyOMat.class.getSimpleName(), TileEntityPersonalChest.class.getSimpleName(), TileEntityPersonalChestBc32x.class.getSimpleName(),
-						TileEntityPump.class.getSimpleName()));
+						TileEntityPump.class.getSimpleName(), TileEntityIronFurnace.class.getSimpleName()));
 			}
 			if(Loader.isModLoaded("AppliedEnergistics"))
 			{

@@ -7,12 +7,15 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.client.registry.RenderingRegistry;
+
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 
 public class RenderHelper
 {
 	public static ResourceLocation foodIcon = new ResourceLocation(SpmodAPILib.ModID.toString()+":textures/gui/extras/foodIcons.png");
 	static RenderItem itemRenderer = new RenderItem();
+	public static int GlobalRenderer = RenderingRegistry.getNextAvailableRenderId();
 	
 	public static RenderItem getItemRenderer()
 	{

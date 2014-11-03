@@ -10,6 +10,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
 import speiger.src.api.inventory.TankSlot;
 import speiger.src.spmodapi.common.tile.AdvTile;
 
@@ -170,6 +171,22 @@ public abstract class AdvContainer extends Container
 				tile.onSendingGuiInfo(this, craft);
 			}
 		}
+	}
+	
+	
+
+	@Override
+	protected boolean mergeItemStack(ItemStack par1ItemStack, int par2, int par3, boolean par4)
+	{
+		while(!((Slot)this.inventorySlots.get(par2)).isItemValid(par1ItemStack) && par2 < par3)
+		{
+			par2++;
+		}
+		if(par2 == par3)
+		{
+			return false;
+		}
+		return super.mergeItemStack(par1ItemStack, par2, par3, par4);
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import java.util.Random;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
@@ -22,6 +23,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ForgeHooks;
 import speiger.src.api.blocks.BlockPosition;
+import speiger.src.api.blocks.BlockStack;
 import speiger.src.api.util.WorldReading;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
@@ -587,5 +589,17 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
     {
     	return par1.getIconSafe();
     }
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onRender(IBlockAccess world, int x, int y, int z, RenderBlocks render, BlockStack block, int renderPass)
+	{
+		AdvTile tile = getAdvTile(world, x, y, z);
+		if(tile != null)
+		{
+			tile.onRender(render, block, renderPass);
+		}
+	}
+    
     
 }

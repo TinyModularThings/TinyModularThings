@@ -25,19 +25,24 @@ public class SlotAdjust extends Slot
 			Class cls = item.getClass();
 			if(cls != null)
 			{
+				
 				for(int i = 5;i>0;i--)
 				{
-					for (Class inter : cls.getInterfaces())
+					if(cls != null)
 					{
-						for (Class cu : clz)
+						for (Class inter : cls.getInterfaces())
 						{
-							if (cu.getSimpleName().equalsIgnoreCase(inter.getSimpleName()))
+							for (Class cu : clz)
 							{
-								return true;
+								if (cu.getSimpleName().equalsIgnoreCase(inter.getSimpleName()))
+								{
+									return true;
+								}
 							}
 						}
+						cls = cls.getSuperclass();
 					}
-					cls = cls.getSuperclass();
+					
 				}
 			}
 		}

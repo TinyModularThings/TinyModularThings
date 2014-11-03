@@ -32,13 +32,14 @@ import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
 import cpw.mods.fml.common.FMLLog;
+import forestry.api.core.ItemInterface;
 import forestry.core.config.ForestryItem;
 
 public class OilGenerator extends AdvTile implements ISidedInventory, INBTReciver, IFluidHandler
 {
 	public FluidTank lavaTank = new TinyFluidTank("lava", 10000, this);
 	public FluidTank oilTank = new TinyFluidTank("oil", 10000, this);
-	public static int TotalTime = 432000;
+	public static int TotalTime = 1728000;
 	public long lastInjection = 0;
 	public float StoredOil = 0.0F;
 	
@@ -210,7 +211,7 @@ public class OilGenerator extends AdvTile implements ISidedInventory, INBTRecive
 			}
 			try
 			{
-				if(itemID == ForestryItem.beeDroneGE.itemID || itemID == ForestryItem.beeLarvaeGE.itemID || itemID == ForestryItem.beePrincessGE.itemID || itemID == ForestryItem.beeQueenGE.itemID)
+				if(itemID == ItemInterface.getItem("beeDroneGE").itemID || itemID == ItemInterface.getItem("beeLarvaeGE").itemID || itemID == ItemInterface.getItem("beePrincessGE").itemID || itemID == ItemInterface.getItem("beeQueenGE").itemID)
 				{
 					return true;
 				}

@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
@@ -14,15 +15,17 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.api.blocks.BlockStack;
+import speiger.src.api.blocks.IBlockRenderer;
 import speiger.src.api.util.SpmodMod;
 import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.client.core.RenderHelper;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class SpmodBlockBase extends Block implements ITextureRequester
+public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRenderer
 {
 	public boolean[] ignoreRightClick = new boolean[16];
 	public boolean[] removeBasicDrops = new boolean[16];
@@ -136,6 +139,8 @@ public class SpmodBlockBase extends Block implements ITextureRequester
 	}
 	
 	
+
+
 
 	@Override
 	public boolean onBlockActivated(World par1, int par2, int par3, int par4, EntityPlayer par5, int par6, float par7, float par8, float par9)
@@ -340,5 +345,50 @@ public class SpmodBlockBase extends Block implements ITextureRequester
 		int meta = par1World.getBlockMetadata(par2, par3, par4);
 		return getBlockHardness(meta);
 	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresRenderer(int meta)
+	{
+		return false;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresMultibleRenderPasses(int meta)
+	{
+		return false;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getRenderPasses(int meta)
+	{
+		return 0;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onRender(IBlockAccess world, int x, int y, int z, RenderBlocks render, BlockStack block, int renderPass)
+	{
+		
+	}
+
+	@Override
+	public boolean dissableRendering(int meta)
+	{
+		return false;
+	}
 	
+	@Override
+	public int getRenderType()
+	{
+		return requiresRender() ? RenderHelper.GlobalRenderer : 0;
+	}
+
+	@Override
+	public boolean requiresRender()
+	{
+		return false;
+	}
 }

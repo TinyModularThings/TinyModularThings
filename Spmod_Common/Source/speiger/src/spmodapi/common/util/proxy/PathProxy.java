@@ -135,7 +135,6 @@ public class PathProxy
 			{
 				if(resultItem.itemID == recipeResult.itemID && resultItem.getItemDamage() == recipeResult.getItemDamage())
 				{
-					FMLLog.getLogger().info("Test: " + System.currentTimeMillis());
 					if(recipes.remove(recipeResult))
 					{
 						return;

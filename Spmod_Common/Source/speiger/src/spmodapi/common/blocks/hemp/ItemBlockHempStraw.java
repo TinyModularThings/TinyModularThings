@@ -1,5 +1,7 @@
 package speiger.src.spmodapi.common.blocks.hemp;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.blocks.BlockStack;
@@ -24,6 +26,15 @@ public class ItemBlockHempStraw extends ItemBlock implements LanguageItem
 		return par1;
 	}
 	
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getSpriteNumber()
+	{
+		return 0;
+	}
+
 	@Override
 	public String getItemDisplayName(ItemStack par1ItemStack)
 	{

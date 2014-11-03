@@ -19,6 +19,7 @@ import speiger.src.spmodapi.common.blocks.utils.MobMachine;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine.DropType;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
+import speiger.src.spmodapi.common.util.data.AccessConfig;
 import speiger.src.spmodapi.common.world.retrogen.RetroGenTickHandler.OreReplacer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.VillagerRegistry;
@@ -50,6 +51,8 @@ public class TickHelper implements ITickReader
 			PressureRecipeList.getInstance().addFurnaceRecipes();
 			loadRecipes(FakePlayerFactory.getMinecraft(DimensionManager.getWorld(0)));
 			MobMachine.addDrops(22, DropType.Common, ItemRandomTrade.getAllTrades());
+			AccessConfig config = new AccessConfig(SpmodConfig.getInstance());
+			config.loadLaterData();
 		}
 		
 		

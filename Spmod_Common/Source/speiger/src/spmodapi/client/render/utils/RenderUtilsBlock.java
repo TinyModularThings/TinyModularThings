@@ -48,7 +48,7 @@ public class RenderUtilsBlock implements ISimpleBlockRenderingHandler
 		return renderID;
 	}
 	
-	public void loadEntityCatcher(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks blocks)
+	public void loadEntityCatcher(IBlockAccess world, int x, int y, int z, Block block, RenderBlocks render)
 	{
 		Tessellator tes = Tessellator.instance;
 		Minecraft mc = FMLClientHandler.instance().getClient();
@@ -56,13 +56,14 @@ public class RenderUtilsBlock implements ISimpleBlockRenderingHandler
 		mc.renderEngine.bindTexture(TextureMap.locationItemsTexture);
 		tes.startDrawingQuads();
 		tes.setNormal(1F, 1F, 0F);
-		blocks.setOverrideBlockTexture(Item.porkRaw.getIconFromDamage(0));
-		blocks.renderCrossedSquares(block, x, y, z);
-		blocks.clearOverrideBlockTexture();
+		render.setOverrideBlockTexture(Item.porkRaw.getIconFromDamage(0));
+		render.renderCrossedSquares(block, x, y, z);
+		render.clearOverrideBlockTexture();
 		tes.draw();
 		tes.startDrawingQuads();
 		mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-		blocks.renderStandardBlock(block, x, y, z);
+		render.renderStandardBlock(block, x, y, z);
+		
 	}
 	
 }

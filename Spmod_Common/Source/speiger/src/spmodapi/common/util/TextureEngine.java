@@ -16,8 +16,6 @@ import net.minecraftforge.event.ForgeSubscribe;
 import speiger.src.api.blocks.BlockStack;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
-import speiger.src.spmodapi.common.util.TextureEngine.BlockData;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -40,6 +38,7 @@ public class TextureEngine
 	}
 	
 	Icon[] missingTexture = new Icon[2];
+	@SideOnly(Side.CLIENT)
 	private TextureMap map;
 	HashMap<BlockData, String[]> blockString = new HashMap<BlockData, String[]>();
 	HashMap<ItemData, String[]> itemString = new HashMap<ItemData, String[]>();
@@ -287,7 +286,7 @@ public class TextureEngine
 		}
 
 	}
-	
+	@SideOnly(Side.CLIENT)
 	public boolean isTextureRegistered(Icon par1, TextureMap par2)
 	{
 		Icon result = par2.getAtlasSprite(par1.getIconName());
@@ -379,6 +378,7 @@ public class TextureEngine
 		return par1;
 	}
 	
+	@SideOnly(Side.CLIENT)
 	public Icon getIconSafe()
 	{
 		if(map != null)

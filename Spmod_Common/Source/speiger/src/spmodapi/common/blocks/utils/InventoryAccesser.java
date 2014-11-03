@@ -248,7 +248,6 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 				else if(newPos.hasTileEntity())
 				{
 					TileEntity tile = newPos.getTileEntity();
-					FMLLog.getLogger().info("Test: "+allowedClasses);
 					if(allowedClasses.contains(tile.getClass().getSimpleName()))
 					{
 						par1 = true;
