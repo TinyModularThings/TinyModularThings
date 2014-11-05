@@ -10,7 +10,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityEnderChest;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.blocks.BlockStack;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;

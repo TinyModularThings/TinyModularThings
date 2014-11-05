@@ -3,7 +3,7 @@ package speiger.src.compactWindmills.client.render;
 import net.minecraft.client.model.ModelBase;
 import net.minecraft.client.model.ModelRenderer;
 import net.minecraft.entity.Entity;
-import speiger.src.api.items.IRotorItem.IRotorModel;
+import speiger.src.api.common.world.items.IRotorItem.IRotorModel;
 
 public class ModelRotor extends ModelBase implements IRotorModel
 {

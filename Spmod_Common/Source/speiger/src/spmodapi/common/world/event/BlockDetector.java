@@ -10,11 +10,11 @@ import net.minecraftforge.event.EventPriority;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import speiger.src.api.blocks.BlockPosition;
-import speiger.src.api.event.BlockPlacedEvent;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.Ticks;
-import speiger.src.api.util.Ticks.ITickReader;
+import speiger.src.api.common.event.BlockPlacedEvent;
+import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.registry.helpers.Ticks;
+import speiger.src.api.common.registry.helpers.Ticks.ITickReader;
+import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.spmodapi.SpmodAPI;
 import cpw.mods.fml.relauncher.Side;
 

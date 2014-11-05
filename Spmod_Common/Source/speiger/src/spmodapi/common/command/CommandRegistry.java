@@ -3,7 +3,7 @@ package speiger.src.spmodapi.common.command;
 import java.util.ArrayList;
 
 import net.minecraft.command.ICommandSender;
-import speiger.src.api.packets.SpmodPacketHelper;
+import speiger.src.api.common.data.packets.SpmodPacketHelper;
 import speiger.src.spmodapi.common.command.commands.ButcherCommand;
 import speiger.src.spmodapi.common.command.commands.ClearItems;
 import speiger.src.spmodapi.common.command.commands.CommandAccesser;

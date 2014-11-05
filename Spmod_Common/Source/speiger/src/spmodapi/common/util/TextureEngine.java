@@ -13,7 +13,7 @@ import net.minecraft.util.Icon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
-import speiger.src.api.blocks.BlockStack;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import cpw.mods.fml.relauncher.Side;

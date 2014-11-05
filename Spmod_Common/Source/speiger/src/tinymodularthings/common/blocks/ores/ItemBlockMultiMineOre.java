@@ -4,10 +4,9 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.item.ItemStack;
-import speiger.src.api.blocks.BlockStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.registry.helpers.SpmodModRegistry;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.items.core.ItemBlockTinyChest;
 
@@ -28,29 +27,6 @@ public class ItemBlockMultiMineOre extends ItemBlockTinyChest
 		}
 		names.put(par0, name);
 		
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if (!SpmodModRegistry.areModsEqual(par0, TinyModularThings.instance))
-		{
-			return;
-		}
-		if (id < Block.blocksList.length && Block.blocksList[id] != null)
-		{
-			LanguageRegister.getLanguageName(new BlockStack(id), names.get(new BlockStack(id).getBlock()), par0);
-		}
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		if (par1.itemID < Block.blocksList.length && Block.blocksList[par1.itemID] != null)
-		{
-			return LanguageRegister.getLanguageName(new BlockStack(par1), names.get(new BlockStack(par1).getBlock()), par0);
-		}
-		return "Nothing";
 	}
 	
 }

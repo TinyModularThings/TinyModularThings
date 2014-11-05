@@ -7,8 +7,8 @@ import net.minecraft.block.material.Material;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import speiger.src.api.blocks.AdvancedPosition;
-import speiger.src.api.blocks.BlockStack;
+import speiger.src.api.common.world.blocks.BlockPosition;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.util.TickHelper;
 import speiger.src.spmodapi.common.world.retrogen.RetroGenTickHandler.OreReplacer;
@@ -35,7 +35,7 @@ public abstract class BlockMultiMineOre extends SpmodBlockBase implements IMulti
 		
 		if (meta > 0)
 		{
-			TickHelper.getInstance().regainOre.add(new OreReplacer(new BlockStack(this, new Random().nextInt(meta)), 2, new AdvancedPosition(par1World, par2, par3, par4)));
+			TickHelper.getInstance().regainOre.add(new OreReplacer(new BlockStack(this, new Random().nextInt(meta)), 2, new BlockPosition(par1World, par2, par3, par4)));
 		}
 		
 	}

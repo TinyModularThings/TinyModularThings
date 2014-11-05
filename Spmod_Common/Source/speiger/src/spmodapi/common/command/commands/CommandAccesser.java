@@ -9,11 +9,11 @@ import net.minecraft.entity.item.EntityItem;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.util.ChunkCoordinates;
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.util.data.AccessConfig;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 
 public class CommandAccesser implements ISpmodCommand
 {
@@ -57,7 +57,7 @@ public class CommandAccesser implements ISpmodCommand
 		}
 		else
 		{
-			par1.sendChatToPlayer(LanguageRegister.createChatMessage("You are not Allowed to use this Command"));
+			par1.sendChatToPlayer(LangProxy.getText("You are not Allowed to use this Command"));
 		}
 	}
 	

@@ -5,8 +5,8 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import speiger.src.api.hopper.HopperUpgrade;
-import speiger.src.api.hopper.IHopper;
+import speiger.src.api.common.world.tiles.interfaces.HopperUpgrade;
+import speiger.src.api.common.world.tiles.interfaces.IHopper;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 
 public class UpgradeTransEnergy implements HopperUpgrade

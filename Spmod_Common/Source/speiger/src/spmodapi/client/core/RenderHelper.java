@@ -7,9 +7,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.client.registry.RenderingRegistry;
-
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class RenderHelper
 {

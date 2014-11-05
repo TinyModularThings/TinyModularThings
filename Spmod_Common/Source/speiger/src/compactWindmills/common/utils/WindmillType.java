@@ -2,7 +2,7 @@ package speiger.src.compactWindmills.common.utils;
 
 import java.util.ArrayList;
 
-import speiger.src.api.blocks.BlockStack;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.spmodapi.common.util.TextureEngine;
 

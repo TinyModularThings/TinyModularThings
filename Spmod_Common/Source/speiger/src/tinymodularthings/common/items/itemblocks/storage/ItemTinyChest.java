@@ -9,15 +9,11 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import speiger.src.api.items.DisplayItem;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyChest;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
-import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -30,21 +26,7 @@ public class ItemTinyChest extends TinyItem
 		setCreativeTab(CreativeTabs.tabFood);
 		setHasSubtypes(true);
 	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod Start)
-	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), "tinychest", Start);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
-	{
-		String slots = LangProxy.getSlot(TinyModularThings.instance, par1.getItemDamage() == 0);
-		par3.add((1 + par1.getItemDamage()) + " " + slots);
-	}
-	
+
 	@Override
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
 	{
@@ -132,17 +114,6 @@ public class ItemTinyChest extends TinyItem
 		{
 			par3List.add(new ItemStack(par1, 1, i));
 		}
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if (!par0.getName().equals(TinyModularThingsLib.Name))
-		{
-			return;
-		}
-		LanguageRegister.getLanguageName(new DisplayItem(id), "tinychest", par0);
-		
 	}
 	
 }

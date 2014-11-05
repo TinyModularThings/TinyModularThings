@@ -4,7 +4,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import speiger.src.api.energy.IBCBattery;
+import speiger.src.api.common.world.items.IBCBattery;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 
 public class FilterSlot extends Slot

@@ -1,8 +1,5 @@
 package speiger.src.spmodapi.common.plugins.BC;
 
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.spmodapi.SpmodAPI;
 import buildcraft.core.triggers.ActionMachineControl;
 
 public class ActionAdvLoop extends ActionMachineControl
@@ -27,16 +24,6 @@ public class ActionAdvLoop extends ActionMachineControl
 			uqine += ".all";
 		}
 		return uqine;
-	}
-	
-	@Override
-	public String getDescription()
-	{
-		if (all)
-		{
-			return LanguageRegister.getLanguageName(new InfoStack(), "loop.all", SpmodAPI.instance) + ": " + tickRate + " Ticks";
-		}
-		return LanguageRegister.getLanguageName(new InfoStack(), "loop", SpmodAPI.instance) + ": " + tickRate + " Ticks";
 	}
 	
 	public boolean allBlocks()

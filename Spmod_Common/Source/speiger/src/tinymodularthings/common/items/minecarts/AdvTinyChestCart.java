@@ -8,12 +8,7 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import speiger.src.api.items.DisplayItem;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityAdvTinyChestCart.EightSlotAdvTinyChestCart;
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityAdvTinyChestCart.FiveSlotAdvTinyChestCart;
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityAdvTinyChestCart.FourSlotAdvTinyChestCart;
@@ -36,31 +31,8 @@ public class AdvTinyChestCart extends TinyItem
 		setCreativeTab(CreativeTabs.tabFood);
 		setHasSubtypes(true);
 	}
+
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
-	{
-		String name = LangProxy.getSlot(getMod(), par1.getItemDamage() == 0);
-		int id = par1.getItemDamage() + 1;
-		par3.add(name + ": " + id);
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if (!SpmodModRegistry.areModsEqual(par0, TinyModularThings.instance))
-		{
-			return;
-		}
-		LanguageRegister.getLanguageName(new DisplayItem(id), "advTinyCart", par0);
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod Start)
-	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "advTinyCart", Start);
-	}
 	
 	@Override
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)

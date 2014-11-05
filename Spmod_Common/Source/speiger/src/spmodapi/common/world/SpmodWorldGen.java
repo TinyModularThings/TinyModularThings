@@ -5,8 +5,8 @@ import java.util.Random;
 
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
-import speiger.src.api.util.SpmodModRegistry;
-import speiger.src.api.world.ISpmodWorldGen;
+import speiger.src.api.common.registry.helpers.SpmodModRegistry;
+import speiger.src.api.common.world.gen.ISpmodWorldGen;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.world.gen.BlueFlowerGen;
 import speiger.src.spmodapi.common.world.retrogen.ChunkCollector;

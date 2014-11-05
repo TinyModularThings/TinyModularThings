@@ -2,19 +2,17 @@ package speiger.src.spmodapi.common.items.debug;
 
 import java.util.List;
 
-import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
+import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.items.SpmodItem;
 import speiger.src.spmodapi.common.util.data.AccessConfig;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -28,17 +26,6 @@ public class ItemAccessAdder extends SpmodItem
 		this.setCreativeTab(APIUtils.tabCrafing);
 	}
 	
-	
-	@Override
-	public void registerItems(int par1, SpmodMod par0)
-	{	
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		return "Inventory Accesser Debug Tool";
-	}
 
 
 	@Override
@@ -68,14 +55,14 @@ public class ItemAccessAdder extends SpmodItem
 						if(player.isSneaking())
 						{
 							AccessConfig.addTileEntity(name);
-							player.sendChatToPlayer(LanguageRegister.createChatMessage("Added TileEntity to Inventory Accessor"));
-							player.sendChatToPlayer(LanguageRegister.createChatMessage("TileEntity name: "+name));
+							player.sendChatToPlayer(LangProxy.getText("Added TileEntity to Inventory Accessor"));
+							player.sendChatToPlayer(LangProxy.getText("TileEntity name: "+name));
 						}
 						else
 						{
 							AccessConfig.removeTileEntity(name);
-							player.sendChatToPlayer(LanguageRegister.createChatMessage("Removed TileEntity from Inventory Accessor"));
-							player.sendChatToPlayer(LanguageRegister.createChatMessage("TileEntity name: "+name));
+							player.sendChatToPlayer(LangProxy.getText("Removed TileEntity from Inventory Accessor"));
+							player.sendChatToPlayer(LangProxy.getText("TileEntity name: "+name));
 						}
 						return false;
 					}

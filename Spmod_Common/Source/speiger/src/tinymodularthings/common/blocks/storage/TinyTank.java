@@ -4,13 +4,9 @@ import ic2.api.tile.IWrenchable;
 
 import java.util.ArrayList;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
@@ -20,10 +16,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import speiger.src.api.blocks.BlockStack;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.WorldReading;
+import speiger.src.api.common.utils.WorldReading;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
@@ -473,15 +467,15 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 							TinyTank bottom = this.getBottomTank();
 							TinyTank top = this.getHighestTank();
 							this.BCTank = true;
-							par1.sendChatToPlayer(LanguageRegister.createChatMessage("Inited Tank to BuildCraft Compatiblity"));
+							par1.sendChatToPlayer(LangProxy.getText("Inited Tank to BuildCraft Compatiblity"));
 							if (bottom.hasBCTank(false) && !bottom.BCTank)
 							{
-								par1.sendChatToPlayer(LanguageRegister.createChatMessage("Found at the Bottom Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
+								par1.sendChatToPlayer(LangProxy.getText("Found at the Bottom Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
 							}
 							
 							if (top.hasBCTank(true) && !top.BCTank)
 							{
-								par1.sendChatToPlayer(LanguageRegister.createChatMessage("Found at the Top Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
+								par1.sendChatToPlayer(LangProxy.getText("Found at the Top Tank a BuildCraft and TinyTank has No Compatiblity Activated. The connection has to be activate too if you want to interact with that tank to"));
 							}
 							
 							return true;
@@ -521,18 +515,17 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 				
 				if (name.equals("Nothing"))
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(new InfoStack(), "tank.stored.nothing", TinyModularThings.instance)));
+					par1.sendChatToPlayer(LangProxy.getText("Nothing Stored"));
 				}
 				else if (name.equals("Unknowen Fluid"))
 				{
-					String tank = LanguageRegister.getLanguageName(new InfoStack(), "tank.stored", TinyModularThings.instance);
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage(tank + ": " + LangProxy.UFluid(TinyModularThings.instance) + " " + LangProxy.getAmount(TinyModularThings.instance) + ": " + amount + "mB / " + this.tank.getCapacity() + "mB"));
+					
+					par1.sendChatToPlayer(LangProxy.getText("Stored: Unknowen Fluid  Amount: " + amount + "mB / " + this.tank.getCapacity() + "mB"));
 					
 				}
 				else
 				{
-					String tank = LanguageRegister.getLanguageName(new InfoStack(), "tank.stored", TinyModularThings.instance);
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage(tank + ": " + name + " " + LangProxy.getAmount(TinyModularThings.instance) + ": " + amount + "mB / " + this.tank.getCapacity() + "mB"));
+					par1.sendChatToPlayer(LangProxy.getText("Stored Fluid: " + name + " Amount: " + amount + "mB / " + this.tank.getCapacity() + "mB"));
 				}
 			}
 		}
@@ -552,13 +545,13 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 		switch (id)
 		{
 			case 0:
-				par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.dissabled", TinyModularThings.instance)));
+				par1.sendChatToPlayer(LangProxy.getText("Dissable Fluid Rendering"));
 				break;
 			case 1:
-				par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.auto", TinyModularThings.instance)));
+				par1.sendChatToPlayer(LangProxy.getText("Automaticly Dissable Fluid Rendering"));
 				break;
 			case 2:
-				par1.sendChatToPlayer(LanguageRegister.createChatMessage(LanguageRegister.getLanguageName(this, "render.tankfluid.enabled", TinyModularThings.instance)));
+				par1.sendChatToPlayer(LangProxy.getText("Force Fluid Rendering"));
 				break;
 		}
 	}

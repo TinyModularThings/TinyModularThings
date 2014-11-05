@@ -5,7 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import speiger.src.api.energy.IBCBattery;
+import speiger.src.api.common.world.items.IBCBattery;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.util.TextureEngine.ItemData;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;

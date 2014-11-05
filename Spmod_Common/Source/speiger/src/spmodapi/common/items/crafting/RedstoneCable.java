@@ -1,7 +1,7 @@
 package speiger.src.spmodapi.common.items.crafting;
 
 import net.minecraft.item.ItemStack;
-import speiger.src.api.util.SpmodMod;
+import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.items.SpmodItem;
 
@@ -14,16 +14,5 @@ public class RedstoneCable extends SpmodItem
 		this.setCreativeTab(APIUtils.tabCrafing);
 	}
 
-	@Override
-	public void registerItems(int par1, SpmodMod par0)
-	{
-		
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		return "Redstone Cable";
-	}
 	
 }

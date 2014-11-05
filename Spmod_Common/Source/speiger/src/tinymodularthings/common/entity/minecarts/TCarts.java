@@ -3,7 +3,7 @@ package speiger.src.tinymodularthings.common.entity.minecarts;
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityMinecartContainer;
 import net.minecraft.world.World;
-import speiger.src.api.blocks.BlockStack;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.tinymodularthings.common.interfaces.IEntityGuiProvider;
 
 public abstract class TCarts extends EntityMinecartContainer implements

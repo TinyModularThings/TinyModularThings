@@ -13,9 +13,9 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.hopper.IHopper;
-import speiger.src.api.hopper.IHopperInventory;
-import speiger.src.api.inventory.TankSlot;
+import speiger.src.api.common.inventory.slot.TankSlot;
+import speiger.src.api.common.world.tiles.interfaces.IHopper;
+import speiger.src.api.common.world.tiles.interfaces.IHopperInventory;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;

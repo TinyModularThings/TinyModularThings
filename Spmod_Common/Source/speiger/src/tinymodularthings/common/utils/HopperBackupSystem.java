@@ -12,10 +12,10 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import speiger.src.api.nbt.DataStorage;
-import speiger.src.api.nbt.DataStorage.LoadingType;
-import speiger.src.api.nbt.INBTReciver;
-import speiger.src.api.util.SpmodMod;
+import speiger.src.api.common.data.nbt.DataStorage;
+import speiger.src.api.common.data.nbt.DataStorage.LoadingType;
+import speiger.src.api.common.data.nbt.INBTReciver;
+import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 

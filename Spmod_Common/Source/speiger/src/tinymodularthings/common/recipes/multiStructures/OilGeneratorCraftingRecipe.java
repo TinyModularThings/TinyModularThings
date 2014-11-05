@@ -4,10 +4,10 @@ import java.util.HashMap;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import speiger.src.api.blocks.BlockPosition;
-import speiger.src.api.blocks.BlockStack;
-import speiger.src.api.util.config.EntityCounter;
-import speiger.src.api.world.IWorldCraftingRecipe;
+import speiger.src.api.common.utils.config.EntityCounter;
+import speiger.src.api.common.world.blocks.BlockPosition;
+import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.api.common.world.gen.IWorldCraftingRecipe;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 
 public class OilGeneratorCraftingRecipe implements IWorldCraftingRecipe

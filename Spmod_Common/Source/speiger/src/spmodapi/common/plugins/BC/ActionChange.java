@@ -2,9 +2,6 @@ package speiger.src.spmodapi.common.plugins.BC;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.spmodapi.SpmodAPI;
 import buildcraft.BuildCraftCore;
 import buildcraft.api.gates.IAction;
 import cpw.mods.fml.relauncher.Side;
@@ -58,15 +55,6 @@ public class ActionChange implements IAction
 		return false;
 	}
 	
-	@Override
-	public String getDescription()
-	{
-		if (on)
-		{
-			return LanguageRegister.getLanguageName(new InfoStack(), "gate.state.on", SpmodAPI.instance);
-		}
-		return LanguageRegister.getLanguageName(new InfoStack(), "gate.state.off", SpmodAPI.instance);
-	}
 	
 	public boolean active()
 	{

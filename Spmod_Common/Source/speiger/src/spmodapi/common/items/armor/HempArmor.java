@@ -21,10 +21,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ISpecialArmor;
-import speiger.src.api.items.DisplayItem;
-import speiger.src.api.items.LanguageItem;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
@@ -33,7 +29,7 @@ import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
+public class HempArmor extends ItemArmor implements ISpecialArmor
 {
 	
 	int type;
@@ -45,12 +41,6 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 		setCreativeTab(APIUtils.tabHemp);
 		APIUtils.hempArmor.customCraftingMaterial = APIItems.hemp;
 		type = par4;
-	}
-	
-	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
-	{
-		return getDisplayName(par1ItemStack, SpmodAPI.instance);
 	}
 	
 	
@@ -402,29 +392,6 @@ public class HempArmor extends ItemArmor implements ISpecialArmor, LanguageItem
 			}
 		}
 		player.addPotionEffect(potion);
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		switch (type)
-		{
-			case 3:
-				return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "hemp.armor.Boots", par0);
-			case 2:
-				return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "hemp.armor.Leggings", par0);
-			case 1:
-				return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "hemp.armor.Plate", par0);
-			case 0:
-				return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "hemp.armor.Helmet", par0);
-			default:
-				return null;
-		}
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{		
 	}
 	
 }

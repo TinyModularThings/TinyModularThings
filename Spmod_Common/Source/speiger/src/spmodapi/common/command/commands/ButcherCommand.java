@@ -15,9 +15,9 @@ import net.minecraft.world.World;
 
 import org.apache.commons.lang3.StringUtils;
 
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
@@ -168,7 +168,7 @@ public class ButcherCommand implements ISpmodCommand
 							}
 						}
 					}
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Killed: " + killed + " Entities"));
+					par1.sendChatToPlayer(LangProxy.getText("Killed: " + killed + " Entities"));
 				}
 			}
 			

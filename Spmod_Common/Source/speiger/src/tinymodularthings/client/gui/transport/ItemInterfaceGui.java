@@ -10,10 +10,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.blocks.BlockPosition;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.packets.SpmodPacketHelper;
+import speiger.src.api.common.data.packets.SpmodPacketHelper;
+import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.common.blocks.transport.MultiStructureItemInterface;
@@ -65,17 +63,14 @@ public class ItemInterfaceGui extends GuiInventoryCore
 			String target = block.getAsBlockStack().getBlockDisplayName();
 			if (target != null)
 			{
-				String name = LanguageRegister.getLanguageName(new InfoStack(), "target", getCore());
-				fontRenderer.drawString(name + ": " + target, xSize / 2 - fontRenderer.getStringWidth(name + ": " + target) / 2, 20, 4210752);
-				String button = LanguageRegister.getLanguageName(this, "slot.selected", getCore());
-				fontRenderer.drawString(button, 50, 35, 4210752);
+				fontRenderer.drawString("Target: " + target, xSize / 2 - fontRenderer.getStringWidth("Target: " + target) / 2, 20, 4210752);
+				fontRenderer.drawString("Choosen Slot", 50, 35, 4210752);
 				fontRenderer.drawString("" + tile.choosenSlot, 80, 56, 4210752);
 			}
 		}
 		else
 		{
-			String name = LanguageRegister.getLanguageName(this, "no.target", getCore());
-			fontRenderer.drawString(name, 60, 35, 4210752);
+			fontRenderer.drawString("No Target", 60, 35, 4210752);
 		}
 	}
 	

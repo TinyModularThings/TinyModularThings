@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import net.minecraft.util.ResourceLocation;
-import speiger.src.api.items.plates.PlateInterface;
-import speiger.src.api.items.plates.PlateManager.PlateInformation;
-import speiger.src.api.util.config.EntityCounter;
+import speiger.src.api.common.utils.config.EntityCounter;
+import speiger.src.api.common.world.items.plates.PlateInterface;
+import speiger.src.api.common.world.items.plates.PlateManager.PlateInformation;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 
 public class PlateHandler implements PlateInterface

@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.packets.IPacketReciver;
+import speiger.src.api.common.data.packets.IPacketReciver;
 import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 
 public class CommandExecuter implements IPacketReciver
 {
@@ -54,7 +54,7 @@ public class CommandExecuter implements IPacketReciver
 								}
 								else
 								{
-									player.sendChatToPlayer(LanguageRegister.createChatMessage("Wrong Arguments or You are not OP. Check the info for right arguments"));
+									player.sendChatToPlayer(LangProxy.getText("Wrong Arguments or You are not OP. Check the info for right arguments"));
 									return;
 								}
 							}

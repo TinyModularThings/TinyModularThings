@@ -4,8 +4,6 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.util.Icon;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.TinyModularThings;
 
@@ -86,10 +84,10 @@ public class PipeInformation
 	
 	public void addInformation(List par1)
 	{
-		par1.add(LanguageRegister.getLanguageName(new InfoStack(), "transfer.energy.limit", TinyModularThings.instance) + ": " + energy + " MJ");
-		par1.add(LanguageRegister.getLanguageName(new InfoStack(), "transfer.fluid.limit", TinyModularThings.instance) + ": " + fluid + " mB");
-		par1.add(LanguageRegister.getLanguageName(new InfoStack(), "transfer.item.limit", TinyModularThings.instance) + ": " + item + " Items");
-		par1.add(LanguageRegister.getLanguageName(new InfoStack(), "pipe.transfer.require", TinyModularThings.instance));
+		par1.add("Energy Transferlimit: " + energy + " MJ");
+		par1.add("Fluid Transferlimit: " + fluid + " mB");
+		par1.add("Item Transferlimit: " + item + " Items");
+		par1.add("Require Tiny Hopper For work");
 		par1.add("No Use Yet!");
 	}
 	

@@ -8,11 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import speiger.src.api.items.DisplayStack;
-import speiger.src.api.items.IExpBottle;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.api.common.world.items.IExpBottle;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.items.SpmodItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
@@ -32,31 +28,6 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 		this.setNoRepair();
 		this.setMaxStackSize(1);
 		this.setCreativeTab(APIUtils.tabCrafing);
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if (!SpmodModRegistry.areModsEqual(par0, getMod()))
-		{
-			return;
-		}
-		for (int i = 0; i < exp.length; i++)
-		{
-			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, 0)), "exp.bottle." + exp[i], par0);
-		}
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod Start)
-	{
-		if (par1.getTagCompound() == null)
-		{
-			par1 = this.getExpBottle(par1.itemID, 0, false, false);
-		}
-		NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Exp");
-		return LanguageRegister.getLanguageName(new DisplayStack(par1), "exp.bottle." + exp[nbt.getInteger("ID")], Start);
-		
 	}
 	
 	@Override

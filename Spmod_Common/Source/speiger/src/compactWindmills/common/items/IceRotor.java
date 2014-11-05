@@ -11,13 +11,9 @@ import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
-import speiger.src.api.items.DisplayItem;
-import speiger.src.api.items.IRotorItem;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.nbt.NBTHelper;
-import speiger.src.api.tiles.IWindmill;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.api.common.data.nbt.NBTHelper;
+import speiger.src.api.common.world.items.IRotorItem;
+import speiger.src.api.common.world.tiles.interfaces.IWindmill;
 import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.common.core.CWPreference;
 import speiger.src.compactWindmills.common.items.ItemRotor.BasicRotorType;
@@ -35,16 +31,6 @@ public class IceRotor extends SpmodItem implements IRotorItem
 		super(par1);
 		this.setMaxDamage(Short.MAX_VALUE);
 		this.setMaxStackSize(1);
-	}
-
-	@Override
-	public void registerItems(int par1, SpmodMod par0)
-	{
-		if(!SpmodModRegistry.areModsEqual(par0, CompactWindmills.instance))
-		{
-			return;
-		}
-		LanguageRegister.getLanguageName(new DisplayItem(par1), "rotor.ice", par0);
 	}
 	
 	@Override
@@ -211,12 +197,6 @@ public class IceRotor extends SpmodItem implements IRotorItem
 	public IRotorModel getCustomModel(ItemStack par1, int size)
 	{
 		return null;
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "rotor.ice", CompactWindmills.instance);
 	}
 	
 }

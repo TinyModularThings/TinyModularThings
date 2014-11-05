@@ -3,13 +3,13 @@ package speiger.src.tinymodularthings.common.world;
 import java.util.HashMap;
 
 import net.minecraftforge.event.ForgeSubscribe;
-import speiger.src.api.blocks.BlockPosition;
-import speiger.src.api.blocks.BlockStack;
-import speiger.src.api.event.BlockPlacedEvent;
-import speiger.src.api.hopper.CopiedIInventory;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.world.IWorldCraftingRecipe;
-import speiger.src.api.world.WorldCraftingManager;
+import speiger.src.api.common.event.BlockPlacedEvent;
+import speiger.src.api.common.inventory.container.CopiedIInventory;
+import speiger.src.api.common.world.blocks.BlockPosition;
+import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.api.common.world.gen.IWorldCraftingRecipe;
+import speiger.src.api.common.world.gen.WorldCraftingManager;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 
@@ -61,7 +61,7 @@ public class WorldCrafter
 					}
 					else
 					{
-						evt.placer.sendChatToPlayer(LanguageRegister.createChatMessage("MultiStructure is not Finish"));
+						evt.placer.sendChatToPlayer(LangProxy.getText("MultiStructure is not Finish"));
 					}
 				}
 				else

@@ -8,9 +8,9 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
+import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 
 public class ItemTinyInfo extends TinyItem
@@ -21,18 +21,6 @@ public class ItemTinyInfo extends TinyItem
 		super(par1);
 		setMaxStackSize(1);
 		setCreativeTab(CreativeTabs.tabFood);
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod Start)
-	{
-		return "Debug Tool";
 	}
 
 	@Override
@@ -48,16 +36,16 @@ public class ItemTinyInfo extends TinyItem
 				adv.loadInformation(data);
 				if(data.size() > 0)
 				{
-					player.sendChatToPlayer(LanguageRegister.createChatMessage("Following infos:"));
+					player.sendChatToPlayer(LangProxy.getText("Following infos:"));
 					for(String key : data)
 					{
-						player.sendChatToPlayer(LanguageRegister.createChatMessage(key));
+						player.sendChatToPlayer(LangProxy.getText(key));
 					}
 					return true;
 				}
 				else
 				{
-					player.sendChatToPlayer(LanguageRegister.createChatMessage("No Problems / Debug Infos"));
+					player.sendChatToPlayer(LangProxy.getText("No Problems / Debug Infos"));
 				}
 			}
 		}

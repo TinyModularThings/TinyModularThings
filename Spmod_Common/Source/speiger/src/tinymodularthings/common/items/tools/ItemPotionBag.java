@@ -13,12 +13,8 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
-import speiger.src.api.items.DisplayItem;
-import speiger.src.api.items.IItemGui;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.nbt.NBTHelper;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.api.client.gui.IItemGui;
+import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.items.GuiPotionBag;
@@ -39,22 +35,6 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 		this.setMaxStackSize(1);
 		this.setCreativeTab(CreativeTabs.tabFood);
 		MinecraftForge.EVENT_BUS.register(this);
-	}
-
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if(!SpmodModRegistry.areModsEqual(getMod(), par0))
-		{
-			return;
-		}
-		LanguageRegister.getLanguageName(new DisplayItem(id), "potion.bag", par0);
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "potion.bag", par0);
 	}
 
 	@Override

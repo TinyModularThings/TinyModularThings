@@ -5,7 +5,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import speiger.src.api.items.IExpBottle;
+import speiger.src.api.common.world.items.IExpBottle;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import cpw.mods.fml.relauncher.Side;

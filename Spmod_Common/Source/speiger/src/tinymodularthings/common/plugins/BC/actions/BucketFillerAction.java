@@ -2,8 +2,6 @@ package speiger.src.tinymodularthings.common.plugins.BC.actions;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.tinymodularthings.TinyModularThings;
 import buildcraft.api.gates.IAction;
 import cpw.mods.fml.relauncher.Side;
@@ -52,11 +50,6 @@ public class BucketFillerAction implements IAction
 	{
 		return false;
 	}
-	
-	@Override
-	public String getDescription()
-	{
-		return fill ? LanguageRegister.getLanguageName(new InfoStack(), "bucketFiller.fill", TinyModularThings.instance) : LanguageRegister.getLanguageName(new InfoStack(), "bucketFiller.drain", TinyModularThings.instance);
-	}
+
 	
 }

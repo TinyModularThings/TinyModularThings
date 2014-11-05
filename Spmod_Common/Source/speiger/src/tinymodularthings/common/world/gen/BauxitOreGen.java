@@ -4,10 +4,10 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
-import speiger.src.api.blocks.BlockStack;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.config.IConfigHelper;
-import speiger.src.api.world.ISpmodWorldGen;
+import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.utils.config.IConfigHelper;
+import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.api.common.world.gen.ISpmodWorldGen;
 import speiger.src.spmodapi.common.util.proxy.WorldProxy;
 import speiger.src.spmodapi.common.world.genHelper.MetaOreGenerator;
 import speiger.src.tinymodularthings.TinyModularThings;

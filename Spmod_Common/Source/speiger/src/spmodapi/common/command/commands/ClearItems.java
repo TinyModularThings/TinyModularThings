@@ -8,9 +8,9 @@ import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.util.AxisAlignedBB;
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
@@ -82,7 +82,7 @@ public class ClearItems implements ISpmodCommand
 	{
 		if (sub == null)
 		{
-			par1.sendChatToPlayer(LanguageRegister.createChatMessage("Could not delete items"));
+			par1.sendChatToPlayer(LangProxy.getText("Could not delete items"));
 			return;
 		}
 		
@@ -90,10 +90,10 @@ public class ClearItems implements ISpmodCommand
 		{
 			if (!FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().isPlayerOpped(par1.getCommandSenderName()))
 			{
-				par1.sendChatToPlayer(LanguageRegister.createChatMessage("You are not allowed to use this command"));
+				par1.sendChatToPlayer(LangProxy.getText("You are not allowed to use this command"));
 				return;
 			}
-			par1.sendChatToPlayer(LanguageRegister.createChatMessage("Clearing All Entity Items in " + par1.getEntityWorld().provider.getDimensionName()));
+			par1.sendChatToPlayer(LangProxy.getText("Clearing All Entity Items in " + par1.getEntityWorld().provider.getDimensionName()));
 			List<Entity> entities = par1.getEntityWorld().loadedEntityList;
 			for (Entity en : entities)
 			{
@@ -110,14 +110,14 @@ public class ClearItems implements ISpmodCommand
 				Integer in = Integer.parseInt(arg[0]);
 				if (in != null && in.intValue() > 50 && !FMLCommonHandler.instance().getMinecraftServerInstance().getConfigurationManager().isPlayerOpped(par1.getCommandSenderName()))
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("You are not allowed to clearing items in a that big Range"));
+					par1.sendChatToPlayer(LangProxy.getText("You are not allowed to clearing items in a that big Range"));
 					return;
 				}
 				if (in == null)
 				{
 					in = 10;
 				}
-				par1.sendChatToPlayer(LanguageRegister.createChatMessage("Removing Entities in a " + in + " Blocks Radius"));
+				par1.sendChatToPlayer(LangProxy.getText("Removing Entities in a " + in + " Blocks Radius"));
 				List<EntityItem> items = par1.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getAABBPool().getAABB(par1.getPlayerCoordinates().posX, par1.getPlayerCoordinates().posY, par1.getPlayerCoordinates().posZ, par1.getPlayerCoordinates().posX, par1.getPlayerCoordinates().posY, par1.getPlayerCoordinates().posZ).expand(in, in, in));
 				for (EntityItem item : items)
 				{
@@ -129,7 +129,7 @@ public class ClearItems implements ISpmodCommand
 			}
 			else
 			{
-				par1.sendChatToPlayer(LanguageRegister.createChatMessage("Removing Entities in a 10 Blocks Radius"));
+				par1.sendChatToPlayer(LangProxy.getText("Removing Entities in a 10 Blocks Radius"));
 				List<EntityItem> items = par1.getEntityWorld().getEntitiesWithinAABB(EntityItem.class, AxisAlignedBB.getAABBPool().getAABB(par1.getPlayerCoordinates().posX, par1.getPlayerCoordinates().posY, par1.getPlayerCoordinates().posZ, par1.getPlayerCoordinates().posX, par1.getPlayerCoordinates().posY, par1.getPlayerCoordinates().posZ).expand(10, 10, 10));
 				for (EntityItem item : items)
 				{

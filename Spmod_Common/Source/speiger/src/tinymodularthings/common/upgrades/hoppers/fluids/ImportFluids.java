@@ -10,9 +10,9 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
-import speiger.src.api.hopper.HopperUpgrade;
-import speiger.src.api.hopper.IHopper;
-import speiger.src.api.util.WorldReading;
+import speiger.src.api.common.utils.WorldReading;
+import speiger.src.api.common.world.tiles.interfaces.HopperUpgrade;
+import speiger.src.api.common.world.tiles.interfaces.IHopper;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 
 public class ImportFluids implements HopperUpgrade

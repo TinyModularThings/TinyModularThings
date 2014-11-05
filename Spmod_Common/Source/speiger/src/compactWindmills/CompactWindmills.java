@@ -11,11 +11,10 @@ import java.io.File;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
-import speiger.src.api.language.LanguageLoader;
-import speiger.src.api.util.LogProxy;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
-import speiger.src.api.util.config.ConfigBoolean;
+import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.registry.helpers.SpmodModRegistry;
+import speiger.src.api.common.utils.LogProxy;
+import speiger.src.api.common.utils.config.ConfigBoolean;
 import speiger.src.compactWindmills.common.blocks.BlockWindmill;
 import speiger.src.compactWindmills.common.blocks.ItemBlockWindmill;
 import speiger.src.compactWindmills.common.blocks.WindMill;
@@ -62,8 +61,6 @@ public class CompactWindmills implements SpmodMod
 	{
 		logger = new LogProxy(this);
 		SpmodModRegistry.registerMod(this);
-		LanguageLoader loader = new LanguageLoader(this);
-		loader.registerAllAviableLanguages();
 		Configuration config = new Configuration(new File(evt.getModConfigurationDirectory().getAbsolutePath() + "/Spmod/CompactWindmills.cfg"));
 		try
 		{

@@ -7,8 +7,8 @@ import java.util.Random;
 
 import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
-import speiger.src.api.blocks.AdvancedPosition;
-import speiger.src.api.blocks.BlockStack;
+import speiger.src.api.common.world.blocks.BlockPosition;
+import speiger.src.api.common.world.blocks.BlockStack;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
@@ -69,9 +69,9 @@ public class RetroGenTickHandler implements ITickHandler
 		BlockStack block;
 		int delay;
 		int cuDelay = 0;
-		AdvancedPosition pos;
+		BlockPosition pos;
 		
-		public OreReplacer(BlockStack block, int delay, AdvancedPosition pos)
+		public OreReplacer(BlockStack block, int delay, BlockPosition pos)
 		{
 			this.block = block;
 			this.delay = delay;
@@ -80,7 +80,7 @@ public class RetroGenTickHandler implements ITickHandler
 		
 		public boolean generate()
 		{
-			if (DimensionManager.getWorld(pos.dim).isRemote)
+			if (DimensionManager.getWorld(pos.getDimensionID()).isRemote)
 			{
 				return false;
 			}
@@ -91,7 +91,7 @@ public class RetroGenTickHandler implements ITickHandler
 			}
 			else
 			{
-				return pos.setBlock(block.getBlockID(), block.getMeta());
+				return pos.setBlock(block);
 			}
 		}
 		

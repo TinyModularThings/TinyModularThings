@@ -10,9 +10,9 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.packets.SpmodPacketHelper.ModularPacket;
-import speiger.src.api.packets.SpmodPacketHelper.PacketType;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.PacketType;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import speiger.src.tinymodularthings.common.pipes.AluFluidExtractionPipe;
@@ -120,13 +120,13 @@ public class GuiAluPipe extends GuiContainer
 		{
 			if(text.getText().length() == 0)
 			{
-				this.mc.thePlayer.sendChatToPlayer(LanguageRegister.createChatMessage("You need a number"));
+				this.mc.thePlayer.sendChatToPlayer(LangProxy.getText("You need a number"));
 				return;
 			}
 			int number = Integer.parseInt(text.getText());
 			if(number > 1000 || number < 1)
 			{
-				this.mc.thePlayer.sendChatToPlayer(LanguageRegister.createChatMessage("Number must be between 1 and 1000"));
+				this.mc.thePlayer.sendChatToPlayer(LangProxy.getText("Number must be between 1 and 1000"));
 			}
 			else
 			{
@@ -143,8 +143,8 @@ public class GuiAluPipe extends GuiContainer
 		modul.InjectNumber(Integer.parseInt(text.getText()));
 		
 		PacketDispatcher.sendPacketToServer(modul.finishPacket());
-		this.mc.thePlayer.sendChatToPlayer(LanguageRegister.createChatMessage("Setted up extracting: "+Integer.parseInt(text.getText())+"mB "));
-		this.mc.thePlayer.sendChatToPlayer(LanguageRegister.createChatMessage(loop ? "AutoLoop Active" : "AutoLoop Deactive"));
+		this.mc.thePlayer.sendChatToPlayer(LangProxy.getText("Setted up extracting: "+Integer.parseInt(text.getText())+"mB "));
+		this.mc.thePlayer.sendChatToPlayer(LangProxy.getText(loop ? "AutoLoop Active" : "AutoLoop Deactive"));
 		this.mc.thePlayer.closeScreen();
 	}
 	

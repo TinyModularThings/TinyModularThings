@@ -8,10 +8,10 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.energy.EnergyUsageProvider;
-import speiger.src.api.hopper.HopperUpgrade;
-import speiger.src.api.hopper.IHopper;
-import speiger.src.api.util.WorldReading;
+import speiger.src.api.common.utils.WorldReading;
+import speiger.src.api.common.world.tiles.energy.EnergyUsageProvider;
+import speiger.src.api.common.world.tiles.interfaces.HopperUpgrade;
+import speiger.src.api.common.world.tiles.interfaces.IHopper;
 import speiger.src.tinymodularthings.common.utils.HopperType;
 
 public class ImportEnergy implements HopperUpgrade

@@ -7,9 +7,11 @@ import java.util.List;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
-import speiger.src.api.language.LanguageRegister;
+import net.minecraft.util.EnumChatFormatting;
+import speiger.src.api.common.utils.MathUtils;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 
 public class TimerCommand implements ISpmodCommand
 {
@@ -118,16 +120,12 @@ public class TimerCommand implements ISpmodCommand
 				
 				if (flag)
 				{
-					int TotalTime = totalTime / 20;
-					int Sekunde = TotalTime % 60;
-					int Minute = TotalTime / 60 % 60;
-					int Stunde = TotalTime / 60 / 60 % 24;
-					String time = "TotalTime: " + Stunde + ":" + Minute + ":" + Sekunde;
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage(time));
+					String time = "TotalTime: "+MathUtils.getTicksInTimeShort(totalTime);
+					par1.sendChatToPlayer(LangProxy.getText(time));
 				}
 				else
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("No Timer running"));
+					par1.sendChatToPlayer(LangProxy.getText("No Timer running", EnumChatFormatting.RED));
 				}
 			}
 			else if (key.equalsIgnoreCase("remove Time"))
@@ -141,7 +139,7 @@ public class TimerCommand implements ISpmodCommand
 					}
 					catch (Exception e)
 					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Text is not a valid Number"));
+						par1.sendChatToPlayer(LangProxy.getText("Text is not a valid Number", EnumChatFormatting.YELLOW));
 						return;
 					}
 					
@@ -157,13 +155,13 @@ public class TimerCommand implements ISpmodCommand
 					}
 					catch (Exception e)
 					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Text is not a valid Numbers, Valid Row: Sek, Min, Hour"));
+						par1.sendChatToPlayer(LangProxy.getText("Text is not a valid Numbers, Valid Row: Sek, Min, Hour", EnumChatFormatting.DARK_RED));
 						return;
 					}
 				}
 				else
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Not Valid String lenght"));
+					par1.sendChatToPlayer(LangProxy.getText("Argument Lenght is not valid", EnumChatFormatting.RED));
 					return;
 				}
 				
@@ -175,28 +173,24 @@ public class TimerCommand implements ISpmodCommand
 						if (totalTime <= 0)
 						{
 							nbt.getCompoundTag("SpmodAPIData").removeTag("CountdownTime");
-							par1.sendChatToPlayer(LanguageRegister.createChatMessage("Removed Timer"));
+							par1.sendChatToPlayer(LangProxy.getText("Removed Timer", EnumChatFormatting.BLUE));
 						}
 						else
 						{
 							int result = total - totalTime;
-							int TotalTime = result / 20;
-							int Sekunde = TotalTime % 60;
-							int Minute = TotalTime / 60 % 60;
-							int Stunde = TotalTime / 60 / 60 % 24;
-							String time = "Set TotalTime to: " + Stunde + ":" + Minute + ":" + Sekunde + " (" + result + " Total Ticks)";
+							String time = "Set TotalTime to: "+MathUtils.getTicksInTimeShort(result)+" Total Ticks: "+result;
 							nbt.getCompoundTag("SpmodAPIData").setInteger("CountdownTime", result);
-							par1.sendChatToPlayer(LanguageRegister.createChatMessage(time));
+							par1.sendChatToPlayer(LangProxy.getText(time, EnumChatFormatting.AQUA));
 						}
 					}
 					else
 					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Never Used a Timer"));
+						par1.sendChatToPlayer(LangProxy.getText("Never Used a Timer"));
 					}
 				}
 				else
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Time should be bigger than 0"));
+					par1.sendChatToPlayer(LangProxy.getText("Time should be bigger than 0", EnumChatFormatting.GREEN));
 				}
 			}
 			else if (key.equalsIgnoreCase("Stop"))
@@ -204,11 +198,11 @@ public class TimerCommand implements ISpmodCommand
 				if (nbt.hasKey("SpmodAPIData") && nbt.getCompoundTag("SpmodAPIData").hasKey("CountdownTime"))
 				{
 					nbt.getCompoundTag("SpmodAPIData").removeTag("CountdownTime");
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Removed Timer"));
+					par1.sendChatToPlayer(LangProxy.getText("Removed Timer", EnumChatFormatting.GREEN));
 				}
 				else
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Nothing to Remove"));
+					par1.sendChatToPlayer(LangProxy.getText("Nothing to Remove"));
 				}
 			}
 			else if (key.equalsIgnoreCase("add"))
@@ -222,7 +216,7 @@ public class TimerCommand implements ISpmodCommand
 					}
 					catch (Exception e)
 					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Text is not a valid Number"));
+						par1.sendChatToPlayer(LangProxy.getText("Text is not a valid Number", EnumChatFormatting.RED));
 						return;
 					}
 					
@@ -238,13 +232,13 @@ public class TimerCommand implements ISpmodCommand
 					}
 					catch (Exception e)
 					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Text is not a valid Numbers, Valid Row: Sek, Min, Hour"));
+						par1.sendChatToPlayer(LangProxy.getText("Text is not a valid Numbers, Valid Row: Sek, Min, Hour", EnumChatFormatting.RED));
 						return;
 					}
 				}
 				else
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Not Valid String lenght"));
+					par1.sendChatToPlayer(LangProxy.getText("Not Valid String lenght", EnumChatFormatting.RED));
 					return;
 				}
 				
@@ -255,19 +249,19 @@ public class TimerCommand implements ISpmodCommand
 					{
 						cont = nbt.getCompoundTag("SpmodAPIData").getInteger("CountdownTime");
 						nbt.getCompoundTag("SpmodAPIData").setInteger("CountdownTime", cont + total);
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Total Ticks Added: " + total));
+						par1.sendChatToPlayer(LangProxy.getText("Total Ticks Added: " + total));
 					}
 					else
 					{
 						NBTTagCompound time = new NBTTagCompound();
 						time.setInteger("CountdownTime", total);
 						nbt.setTag("SpmodAPIData", time);
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Total Ticks Added: " + total));
+						par1.sendChatToPlayer(LangProxy.getText("Total Ticks Added: " + total));
 					}
 				}
 				else
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Time should be bigger than 0"));
+					par1.sendChatToPlayer(LangProxy.getText("Time should be bigger than 0"));
 				}
 			}
 			else if (key.equalsIgnoreCase("set"))
@@ -281,7 +275,7 @@ public class TimerCommand implements ISpmodCommand
 					}
 					catch (Exception e)
 					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Text is not a valid Number"));
+						par1.sendChatToPlayer(LangProxy.getText("Text is not a valid Number"));
 						return;
 					}
 					
@@ -297,13 +291,13 @@ public class TimerCommand implements ISpmodCommand
 					}
 					catch (Exception e)
 					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Text is not a valid Numbers, Valid Row: Sek, Min, Hour"));
+						par1.sendChatToPlayer(LangProxy.getText("Text is not a valid Numbers, Valid Row: Sek, Min, Hour"));
 						return;
 					}
 				}
 				else
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Not Valid String lenght"));
+					par1.sendChatToPlayer(LangProxy.getText("Not Valid String lenght"));
 					return;
 				}
 				
@@ -312,19 +306,19 @@ public class TimerCommand implements ISpmodCommand
 					if (nbt.hasKey("SpmodAPIData"))
 					{
 						nbt.getCompoundTag("SpmodAPIData").setInteger("CountdownTime", total);
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Set Total Time to: " + total));
+						par1.sendChatToPlayer(LangProxy.getText("Set Total Time to: " + total));
 					}
 					else
 					{
 						NBTTagCompound time = new NBTTagCompound();
 						time.setInteger("CountdownTime", total);
 						nbt.setTag("SpmodAPIData", time);
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Set Total Time to: " + total));
+						par1.sendChatToPlayer(LangProxy.getText("Set Total Time to: " + total));
 					}
 				}
 				else
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Time should be bigger than 0"));
+					par1.sendChatToPlayer(LangProxy.getText("Time should be bigger than 0"));
 				}
 			}
 			

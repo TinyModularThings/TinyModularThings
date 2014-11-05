@@ -10,14 +10,11 @@ import static speiger.src.spmodapi.common.lib.SpmodAPILib.Version;
 
 import java.io.File;
 
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
-import speiger.src.api.language.LanguageLoader;
-import speiger.src.api.nbt.DataStorage;
-import speiger.src.api.util.LogProxy;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
-import speiger.src.api.util.Ticks;
+import speiger.src.api.common.data.nbt.DataStorage;
+import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.registry.helpers.SpmodModRegistry;
+import speiger.src.api.common.registry.helpers.Ticks;
+import speiger.src.api.common.utils.LogProxy;
 import speiger.src.spmodapi.common.command.CommandRegistry;
 import speiger.src.spmodapi.common.command.commands.CommandServerTimer;
 import speiger.src.spmodapi.common.config.SpmodConfig;
@@ -26,7 +23,6 @@ import speiger.src.spmodapi.common.core.SpmodAPICore;
 import speiger.src.spmodapi.common.handler.SpmodPacketHandler;
 import speiger.src.spmodapi.common.plugins.PluginLoader;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 import speiger.src.spmodapi.common.world.WorldLoader;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -69,8 +65,6 @@ public class SpmodAPI implements SpmodMod
 		SpmodModRegistry.registerMod(this);
 		log = new LogProxy(this);
 		TextureEngine.getTextures();
-		LanguageLoader language = new LanguageLoader(this);
-		language.registerAllAviableLanguages();
 		SpmodConfig.getInstance().loadSpmodCondig(new File(evt.getModConfigurationDirectory().getAbsolutePath() + "/Spmod/SpmodAPIBeta.cfg"));
 		NetworkRegistry.instance().registerChannel(new SpmodPacketHandler(), "Spmod");
 		instance = this;

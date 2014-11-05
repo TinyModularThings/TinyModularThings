@@ -15,7 +15,6 @@ import speiger.src.spmodapi.common.blocks.deko.TileLamp;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.core.SpmodAPICore;
 import speiger.src.spmodapi.common.util.ForgeRegister;
-import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.RenderingRegistry;
 

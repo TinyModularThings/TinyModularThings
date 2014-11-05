@@ -15,8 +15,7 @@ import net.minecraftforge.fluids.FluidStack;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.packets.SpmodPacketHelper;
+import speiger.src.api.common.data.packets.SpmodPacketHelper;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.machine.BucketFillerBasic;
@@ -37,10 +36,10 @@ public class BucketFillerGui extends GuiInventoryCore
 	
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		String name = LanguageRegister.getLanguageName(this, "bucketFiller.Basic", getCore());
+		String name = "Basic Bucket Filler";
 		if (basic instanceof SelfPoweredBucketFiller)
 		{
-			name = LanguageRegister.getLanguageName(this, "self.bucketfiller", getCore());
+			name = "SelfPowered Bucket Filler";
 		}
 		
 		this.fontRenderer.drawString(name, this.xSize / 2 - this.fontRenderer.getStringWidth(name) / 2, 6, 4210752);

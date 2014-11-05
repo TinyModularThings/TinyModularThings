@@ -6,7 +6,7 @@ import java.util.List;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
-import speiger.src.api.blocks.BlockPosition;
+import speiger.src.api.common.world.blocks.BlockPosition;
 
 public class BlockPositionList extends ArrayList<BlockPosition>
 {

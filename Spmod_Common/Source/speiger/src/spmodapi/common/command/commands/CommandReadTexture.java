@@ -7,12 +7,12 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.Item;
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TextureEngine.BlockData;
 import speiger.src.spmodapi.common.util.TextureEngine.ItemData;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 
 public class CommandReadTexture implements ISpmodCommand
 {
@@ -66,7 +66,7 @@ public class CommandReadTexture implements ISpmodCommand
 				{
 					end = end + " : "+key;
 				}
-				par1.sendChatToPlayer(LanguageRegister.createChatMessage("Texture Info: "+end));
+				par1.sendChatToPlayer(LangProxy.getText("Texture Info: "+end));
 			}
 			else if(result.equalsIgnoreCase("Item"))
 			{
@@ -78,16 +78,16 @@ public class CommandReadTexture implements ISpmodCommand
 					end = end + " : "+key;
 				}
 				
-				par1.sendChatToPlayer(LanguageRegister.createChatMessage("Texture Info: "+end));
+				par1.sendChatToPlayer(LangProxy.getText("Texture Info: "+end));
 			}
 			else
 			{
-				par1.sendChatToPlayer(LanguageRegister.createChatMessage("argument 3 heist nicht Block oder Item"));
+				par1.sendChatToPlayer(LangProxy.getText("argument 3 heist nicht Block oder Item"));
 			}
 		}
 		else
 		{
-			par1.sendChatToPlayer(LanguageRegister.createChatMessage("3 Argumente, ID, Meta, Block/Item"));
+			par1.sendChatToPlayer(LangProxy.getText("3 Argumente, ID, Meta, Block/Item"));
 		}
 	}
 	

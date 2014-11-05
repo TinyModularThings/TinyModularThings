@@ -12,14 +12,10 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.energy.IBCBattery;
-import speiger.src.api.energy.IEnergyProvider;
-import speiger.src.api.energy.IEnergySubject;
-import speiger.src.api.items.DisplayItem;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.nbt.NBTHelper;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.api.common.data.nbt.NBTHelper;
+import speiger.src.api.common.world.items.IBCBattery;
+import speiger.src.api.common.world.tiles.energy.IEnergyProvider;
+import speiger.src.api.common.world.tiles.energy.IEnergySubject;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import buildcraft.api.power.IPowerReceptor;
@@ -75,16 +71,6 @@ public class Batteries extends TinyItem implements IBCBattery
 		NBTTagCompound nbt = new NBTTagCompound();
 		stack.setTagInfo("Battery", nbt);
 		return stack;
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if(!SpmodModRegistry.areModsEqual(par0, getMod()))
-		{
-			return;
-		}
-		LanguageRegister.getLanguageName(new DisplayItem(id), name, par0);
 	}
 	
 	@Override
@@ -217,12 +203,6 @@ public class Batteries extends TinyItem implements IBCBattery
 	{
 		double pro = ((double)getStoredMJ(par1) / (double)getMaxStorage(par1)) * 100;
 		return (int)pro;
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), name, par0);
 	}
 	
 	@Override

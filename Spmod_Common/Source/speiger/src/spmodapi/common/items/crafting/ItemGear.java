@@ -5,10 +5,6 @@ import java.util.List;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import speiger.src.api.items.DisplayItem;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.items.SpmodItem;
@@ -35,25 +31,7 @@ public class ItemGear extends SpmodItem
 			par3List.add(getGearFromType(type));
 		}
 	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if(!SpmodModRegistry.areModsEqual(par0, getMod()))
-		{
-			return;
-		}
-		for(int i = 0;i < GearType.values().length;i++)
-		{
-			LanguageRegister.getLanguageName(new DisplayItem(id), "gear." + GearType.values()[i].getName(), par0);
-		}
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.itemID), "gear." + GearType.values()[par1.getItemDamage()].getName(), par0);
-	}
+
 	
 	@Override
 	public void registerTexture(TextureEngine par1)

@@ -10,10 +10,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.items.plates.PlateInterface;
-import speiger.src.api.items.plates.PlateManager;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.WorldReading;
+import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.world.items.plates.PlateInterface;
+import speiger.src.api.common.world.items.plates.PlateManager;
 import speiger.src.spmodapi.common.blocks.deko.MultiPlate;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
@@ -83,23 +82,6 @@ public class ItemMultiPlate extends SpmodItem
 				par3.add(new ItemStack(par1, 1, manager.getInfoFromIdentity(manager.getAllIdentifiers().get(i)).getMetadata()));
 			}
 		}
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		PlateInterface manager = PlateManager.plates;
-		if (manager != null && manager.getAllIdentifiers().size() > 0)
-		{
-			return manager.getInfoFromIdentity(manager.getAllIdentifiers().get(par1.getItemDamage())).getDisplayName();
-		}
-		return "Nothing";
 	}
 	
 	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)

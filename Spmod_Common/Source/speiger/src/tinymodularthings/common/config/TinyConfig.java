@@ -4,7 +4,7 @@ import java.io.File;
 
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
-import speiger.src.api.util.config.ConfigBoolean;
+import speiger.src.api.common.utils.config.ConfigBoolean;
 import speiger.src.spmodapi.common.config.configType.ConfigBlock;
 import speiger.src.spmodapi.common.config.configType.ConfigItem;
 import speiger.src.spmodapi.common.util.TextureEngine;

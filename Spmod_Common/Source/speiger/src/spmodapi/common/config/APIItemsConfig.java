@@ -3,10 +3,7 @@ package speiger.src.spmodapi.common.config;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
-import speiger.src.api.items.DisplayStack;
-import speiger.src.api.items.plates.PlateManager;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.api.common.world.items.plates.PlateManager;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.fluids.hemp.ItemHempResin;
 import speiger.src.spmodapi.common.items.SpmodItem;
@@ -174,6 +171,6 @@ public class APIItemsConfig
 	
 	static String getDisplayName(String par1)
 	{
-		return LanguageRegister.getLanguageName(new DisplayStack(null, 0), par1, SpmodAPI.instance);
+		return "";
 	}
 }

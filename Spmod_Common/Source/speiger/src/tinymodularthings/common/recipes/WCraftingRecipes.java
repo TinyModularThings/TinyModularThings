@@ -1,6 +1,6 @@
 package speiger.src.tinymodularthings.common.recipes;
 
-import speiger.src.api.world.WorldCraftingManager;
+import speiger.src.api.common.world.gen.WorldCraftingManager;
 import speiger.src.tinymodularthings.common.recipes.multiStructures.OilGeneratorCraftingRecipe;
 
 public class WCraftingRecipes

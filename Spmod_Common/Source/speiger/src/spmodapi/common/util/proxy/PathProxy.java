@@ -16,11 +16,10 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import speiger.src.api.recipe.pressureFurnace.PressureRecipe;
-import speiger.src.api.recipe.pressureFurnace.helper.PressureRecipeList;
+import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipe;
+import speiger.src.api.common.registry.recipes.pressureFurnace.helper.PressureRecipeList;
 import buildcraft.api.recipes.AssemblyRecipe;
 import cpw.mods.fml.common.FMLCommonHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class PathProxy
 {

@@ -13,11 +13,11 @@ import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.packets.IPacketReciver;
-import speiger.src.api.packets.SpmodPacketHelper;
-import speiger.src.api.util.RedstoneUtils;
-import speiger.src.api.util.WorldReading;
+import speiger.src.api.common.data.packets.IPacketReciver;
+import speiger.src.api.common.data.packets.SpmodPacketHelper;
+import speiger.src.api.common.utils.RedstoneUtils;
+import speiger.src.api.common.utils.WorldReading;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.pipes.GuiAluPipe;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
@@ -264,7 +264,7 @@ public class AluFluidExtractionPipe extends Pipe<PipeTransportFluids> implements
 			{
 				if(entityplayer.isSneaking())
 				{
-					entityplayer.sendChatToPlayer(LanguageRegister.createChatMessage("Current Setup: " + FluidSetup + "mB " + (continueless ? "Loops Automaticly with Redstone Signal" : "Require Redstone Clock")));
+					entityplayer.sendChatToPlayer(LangProxy.getText("Current Setup: " + FluidSetup + "mB " + (continueless ? "Loops Automaticly with Redstone Signal" : "Require Redstone Clock")));
 				}
 				else
 				{

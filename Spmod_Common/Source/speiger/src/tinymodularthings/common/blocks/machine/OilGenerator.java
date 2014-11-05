@@ -21,19 +21,16 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
-import speiger.src.api.blocks.BlockStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.nbt.INBTReciver;
-import speiger.src.api.util.MathUtils;
-import speiger.src.api.util.SpmodMod;
+import speiger.src.api.common.data.nbt.INBTReciver;
+import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.utils.MathUtils;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
-import cpw.mods.fml.common.FMLLog;
 import forestry.api.core.ItemInterface;
-import forestry.core.config.ForestryItem;
 
 public class OilGenerator extends AdvTile implements ISidedInventory, INBTReciver, IFluidHandler
 {
@@ -139,24 +136,24 @@ public class OilGenerator extends AdvTile implements ISidedInventory, INBTRecive
 			{
 				if(oil.isEmpty())
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("No Work at the Moment"));
+					par1.sendChatToPlayer(LangProxy.getText("No Work at the Moment"));
 				}
 				else
 				{
 					if(par1.isSneaking())
 					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Stored Lava: "+lavaTank.getFluidAmount()+ "mB / "+lavaTank.getCapacity()+"mB"));
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Stored Oil: "+oilTank.getFluidAmount()+ "mB / "+oilTank.getCapacity()+"mB"));
+						par1.sendChatToPlayer(LangProxy.getText("Stored Lava: "+lavaTank.getFluidAmount()+ "mB / "+lavaTank.getCapacity()+"mB"));
+						par1.sendChatToPlayer(LangProxy.getText("Stored Oil: "+oilTank.getFluidAmount()+ "mB / "+oilTank.getCapacity()+"mB"));
 					}
 					else
 					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Total Tasks: "+oil.size()));
+						par1.sendChatToPlayer(LangProxy.getText("Total Tasks: "+oil.size()));
 						String key = MathUtils.getTicksInTimeShort(oil.get(0).tick);
 						if(key.length() == 2)
 						{
 							key = "00:"+key;
 						}
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Current Task need: "+key+" Minutes"));
+						par1.sendChatToPlayer(LangProxy.getText("Current Task need: "+key+" Minutes"));
 					}
 				}
 			}
@@ -164,12 +161,12 @@ public class OilGenerator extends AdvTile implements ISidedInventory, INBTRecive
 			{
 				if(par1.isSneaking())
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Stored Lava: "+lavaTank.getFluidAmount()+ "mB / "+lavaTank.getCapacity()+"mB"));
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Stored Oil: "+oilTank.getFluidAmount()+ "mB / "+oilTank.getCapacity()+"mB"));
+					par1.sendChatToPlayer(LangProxy.getText("Stored Lava: "+lavaTank.getFluidAmount()+ "mB / "+lavaTank.getCapacity()+"mB"));
+					par1.sendChatToPlayer(LangProxy.getText("Stored Oil: "+oilTank.getFluidAmount()+ "mB / "+oilTank.getCapacity()+"mB"));
 				}
 				else
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("No Work at the Moment"));
+					par1.sendChatToPlayer(LangProxy.getText("No Work at the Moment"));
 				}
 			}
 		}

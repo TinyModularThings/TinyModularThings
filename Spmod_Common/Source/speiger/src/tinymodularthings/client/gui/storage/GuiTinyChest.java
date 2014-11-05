@@ -9,7 +9,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.interfaces.ISharedInventory;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
@@ -30,10 +29,10 @@ public class GuiTinyChest extends GuiInventoryCore
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		String s = LanguageRegister.getLanguageName(this, "tiny.chest", getCore());
+		String s = "Tiny Chest";
 		if (tile.isEntity())
 		{
-			s = LanguageRegister.getLanguageName(this, "tiny.chest.cart", getCore());
+			s = "Tiny Chest Cart";
 		}
 		fontRenderer.drawString(s, xSize / 2 - fontRenderer.getStringWidth(s) / 2, 6, 4210752);
 		fontRenderer.drawString(I18n.getString("container.inventory"), 8, ySize - 96 + 2, 4210752);

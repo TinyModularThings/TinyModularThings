@@ -2,8 +2,6 @@ package speiger.src.spmodapi.common.plugins.BC;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.SpmodAPI;
 import buildcraft.BuildCraftCore;
 import buildcraft.api.gates.IAction;
@@ -80,19 +78,6 @@ public class ActionRandomLoop implements IAction
 	public boolean hasParameter()
 	{
 		return false;
-	}
-	
-	@Override
-	public String getDescription()
-	{
-		if (randOnly)
-		{
-			return LanguageRegister.getLanguageName(new InfoStack(), "action.random.color.change", SpmodAPI.instance) + " " + delay + " Ticks";
-		}
-		else
-		{
-			return LanguageRegister.getLanguageName(new InfoStack(), "action.randRoubin.color.change", SpmodAPI.instance) + " " + delay + " Ticks";
-		}
 	}
 	
 }

@@ -2,8 +2,6 @@ package speiger.src.spmodapi.common.blocks.deko;
 
 import java.util.ArrayList;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -15,8 +13,8 @@ import net.minecraft.util.MathHelper;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.items.plates.PlateManager;
-import speiger.src.api.util.WorldReading;
+import speiger.src.api.common.utils.WorldReading;
+import speiger.src.api.common.world.items.plates.PlateManager;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.TextureEngine;
 

@@ -5,26 +5,17 @@ import java.util.List;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.village.MerchantRecipe;
-import net.minecraft.world.World;
-import speiger.src.api.items.DisplayStack;
-import speiger.src.api.items.IItemGui;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.api.client.gui.IItemGui;
 import speiger.src.spmodapi.client.gui.items.trades.GuiTrade;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
-import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.items.SpmodItem;
-import speiger.src.spmodapi.common.util.TickHelper;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -39,18 +30,6 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 		super(par1);
 		this.setHasSubtypes(true);
 		this.setCreativeTab(APIUtils.tabHemp);
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		return LanguageRegister.getLanguageName(new DisplayStack(par1), "trade.random", par0);
 	}
 	
 	
@@ -71,58 +50,6 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 		{
 			par3.add(new ItemStack(par1, 1, i));
 		}
-	}
-	
-	@Override
-	public ItemStack onItemRightClick(ItemStack par1, World par2World, EntityPlayer par3EntityPlayer)
-	{
-		if (!par2World.isRemote)
-		{
-			if (par3EntityPlayer.isSneaking())
-			{
-				this.addRecipes(recipeList);
-				par3EntityPlayer.sendChatToPlayer(LanguageRegister.createChatMessage("Relefresed Recipe List"));
-			}
-			else
-			{
-				par3EntityPlayer.openGui(SpmodAPI.instance, EnumGuiIDs.Items.getID(), par2World, 0, 0, 0);
-			}
-		}
-		return par1;
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
-	{
-		if (recipeList.isEmpty())
-		{
-			if (!secondTry)
-			{
-				secondTry = true;
-				TickHelper.loadRecipes(par2);
-			}
-			par3.add("No Trades Aviable");
-			return;
-		}
-		
-		MerchantRecipe recipe = recipeList.get(par1.getItemDamage());
-		boolean first = recipe.getItemToBuy() != null;
-		boolean second = recipe.getSecondItemToBuy() != null;
-		
-		if (first && !second)
-		{
-			par3.add("Trade: x" + recipe.getItemToBuy().stackSize + " " + recipe.getItemToBuy().getDisplayName() + " = x" + recipe.getItemToSell().stackSize + " " + recipe.getItemToSell().getDisplayName());
-		}
-		else if (!first && second)
-		{
-			par3.add("Trade: x" + recipe.getSecondItemToBuy().stackSize + " " + recipe.getSecondItemToBuy().getDisplayName() + " = x" + recipe.getItemToSell().stackSize + " " + recipe.getItemToSell().getDisplayName());
-		}
-		else
-		{
-			par3.add("Trade: x" + recipe.getItemToBuy().stackSize + " " + recipe.getItemToBuy().getDisplayName() + " + x" + recipe.getSecondItemToBuy().stackSize + " " + recipe.getSecondItemToBuy().getDisplayName() + " = x" + recipe.getItemToSell().stackSize + " " + recipe.getItemToSell().getDisplayName());
-		}
-		par3.add(LanguageRegister.getLanguageName(new InfoStack(), "trade.size", SpmodAPI.instance) + " " + recipeList.size());
 	}
 	
 	@Override

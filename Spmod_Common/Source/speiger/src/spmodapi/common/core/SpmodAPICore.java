@@ -1,14 +1,13 @@
 package speiger.src.spmodapi.common.core;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.inventory.GuiCrafting;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import speiger.src.api.blocks.BlockPosition;
-import speiger.src.api.blocks.IBlockGui;
-import speiger.src.api.items.IItemGui;
+import speiger.src.api.client.gui.IBlockGui;
+import speiger.src.api.client.gui.IItemGui;
+import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.spmodapi.client.gui.commands.GuiCommands;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.tile.AdvTile;

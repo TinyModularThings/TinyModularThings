@@ -7,7 +7,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import speiger.src.api.util.SpmodMod;
+import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
@@ -38,17 +38,6 @@ public class ItemMobMachineHelper extends SpmodItem
 		{
 			par3List.add(new ItemStack(par1, 1, ints.intValue()));
 		}
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		return "MobMachine Modul";
 	}
 	
 	@Override

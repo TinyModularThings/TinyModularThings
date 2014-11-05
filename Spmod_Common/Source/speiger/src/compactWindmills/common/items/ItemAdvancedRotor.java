@@ -23,23 +23,17 @@ import net.minecraftforge.common.EnumHelper;
 
 import org.lwjgl.input.Keyboard;
 
-import speiger.src.api.items.DisplayStack;
-import speiger.src.api.items.IRotorItem;
-import speiger.src.api.items.LanguageItem;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.nbt.NBTHelper;
-import speiger.src.api.tiles.IWindmill;
-import speiger.src.api.util.MathUtils;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.api.common.data.nbt.NBTHelper;
+import speiger.src.api.common.utils.MathUtils;
+import speiger.src.api.common.world.items.IRotorItem;
+import speiger.src.api.common.world.tiles.interfaces.IWindmill;
 import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.common.items.ItemRotor.BasicRotorType;
 import speiger.src.compactWindmills.common.utils.WindmillFake;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemAdvancedRotor extends ItemTool implements IRotorItem,
-		LanguageItem
+public class ItemAdvancedRotor extends ItemTool implements IRotorItem
 {
 	private static String[] names = new String[] { "rotor.adv.wood", "rotor.adv.wool", "rotor.adv.iron", "rotor.adv.carbon", "rotor.adv.alloy", "rotor.adv.iridium" };
 	
@@ -131,33 +125,6 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem,
 			return (int) per;
 		}
 		return 0;
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		return LanguageRegister.getLanguageName(new DisplayStack(par1), names[par1.getItemDamage()], par0);
-	}
-	
-	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
-	{
-		return getDisplayName(par1ItemStack, CompactWindmills.instance);
-	}
-	
-	
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if (!SpmodModRegistry.areModsEqual(CompactWindmills.instance, par0))
-		{
-			return;
-		}
-		for (int i = 0; i < names.length; i++)
-		{
-			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, i)), names[i], par0);
-		}
 	}
 	
 	@Override

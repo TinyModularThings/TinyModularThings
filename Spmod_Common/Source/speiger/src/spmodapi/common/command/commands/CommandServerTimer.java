@@ -11,14 +11,14 @@ import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.network.packet.Packet3Chat;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.MathUtils;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.Ticks.ITickReader;
+import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.registry.helpers.Ticks.ITickReader;
+import speiger.src.api.common.utils.MathUtils;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.command.CommandRegistry;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 
@@ -135,7 +135,7 @@ public class CommandServerTimer implements ISpmodCommand, ITickReader
 					time = setup;
 					password = key;
 					isActive = true;
-					manager.sendChatMsg(LanguageRegister.createChatMessage(par1.getCommandSenderName() + " Setted up a Shutdown timer: " + MathUtils.getTicksInTime(setup)));
+					manager.sendChatMsg(LangProxy.getText(par1.getCommandSenderName() + " Setted up a Shutdown timer: " + MathUtils.getTicksInTime(setup)));
 					Set players = manager.getOps();
 					
 					if (players != null)
@@ -148,11 +148,11 @@ public class CommandServerTimer implements ISpmodCommand, ITickReader
 							{
 								if (key.equalsIgnoreCase(""))
 								{
-									mp.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(LanguageRegister.createChatMessage("No Password was setted Up"), true));
+									mp.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(LangProxy.getText("No Password was setted Up"), true));
 								}
 								else
 								{
-									mp.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(LanguageRegister.createChatMessage("Password: " + key), true));
+									mp.playerNetServerHandler.sendPacketToPlayer(new Packet3Chat(LangProxy.getText("Password: " + key), true));
 								}
 							}
 						}
@@ -181,22 +181,22 @@ public class CommandServerTimer implements ISpmodCommand, ITickReader
 				}
 				if (flag)
 				{
-					manager.sendChatMsg(LanguageRegister.createChatMessage(par1.getCommandSenderName() + " Removed Timer"));
+					manager.sendChatMsg(LangProxy.getText(par1.getCommandSenderName() + " Removed Timer"));
 				}
 			}
 			else if (name.equalsIgnoreCase("Info"))
 			{
 				if (isActive)
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Time left: " + MathUtils.getTicksInTime(time)));
+					par1.sendChatToPlayer(LangProxy.getText("Time left: " + MathUtils.getTicksInTime(time)));
 					if (manager.isPlayerOpped(par1.getCommandSenderName()))
 					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Password: " + password));
+						par1.sendChatToPlayer(LangProxy.getText("Password: " + password));
 					}
 				}
 				else
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("No Countdown is running"));
+					par1.sendChatToPlayer(LangProxy.getText("No Countdown is running"));
 				}
 			}
 		}

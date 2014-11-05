@@ -6,7 +6,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.common.blocks.ContainerWindmill;
 import speiger.src.compactWindmills.common.blocks.WindMill;
@@ -25,8 +24,7 @@ public class GuiWindmill extends GuiInventoryCore
 	
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		String s = LanguageRegister.getLanguageName(this, "wind.mill", CompactWindmills.instance);
-		this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
+		this.fontRenderer.drawString("Windmill", this.xSize / 2 - this.fontRenderer.getStringWidth("Windmill") / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 		this.fontRenderer.drawString("Rotor:", 44, 30, 0x404040);
 		String eu = String.valueOf(mill.cuOutput);
@@ -35,7 +33,7 @@ public class GuiWindmill extends GuiInventoryCore
 			int size = eu.substring(eu.indexOf(".")).length();
 			eu = eu.substring(0, eu.indexOf(".")+ (size < 3 ? size : 3));
 		}
-		this.fontRenderer.drawSplitString(LanguageRegister.getLanguageName(this, "output", CompactWindmills.instance) + " " + eu + "EU", 105, 15, 70, 0x404040);
+		this.fontRenderer.drawSplitString("Output " + eu + "EU", 105, 15, 70, 0x404040);
 	}
 	
 	private static final ResourceLocation furnaceGuiTextures = new ResourceLocation(CWPreference.ModID.toLowerCase() + ":textures/gui/GuiWindmill.png");

@@ -5,10 +5,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.command.ICommandSender;
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
 import speiger.src.spmodapi.common.entity.SpmodFoodStats;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 
 public class SpeigerCommand implements ISpmodCommand
 {
@@ -56,7 +56,7 @@ public class SpeigerCommand implements ISpmodCommand
 	{
 		boolean par2 = Boolean.parseBoolean(arg[0]);
 		SpmodFoodStats.hardcorePeacefull.put(par1.getCommandSenderName(), par2);
-		par1.sendChatToPlayer(LanguageRegister.createChatMessage(par2 ? "Activated Hardcore Peacefull" : "Deactivated Hardcore Peacefull"));
+		par1.sendChatToPlayer(LangProxy.getText(par2 ? "Activated Hardcore Peacefull" : "Deactivated Hardcore Peacefull"));
 	}
 	
 }

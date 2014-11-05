@@ -23,13 +23,10 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
-import speiger.src.api.blocks.BlockPosition;
-import speiger.src.api.blocks.BlockStack;
-import speiger.src.api.items.DisplayStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.nbt.INBTReciver;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.api.common.data.nbt.INBTReciver;
+import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.world.blocks.BlockPosition;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.data.BlockPositionList;
 import speiger.src.tinymodularthings.TinyModularThings;
@@ -77,25 +74,6 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if (!SpmodModRegistry.areModsEqual(getMod(), par0))
-		{
-			return;
-		}
-		for (int i = 0; i < names.length; i++)
-		{
-			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, i)), names[i], par0);
-		}
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod Start)
-	{
-		return LanguageRegister.getLanguageName(new DisplayStack(par1), names[par1.getItemDamage()], Start);
-	}
-	
-	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
 	{
 		if (!par2World.isRemote)
@@ -139,7 +117,6 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 		{
 			int charge = par1.getTagCompound().getCompoundTag("Lava").getInteger("Charges");
 			
-			par2.sendChatToPlayer(LanguageRegister.createChatMessage(charge + " Charges Left"));
 		}
 	}
 	
@@ -473,7 +450,6 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 		{
 			if (flag)
 			{
-				player.sendChatToPlayer(LanguageRegister.createChatMessage("Work done"));
 			}
 			par1.setItemDamage(2);
 		}
@@ -573,7 +549,6 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 		
 		if (move == null)
 		{
-			player.sendChatToPlayer(LanguageRegister.createChatMessage("You need to click a block"));
 			return;
 		}
 		
@@ -626,12 +601,9 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 			nbt.setInteger("Size", all);
 			nbt.setInteger("RemoveSize", rep.size());
 			stack.setItemDamage(1);
-			player.sendChatToPlayer(LanguageRegister.createChatMessage("Start Charging Nether Crystal"));
-			player.sendChatToPlayer(LanguageRegister.createChatMessage("Please Stay in the Nether or let the Item Dropped (Item Life Time 10 Minutes) until its done and keep all chunks loaded from (x" + min[0] + "-" + max[0] + " z" + min[1] + "-" + max[1] + ")"));
 		}
 		else
 		{
-			player.sendChatToPlayer(LanguageRegister.createChatMessage("Not Enought Lava"));
 		}
 		
 	}

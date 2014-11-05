@@ -7,7 +7,6 @@ import net.minecraft.util.StatCollector;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnaceInventory;
@@ -28,8 +27,8 @@ public class PressureFurnaceGui extends GuiInventoryCore
 	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		String name = LanguageRegister.getLanguageName(this, "pressurefurnace", getCore());
-		String heat = LanguageRegister.getLanguageName(this, "heat", getCore());
+		String name = "Pressure Furnace";
+		String heat = "Heat";
 		fontRenderer.drawString(name, xSize / 2 - fontRenderer.getStringWidth(name) / 2, 6, 4210752);
 		fontRenderer.drawString(StatCollector.translateToLocal("container.inventory"), 8, ySize - 105 + 2, 4210752);
 		fontRenderer.drawString(heat, 33, 50, 4210752);
@@ -37,7 +36,7 @@ public class PressureFurnaceGui extends GuiInventoryCore
 		fontRenderer.drawString("" + maxHeat + "%", 32, 61, 4210752);
 		if (maxHeat < 100)
 		{
-			String text = LanguageRegister.getLanguageName(this, "furnace.starting", getCore());
+			String text = "Heating Up";
 			fontRenderer.drawString(text, 80, 65, 4210752);
 		}
 		else
@@ -45,12 +44,12 @@ public class PressureFurnaceGui extends GuiInventoryCore
 			if (tile.getRecipeModeFromInventory(tile.inv) > 0)
 			{
 				int progress = tile.progress / 2;
-				String done = LanguageRegister.getLanguageName(this, "furnace.progress", getCore());
+				String done = "Progress";
 				fontRenderer.drawString(done + ": " + progress + "%", 80, 67, 4210752);
 			}
 			else
 			{
-				String need = LanguageRegister.getLanguageName(this, "furnace.request", getCore());
+				String need = "Nothing To do";
 				fontRenderer.drawString(need, 80, 67, 4210752);
 			}
 			

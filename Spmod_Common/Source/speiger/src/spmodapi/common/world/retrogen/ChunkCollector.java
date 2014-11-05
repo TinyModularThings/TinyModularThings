@@ -8,7 +8,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.world.ChunkDataEvent;
-import speiger.src.api.world.ISpmodWorldGen;
+import speiger.src.api.common.world.gen.ISpmodWorldGen;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 

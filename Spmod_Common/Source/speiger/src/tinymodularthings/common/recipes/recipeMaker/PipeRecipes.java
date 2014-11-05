@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
-import speiger.src.api.blocks.BlockStack;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.tinymodularthings.common.blocks.pipes.basic.BlockPipe;
 import speiger.src.tinymodularthings.common.recipes.recipeHelper.InterfaceRecipe;
 

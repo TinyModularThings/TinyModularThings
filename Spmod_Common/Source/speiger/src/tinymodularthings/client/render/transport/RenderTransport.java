@@ -4,7 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
-import speiger.src.api.inventory.IAcceptor;
+import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 

@@ -9,7 +9,7 @@ import net.minecraft.village.MerchantRecipe;
 import org.lwjgl.opengl.GL11;
 import org.lwjgl.opengl.GL12;
 
-import speiger.src.api.items.IItemGui;
+import speiger.src.api.client.gui.IItemGui;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.items.trades.TradeInventory;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;

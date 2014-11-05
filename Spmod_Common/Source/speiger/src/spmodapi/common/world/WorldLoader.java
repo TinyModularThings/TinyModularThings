@@ -2,8 +2,8 @@ package speiger.src.spmodapi.common.world;
 
 import java.util.ArrayList;
 
-import speiger.src.api.world.ISpmodWorldGen;
-import speiger.src.api.world.SpmodWorldGenRegistry;
+import speiger.src.api.common.world.gen.ISpmodWorldGen;
+import speiger.src.api.common.world.gen.SpmodWorldGenRegistry;
 
 public class WorldLoader
 {

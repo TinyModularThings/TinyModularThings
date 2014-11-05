@@ -6,47 +6,21 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
+import net.minecraft.util.ChatMessageComponent;
 import net.minecraft.util.EnumChatFormatting;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
 
 public class LangProxy
 {
-	public static String getModeString(SpmodMod par1)
+	public static ChatMessageComponent getText(String data)
 	{
-		return LanguageRegister.getLanguageName(new InfoStack(), "mode", par1);
+		return new ChatMessageComponent().addText(data);
 	}
 	
-	public static String getInfo(SpmodMod par1)
+	public static ChatMessageComponent getText(String data, EnumChatFormatting color)
 	{
-		return LanguageRegister.getLanguageName(new InfoStack(), "info", par1);
+		return getText(data).setColor(color);
 	}
 	
-	public static String getAmount(SpmodMod par1)
-	{
-		return LanguageRegister.getLanguageName(new InfoStack(), "amount", par1);
-	}
-	
-	public static String getStoredNothing(SpmodMod par1)
-	{
-		return LanguageRegister.getLanguageName(new InfoStack(), "stored.nothing", par1);
-	}
-	
-	public static String UFluid(SpmodMod par1)
-	{
-		return LanguageRegister.getLanguageName(new InfoStack(), "tank.stored.unknowen", par1);
-	}
-	
-	public static String getStored(SpmodMod par1)
-	{
-		return LanguageRegister.getLanguageName(new InfoStack(), "tank.stored", par1);
-	}
-	
-	public static String getSlot(SpmodMod par1, boolean par2)
-	{
-		return LanguageRegister.getLanguageName(new InfoStack(), par2 ? "slots" : "slot", par1);
-	}
 	
 	public static int getLongestString(List<String> par1)
 	{

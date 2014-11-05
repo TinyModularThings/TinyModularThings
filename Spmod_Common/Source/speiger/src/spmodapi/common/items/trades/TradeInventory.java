@@ -6,7 +6,7 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.village.MerchantRecipe;
-import speiger.src.api.util.InventoryUtil;
+import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.spmodapi.common.items.trades.BasicTradeInventory.TradeSlot;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 

@@ -11,8 +11,8 @@ import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.blocks.BlockPosition;
-import speiger.src.api.packets.SpmodPacketHelper;
+import speiger.src.api.common.data.packets.SpmodPacketHelper;
+import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.blocks.utils.InventoryAccesser;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;

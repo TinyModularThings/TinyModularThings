@@ -5,9 +5,9 @@ import java.util.Random;
 import net.minecraft.world.World;
 import net.minecraft.world.biome.BiomeGenBase;
 import net.minecraft.world.gen.feature.WorldGenFlowers;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.config.IConfigHelper;
-import speiger.src.api.world.ISpmodWorldGen;
+import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.utils.config.IConfigHelper;
+import speiger.src.api.common.world.gen.ISpmodWorldGen;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 

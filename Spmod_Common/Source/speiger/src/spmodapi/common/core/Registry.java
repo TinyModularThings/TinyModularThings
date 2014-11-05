@@ -7,10 +7,8 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.nbt.DataStorage;
-import speiger.src.api.packets.SpmodPacketHelper;
+import speiger.src.api.common.data.nbt.DataStorage;
+import speiger.src.api.common.data.packets.SpmodPacketHelper;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.blocks.utils.InventoryAccesser;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
@@ -62,7 +60,7 @@ public class Registry
 	
 	void registerText()
 	{
-		LanguageRegistry.instance().addStringLocalization("attribute.name.generic.jump", FMLCommonHandler.instance().getCurrentLanguage(), LanguageRegister.getLanguageName(new InfoStack(), "jump.boost", SpmodAPI.instance));
+		LanguageRegistry.instance().addStringLocalization("attribute.name.generic.jump", "Jump Boost");
 	}
 	
 	public static void register()

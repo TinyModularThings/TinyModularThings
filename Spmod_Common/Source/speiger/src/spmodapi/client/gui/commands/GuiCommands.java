@@ -13,8 +13,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.packets.SpmodPacketHelper.ModularPacket;
-import speiger.src.api.packets.SpmodPacketHelper.PacketType;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.PacketType;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.command.CommandRegistry;

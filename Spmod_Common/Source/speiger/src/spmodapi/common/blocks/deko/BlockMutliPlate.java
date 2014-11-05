@@ -1,18 +1,10 @@
 package speiger.src.spmodapi.common.blocks.deko;
 
-import java.util.Random;
-
 import net.minecraft.block.material.Material;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.AxisAlignedBB;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
-import speiger.src.api.items.plates.PlateManager;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
-import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 
 public class BlockMutliPlate extends SpmodBlockContainerBase
 {

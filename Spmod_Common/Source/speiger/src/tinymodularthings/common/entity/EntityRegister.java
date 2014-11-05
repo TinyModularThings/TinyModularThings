@@ -1,7 +1,7 @@
 package speiger.src.tinymodularthings.common.entity;
 
 import net.minecraft.entity.item.EntityMinecart;
-import speiger.src.api.util.config.EntityCounter;
+import speiger.src.api.common.utils.config.EntityCounter;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityAdvTinyChestCart.EightSlotAdvTinyChestCart;
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityAdvTinyChestCart.FiveSlotAdvTinyChestCart;

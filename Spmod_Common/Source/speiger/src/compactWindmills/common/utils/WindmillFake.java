@@ -2,7 +2,7 @@ package speiger.src.compactWindmills.common.utils;
 
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
-import speiger.src.api.tiles.IWindmill;
+import speiger.src.api.common.world.tiles.interfaces.IWindmill;
 
 public class WindmillFake implements IWindmill
 {

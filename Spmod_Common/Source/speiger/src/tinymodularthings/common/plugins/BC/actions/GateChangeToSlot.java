@@ -2,8 +2,6 @@ package speiger.src.tinymodularthings.common.plugins.BC.actions;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.tinymodularthings.TinyModularThings;
 import buildcraft.BuildCraftTransport;
 import buildcraft.api.gates.IAction;
@@ -55,11 +53,6 @@ public class GateChangeToSlot implements IAction
 	{
 		return false;
 	}
-	
-	@Override
-	public String getDescription()
-	{
-		return LanguageRegister.getLanguageName(new InfoStack(), "Change.to.Slot", TinyModularThings.instance) + ": " + SlotID;
-	}
+
 	
 }

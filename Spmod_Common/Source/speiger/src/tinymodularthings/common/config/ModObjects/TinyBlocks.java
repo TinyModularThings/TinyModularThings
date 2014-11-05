@@ -1,8 +1,6 @@
 package speiger.src.tinymodularthings.common.config.ModObjects;
 
-import net.minecraft.block.Block;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
-import speiger.src.tinymodularthings.common.blocks.ores.BlockMultiMineOre;
 
 public class TinyBlocks
 {

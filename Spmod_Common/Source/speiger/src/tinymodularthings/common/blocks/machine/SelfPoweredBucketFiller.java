@@ -4,7 +4,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.energy.EnergyProvider;
+import speiger.src.api.common.world.tiles.energy.EnergyProvider;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import buildcraft.api.power.PowerHandler.PowerReceiver;

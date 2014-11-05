@@ -15,10 +15,10 @@ import net.minecraftforge.event.Event.Result;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import speiger.src.api.blocks.BlockPosition;
-import speiger.src.api.nbt.DataStorage;
-import speiger.src.api.nbt.INBTReciver;
-import speiger.src.api.util.SpmodMod;
+import speiger.src.api.common.data.nbt.DataStorage;
+import speiger.src.api.common.data.nbt.INBTReciver;
+import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.tile.AdvTile;
 

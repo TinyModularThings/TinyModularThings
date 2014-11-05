@@ -3,7 +3,7 @@ package speiger.src.tinymodularthings.common.handler;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
-import speiger.src.api.util.InventoryUtil;
+import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInterfaceBlock;
 import cpw.mods.fml.common.ICraftingHandler;

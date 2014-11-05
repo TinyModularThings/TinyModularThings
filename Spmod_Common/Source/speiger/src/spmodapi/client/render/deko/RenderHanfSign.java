@@ -5,8 +5,6 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLLog;
-
 import speiger.src.spmodapi.client.model.ModelHanfSign;
 import speiger.src.spmodapi.common.blocks.deko.MultiPlate;
 

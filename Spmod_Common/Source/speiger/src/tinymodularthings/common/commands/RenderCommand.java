@@ -6,10 +6,10 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.command.ICommandSender;
-import speiger.src.api.packets.IPacketReciver;
-import speiger.src.api.packets.SpmodPacketHelper;
-import speiger.src.api.packets.SpmodPacketHelper.ModularPacket;
-import speiger.src.api.packets.SpmodPacketHelper.PacketType;
+import speiger.src.api.common.data.packets.IPacketReciver;
+import speiger.src.api.common.data.packets.SpmodPacketHelper;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.PacketType;
 import speiger.src.spmodapi.common.command.CommandRegistry;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;

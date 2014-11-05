@@ -8,11 +8,10 @@ import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.Vers
 
 import java.io.File;
 
-import speiger.src.api.language.LanguageLoader;
-import speiger.src.api.util.LogProxy;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
-import speiger.src.api.util.Ticks;
+import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.registry.helpers.SpmodModRegistry;
+import speiger.src.api.common.registry.helpers.Ticks;
+import speiger.src.api.common.utils.LogProxy;
 import speiger.src.spmodapi.common.util.TickHelper;
 import speiger.src.tinymodularthings.common.config.TinyConfig;
 import speiger.src.tinymodularthings.common.core.TinyModularThingsCore;
@@ -53,8 +52,6 @@ public class TinyModularThings implements SpmodMod
 	{
 		SpmodModRegistry.registerMod(this);
 		log = new LogProxy(this);
-		LanguageLoader language = new LanguageLoader(this);
-		language.registerAllAviableLanguages();
 		TinyConfig.getConfig().loadTinyConfig(new File(evt.getModConfigurationDirectory().getAbsolutePath() + "/Spmod/TinyModularThings.cfg"));
 		instance = this;
 		NetworkRegistry.instance().registerGuiHandler(instance, core);

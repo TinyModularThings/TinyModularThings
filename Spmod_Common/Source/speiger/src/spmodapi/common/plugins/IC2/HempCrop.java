@@ -12,8 +12,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Icon;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
@@ -26,7 +24,7 @@ public class HempCrop extends CropCard
 	@Override
 	public String name()
 	{
-		return LanguageRegister.getLanguageName(new InfoStack(), "crop.hemp", SpmodAPI.instance);
+		return "Hemp";
 	}
 	
 	@Override

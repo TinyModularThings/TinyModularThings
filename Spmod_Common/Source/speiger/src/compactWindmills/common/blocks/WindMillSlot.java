@@ -3,7 +3,7 @@ package speiger.src.compactWindmills.common.blocks;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import speiger.src.api.items.IRotorItem;
+import speiger.src.api.common.world.items.IRotorItem;
 
 public class WindMillSlot extends Slot
 {

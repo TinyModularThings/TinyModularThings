@@ -6,8 +6,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import speiger.src.api.items.IEssens;
-import speiger.src.api.items.IExpBottle;
+import speiger.src.api.common.world.items.IEssens;
+import speiger.src.api.common.world.items.IExpBottle;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.spmodapi.common.util.slot.SlotAdjust;
 

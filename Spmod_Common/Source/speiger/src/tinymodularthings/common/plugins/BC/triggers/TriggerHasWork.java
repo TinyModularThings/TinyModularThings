@@ -13,8 +13,6 @@ import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import buildcraft.api.gates.ITrigger;
@@ -73,15 +71,7 @@ public class TriggerHasWork implements ITrigger
 		return false;
 	}
 	
-	@Override
-	public String getDescription()
-	{
-		if (Active)
-		{
-			return LanguageRegister.getLanguageName(new InfoStack(), "has.work", TinyModularThings.instance);
-		}
-		return LanguageRegister.getLanguageName(new InfoStack(), "no.work", TinyModularThings.instance);
-	}
+
 	
 	@Override
 	public boolean isTriggerActive(ForgeDirection side, TileEntity tile, ITriggerParameter parameter)

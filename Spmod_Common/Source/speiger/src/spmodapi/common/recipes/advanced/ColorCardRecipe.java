@@ -14,7 +14,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import speiger.src.api.util.InventoryUtil;
+import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;

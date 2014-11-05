@@ -9,12 +9,6 @@ import net.minecraft.util.DamageSource;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-import speiger.src.api.items.DisplayItem;
-import speiger.src.api.items.LanguageItem;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
-import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.util.TextureEngine;
@@ -22,7 +16,7 @@ import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class SpmodBone extends ItemFood implements LanguageItem
+public class SpmodBone extends ItemFood
 {
 	String name;
 	
@@ -51,30 +45,6 @@ public class SpmodBone extends ItemFood implements LanguageItem
 	public Icon getIconFromDamage(int par1)
 	{
 		return TextureEngine.getTextures().getTexture(this);
-	}
-
-
-
-	@Override
-	public String getItemDisplayName(ItemStack par1)
-	{
-		return getDisplayName(par1, SpmodAPI.instance);
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), name + "_bone", par0);
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if (!SpmodModRegistry.areModsEqual(par0, SpmodAPI.instance))
-		{
-			return;
-		}
-		LanguageRegister.getLanguageName(new DisplayItem(id), name + "_bone", par0);
 	}
 	
 	@Override

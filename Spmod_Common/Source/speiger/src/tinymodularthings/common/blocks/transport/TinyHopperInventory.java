@@ -4,8 +4,8 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
-import speiger.src.api.hopper.IHopperInventory;
-import speiger.src.api.inventory.TankSlot;
+import speiger.src.api.common.inventory.slot.TankSlot;
+import speiger.src.api.common.world.tiles.interfaces.IHopperInventory;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 
 public class TinyHopperInventory extends AdvContainer

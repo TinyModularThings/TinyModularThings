@@ -1,12 +1,7 @@
 package speiger.src.tinymodularthings.client.core;
 
-import net.minecraft.item.Item;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.items.LanguageItem;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.render.carts.CartItemRenderer;
 import speiger.src.tinymodularthings.client.render.carts.RenderTCarts;
@@ -122,22 +117,6 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 	{
 		if (TinyModularThings.LanguagePrint)
 		{
-			Item[] items = Item.itemsList;
-			for (Item cu : items)
-			{
-				if (cu != null && cu instanceof LanguageItem)
-				{
-					LanguageItem item = (LanguageItem) cu;
-					for (SpmodMod mod : SpmodModRegistry.getRegisteredMods())
-					{
-						item.registerItems(cu.itemID, mod);
-					}
-				}
-			}
-			for (SpmodMod mod : SpmodModRegistry.getRegisteredMods())
-			{
-				LanguageRegister.printModLanguage(mod);
-			}
 			
 		}
 	}

@@ -15,22 +15,17 @@ import net.minecraftforge.common.EnumHelper;
 
 import org.lwjgl.input.Keyboard;
 
-import speiger.src.api.items.DisplayStack;
-import speiger.src.api.items.IRotorItem;
-import speiger.src.api.items.LanguageItem;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.nbt.NBTHelper;
-import speiger.src.api.tiles.IWindmill;
-import speiger.src.api.util.MathUtils;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.api.common.data.nbt.NBTHelper;
+import speiger.src.api.common.utils.MathUtils;
+import speiger.src.api.common.world.items.IRotorItem;
+import speiger.src.api.common.world.tiles.interfaces.IWindmill;
 import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.common.core.CWPreference;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemRotor extends Item implements LanguageItem, IRotorItem
+public class ItemRotor extends Item implements IRotorItem
 {
 	public static HashMap<BasicRotorType, Icon> textures = new HashMap<BasicRotorType, Icon>();
 	
@@ -195,32 +190,6 @@ public class ItemRotor extends Item implements LanguageItem, IRotorItem
 			stack.setTagInfo("Rotor", nbt);
 			par3List.add(stack);
 		}
-	}
-	
-	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
-	{
-		return getDisplayName(par1ItemStack, CompactWindmills.instance);
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		return LanguageRegister.getLanguageName(new DisplayStack(par1), BasicRotorType.values()[par1.getItemDamage()].getDisplayName(), par0);
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if(!SpmodModRegistry.areModsEqual(par0, CompactWindmills.instance))
-		{
-			return;
-		}
-		for(BasicRotorType type : BasicRotorType.values())
-		{
-			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, type.ordinal())), type.getDisplayName(), par0);
-		}
-		
 	}
 	
 	@Override

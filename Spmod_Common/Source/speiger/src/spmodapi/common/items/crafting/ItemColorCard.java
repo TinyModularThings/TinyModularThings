@@ -9,12 +9,6 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
-import speiger.src.api.items.DisplayItem;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
-import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.items.SpmodItem;
@@ -49,16 +43,6 @@ public class ItemColorCard extends SpmodItem
 	}
 	
 	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if (!SpmodModRegistry.areModsEqual(par0, getMod()))
-		{
-			return;
-		}
-		LanguageRegister.getLanguageName(new DisplayItem(id), "color.card", par0);
-	}
-	
-	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
 	{
@@ -66,7 +50,6 @@ public class ItemColorCard extends SpmodItem
 		if (meta > 0)
 		{
 			EnumColor color = EnumColor.getColorFromWool(meta - 1);
-			par3List.add(LanguageRegister.getLanguageName(new InfoStack(), color.getName(), SpmodAPI.instance));
 		}
 		else
 		{
@@ -75,12 +58,6 @@ public class ItemColorCard extends SpmodItem
 				par3List.add("Copy Input Color");
 			}
 		}
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), "color.card", par0);
 	}
 	
 	@Override

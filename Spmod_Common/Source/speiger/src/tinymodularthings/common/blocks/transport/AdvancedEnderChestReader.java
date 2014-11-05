@@ -1,15 +1,15 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
-import speiger.src.api.blocks.BlockStack;
-import speiger.src.spmodapi.common.handler.PlayerHandler;
-import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryEnderChest;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityEnderChest;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.common.handler.PlayerHandler;
+import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 
 public class AdvancedEnderChestReader extends EnderChestReader
 {

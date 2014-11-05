@@ -6,8 +6,8 @@ import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.hopper.IHopper;
-import speiger.src.api.util.RedstoneUtils;
+import speiger.src.api.common.utils.RedstoneUtils;
+import speiger.src.api.common.world.tiles.interfaces.IHopper;
 import speiger.src.tinymodularthings.client.models.transport.ModelTinyHopper;
 
 public class renderTransportTile extends TileEntitySpecialRenderer

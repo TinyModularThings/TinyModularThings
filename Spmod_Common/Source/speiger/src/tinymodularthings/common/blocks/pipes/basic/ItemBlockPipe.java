@@ -5,22 +5,13 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.blocks.BlockHelper;
-import speiger.src.api.blocks.BlockStack;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.nbt.NBTHelper;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
-import speiger.src.api.util.WorldReading;
-import speiger.src.spmodapi.common.util.proxy.LangProxy;
-import speiger.src.tinymodularthings.TinyModularThings;
+import speiger.src.api.common.data.nbt.NBTHelper;
+import speiger.src.api.common.utils.WorldReading;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.tinymodularthings.common.interfaces.IBasicPipe;
 import speiger.src.tinymodularthings.common.items.core.ItemBlockTinyChest;
-import speiger.src.tinymodularthings.common.utils.PipeInformation;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -30,45 +21,6 @@ public class ItemBlockPipe extends ItemBlockTinyChest
 	public ItemBlockPipe(int par1)
 	{
 		super(par1);
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod start)
-	{
-		BlockStack stack = new BlockStack(par1);
-		String name = "nameless.Pipe";
-		if (stack.getBlock() instanceof IBasicPipe)
-		{
-			IBasicPipe pipe = (IBasicPipe) stack.getBlock();
-			PipeInformation info = pipe.getItemInformation(par1);
-			if (info != null)
-			{
-				name = info.getItemName();
-			}
-		}
-		
-		return LanguageRegister.getLanguageName(stack.getBlock(), name, start);
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if (!SpmodModRegistry.areModsEqual(par0, TinyModularThings.instance))
-		{
-			return;
-		}
-		BlockStack stack = new BlockStack(id);
-		String name = "nameless.Pipe";
-		if (stack.getBlock() instanceof IBasicPipe)
-		{
-			IBasicPipe pipe = (IBasicPipe) stack.getBlock();
-			PipeInformation info = pipe.getItemInformation(stack.asItemStack());
-			if (info != null)
-			{
-				name = info.getItemName();
-			}
-		}
-		LanguageRegister.getLanguageName(stack.getBlock(), name, par0);
 	}
 	
 	@Override
@@ -89,14 +41,6 @@ public class ItemBlockPipe extends ItemBlockTinyChest
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1, World par2, EntityPlayer par3)
 	{
-		NBTTagCompound nbt = NBTHelper.getTinyChestTagCompound(par3.getEntityData());
-		if (nbt.hasKey(NBTHelper.getPlayerNBTStringFromMode(0)))
-		{
-			int mode = nbt.getInteger(NBTHelper.getPlayerNBTStringFromMode(0));
-			par3.sendChatToPlayer(LanguageRegister.createChatMessage(LangProxy.getModeString(TinyModularThings.instance) + ": " + LanguageRegister.getLanguageName(new InfoStack(), BlockHelper.getPlacingMode(mode), TinyModularThings.instance)));
-			return par1;
-		}
-		par3.sendChatToPlayer(LanguageRegister.createChatMessage(LangProxy.getModeString(TinyModularThings.instance) + ": " + LanguageRegister.getLanguageName(new InfoStack(), "error.hasNot.Mode", TinyModularThings.instance)));
 		return par1;
 	}
 	

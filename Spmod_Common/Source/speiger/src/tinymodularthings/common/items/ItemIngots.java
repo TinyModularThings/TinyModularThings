@@ -6,11 +6,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraftforge.oredict.OreDictionary;
-import speiger.src.api.items.DisplayStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
-import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -35,12 +31,6 @@ public class ItemIngots extends TinyItem
 	}
 	
 	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod Start)
-	{
-		return LanguageRegister.getLanguageName(new DisplayStack(par1), ingots[par1.getItemDamage()], Start);
-	}
-	
-	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
@@ -48,20 +38,6 @@ public class ItemIngots extends TinyItem
 		{
 			par3.add(new ItemStack(par1, 1, i));
 		}
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if (!par0.getName().equals(TinyModularThingsLib.Name))
-		{
-			return;
-		}
-		for (int i = 0; i < ingots.length; i++)
-		{
-			LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, i)), ingots[i], par0);
-		}
-		
 	}
 
 	@Override

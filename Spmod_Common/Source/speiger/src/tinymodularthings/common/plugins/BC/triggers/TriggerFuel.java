@@ -6,8 +6,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import buildcraft.api.gates.ITrigger;
@@ -50,11 +48,6 @@ public class TriggerFuel implements ITrigger
 		return false;
 	}
 	
-	@Override
-	public String getDescription()
-	{
-		return LanguageRegister.getLanguageName(new InfoStack(), "need.Fuel", TinyModularThings.instance);
-	}
 	
 	@Override
 	public boolean isTriggerActive(ForgeDirection side, TileEntity tile, ITriggerParameter parameter)

@@ -7,11 +7,11 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import speiger.src.api.hopper.HopperRegistry;
-import speiger.src.api.hopper.HopperUpgrade;
-import speiger.src.api.hopper.IHopper;
-import speiger.src.api.hopper.IHopperUpgradeItem;
-import speiger.src.api.util.InventoryUtil;
+import speiger.src.api.common.registry.hopper.HopperRegistry;
+import speiger.src.api.common.utils.InventoryUtil;
+import speiger.src.api.common.world.items.IHopperUpgradeItem;
+import speiger.src.api.common.world.tiles.interfaces.HopperUpgrade;
+import speiger.src.api.common.world.tiles.interfaces.IHopper;
 
 public class InventoryHopperUpgrades implements IInventory
 {

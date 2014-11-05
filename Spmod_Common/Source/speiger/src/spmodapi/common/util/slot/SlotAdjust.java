@@ -1,6 +1,5 @@
 package speiger.src.spmodapi.common.util.slot;
 
-import cpw.mods.fml.common.FMLLog;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.Item;

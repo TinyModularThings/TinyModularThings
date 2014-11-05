@@ -2,8 +2,6 @@ package speiger.src.spmodapi.common.plugins.BC;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import buildcraft.BuildCraftTransport;
@@ -20,16 +18,6 @@ public class ColorChangeAdv implements IAction
 	{
 		adv = all;
 		this.color = color;
-	}
-	
-	@Override
-	public String getDescription()
-	{
-		if (adv)
-		{
-			return LanguageRegister.getLanguageName(new InfoStack(), "color.blocks.all", SpmodAPI.instance);
-		}
-		return LanguageRegister.getLanguageName(new InfoStack(), "color.blocks", SpmodAPI.instance);
 	}
 	
 	@Override

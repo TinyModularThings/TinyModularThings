@@ -26,12 +26,8 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
 import net.minecraftforge.fluids.IFluidContainerItem;
 import net.minecraftforge.fluids.IFluidHandler;
-import speiger.src.api.items.DisplayStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.nbt.NBTHelper;
-import speiger.src.api.util.InventoryUtil;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.api.util.SpmodModRegistry;
+import speiger.src.api.common.data.nbt.NBTHelper;
+import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import cpw.mods.fml.relauncher.Side;
@@ -187,7 +183,6 @@ public class ItemCell extends TinyItem implements IFluidContainerItem
 						size++;
 					}
 					NBTHelper.getTag(stack, "Transport").setInteger("Size", size);
-					player.sendChatToPlayer(LanguageRegister.createChatMessage("Transferlimit Changed to: "+array[size]+"mB"));
 				}
 				return stack;
 			}
@@ -398,24 +393,6 @@ public class ItemCell extends TinyItem implements IFluidContainerItem
 		ItemStack stack = new ItemStack(itemID, stack_size, 0);
 		setFluid(stack, null);
 		return stack;
-	}
-	
-	// ILanguageItem functions
-		
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if(!SpmodModRegistry.areModsEqual(par0, getMod()))
-		{
-			return;
-		}
-		LanguageRegister.getLanguageName(new DisplayStack(new ItemStack(id, 1, 0)), "cell.fluid", par0);
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod par0)
-	{
-		return LanguageRegister.getLanguageName(new DisplayStack(par1), "cell.fluid", par0);
 	}
 	
 	// IFluidContainerItem function

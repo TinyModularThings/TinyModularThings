@@ -3,12 +3,10 @@ package speiger.src.spmodapi.client.render.core;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.world.IBlockAccess;
-import speiger.src.api.blocks.BlockStack;
-import speiger.src.api.blocks.IBlockRenderer;
+import speiger.src.api.client.render.IBlockRenderer;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.client.core.RenderHelper;
-import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
-import cpw.mods.fml.common.FMLLog;
 
 public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler
 {

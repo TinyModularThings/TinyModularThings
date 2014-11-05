@@ -23,14 +23,12 @@ import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.Icon;
-import speiger.src.api.blocks.BlockStack;
-import speiger.src.api.items.IEssens;
-import speiger.src.api.items.IExpBottle;
-import speiger.src.api.items.ItemList;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.InventoryUtil;
-import speiger.src.api.util.MathUtils;
-import speiger.src.api.util.config.EntityCounter;
+import speiger.src.api.common.utils.InventoryUtil;
+import speiger.src.api.common.utils.MathUtils;
+import speiger.src.api.common.utils.config.EntityCounter;
+import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.api.common.world.items.IEssens;
+import speiger.src.api.common.world.items.IExpBottle;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
@@ -240,7 +238,7 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 			List<ItemStack> drops = type.get(DropType.Common);
 			if(drops != null && drops.size() > 0)
 			{
-				ItemList between = new ItemList();
+				ArrayList<ItemStack> between = new ArrayList<ItemStack>();
 				between.addAll(drops);
 				HashMap<Integer, EntityCounter> types = new HashMap<Integer, EntityCounter>();
 				for(int i = 0;i<between.size();i++)
@@ -253,10 +251,9 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 					else
 					{
 						types.get(par1.itemID).updateToNextID();
-						between.markForRemove();
+						between.remove(--i);
 					}
 				}
-				between.remove();
 				for(ItemStack stack : between)
 				{
 					int size = types.get(stack.itemID).getCurrentID();
@@ -272,7 +269,7 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 			drops = type.get(DropType.Rare);
 			if(drops != null && drops.size() > 0)
 			{
-				ItemList between = new ItemList();
+				ArrayList<ItemStack> between = new ArrayList<ItemStack>();
 				between.addAll(drops);
 				HashMap<Integer, EntityCounter> types = new HashMap<Integer, EntityCounter>();
 				for(int i = 0;i<between.size();i++)
@@ -285,10 +282,9 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 					else
 					{
 						types.get(par1.itemID).updateToNextID();
-						between.markForRemove();
+						between.remove(--i);
 					}
 				}
-				between.remove();
 				for(ItemStack stack : between)
 				{
 					int size = types.get(stack.itemID).getCurrentID();
@@ -303,7 +299,7 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 			drops = type.get(DropType.Legendary);
 			if(drops != null && drops.size() > 0)
 			{
-				ItemList between = new ItemList();
+				ArrayList<ItemStack> between = new ArrayList<ItemStack>();
 				between.addAll(drops);
 				HashMap<Integer, EntityCounter> types = new HashMap<Integer, EntityCounter>();
 				for(int i = 0;i<between.size();i++)
@@ -316,10 +312,9 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 					else
 					{
 						types.get(par1.itemID).updateToNextID();
-						between.markForRemove();
+						between.remove(i--);
 					}
 				}
-				between.remove();
 				for(ItemStack stack : between)
 				{
 					int size = types.get(stack.itemID).getCurrentID();
@@ -844,7 +839,7 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 					{
 						this.type = activators.get(key);
 						current.stackSize--;
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Initizialized MobMachine to: " + this.names.get(type)));
+						par1.sendChatToPlayer(LangProxy.getText("Initizialized MobMachine to: " + this.names.get(type)));
 						this.updateBlock();
 						this.worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 						this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, getBlockType().blockID);
@@ -855,7 +850,7 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 					{
 						type = current.getItemDamage();
 						current.stackSize--;
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Initizialized MobMachine to: " + this.names.get(type)));
+						par1.sendChatToPlayer(LangProxy.getText("Initizialized MobMachine to: " + this.names.get(type)));
 						this.updateBlock();
 						this.worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 						this.worldObj.notifyBlockChange(xCoord, yCoord, zCoord, getBlockType().blockID);
@@ -864,13 +859,13 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 					}
 					else
 					{
-						par1.sendChatToPlayer(LanguageRegister.createChatMessage("Not a valid init Item/Block"));
+						par1.sendChatToPlayer(LangProxy.getText("Not a valid init Item/Block"));
 						return true;
 					}
 				}
 				else
 				{
-					par1.sendChatToPlayer(LanguageRegister.createChatMessage("Need to be Initizialized"));
+					par1.sendChatToPlayer(LangProxy.getText("Need to be Initizialized"));
 				}
 			}
 		}

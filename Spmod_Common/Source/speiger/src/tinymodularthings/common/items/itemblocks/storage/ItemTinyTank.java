@@ -11,16 +11,9 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.FluidStack;
-import speiger.src.api.items.DisplayItem;
-import speiger.src.api.items.InfoStack;
-import speiger.src.api.language.LanguageRegister;
-import speiger.src.api.util.SpmodMod;
-import speiger.src.spmodapi.common.util.proxy.LangProxy;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyTank;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
-import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -32,32 +25,6 @@ public class ItemTinyTank extends TinyItem
 		super(par1);
 		setCreativeTab(CreativeTabs.tabFood);
 		setHasSubtypes(true);
-	}
-	
-	@Override
-	public String getDisplayName(ItemStack par1, SpmodMod start)
-	{
-		return LanguageRegister.getLanguageName(new DisplayItem(par1.getItem()), "tinyTank", start);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void addInformation(ItemStack par1, EntityPlayer par2EntityPlayer, List par3, boolean par4)
-	{
-		int[] tankSizes = new int[] { 1000, 2000, 4000, 8000, 12000, 16000, 24000, 32000, 64000 };
-		String name = LanguageRegister.getLanguageName(new InfoStack(), "tank.size", TinyModularThings.instance);
-		par3.add(name + ": " + tankSizes[par1.getItemDamage()] + "mB");
-		if (par1.hasTagCompound() && par1.getTagCompound().hasKey("Fluid"))
-		{
-			NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Fluid");
-			String stored = LangProxy.getStored(TinyModularThings.instance);
-			FluidStack fluid = new FluidStack(nbt.getInteger("FluidID"), nbt.getInteger("Amount"));
-			if (fluid != null)
-			{
-				par3.add(stored + " Fluid: " + fluid.getFluid().getLocalizedName());
-				par3.add(LangProxy.getAmount(TinyModularThings.instance) + ": " + fluid.amount + "mB");
-			}
-		}
 	}
 	
 	@Override
@@ -158,17 +125,6 @@ public class ItemTinyTank extends TinyItem
 			par3List.add(new ItemStack(par1, 1, i));
 			
 		}
-	}
-	
-	@Override
-	public void registerItems(int id, SpmodMod par0)
-	{
-		if (!par0.getName().equals(TinyModularThingsLib.Name))
-		{
-			return;
-		}
-		LanguageRegister.getLanguageName(new DisplayItem(id), "tinyTank", par0);
-		LanguageRegister.getLanguageName(new InfoStack(), "tank.size", TinyModularThings.instance);
 	}
 	
 }

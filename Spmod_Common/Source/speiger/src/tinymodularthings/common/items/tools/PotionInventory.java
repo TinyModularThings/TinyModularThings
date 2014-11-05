@@ -11,7 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import speiger.src.api.nbt.NBTHelper;
+import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.spmodapi.common.util.slot.BasicItemInventory;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 
