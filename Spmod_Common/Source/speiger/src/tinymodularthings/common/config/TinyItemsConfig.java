@@ -62,12 +62,12 @@ public class TinyItemsConfig
 		engine.registerTexture(items.ingots, "IngotCopper", "IngotTin", "IngotAluminium", "IngotSilver", "IngotLead", "IngotBronze", "IngotIridium");
 		config.item.updateToNextID();
 		
-		items.IridiumDrop = new ItemTinyItem(config.item.getCurrentID(), "Unrefined_Iridium");
+		items.IridiumDrop = new ItemTinyItem(config.item.getCurrentID(), "Unrefined Iridium");
 		RegisterItem(items.IridiumDrop, "IridiumDrop");
 		engine.registerTexture(items.IridiumDrop, "UnrefinedIridium");
 		config.item.updateToNextID();
 		
-		items.bauxitDust = new ItemTinyItem(config.item.getCurrentID(), "bauxit_dust").setUnlocalizedName("BauxiteDust");
+		items.bauxitDust = new ItemTinyItem(config.item.getCurrentID(), "Bauxit Dust").setUnlocalizedName("BauxiteDust");
 		RegisterItem(items.bauxitDust, "BaxitDust");
 		engine.removePath();
 		engine.registerTexture(items.bauxitDust, "dusts/BauxitDust");
@@ -119,19 +119,19 @@ public class TinyItemsConfig
 		RegisterItem(items.advTinyTank, "AdvTinyTank");
 		config.item.updateToNextID();
 
-		items.smallMJBattery = new Batteries(config.item.getCurrentID(), "small", BatterieType.Small);
+		items.smallMJBattery = new Batteries(config.item.getCurrentID(), "Small", BatterieType.Small);
 		RegisterItem(items.smallMJBattery, "SmallMJBattery");
 		config.item.updateToNextID();
 
-		items.mediumMJBattery = new Batteries(config.item.getCurrentID(), "medium", BatterieType.Medium);
+		items.mediumMJBattery = new Batteries(config.item.getCurrentID(), "Medium", BatterieType.Medium);
 		RegisterItem(items.mediumMJBattery, "MediumMJBattery");
 		config.item.updateToNextID();
 
-		items.bigMJBattery = new Batteries(config.item.getCurrentID(), "big", BatterieType.Big);
+		items.bigMJBattery = new Batteries(config.item.getCurrentID(), "Big", BatterieType.Big);
 		RegisterItem(items.bigMJBattery, "BigMJBattery");
 		config.item.updateToNextID();
 		
-		items.hugeMJBattery = new Batteries(config.item.getCurrentID(), "huge", BatterieType.Huge);
+		items.hugeMJBattery = new Batteries(config.item.getCurrentID(), "Huge", BatterieType.Huge);
 		RegisterItem(items.hugeMJBattery, "HugeMJBattery");
 		BatterieType.registerTextures(engine);
 		config.item.updateToNextID();

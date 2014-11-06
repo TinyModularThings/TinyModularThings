@@ -13,7 +13,6 @@ import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerParameter;
@@ -201,5 +200,12 @@ public class TriggerHasWork implements ITrigger
 	private int getPotionResult(int par1, ItemStack par2ItemStack)
 	{
 		return par2ItemStack == null ? par1 : (Item.itemsList[par2ItemStack.itemID].isPotionIngredient() ? PotionHelper.applyIngredient(par1, Item.itemsList[par2ItemStack.itemID].getPotionEffect()) : par1);
+	}
+
+	@Override
+	public String getDescription()
+	{
+		if(Active)return "Has Work";
+		return "Work done";
 	}
 }

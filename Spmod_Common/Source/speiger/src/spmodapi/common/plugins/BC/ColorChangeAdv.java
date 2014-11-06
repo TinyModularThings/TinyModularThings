@@ -2,7 +2,6 @@ package speiger.src.spmodapi.common.plugins.BC;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import buildcraft.BuildCraftTransport;
 import buildcraft.api.gates.IAction;
@@ -54,6 +53,13 @@ public class ColorChangeAdv implements IAction
 	public boolean hasParameter()
 	{
 		return false;
+	}
+
+	@Override
+	public String getDescription()
+	{
+		if(adv)return "Color All Blocks: "+color.getNameBig();
+		return "Color Block: "+color.getName();
 	}
 	
 }

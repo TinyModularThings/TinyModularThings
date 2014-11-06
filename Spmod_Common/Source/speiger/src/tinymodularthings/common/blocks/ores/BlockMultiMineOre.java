@@ -67,7 +67,7 @@ public abstract class BlockMultiMineOre extends SpmodBlockBase implements IMulti
 	@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
 	{
-		ArrayList<ItemStack> end = new ArrayList<ItemStack>();
+		ArrayList<ItemStack> end = super.getBlockDropped(world, x, y, z, metadata, fortune);
 		if (getDrops(fortune, metadata) != null && getDrops(fortune, metadata).length > 0)
 		{
 			for (ItemStack cu : getDrops(fortune, metadata))

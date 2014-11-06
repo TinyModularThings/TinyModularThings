@@ -8,7 +8,6 @@ import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart.EightSlotTinyChestCart;
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart.FiveSlotTinyChestCart;
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart.FourSlotTinyChestCart;
@@ -30,6 +29,13 @@ public class TinyChestCart extends TinyItem
 		super(par1);
 		setCreativeTab(CreativeTabs.tabFood);
 		setHasSubtypes(true);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
+	{
+		par3.add((1+par1.getItemDamage())+ (par1.getItemDamage() > 0 ? " Slots" : " Slot"));
 	}
 	
 	@Override
@@ -95,6 +101,12 @@ public class TinyChestCart extends TinyItem
 			default:
 				return EntityMinecart.createMinecart(world, x, y, z, 0);
 		}
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return "TinyChest Cart";
 	}
 	
 }

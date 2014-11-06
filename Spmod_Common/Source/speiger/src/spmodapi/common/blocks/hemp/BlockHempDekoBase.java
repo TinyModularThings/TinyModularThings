@@ -36,20 +36,22 @@ public class BlockHempDekoBase extends SpmodBlockBase
 		this.setMonsterSpawnSave(7);
 	}
 	
+	
+	
 	@Override
-	public float getBlockHardness(World par1World, int par2, int par3, int par4)
+	public float getBlockHardness(int metaNew)
 	{
-		int meta = par1World.getBlockMetadata(par2, par3, par4) % 1;
+		int meta = metaNew % 1;
 		return meta == 0 ? 1F : 2F;
 	}
 	
 	@Override
-	public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
+	public float getBlockResistance(Entity par1, int metaNew)
 	{
-		int meta = world.getBlockMetadata(x, y, z) % 1;
+		int meta = metaNew % 1;
 		return meta == 0 ? 3F : 8F;
 	}
-	
+
 	@Override
 	public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
 	{

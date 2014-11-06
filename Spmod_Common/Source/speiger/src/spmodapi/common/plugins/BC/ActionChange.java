@@ -60,5 +60,15 @@ public class ActionChange implements IAction
 	{
 		return on;
 	}
+
+	@Override
+	public String getDescription()
+	{
+		if(on)
+		{
+			return "Turn all Blocks on";
+		}
+		return "Turn all Blocks off";
+	}
 	
 }

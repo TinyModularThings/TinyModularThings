@@ -2,7 +2,6 @@ package speiger.src.spmodapi.common.creativeTabs;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -26,7 +25,7 @@ public class TabHempDeko extends CreativeTabs
 	@SideOnly(Side.CLIENT)
 	public String getTranslatedTabLabel()
 	{
-		return "Hemp Dekorations";
+		return "Hemp Deko";
 	}
 	
 	@Override

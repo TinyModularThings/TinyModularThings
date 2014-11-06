@@ -2,7 +2,6 @@ package speiger.src.spmodapi.common.plugins.BC;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-import speiger.src.spmodapi.SpmodAPI;
 import buildcraft.BuildCraftCore;
 import buildcraft.api.gates.IAction;
 import cpw.mods.fml.relauncher.Side;
@@ -78,6 +77,13 @@ public class ActionRandomLoop implements IAction
 	public boolean hasParameter()
 	{
 		return false;
+	}
+
+	@Override
+	public String getDescription()
+	{
+		if(randOnly)return "Change Color (Random Mode)";
+		return "Change Color (Random Roundroubin Mod)";
 	}
 	
 }

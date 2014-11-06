@@ -1,17 +1,24 @@
 package speiger.src.spmodapi.common.blocks.deko;
 
-import net.minecraft.block.Block;
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.api.common.data.nbt.NBTHelper;
+import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.common.blocks.deko.TileLamp.EnumLampType;
 import speiger.src.spmodapi.common.enums.EnumColor;
+import speiger.src.spmodapi.common.items.core.ItemBlockSpmod;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemBlockLightDekoBlock extends ItemBlock
+public class ItemBlockLightDekoBlock extends ItemBlockSpmod
 {
 	
 	public ItemBlockLightDekoBlock(int par1)
@@ -24,110 +31,6 @@ public class ItemBlockLightDekoBlock extends ItemBlock
 	public int getMetadata(int par1)
 	{
 		return par1;
-	}
-	
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
-	{
-		int i1 = par3World.getBlockId(par4, par5, par6);
-		
-		if (i1 == Block.snow.blockID && (par3World.getBlockMetadata(par4, par5, par6) & 7) < 1)
-		{
-			par7 = 1;
-		}
-		else if (i1 != Block.vine.blockID && i1 != Block.tallGrass.blockID && i1 != Block.deadBush.blockID && (Block.blocksList[i1] == null || !Block.blocksList[i1].isBlockReplaceable(par3World, par4, par5, par6)))
-		{
-			if (par7 == 0)
-			{
-				--par5;
-			}
-			
-			if (par7 == 1)
-			{
-				++par5;
-			}
-			
-			if (par7 == 2)
-			{
-				--par6;
-			}
-			
-			if (par7 == 3)
-			{
-				++par6;
-			}
-			
-			if (par7 == 4)
-			{
-				--par4;
-			}
-			
-			if (par7 == 5)
-			{
-				++par4;
-			}
-		}
-		
-		if (par1ItemStack.stackSize == 0)
-		{
-			return false;
-		}
-		else if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack))
-		{
-			return false;
-		}
-		else if (par5 == 255 && Block.blocksList[this.getBlockID()].blockMaterial.isSolid())
-		{
-			return false;
-		}
-		else if (par3World.setBlock(par4, par5, par6, getBlockID()))
-		{
-			TileEntity tile = par3World.getBlockTileEntity(par4, par5, par6);
-			if (tile != null && tile instanceof TileLamp)
-			{
-				TileLamp lamp = (TileLamp) tile;
-				lamp.setFacing(ForgeDirection.getOrientation(par7).getOpposite().ordinal());
-				int meta = par1ItemStack.getItemDamage();
-				int color = color(meta);
-				boolean inverted = inverted(meta);
-				int type = type(meta);
-				
-				lamp.setType(type);
-				if (inverted)
-				{
-					lamp.setInverted();
-				}
-				
-				if (color <= 15)
-					lamp.setColor(color);
-				else
-					lamp.setColor(16);
-				
-				if (color == 16)
-				{
-					lamp.setNoneColored();
-					if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().hasKey("Colors") && par1ItemStack.getTagCompound().getTagList("Colors").tagCount() > 0)
-					{
-						NBTTagList list = par1ItemStack.getTagCompound().getTagList("Colors");
-						for (int i = 0; i < list.tagCount(); i++)
-						{
-							lamp.addColor(EnumColor.values()[((NBTTagInt) list.tagAt(i)).data]);
-						}
-					}
-				}
-				else if (color == 17)
-					lamp.setAllColored();
-				
-				lamp.setMetadata(meta);
-				par1ItemStack.stackSize--;
-				
-			}
-			
-			return true;
-		}
-		else
-		{
-			return false;
-		}
 	}
 	
 	public int type(int meta)
@@ -144,5 +47,112 @@ public class ItemBlockLightDekoBlock extends ItemBlock
 	{
 		return (meta % 36) >= 18;
 	}
+
+	@Override
+	public BlockStack getBlockToPlace(int meta)
+	{
+		return new BlockStack(this.getBlockID(), inverted(meta) ? 3 : 0);
+	}
+
+	@Override
+	public void onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
+	{
+		int meta = item.getItemDamage();
+		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		if(tile != null && tile instanceof TileLamp)
+		{
+			TileLamp lamp = (TileLamp)tile;
+			lamp.setFacing(ForgeDirection.getOrientation(side).getOpposite().ordinal());
+			lamp.setMetadata(meta);
+			lamp.setType(type(meta));
+			lamp.setInverted(inverted(meta));
+			int color = color(meta);
+			if(!player.capabilities.isCreativeMode)item.stackSize--;
+			if(color <= 15)lamp.setColor(color);
+			else if(color == 16)
+			{
+				lamp.setNoneColored();
+				if(NBTHelper.nbtCheck(item, "Colors"))
+				{
+					NBTTagList list = item.getTagCompound().getTagList("Colors");
+					for(int i = 0;i<list.tagCount();i++)
+					{
+						lamp.addColor(((NBTTagInt)list.tagAt(i)).data);
+					}
+				}
+			}
+			else lamp.setAllColored();
+		}
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		int meta = par1.getItemDamage();
+		EnumLampType type = EnumLampType.values()[type(meta)];
+		int color = color(meta);
+		if(color > 15)
+		{
+			if(color > 16)
+			{
+				return "All Colored "+type.getName();
+			}
+			return "None Colored "+type.getName();
+		}
+		return EnumColor.values()[color].getNameBig()+" "+type.getName();
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
+	{
+		int meta = par1.getItemDamage();
+		if(inverted(meta))
+		{
+			par3.add("Is Inverted");
+		}
+		int color = color(meta);
+		if(color == 16)
+		{
+			if(NBTHelper.nbtCheck(par1, "Colors"))
+			{
+				ArrayList<EnumColor> colors = new ArrayList<EnumColor>();
+				NBTTagList list = par1.getTagCompound().getTagList("Colors");
+				for(int i = 0;i<list.tagCount();i++)
+				{
+					EnumColor data = EnumColor.values()[((NBTTagInt)list.tagAt(i)).data];
+					if(!colors.contains(data))
+					{
+						colors.add(data);
+					}
+				}
+				String text = "Stored Color: ";
+				int count = 0;
+				for(int i = 0;i<colors.size();i++)
+				{
+					count++;
+					text = text +" "+ colors.get(i).getNameBig();
+					if(count > 4)
+					{
+						par3.add(text);
+						text = "";
+						count = 0;
+					}
+					else
+					{
+						if(i == colors.size()-1)
+						{
+							par3.add(text);
+						}
+					}
+				}
+			}
+		}
+		if(NBTHelper.nbtCheck(par1, "Recipe") && par1.getTagCompound().getBoolean("Recipe"))
+		{
+			par3.add("Copies the Color of the Lamp in the Middle");
+		}
+	}
+	
 	
 }

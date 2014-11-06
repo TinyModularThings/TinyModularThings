@@ -29,60 +29,66 @@ public class RenderLamp extends TileEntitySpecialRenderer
 	
 	private void renderLamp(TileLamp Lamp, double x, double y, double z)
 	{
-		GL11.glPushMatrix();
-		float f = 1.0F;
-		GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
-		EnumLampType type = Lamp.getType();
-		
-		if (type == null)
+		try
 		{
-			GL11.glPopMatrix();
-			return;
-		}
-		if (type.hasFacing())
-		{
-			int facing = Lamp.getFacing();
+			GL11.glPushMatrix();
+			float f = 1.0F;
+			GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
+			EnumLampType type = Lamp.getType();
 			
-			switch (facing)
+			if (type == null)
 			{
-				case 0:
-					break;
-				case 1:
-					GL11.glRotatef(180, 1, 0, 0);
-					break;
-				case 2:
-					GL11.glRotatef(90, 1, 0, 0);
-					break;
-				case 3:
-					GL11.glRotatef(-90, 1, 0, 0);
-					break;
-				case 4:
-					GL11.glRotatef(-90, 0, 0, 1);
-					break;
-				case 5:
-					GL11.glRotatef(90, 0, 0, 1);
-					
+				GL11.glPopMatrix();
+				return;
+			}
+			if (type.hasFacing())
+			{
+				int facing = Lamp.getFacing();
+				
+				switch (facing)
+				{
+					case 0:
+						break;
+					case 1:
+						GL11.glRotatef(180, 1, 0, 0);
+						break;
+					case 2:
+						GL11.glRotatef(90, 1, 0, 0);
+						break;
+					case 3:
+						GL11.glRotatef(-90, 1, 0, 0);
+						break;
+					case 4:
+						GL11.glRotatef(-90, 0, 0, 1);
+						break;
+					case 5:
+						GL11.glRotatef(90, 0, 0, 1);
+						
+				}
+				
+				GL11.glRotatef(180, 1, 0, 0);
 			}
 			
-			GL11.glRotatef(180, 1, 0, 0);
+			if(type.getTexture() != null)
+			{
+				this.bindTexture(type.getTexture());
+			}
+			GL11.glTranslatef(0, -f, 0);
+			
+			SpmodColor color = Lamp.getColor();
+			if (color != null)
+			{
+				GL11.glColor4d(color.red, color.green, color.blue, 1.0D);
+			}
+			
+			lamp.render(0.0625F, type.getRenderType());
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			lamp.renderAfter(0.0625F, type.getRenderType());
+			GL11.glPopMatrix();
 		}
-		
-		if(type.getTexture() != null)
+		catch(Exception e)
 		{
-			this.bindTexture(type.getTexture());
 		}
-		GL11.glTranslatef(0, -f, 0);
-		
-		SpmodColor color = Lamp.getColor();
-		if (color != null)
-		{
-			GL11.glColor4d(color.red, color.green, color.blue, 1.0D);
-		}
-		
-		lamp.render(0.0625F, type.getRenderType());
-		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
-		lamp.renderAfter(0.0625F, type.getRenderType());
-		GL11.glPopMatrix();
 	}
 	
 }

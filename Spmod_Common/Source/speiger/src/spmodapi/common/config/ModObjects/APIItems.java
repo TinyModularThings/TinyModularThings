@@ -2,7 +2,7 @@ package speiger.src.spmodapi.common.config.ModObjects;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import speiger.src.spmodapi.common.items.SpmodItem;
+import speiger.src.spmodapi.common.items.core.SpmodItem;
 
 public class APIItems
 {

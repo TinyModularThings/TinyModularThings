@@ -5,7 +5,6 @@ import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
@@ -21,11 +20,12 @@ import speiger.src.api.common.world.items.IRotorItem;
 import speiger.src.api.common.world.tiles.interfaces.IWindmill;
 import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.common.core.CWPreference;
+import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemRotor extends Item implements IRotorItem
+public class ItemRotor extends SpmodItem implements IRotorItem
 {
 	public static HashMap<BasicRotorType, Icon> textures = new HashMap<BasicRotorType, Icon>();
 	
@@ -198,6 +198,21 @@ public class ItemRotor extends Item implements IRotorItem
 		return false;
 	}
 	
+	@Override
+	public String getName(ItemStack par1)
+	{
+		switch(par1.getItemDamage())
+		{
+			case 0: return "Wooden Rotor";
+			case 1: return "Wool Rotor";
+			case 2: return "Iron Rotor";
+			case 3: return "Carbon Rotor";
+			case 4: return "Alloy Rotor";
+			case 5: return "Iridium Rotor";
+			default: return "Unnamed Rotor";
+		}
+	}
+	
 	public static enum BasicRotorType
 	{
 		WoodenRotor(2250, 0, 0.5F, "rotor.basic.wood"),
@@ -275,5 +290,7 @@ public class ItemRotor extends Item implements IRotorItem
 			return false;
 		}
 	}
+
+
 	
 }

@@ -34,7 +34,7 @@ public class Batteries extends TinyItem implements IBCBattery
 	{
 		super(par1);
 		type = par3;
-		name = "mj.battery." + par2;
+		name = par2+ " MJ Battery";
 		this.setMaxDamage(100);
 		this.setMaxStackSize(1);
 		this.setNoRepair();
@@ -336,5 +336,11 @@ public class Batteries extends TinyItem implements IBCBattery
 		{
 			return maxStorage;
 		}
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return name;
 	}
 }

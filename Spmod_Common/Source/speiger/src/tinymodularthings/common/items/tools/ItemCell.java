@@ -498,5 +498,12 @@ public class ItemCell extends TinyItem implements IFluidContainerItem
 	}
 
 
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return "Tiny Fluid Cell";
+	}
+
+
 
 }

@@ -8,9 +8,8 @@ import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.management.ServerConfigurationManager;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
-import speiger.src.spmodapi.common.items.SpmodItem;
+import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.util.data.AccessConfig;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -26,8 +25,6 @@ public class ItemAccessAdder extends SpmodItem
 		this.setCreativeTab(APIUtils.tabCrafing);
 	}
 	
-
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
@@ -70,5 +67,11 @@ public class ItemAccessAdder extends SpmodItem
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return "Inventory Accesser Debug Tool";
 	}
 }

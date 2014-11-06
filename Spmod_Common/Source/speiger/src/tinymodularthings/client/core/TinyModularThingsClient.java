@@ -94,7 +94,6 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		}
 
 		
-		registerLanguage();
 		
 		if(Loader.isModLoaded("BuildCraft|Core"))
 		{
@@ -113,13 +112,6 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		PipeToolTipManager.addToolTip(AluFluidExtractionPipe.class, "Adjustable Fluid Extraction Pipe");
 	}
 	
-	private void registerLanguage()
-	{
-		if (TinyModularThings.LanguagePrint)
-		{
-			
-		}
-	}
 	
 	@Override
 	public void loadPipe(ItemPipe par1, int id, Class<? extends Pipe> par2)

@@ -1,7 +1,7 @@
 package speiger.src.tinymodularthings.common.items.core;
 
 import speiger.src.api.common.registry.helpers.SpmodMod;
-import speiger.src.spmodapi.common.items.SpmodItem;
+import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 

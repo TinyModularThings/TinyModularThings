@@ -1,17 +1,11 @@
 package speiger.src.tinymodularthings.common.blocks.ores;
 
 import net.minecraft.item.ItemStack;
-import speiger.src.api.common.registry.helpers.SpmodMod;
-import speiger.src.api.common.registry.helpers.SpmodModRegistry;
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.items.core.ItemBlockTinyChest;
 
 public class ItemBlockSpmodOre extends ItemBlockTinyChest
-{
-	
-	private String[] oreNames = new String[] { "oreCopper", "oreTin", "oreSilver", "oreLead", "oreBauxit", "oreIridium" };
-	
+{	
 	public ItemBlockSpmodOre(int par1)
 	{
 		super(par1);
@@ -23,5 +17,25 @@ public class ItemBlockSpmodOre extends ItemBlockTinyChest
 	{
 		return par1;
 	}
-	
+
+	@Override
+	public BlockStack getBlockToPlace(int meta)
+	{
+		return new BlockStack(getBlockID(), meta);
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		switch(par1.getItemDamage())
+		{
+			case 0: return "Copper Ore";
+			case 1: return "Tin Ore";
+			case 2: return "Silver Ore";
+			case 3: return "Lead Ore";
+			case 4: return "Bauxit Ore";
+			case 5: return "Iridium Ore";
+		}
+		return null;
+	}
 }

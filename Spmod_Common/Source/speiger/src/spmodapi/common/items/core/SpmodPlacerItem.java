@@ -1,16 +1,16 @@
-package speiger.src.spmodapi.common.items;
+package speiger.src.spmodapi.common.items.core;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.blocks.BlockStack;
 
-public abstract class ItemBlockSpmod extends ItemBlock
+public abstract class SpmodPlacerItem extends SpmodItem
 {
 
-	public ItemBlockSpmod(int par1)
+	public SpmodPlacerItem(int par1)
 	{
 		super(par1);
 	}
@@ -55,6 +55,10 @@ public abstract class ItemBlockSpmod extends ItemBlock
                 ++x;
             }
         }
+        if(getBlockToPlace(item.getItemDamage()) == null)
+        {
+        	return false;
+        }
         
         if (item.stackSize == 0)
         {
@@ -64,7 +68,7 @@ public abstract class ItemBlockSpmod extends ItemBlock
         {
             return false;
         }
-        else if (y == 255 && Block.blocksList[this.getBlockID()].blockMaterial.isSolid())
+        else if (y == 255 && Block.blocksList[getBlockToPlace(item.getItemDamage()).getBlockID()].blockMaterial.isSolid())
         {
             return false;
         }
@@ -73,6 +77,7 @@ public abstract class ItemBlockSpmod extends ItemBlock
         	BlockStack stack = getBlockToPlace(item.getItemDamage());
         	if(world.setBlock(x, y, z, stack.getBlockID(), stack.getMeta(), 3))
         	{
+        		WorldReading.setupUser(world, x, y, z, player);
         		onAfterPlaced(world, x, y, z, side, player, item);
         		return true;
         	}
@@ -88,4 +93,11 @@ public abstract class ItemBlockSpmod extends ItemBlock
     	
     }
     
+    public void removeItem(EntityPlayer par1, ItemStack par2)
+    {
+    	if(!par1.capabilities.isCreativeMode)
+    	{
+    		par2.stackSize--;
+    	}
+    }
 }

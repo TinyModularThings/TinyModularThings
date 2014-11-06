@@ -14,7 +14,7 @@ public class ItemBlockMultiPlate extends ItemBlock
 	@Override
 	public String getItemDisplayName(ItemStack par1ItemStack)
 	{
-		return "MultiPlate";
+		return "Multi Plate";
 	}
 	
 }

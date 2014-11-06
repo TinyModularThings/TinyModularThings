@@ -8,7 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
@@ -51,6 +50,12 @@ public class ItemTinyInfo extends TinyItem
 		}
 		
 		return super.onItemUseFirst(stack, player, world, x, y, z, side, hitX, hitY, hitZ);
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return "Debug Tool";
 	}
 	
 	

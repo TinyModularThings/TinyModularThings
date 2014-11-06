@@ -63,6 +63,13 @@ public enum EnumColor
 		return name;
 	}
 	
+	public String getNameBig()
+	{
+		String copy = name.substring(1);
+		copy = name.substring(0, 1).toUpperCase() + copy;
+		return copy;
+	}
+	
 	public int getAsWool()
 	{
 		return wool;

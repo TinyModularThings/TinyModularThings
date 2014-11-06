@@ -25,7 +25,6 @@ import speiger.src.spmodapi.common.tile.MobMachineLoader;
 import speiger.src.spmodapi.common.util.ForgeRegister;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import buildcraft.BuildCraftCore;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;

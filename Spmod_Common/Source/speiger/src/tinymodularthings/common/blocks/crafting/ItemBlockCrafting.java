@@ -1,9 +1,10 @@
 package speiger.src.tinymodularthings.common.blocks.crafting;
 
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
+import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.tinymodularthings.common.items.core.ItemBlockTinyChest;
 
-public class ItemBlockCrafting extends ItemBlock
+public class ItemBlockCrafting extends ItemBlockTinyChest
 {
 
 	public ItemBlockCrafting(int par1)
@@ -17,11 +18,17 @@ public class ItemBlockCrafting extends ItemBlock
 	{
 		return par1;
 	}
+	
+	@Override
+	public BlockStack getBlockToPlace(int meta)
+	{
+		return new BlockStack(getBlockID(), meta);
+	}
 
 	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
+	public String getName(ItemStack par1)
 	{
-		switch(par1ItemStack.getItemDamage())
+		switch(par1.getItemDamage())
 		{
 			case 0: return "Advanced Workbench";
 			case 1: return "Oredictionary Crafter";

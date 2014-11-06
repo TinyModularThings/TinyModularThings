@@ -5,7 +5,6 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.util.Icon;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.tinymodularthings.TinyModularThings;
 
 public class PipeInformation
 {

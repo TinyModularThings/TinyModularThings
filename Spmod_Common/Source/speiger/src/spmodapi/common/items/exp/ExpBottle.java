@@ -10,14 +10,14 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import speiger.src.api.common.world.items.IExpBottle;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
-import speiger.src.spmodapi.common.items.SpmodItem;
+import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ExpBottle extends SpmodItem implements IExpBottle
 {
-	String[] exp = new String[] { "small", "medium", "big", "huge", "transdimensional" };
+	String[] exp = new String[] { "Small", "Medium", "Big", "Huge", "Transdimensional"};
 	static int[] exps = new int[] { 100, 1000, 10000, 100000, 1000000 };
 	
 	public ExpBottle(int par1)
@@ -61,7 +61,7 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 		String[] array = new String[exp.length];
 		for(int i = 0;i<exp.length;i++)
 		{
-			array[i] = "bottle_" + exp[i];
+			array[i] = "bottle_" + exp[i].toLowerCase();
 		}
 		par1.registerTexture(this, array);
 	}
@@ -259,6 +259,12 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 	public boolean needExp(ItemStack par1)
 	{
 		return this.getStoredExp(par1) < this.getMaxExp(par1);
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return exp[par1.getItemDamage()]+" Exp Bottle";
 	}
 	
 }

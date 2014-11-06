@@ -3,6 +3,7 @@ package speiger.src.spmodapi.common.items.hemp;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemSeeds;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.EnumPlantType;
@@ -26,10 +27,13 @@ public class ItemHempSeed extends ItemSeeds
 		return EnumPlantType.Crop;
 	}
 	
+	
+	@Override
+	public String getItemDisplayName(ItemStack par1ItemStack)
+	{
+		return "Hemp Seeds";
+	}
 
-	
-	
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)

@@ -11,12 +11,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemIngots extends TinyItem
-{
-	
-	String[] ingots = new String[] { "ingotCopper", "ingotTin", "ingotAluminium", "ingotSilver", "ingotLead", "ingotBronze", "ingotIridium" };
-	
-	Icon[] ingotTextures = new Icon[ingots.length];
-	
+{	
 	public ItemIngots(int par1)
 	{
 		super(par1);
@@ -31,22 +26,28 @@ public class ItemIngots extends TinyItem
 	}
 	
 	@Override
+	public String getName(ItemStack par1)
+	{
+		switch(par1.getItemDamage())
+		{
+			case 0: return "Copper Ingot";
+			case 1: return "Tin Ingot";
+			case 2: return "Aluminium Ingot";
+			case 3: return "Silver Ingot";
+			case 4: return "Lead Ingot";
+			case 5: return "Bronze Ingot";
+			case 6: return "Iridium Ingot";
+		}
+		return null;
+	}
+	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
-		for (int i = 0; i < ingots.length; i++)
+		for (int i = 0; i < 7; i++)
 		{
 			par3.add(new ItemStack(par1, 1, i));
 		}
 	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public Icon getIconFromDamage(int par1)
-	{
-		return super.getIconFromDamage(par1);
-	}
-
-	
-	
 }

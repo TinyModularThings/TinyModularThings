@@ -1,7 +1,10 @@
-package speiger.src.spmodapi.common.items;
+package speiger.src.spmodapi.common.items.core;
+
+import com.google.common.base.Strings;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.SpmodAPI;
@@ -28,6 +31,21 @@ public abstract class SpmodItem extends Item implements ITextureRequester
 	{
 		return SpmodAPILib.ModID.toLowerCase();
 	}
+	
+	
+
+	@Override
+	public String getItemDisplayName(ItemStack par1ItemStack)
+	{
+		String name = getName(par1ItemStack);
+		if(Strings.isNullOrEmpty(name))
+		{
+			name = "No Name";
+		}
+		return name;
+	}
+	
+	public abstract String getName(ItemStack par1);
 
 	@Override
 	@SideOnly(Side.CLIENT)

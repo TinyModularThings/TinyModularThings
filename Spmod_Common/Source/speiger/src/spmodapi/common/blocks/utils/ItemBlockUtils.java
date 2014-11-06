@@ -6,10 +6,10 @@ import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.registry.helpers.SpmodModRegistry;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.items.core.ItemBlockSpmod;
 
-public class ItemBlockUtils extends ItemBlock
+public class ItemBlockUtils extends ItemBlockSpmod
 {
-	String[] names = new String[] { "cobble.workbench", "exp.storage", "mob.machine", "entity.lurer", "Inventory Accesser"};
 	
 	public ItemBlockUtils(int par1)
 	{
@@ -21,6 +21,26 @@ public class ItemBlockUtils extends ItemBlock
 	public int getMetadata(int par1)
 	{
 		return par1;
+	}
+
+	@Override
+	public BlockStack getBlockToPlace(int meta)
+	{
+		return new BlockStack(getBlockID(), meta);
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		switch(par1.getItemDamage())
+		{
+			case 0: return "Cobble Workbench";
+			case 1: return "Exp Storage";
+			case 2: return "Mob Machine";
+			case 3: return "Entity Lurer";
+			case 4: return "Inventory Accesser";
+			default: return "No Name";
+		}
 	}
 	
 }

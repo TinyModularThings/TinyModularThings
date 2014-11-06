@@ -103,9 +103,9 @@ public class TileLamp extends TileFacing implements IActionReceptor
 		return isInverted;
 	}
 	
-	public void setInverted()
+	public void setInverted(boolean par1)
 	{
-		this.isInverted = true;
+		this.isInverted = par1;
 	}
 	
 	public void setType(int lamp)
@@ -133,6 +133,11 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	public void setMetadata(int meta)
 	{
 		this.meta = meta;
+	}
+	
+	public void addColor(int colorID)
+	{
+		this.addColor(EnumColor.values()[colorID]);
 	}
 	
 	public void addColor(EnumColor par1)
@@ -264,15 +269,20 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	
 	public boolean isActive()
 	{
-		return this.getBlockMetadata() == 1;
+		if(isInverted)
+		{
+			return getBlockMetadata() == 4;
+		}
+		return getBlockMetadata() == 1;
 	}
 	
 	public void changeState(boolean active)
 	{
-		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, active ? 1 : 0, 3);
+		worldObj.setBlockMetadataWithNotify(xCoord, yCoord, zCoord, isInverted ? active ? 4 : 3 : active ? 1 : 0, 3);
 		this.updateNeighbors(true);
 		this.updateBlock();
 		this.updateLight();
+		this.worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	public void refillRoundRobin()
@@ -565,8 +575,8 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	
 	public static enum EnumLampType
 	{
-		FULL(new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/blocks/ModelFullLamp.png"), 0, "Full", false),
-		RP2CAGELAMP(new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/blocks/ModelCageLamp.png"), 1, "RPCageLamp", true),
+		FULL(new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/blocks/ModelFullLamp.png"), 0, "Lamp", false),
+		RP2CAGELAMP(new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/blocks/ModelCageLamp.png"), 1, "Cage Lamp", true),
 		Nothing();
 		
 		ResourceLocation texture;

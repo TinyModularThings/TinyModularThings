@@ -43,14 +43,21 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 	static HashMap<String, BlockPositionList> replace = new HashMap<String, BlockPositionList>();
 	public static DataType dataLoaded = DataType.NotLoaded;
 	
-	public String[] names = new String[] {
-			"nether.crystal", 
-			"nether.crystal.charging", 
-			"nether.crystal.charging", 
-			"nether.crystal.charged", 
-			"nether.crystal.used", 
-			"nether.crystal.broken" 
-	};
+	
+	@Override
+	public String getName(ItemStack par1)
+	{
+		switch(par1.getItemDamage())
+		{
+			case 0: return "Nether Crystal";
+			case 1: return "Charging Nether Crystal";
+			case 2: return "Charging Nether Crystal";
+			case 3: return "Charged Nether Crystal";
+			case 4: return "Used Nether Crystal";
+			case 5: return "Broken Nether Crystal";
+		}
+		return null;
+	}
 	
 	public ItemNetherCrystal(int par1)
 	{

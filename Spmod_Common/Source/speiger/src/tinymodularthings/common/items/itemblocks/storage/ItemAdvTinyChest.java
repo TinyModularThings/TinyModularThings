@@ -9,15 +9,15 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import speiger.src.spmodapi.common.util.proxy.LangProxy;
-import speiger.src.tinymodularthings.TinyModularThings;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyChest;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
+import speiger.src.tinymodularthings.common.items.core.TinyPlacerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemAdvTinyChest extends TinyItem
+public class ItemAdvTinyChest extends TinyPlacerItem
 {
 	
 	public ItemAdvTinyChest(int par1)
@@ -26,85 +26,7 @@ public class ItemAdvTinyChest extends TinyItem
 		setHasSubtypes(true);
 		setCreativeTab(CreativeTabs.tabFood);
 	}
-	
-	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
-	{
-		int i1 = par3World.getBlockId(par4, par5, par6);
 		
-		if (i1 == Block.snow.blockID && (par3World.getBlockMetadata(par4, par5, par6) & 7) < 1)
-		{
-			par7 = 1;
-		}
-		else if (i1 != Block.vine.blockID && i1 != Block.tallGrass.blockID && i1 != Block.deadBush.blockID && (Block.blocksList[i1] == null || !Block.blocksList[i1].isBlockReplaceable(par3World, par4, par5, par6)))
-		{
-			if (par7 == 0)
-			{
-				--par5;
-			}
-			
-			if (par7 == 1)
-			{
-				++par5;
-			}
-			
-			if (par7 == 2)
-			{
-				--par6;
-			}
-			
-			if (par7 == 3)
-			{
-				++par6;
-			}
-			
-			if (par7 == 4)
-			{
-				--par4;
-			}
-			
-			if (par7 == 5)
-			{
-				++par4;
-			}
-		}
-		if (par1ItemStack.stackSize == 0)
-		{
-			return false;
-		}
-		else if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack))
-		{
-			return false;
-		}
-		else if (par5 == 255)
-		{
-			return false;
-		}
-		else if (!par3World.canPlaceEntityOnSide(TinyBlocks.storageBlock.blockID, par4, par5, par6, false, par7, par2EntityPlayer, par1ItemStack))
-		{
-			return false;
-		}
-		else
-		{
-			if (par3World.setBlock(par4, par5, par6, TinyBlocks.storageBlock.blockID, 2, 3))
-			{
-				TileEntity tile = par3World.getBlockTileEntity(par4, par5, par6);
-				if (tile != null && tile instanceof AdvTinyChest)
-				{
-					((AdvTinyChest) tile).setMode(par1ItemStack.getItemDamage() + 1);
-					Block.blocksList[par3World.getBlockId(par4, par5, par6)].onBlockPlacedBy(par3World, par4, par5, par6, par2EntityPlayer, par1ItemStack);
-					StepSound sound = Block.blocksList[par3World.getBlockId(par4, par5, par6)].stepSound;
-					par3World.playSoundEffect(par4, par5, par6, sound.getPlaceSound(), sound.stepSoundVolume, sound.stepSoundPitch);
-					par1ItemStack.stackSize--;
-					return true;
-				}
-				
-			}
-			
-			return false;
-		}
-	}
-	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
@@ -115,4 +37,36 @@ public class ItemAdvTinyChest extends TinyItem
 		}
 	}
 	
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return "Advanced TinyChest";
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
+	{
+		par3.add((1+par1.getItemDamage())+ (par1.getItemDamage() > 0 ? " Slots" : " Slot"));
+	}
+	
+	@Override
+	public void onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
+	{
+		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		if(tile != null && tile instanceof AdvTinyChest)
+		{
+			((AdvTinyChest)tile).setMode(item.getItemDamage()+1);
+			if(!player.capabilities.isCreativeMode)
+			{
+				item.stackSize--;
+			}
+		}
+	}
+	
+	@Override
+	public BlockStack getBlockToPlace(int meta)
+	{
+		return new BlockStack(TinyBlocks.storageBlock, 2);
+	}
 }

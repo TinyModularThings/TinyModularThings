@@ -30,6 +30,11 @@ import buildcraft.api.transport.IPipeTile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+/**
+ * Everything in this Class Will Change. So do not access it.
+ */
+
+@Deprecated
 public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 {
 	

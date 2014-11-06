@@ -35,7 +35,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemAdvancedRotor extends ItemTool implements IRotorItem
 {
-	private static String[] names = new String[] { "rotor.adv.wood", "rotor.adv.wool", "rotor.adv.iron", "rotor.adv.carbon", "rotor.adv.alloy", "rotor.adv.iridium" };
 	
 	public ItemAdvancedRotor(int par1)
 	{
@@ -44,6 +43,21 @@ public class ItemAdvancedRotor extends ItemTool implements IRotorItem
 		this.setMaxDamage(100);
 		this.setMaxStackSize(1);
 		this.setNoRepair();
+	}
+	
+	@Override
+	public String getItemDisplayName(ItemStack par1)
+	{
+		switch(par1.getItemDamage())
+		{
+			case 0: return "Advanced Wooden Rotor";
+			case 1: return "Advanced Wool Rotor";
+			case 2: return "Advanced Iron Rotor";
+			case 3: return "Advanced Carbon Rotor";
+			case 4: return "Advanced Alloy Rotor";
+			case 5: return "Advanced Iridium Rotor";
+			default: return "Unnamed Rotor";
+		}
 	}
 	
 	@Override

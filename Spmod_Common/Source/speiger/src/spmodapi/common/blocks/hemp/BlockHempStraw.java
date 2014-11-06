@@ -52,8 +52,6 @@ public class BlockHempStraw extends SpmodBlockBase
 		return false;
 	}
 	
-	
-	
 	@Override
 	public ArrayList<ItemStack> onDrop(int meta, int fortune)
 	{
@@ -64,14 +62,14 @@ public class BlockHempStraw extends SpmodBlockBase
 		}
 		return super.onDrop(meta, fortune);
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int par1, int par2)
 	{
 		return TextureEngine.getTextures().getTexture(this, 0);
 	}
-
+	
 	@Override
 	public void updateTick(World par1World, int par2, int par3, int par4, Random par5Random)
 	{
@@ -89,7 +87,6 @@ public class BlockHempStraw extends SpmodBlockBase
 			}
 			
 		}
-		
 		breedAnimal(par1World, par2, par3, par4, par5Random);
 		par1World.notifyBlockOfNeighborChange(par2, par3, par4, blockID);
 		par1World.scheduleBlockUpdate(par2, par3, par4, blockID, tickRate(par1World));
@@ -181,7 +178,6 @@ public class BlockHempStraw extends SpmodBlockBase
 		}
 	}
 	
-	
 	public void damageBlock(World par1, int x, int y, int z)
 	{
 		int id = par1.getBlockId(x, y, z);
@@ -198,5 +194,4 @@ public class BlockHempStraw extends SpmodBlockBase
 			}
 		}
 	}
-	
 }

@@ -2,7 +2,6 @@ package speiger.src.tinymodularthings.common.plugins.BC.actions;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-import speiger.src.tinymodularthings.TinyModularThings;
 import buildcraft.api.gates.IAction;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -49,6 +48,13 @@ public class BucketFillerAction implements IAction
 	public boolean hasParameter()
 	{
 		return false;
+	}
+
+	@Override
+	public String getDescription()
+	{
+		if(fill)return "Fill";
+		return "Drain";
 	}
 
 	

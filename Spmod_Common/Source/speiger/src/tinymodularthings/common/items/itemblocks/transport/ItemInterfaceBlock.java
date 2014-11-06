@@ -8,21 +8,20 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
-import speiger.src.api.common.registry.helpers.SpmodMod;
-import speiger.src.api.common.registry.helpers.SpmodModRegistry;
+import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
-import speiger.src.tinymodularthings.common.items.core.TinyItem;
+import speiger.src.tinymodularthings.common.items.core.TinyPlacerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemInterfaceBlock extends TinyItem
+public class ItemInterfaceBlock extends TinyPlacerItem
 {
 	
 	public ItemInterfaceBlock(int par1)
@@ -95,110 +94,85 @@ public class ItemInterfaceBlock extends TinyItem
 	
 	@Override
 	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
+	{
+		if(NBTHelper.nbtCheck(par1, "Interface"))
+		{
+			NBTTagCompound nbt = NBTHelper.getTag(par1, "Interface");
+			int id = nbt.getInteger("ID");
+			int meta = nbt.getInteger("Meta");
+			if(id > 0)
+			{
+				BlockStack stack = new BlockStack(id, meta);
+				par3.add("Stored Block: "+stack.getBlockDisplayName());
+			}
+			else
+			{
+				par3.add("No Block Stored");
+			}
+		}
+	}
+
+
+	@Override
+	@SideOnly(Side.CLIENT)
 	public int getSpriteNumber()
 	{
 		return 0;
-	}
-
-	
-	@Override
-	public boolean onItemUse(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, World par3World, int par4, int par5, int par6, int par7, float par8, float par9, float par10)
-	{
-		int i1 = par3World.getBlockId(par4, par5, par6);
-		
-		if (i1 == Block.snow.blockID && (par3World.getBlockMetadata(par4, par5, par6) & 7) < 1)
-		{
-			par7 = 1;
-		}
-		else if (i1 != Block.vine.blockID && i1 != Block.tallGrass.blockID && i1 != Block.deadBush.blockID && (Block.blocksList[i1] == null || !Block.blocksList[i1].isBlockReplaceable(par3World, par4, par5, par6)))
-		{
-			if (par7 == 0)
-			{
-				--par5;
-			}
-			
-			if (par7 == 1)
-			{
-				++par5;
-			}
-			
-			if (par7 == 2)
-			{
-				--par6;
-			}
-			
-			if (par7 == 3)
-			{
-				++par6;
-			}
-			
-			if (par7 == 4)
-			{
-				--par4;
-			}
-			
-			if (par7 == 5)
-			{
-				++par4;
-			}
-		}
-		
-		if (par1ItemStack.stackSize == 0)
-		{
-			return false;
-		}
-		else if (!par2EntityPlayer.canPlayerEdit(par4, par5, par6, par7, par1ItemStack))
-		{
-			return false;
-		}
-		else if (par5 == 255)
-		{
-			return false;
-		}
-		else
-		{
-			if (!par3World.isRemote)
-			{
-				BlockStack stack = null;
-				
-				if (par1ItemStack.hasTagCompound() && par1ItemStack.getTagCompound().getCompoundTag("Interface") != null)
-				{
-					NBTTagCompound nbt = par1ItemStack.getTagCompound().getCompoundTag("Interface");
-					if (nbt.getInteger("ID") == 0)
-					{
-						par2EntityPlayer.sendChatToPlayer(LangProxy.getText("Need Stored Block"));
-						return false;
-					}
-					stack = new BlockStack(nbt.getInteger("ID"), nbt.getInteger("Meta"));
-				}
-				
-				if (stack == null)
-				{
-					return false;
-				}
-				
-				if (par3World.setBlock(par4, par5, par6, TinyBlocks.transportBlock.blockID, getMetaFromDamage(par1ItemStack), 3))
-				{
-					TileEntity tile = par3World.getBlockTileEntity(par4, par5, par6);
-					if (tile != null && tile instanceof IAcceptor)
-					{
-						IAcceptor hidden = (IAcceptor) tile;
-						hidden.setBlock(stack);
-						par1ItemStack.stackSize--;
-						return true;
-					}
-					
-				}
-			}
-			
-			return false;
-		}
 	}
 	
 	public int getMetaFromDamage(ItemStack par1)
 	{
 		int meta = par1.getItemDamage();
 		return meta + 1;
+	}
+	
+	@Override
+	public BlockStack getBlockToPlace(int meta)
+	{
+		return new BlockStack(TinyBlocks.transportBlock, meta+1);
+	}
+	
+	@Override
+	public String getName(ItemStack par1)
+	{
+		switch(par1.getItemDamage())
+		{
+			case 0: return "Item Interface";
+			case 1: return "Fluid Interface";
+			case 2: return "Energy Interface";
+		}
+		return null;
+	}
+	
+	@Override
+	public void onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
+	{
+		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		if(tile != null && tile instanceof IAcceptor)
+		{
+			IAcceptor accept = (IAcceptor)tile;
+			boolean flag = false;
+			
+			if(NBTHelper.nbtCheck(item, "Interface"))
+			{
+				flag = true;
+				NBTTagCompound nbt = NBTHelper.getTag(item, "Interface");
+				if(nbt.getInteger("ID") == 0)
+				{
+					flag = false;
+					player.sendChatToPlayer(LangProxy.getText("Need Internal Block", EnumChatFormatting.RED));
+				}
+				if(flag)
+				{
+					accept.setBlock(new BlockStack(nbt.getInteger("ID"), nbt.getInteger("Meta")));
+					this.removeItem(player, item);
+					return;
+				}
+				world.setBlockToAir(x, y, z);
+			}
+			
+		}
 	}
 	
 }

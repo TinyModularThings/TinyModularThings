@@ -23,11 +23,11 @@ public class SpmodBone extends ItemFood
 	public SpmodBone(int itemID, int size, String Name, TextureEngine par1)
 	{
 		super(itemID, 2, 4F * size, true);
-		name = Name;
+		name = Name+" Bone";
 		OreDictionary.registerOre("bone", this);
 		PathProxy.addSRecipe(new ItemStack(Item.dyePowder.itemID, size, EnumColor.WHITE.getAsDye()), new Object[] { new ItemStack(this) });
 		this.setCreativeTab(APIUtils.tabCrafing);
-		par1.registerTexture(this, "bone_"+Name);
+		par1.registerTexture(this, "bone_"+Name.toLowerCase());
 	}
 	
 	
@@ -38,7 +38,11 @@ public class SpmodBone extends ItemFood
 	{
 	}
 
-
+	@Override
+	public String getItemDisplayName(ItemStack par1ItemStack)
+	{
+		return name;
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
@@ -294,6 +295,15 @@ public class WorldReading
 	public static ForgeDirection[] getVDirections()
 	{
 		return new ForgeDirection[] { ForgeDirection.DOWN, ForgeDirection.UP };
+	}
+
+	public static void setupUser(World world, int x, int y, int z, EntityPlayer player)
+	{
+		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		if(tile != null && tile instanceof AdvTile)
+		{
+			((AdvTile)tile).setupUser(player);
+		}
 	}
 
 

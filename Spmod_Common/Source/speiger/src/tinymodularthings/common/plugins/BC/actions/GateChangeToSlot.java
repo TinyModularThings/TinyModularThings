@@ -2,7 +2,6 @@ package speiger.src.tinymodularthings.common.plugins.BC.actions;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-import speiger.src.tinymodularthings.TinyModularThings;
 import buildcraft.BuildCraftTransport;
 import buildcraft.api.gates.IAction;
 import cpw.mods.fml.relauncher.Side;
@@ -52,6 +51,12 @@ public class GateChangeToSlot implements IAction
 	public boolean hasParameter()
 	{
 		return false;
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Change To Slot: "+SlotID;
 	}
 
 	

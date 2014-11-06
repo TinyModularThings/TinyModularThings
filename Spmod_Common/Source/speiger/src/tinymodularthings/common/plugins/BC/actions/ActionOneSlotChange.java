@@ -2,7 +2,6 @@ package speiger.src.tinymodularthings.common.plugins.BC.actions;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.util.Icon;
-import speiger.src.tinymodularthings.TinyModularThings;
 import buildcraft.BuildCraftTransport;
 import buildcraft.api.gates.IAction;
 import cpw.mods.fml.relauncher.Side;
@@ -46,6 +45,13 @@ public class ActionOneSlotChange implements IAction
 	public boolean hasParameter()
 	{
 		return false;
+	}
+
+	@Override
+	public String getDescription()
+	{
+		if(plus)return "Increase by 1 Slot";
+		return "Increase by 1 Slot";
 	}
 
 	

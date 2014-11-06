@@ -45,7 +45,6 @@ public class TinyModularThings implements SpmodMod
 	
 	public static LogProxy log;
 	
-	public static boolean LanguagePrint = false;
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt)
@@ -84,7 +83,6 @@ public class TinyModularThings implements SpmodMod
 	@EventHandler
 	public void onStopped(FMLServerStoppedEvent evt)
 	{
-		core.registerRenderer();
 	}
 	
 	@Override

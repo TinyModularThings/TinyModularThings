@@ -6,8 +6,8 @@ import net.minecraft.util.ResourceLocation;
 import speiger.src.api.common.world.items.plates.PlateManager;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.fluids.hemp.ItemHempResin;
-import speiger.src.spmodapi.common.items.SpmodItem;
 import speiger.src.spmodapi.common.items.armor.HempArmor;
+import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.items.crafting.ItemBlueDye;
 import speiger.src.spmodapi.common.items.crafting.ItemColorCard;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
@@ -114,27 +114,27 @@ public class APIItemsConfig
 		config.itemIDs.updateToNextID();
 		
 		engine.setCurrentPath("crafting");
-		items.boneChicken = new SpmodBone(config.itemIDs.getCurrentID(), 1, "chicken", engine);
+		items.boneChicken = new SpmodBone(config.itemIDs.getCurrentID(), 1, "Chicken", engine);
 		RegisterProxy.RegisterItem(items.boneChicken);
 		config.itemIDs.updateToNextID();
 		
-		items.boneSheep = new SpmodBone(config.itemIDs.getCurrentID(), 2, "sheep", engine);
+		items.boneSheep = new SpmodBone(config.itemIDs.getCurrentID(), 2, "Sheep", engine);
 		RegisterProxy.RegisterItem(items.boneSheep);
 		config.itemIDs.updateToNextID();
 		
-		items.bonePig = new SpmodBone(config.itemIDs.getCurrentID(), 4, "pig", engine);
+		items.bonePig = new SpmodBone(config.itemIDs.getCurrentID(), 4, "Pig", engine);
 		RegisterProxy.RegisterItem(items.bonePig);
 		config.itemIDs.updateToNextID();
 		
-		items.boneCow = new SpmodBone(config.itemIDs.getCurrentID(), 5, "cow", engine);
+		items.boneCow = new SpmodBone(config.itemIDs.getCurrentID(), 5, "Cow", engine);
 		RegisterProxy.RegisterItem(items.boneCow);
 		config.itemIDs.updateToNextID();
 		
-		items.boneMooshroom = new SpmodBone(config.itemIDs.getCurrentID(), 5, "mushroom", engine);
+		items.boneMooshroom = new SpmodBone(config.itemIDs.getCurrentID(), 5, "Mushroom", engine);
 		RegisterProxy.RegisterItem(items.boneMooshroom);
 		config.itemIDs.updateToNextID();
 		
-		items.boneHorse = new SpmodBone(config.itemIDs.getCurrentID(), 6, "horse", engine);
+		items.boneHorse = new SpmodBone(config.itemIDs.getCurrentID(), 6, "Horse", engine);
 		RegisterProxy.RegisterItem(items.boneHorse);
 		config.itemIDs.updateToNextID();
 		
@@ -160,17 +160,14 @@ public class APIItemsConfig
 	private static void initHempPlates()
 	{
 		ResourceLocation[] models = new ResourceLocation[] { new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/HanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/BlackHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/RedHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/GreenHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/BrownHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/BlueHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/PurpleHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/CyanHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/SilverHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/GrayHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/PinkHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/LimeHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/YellowHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/LightBlueHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/MagentaHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/OrangeHanfSign.png"), new ResourceLocation(SpmodAPILib.ModID.toLowerCase() + ":textures/models/plates/WhiteHanfSign.png") };
-		String[] identifiers = new String[] { "hemp.Sign", "hemp.Sign.black", "hemp.Sign.red", "hemp.Sign.green", "hemp.Sign.brown", "hemp.Sign.blue", "hemp.Sign.purple", "hemp.Sign.cyan", "hemp.Sign.lightGray", "hemp.Sign.gray", "hemp.Sign.pink", "hemp.Sign.lime", "hemp.Sign.yellow", "hemp.Sign.lightBlue", "hemp.Sign.magenta", "hemp.Sign.orange", "hemp.Sign.white", };
+		String[] identifiers = new String[] { "hemp.Sign", "hemp.Sign.black", "hemp.Sign.red", "hemp.Sign.green", "hemp.Sign.brown", "hemp.Sign.blue", "hemp.Sign.purple", "hemp.Sign.cyan", "hemp.Sign.lightGray", "hemp.Sign.gray", "hemp.Sign.pink", "hemp.Sign.lime", "hemp.Sign.yellow", "hemp.Sign.lightBlue", "hemp.Sign.magenta", "hemp.Sign.orange", "hemp.Sign.white"};
 		String[] textures = new String[] { SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSign", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignBlack", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignRed", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignGreen", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignBrown", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignBlue", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignPurple", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignCyan", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignSilver", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignGray", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignPink", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignLime", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignYellow", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignLightBlue", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignMagenta", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignOrange", SpmodAPILib.ModID.toLowerCase() + ":plates/HanfSignWhite" };
+		String[] names = new String[]{"Hemp Sign",  "Black Hemp Sign", "Red Hemp Sign", "Green Hemp Sign", "Brown Hemp Sign", "Blue Hemp Sign", "Purple Hemp Sign", "Cyan Hemp Sign", "Light Gray Hemp Sign", "Gray Hemp Sign", "Pink Hemp Sign", "Lime Hemp Sign", "Yellow Hemp Sign", "Light Blue Hemp Sign", "Magenta Hemp Sign", "Orange Hemp Sign", "White Hemp Sign"};
 		items.hempPlates = new ItemStack[models.length];
 		for (int i = 0; i < items.hempPlates.length; i++)
 		{
-			items.hempPlates[i] = PlateManager.plates.registerPlate(models[i], textures[i], identifiers[i], getDisplayName(identifiers[i]), 0.2F).getItemStack();
+			items.hempPlates[i] = PlateManager.plates.registerPlate(models[i], textures[i], identifiers[i], names[i], 0.2F).getItemStack();
 		}
 	}
 	
-	static String getDisplayName(String par1)
-	{
-		return "";
-	}
 }

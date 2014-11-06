@@ -77,16 +77,11 @@ public class CraftingStation extends AdvTile
 		nbt.setTag("Data", list);
 	}
 	
-	
-	
-	
 	@Override
 	public boolean hasContainer()
 	{
 		return true;
 	}
-
-	
 	
 	@Override
 	public void registerIcon(TextureEngine par1)
@@ -134,10 +129,7 @@ public class CraftingStation extends AdvTile
 	{
 		return new CraftingStationGui(par1, this);
 	}
-
-
-
-
+	
 	public static class CraftingInventory extends InventoryCrafting
 	{
 		ItemStack[] inv = new ItemStack[18];

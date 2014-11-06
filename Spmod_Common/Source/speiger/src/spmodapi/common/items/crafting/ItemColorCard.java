@@ -11,7 +11,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumColor;
-import speiger.src.spmodapi.common.items.SpmodItem;
+import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -50,6 +50,7 @@ public class ItemColorCard extends SpmodItem
 		if (meta > 0)
 		{
 			EnumColor color = EnumColor.getColorFromWool(meta - 1);
+			par3List.add("Color: "+color.getNameBig());
 		}
 		else
 		{
@@ -95,6 +96,12 @@ public class ItemColorCard extends SpmodItem
 	public Icon getIconFromDamage(int par1)
 	{
 		return TextureEngine.getTextures().getTexture(this);
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return "Color Card";
 	}
 	
 	

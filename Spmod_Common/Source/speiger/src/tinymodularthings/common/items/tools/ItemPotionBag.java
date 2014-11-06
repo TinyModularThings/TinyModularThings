@@ -172,6 +172,12 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 			}
 		}
 	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return "Potion Bag";
+	}
 	
 	
 }

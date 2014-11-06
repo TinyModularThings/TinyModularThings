@@ -1,10 +1,11 @@
 package speiger.src.spmodapi.common.blocks.hemp;
 
-import net.minecraft.item.ItemBlock;
+import net.minecraft.item.ItemStack;
+import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.common.items.core.ItemBlockSpmod;
 
-public class ItemBlockHempDekoBase extends ItemBlock
+public class ItemBlockHempDekoBase extends ItemBlockSpmod
 {
-	String[] names = new String[] { "hemp.base", "hemp.brick", "hemp.base.nice", "hemp.brick.nice" };
 	
 	public ItemBlockHempDekoBase(int par1)
 	{
@@ -17,5 +18,30 @@ public class ItemBlockHempDekoBase extends ItemBlock
 	{
 		return par1;
 	}
+
+	@Override
+	public BlockStack getBlockToPlace(int meta)
+	{
+		return new BlockStack(getBlockID(), meta);
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		switch(par1.getItemDamage())
+		{
+			case 4:
+			case 0: return "Hemp Block";
+			case 5:
+			case 1: return "Hemp Brick";
+			case 6:
+			case 2: return "Plated Hemp Block";
+			case 7:
+			case 3: return "Plated Hemp Brick";
+			default: return "No Name";
+		}
+	}
+	
+	
 	
 }

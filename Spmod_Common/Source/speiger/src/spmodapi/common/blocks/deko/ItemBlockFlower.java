@@ -1,13 +1,10 @@
 package speiger.src.spmodapi.common.blocks.deko;
 
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import speiger.src.api.common.registry.helpers.SpmodMod;
-import speiger.src.api.common.registry.helpers.SpmodModRegistry;
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.items.core.ItemBlockSpmod;
 
-public class ItemBlockFlower extends ItemBlock
+public class ItemBlockFlower extends ItemBlockSpmod
 {
 	
 	public ItemBlockFlower(int par1)
@@ -20,6 +17,19 @@ public class ItemBlockFlower extends ItemBlock
 	{
 		return par1;
 	}
+
+	@Override
+	public BlockStack getBlockToPlace(int meta)
+	{
+		return new BlockStack(getBlockID(), meta);
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return "Indigo Dye";
+	}
+	
 	
 	
 }

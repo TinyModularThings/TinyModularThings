@@ -34,5 +34,8 @@ public class ItemBlockWindmill extends ItemBlock
 			par3List.add("Max. Output: " + type.getOutput() + "EU/t");
 		}
 	}
+
+	
+	
 	
 }

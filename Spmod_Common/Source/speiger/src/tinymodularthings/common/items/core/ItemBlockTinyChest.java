@@ -1,8 +1,8 @@
 package speiger.src.tinymodularthings.common.items.core;
 
-import net.minecraft.item.ItemBlock;
+import speiger.src.spmodapi.common.items.core.ItemBlockSpmod;
 
-public abstract class ItemBlockTinyChest extends ItemBlock
+public abstract class ItemBlockTinyChest extends ItemBlockSpmod
 {
 	
 	public ItemBlockTinyChest(int par1)

@@ -7,11 +7,10 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
-import speiger.src.spmodapi.common.items.SpmodItem;
+import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import cpw.mods.fml.relauncher.Side;
@@ -24,7 +23,7 @@ public class ItemMobMachineHelper extends SpmodItem
 	public ItemMobMachineHelper(int par1)
 	{
 		super(par1);
-		mobs = (MobMachine) TileIconMaker.getIconMaker().getTileEntityFromClass(MobMachine.class);
+		mobs = TileIconMaker.getIconMaker().getTileEntityFromClass(MobMachine.class);
 		this.setHasSubtypes(true);
 		this.setCreativeTab(APIUtils.tabCrafing);
 	}
@@ -59,6 +58,12 @@ public class ItemMobMachineHelper extends SpmodItem
 	public Icon getIconFromDamage(int par1)
 	{
 		return TextureEngine.getIcon(APIBlocks.blockUtils, 2)[(par1*2)+1];
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return "Mob Machine Modul";
 	}
 	
 }

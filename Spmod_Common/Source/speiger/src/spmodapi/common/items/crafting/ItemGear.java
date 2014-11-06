@@ -7,7 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
-import speiger.src.spmodapi.common.items.SpmodItem;
+import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -40,7 +40,7 @@ public class ItemGear extends SpmodItem
 		String[] textures = new String[GearType.values().length];
 		for(int i = 0;i < textures.length;i++)
 		{
-			textures[i] = "gear." + GearType.values()[i].getName();
+			textures[i] = "gear." + GearType.values()[i].getTexture();
 		}
 		par1.registerTexture(this, textures);
 	}
@@ -64,31 +64,37 @@ public class ItemGear extends SpmodItem
 	
 	public static enum GearType
 	{
-		Wood("wood"),
-		Cobblestone("cobble"),
-		Stone("stone"),
-		Iron("iron"),
-		Gold("gold"),
-		Diamond("diamond"),
-		Redstone("redstone"),
-		Bone("bone"),
-		WoodenRing("part.ring.wood"),
-		CobbleRing("part.ring.cobble"),
-		StoneRing("part.ring.stone"),
-		StoneCorner("part.corner.stone"),
-		WoodenCorner("part.corner.wood");
+		Wood("Wooden Gear", "wood"),
+		Cobblestone("Cobblestone Gear", "cobble"),
+		Stone("Stone Gear", "stone"),
+		Iron("Iron Gear", "iron"),
+		Gold("Gold Gear", "gold"),
+		Diamond("Diamond Gear", "diamond"),
+		Redstone("Redstone Gear", "redstone"),
+		Bone("Bone Gear", "bone"),
+		WoodenRing("Wooden Ring", "part.ring.wood"),
+		CobbleRing("Cobblestone Ring", "part.ring.cobble"),
+		StoneRing("Stone Ring", "part.ring.stone"),
+		StoneCorner("Stone Corner", "part.corner.stone"),
+		WoodenCorner("Wooden Corner", "part.corner.wood");
 		
 		String name;
+		String texture;
 		
-		private GearType(String name)
+		private GearType(String name, String texture)
 		{
 			this.name = name;
-			
+			this.texture = texture;
 		}
 		
 		public String getName()
 		{
 			return name;
+		}
+		
+		public String getTexture()
+		{
+			return texture;
 		}
 		
 		public ItemStack getItem()
@@ -101,6 +107,12 @@ public class ItemGear extends SpmodItem
 			return new ItemStack(APIItems.gears, qty, this.ordinal());
 		}
 		
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return GearType.values()[par1.getItemDamage()].getName();
 	}
 	
 }

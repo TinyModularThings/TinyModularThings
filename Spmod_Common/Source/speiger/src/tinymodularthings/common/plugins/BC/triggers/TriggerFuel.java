@@ -6,7 +6,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerParameter;
@@ -90,7 +89,12 @@ public class TriggerFuel implements ITrigger
 	@Override
 	public boolean requiresParameter()
 	{
-		// TODO Auto-generated method stub
 		return false;
+	}
+
+	@Override
+	public String getDescription()
+	{
+		return "Has Fuel";
 	}
 }

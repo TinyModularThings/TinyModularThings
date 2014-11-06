@@ -1,6 +1,7 @@
 package speiger.src.tinymodularthings.common.items;
 
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 
 public class ItemTinyItem extends TinyItem
@@ -13,6 +14,12 @@ public class ItemTinyItem extends TinyItem
 		super(par1);
 		Name = name;
 		setCreativeTab(CreativeTabs.tabFood);
+	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return Name;
 	}
 	
 }

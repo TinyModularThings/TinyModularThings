@@ -6,6 +6,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.tinymodularthings.common.utils.PipeInformation;
 
+@Deprecated
 public interface IBasicPipe
 {
 	public ForgeDirection getNextPipeDirection(World world, int x, int y, int z);

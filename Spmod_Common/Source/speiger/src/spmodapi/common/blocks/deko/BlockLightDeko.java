@@ -95,7 +95,7 @@ public class BlockLightDeko extends SpmodBlockContainerBase
 	public int getLightValue(IBlockAccess world, int x, int y, int z)
 	{
 		int meta = world.getBlockMetadata(x, y, z);
-		return meta == 1 ? 15 : 0;
+		return meta == 1 || meta == 3 ? 15 : 0;
 	}
 	
 	

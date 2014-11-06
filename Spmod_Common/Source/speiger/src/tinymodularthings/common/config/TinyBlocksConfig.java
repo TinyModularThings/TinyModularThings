@@ -82,7 +82,7 @@ public class TinyBlocksConfig
 		blocks.bauxitOre.setStepSound(Block.soundGravelFootstep);
 		blocks.bauxitOre.setCreativeTab(CreativeTabs.tabFood);
 		RegisterProxy.RegisterBlock(blocks.bauxitOre, ItemBlockMultiMineOre.class, "BauxitOreTiny");
-		ItemBlockMultiMineOre.addName(blocks.bauxitOre, "oreBauxit");
+		ItemBlockMultiMineOre.addName(blocks.bauxitOre, "Bauxit Ore");
 		config.block.updateToNextID();
 		
 		

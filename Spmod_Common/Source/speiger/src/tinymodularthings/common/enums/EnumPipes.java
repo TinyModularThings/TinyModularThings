@@ -4,7 +4,13 @@ import speiger.src.tinymodularthings.common.utils.PipeInformation;
 
 public enum EnumPipes
 {
-	Small(6, 60, 4, "pipe.basic.small", "basic/smallPipe"), Normal(12, 125, 8, "pipe.basic.normal", "basic/normalPipe"), Medium(25, 250, 16, "pipe.basic.medium", "basic/mediumPipe"), Big(50, 500, 24, "pipe.basic.big", "basic/bigPipe"), Bigger(100, 1000, 32, "pipe.basic.bigger", "basic/biggerPipe"), Large(200, 2000, 48, "pipe.basic.large", "basic/largePipe"), Huge(500, 5000, 64, "pipe.basic.huge", "basic/hugePipe");
+	Small(6, 60, 4, "Small Transfer Pipe", "basic/smallPipe"),
+	Normal(12, 125, 8, "Normal Transfer Pipe", "basic/normalPipe"),
+	Medium(25, 250, 16, "Medium Transfer Pipe", "basic/mediumPipe"),
+	Big(50, 500, 24, "Big Transfer Pipe", "basic/bigPipe"),
+	Bigger(100, 1000, 32, "Bigger Transfer Pipe", "basic/biggerPipe"),
+	Large(200, 2000, 48, "Large Transfer Pipe", "basic/largePipe"),
+	Huge(500, 5000, 64, "Huge Transfer Pipe", "basic/hugePipe");
 	
 	int par1;
 	int par2;

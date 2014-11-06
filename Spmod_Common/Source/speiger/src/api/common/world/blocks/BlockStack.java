@@ -41,7 +41,7 @@ public class BlockStack
 	
 	public BlockStack(ItemStack par1)
 	{
-		this(Block.blocksList[par1.itemID], par1.getItemDamage());
+		this(Block.blocksList[((ItemBlock)par1.getItem()).getBlockID()], par1.getItem().getMetadata(par1.getItemDamage()));
 	}
 	
 	public BlockStack(Block block)

@@ -19,7 +19,7 @@ import speiger.src.compactWindmills.common.core.CWPreference;
 import speiger.src.compactWindmills.common.items.ItemRotor.BasicRotorType;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
-import speiger.src.spmodapi.common.items.SpmodItem;
+import speiger.src.spmodapi.common.items.core.SpmodItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -198,5 +198,13 @@ public class IceRotor extends SpmodItem implements IRotorItem
 	{
 		return null;
 	}
+
+	@Override
+	public String getName(ItemStack par1)
+	{
+		return "Ice Rotor";
+	}
+	
+	
 	
 }

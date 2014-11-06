@@ -46,6 +46,21 @@ public class HempArmor extends ItemArmor implements ISpecialArmor
 	
 	
 	@Override
+	public String getItemDisplayName(ItemStack par1)
+	{
+		switch(type)
+		{
+			case 3: return "Hemp Boots";
+			case 2: return "Hemp Leggings";
+			case 1: return "Hemp ChestPlate";
+			case 0: return "Hemp Helmet";
+			default: return "No name";
+		}
+	}
+
+
+
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void registerIcons(IconRegister par1IconRegister)
 	{

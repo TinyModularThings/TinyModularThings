@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.items.hemp;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.ItemBucket;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
@@ -31,4 +32,12 @@ public class ItemHempBucket extends ItemBucket
 	public void registerIcons(IconRegister par1IconRegister)
 	{
 	}
+	
+	@Override
+	public String getItemDisplayName(ItemStack par1ItemStack)
+	{
+		return "Hemp Resin Bucket";
+	}
+	
+	
 }
