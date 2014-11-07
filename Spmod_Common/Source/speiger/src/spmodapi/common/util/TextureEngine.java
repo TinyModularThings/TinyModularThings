@@ -531,6 +531,12 @@ public class TextureEngine
 		ItemStack getResult();
 	}
 
+	@SideOnly(Side.CLIENT)
+	public TextureMap getTextureMap()
+	{
+		return map;
+	}
+
 	
 	
 	

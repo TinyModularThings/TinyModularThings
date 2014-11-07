@@ -7,6 +7,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
@@ -53,6 +54,13 @@ public class BCRegistry
 		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 1), new Object[] { " X ", "YCY", " V ", 'X', BuildCraftTransport.pipeFluidsWood, 'V', BuildCraftTransport.pipeFluidsGold, 'Y', ItemGear.getGearFromType(GearType.Cobblestone), 'C', BuildCraftFactory.tankBlock });
 		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 3), new Object[] { "XXX", "CVC", "XXX", 'X', Item.bucketWater, 'C', ItemGear.getGearFromType(GearType.Diamond), 'V', BuildCraftFactory.pumpBlock });
 		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 2), new Object[] { "GEG", "EFE", "GEG", 'G', ItemGear.getGearFromType(GearType.Redstone), 'E', new ItemStack(BuildCraftEnergy.engineBlock, 1, 0), 'F', new ItemStack(TinyBlocks.machine, 1, 1) });
+		try
+		{
+			OreDictionary.registerOre("Facade", new ItemStack(BuildCraftTransport.facadeItem, 1, PathProxy.getRecipeBlankValue()));
+		}
+		catch(Exception e)
+		{
+		}
 	}
 	
 	public void loadTrigger()

@@ -1,6 +1,8 @@
 package speiger.src.spmodapi.client.core;
 
+import net.minecraft.block.Block;
 import net.minecraftforge.client.MinecraftForgeClient;
+import speiger.src.api.client.render.IBlockRenderer;
 import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore;
 import speiger.src.spmodapi.client.render.deko.ItemRendererLamp;
 import speiger.src.spmodapi.client.render.deko.ItemRendererStatue;
@@ -39,7 +41,19 @@ public class SpmodAPIClient extends SpmodAPICore
 	
 		RenderingRegistry.registerBlockHandler(new BlockRendererSpmodCore());
 		
-	
+		for(int i = 0;i<Block.blocksList.length;i++)
+		{
+			Block block = Block.blocksList[i];
+			if(block != null && block instanceof IBlockRenderer)
+			{
+				IBlockRenderer render = (IBlockRenderer)block;
+				if(render.requiresRender())
+				{
+					BlockRendererSpmodCore.instance.addBlockToRender(block);
+				}
+			}
+		}
+		BlockRendererSpmodCore.instance.register();
 	}
 	
 	@Override

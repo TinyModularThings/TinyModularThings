@@ -2,6 +2,7 @@ package speiger.src.spmodapi.client.render.core;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
+import speiger.src.api.client.render.IMetaItemRender;
 
 public class ItemRenderSpmodCore implements IItemRenderer
 {
@@ -23,7 +24,14 @@ public class ItemRenderSpmodCore implements IItemRenderer
 	@Override
 	public void renderItem(ItemRenderType type, ItemStack item, Object... data)
 	{
-		
+		IMetaItemRender render = (IMetaItemRender)item.getItem();
+		if(render.doRenderCustom(item.getItemDamage()))
+		{
+			
+		}
+		else
+		{
+		}
 	}
 	
 }

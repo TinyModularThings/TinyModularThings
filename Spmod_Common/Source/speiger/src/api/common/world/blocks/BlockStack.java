@@ -132,6 +132,11 @@ public class BlockStack
 		return meta;
 	}
 	
+	public <T> T getCastedBlock(Class<T> classToCast)
+	{
+		return (T)blocks;
+	}
+	
 	public Icon getTexture(int side)
 	{
 		return blocks.getIcon(side, meta);

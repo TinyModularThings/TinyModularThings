@@ -22,9 +22,11 @@ import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
+import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.crafting.GuiOreCrafter;
 import speiger.src.tinymodularthings.common.config.TinyConfig;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
+import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -462,6 +464,20 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 	{
 		return true;
 	}
+
+	
+	
+	@Override
+	public boolean onActivated(EntityPlayer par1)
+	{
+		if(!worldObj.isRemote)
+		{
+			par1.openGui(TinyModularThings.instance, EnumIDs.ADVTiles.getId(), worldObj, xCoord, yCoord, zCoord);
+		}
+		return true;
+	}
+
+
 
 	@Override
 	public Container getInventory(InventoryPlayer par1)

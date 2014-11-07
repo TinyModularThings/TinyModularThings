@@ -12,9 +12,34 @@ import cpw.mods.fml.client.registry.RenderingRegistry;
 
 public class RenderHelper
 {
-	public static ResourceLocation foodIcon = new ResourceLocation(SpmodAPILib.ModID.toString()+":textures/gui/extras/foodIcons.png");
+	static ResourceLocation foodIcon = new ResourceLocation(SpmodAPILib.ModID.toString()+":textures/gui/extras/foodIcons.png");
 	static RenderItem itemRenderer = new RenderItem();
-	public static int GlobalRenderer = RenderingRegistry.getNextAvailableRenderId();
+	static int GlobalRenderer = RenderingRegistry.getNextAvailableRenderId();
+	static float[][] sizes = new float[][]{
+		{0.0F, -1.0F, 0.0F},
+		{0.0F, 1.0F, 0.0F},
+		{0.0F, 0.0F, -1.0F},
+		{0.0F, 0.0F, 1.0F},
+		{-1.0F, 0.0F, 0.0F},
+		{1.0F, 0.0F, 0.0F}
+	};
+	
+	
+	
+	public static ResourceLocation getFoodTexture()
+	{
+		return foodIcon;
+	}
+	
+	public static int getGlobalRenderID()
+	{
+		return GlobalRenderer;
+	}
+	
+	public static float[][] getFullBlockSize()
+	{
+		return sizes;
+	}
 	
 	public static RenderItem getItemRenderer()
 	{
