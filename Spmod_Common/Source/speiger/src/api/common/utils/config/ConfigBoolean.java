@@ -1,6 +1,7 @@
 package speiger.src.api.common.utils.config;
 
 import net.minecraftforge.common.Configuration;
+import net.minecraftforge.common.Property;
 
 public class ConfigBoolean
 {
@@ -32,6 +33,23 @@ public class ConfigBoolean
 		
 		return Boolean.parseBoolean(par1.get(Categorie, Name, Default).getString());
 		
+	}
+	
+	public void changeResult(Configuration par1, boolean newResult)
+	{
+		Property prop;
+		if (comment != null && comment.length() > 0)
+		{
+			prop = par1.get(Categorie, Name, Default, comment);
+		}
+		else
+		{
+			prop = par1.get(Categorie, Name, Default);
+		}
+		if(prop != null)
+		{
+			prop.set(newResult);
+		}
 	}
 	
 }

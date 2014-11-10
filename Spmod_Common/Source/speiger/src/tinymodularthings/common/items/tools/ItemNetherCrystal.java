@@ -78,6 +78,7 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 		ItemStack end = new ItemStack(par1, 1, 3);
 		end.setTagInfo("Lava", nbt);
 		par3List.add(end);
+		par3List.add(new ItemStack(par1, 1, 5));
 	}
 	
 	@Override
@@ -187,6 +188,8 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 		
 		return par1;
 	}
+	
+	
 	
 	public void discharge(ItemStack par1, int amount)
 	{

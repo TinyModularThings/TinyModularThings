@@ -21,26 +21,12 @@ import speiger.src.spmodapi.common.util.TextureEngine.BlockData;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IItemRenderer
-{
-	ArrayList<BlockData> data = new ArrayList<BlockData>();
-	
+{	
 	public static BlockRendererSpmodCore instance = new BlockRendererSpmodCore();
 	static TextureEngine engine = TextureEngine.getTextures();
 	static BlockRendererHelper helper = new BlockRendererHelper();
 	
-	public void addBlockToRender(Block block)
-	{
-		data.add(new BlockData(block));
-	}
-	
-	public void register()
-	{
-		for(BlockData block : data)
-		{
-			MinecraftForgeClient.registerItemRenderer(block.getResult().itemID, instance);
-		}
-		data.clear();
-	}
+
 	
 	@Override
 	public void renderInventoryBlock(Block block, int metadata, int modelID, RenderBlocks renderer)
@@ -100,13 +86,13 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IIt
 	@Override
 	public boolean handleRenderType(ItemStack item, ItemRenderType type)
 	{
-		return type == type.FIRST_PERSON_MAP ? false : true;
+		return type == type.FIRST_PERSON_MAP ? false : new BlockStack(item).getCastedBlock(IBlockRenderer.class).renderItemBlock(item.getItemDamage());
 	}
 
 	@Override
 	public boolean shouldUseRenderHelper(ItemRenderType type, ItemStack item, ItemRendererHelper helper)
 	{
-		return new BlockStack(item).getCastedBlock(IBlockRenderer.class).renderItemBlock(item.getItemDamage());
+		return true;
 	}
 
 	@Override

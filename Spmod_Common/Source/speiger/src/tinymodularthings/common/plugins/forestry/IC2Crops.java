@@ -76,6 +76,10 @@ public class IC2Crops implements IFarmable
 		public void trimBack()
 		{
 			tile.setSize(getCropCard().getSizeAfterHarvest(tile));
+			if(tile.getWorld().rand.nextInt(1000) >= 999)
+			{
+				tile.setSize((byte)0);
+			}
 		}
 		
 		public boolean isLoaded()

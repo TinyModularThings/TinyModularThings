@@ -2,7 +2,9 @@ package speiger.src.spmodapi.common.util.proxy;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.OreDictionary;
@@ -85,5 +87,34 @@ public class CodeProxy
 		String name = ore.getOreName(ore.getOreID(par1));
 		name = name.substring(3);
 		return EnumColor.valueOf(name);
+	}
+	
+	public static String getListAsSimpleName(List par1)
+	{
+		String result = "";
+		for(int i = 0;i<par1.size();i++)
+		{
+			result += par1.get(i).getClass().getSimpleName();
+			
+			if(i == par1.size()-1)
+			{
+				break;
+			}
+			
+			result += ":";
+		}
+		
+		return result;
+	}
+	
+	public static String getListAsSimpleName(Set par1)
+	{
+		String result = "";
+		for(Object obj : par1)
+		{
+			result += obj.getClass().getSimpleName()+":";		
+		}
+		
+		return result;
 	}
 }

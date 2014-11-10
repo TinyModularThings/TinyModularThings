@@ -1,12 +1,18 @@
 package speiger.src.tinymodularthings.common.plugins.forestry;
 
+import ic2.api.item.Items;
+
 import java.util.Collection;
 import java.util.Stack;
 
+import speiger.src.spmodapi.common.util.TextureEngine;
+
 import net.minecraft.block.Block;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import cpw.mods.fml.relauncher.Side;
@@ -39,9 +45,22 @@ public class FarmLogicIC2Crops extends FarmLogicWatered
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon()
 	{
-		return Item.stick.getIconFromDamage(0);
+		ItemStack stack = Items.getItem("cropSeed");
+		if(stack != null)
+		{
+			return stack.getIconIndex();
+		}
+		return TextureEngine.getTextures().getIconSafe();
 	}
 	
+	
+	
+	@Override
+	public ResourceLocation getSpriteSheet()
+	{
+		return TextureMap.locationBlocksTexture;
+	}
+
 	@Override
 	public String getName()
 	{
@@ -69,5 +88,18 @@ public class FarmLogicIC2Crops extends FarmLogicWatered
 	{
 		return false;
 	}
+
+	@Override
+	public int getFertilizerConsumption()
+	{
+		return 20;
+	}
+
+	@Override
+	public int getWaterConsumption(float hydrationModifier)
+	{
+		return (int)(160.0F * hydrationModifier);
+	}
+	
 	
 }

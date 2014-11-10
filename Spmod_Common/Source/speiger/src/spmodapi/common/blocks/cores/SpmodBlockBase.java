@@ -14,12 +14,14 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.client.render.IBlockRenderer;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.core.RenderHelper;
+import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
@@ -383,12 +385,48 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 	@Override
 	public int getRenderType()
 	{
-		return requiresRender() ? RenderHelper.GlobalRenderer : 0;
+		return requiresRender() ? RenderHelper.getGlobalRenderID() : 0;
 	}
 
 	@Override
 	public boolean requiresRender()
 	{
 		return false;
+	}
+
+	@Override
+	public boolean renderItemBlock(int meta)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean renderItemBlockBasic(int meta)
+	{
+		return false;
+	}
+
+	@Override
+	public float[] getBoundingBoxes(int meta)
+	{
+		return null;
+	}
+
+	@Override
+	public float[] getXYZForItemRenderer(ItemRenderType type, int meta)
+	{
+		return null;
+	}
+
+	@Override
+	public int getItemRenderPasses(int meta)
+	{
+		return 0;
+	}
+
+	@Override
+	public void onItemRendering(BlockRendererHelper render, ItemRenderType type, BlockStack stack, int renderPass, float x, float y, float z, Object... data)
+	{
+		
 	}
 }

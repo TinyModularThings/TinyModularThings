@@ -8,6 +8,7 @@ import speiger.src.spmodapi.common.command.commands.ButcherCommand;
 import speiger.src.spmodapi.common.command.commands.ClearItems;
 import speiger.src.spmodapi.common.command.commands.CommandAccesser;
 import speiger.src.spmodapi.common.command.commands.CommandReadTexture;
+import speiger.src.spmodapi.common.command.commands.RetrogenInfoCommand;
 import speiger.src.spmodapi.common.command.commands.SpeigerCommand;
 import speiger.src.spmodapi.common.command.commands.TimerCommand;
 
@@ -66,6 +67,9 @@ public class CommandRegistry
 		reg.registerCommand(new SpeigerCommand());
 		reg.registerCommand(new CommandReadTexture());
 		reg.registerCommand(new CommandAccesser());
+		reg.registerCommand(new RetrogenInfoCommand());
 	}
+	
+	
 	
 }

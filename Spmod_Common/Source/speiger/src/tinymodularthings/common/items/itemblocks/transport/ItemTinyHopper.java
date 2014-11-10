@@ -2,14 +2,13 @@ package speiger.src.tinymodularthings.common.items.itemblocks.transport;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.client.render.IMetaItemRender;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
@@ -17,7 +16,7 @@ import speiger.src.tinymodularthings.common.items.core.TinyPlacerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemTinyHopper extends TinyPlacerItem
+public class ItemTinyHopper extends TinyPlacerItem implements IMetaItemRender
 {
 	HopperType type;
 	

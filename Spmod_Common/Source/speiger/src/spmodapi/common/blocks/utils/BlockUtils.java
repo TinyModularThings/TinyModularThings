@@ -5,8 +5,12 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.gui.inventory.GuiCrafting;
+import net.minecraft.client.renderer.RenderBlocks;
+import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ai.EntityAITaskEntry;
@@ -15,22 +19,26 @@ import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import speiger.src.api.client.gui.IBlockGui;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.spmodapi.client.render.utils.RenderUtilsBlock;
+import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.entity.EntityOverridenEnderman;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -81,14 +89,6 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 			case 4: return new InventoryAccesser();
 		}
 		return null;
-	}
-
-	
-	
-	@Override
-	public int getRenderType()
-	{
-		return RenderUtilsBlock.renderID;
 	}
 
 	@Override
@@ -271,4 +271,114 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 		}
 		return null;
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresRenderer(int meta)
+	{
+		return meta == 3;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresMultibleRenderPasses(int meta)
+	{
+		return meta == 3;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getRenderPasses(int meta)
+	{
+		return meta == 3 ? 2 : 0;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onRender(IBlockAccess world, int x, int y, int z, RenderBlocks render, BlockStack block, int renderPass)
+	{
+		if(renderPass == 0)
+		{
+			render.renderStandardBlock(block.getBlock(), x, y, z);
+		}
+		else
+		{
+			Tessellator tes = Tessellator.instance;
+			Minecraft mc = FMLClientHandler.instance().getClient();
+			tes.draw();
+			mc.renderEngine.bindTexture(TextureMap.locationItemsTexture);
+			tes.startDrawingQuads();
+			tes.setNormal(1F, 1F, 0F);
+			render.setOverrideBlockTexture(Item.porkRaw.getIconFromDamage(0));
+			render.renderCrossedSquares(block.getBlock(), x, y, z);
+			render.clearOverrideBlockTexture();
+			tes.draw();
+			tes.startDrawingQuads();
+			mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+		}
+	}
+	
+	@Override
+	public void onItemRendering(BlockRendererHelper render, ItemRenderType type, BlockStack stack, int renderPass, float x, float y, float z, Object... data)
+	{
+		render.renderBlockStandart(this, stack, (RenderBlocks)data[1]);
+		Tessellator tessellator = Tessellator.instance;
+		tessellator.startDrawingQuads();
+		tessellator.setNormal(1.0F, 1.0F, 0.0F);
+		Minecraft mc = FMLClientHandler.instance().getClient();
+		mc.renderEngine.bindTexture(TextureMap.locationItemsTexture);
+		((RenderBlocks)data[1]).renderFaceXPos(this, -0.5D, 0.0D, 0.0D, TextureEngine.getTextures().getIconSafe(Item.porkRaw.getIconFromDamage(0)));
+		tessellator.draw();
+		mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+	}
+
+	@Override
+	public boolean dissableRendering(int meta)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean requiresRender()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean renderItemBlock(int meta)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean renderItemBlockBasic(int meta)
+	{
+		return meta != 3;
+	}
+
+	@Override
+	public float[] getBoundingBoxes(int meta)
+	{
+		return null;
+	}
+
+	@Override
+	public float[] getXYZForItemRenderer(ItemRenderType type, int meta)
+	{
+		switch (type)
+		{
+			case ENTITY: return new float[]{-0.5f, -0.5f, -0.5f};
+			case EQUIPPED_FIRST_PERSON: return new float[]{-0.3f, 0.2f, 0.3f};
+			case EQUIPPED: return new float[]{-0.4f, 0.50f, 0.35f};
+			case INVENTORY: return new float[]{-0.5f, -0.5f, -0.5f};
+			default: return null;
+		}
+	}
+
+	@Override
+	public int getItemRenderPasses(int meta)
+	{
+		return meta == 3 ? 2 : 0;
+	}
+	
 }

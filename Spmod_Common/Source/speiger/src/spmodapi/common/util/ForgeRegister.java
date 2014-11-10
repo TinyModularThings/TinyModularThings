@@ -9,6 +9,7 @@ import speiger.src.spmodapi.common.util.data.ServerTick;
 import speiger.src.spmodapi.common.util.data.StructureStorage;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 import speiger.src.spmodapi.common.world.event.BlockDetector;
+import speiger.src.spmodapi.common.world.retrogen.AdvancedRetrogen;
 import speiger.src.spmodapi.common.world.retrogen.ChunkCollector;
 import speiger.src.spmodapi.common.world.retrogen.RetroGenTickHandler;
 import speiger.src.spmodapi.common.world.retrogen.RetrogenSave;
@@ -29,6 +30,11 @@ public class ForgeRegister
 		TickRegistry.registerTickHandler(new CountdownTick(), Side.SERVER);
 		regist(LivingHandler.instance);
 		regist(new WorldCrafter());
+		AdvancedRetrogen gen = AdvancedRetrogen.getInstance();
+		if(gen != null)
+		{
+			regist(gen);
+		}
 		if (SpmodConfig.retogen)
 		{
 			TickRegistry.registerTickHandler(RetroGenTickHandler.getTicks(), Side.SERVER);
@@ -36,7 +42,7 @@ public class ForgeRegister
 		StructureStorage.registerForgeEvent();
 		regist(new BucketHandler());
 		TickRegistry.registerTickHandler(new ServerTick(), Side.SERVER);
-		
+
 	}
 	
 	public static void regsiterClient()

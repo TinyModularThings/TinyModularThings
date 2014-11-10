@@ -1,5 +1,6 @@
 package speiger.src.tinymodularthings.common.pipes;
 
+import net.minecraft.item.ItemStack;
 import buildcraft.transport.ItemPipe;
 
 public class SpmodPipe extends ItemPipe
@@ -11,5 +12,13 @@ public class SpmodPipe extends ItemPipe
 		super(i);
 		languageName = name;
 	}
+
+	@Override
+	public String getItemDisplayName(ItemStack itemstack)
+	{
+		return languageName;
+	}
+	
+	
 	
 }

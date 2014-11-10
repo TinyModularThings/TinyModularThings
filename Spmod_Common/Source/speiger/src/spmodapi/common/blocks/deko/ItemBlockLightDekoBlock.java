@@ -3,22 +3,29 @@ package speiger.src.spmodapi.common.blocks.deko;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagInt;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.api.client.render.IMetaItemRender;
 import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.client.render.deko.RenderLamp;
 import speiger.src.spmodapi.common.blocks.deko.TileLamp.EnumLampType;
 import speiger.src.spmodapi.common.enums.EnumColor;
+import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.items.core.ItemBlockSpmod;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemBlockLightDekoBlock extends ItemBlockSpmod
+public class ItemBlockLightDekoBlock extends ItemBlockSpmod implements IMetaItemRender
 {
 	
 	public ItemBlockLightDekoBlock(int par1)
@@ -152,6 +159,66 @@ public class ItemBlockLightDekoBlock extends ItemBlockSpmod
 		{
 			par3.add("Copies the Color of the Lamp in the Middle");
 		}
+	}
+
+	@Override
+	public boolean doRender()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean doRenderCustom(int meta)
+	{
+		return true;
+	}
+
+	@Override
+	public float[] getXYZ(ItemRenderType type, int meta)
+	{
+		switch (type)
+		{
+			case ENTITY: return new float[]{0.0F, 1.5F, 0.0F};
+			case EQUIPPED_FIRST_PERSON: return new float[]{0.5F, 1.8F, 0.5F};
+			case EQUIPPED: return new float[]{0.5F, 1.5F, 0.0F};
+			case INVENTORY: return new float[]{0.0F, 1.0F, 0.0F};
+			default: return new float[3];
+		}
+	}
+
+	@Override
+	public void onRender(ItemRenderType Rendertype, ItemStack item, int renderPass, float x, float y, float z, Object... data)
+	{
+		int meta = item.getItemDamage();
+		boolean inverted = inverted(meta);
+		EnumLampType type = EnumLampType.values()[type(meta)];
+		int Color = color(meta);
+		if (Color > 15)
+		{
+			Color = 16;
+		}
+		
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(type.getTexture());
+		SpmodColor color = new SpmodColor(EnumColor.values()[Color].getAsHex().intValue());
+		if (!inverted)
+		{
+			color = color.add(0.3D);
+		}
+		else
+		{
+			color = color.add(1.4D);
+		}
+		GL11.glPushMatrix();
+		GL11.glTranslatef((float) x, (float) y, (float) z);
+		GL11.glRotatef(180, 1, 0, 0);
+		if (Color != 16)
+		{
+			GL11.glColor4d(color.red, color.green, color.blue, 1.0D);
+		}
+		RenderLamp.lamp.render(0.0625F, type.getRenderType());
+		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+		RenderLamp.lamp.renderAfter(0.0625F, type.getRenderType());
+		GL11.glPopMatrix();
 	}
 	
 	

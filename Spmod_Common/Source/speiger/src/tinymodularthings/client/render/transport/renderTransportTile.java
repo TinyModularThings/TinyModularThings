@@ -13,7 +13,7 @@ import speiger.src.tinymodularthings.client.models.transport.ModelTinyHopper;
 public class renderTransportTile extends TileEntitySpecialRenderer
 {
 	
-	ModelTinyHopper hopper = new ModelTinyHopper();
+	public static ModelTinyHopper hopper = new ModelTinyHopper();
 	private NBTTagCompound data = new NBTTagCompound("RenderData");
 	
 	@Override

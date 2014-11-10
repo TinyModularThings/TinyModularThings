@@ -29,6 +29,18 @@ public class TinyCraftingHandler implements ICraftingHandler
 				}
 			}
 		}
+		if(item != null && item.itemID == TinyItems.netherCrystal.itemID && item.getItemDamage() == 0)
+		{
+			for(int i = 0;i<craftMatrix.getSizeInventory();i++)
+			{
+				ItemStack stack = craftMatrix.getStackInSlot(i);
+				if(stack != null && stack.itemID == TinyItems.netherCrystal.itemID)
+				{
+					craftMatrix.setInventorySlotContents(i, null);
+					craftMatrix.onInventoryChanged();
+				}
+			}
+		}
 	}
 	
 	@Override
