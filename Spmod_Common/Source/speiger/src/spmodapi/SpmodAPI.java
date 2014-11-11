@@ -88,12 +88,7 @@ public class SpmodAPI implements SpmodMod
 		SpmodWorldGen.getWorldGen().init(SpmodConfig.getInstance());
 		plugins.loadModAdditions();
 		CommandRegistry.init();
-		AdvancedRetrogen.onAfterConfig();
-		AdvancedRetrogen gen = AdvancedRetrogen.getInstance();
-		if(gen != null)
-		{
-			gen.initConfig();
-		}
+		AdvancedRetrogen.getInstance().loadConfig();
 	}
 	
 	@EventHandler

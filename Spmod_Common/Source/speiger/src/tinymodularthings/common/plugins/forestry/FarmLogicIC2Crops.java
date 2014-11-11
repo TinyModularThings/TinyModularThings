@@ -15,6 +15,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.farming.Farmables;
@@ -53,14 +54,6 @@ public class FarmLogicIC2Crops extends FarmLogicWatered
 		return TextureEngine.getTextures().getIconSafe();
 	}
 	
-	
-	
-	@Override
-	public ResourceLocation getSpriteSheet()
-	{
-		return TextureMap.locationBlocksTexture;
-	}
-
 	@Override
 	public String getName()
 	{
@@ -92,13 +85,13 @@ public class FarmLogicIC2Crops extends FarmLogicWatered
 	@Override
 	public int getFertilizerConsumption()
 	{
-		return 20;
+		return 40;
 	}
 
 	@Override
 	public int getWaterConsumption(float hydrationModifier)
 	{
-		return (int)(160.0F * hydrationModifier);
+		return (int)(240.0F * hydrationModifier);
 	}
 	
 	

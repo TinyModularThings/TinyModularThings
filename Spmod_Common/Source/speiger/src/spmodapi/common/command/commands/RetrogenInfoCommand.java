@@ -60,14 +60,15 @@ public class RetrogenInfoCommand implements ISpmodCommand
 	@Override
 	public void runCommand(ICommandSender par1, ISubCommand sub, String[] arg)
 	{
-		if(AdvancedRetrogen.getConfigWork())
+		AdvancedRetrogen gen = AdvancedRetrogen.getInstance();
+		if(gen.doesRetrogenWork())
 		{
 			if(arg.length == 1)
 			{
 				if(arg[0].equalsIgnoreCase("true") || arg[0].equalsIgnoreCase("false"))
 				{
 					boolean result = Boolean.parseBoolean(arg[0]);
-					AdvancedRetrogen.setRetrogenState(result);
+					gen.setAdvancedRetrogenState(!result);
 					par1.sendChatToPlayer(LangProxy.getText(result ? "Enabled Full World Retrogen" : "Dissabled Full World Retrogen"));
 				}
 				else
@@ -77,24 +78,15 @@ public class RetrogenInfoCommand implements ISpmodCommand
 			}
 			else
 			{
-				AdvancedRetrogen gen = AdvancedRetrogen.getInstance();
-				if(gen == null)
-				{
-					AdvancedRetrogen.setRetrogenState(true);
-					gen = AdvancedRetrogen.getInstance();
-					AdvancedRetrogen.setRetrogenState(false);
-				}
-				if(gen == null)
-				{
-					par1.sendChatToPlayer(LangProxy.getText("Sorry Something Happend While the command loaded the Retrogen data"));
-				}
+			
+
 				HashMap<Integer, ArrayList<ChunkData>> list = gen.getData();
 				Iterator<Entry<Integer, ArrayList<ChunkData>>> iter = list.entrySet().iterator();
 				for(;iter.hasNext();)
 				{
 					Entry<Integer, ArrayList<ChunkData>> data = iter.next();
 					WorldProvider pro = DimensionManager.getProvider(data.getKey());
-					par1.sendChatToPlayer(LangProxy.getText("DimensionID: "+data.getKey()+" "+pro.getDimensionName()+" Has Still "+data.getValue().size()+" Chunks to Retrogenerate. It will Take: "+MathUtils.getTicksInTimeShort(data.getValue().size()*gen.getTickSpeed())+"min"));
+					par1.sendChatToPlayer(LangProxy.getText("DimensionID: "+data.getKey()+" "+pro.getDimensionName()+" Has Still "+data.getValue().size()+" ChunkFiles to Process. It will Take Maximum: "+MathUtils.getTicksInTimeShort((data.getValue().size()*1024)*gen.getTickSpeed())+"min"));
 				}
 			}
 		}

@@ -7,6 +7,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.client.render.IMetaItemRender;
 import speiger.src.api.common.world.blocks.BlockStack;
@@ -85,5 +86,29 @@ public class ItemTinyHopper extends TinyPlacerItem implements IMetaItemRender
 	public String getName(ItemStack par1)
 	{
 		return "Tiny Hopper";
+	}
+
+	@Override
+	public boolean doRender()
+	{
+		return false;
+	}
+
+	@Override
+	public boolean doRenderCustom(int meta)
+	{
+		return false;
+	}
+
+	@Override
+	public float[] getXYZ(ItemRenderType type, int meta)
+	{
+		return null;
+	}
+
+	@Override
+	public void onRender(ItemRenderType type, ItemStack item, int renderPass, float x, float y, float z, Object... data)
+	{
+		
 	}
 }

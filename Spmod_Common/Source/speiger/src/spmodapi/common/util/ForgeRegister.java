@@ -30,11 +30,6 @@ public class ForgeRegister
 		TickRegistry.registerTickHandler(new CountdownTick(), Side.SERVER);
 		regist(LivingHandler.instance);
 		regist(new WorldCrafter());
-		AdvancedRetrogen gen = AdvancedRetrogen.getInstance();
-		if(gen != null)
-		{
-			regist(gen);
-		}
 		if (SpmodConfig.retogen)
 		{
 			TickRegistry.registerTickHandler(RetroGenTickHandler.getTicks(), Side.SERVER);

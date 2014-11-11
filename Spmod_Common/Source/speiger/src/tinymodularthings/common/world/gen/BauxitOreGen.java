@@ -2,6 +2,8 @@ package speiger.src.tinymodularthings.common.world.gen;
 
 import java.util.Random;
 
+import cpw.mods.fml.common.FMLLog;
+
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import speiger.src.api.common.registry.helpers.SpmodMod;
@@ -44,6 +46,7 @@ public class BauxitOreGen implements ISpmodWorldGen
 			int z = chunkZ * 16 + rand.nextInt(16);
 			int y = 30 + rand.nextInt(64 * WorldProxy.getBaseHight(world));
 			MetaOreGenerator gen = new MetaOreGenerator(15, new BlockStack(TinyBlocks.bauxitOre));
+
 			gen.setBlockToReplace(Block.dirt);
 			gen.forcePlacing();
 			gen.generate(world, rand, x, y, z);

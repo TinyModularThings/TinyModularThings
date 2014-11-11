@@ -9,7 +9,6 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
@@ -49,12 +48,6 @@ public class RetroGenTickHandler implements ITickHandler
 			ChunkCollector.getInstance().generateWorld(rand, c.chunkX, c.chunkZ, world, true);
 			chunk.remove(0);
 			chunks.put(Integer.valueOf(dim), chunk);
-		}
-		
-		AdvancedRetrogen gen = AdvancedRetrogen.getInstance();
-		if(gen != null)
-		{
-			gen.onWorldTick(world);
 		}
 		
 	}

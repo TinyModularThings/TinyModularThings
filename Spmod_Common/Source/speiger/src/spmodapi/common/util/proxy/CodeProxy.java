@@ -112,7 +112,7 @@ public class CodeProxy
 		String result = "";
 		for(Object obj : par1)
 		{
-			result += obj.getClass().getSimpleName()+":";		
+			result += obj.getClass().getSimpleName()+":";
 		}
 		
 		return result;
