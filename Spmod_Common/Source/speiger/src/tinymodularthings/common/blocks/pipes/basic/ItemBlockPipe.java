@@ -43,6 +43,14 @@ public class ItemBlockPipe extends ItemBlockTinyChest
 	{
 		return new BlockStack(getBlockID());
 	}
+	
+	
+
+	@Override
+	public void onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
+	{
+		world.setBlockMetadataWithNotify(x, y, z, side, 3);
+	}
 
 	@Override
 	public String getName(ItemStack par1)

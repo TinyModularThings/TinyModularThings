@@ -321,7 +321,7 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 	@Override
 	public void onItemRendering(BlockRendererHelper render, ItemRenderType type, BlockStack stack, int renderPass, float x, float y, float z, Object... data)
 	{
-		render.renderBlockStandart(this, stack, (RenderBlocks)data[1]);
+		render.renderBlockStandart(this, stack, (RenderBlocks)data[1], type);
 		Tessellator tessellator = Tessellator.instance;
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(1.0F, 1.0F, 0.0F);

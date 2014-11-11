@@ -343,7 +343,6 @@ public class TextureEngine
 		Icon[] texture = itemTextures.get(new ItemData(par1, meta));
 		if(texture != null && texture.length > key)
 		{
-			
 			return texture[key];
 		}
 		return getIconSafe();

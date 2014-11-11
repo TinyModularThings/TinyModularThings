@@ -35,6 +35,8 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 	public boolean[] monsterSpawnSave = new boolean[16];
 	public boolean[] isARenderedBlock = new boolean[16];
 	public boolean[] ItemNoRightClick = new boolean[16];
+	public int[] renderPass = new int[16];
+	
 	
 	public SpmodBlockBase(int par1, Material par2Material)
 	{
@@ -140,9 +142,20 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 		
 	}
 	
-	
+	public int getRenderPass(int meta)
+	{
+		return renderPass[meta];
+	}
 
+	public void setRenderPass(int meta, int pass)
+	{
+		renderPass[meta] = pass;
+	}
 
+	public boolean requiresRenderPass(int meta)
+	{
+		return false;
+	}
 
 	@Override
 	public boolean onBlockActivated(World par1, int par2, int par3, int par4, EntityPlayer par5, int par6, float par7, float par8, float par9)
@@ -349,6 +362,12 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 	}
 
 	@Override
+	public int getRenderType()
+	{
+		return requiresRender() ? RenderHelper.getGlobalRenderID() : 0;
+	}
+	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public boolean requiresRenderer(int meta)
 	{
@@ -380,12 +399,6 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 	public boolean dissableRendering(int meta)
 	{
 		return false;
-	}
-	
-	@Override
-	public int getRenderType()
-	{
-		return requiresRender() ? RenderHelper.getGlobalRenderID() : 0;
 	}
 
 	@Override

@@ -86,7 +86,7 @@ public class RetrogenInfoCommand implements ISpmodCommand
 				{
 					Entry<Integer, ArrayList<ChunkData>> data = iter.next();
 					WorldProvider pro = DimensionManager.getProvider(data.getKey());
-					par1.sendChatToPlayer(LangProxy.getText("DimensionID: "+data.getKey()+" "+pro.getDimensionName()+" Has Still "+data.getValue().size()+" ChunkFiles to Process. It will Take Maximum: "+MathUtils.getTicksInTimeShort((data.getValue().size()*1024)*gen.getTickSpeed())+"min"));
+					par1.sendChatToPlayer(LangProxy.getText("DimensionID: "+data.getKey()+" "+pro.getDimensionName()+" Has Still "+data.getValue().size()+" ChunkFiles to Process. It will Take Maximum: "+MathUtils.getTicksInTimeShort((gen.getSizeFromList(data.getValue()))*gen.getTickSpeed())+" sek"));
 				}
 			}
 		}

@@ -5,6 +5,7 @@ import java.util.Random;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
@@ -13,12 +14,14 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.blocks.IAdvancedPipeProvider;
 import speiger.src.api.common.world.blocks.IBasicPipeProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergyProvider;
+import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
@@ -161,12 +164,6 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 	public Icon getIcon(int par1, int par2)
 	{
 		return info.getPipeIcon();
-	}
-	
-	@Override
-	public int getRenderType()
-	{
-		return EnumIDs.Pipe.getId();
 	}
 	
 	@Override
@@ -395,6 +392,138 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 	public void onBlockDestroyedByPlayer(World world, int i, int j, int k, int l)
 	{
 		notifyNeighbors(world, i, j, k);
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresRenderer(int meta)
+	{
+		return true;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresMultibleRenderPasses(int meta)
+	{
+		return false;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getRenderPasses(int meta)
+	{
+		return 0;
+	}
+	double min = 0.25;
+	double max = 0.75;
+	double[][] facings = new double[][] { { min, 0.0D, min, max, min, max }, { min, max, min, max, 1.0D, max }, { min, min, 0.0D, max, max, min }, { min, min, max, max, max, 1.0D }, { 0.0D, min, min, min, max, max }, { max, min, min, 1.0D, max, max } };
+
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onRender(IBlockAccess world, int x, int y, int z, RenderBlocks render, BlockStack block, int renderPass)
+	{
+		ForgeDirection front = ForgeDirection.getOrientation(block.getMeta());
+		
+		render.setRenderBounds(min, min, min, max, max, max);
+		render.renderStandardBlock(this, x, y, z);
+		
+		if (isConnected(ForgeDirection.UP, world, x, y, z))
+		{
+			render.setRenderBounds(min, max, min, max, 1.0D, max);
+			render.renderStandardBlock(this, x, y, z);
+		}
+		if (isConnected(ForgeDirection.DOWN, world, x, y, z))
+		{
+			render.setRenderBounds(min, 0.0D, min, max, min, max);
+			render.renderStandardBlock(this, x, y, z);
+		}
+		if (isConnected(ForgeDirection.SOUTH, world, x, y, z))
+		{
+			render.setRenderBounds(min, min, max, max, max, 1.0D);
+			render.renderStandardBlock(this, x, y, z);
+		}
+		if (isConnected(ForgeDirection.NORTH, world, x, y, z))
+		{
+			render.setRenderBounds(min, min, 0.0D, max, max, min);
+			render.renderStandardBlock(this, x, y, z);
+		}
+		if (isConnected(ForgeDirection.EAST, world, x, y, z))
+		{
+			render.setRenderBounds(max, min, min, 1.0D, max, max);
+			render.renderStandardBlock(this, x, y, z);
+		}
+		if (isConnected(ForgeDirection.WEST, world, x, y, z))
+		{
+			render.setRenderBounds(0.0D, min, min, min, max, max);
+			render.renderStandardBlock(this, x, y, z);
+			
+		}
+		
+		if (isPossibleReciver(front, world, x, y, z))
+		{
+			render.setOverrideBlockTexture(info.getDirectionIcon());
+			double[] array = facings[front.ordinal()];
+			render.setRenderBounds(array[0], array[1], array[2], array[3], array[4], array[5]);
+			render.renderStandardBlock(this, x, y, z);
+			render.clearOverrideBlockTexture();
+		}
+	}
+
+	@Override
+	public boolean dissableRendering(int meta)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean requiresRender()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean renderItemBlock(int meta)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean renderItemBlockBasic(int meta)
+	{
+		return false;
+	}
+
+	@Override
+	public float[] getBoundingBoxes(int meta)
+	{
+		return new float[]{0.0F, 0.25F, 0.25F, 1.0F, 0.75F, 0.75F};
+	}
+
+	@Override
+	public float[] getXYZForItemRenderer(ItemRenderType type, int meta)
+	{
+		switch(type)
+		{
+			case ENTITY: return new float[]{-0.5F, -0.5F, -0.5F};
+			case EQUIPPED: return new float[]{-0.4F, 0.50F, 0.35F};
+			case EQUIPPED_FIRST_PERSON: return new float[]{-0.4F, 0.50F, 0.35F};
+			case INVENTORY: return new float[]{-0.5F, -0.5F, -0.5F};
+			default: return null;
+			
+		}
+	}
+
+	@Override
+	public int getItemRenderPasses(int meta)
+	{
+		return 0;
+	}
+
+	@Override
+	public void onItemRendering(BlockRendererHelper render, ItemRenderType type, BlockStack stack, int renderPass, float x, float y, float z, Object... data)
+	{
+		render.renderBlockStandart(this, stack, (RenderBlocks)data[1], type);
 	}
 	
 }

@@ -92,7 +92,5 @@ public interface IBlockRenderer
 	 * @param data: Data for Rendering: 0 = ItemStack (NBT), 1 = RenderBlocks, (Based on Type) 2 = Entity
 	 */
 	public void onItemRendering(BlockRendererHelper render, ItemRenderType type, BlockStack stack, int renderPass, float x, float y, float z, Object...data);
-
-	
 	
 }

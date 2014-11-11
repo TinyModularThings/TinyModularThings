@@ -22,9 +22,9 @@ public class RenderStorageBlock extends TileEntitySpecialRenderer
 	public static ResourceLocation advTCOpenTexture = new ResourceLocation(TinyModularThingsLib.ModID.toLowerCase() + ":textures/models/storage/ModelAdvTinyChest.png");
 	public static ResourceLocation advTCClosedTexture = new ResourceLocation(TinyModularThingsLib.ModID.toLowerCase() + ":textures/models/storage/ModelAdvTinyChestClosed.png");
 	
-	ModelTinyTank tinytank = new ModelTinyTank();
-	ModelTinyChest tinychest = new ModelTinyChest();
-	ModelAdvTinyChest advtinychest = new ModelAdvTinyChest();
+	public static ModelTinyTank tinytank = new ModelTinyTank();
+	public static ModelTinyChest tinychest = new ModelTinyChest();
+	public static ModelAdvTinyChest advtinychest = new ModelAdvTinyChest();
 	
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double d0, double d1, double d2, float f)

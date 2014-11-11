@@ -104,7 +104,7 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IIt
 		{
 			if(render.renderItemBlockBasic(item.getItemDamage()))
 			{
-				renderBlock(render, stack, (RenderBlocks)data[0]);
+				renderBlock(render, stack, (RenderBlocks)data[0], type);
 			}
 			else
 			{
@@ -133,7 +133,7 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IIt
 		}
 	}
 	
-	public void renderBlock(IBlockRenderer par1, BlockStack par2, RenderBlocks par3)
+	public void renderBlock(IBlockRenderer par1, BlockStack par2, RenderBlocks par3, ItemRenderType par4)
 	{
 		float[] size = par1.getBoundingBoxes(par2.getMeta());
 		if(size == null || size.length < 6)
@@ -150,13 +150,18 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IIt
 			}
 			textureArray[i] = blockIcon;
 		}
+		float[] data = par1.getXYZForItemRenderer(par4, par2.getMeta());
+		if(data == null || data.length != 3)
+		{
+			data = new float[]{-0.5F, -0.5F, -0.5F};
+		}
 		
 		Tessellator tessellator = Tessellator.instance;
 		Block block = par2.getBlock();
 		block.setBlockBounds(size[0], size[1], size[2], size[3], size[4], size[5]);
 		block.setBlockBoundsForItemRender();
 		par3.setRenderBoundsFromBlock(block);
-		GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+		GL11.glTranslatef(data[0], data[1], data[2]);
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, -1.0F, 0.0F);
 		par3.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, textureArray[0]);
@@ -187,9 +192,49 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IIt
 	
 	public static class BlockRendererHelper
 	{
-		public static void renderBlockStandart(IBlockRenderer par1, BlockStack par2, RenderBlocks par3)
+		public static void renderBlockStandart(IBlockRenderer par1, BlockStack par2, RenderBlocks par3, ItemRenderType par4)
 		{
-			BlockRendererSpmodCore.instance.renderBlock(par1, par2, par3);
+			BlockRendererSpmodCore.instance.renderBlock(par1, par2, par3, par4);
+		}
+		
+		public static void renderBlockStandart(Icon[] texture, float[] sides, Block block, float[] sizes, RenderBlocks render)
+		{
+			if(sizes == null || sizes.length != 3)
+			{
+				sizes = new float[]{-0.5F, -0.5F, -0.5F};
+			}
+			
+			Tessellator tessellator = Tessellator.instance;
+			block.setBlockBounds(sides[0], sides[1], sides[2], sides[3], sides[4], sides[5]);
+			block.setBlockBoundsForItemRender();
+			render.setRenderBoundsFromBlock(block);
+			GL11.glTranslatef(sizes[0], sizes[1], sizes[2]);
+			tessellator.startDrawingQuads();
+			tessellator.setNormal(0.0F, -1.0F, 0.0F);
+			render.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, texture[0]);
+			tessellator.draw();
+			tessellator.startDrawingQuads();
+			tessellator.setNormal(0.0F, 1.0F, 0.0F);
+			render.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, texture[0]);
+			tessellator.draw();
+			tessellator.startDrawingQuads();
+			tessellator.setNormal(0.0F, 0.0F, -1.0F);
+			render.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, texture[0]);
+			tessellator.draw();
+			tessellator.startDrawingQuads();
+			tessellator.setNormal(0.0F, 0.0F, 1.0F);
+			render.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, texture[0]);
+			tessellator.draw();
+			tessellator.startDrawingQuads();
+			tessellator.setNormal(-1.0F, 0.0F, 0.0F);
+			render.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, texture[0]);
+			tessellator.draw();
+			tessellator.startDrawingQuads();
+			tessellator.setNormal(1.0F, 0.0F, 0.0F);
+			render.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, texture[0]);
+			tessellator.draw();
+			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		}
 	}
 	

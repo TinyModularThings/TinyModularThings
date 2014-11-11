@@ -2,12 +2,19 @@ package speiger.src.tinymodularthings.common.items.minecarts;
 
 import java.util.List;
 
+import org.lwjgl.opengl.GL11;
+
 import net.minecraft.block.BlockRailBase;
+import net.minecraft.client.model.ModelMinecart;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import speiger.src.api.client.render.IMetaItemRender;
+import speiger.src.tinymodularthings.client.models.storage.ModelTinyChest;
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityAdvTinyChestCart.EightSlotAdvTinyChestCart;
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityAdvTinyChestCart.FiveSlotAdvTinyChestCart;
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityAdvTinyChestCart.FourSlotAdvTinyChestCart;
@@ -18,10 +25,12 @@ import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityAdv
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityAdvTinyChestCart.ThreeSlotAdvTinyChestCart;
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityAdvTinyChestCart.TwoSlotAdvTinyChestCart;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
+import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
+import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class AdvTinyChestCart extends TinyItem
+public class AdvTinyChestCart extends TinyItem implements IMetaItemRender
 {
 	
 	public AdvTinyChestCart(int par1)
@@ -110,6 +119,66 @@ public class AdvTinyChestCart extends TinyItem
 	{
 		par3.add((1+par1.getItemDamage())+ (par1.getItemDamage() > 0 ? " Slots" : " Slot"));
 	}
+
+	@Override
+	public boolean doRender()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean doRenderCustom(int meta)
+	{
+		return true;
+	}
+
+	@Override
+	public float[] getXYZ(ItemRenderType type, int meta)
+	{
+		switch(type)
+		{
+			case ENTITY: return new float[]{0.0F, 0F, 0.0F};
+			case EQUIPPED: return new float[]{0.5F, 1F, 0.0F};
+			case EQUIPPED_FIRST_PERSON: return new float[]{0.5F, 1.0F, 0.5F};
+			case INVENTORY: return new float[]{0.0F, -0.2F, 0.0F};
+			default: return null;
+		}
+	}
 	
+	public float[] getSecondXYZ(ItemRenderType type)
+	{
+		switch(type)
+		{
+			case ENTITY: return new float[]{0.0F, -1.2F, 0.0F};
+			case EQUIPPED: return new float[]{0F, -1.2F, 0.0F};
+			case EQUIPPED_FIRST_PERSON: return new float[]{0.0F, -1.2F, -0.01F};
+			case INVENTORY: return new float[]{0.0F, -1.2F, 0.0F};
+			default: return null;
+		}
+	}
+
+	ModelMinecart cart = new ModelMinecart();
+	ModelTinyChest chest = new ModelTinyChest();
+	private static final ResourceLocation minecartTextures = new ResourceLocation("textures/entity/minecart.png");
+	private static final ResourceLocation advTCOpenTexture = new ResourceLocation(TinyModularThingsLib.ModID.toLowerCase() + ":textures/models/storage/ModelAdvTinyChest.png");
+	
+	
+	@Override
+	public void onRender(ItemRenderType type, ItemStack item, int renderPass, float x, float y, float z, Object... data)
+	{
+		float[] second = getSecondXYZ(type);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(minecartTextures);
+		GL11.glPushMatrix();
+		GL11.glTranslatef(x, y, z);
+		GL11.glRotatef(180, 1, 0, 0);
+		GL11.glRotatef(0, 0, 1, 0);
+		cart.render(null, 0.0F, 0.0F, 0F, 0.0F, 0.0F, 0.0625F);
+		FMLClientHandler.instance().getClient().renderEngine.bindTexture(advTCOpenTexture);
+		GL11.glTranslatef(second[0], second[1], second[2]);
+		GL11.glScalef(0.9F, 1, 0.9F);
+		chest.render(0.0625F);
+		GL11.glPopMatrix();
+		
+	}
 	
 }

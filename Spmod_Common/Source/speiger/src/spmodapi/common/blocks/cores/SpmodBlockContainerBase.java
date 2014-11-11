@@ -188,11 +188,15 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
 	{
 		AdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
+		int meta = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
 		if(tile != null)
 		{
+			if(requiresRenderPass(meta))
+			{
+				return TextureEngine.getTextures().getIconSafe(tile.getIconFromSideAndMetadata(par5, getRenderPass(meta)));
+			}
 			return TextureEngine.getTextures().getIconSafe(tile.getIconFromSideAndMetadata(par5, 0));
 		}
-		int meta = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
 		return getIcon(par5, meta);
 	}
 	
@@ -200,7 +204,6 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@SideOnly(Side.CLIENT)
 	public Icon getIcon(int side, int meta)
 	{
-		
 		if(!this.hasTileEntity(meta))
 		{
 			return getTexture(TextureEngine.getTextures(), meta, side);

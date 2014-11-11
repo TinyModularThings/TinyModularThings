@@ -278,7 +278,7 @@ public class AdvancedRetrogen implements ITickHandler
 		
 		if(world.getWorldTime() % 200 == 0)
 		{
-			SpmodAPI.log.print("World: "+world.provider.getDimensionName()+" Has still "+(todoList.get(world.provider.dimensionId) != null ? todoList.get(world.provider.dimensionId).size() : "0") + " Chunks to Retrogenerate");
+			SpmodAPI.log.print("World: "+world.provider.getDimensionName()+" Has still "+(todoList.get(world.provider.dimensionId) != null ? getSizeFromList(todoList.get(world.provider.dimensionId)) : "0") + " Chunks to Retrogenerate");
 		}
 		
 		if(todoList.isEmpty() || todoList.size() <= 0)
@@ -297,6 +297,20 @@ public class AdvancedRetrogen implements ITickHandler
 		{
 			this.totalShutdownDelay = 2000;
 		}
+	}
+	
+	public int getSizeFromList(ArrayList<ChunkData> data)
+	{
+		if(data == null)
+		{
+			return 0;
+		}
+		int count = 0;
+		for(ChunkData cu : data)
+		{
+			count += cu.getSize();
+		}
+		return count;
 	}
 
 	@Override
@@ -355,6 +369,11 @@ public class AdvancedRetrogen implements ITickHandler
 				}
 			}
 			return null;
+		}
+		
+		public int getSize()
+		{
+			return (31 - xOffset) * (31 - zOffset);
 		}
 		
 		public void saveChunk(World world, Chunk chunk)

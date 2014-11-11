@@ -3,9 +3,13 @@ package speiger.src.spmodapi.common.items.core;
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.common.util.TextureEngine;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class SpmodPlacerItem extends SpmodItem
 {
@@ -99,5 +103,12 @@ public abstract class SpmodPlacerItem extends SpmodItem
     	{
     		par2.stackSize--;
     	}
+    }
+    
+    @SideOnly(Side.CLIENT)
+    public Icon[] getTextureArray(int meta)
+    {
+    	Icon texture = TextureEngine.getTextures().getTexture(this, meta, 0);
+    	return new Icon[]{texture, texture, texture, texture, texture, texture};
     }
 }

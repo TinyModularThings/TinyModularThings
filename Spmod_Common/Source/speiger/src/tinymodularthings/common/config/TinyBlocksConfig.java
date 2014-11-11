@@ -138,9 +138,9 @@ public class TinyBlocksConfig
 		blocks.transportBlock = new BlockTransport(config.block.getCurrentID());
 		RegisterProxy.RegisterBlock(blocks.transportBlock, ItemBlockTransport.class, "TransportBlock");
 		RegisterProxy.RegisterTile(blocks.transportBlock, EnderChestReader.class, "EnderChestProxy");
-		RegisterProxy.RegisterTile(MultiStructureItemInterface.class, "ItemInterface");
-		RegisterProxy.RegisterTile(MultiStructureFluidInterface.class, "FluidInterface");
-		RegisterProxy.RegisterTile(MultiStructureEnergyInterface.class, "EnergyInterface");
+		RegisterProxy.RegisterTile(blocks.transportBlock, 1, MultiStructureItemInterface.class, "ItemInterface");
+		RegisterProxy.RegisterTile(blocks.transportBlock, 2, MultiStructureFluidInterface.class, "FluidInterface");
+		RegisterProxy.RegisterTile(blocks.transportBlock, 3, MultiStructureEnergyInterface.class, "EnergyInterface");
 		RegisterProxy.RegisterTile(TinyHopper.class, "ModularTinyHopper");
 		RegisterProxy.RegisterTile(blocks.transportBlock, 4, AdvancedEnderChestReader.class, "AdvEnderChestProxy");
 		blocks.transportBlock.registerTextures(engine);
