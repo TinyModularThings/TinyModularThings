@@ -3,6 +3,7 @@ package speiger.src.tinymodularthings.common.plugins.BC;
 import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerEnergyFlow;
 import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerFuel;
 import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerHasWork;
+import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerPipeRequestPower;
 import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerRequestPower;
 import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerTank;
 import buildcraft.api.gates.IAction;
@@ -15,8 +16,10 @@ public class BCVariables
 	public static ITrigger noWork = new TriggerHasWork(false);
 	public static ITrigger needFuel = new TriggerFuel();
 	public static ITrigger requestPower = new TriggerRequestPower();
+	public static ITrigger pipeRequestPower = new TriggerPipeRequestPower();
 	public static ITrigger[] storedFluid = new ITrigger[]{new TriggerTank(0), new TriggerTank(1), new TriggerTank(2)};
 	public static ITrigger[] energyFlows = new ITrigger[]{new TriggerEnergyFlow(true), new TriggerEnergyFlow(false)};
+	
 	
 	// Actions
 	public static IAction[] changeToSlot = new IAction[64];

@@ -114,7 +114,6 @@ public class ItemMultiPlate extends SpmodPlacerItem
 			if(info != null && info.getAllIdentifiers().size() > meta && !flag)
 			{
 				plate.setIdentity(info.getAllIdentifiers().get(meta));
-				if(!player.capabilities.isCreativeMode)item.stackSize--;
 				return;
 			}
 			flag = true;

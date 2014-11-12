@@ -172,7 +172,6 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 				if(flag)
 				{
 					accept.setBlock(new BlockStack(nbt.getInteger("ID"), nbt.getInteger("Meta")));
-					this.removeItem(player, item);
 					return;
 				}
 				world.setBlockToAir(x, y, z);

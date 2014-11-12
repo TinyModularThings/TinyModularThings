@@ -37,7 +37,14 @@ public abstract class SpmodItem extends Item implements ITextureRequester
 	@Override
 	public String getItemDisplayName(ItemStack par1ItemStack)
 	{
-		String name = getName(par1ItemStack);
+		String name = "";
+		try
+		{
+			name = getName(par1ItemStack);
+		}
+		catch(Exception e)
+		{
+		}
 		if(Strings.isNullOrEmpty(name))
 		{
 			name = "No Name";

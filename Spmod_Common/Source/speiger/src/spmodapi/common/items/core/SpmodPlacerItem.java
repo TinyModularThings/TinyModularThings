@@ -83,6 +83,7 @@ public abstract class SpmodPlacerItem extends SpmodItem
         	{
         		WorldReading.setupUser(world, x, y, z, player);
         		onAfterPlaced(world, x, y, z, side, player, item);
+        		removeItem(player, item);
         		return true;
         	}
         }

@@ -75,6 +75,10 @@ public abstract class ItemBlockSpmod extends ItemBlock
         	{
         		stack.getBlock().onBlockPlacedBy(world, x, y, z, player, item);
         		onAfterPlaced(world, x, y, z, side, player, item);
+        		if(!player.capabilities.isCreativeMode)
+        		{
+        			item.stackSize--;
+        		}
         		return true;
         	}
         }

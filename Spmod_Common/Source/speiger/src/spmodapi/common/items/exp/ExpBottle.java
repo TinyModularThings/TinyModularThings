@@ -8,6 +8,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.api.common.world.items.IExpBottle;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.items.core.SpmodItem;
@@ -156,6 +157,18 @@ public class ExpBottle extends SpmodItem implements IExpBottle
 		return nbt.getInteger("Cu");
 	}
 	
+	
+	
+	@Override
+	public int getDamage(ItemStack stack)
+	{
+		if(NBTHelper.nbtCheck(stack, "Exp"))
+		{
+			return NBTHelper.getTag(stack, "Exp").getInteger("ID");
+		}
+		return 0;
+	}
+
 	public static ItemStack getExpBottle(int id, int type, boolean doubles, boolean full)
 	{
 		ItemStack item = new ItemStack(id, 1, full ? 1 : 100);

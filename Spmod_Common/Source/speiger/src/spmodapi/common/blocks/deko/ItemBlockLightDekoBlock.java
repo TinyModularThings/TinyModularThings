@@ -74,7 +74,6 @@ public class ItemBlockLightDekoBlock extends ItemBlockSpmod implements IMetaItem
 			lamp.setType(type(meta));
 			lamp.setInverted(inverted(meta));
 			int color = color(meta);
-			if(!player.capabilities.isCreativeMode)item.stackSize--;
 			if(color <= 15)lamp.setColor(color);
 			else if(color == 16)
 			{

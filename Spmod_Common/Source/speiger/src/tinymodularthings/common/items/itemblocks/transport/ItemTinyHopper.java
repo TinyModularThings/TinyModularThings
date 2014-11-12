@@ -67,7 +67,6 @@ public class ItemTinyHopper extends TinyPlacerItem implements IMetaItemRender
 			{
 				tiny.setRotation(ForgeDirection.getOrientation(side).getOpposite().ordinal());
 			}
-			this.removeItem(player, item);
 		}
 	}
 	

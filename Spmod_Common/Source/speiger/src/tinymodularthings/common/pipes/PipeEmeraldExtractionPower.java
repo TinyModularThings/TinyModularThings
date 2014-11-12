@@ -152,7 +152,7 @@ public class PipeEmeraldExtractionPower extends Pipe<PipeTransportPower>
 	{
 		if (full)
 		{
-			boolean request = powerHandler.getEnergyStored() < powerHandler.getMaxEnergyStored() / 2;
+			boolean request = powerHandler.getEnergyStored() < 100;
 			if (request)
 			{
 				full = false;

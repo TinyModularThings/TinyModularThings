@@ -72,10 +72,6 @@ public class ItemAdvTinyTank extends TinyPlacerItem implements IMetaItemRender
 				}
 				tank.tank.setFluid(fluid);
 			}
-			if(!player.capabilities.isCreativeMode)
-			{
-				item.stackSize--;
-			}
 		}
 	}
 

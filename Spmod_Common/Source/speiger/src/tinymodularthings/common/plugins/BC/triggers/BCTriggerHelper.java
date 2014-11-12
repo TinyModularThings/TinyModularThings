@@ -9,7 +9,9 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntityBrewingStand;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fluids.IFluidHandler;
+import speiger.src.tinymodularthings.common.pipes.PipeEmeraldExtractionPower;
 import speiger.src.tinymodularthings.common.plugins.BC.BCVariables;
+import buildcraft.BuildCraftTransport;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerProvider;
 import buildcraft.api.power.IPowerReceptor;
@@ -70,6 +72,15 @@ public class BCTriggerHelper implements ITriggerProvider
 	@Override
 	public LinkedList<ITrigger> getPipeTriggers(IPipe pipe)
 	{
-		return null;
+		LinkedList<ITrigger> trigger = new LinkedList<ITrigger>();
+		if(pipe != null)
+		{
+			if(pipe instanceof PipeEmeraldExtractionPower)
+			{
+				trigger.add(BCVariables.pipeRequestPower);
+			}
+		}
+		
+		return trigger;
 	}
 }

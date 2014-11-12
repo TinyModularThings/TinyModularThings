@@ -61,10 +61,6 @@ public class ItemAdvTinyChest extends TinyPlacerItem implements IMetaItemRender
 		if(tile != null && tile instanceof AdvTinyChest)
 		{
 			((AdvTinyChest)tile).setMode(item.getItemDamage()+1);
-			if(!player.capabilities.isCreativeMode)
-			{
-				item.stackSize--;
-			}
 		}
 	}
 	

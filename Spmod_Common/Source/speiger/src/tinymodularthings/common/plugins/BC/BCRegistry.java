@@ -72,6 +72,7 @@ public class BCRegistry
 		ActionManager.registerTrigger(BCVariables.storedFluid[0]);
 		ActionManager.registerTrigger(BCVariables.storedFluid[1]);
 		ActionManager.registerTrigger(BCVariables.storedFluid[2]);
+		ActionManager.registerTrigger(BCVariables.pipeRequestPower);
 		ActionManager.registerTriggerProvider(new BCTriggerHelper());
 		if(Loader.isModLoaded("IC2"))
 		{
