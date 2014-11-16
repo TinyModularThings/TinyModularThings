@@ -15,7 +15,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import org.lwjgl.opengl.GL11;
 
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipe;
-import speiger.src.api.common.registry.recipes.pressureFurnace.helper.PressureRecipeList;
+import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
 import speiger.src.api.common.utils.MathUtils;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import speiger.src.tinymodularthings.client.gui.machine.PressureFurnaceGui;

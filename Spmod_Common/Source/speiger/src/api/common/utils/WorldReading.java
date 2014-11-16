@@ -70,58 +70,32 @@ public class WorldReading
 	
 	public static int getBlockId(World par0, int par1, int par2, int par3, int side)
 	{
-		if (side == 0)
-		{
-			return par0.getBlockId(par1, par2 - 1, par3);
-		}
-		else if (side == 1)
-		{
-			return par0.getBlockId(par1, par2 + 1, par3);
-		}
-		else if (side == 2)
-		{
-			return par0.getBlockId(par1, par2, par3 - 1);
-		}
-		else if (side == 3)
-		{
-			return par0.getBlockId(par1, par2, par3 + 1);
-		}
-		else if (side == 4)
-		{
-			return par0.getBlockId(par1 - 1, par2, par3);
-		}
-		else
-		{
-			return par0.getBlockId(par1 + 1, par2, par3);
-		}
+		ForgeDirection dir = ForgeDirection.getOrientation(side);
+		return par0.getBlockId(par1+dir.offsetX, par2+dir.offsetY, par3+dir.offsetZ);
+	}
+	
+	public static int getBlockMeta(World par0, int par1, int par2, int par3, int side)
+	{
+		ForgeDirection dir = ForgeDirection.getOrientation(side);
+		return par0.getBlockMetadata(par1+dir.offsetX, par2+dir.offsetY, par3+dir.offsetZ);		
+	}
+	
+	public static boolean setBlockToSide(World par0, int par1, int par2, int par3, int side, int blockID, int meta, int flag)
+	{
+		ForgeDirection dir = ForgeDirection.getOrientation(side);
+		return par0.setBlock(par1+dir.offsetX, par2+dir.offsetY, par3+dir.offsetZ, blockID, meta, flag);
+	}
+	
+	public static boolean setBlockMetaData(World world, int x, int y, int z, int side, int meta, int flag)
+	{
+		ForgeDirection dir = ForgeDirection.getOrientation(side);
+		return world.setBlockMetadataWithNotify(x+dir.offsetX, y+dir.offsetY, z+dir.offsetZ, meta, flag);
 	}
 	
 	public static TileEntity getTileEntity(World par0, int par1, int par2, int par3, int side)
 	{
-		if (side == 0)
-		{
-			return par0.getBlockTileEntity(par1, par2 - 1, par3);
-		}
-		else if (side == 1)
-		{
-			return par0.getBlockTileEntity(par1, par2 + 1, par3);
-		}
-		else if (side == 2)
-		{
-			return par0.getBlockTileEntity(par1, par2, par3 - 1);
-		}
-		else if (side == 3)
-		{
-			return par0.getBlockTileEntity(par1, par2, par3 + 1);
-		}
-		else if (side == 4)
-		{
-			return par0.getBlockTileEntity(par1 - 1, par2, par3);
-		}
-		else
-		{
-			return par0.getBlockTileEntity(par1 + 1, par2, par3);
-		}
+		ForgeDirection dir = ForgeDirection.getOrientation(side);
+		return par0.getBlockTileEntity(par1+dir.offsetX, par2+dir.offsetY, par3+dir.offsetZ);
 	}
 	
 	public static int getLookingDirectionFromEnitty(EntityLivingBase par0)
@@ -305,6 +279,8 @@ public class WorldReading
 			((AdvTile)tile).setupUser(player);
 		}
 	}
+
+
 
 
 }

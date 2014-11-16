@@ -62,7 +62,7 @@ public class ItemBlockLightDekoBlock extends ItemBlockSpmod implements IMetaItem
 	}
 
 	@Override
-	public void onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
+	public boolean onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
 	{
 		int meta = item.getItemDamage();
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
@@ -88,7 +88,10 @@ public class ItemBlockLightDekoBlock extends ItemBlockSpmod implements IMetaItem
 				}
 			}
 			else lamp.setAllColored();
+			
+			return true;
 		}
+		return false;
 	}
 
 	@Override

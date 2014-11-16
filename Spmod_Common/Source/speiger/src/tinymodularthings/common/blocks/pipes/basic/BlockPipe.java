@@ -475,6 +475,12 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 	{
 		return false;
 	}
+	
+	@Override
+	public int damageDropped(int par1)
+	{
+		return 0;
+	}
 
 	@Override
 	public boolean requiresRender()

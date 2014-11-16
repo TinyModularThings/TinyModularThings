@@ -82,8 +82,12 @@ public abstract class SpmodPlacerItem extends SpmodItem
         	if(world.setBlock(x, y, z, stack.getBlockID(), stack.getMeta(), 3))
         	{
         		WorldReading.setupUser(world, x, y, z, player);
-        		onAfterPlaced(world, x, y, z, side, player, item);
-        		removeItem(player, item);
+        		boolean flag = onAfterPlaced(world, x, y, z, side, player, item);
+        		stack.getBlock().onBlockPlacedBy(world, x, y, z, player, item);
+        		if(flag)
+        		{
+            		removeItem(player, item);
+        		}
         		return true;
         	}
         }
@@ -93,9 +97,9 @@ public abstract class SpmodPlacerItem extends SpmodItem
     
     public abstract BlockStack getBlockToPlace(int meta);
 	
-    public void onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
+    public boolean onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
     {
-    	
+    	return false;
     }
     
     public void removeItem(EntityPlayer par1, ItemStack par2)
@@ -103,6 +107,19 @@ public abstract class SpmodPlacerItem extends SpmodItem
     	if(!par1.capabilities.isCreativeMode)
     	{
     		par2.stackSize--;
+    		if(par2.getItem().hasContainerItem())
+    		{
+    			ItemStack stack = par2.getItem().getContainerItemStack(par2);
+    			if(!par1.inventory.addItemStackToInventory(stack))
+    			{
+    				if(!par1.worldObj.isRemote)
+    				{
+    					par1.worldObj.spawnEntityInWorld(par1.dropPlayerItem(stack));
+    				}
+    				return;
+    			}
+    			par1.inventoryContainer.detectAndSendChanges();
+    		}
     	}
     }
     

@@ -8,9 +8,9 @@ public class APIItems
 {
 	// Hemp
 	public static Item hempSeed;
-	public static Item hemp;
-	public static Item compressedHemp;
-	public static Item hempResin;
+	public static SpmodItem hemp;
+	public static SpmodItem compressedHemp;
+	public static SpmodItem hempResin;
 	
 	// Armor
 	public static Item hempHelmet;
@@ -19,21 +19,21 @@ public class APIItems
 	public static Item hempBoots;
 	
 	// Crafting
-	public static Item gears;
-	public static Item blueDye;
-	public static Item colorCard;
-	public static Item multiPlate;
-	public static Item trades;
-	public static Item redstoneCable;
+	public static SpmodItem gears;
+	public static SpmodItem blueDye;
+	public static SpmodItem colorCard;
+	public static SpmodItem multiPlate;
+	public static SpmodItem trades;
+	public static SpmodItem redstoneCable;
 	
 	public static ItemStack[] hempPlates;
 	public static Item hempResinBucket;
 	
 	// ExpBottle
-	public static Item expBottles;
+	public static SpmodItem expBottles;
 	
 	// Mob Machine
-	public static Item mobMachineHelper;
+	public static SpmodItem mobMachineHelper;
 	
 	// Bone
 	public static Item boneChicken;
@@ -43,5 +43,8 @@ public class APIItems
 	public static Item boneSheep;
 	public static Item boneHorse;
 	public static SpmodItem accessDebug;
+	
+	//Gas
+	public static SpmodItem gasBucket;
 	
 }

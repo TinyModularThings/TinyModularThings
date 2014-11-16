@@ -32,6 +32,7 @@ public class BlockStorage extends SpmodBlockContainerBase
 		setHardness(4.0F);
 		setCreativeTab(CreativeTabs.tabFood);
 		this.setIgnoreRighClick();
+		this.dissableDrops();
 		MinecraftForge.setBlockHarvestLevel(this, 0, "pickaxe", 0);
 		MinecraftForge.setBlockHarvestLevel(this, 0, "axe", 0);
 		MinecraftForge.setBlockHarvestLevel(this, 1, "pickaxe", 0);
@@ -66,12 +67,6 @@ public class BlockStorage extends SpmodBlockContainerBase
 			case 3: return new AdvTinyTank();
 			default: return null;
 		}
-	}
-	
-	@Override
-	public int getRenderType()
-	{
-		return super.getRenderType();
 	}
 	
 	@Override
@@ -139,6 +134,7 @@ public class BlockStorage extends SpmodBlockContainerBase
 				render.renderAllFaces = true;
 				render.renderStandardBlock(this, x, y, z);
 				render.clearOverrideBlockTexture();
+				render.renderAllFaces = false;
 			}
 			
 			if(tank.renderTank())

@@ -179,37 +179,37 @@ public class TinyItemsConfig
 		try
 		{
 			PipeTransportPower.powerCapacities.put(PipeEmeraldExtractionPower.class, 2048);
-			items.emeraldPowerPipeE = BuildItem(config.pipes.getCurrentID(), PipeEmeraldExtractionPower.class, "pipe.emerald.power.extraction");
+			items.emeraldPowerPipeE = BuildItem(config.pipes.getCurrentID(), PipeEmeraldExtractionPower.class, "Emerald Power Extraction Pipe");
 			config.pipes.updateToNextID();
 			AssemblyRecipe.assemblyRecipes.add(new AssemblyRecipe(new ItemStack[] { new ItemStack(BuildCraftTransport.pipeItemsEmerald, 8), new ItemStack(Item.redstone, 8) }, 10000, new ItemStack(items.emeraldPowerPipeE, 8)));
 			PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeItemsEmerald), new Object[] { items.emeraldPowerPipeE });
 			
 			
 			PipeTransportPower.powerCapacities.put(PipeEmeraldPower.class, 2048);
-			items.emeraldPowerPipe = BuildItem(config.pipes.getCurrentID(), PipeEmeraldPower.class, "pipe.emerald.power");
+			items.emeraldPowerPipe = BuildItem(config.pipes.getCurrentID(), PipeEmeraldPower.class, "Emerald Power Pipe");
 			config.pipes.updateToNextID();
 			PathProxy.addSRecipe(new ItemStack(items.emeraldPowerPipe), new Object[] { BuildCraftTransport.pipeItemsEmerald, Item.redstone });
 			PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeItemsEmerald), new Object[] { items.emeraldPowerPipe });
 			
-			items.redstoneFluidPipe = BuildItem(config.pipes.getCurrentID(), FluidRegstonePipe.class, "pipe.redstone.fluid");
+			items.redstoneFluidPipe = BuildItem(config.pipes.getCurrentID(), FluidRegstonePipe.class, "Redstone Fluid Pipe");
 			config.pipes.updateToNextID();
 			PathProxy.addSRecipe(new ItemStack(items.redstoneFluidPipe, 1), new Object[] { new ItemStack(BuildCraftTransport.pipeFluidsGold), new ItemStack(Item.redstone) });
 			PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeFluidsGold, 1), new Object[] { items.redstoneFluidPipe });
 			
 			
 			PipeTransportPower.powerCapacities.put(RefinedDiamondPowerPipe.class, 512);
-			items.refinedDiamondPowerPipe = BuildItem(config.pipes.getCurrentID(), RefinedDiamondPowerPipe.class, "pipe.diamond.safe.power");
+			items.refinedDiamondPowerPipe = BuildItem(config.pipes.getCurrentID(), RefinedDiamondPowerPipe.class, "Diamond Power Pipe");
 			AssemblyRecipe.assemblyRecipes.add(new AssemblyRecipe(new ItemStack[] { new ItemStack(BuildCraftTransport.pipePowerDiamond), new ItemStack(BuildCraftSilicon.redstoneChipset, 2, 2) }, 1000000, new ItemStack(items.refinedDiamondPowerPipe)));
 			PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipePowerDiamond), new Object[] { items.refinedDiamondPowerPipe });
 			PathProxy.addRecipe(new ItemStack(items.refinedDiamondPowerPipe), new Object[] { "XXX", "XYX", "XXX", 'X', new ItemStack(BuildCraftSilicon.redstoneChipset, 1, 3), 'Y', BuildCraftTransport.pipePowerDiamond });
 			config.pipes.updateToNextID();
 			
-			items.redstoneItemPipe = BuildItem(config.pipes.getCurrentID(), ItemRedstonePipe.class, "pipe.redstone.item");
+			items.redstoneItemPipe = BuildItem(config.pipes.getCurrentID(), ItemRedstonePipe.class, "Item Redstone Pipe");
 			config.pipes.updateToNextID();
 			PathProxy.addSRecipe(new ItemStack(items.redstoneItemPipe), new Object[]{BuildCraftTransport.pipeItemsGold, Item.redstone});
 			PathProxy.addSRecipe(new ItemStack(items.redstoneFluidPipe), new Object[]{items.redstoneItemPipe, BuildCraftTransport.pipeWaterproof});
 			
-			items.aluPipe = BuildItem(config.pipes.getCurrentID(), AluFluidExtractionPipe.class, "pipe.aluminium.fluid");
+			items.aluPipe = BuildItem(config.pipes.getCurrentID(), AluFluidExtractionPipe.class, "Aluminium Fluid Pipe");
 			AluFluidExtractionPipe.init(items.aluPipe.itemID);
 			PathProxy.addRecipe(new ItemStack(items.aluPipe, 8), new Object[]{"XYX", "CVC", "XBX", 'V', Block.glass, 'C', EnumIngots.Aluminum.getIngot(), 'X', BuildCraftTransport.pipeWaterproof, 'B', new ItemStack(BuildCraftSilicon.redstoneChipset, 1, 2), 'Y', new ItemStack(BuildCraftTransport.pipeGateAutarchic, 1, 1)});
 			config.pipes.updateToNextID();

@@ -13,6 +13,7 @@ import buildcraft.BuildCraftCore;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerParameter;
 import buildcraft.api.gates.TriggerParameter;
+import buildcraft.transport.TileGenericPipe;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -86,7 +87,7 @@ public class TriggerTank implements ITrigger
 	{
 		if(tile != null)
 		{
-			if(tile instanceof IFluidHandler)
+			if(tile instanceof IFluidHandler && !(tile instanceof TileGenericPipe))
 			{
 				IFluidHandler fluid = (IFluidHandler)tile;
 				FluidTankInfo[] info = fluid.getTankInfo(side);

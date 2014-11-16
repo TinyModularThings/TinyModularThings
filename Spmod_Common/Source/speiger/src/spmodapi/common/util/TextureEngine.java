@@ -13,6 +13,8 @@ import net.minecraft.util.Icon;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
+import speiger.src.api.common.data.utils.BlockData;
+import speiger.src.api.common.data.utils.ItemData;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
@@ -405,129 +407,9 @@ public class TextureEngine
 		return false;
 	}
 	
-	
-	
-	public static class ItemData implements StackInfo
-	{
-		Item item;
-		int meta;
-		
-		public ItemData(ItemStack par2)
-		{
-			this(par2.getItem(), par2.getItemDamage());
-		}
-		
-		public ItemData(Item par1, int par2)
-		{
-			item = par1;
-			meta = par2;
-		}
-		
-		public ItemData(Item par1)
-		{
-			this(par1, 0);
-		}
-
-		@Override
-		public boolean equals(Object arg0)
-		{
-			if(arg0 == null)
-			{
-				return false;
-			}
-			if(!(arg0 instanceof ItemData))
-			{
-				return false;
-			}
-			ItemData par1 = (ItemData)arg0;
-			if(par1.item != item)
-			{
-				return false;
-			}
-			if(par1.meta != meta)
-			{
-				return false;
-			}
-			return true;
-		}
-		@Override
-		public int hashCode()
-		{
-			return item.itemID + meta;
-		}
-
-		@Override
-		public ItemStack getResult()
-		{
-			return new ItemStack(item, 1, meta);
-		}
-		
-		
-	}
-	
-	public static class BlockData implements StackInfo
-	{
-		Block block;
-		int meta;
-		
-		public BlockData(BlockStack par1)
-		{
-			this(par1.getBlock(), par1.getMeta());
-		}
-		public BlockData(Block par1, int par2)
-		{
-			block = par1;
-			meta = par2;
-		}
-		
-		public BlockData(Block par1)
-		{
-			this(par1, 0);
-		}
-		
-		@Override
-		public boolean equals(Object arg0)
-		{
-			if(arg0 == null)
-			{
-				return false;
-			}
-			if(!(arg0 instanceof BlockData))
-			{
-				return false;
-			}
-			BlockData par1 = (BlockData)arg0;
-			if(par1.block != block)
-			{
-				return false;
-			}
-			if(par1.meta != meta)
-			{
-				return false;
-			}
-			return true;
-		}
-		@Override
-		public int hashCode()
-		{
-			return block.blockID + meta;
-		}
-		@Override
-		public ItemStack getResult()
-		{
-			return new ItemStack(block, 1, meta);
-		}
-		
-	}
-	
 	public static class RequestData
 	{
 		ITextureRequester data;
-	}
-	
-	public static interface StackInfo
-	{
-		ItemStack getResult();
 	}
 
 	@SideOnly(Side.CLIENT)

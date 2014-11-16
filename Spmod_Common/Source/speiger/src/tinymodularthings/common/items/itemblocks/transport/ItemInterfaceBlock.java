@@ -152,7 +152,7 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 	}
 	
 	@Override
-	public void onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
+	public boolean onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
 	{
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
 		if(tile != null && tile instanceof IAcceptor)
@@ -172,12 +172,13 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 				if(flag)
 				{
 					accept.setBlock(new BlockStack(nbt.getInteger("ID"), nbt.getInteger("Meta")));
-					return;
+					return true;
 				}
 				world.setBlockToAir(x, y, z);
 			}
 			
 		}
+		return false;
 	}
 
 

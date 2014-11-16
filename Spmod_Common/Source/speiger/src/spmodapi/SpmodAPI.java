@@ -25,6 +25,7 @@ import speiger.src.spmodapi.common.plugins.PluginLoader;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 import speiger.src.spmodapi.common.world.WorldLoader;
+import speiger.src.spmodapi.common.world.retrogen.ChunkCollector;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -86,6 +87,7 @@ public class SpmodAPI implements SpmodMod
 		SpmodWorldGen.getWorldGen().init(SpmodConfig.getInstance());
 		plugins.loadModAdditions();
 		CommandRegistry.init();
+		ChunkCollector.getInstance().loadConfig();
 	}
 	
 	@EventHandler

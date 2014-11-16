@@ -22,6 +22,7 @@ public class APIBlocks
 	public static SpmodBlockBase savedHempBrickPlated;
 	
 	public static Block fluidHempResin;
+	public static SpmodBlockBase animalGas;
 	
 	public static SpmodBlockBase hempLamp;
 	public static Block blueFlower;

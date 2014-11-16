@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.StepSound;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -24,6 +26,7 @@ import speiger.src.spmodapi.client.core.RenderHelper;
 import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -50,6 +53,15 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 		for(int i = 0;i<16;i++)
 		{
 			this.ItemNoRightClick[i] = true;
+		}
+		return this;
+	}
+	
+	public SpmodBlockBase enableDrops(int...meta)
+	{
+		for(int i : meta)
+		{
+			removeBasicDrops[i] = false;
 		}
 		return this;
 	}
@@ -337,8 +349,6 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 	{
 		return true;
 	}
-	
-	
 
 	@Override
 	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side)
@@ -442,4 +452,5 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 	{
 		
 	}
+	
 }

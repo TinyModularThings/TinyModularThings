@@ -57,7 +57,7 @@ public class TriggerPipeRequestPower implements ITrigger, ITriggerPipe
 	@Override
 	public String getDescription()
 	{
-		return null;
+		return BuildCraftTransport.triggerPipeRequestsEnergy.getDescription();
 	}
 	
 	@Override

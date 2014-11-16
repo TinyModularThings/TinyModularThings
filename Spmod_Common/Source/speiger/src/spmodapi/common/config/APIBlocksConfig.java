@@ -12,6 +12,8 @@ import speiger.src.spmodapi.common.blocks.deko.ItemBlockMultiPlate;
 import speiger.src.spmodapi.common.blocks.deko.KyrokaTheFox;
 import speiger.src.spmodapi.common.blocks.deko.MultiPlate;
 import speiger.src.spmodapi.common.blocks.deko.TileLamp;
+import speiger.src.spmodapi.common.blocks.gas.BlockAnimalGas;
+import speiger.src.spmodapi.common.blocks.gas.ItemBlockAnimalGas;
 import speiger.src.spmodapi.common.blocks.hemp.BlockHempCrop;
 import speiger.src.spmodapi.common.blocks.hemp.BlockHempDeko;
 import speiger.src.spmodapi.common.blocks.hemp.BlockHempDekoBase;
@@ -131,5 +133,11 @@ public class APIBlocksConfig
 		RegisterProxy.RegisterBlock(blocks.statues, ItemBlockKyrokaTheFox.class, "Statue");
 		RegisterProxy.RegisterTile(blocks.statues, KyrokaTheFox.class, "Kyroka");
 		config.blockIDs.updateToNextID();
+		
+		engine.setCurrentPath("gas");
+		blocks.animalGas = new BlockAnimalGas(config.blockIDs.getCurrentID());
+		RegisterProxy.RegisterBlock(blocks.animalGas, ItemBlockAnimalGas.class, "AnimalGas");
+		engine.registerTexture(blocks.animalGas, "AnimalGas");
+		config.itemIDs.updateToNextID();
 	}
 }

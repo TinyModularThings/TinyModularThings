@@ -17,7 +17,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipe;
-import speiger.src.api.common.registry.recipes.pressureFurnace.helper.PressureRecipeList;
+import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
 import buildcraft.api.recipes.AssemblyRecipe;
 import cpw.mods.fml.common.FMLCommonHandler;
 

@@ -47,9 +47,10 @@ public class ItemBlockPipe extends ItemBlockTinyChest
 	
 
 	@Override
-	public void onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
+	public boolean onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
 	{
 		world.setBlockMetadataWithNotify(x, y, z, side, 3);
+		return true;
 	}
 
 	@Override

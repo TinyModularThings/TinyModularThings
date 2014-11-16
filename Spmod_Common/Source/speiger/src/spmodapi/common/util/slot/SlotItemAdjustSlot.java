@@ -3,13 +3,13 @@ package speiger.src.spmodapi.common.util.slot;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import speiger.src.api.common.data.utils.IStackInfo;
 import speiger.src.api.common.utils.InventoryUtil;
-import speiger.src.spmodapi.common.util.TextureEngine.StackInfo;
 
 public class SlotItemAdjustSlot extends Slot
 {
-	StackInfo[] data;
-	public SlotItemAdjustSlot(IInventory par1iInventory, int par2, int par3, int par4, StackInfo...data)
+	IStackInfo[] data;
+	public SlotItemAdjustSlot(IInventory par1iInventory, int par2, int par3, int par4, IStackInfo...data)
 	{
 		super(par1iInventory, par2, par3, par4);
 		this.data = data;
@@ -23,7 +23,7 @@ public class SlotItemAdjustSlot extends Slot
 			return false;
 		}
 		
-		for(StackInfo cu : data)
+		for(IStackInfo cu : data)
 		{
 			if(cu.getResult() != null)
 			{

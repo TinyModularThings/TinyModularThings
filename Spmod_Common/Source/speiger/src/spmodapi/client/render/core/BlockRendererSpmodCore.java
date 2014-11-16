@@ -1,7 +1,5 @@
 package speiger.src.spmodapi.client.render.core;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
@@ -9,7 +7,6 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.client.IItemRenderer;
-import net.minecraftforge.client.MinecraftForgeClient;
 
 import org.lwjgl.opengl.GL11;
 
@@ -17,7 +14,6 @@ import speiger.src.api.client.render.IBlockRenderer;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.client.core.RenderHelper;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.spmodapi.common.util.TextureEngine.BlockData;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
 public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IItemRenderer

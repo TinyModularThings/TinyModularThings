@@ -96,7 +96,7 @@ public class ItemMultiPlate extends SpmodPlacerItem
 	}
 
 	@Override
-	public void onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
+	public boolean onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
 	{
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
 		boolean flag = true;
@@ -114,7 +114,7 @@ public class ItemMultiPlate extends SpmodPlacerItem
 			if(info != null && info.getAllIdentifiers().size() > meta && !flag)
 			{
 				plate.setIdentity(info.getAllIdentifiers().get(meta));
-				return;
+				return true;
 			}
 			flag = true;
 		}
@@ -122,5 +122,6 @@ public class ItemMultiPlate extends SpmodPlacerItem
 		{
 			world.setBlockToAir(x, y, z);
 		}
+		return false;
 	}
 }

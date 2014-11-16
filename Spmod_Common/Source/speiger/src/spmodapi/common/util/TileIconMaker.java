@@ -7,8 +7,8 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.Icon;
+import speiger.src.api.common.data.utils.BlockData;
 import speiger.src.spmodapi.common.tile.AdvTile;
-import speiger.src.spmodapi.common.util.TextureEngine.BlockData;
 
 public class TileIconMaker
 {

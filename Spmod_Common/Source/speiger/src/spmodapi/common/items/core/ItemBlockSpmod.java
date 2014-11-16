@@ -5,6 +5,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
+import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.blocks.BlockStack;
 
 public abstract class ItemBlockSpmod extends ItemBlock
@@ -73,11 +74,12 @@ public abstract class ItemBlockSpmod extends ItemBlock
         	BlockStack stack = getBlockToPlace(item.getItemDamage());
         	if(world.setBlock(x, y, z, stack.getBlockID(), stack.getMeta(), 3))
         	{
+        		WorldReading.setupUser(world, x, y, z, player);
+        		boolean flag = onAfterPlaced(world, x, y, z, side, player, item);
         		stack.getBlock().onBlockPlacedBy(world, x, y, z, player, item);
-        		onAfterPlaced(world, x, y, z, side, player, item);
-        		if(!player.capabilities.isCreativeMode)
+        		if(flag)
         		{
-        			item.stackSize--;
+        			removeItem(player, item);
         		}
         		return true;
         	}
@@ -88,9 +90,17 @@ public abstract class ItemBlockSpmod extends ItemBlock
     
     public abstract BlockStack getBlockToPlace(int meta);
 	
-    public void onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
+    public boolean onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
     {
-    	
+    	return false;
+    }
+    
+    public void removeItem(EntityPlayer par1, ItemStack par2)
+    {
+    	if(!par1.capabilities.isCreativeMode)
+    	{
+    		par2.stackSize--;
+    	}
     }
 
 	@Override

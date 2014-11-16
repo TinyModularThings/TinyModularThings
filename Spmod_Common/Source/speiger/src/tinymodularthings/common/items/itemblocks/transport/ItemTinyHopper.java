@@ -55,7 +55,7 @@ public class ItemTinyHopper extends TinyPlacerItem implements IMetaItemRender
 	
 	
 	@Override
-	public void onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
+	public boolean onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
 	{
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
 		if(tile != null && tile instanceof TinyHopper)
@@ -67,7 +67,9 @@ public class ItemTinyHopper extends TinyPlacerItem implements IMetaItemRender
 			{
 				tiny.setRotation(ForgeDirection.getOrientation(side).getOpposite().ordinal());
 			}
+			return true;
 		}
+		return false;
 	}
 	
 	public static enum HopperType

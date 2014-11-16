@@ -22,6 +22,34 @@ public class CodeProxy
 		return (T) field.get(instance);
 	}
 	
+	public static <T> T getField(Class<T> result, Class<?> search, Object instance) throws IllegalArgumentException, IllegalAccessException
+	{
+		Field[] fields = search.getClass().getDeclaredFields();
+		for(Field field : fields)
+		{
+			if(field != null && field.getClass().getSimpleName().equalsIgnoreCase(result.getSimpleName()))
+			{
+				field.setAccessible(true);
+				return (T)field.get(instance);
+			}
+		}
+		return null;
+	}
+	
+	public static void setField(Class<?> searchingClass, Class<?> instanceClass, Object instance, Object value) throws IllegalArgumentException, IllegalAccessException
+	{
+		Field[] fields = instanceClass.getDeclaredFields();
+		for(Field field : fields)
+		{
+			if(field != null && field.getClass().getSimpleName().equalsIgnoreCase(searchingClass.getSimpleName()))
+			{
+				field.setAccessible(true);
+				field.set(instance, value);
+				break;
+			}
+		}
+	}
+	
 	public static <T> T getField(Class<?> class1, Class<T> fieldType, Object instance, String fieldName) throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException
 	{
 		Field field = class1.getDeclaredField(fieldName);
@@ -34,16 +62,6 @@ public class CodeProxy
 		Field field = instance.getClass().getDeclaredField(fieldName);
 		field.setAccessible(true);
 		return (T)field.get(instance);
-	}
-	
-	public static <T> T getMethode(Class<T> fieldType, Object instance, String fieldName, Object key) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, NoSuchMethodException, SecurityException
-	{
-		return (T)instance.getClass().getMethod(fieldName, Object.class).invoke(null, key);
-	}
-	
-	public static <T> T getMethode(Class<T> fieldType, Object instance, int type, Object arg) throws IllegalAccessException, IllegalArgumentException, InvocationTargetException, SecurityException
-	{
-		return (T)instance.getClass().getMethods()[type].invoke(null, arg);
 	}
 	
 	public static <T> T getField(Class<T> fieldType, Object instance, int index) throws IllegalArgumentException, IllegalAccessException

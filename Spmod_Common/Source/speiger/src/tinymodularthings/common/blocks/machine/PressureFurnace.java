@@ -24,7 +24,7 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipe;
-import speiger.src.api.common.registry.recipes.pressureFurnace.helper.PressureRecipeList;
+import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor;

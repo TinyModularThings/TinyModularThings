@@ -1,7 +1,14 @@
 package speiger.src.api.common.utils;
 
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.google.common.base.Strings;
+import com.google.common.math.DoubleMath;
+import com.google.common.primitives.Floats;
+
+import net.minecraft.util.MathHelper;
 
 public class MathUtils
 {
@@ -86,5 +93,44 @@ public class MathUtils
 			result.add(i);
 		}
 		return result;
+	}
+
+	public static int[] getAdjustedMeta(int end, int provide, int requested)
+	{
+		if(end + provide < requested)
+		{
+			return new int[]{(end+provide), 0};
+		}
+		return new int[]{requested, ((end+provide)-requested)};
+	}
+	
+	public static int[] getEqualMeta(int key, int value)
+	{
+		if(key+value == 0)
+		{
+			return new int[]{0, 0};
+		}
+		if(key+value == 1)
+		{
+			return new int[]{1, 0};
+		}
+		
+		if(areTwoNumbersDivideableToInteger(key, value))
+		{
+			int result = (key+value)/2;
+			return new int[]{result, result};
+		}
+		double end = ((double)key + (double)value) / 2;
+		return new int[]{DoubleMath.roundToInt(end, RoundingMode.DOWN), DoubleMath.roundToInt(end, RoundingMode.UP)};
+	}
+	
+	public static boolean areTwoNumbersDivideableToInteger(int key, int value)
+	{
+		double end = ((double)key + (double)value) / 2;
+		if((end+"").contains(".") || (end+"").contains(","))
+		{
+			return false;
+		}
+		return true;
 	}
 }

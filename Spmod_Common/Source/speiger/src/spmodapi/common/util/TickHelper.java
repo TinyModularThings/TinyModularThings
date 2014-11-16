@@ -13,7 +13,7 @@ import net.minecraftforge.common.FakePlayerFactory;
 import speiger.src.api.common.data.nbt.DataStorage;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.registry.helpers.Ticks.ITickReader;
-import speiger.src.api.common.registry.recipes.pressureFurnace.helper.PressureRecipeList;
+import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine.DropType;

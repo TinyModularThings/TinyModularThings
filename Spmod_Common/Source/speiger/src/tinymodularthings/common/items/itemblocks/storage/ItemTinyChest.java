@@ -66,13 +66,15 @@ public class ItemTinyChest extends TinyPlacerItem implements IMetaItemRender
 	}
 
 	@Override
-	public void onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
+	public boolean onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
 	{
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
 		if(tile != null && tile instanceof TinyChest)
 		{
 			((TinyChest)tile).setMode(item.getItemDamage()+1);
+			return true;
 		}
+		return false;
 	}
 
 

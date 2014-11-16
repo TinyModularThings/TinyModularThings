@@ -7,11 +7,11 @@ import java.util.List;
 import net.minecraft.block.Block;
 import net.minecraft.command.ICommandSender;
 import net.minecraft.item.Item;
+import speiger.src.api.common.data.utils.BlockData;
+import speiger.src.api.common.data.utils.ItemData;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.spmodapi.common.util.TextureEngine.BlockData;
-import speiger.src.spmodapi.common.util.TextureEngine.ItemData;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 
 public class CommandReadTexture implements ISpmodCommand
