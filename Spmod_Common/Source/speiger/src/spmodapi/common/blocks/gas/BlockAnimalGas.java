@@ -238,7 +238,6 @@ public class BlockAnimalGas extends SpmodBlockBase implements IFluidBlock
 		Random rand = world.rand;
 		int meta = world.getBlockMetadata(x, y, z);
 		FlowingState up = canFlowUp(world, x, y, z);
-		FMLLog.getLogger().info("up:"+up);
 		if(meta == 1 && up == FlowingState.Nothing)
 		{
 			

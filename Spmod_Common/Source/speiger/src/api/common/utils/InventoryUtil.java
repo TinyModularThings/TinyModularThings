@@ -1,6 +1,7 @@
 package speiger.src.api.common.utils;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import net.minecraft.entity.item.EntityItem;
@@ -13,6 +14,8 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.oredict.OreDictionary;
+import cpw.mods.fml.common.registry.GameRegistry;
+import cpw.mods.fml.common.registry.GameRegistry.UniqueIdentifier;
 
 public class InventoryUtil
 {
@@ -365,6 +368,31 @@ public class InventoryUtil
 			}
 		}
 		return true;
+	}
+
+	public static ItemStack getItemFromModAndOreDict(String ore, String modName, boolean forceResult)
+	{
+		List<ItemStack> list = OreDictionary.getOres(ore);
+		for(ItemStack stack : list)
+		{
+			UniqueIdentifier id = GameRegistry.findUniqueIdentifierFor(stack.getItem());
+			if(id.modId.equalsIgnoreCase(modName))
+			{
+				return stack.copy();
+			}
+		}
+		if(forceResult && list.size() > 0 && !list.isEmpty())
+		{
+			return list.get(0).copy();
+		}
+		return null;
+	}
+	
+	public static ItemStack getItemFromModAndOreDictWithSize(String ore, String modName, boolean forceResult, int size)
+	{
+		ItemStack result = getItemFromModAndOreDict(ore, modName, forceResult);
+		result.stackSize = size;
+		return result.copy();
 	}
 	
 

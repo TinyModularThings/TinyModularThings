@@ -23,6 +23,7 @@ import speiger.src.spmodapi.common.core.SpmodAPICore;
 import speiger.src.spmodapi.common.handler.SpmodPacketHandler;
 import speiger.src.spmodapi.common.plugins.PluginLoader;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.data.ClassStorage;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
 import speiger.src.spmodapi.common.world.WorldLoader;
 import speiger.src.spmodapi.common.world.retrogen.ChunkCollector;
@@ -94,7 +95,9 @@ public class SpmodAPI implements SpmodMod
 	public void onServerStarted(FMLServerStartingEvent evt)
 	{
 		DataStorage.read(evt.getServer());
+		ClassStorage.getInstance().onWorldLoad();
 	}
+	
 	
 	@EventHandler
 	public void onServerStopped(FMLServerStoppingEvent evt)

@@ -37,6 +37,9 @@ public class UncrafterRecipeList
 		addUncraftingRecipe(new ItemNBTData(input), output);
 	}
 	
+	/**
+	 * For custom Results, So you do not need to make recipe override in my mod just implement this result in your class.^^"
+	 */
 	public void addUncraftingRecipe(IStackInfo input, RecipeOutput...output)
 	{
 		//Returns an ArrayList but will be released as List

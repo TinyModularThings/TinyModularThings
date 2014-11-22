@@ -95,6 +95,7 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 		{
 			case 1: return new OreCrafter();
 			case 2: return new CraftingStation();
+			case 3: return new Uncrafter();
 		}
 		return null;
 	}
@@ -123,7 +124,7 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		for(int i = 0;i<3;i++)
+		for(int i = 0;i<4;i++)
 		{
 			par3List.add(new ItemStack(par1, 1, i));
 		}
