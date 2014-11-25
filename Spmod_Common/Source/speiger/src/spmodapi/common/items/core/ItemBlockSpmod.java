@@ -1,5 +1,7 @@
 package speiger.src.spmodapi.common.items.core;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -7,9 +9,31 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.TileIconMaker;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class ItemBlockSpmod extends ItemBlock
 {
+
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+	{
+		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+		BlockStack stack = getBlockToPlace(par1ItemStack.getItemDamage());
+		if(stack != null)
+		{
+			AdvTile tile = TileIconMaker.getIconMaker().getTileEntityFormBlockAndMetadata(stack.getBlock(), stack.getMeta());
+			if(tile != null)
+			{
+				tile.onItemInformation(par2EntityPlayer, par3List);
+			}
+		}
+	}
 
 	public ItemBlockSpmod(int par1)
 	{
@@ -75,6 +99,7 @@ public abstract class ItemBlockSpmod extends ItemBlock
         	if(world.setBlock(x, y, z, stack.getBlockID(), stack.getMeta(), 3))
         	{
         		WorldReading.setupUser(world, x, y, z, player);
+        		WorldReading.setUpFacing(world, x, y, z, player, side);
         		boolean flag = onAfterPlaced(world, x, y, z, side, player, item);
         		stack.getBlock().onBlockPlacedBy(world, x, y, z, player, item);
         		if(flag)

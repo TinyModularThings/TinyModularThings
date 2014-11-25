@@ -10,6 +10,7 @@ import speiger.src.tinymodularthings.common.blocks.crafting.BlockCrafting;
 import speiger.src.tinymodularthings.common.blocks.crafting.CraftingStation;
 import speiger.src.tinymodularthings.common.blocks.crafting.ItemBlockCrafting;
 import speiger.src.tinymodularthings.common.blocks.crafting.OreCrafter;
+import speiger.src.tinymodularthings.common.blocks.crafting.Uncrafter;
 import speiger.src.tinymodularthings.common.blocks.machine.BlockMachine;
 import speiger.src.tinymodularthings.common.blocks.machine.BucketFillerBasic;
 import speiger.src.tinymodularthings.common.blocks.machine.ItemBlockMachine;
@@ -150,6 +151,7 @@ public class TinyBlocksConfig
 		RegisterProxy.RegisterBlock(blocks.craftingBlock, ItemBlockCrafting.class, "CraftingBlock");
 		RegisterProxy.RegisterTile(blocks.craftingBlock, 1, OreCrafter.class, "OreCrafter");
 		RegisterProxy.RegisterTile(blocks.craftingBlock, 2, CraftingStation.class, "CraftingStation");
+		RegisterProxy.RegisterTile(blocks.craftingBlock, 3, Uncrafter.class, "Deconstructor");
 		blocks.craftingBlock.registerTextures(engine);
 		config.block.updateToNextID();
 		

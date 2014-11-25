@@ -33,6 +33,7 @@ public class ItemBlockCrafting extends ItemBlockTinyChest
 			case 0: return "Advanced Workbench";
 			case 1: return "Oredictionary Crafter";
 			case 2: return "Advanced Crafting Station";
+			case 3: return "Deconstructor";
 			default: return "";
 		}
 	}

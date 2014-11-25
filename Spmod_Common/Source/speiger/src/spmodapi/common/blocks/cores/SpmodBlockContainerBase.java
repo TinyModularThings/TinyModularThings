@@ -221,21 +221,6 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		}
 		return super.canEntityDestroy(world, x, y, z, entity);
 	}
-
-	@Override
-	public void onBlockPlacedBy(World par1World, int par2, int par3, int par4, EntityLivingBase par5, ItemStack par6ItemStack)
-	{
-    	int facing = WorldReading.getLookingDirectionFromEnitty(par5);
-    	AdvTile tile = getAdvTile(par1World, par2, par3, par4);
-    	if(tile != null)
-    	{
-    		tile.onPlaced(facing);
-    		if(par5 != null && par5 instanceof EntityPlayer)
-    		{
-    			tile.setupUser((EntityPlayer)par5);
-    		}
-    	}
-	}
     
 	@Override
 	public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
@@ -559,7 +544,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		
 		if(tileDrops.containsKey(pos))
 		{
-			drops.addAll(tileDrops.get(pos));
+			drops.addAll(tileDrops.remove(pos));
 		}
 		else
 		{

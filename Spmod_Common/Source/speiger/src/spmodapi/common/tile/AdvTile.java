@@ -73,6 +73,12 @@ public abstract class AdvTile extends TileEntity
 	}
 	
 	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2)
+	{
+		
+	}
+	
+	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(int side)
 	{
 		return true;

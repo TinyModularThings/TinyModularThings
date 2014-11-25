@@ -32,6 +32,16 @@ public class TileIconMaker
 		}
 	}
 	
+	public AdvTile getTileEntityFormBlockAndMetadata(Block par1, int meta)
+	{
+		Class<? extends AdvTile> tile = classes.get(new BlockData(par1, meta));
+		if(tile != null)
+		{
+			return getTileEntityFromClass(par1, tile);
+		}
+		return null;
+	}
+	
 	public void addTileEntity(Block par1, int meta, AdvTile tile)
 	{
 		if (allTiles.get(par1) == null)

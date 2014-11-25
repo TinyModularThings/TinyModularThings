@@ -147,6 +147,7 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 		switch(meta)
 		{
 			case 1:
+			case 3:
 			case 2: return true;
 		}
 		return super.hasTileDrops(meta);

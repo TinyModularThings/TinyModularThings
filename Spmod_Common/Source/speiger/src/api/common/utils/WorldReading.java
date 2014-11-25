@@ -280,6 +280,17 @@ public class WorldReading
 		}
 	}
 
+	public static void setUpFacing(World world, int x, int y, int z, EntityPlayer player, int side)
+	{
+		TileEntity tile = world.getBlockTileEntity(x, y, z);
+		if(tile != null && tile instanceof AdvTile)
+		{
+			AdvTile adv = (AdvTile)tile;
+			int playerSide = getLookingDirectionFromEnitty(player);
+			adv.onAdvPlacing(side, playerSide);
+		}
+	}
+
 
 
 

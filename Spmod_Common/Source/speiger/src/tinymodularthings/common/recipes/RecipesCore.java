@@ -3,6 +3,7 @@ package speiger.src.tinymodularthings.common.recipes;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.tinymodularthings.common.recipes.recipeMaker.PipeRecipes;
 import speiger.src.tinymodularthings.common.recipes.recipeMaker.TinyRecipes;
+import speiger.src.tinymodularthings.common.recipes.uncrafter.UncraftingRecipes;
 
 public class RecipesCore
 {
@@ -14,5 +15,6 @@ public class RecipesCore
 		PreRecipes.initRecipes();
 		TinyRecipes.init(proxy);
 		WCraftingRecipes.init();
+		UncraftingRecipes.initRecipes(proxy);
 	}
 }

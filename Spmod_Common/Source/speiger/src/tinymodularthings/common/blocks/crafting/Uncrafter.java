@@ -3,7 +3,11 @@ package speiger.src.tinymodularthings.common.blocks.crafting;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.lwjgl.input.Keyboard;
+
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,6 +32,9 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.transport.IPipeTile;
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProvider, ILaserTarget
 {
@@ -36,6 +43,7 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 	private List<ItemStack> results = new ArrayList<ItemStack>();
 	private int progress = 0;
 	private int maxprogress = 1000;
+	private boolean laser = false;
 	
 	@Override
 	public boolean isSixSidedFacing()
@@ -71,7 +79,24 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 		
 	}
 	
+
+	@Override
+	public void onPlaced(int facing)
+	{
+		this.setFacing(facing);
+	}
 	
+	@Override
+	public float getBlockHardness()
+	{
+		return 4F;
+	}
+
+	@Override
+	public float getExplosionResistance(Entity par1)
+	{
+		return 15F;
+	}
 
 	@Override
 	public void onTick()
@@ -94,19 +119,24 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 					progress = 0;
 					List<RecipeOutput> drops = UncrafterRecipeList.getInstance().getRecipeOutput(currentItem);
 					currentItem = null;
-					for(RecipeOutput output : drops)
+					int chance = laser ? 95 : 85;
+					if(worldObj.rand.nextInt(100) < chance)
 					{
-						if(worldObj.rand.nextInt(100) < output.getChance())
+						for(RecipeOutput output : drops)
 						{
-							ItemStack result = output.getOutput();
-							if(result != null)
+							if(worldObj.rand.nextInt(100) < output.getChance())
 							{
-								results.add(result);
+								ItemStack result = output.getOutput();
+								if(result != null)
+								{
+									results.add(result.copy());
+								}
 							}
 						}
 					}
 				}
 			}
+			laser = false;
 		}
 		
 		if(results.isEmpty() && currentItem == null)
@@ -188,6 +218,7 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 	public void receiveLaserEnergy(float energy)
 	{	
 		provider.addEnergy((int)energy, false);
+		laser = true;
 	}
 
 	@Override
@@ -239,6 +270,8 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 				
 			}
 		}
+		progress = nbt.getInteger("progress");
+		laser = nbt.getBoolean("laser");
 	}
 
 	@Override
@@ -263,6 +296,8 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 			}
 			nbt.setTag("Results", list);
 		}
+		nbt.setInteger("progress", progress);
+		nbt.setBoolean("laser", laser);
 	}
 
 	@Override
@@ -310,6 +345,23 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 			}
 		}
 		return true;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2)
+	{
+		super.onItemInformation(par1, par2);
+		par2.add("Machine has No Gui");
+		par2.add("It requires 20k MJ for Each Progress");
+		par2.add("It Imports from the Top");
+		par2.add("And Exports to the Front");
+		if(GuiScreen.isCtrlKeyDown())
+		{
+			par2.add("It has a general Chance for Success of 85%");
+			par2.add("With Lasers 95%");
+			par2.add("If you Rightclick with an Item on it it shows you what you get out");
+		}
 	}
 	
 	

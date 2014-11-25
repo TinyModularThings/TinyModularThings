@@ -79,13 +79,13 @@ public class UncraftingRecipes
 			un.addUncraftingRecipe(Items.getItem("insulatedIronCableItem"), new RecipeOutput(Items.getItem("ironCableItem"), 95), new RecipeOutput(Items.getItem("rubber"), 25));
 			un.addUncraftingRecipe(Items.getItem("doubleInsulatedIronCableItem"), new RecipeOutput(Items.getItem("ironCableItem"), 95), new RecipeOutput(Items.getItem("rubber"), 50));
 			un.addUncraftingRecipe(Items.getItem("trippleInsulatedIronCableItem"), new RecipeOutput(Items.getItem("ironCableItem"), 95), new RecipeOutput(Items.getItem("rubber"), 75));
-			un.addUncraftingRecipe(Items.getItem("insulatedtinCableItem"), new RecipeOutput(Items.getItem("tinCableItem"), 95), new RecipeOutput(Items.getItem("rubber"), 25));
+			un.addUncraftingRecipe(Items.getItem("insulatedTinCableItem"), new RecipeOutput(Items.getItem("tinCableItem"), 95), new RecipeOutput(Items.getItem("rubber"), 25));
 			un.addUncraftingRecipe(Items.getItem("generator"), new RecipeOutput(Items.getItem("machine"), 85), new RecipeOutput(Items.getItem("reBattery"), 75));
 			un.addUncraftingRecipe(Items.getItem("geothermalGenerator"), new RandomOutput(Items.getItem("generator"), Items.getItem("machine"), 80, 95), new RecipeOutput(Block.glass, 80), new RecipeOutput(PathProxy.getIC2Item("cell", 2), 75));
 			un.addUncraftingRecipe(Items.getItem("waterMill"), new RandomOutput(Items.getItem("generator"), Items.getItem("machine"), 80, 95));
 			un.addUncraftingRecipe(Items.getItem("solarPanel"), new RecipeOutput(Items.getItem("electronicCircuit"), 50), new RecipeOutput(Items.getItem("electronicCircuit"), 50), new RandomOutput(Items.getItem("generator"), Items.getItem("machine"), 80, 95));
 			un.addUncraftingRecipe(Items.getItem("windMill"), new RandomOutput(Items.getItem("generator"), Items.getItem("machine"), 80, 95), new RecipeOutput(Item.ingotIron, 60), new RecipeOutput(Item.ingotIron, 60));
-			un.addUncraftingRecipe(Items.getItem("nuclearReactor"), new RandomOutput(Items.getItem("generator"), Items.getItem("machine"), 80, 95), new RecipeOutput(Items.getItem("plateDenseLead"), 50), new RecipeOutput(PathProxy.getIC2Item("plateDenseLead", 2), 25), new RecipeOutput(Items.getItem("advancedCircuit"), 40), new RecipeOutput(Items.getItem("reactorChamber"), 65), new RecipeOutput(Items.getItem("reactorChamber"), 65));
+			un.addUncraftingRecipe(Items.getItem("nuclearReactor"), new RandomOutput(Items.getItem("generator"), Items.getItem("machine"), 80, 95), new RecipeOutput(Items.getItem("plateDenseLead"), 50), new RecipeOutput(PathProxy.getIC2Item("denseplatelead", 2), 25), new RecipeOutput(Items.getItem("advancedCircuit"), 40), new RecipeOutput(Items.getItem("reactorChamber"), 65), new RecipeOutput(Items.getItem("reactorChamber"), 65));
 			un.addUncraftingRecipe(Items.getItem("reactorChamber"), new RecipeOutput(Items.getItem("machine"), 49));
 			un.addUncraftingRecipe(Items.getItem("RTGenerator"), new RecipeOutput(Items.getItem("reactorChamber"), 65), new RandomOutput(Items.getItem("generator"), Items.getItem("machine"), 80, 75));
 			un.addUncraftingRecipe(Items.getItem("semifluidGenerator"), new RecipeOutput(Items.getItem("geothermalGenerator"), 95));
