@@ -33,6 +33,7 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
+import net.minecraftforge.event.entity.living.LivingDropsEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
 import speiger.src.api.common.registry.animalgas.AnimalGasRegistry;
@@ -136,6 +137,38 @@ public class LivingHandler
 					}
 				}
 			}
+
+			if(entity instanceof EntityAgeable)
+			{
+				EntityAgeable age = (EntityAgeable)entity;
+				AnimalChunkLoader.onEntityDeath(age);
+				if(gas.isValidEntity(age) && rand.nextInt(3) == 0)
+				{
+					IEntityGasInfo gasInfo = gas.getGasInfo(age.getClass());
+					int min = gasInfo.getMinProducingGas(age);
+					int max = gasInfo.getMaxProducingGas(age);
+					if(max > 0 && max <= 10)
+					{
+						int newMax = Math.max(min, rand.nextInt(max+1));
+						int x = (int) age.posX;
+						int y = (int) age.posY;
+						int z = (int) age.posZ;
+						if(newMax > 0 && age.worldObj.getBlockId(x, y+1, z) == 0)
+						{
+							age.worldObj.setBlock(x, y+1, z, APIBlocks.animalGas.blockID, newMax, 3);
+						}
+					}
+				}
+			}
+		}
+	}
+	
+	@ForgeSubscribe
+	public void onEntityDropsByDeath(LivingDropsEvent evt)
+	{
+		EntityLivingBase entity = evt.entityLiving;
+		if(entity != null)
+		{
 			if (entity instanceof EntitySheep)
 			{
 				EntitySheep killed = (EntitySheep) entity;
@@ -179,28 +212,6 @@ public class LivingHandler
 			{
 				EntityItem item = new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, ItemRandomTrade.getRandomTrade());
 				entity.worldObj.spawnEntityInWorld(item);
-			}
-			if(entity instanceof EntityAgeable)
-			{
-				EntityAgeable age = (EntityAgeable)entity;
-				AnimalChunkLoader.onEntityDeath(age);
-				if(gas.isValidEntity(age) && rand.nextInt(3) == 0)
-				{
-					IEntityGasInfo gasInfo = gas.getGasInfo(age.getClass());
-					int min = gasInfo.getMinProducingGas(age);
-					int max = gasInfo.getMaxProducingGas(age);
-					if(max > 0 && max <= 10)
-					{
-						int newMax = Math.max(min, rand.nextInt(max+1));
-						int x = (int) age.posX;
-						int y = (int) age.posY;
-						int z = (int) age.posZ;
-						if(newMax > 0 && age.worldObj.getBlockId(x, y+1, z) == 0)
-						{
-							age.worldObj.setBlock(x, y+1, z, APIBlocks.animalGas.blockID, newMax, 3);
-						}
-					}
-				}
 			}
 		}
 	}

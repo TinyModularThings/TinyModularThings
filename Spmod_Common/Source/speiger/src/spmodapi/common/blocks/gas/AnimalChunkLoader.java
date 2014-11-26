@@ -8,14 +8,17 @@ import java.util.Map.Entry;
 import java.util.UUID;
 
 import net.minecraft.entity.EntityAgeable;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
+import net.minecraftforge.fluids.FluidStack;
 import speiger.src.api.common.data.nbt.INBTReciver;
 import speiger.src.api.common.registry.animalgas.AnimalGasRegistry;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.sound.SoundRegistry;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.data.EntityProcessor;
 
@@ -49,9 +52,10 @@ public class AnimalChunkLoader extends AdvTile implements INBTReciver
 			entityUpdateCheck = nextCheckTime;
 			updateEntities();
 		}
+		onEntityTick();
 	}
 	
-	public void onGasTick()
+	public void onEntityTick()
 	{
 		for(EntityAgeable target : storedEntities)
 		{
@@ -208,6 +212,47 @@ public class AnimalChunkLoader extends AdvTile implements INBTReciver
 		{
 			entityBackupData.remove(id);
 		}
+	}
+
+	public boolean hasFood(ItemStack item)
+	{
+		//TODO NEED TO FUNCTION
+		return false;
+	}
+
+	public void useFood(ItemStack item)
+	{
+		
+	}
+
+	public void playEatingSound(EntityAgeable par1)
+	{
+		SoundRegistry.getInstance().playSound(worldObj, (int)par1.posX, (int)par1.posY, (int)par1.posZ, "random.burp", 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
+	}
+	
+	public void playDrinkingSound(EntityAgeable par1)
+	{
+		SoundRegistry.getInstance().playSound(worldObj, (int)par1.posX, (int)par1.posY, (int)par1.posZ, "random.drink", 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
+	}
+	
+	public boolean isFeedingTime()
+	{
+		return false;
+	}
+	
+	public boolean isControlledFeeding()
+	{
+		return false;
+	}
+
+	public boolean hasDrink(FluidStack fluid)
+	{		
+		return false;
+	}
+	
+	public void useDrink(FluidStack fluid)
+	{
+		
 	}
 	
 }

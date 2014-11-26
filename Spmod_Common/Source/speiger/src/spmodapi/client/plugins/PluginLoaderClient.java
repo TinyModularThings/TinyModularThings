@@ -2,6 +2,7 @@ package speiger.src.spmodapi.client.plugins;
 
 import speiger.src.spmodapi.common.plugins.PluginLoader;
 import speiger.src.spmodapi.common.plugins.nei.PluginNei;
+import speiger.src.spmodapi.common.sound.SoundRegistry;
 import cpw.mods.fml.common.Loader;
 
 public class PluginLoaderClient extends PluginLoader

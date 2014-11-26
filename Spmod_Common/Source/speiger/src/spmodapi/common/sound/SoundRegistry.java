@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.sound;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.audio.SoundManager;
@@ -35,6 +36,8 @@ public class SoundRegistry
 	private SoundManager manager;
 	
 	private ArrayList<SoundWaiter> waitingList = new ArrayList<SoundWaiter>();
+	
+	private List<String> soundsToRegister = new ArrayList<String>();
 	
 	/**
 	 * My Sound Controll
@@ -73,7 +76,6 @@ public class SoundRegistry
 					sounds.put(name, sound);
 				}
 			}
-			
 			return;
 		}
 		else
@@ -112,7 +114,6 @@ public class SoundRegistry
 		{
 			system = manager.sndSystem;
 			playSound(world, x, y, z, name, volume, pitch);
-			
 			return;
 		}
 		
@@ -136,9 +137,15 @@ public class SoundRegistry
 			
 			system.setPitch(id, pitch);
 			system.setVolume(id, volume * settings.soundVolume);
-			
 			system.play(id);
 			
+		}
+		else if(system != null && sound == null)
+		{
+			SoundPoolEntry entry = manager.soundPoolSounds.getRandomSoundFromSoundPool(name);
+			sounds.put(name, entry);
+			playSound(world, x, y, z, name, volume, pitch);
+			return;
 		}
 		
 	}

@@ -16,6 +16,7 @@ public interface IEntityFoodInfo extends IEntityInfo
 	
 	/**
 	 * @return the amount it is eating over time.
+	 * this simply mean how much food get Used that he already ate.
 	 * The time how long it takes is set already.
 	 */
 	public int getEatingAmount(EntityAgeable par1);
