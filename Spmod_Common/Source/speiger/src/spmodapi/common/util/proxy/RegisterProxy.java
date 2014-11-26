@@ -6,6 +6,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
+import speiger.src.api.common.data.nbt.DataStorage;
+import speiger.src.api.common.data.nbt.INBTReciver;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TileIconMaker;
@@ -46,6 +48,10 @@ public class RegisterProxy
 		{
 			SpmodAPI.log.print(String.format("%s%n%s%n%s", "Failing by Reinstancing TileEntity.", "Crash can Happen.", "Reason why it could not Reinstance TileEntity: " + e.getLocalizedMessage()));
 			return;
+		}
+		if(tile != null && tile instanceof INBTReciver)
+		{
+			DataStorage.registerNBTReciver((INBTReciver)tile);
 		}
 		
 		if (block != null && tile != null && tile instanceof AdvTile)

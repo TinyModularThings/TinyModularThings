@@ -7,6 +7,7 @@ import java.util.Random;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
+import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.SharedMonsterAttributes;
 import net.minecraft.entity.ai.EntityAITaskEntry;
@@ -34,16 +35,18 @@ import net.minecraftforge.event.entity.living.EnderTeleportEvent;
 import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import speiger.src.api.common.registry.animalgas.AnimalGasRegistry;
+import speiger.src.api.common.registry.animalgas.parts.IEntityGasInfo;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.tiles.interfaces.IExpProvider;
 import speiger.src.spmodapi.client.core.RenderHelper;
+import speiger.src.spmodapi.common.blocks.gas.AnimalChunkLoader;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.entity.EntityOverridenEnderman;
 import speiger.src.spmodapi.common.entity.ai.EntityAiAutoFeed;
 import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -52,6 +55,7 @@ public class LivingHandler
 {
 	public static LivingHandler instance = new LivingHandler();
 	public static Random rand = new Random();
+	public static AnimalGasRegistry gas = AnimalGasRegistry.getInstance();
 	
 	@ForgeSubscribe
 	public void onJumping(LivingJumpEvent evt)
@@ -99,9 +103,6 @@ public class LivingHandler
 	{
 		if (par0.entity != null)
 		{
-
-			
-			
 			if (par0.entity instanceof EntityLivingBase)
 			{
 				EntityLivingBase entity = (EntityLivingBase) par0.entity;
@@ -179,7 +180,28 @@ public class LivingHandler
 				EntityItem item = new EntityItem(entity.worldObj, entity.posX, entity.posY, entity.posZ, ItemRandomTrade.getRandomTrade());
 				entity.worldObj.spawnEntityInWorld(item);
 			}
-			
+			if(entity instanceof EntityAgeable)
+			{
+				EntityAgeable age = (EntityAgeable)entity;
+				AnimalChunkLoader.onEntityDeath(age);
+				if(gas.isValidEntity(age) && rand.nextInt(3) == 0)
+				{
+					IEntityGasInfo gasInfo = gas.getGasInfo(age.getClass());
+					int min = gasInfo.getMinProducingGas(age);
+					int max = gasInfo.getMaxProducingGas(age);
+					if(max > 0 && max <= 10)
+					{
+						int newMax = Math.max(min, rand.nextInt(max+1));
+						int x = (int) age.posX;
+						int y = (int) age.posY;
+						int z = (int) age.posZ;
+						if(newMax > 0 && age.worldObj.getBlockId(x, y+1, z) == 0)
+						{
+							age.worldObj.setBlock(x, y+1, z, APIBlocks.animalGas.blockID, newMax, 3);
+						}
+					}
+				}
+			}
 		}
 	}
 	

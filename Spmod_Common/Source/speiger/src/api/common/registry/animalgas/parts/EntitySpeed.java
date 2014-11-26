@@ -9,4 +9,5 @@ public enum EntitySpeed
 	Fast,
 	Faster,
 	Fastest;
+	
 }

@@ -48,8 +48,6 @@ public class Registry
 		GameRegistry.registerPlayerTracker(tracker);
 		DataStorage.registerNBTReciver(tracker);
 		DataStorage.registerNBTReciver(SpmodFoodStats.food);
-		DataStorage.registerNBTReciver(TileIconMaker.getIconMaker().getTileEntityFromClass(InventoryAccesser.class));
-		DataStorage.registerNBTReciver(TileIconMaker.getIconMaker().getTileEntityFromClass(InventoryAccesser.class));
 		SpmodPacketHelper.getHelper().registerPacketReciver(TileIconMaker.getIconMaker().getTileEntityFromClass(InventoryAccesser.class));
 		SpmodRecipeRegistry.loadRecipes();
 		EntityRegistry.registerModEntity(EntityOverridenEnderman.class, "newEndermann", 1, SpmodAPI.instance, 256, 3, true);
