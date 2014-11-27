@@ -7,20 +7,26 @@ import java.util.List;
 import java.util.Map.Entry;
 import java.util.UUID;
 
+import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
+import net.minecraft.world.Explosion;
+import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.fluids.FluidStack;
 import speiger.src.api.common.data.nbt.INBTReciver;
+import speiger.src.api.common.event.EntityGasOverloadEvent;
 import speiger.src.api.common.registry.animalgas.AnimalGasRegistry;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.sound.SoundRegistry;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.data.EntityProcessor;
+import speiger.src.spmodapi.common.util.data.Infection;
 
 public class AnimalChunkLoader extends AdvTile implements INBTReciver
 {
@@ -106,7 +112,7 @@ public class AnimalChunkLoader extends AdvTile implements INBTReciver
 	{
 		storedEntities.remove(par1);
 		EntityProcessor processor = entityData.remove(par1);
-		if(processor != null)
+		if(processor != null && !par1.isDead)
 		{
 			NBTTagCompound data = new NBTTagCompound();
 			processor.writeToNBT(data);
@@ -253,6 +259,41 @@ public class AnimalChunkLoader extends AdvTile implements INBTReciver
 	public void useDrink(FluidStack fluid)
 	{
 		
+	}
+
+	public boolean onEntityProduceGas(EntityAgeable par1, int level)
+	{
+		int x = (int)par1.posX;
+		int y = ((int)par1.posY)+1;
+		int z = (int)par1.posZ;
+		int id = worldObj.getBlockId(x, y, z);
+		if(id == 0 || Block.blocksList[id].isAirBlock(worldObj, x, y, z) || Block.blocksList[id].isBlockReplaceable(worldObj, x, y, z))
+		{
+			return worldObj.setBlock(x, y, z, APIBlocks.animalGas.blockID, level, 3);
+		}
+		return false;
+	}
+
+	public void onEntityOverloadGas(EntityAgeable par1)
+	{
+		Explosion blowup = worldObj.newExplosion(par1, par1.posX, par1.posY, par1.posZ, 6F, true, true);
+		if(blowup != null)
+		{
+			par1.setDead();
+			EntityProcessor pro = entityData.get(par1);
+			EntityGasOverloadEvent evt = new EntityGasOverloadEvent(par1, blowup, pro);
+			MinecraftForge.EVENT_BUS.post(evt);
+		}
+	}
+
+	public boolean hasMedic(Infection par1)
+	{
+		return false;
+	}
+
+	public double getMedic(Infection par1)
+	{
+		return 0;
 	}
 	
 }

@@ -19,12 +19,14 @@ import speiger.src.api.common.registry.animalgas.parts.EntitySpeed;
 import speiger.src.api.common.registry.animalgas.parts.IEntityDrinkInfo;
 import speiger.src.api.common.registry.animalgas.parts.IEntityFoodInfo;
 import speiger.src.api.common.registry.animalgas.parts.IEntityGasInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityLogic;
 import speiger.src.api.common.registry.animalgas.parts.IEntityResistenceInfo;
 import speiger.src.api.common.registry.animalgas.parts.Resistence;
-import speiger.src.api.common.utils.config.EntityCounter;
+import speiger.src.api.common.registry.animalgas.parts.Resistence.ResistanceType;
+import speiger.src.api.common.utils.DoubleCounter;
 import speiger.src.spmodapi.common.blocks.gas.AnimalChunkLoader;
 
-public class EntityProcessor
+public final class EntityProcessor implements IEntityLogic
 {
 	static Random rand = new Random("SpeigersEntityHumanitySystem".hashCode());
 	
@@ -47,7 +49,7 @@ public class EntityProcessor
 	
 	//Resistance
 	Infection currentEffection = Infection.Nothing;
-	Map<Resistence, EntityCounter> resistances = new WeakHashMap<Resistence, EntityCounter>();
+	Map<Resistence, DoubleCounter> resistances = new WeakHashMap<Resistence, DoubleCounter>();
 	double healingProgress = 0D;
 	
 	//Gas
@@ -83,8 +85,94 @@ public class EntityProcessor
 		}
 		handleFood(par1);
 		handleDrink(par1);
-//		handleGene(par1);
-//		handleGas(par1);
+		handleGene(par1);
+		handleGas(par1);
+	}
+	
+	public void handleGene(EntityAgeable par1)
+	{
+		if(rand.nextInt(10000) == 0 && rand.nextBoolean())
+		{
+			Infection[] inv = Infection.getSadValues();
+			Infection randEffect = inv[rand.nextInt(inv.length)];
+			if(resistances.get(randEffect).get() > 5D)
+			{
+				resistances.get(randEffect).removeOne();
+			}
+		}
+		
+		if(currentEffection != Infection.Nothing)
+		{
+			currentEffection.handleEffect(par1);
+			if(rand.nextInt(25) == 0)
+			{
+				EntitySpeed regen = gen.getRegenSpeed(par1);
+				if(regen == null)
+				{
+					regen = EntitySpeed.Normal;
+				}
+				healingProgress+=regen.getSpeed();
+				par1.heal(0.1F);
+			}
+			if(rand.nextInt(5) == 0 && tileEntity.hasMedic(currentEffection))
+			{
+				double added = tileEntity.getMedic(currentEffection);
+				healingProgress+=added;
+				par1.heal(1F);
+			}
+			if(healingProgress >= 100)
+			{
+				healingProgress = 0;
+				Infection inf = currentEffection;
+				Resistence res = inf.getResistance();
+				if(res != null)
+				{
+					DoubleCounter count = resistances.get(res);
+					if(count.get() < 95D)
+					{
+						ResistanceType type = gen.getResistanceType(par1);
+						if(type == null)
+						{
+							type = ResistanceType.Normal;
+						}
+						count.add(type.getValue());
+					}
+					resistances.put(res, count);
+				}
+			}
+		}
+	}
+	
+	public void handleGas(EntityAgeable par1)
+	{
+		if(extraGas > 100D && rand.nextInt(10) == 0)
+		{
+			extraGas -= 100;
+			currentLevel++;
+		}
+		if(currentLevel > 100D && rand.nextInt(5) == 0)
+		{
+			int amount = Math.max(gas.getMinProducingGas(par1), rand.nextInt(gas.getMaxProducingGas(par1)+1));
+			boolean farted = tileEntity.onEntityProduceGas(par1, amount);
+			if(farted)
+			{
+				currentLevel-= 100;
+				return;
+			}
+		}
+		if(rand.nextBoolean())
+		{
+			EntitySpeed speed = gas.getGasProductionSpeed(par1);
+			if(speed == null)
+			{
+				speed = EntitySpeed.Normal;
+			}
+			currentLevel += speed.getSpeed();
+		}
+		if(currentLevel > 1000)
+		{
+			tileEntity.onEntityOverloadGas(par1);
+		}
 	}
 	
 	public void handleDrink(EntityAgeable par1)
@@ -171,14 +259,14 @@ public class EntityProcessor
 		{
 			for(Resistence cu : res)
 			{
-				resistances.put(cu, new EntityCounter(100));
+				resistances.put(cu, new DoubleCounter(100));
 			}
 		}
 		for(Resistence cu : Resistence.values())
 		{
 			if(!resistances.containsKey(cu))
 			{
-				resistances.put(cu, new EntityCounter(0));
+				resistances.put(cu, new DoubleCounter(0));
 			}
 		}
 	}
@@ -201,13 +289,13 @@ public class EntityProcessor
 		nbt.setCompoundTag("Gas", gas);
 		NBTTagCompound resis = new NBTTagCompound();
 		NBTTagList list = new NBTTagList();
-		Iterator<Entry<Resistence, EntityCounter>> iter = resistances.entrySet().iterator();
+		Iterator<Entry<Resistence, DoubleCounter>> iter = resistances.entrySet().iterator();
 		for(;iter.hasNext();)
 		{
-			Entry<Resistence, EntityCounter> entry = iter.next();
+			Entry<Resistence, DoubleCounter> entry = iter.next();
 			NBTTagCompound data = new NBTTagCompound();
 			data.setInteger("Key", entry.getKey().ordinal());
-			data.setInteger("Value", entry.getValue().getCurrentID());
+			data.setDouble("Value", entry.getValue().get());
 			list.appendTag(data);
 		}
 		resis.setTag("Resistances", list);
@@ -235,7 +323,7 @@ public class EntityProcessor
 		for(int i = 0;i<list.tagCount();i++)
 		{
 			NBTTagCompound data = (NBTTagCompound)list.tagAt(i);
-			resistances.put(Resistence.values()[data.getInteger("Key")], new EntityCounter(data.getInteger("Value")));
+			resistances.put(Resistence.values()[data.getInteger("Key")], new DoubleCounter(data.getDouble("Value")));
 		}
 		healingProgress = resis.getDouble("HealinState");
 		needsInit = false;
