@@ -3,9 +3,7 @@ package speiger.src.api.common.registry.animalgas.parts;
 public enum Resistence
 {
 	Poisen, 
-	Nausea, 
-	FoodPoisen, 
-	Squits;
+	Weather;
 	
 	public static enum ResistanceType
 	{

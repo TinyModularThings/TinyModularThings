@@ -8,7 +8,12 @@ import speiger.src.api.common.registry.animalgas.parts.Resistence;
 
 public enum Infection
 {
-	Nothing;
+	Nothing,
+	Fever,
+	HardFever,
+	Poisen,
+	FoodPoisen,
+	Squits;
 	
 	
 	public void handleEffect(EntityAgeable par1)
@@ -18,7 +23,16 @@ public enum Infection
 
 	public Resistence getResistance()
 	{
-		return null;
+		switch(this)
+		{
+			case Fever: return Resistence.Weather;
+			case HardFever: return Resistence.Weather;
+			case FoodPoisen: return Resistence.Poisen;
+			case Poisen: return Resistence.Poisen;
+			case Squits: return Resistence.Poisen;
+			default: return null;
+			
+		}
 	}
 
 	public static Infection[] getSadValues()

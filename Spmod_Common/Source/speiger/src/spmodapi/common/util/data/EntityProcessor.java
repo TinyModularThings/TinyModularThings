@@ -11,6 +11,9 @@ import net.minecraft.entity.EntityAgeable;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.MathHelper;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import speiger.src.api.common.data.utils.IFluidInfo;
 import speiger.src.api.common.data.utils.IStackInfo;
@@ -125,6 +128,7 @@ public final class EntityProcessor implements IEntityLogic
 				healingProgress = 0;
 				Infection inf = currentEffection;
 				Resistence res = inf.getResistance();
+				currentEffection = Infection.Nothing;
 				if(res != null)
 				{
 					DoubleCounter count = resistances.get(res);
@@ -139,8 +143,73 @@ public final class EntityProcessor implements IEntityLogic
 					}
 					resistances.put(res, count);
 				}
+				if(inf != Infection.Fever && (rand.nextInt(10) == 0 || inf == Infection.HardFever))
+				{
+					currentEffection = Infection.Fever;
+					healingProgress = 75D;
+				}
 			}
 		}
+		if(tileEntity.worldObj.getRainStrength(1.0F) > 0.2F && (currentEffection == Infection.Nothing || currentEffection == Infection.Fever))
+		{
+			int height = tileEntity.worldObj.getChunkFromBlockCoords((int)par1.posX, (int)par1.posZ).getPrecipitationHeight((int)par1.posX, (int)par1.posZ);
+			int y = (int)(par1.posY+par1.height);
+			if(height-1 <= y)
+			{
+				int resist = rand.nextInt((int)this.resistances.get(Resistence.Weather).get());
+				int effect = rand.nextInt(100);
+				if(currentEffection == Infection.Nothing)
+				{
+					if(effect >= resist && rand.nextInt(50) == 0)
+					{
+						currentEffection = Infection.Fever;
+						healingProgress = 0.0D;
+					}
+				}
+				else
+				{
+					resist /= 2;
+					if(resist < effect && rand.nextInt(20) == 0)
+					{
+						currentEffection = Infection.HardFever;
+						healingProgress = 0.0D;
+					}
+				}
+			}
+		}
+		if(currentEffection == Infection.Nothing)
+		{
+			boolean stop = checkOil(par1);
+			if(stop)
+			{
+				return;
+			}
+		}
+	}
+	
+	private boolean checkOil(EntityAgeable par1)
+	{
+        double d0 = par1.posY + (double)par1.getEyeHeight();
+        int i = MathHelper.floor_double(par1.posX);
+        int j = MathHelper.floor_float((float)MathHelper.floor_double(d0));
+        int k = MathHelper.floor_double(par1.posZ);
+        int l = par1.worldObj.getBlockId(i, j, k);
+        Fluid oil = FluidRegistry.getFluid("oil");
+        if(oil != null && oil.getBlockID() == l)
+        {
+        	if(rand.nextBoolean())
+        	{
+        		currentEffection = Infection.Poisen;
+        		healingProgress = 0.0D;
+        	}
+        	else
+        	{
+        		currentEffection = Infection.Squits;
+        		healingProgress = 0.0D;
+        	}
+        	return true;
+        }
+        return false;
 	}
 	
 	public void handleGas(EntityAgeable par1)
@@ -177,7 +246,7 @@ public final class EntityProcessor implements IEntityLogic
 	
 	public void handleDrink(EntityAgeable par1)
 	{
-		nextDrinkTime--;
+		nextDrinkTime-= par1.worldObj.provider.isHellWorld ? 50 : 1;
 		if(nextDrinkTime <= 0)
 		{
 			nextDrinkTime = 1250;
