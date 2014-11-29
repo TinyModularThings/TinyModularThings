@@ -5,9 +5,11 @@ import net.minecraft.item.ItemStack;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
+import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import buildcraft.BuildCraftTransport;
+import buildcraft.api.fuels.IronEngineFuel;
 import buildcraft.api.gates.ActionManager;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.transport.FacadeManager;
@@ -40,7 +42,7 @@ public class BCAddon
 		
 		PathProxy.addRecipe(new ItemStack(BuildCraftTransport.pipeWaterproof, 16), new Object[] { "XXX", "XYX", "XXX", 'X', APIItems.hemp, 'Y', Item.slimeBall });
 		PathProxy.removeRecipeS(new ItemStack(APIItems.colorCard, 1, EnumColor.GREEN.getAsDye()), BuildCraftTransport.pipeWaterproof);
-		
+		IronEngineFuel.addFuel(APIUtils.animalGas, 3, 7500);
 		int ticks = SpmodConfig.ticks.length;
 		
 		loopRandom = new IAction[ticks];

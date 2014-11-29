@@ -29,7 +29,7 @@ public class ForgeRegister
 		TickRegistry.registerTickHandler(new CountdownTick(), Side.SERVER);
 		regist(LivingHandler.instance);
 		regist(new WorldCrafter());
-		if (SpmodConfig.retogen)
+		if (SpmodConfig.booleanInfos.get("Retrogen"))
 		{
 			TickRegistry.registerTickHandler(RetroGenTickHandler.getTicks(), Side.SERVER);
 		}

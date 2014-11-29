@@ -40,7 +40,7 @@ public class TickHelper implements ITickReader
 	
 	public boolean isCloseToBackup()
 	{
-		return cDelay + 1000 >= SpmodConfig.savingDelay;
+		return cDelay + 1000 >= SpmodConfig.integerInfos.get("SavingDelay");
 	}
 	
 	public void tick()
@@ -66,7 +66,7 @@ public class TickHelper implements ITickReader
 			}
 		}
 		cDelay++;
-		if (cDelay > SpmodConfig.savingDelay)
+		if (cDelay > SpmodConfig.integerInfos.get("SavingDelay"))
 		{
 			cDelay = 0;
 			DataStorage.write(FMLCommonHandler.instance().getMinecraftServerInstance(), true);

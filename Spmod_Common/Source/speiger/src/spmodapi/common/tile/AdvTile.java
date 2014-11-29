@@ -171,7 +171,7 @@ public abstract class AdvTile extends TileEntity
 	{
 		super.updateEntity();
 		
-		if(!SpmodConfig.loadTiles)
+		if(!SpmodConfig.booleanInfos.get("LoadTileEntities"))
 		{
 			return;
 		}

@@ -17,10 +17,12 @@ import speiger.src.api.common.data.utils.IFluidInfo;
 import speiger.src.api.common.data.utils.IStackInfo;
 import speiger.src.api.common.data.utils.ItemData;
 import speiger.src.api.common.registry.animalgas.parts.EntitySpeed;
+import speiger.src.api.common.registry.animalgas.parts.IEntityCustomInfo;
 import speiger.src.api.common.registry.animalgas.parts.IEntityDrinkInfo;
 import speiger.src.api.common.registry.animalgas.parts.IEntityFoodInfo;
 import speiger.src.api.common.registry.animalgas.parts.IEntityGasInfo;
 import speiger.src.api.common.registry.animalgas.parts.IEntityInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityLogic;
 import speiger.src.api.common.registry.animalgas.parts.IEntityResistenceInfo;
 import speiger.src.api.common.registry.animalgas.parts.Resistence;
 import speiger.src.api.common.registry.animalgas.parts.Resistence.ResistanceType;
@@ -40,6 +42,7 @@ public final class AnimalGasRegistry
 	private Map<Class<? extends EntityAgeable>, IEntityDrinkInfo> drinkData = new WeakHashMap<Class<? extends EntityAgeable>, IEntityDrinkInfo>();
 	private Map<Class<? extends EntityAgeable>, IEntityGasInfo> gasData = new WeakHashMap<Class<? extends EntityAgeable>, IEntityGasInfo>();
 	private Map<Class<? extends EntityAgeable>, IEntityResistenceInfo> resistanceData = new WeakHashMap<Class<? extends EntityAgeable>, IEntityResistenceInfo>();
+	private Map<Class<? extends EntityAgeable>, IEntityCustomInfo> customData = new WeakHashMap<Class<? extends EntityAgeable>, IEntityCustomInfo>();
 	
 	public void registerEntity(Class<? extends EntityAgeable> entity, IEntityInfo...par1)
 	{
@@ -111,6 +114,11 @@ public final class AnimalGasRegistry
 			return new DefaultInfo();
 		}
 		return resistanceData.get(par1);
+	}
+	
+	public IEntityCustomInfo getCustomInfo(Class<? extends EntityAgeable> par1)
+	{
+		return customData.get(par1);
 	}
 	
 	public boolean isValidEntity(EntityAgeable par1)
@@ -209,6 +217,7 @@ public final class AnimalGasRegistry
 		{
 			return 20;
 		}
+
 	}
 	
 	static class EntitySelectorAnimalGas implements IEntitySelector
@@ -229,5 +238,7 @@ public final class AnimalGasRegistry
 		}
 		
 	}
+
+
 	
 }

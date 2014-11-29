@@ -17,6 +17,8 @@ import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.entity.EntityOverridenEnderman;
 import speiger.src.spmodapi.common.entity.SpmodFoodStats;
 import speiger.src.spmodapi.common.handler.ChatHandler;
+import speiger.src.spmodapi.common.handler.GasHandler;
+import speiger.src.spmodapi.common.handler.InventoryHandler;
 import speiger.src.spmodapi.common.handler.PlayerHandler;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
@@ -54,6 +56,8 @@ public class Registry
 		MinecraftForge.EVENT_BUS.register(ChatHandler.getInstance());
 		FluidContainerRegistry.registerFluidContainer(APIUtils.hempResin, new ItemStack(APIItems.hempResinBucket), new ItemStack(Item.bucketEmpty));
 		MobMachineLoader.initMobMachines();
+		GameRegistry.registerFuelHandler(new InventoryHandler());
+		GasHandler.init();
 	}
 	
 	void registerText()

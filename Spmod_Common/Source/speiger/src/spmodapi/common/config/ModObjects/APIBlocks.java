@@ -10,12 +10,10 @@ public class APIBlocks
 	public static SpmodBlockBase hempStraw;
 	
 	public static SpmodBlockBase hempBlockBase;
-	
 	public static SpmodBlockBase hempBlock;
 	public static SpmodBlockBase hempBrick;
 	public static SpmodBlockBase hempBlockPlated;
 	public static SpmodBlockBase hempBrickPlated;
-	
 	public static SpmodBlockBase savedHempBlock;
 	public static SpmodBlockBase savedHempBrick;
 	public static SpmodBlockBase savedHempBlockPlated;
@@ -23,6 +21,7 @@ public class APIBlocks
 	
 	public static Block fluidHempResin;
 	public static SpmodBlockBase animalGas;
+	public static SpmodBlockBase animalUtils;
 	
 	public static SpmodBlockBase hempLamp;
 	public static Block blueFlower;

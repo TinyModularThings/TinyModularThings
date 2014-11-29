@@ -2,13 +2,14 @@ package speiger.src.spmodapi.common.blocks.gas;
 
 import java.util.List;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
+import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.common.items.core.ItemBlockSpmod;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 
-public class ItemBlockAnimalGas extends ItemBlock
+public class ItemBlockAnimalGas extends ItemBlockSpmod
 {
 
 	public ItemBlockAnimalGas(int par1)
@@ -27,11 +28,17 @@ public class ItemBlockAnimalGas extends ItemBlock
 	{
 		return par1;
 	}
-
+	
 	@Override
-	public String getItemDisplayName(ItemStack par1ItemStack)
+	public String getName(ItemStack par1)
 	{
 		return "Animal Gas";
+	}
+
+	@Override
+	public BlockStack getBlockToPlace(int meta)
+	{
+		return new BlockStack(getBlockID(), meta);
 	}
 
 

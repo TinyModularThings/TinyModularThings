@@ -105,7 +105,7 @@ public class SoundRegistry
 	public void playSound(World world, int x, int y, int z, String name, float volume, float pitch)
 	{
 		
-		if (!SpmodConfig.playSounds)
+		if (!SpmodConfig.booleanInfos.get("PlaySounds"))
 		{
 			return;
 		}

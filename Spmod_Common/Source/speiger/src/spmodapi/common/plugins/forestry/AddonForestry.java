@@ -5,16 +5,21 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
+import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import cpw.mods.fml.common.FMLLog;
 import forestry.api.apiculture.FlowerManager;
 import forestry.api.farming.Farmables;
 import forestry.api.farming.IFarmable;
+import forestry.api.fuels.EngineBronzeFuel;
+import forestry.api.fuels.EngineCopperFuel;
+import forestry.api.fuels.FuelManager;
 import forestry.api.recipes.RecipeManagers;
 import forestry.core.GameMode;
 import forestry.core.utils.RecipeUtil;
@@ -28,10 +33,17 @@ public class AddonForestry
 	public static void loadForestryStuff()
 	{
 		addon.loadRecipes();
+		addon.loadGas();
 		Collection<IFarmable> list = Farmables.farmables.get("farmWheat");
 		list.add(new Hanfaddon());
 		Farmables.farmables.put("farmWheat", list);
 		
+	}
+	
+	public void loadGas()
+	{
+		FuelManager.bronzeEngineFuel.put(APIUtils.animalGas, new EngineBronzeFuel(APIUtils.animalGas, 3, 7500, 1));
+		FuelManager.copperEngineFuel.put(new ItemStack(Item.gunpowder), new EngineCopperFuel(new ItemStack(Item.gunpowder), 4, 1000));
 	}
 	
 	public void loadRecipes()
@@ -40,7 +52,7 @@ public class AddonForestry
 		RecipeManagers.squeezerManager.addRecipe(10, new ItemStack[] { new ItemStack(APIItems.hemp) }, FluidRegistry.getFluidStack("hemp.resin", 25), new ItemStack(APIItems.compressedHemp), 10);
 		RecipeManagers.squeezerManager.addRecipe(10, new ItemStack[] { new ItemStack(APIBlocks.hempStraw) }, FluidRegistry.getFluidStack("hemp.resin", 250), new ItemStack(APIItems.compressedHemp), 100);
 		FlowerManager.plainFlowers.add(new ItemStack(APIBlocks.blueFlower));
-		
+		RecipeManagers.bottlerManager.addRecipe(100, new FluidStack(APIUtils.animalGas, 1000), new ItemStack(Item.bucketEmpty),  new ItemStack(APIItems.gasBucket));
 		try
 		{
 			RecipeUtil.injectLeveledRecipe(new ItemStack(APIItems.hemp), GameMode.getGameMode().getIntegerSetting("fermenter.yield.sapling"), "biomass");
@@ -51,7 +63,7 @@ public class AddonForestry
 			
 		}
 		
-		if (SpmodConfig.forestrySeedOil)
+		if (SpmodConfig.booleanInfos.get("ForestrySeedOil"))
 		{
 			FMLLog.getLogger().info("Start Overriding Recipes");
 			

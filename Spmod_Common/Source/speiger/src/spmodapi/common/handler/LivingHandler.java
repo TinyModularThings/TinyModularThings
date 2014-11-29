@@ -29,6 +29,7 @@ import net.minecraft.util.FoodStats;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.client.event.RenderGameOverlayEvent.ElementType;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.EnderTeleportEvent;
@@ -87,15 +88,12 @@ public class LivingHandler
 					if(extraHunger > 0)
 					{
 					    ScaledResolution scale = evt.resolution;
-
 					    int left = scale.getScaledWidth() / 2 + 91;
 					    int top = scale.getScaledHeight() - GuiIngameForge.right_height + 10;
-
-					      RenderHelper.drawSaturationOverlay(0.0F, food.getSaturationLevel(), mc, left, top, 1.0F);
+					    RenderHelper.drawSaturationOverlay(0.0F, food.getSaturationLevel(), mc, left, top, 1.0F);
 					}
 				}
 			}
-			
 		}
 	}
 	

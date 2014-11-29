@@ -24,4 +24,9 @@ public class EntityCounter
 		ID++;
 	}
 	
+	public void resetCounter()
+	{
+		ID = 0;
+	}
+	
 }

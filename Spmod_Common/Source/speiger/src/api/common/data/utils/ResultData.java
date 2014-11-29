@@ -12,6 +12,7 @@ import net.minecraft.nbt.NBTTagCompound;
 public class ResultData implements IStackInfo, INBTInfo
 {
 	Item item;
+	int stackSize;
 	int meta;
 	NBTTagCompound nbt;
 	
@@ -19,6 +20,7 @@ public class ResultData implements IStackInfo, INBTInfo
 	{
 		item = data.getItem();
 		meta = data.getItemDamage();
+		stackSize = data.stackSize;
 		nbt = data.getTagCompound();
 	}
 
@@ -56,7 +58,7 @@ public class ResultData implements IStackInfo, INBTInfo
 		if(par1 instanceof ResultData)
 		{
 			ResultData data = (ResultData)par1;
-			return data.item.itemID == item.itemID && data.meta == meta;
+			return data.item.itemID == item.itemID && data.meta == meta && data.stackSize == stackSize;
 		}
 		else if(par1 instanceof ItemData)
 		{

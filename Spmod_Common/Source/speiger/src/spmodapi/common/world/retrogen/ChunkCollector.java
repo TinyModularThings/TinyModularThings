@@ -36,7 +36,7 @@ public class ChunkCollector
 	public void onChunkSave(ChunkDataEvent.Save par1)
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
-		if (SpmodConfig.retogen)
+		if (SpmodConfig.booleanInfos.get("Retrogen"))
 		{
 			nbt.setLong("Features", genHash);
 		}
@@ -59,12 +59,12 @@ public class ChunkCollector
 		
 		if (nbt != null)
 		{
-			feature = (nbt.getLong("Features") != genHash) && (SpmodConfig.retogen);
+			feature = (nbt.getLong("Features") != genHash) && (SpmodConfig.booleanInfos.get("Retrogen"));
 		}
 		
 		ChunkProsition chunk = new ChunkProsition(par1.getChunk());
 		
-		if (nbt == null && SpmodConfig.retogen && !par1.getData().getBoolean("SpmodAPI.Retrogen"))
+		if (nbt == null && SpmodConfig.booleanInfos.get("Retrogen") && !par1.getData().getBoolean("SpmodAPI.Retrogen"))
 		{
 			regen = true;
 		}
@@ -126,7 +126,7 @@ public class ChunkCollector
 	
 	public void generateWorld(Random rand, int chunkX, int chunkZ, World world, boolean retro)
 	{
-		if (retro && (!SpmodConfig.retogen))
+		if (retro && (!SpmodConfig.booleanInfos.get("Retrogen")))
 		{
 			return;
 		}

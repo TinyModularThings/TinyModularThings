@@ -46,5 +46,7 @@ public class APIItems
 	
 	//Gas
 	public static SpmodItem gasBucket;
+	public static SpmodItem gasCell;
+	public static SpmodItem gasCellC;
 	
 }

@@ -87,7 +87,7 @@ public class BlockAnimalGas extends SpmodBlockBase implements IFluidBlock
 			if(par5Entity instanceof EntityPlayer)
 			{
 				EntityPlayer player = (EntityPlayer)par5Entity;
-				if(!isAirSave(player, player.getCurrentArmor(0)))
+				if(!isAirSave(player, player.getCurrentArmor(3)))
 				{
 					PotionEffect ef = player.getActivePotionEffect(Potion.confusion);
 					if(ef != null)

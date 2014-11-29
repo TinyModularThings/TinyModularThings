@@ -2,6 +2,8 @@ package speiger.src.spmodapi.common.items.core;
 
 import java.util.List;
 
+import com.google.common.base.Strings;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -17,7 +19,16 @@ import cpw.mods.fml.relauncher.SideOnly;
 public abstract class ItemBlockSpmod extends ItemBlock
 {
 
+	public ItemBlockSpmod(int par1)
+	{
+		super(par1);
+	}
 	
+	@Override
+	public int getMetadata(int par1)
+	{
+		return par1;
+	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -33,11 +44,6 @@ public abstract class ItemBlockSpmod extends ItemBlock
 				tile.onItemInformation(par2EntityPlayer, par3List);
 			}
 		}
-	}
-
-	public ItemBlockSpmod(int par1)
-	{
-		super(par1);
 	}
 	
     public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10)
@@ -131,7 +137,20 @@ public abstract class ItemBlockSpmod extends ItemBlock
 	@Override
 	public String getItemDisplayName(ItemStack par1)
 	{
-		return getName(par1);
+		String data = "No Name";
+		try
+		{
+			String name = getName(par1);
+			if(!Strings.isNullOrEmpty(name))
+			{
+				data = name;
+			}
+		}
+		catch(Exception e)
+		{
+			
+		}
+		return data;
 	}
     
 	public abstract String getName(ItemStack par1);

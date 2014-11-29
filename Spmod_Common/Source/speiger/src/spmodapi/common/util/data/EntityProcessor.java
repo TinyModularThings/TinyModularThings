@@ -19,6 +19,7 @@ import speiger.src.api.common.data.utils.IFluidInfo;
 import speiger.src.api.common.data.utils.IStackInfo;
 import speiger.src.api.common.registry.animalgas.AnimalGasRegistry;
 import speiger.src.api.common.registry.animalgas.parts.EntitySpeed;
+import speiger.src.api.common.registry.animalgas.parts.IEntityCustomInfo;
 import speiger.src.api.common.registry.animalgas.parts.IEntityDrinkInfo;
 import speiger.src.api.common.registry.animalgas.parts.IEntityFoodInfo;
 import speiger.src.api.common.registry.animalgas.parts.IEntityGasInfo;
@@ -37,6 +38,7 @@ public final class EntityProcessor implements IEntityLogic
 	IEntityDrinkInfo drink;
 	IEntityGasInfo gas;
 	IEntityResistenceInfo gen;
+	IEntityCustomInfo info;
 	AnimalChunkLoader tileEntity;
 	
 	boolean needsInit = true;
@@ -60,12 +62,13 @@ public final class EntityProcessor implements IEntityLogic
 	EntitySpeed boost = null;
 	double extraGas = 0D;
 	
-	public EntityProcessor(IEntityFoodInfo par1, IEntityDrinkInfo par2, IEntityGasInfo par3, IEntityResistenceInfo par4)
+	public EntityProcessor(IEntityFoodInfo par1, IEntityDrinkInfo par2, IEntityGasInfo par3, IEntityResistenceInfo par4, IEntityCustomInfo par5)
 	{
 		food = par1;
 		drink = par2;
 		gas = par3;
 		gen = par4;
+		info = par5;
 	}
 	
 	private EntityProcessor()
@@ -86,10 +89,18 @@ public final class EntityProcessor implements IEntityLogic
 			initEntity(par1);
 			return;
 		}
+		if(info != null && info.canUpdate())
+		{
+			info.onPreTick(par1, this);
+		}
 		handleFood(par1);
 		handleDrink(par1);
 		handleGene(par1);
 		handleGas(par1);
+		if(info != null && info.canUpdate())
+		{
+			info.onPostTick(par1, this);
+		}
 	}
 	
 	public void handleGene(EntityAgeable par1)
@@ -221,7 +232,7 @@ public final class EntityProcessor implements IEntityLogic
 		}
 		if(currentLevel > 100D && rand.nextInt(5) == 0)
 		{
-			int amount = Math.max(gas.getMinProducingGas(par1), rand.nextInt(gas.getMaxProducingGas(par1)+1));
+			int amount = Math.max(Math.max(gas.getMinProducingGas(par1), 1), rand.nextInt(gas.getMaxProducingGas(par1)+1));
 			boolean farted = tileEntity.onEntityProduceGas(par1, amount);
 			if(farted)
 			{

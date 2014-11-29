@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.plugins;
 
 import speiger.src.spmodapi.common.plugins.BC.BCAddon;
 import speiger.src.spmodapi.common.plugins.IC2.IC2Addon;
+import speiger.src.spmodapi.common.plugins.RailCraft.PluginRailcraft;
 import speiger.src.spmodapi.common.plugins.forestry.AddonForestry;
 import speiger.src.spmodapi.common.plugins.minefactoryReloaded.MineFactoryReloadedAddon;
 import speiger.src.spmodapi.common.recipes.helper.RecipeOverrider;
@@ -36,6 +37,10 @@ public class PluginLoader
 		if (Loader.isModLoaded("BuildCraft|Core"))
 		{
 			BCAddon.loadBC();
+		}
+		if(Loader.isModLoaded("Railcraft"))
+		{
+			PluginRailcraft.init();
 		}
 
 	}

@@ -17,6 +17,7 @@ import speiger.src.spmodapi.common.items.crafting.SpmodBone;
 import speiger.src.spmodapi.common.items.debug.ItemAccessAdder;
 import speiger.src.spmodapi.common.items.exp.ExpBottle;
 import speiger.src.spmodapi.common.items.gas.ItemGasBucket;
+import speiger.src.spmodapi.common.items.gas.ItemGasCell;
 import speiger.src.spmodapi.common.items.hemp.ItemCompressedHemp;
 import speiger.src.spmodapi.common.items.hemp.ItemHemp;
 import speiger.src.spmodapi.common.items.hemp.ItemHempBucket;
@@ -159,6 +160,16 @@ public class APIItemsConfig
 		items.gasBucket = new ItemGasBucket(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.gasBucket);
 		engine.registerTexture(items.gasBucket, "GasBucket");
+		config.itemIDs.updateToNextID();
+		
+		items.gasCell = new ItemGasCell(config.itemIDs.getCurrentID(), false);
+		RegisterProxy.RegisterItem(items.gasCell);
+		engine.registerTexture(items.gasCell, "GasCell");
+		config.itemIDs.updateToNextID();
+		
+		items.gasCellC = new ItemGasCell(config.itemIDs.getCurrentID(), true);
+		RegisterProxy.RegisterItem(items.gasCellC);
+		engine.registerTexture(items.gasCellC, "CompressedGasCell");
 		config.itemIDs.updateToNextID();
 		
 		initHempPlates();

@@ -18,9 +18,19 @@ public class BlockAnimalUtils extends SpmodBlockContainerBase
 	{
 		switch(metadata)
 		{
-			case 0: return new AnimalChunkLoader();
+			case 0: return new BasicAnimalChunkLoader();
 			default: return null;
 		}
+	}
+
+	@Override
+	public boolean hasTileDrops(int meta)
+	{
+		switch(meta)
+		{
+			case 0: return true;
+		}
+		return super.hasTileDrops(meta);
 	}
 	
 	

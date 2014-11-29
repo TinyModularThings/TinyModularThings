@@ -12,8 +12,11 @@ import speiger.src.spmodapi.common.blocks.deko.ItemBlockMultiPlate;
 import speiger.src.spmodapi.common.blocks.deko.KyrokaTheFox;
 import speiger.src.spmodapi.common.blocks.deko.MultiPlate;
 import speiger.src.spmodapi.common.blocks.deko.TileLamp;
+import speiger.src.spmodapi.common.blocks.gas.BasicAnimalChunkLoader;
 import speiger.src.spmodapi.common.blocks.gas.BlockAnimalGas;
+import speiger.src.spmodapi.common.blocks.gas.BlockAnimalUtils;
 import speiger.src.spmodapi.common.blocks.gas.ItemBlockAnimalGas;
+import speiger.src.spmodapi.common.blocks.gas.ItemBlockAnimalUtils;
 import speiger.src.spmodapi.common.blocks.hemp.BlockHempCrop;
 import speiger.src.spmodapi.common.blocks.hemp.BlockHempDeko;
 import speiger.src.spmodapi.common.blocks.hemp.BlockHempDekoBase;
@@ -138,6 +141,14 @@ public class APIBlocksConfig
 		blocks.animalGas = new BlockAnimalGas(config.blockIDs.getCurrentID());
 		RegisterProxy.RegisterBlock(blocks.animalGas, ItemBlockAnimalGas.class, "AnimalGas");
 		engine.registerTexture(blocks.animalGas, "AnimalGas");
-		config.itemIDs.updateToNextID();
+		config.blockIDs.updateToNextID();
+		
+		blocks.animalUtils = new BlockAnimalUtils(config.blockIDs.getCurrentID());
+		RegisterProxy.RegisterBlock(blocks.animalUtils, ItemBlockAnimalUtils.class, "AnimalUtils");
+		RegisterProxy.RegisterTile(blocks.animalUtils, 0, BasicAnimalChunkLoader.class, "BasisAnimalChunkloader");
+		config.blockIDs.updateToNextID();
+		
+		
+		
 	}
 }

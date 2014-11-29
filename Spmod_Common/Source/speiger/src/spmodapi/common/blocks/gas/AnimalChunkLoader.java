@@ -22,6 +22,7 @@ import speiger.src.api.common.event.EntityGasOverloadEvent;
 import speiger.src.api.common.registry.animalgas.AnimalGasRegistry;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.sound.SoundRegistry;
 import speiger.src.spmodapi.common.tile.AdvTile;
@@ -38,6 +39,11 @@ public class AnimalChunkLoader extends AdvTile implements INBTReciver
 	public int entityUpdateCheck = 100;
 	public static int maxRange = 1;
 	public static int nextCheckTime = 100;
+	
+	public AnimalChunkLoader()
+	{
+		maxRange = SpmodConfig.integerInfos.get("AnimalChunkLoaderRange");
+	}
 	
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
@@ -63,17 +69,18 @@ public class AnimalChunkLoader extends AdvTile implements INBTReciver
 	
 	public void onEntityTick()
 	{
-		for(EntityAgeable target : storedEntities)
+		for(int i = 0;i<storedEntities.size();i++)
 		{
-			EntityProcessor pro = entityData.get(target);
+			EntityProcessor pro = entityData.get(storedEntities.get(i));
 			if(pro != null)
 			{
-				pro.onTick(target);
+				pro.onTick(storedEntities.get(i));
 			}
 			else
 			{
 				;//This never should happen. Else someone Hacket It
-				this.removeEntity(target);
+				this.removeEntity(storedEntities.get(i));
+				i--;
 			}
 		}
 	}
@@ -91,11 +98,13 @@ public class AnimalChunkLoader extends AdvTile implements INBTReciver
 				continue;
 			}
 		}
-		for(EntityAgeable target : storedEntities)
+		for(int i = 0;i<storedEntities.size();i++)
 		{
+			EntityAgeable target = storedEntities.get(i);
 			if(!livingThings.contains(target))
 			{
 				removeEntity(target);
+				i--;
 				continue;
 			}
 		}
@@ -123,7 +132,7 @@ public class AnimalChunkLoader extends AdvTile implements INBTReciver
 	public EntityProcessor getEntityProcessorFromEntity(EntityAgeable par1)
 	{
 		AnimalGasRegistry registry = AnimalGasRegistry.getInstance();
-		EntityProcessor pro = new EntityProcessor(registry.getFoodInfo(par1.getClass()), registry.getDrinkInfo(par1.getClass()), registry.getGasInfo(par1.getClass()), registry.getResistanceInfo(par1.getClass()));
+		EntityProcessor pro = new EntityProcessor(registry.getFoodInfo(par1.getClass()), registry.getDrinkInfo(par1.getClass()), registry.getGasInfo(par1.getClass()), registry.getResistanceInfo(par1.getClass()), registry.getCustomInfo(par1.getClass()));
 		pro.setAnimalChunkLoader(this);
 		return pro;
 	}
