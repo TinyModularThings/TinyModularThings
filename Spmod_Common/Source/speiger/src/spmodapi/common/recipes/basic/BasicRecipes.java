@@ -55,5 +55,8 @@ public class BasicRecipes
 		pp.addRecipe(new ItemStack(APIBlocks.blockUtils, 1, 2), new Object[] { "ABC", "DEF", "GGG", 'A', Item.leather, 'B', Item.porkRaw, 'C', Item.feather, 'D', Block.cloth, 'E', Item.ingotIron, 'F', Block.mushroomRed, 'G', new ItemStack(Block.glowStone)});
 		pp.addRecipe(new ItemStack(APIBlocks.blockUtils, 1, 4), new Object[]{"XYX", "CVC", "BNB", 'X', GearType.StoneRing.getItem(), 'Y', Block.bookShelf, 'C', Block.tripWireSource, 'V', Block.redstoneLampIdle, 'B', Item.eyeOfEnder, 'N', Block.stoneButton});
 		pp.addRecipe(new ItemStack(APIItems.redstoneCable, 6), new Object[]{"XXX", "YYY", "XXX", 'X', Block.glass, 'Y', Item.redstone});
+		pp.addRecipe(new ItemStack(APIBlocks.animalUtils), new Object[]{"BCD", "AYE", "XXX", 'E', Block.mushroomRed, 'D', Block.cloth, 'C', Item.beefRaw, 'A', Item.feather, 'B', Item.porkRaw, 'Y', Item.emerald, 'X', Block.cobblestoneMossy });
+		
+		
 	}
 }

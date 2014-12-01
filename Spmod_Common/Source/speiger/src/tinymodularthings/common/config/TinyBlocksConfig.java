@@ -128,9 +128,9 @@ public class TinyBlocksConfig
 		
 		blocks.storageBlock = new BlockStorage(config.block.getCurrentID());
 		RegisterProxy.RegisterBlock(blocks.storageBlock, ItemBlockStorage.class, "StorageBlock");
-		RegisterProxy.RegisterTile(TinyChest.class, "TinyChests");
+		RegisterProxy.RegisterTile(blocks.storageBlock, 0, TinyChest.class, "TinyChests");
 		RegisterProxy.RegisterTile(blocks.storageBlock, 1, TinyTank.class, "TinyTanks");
-		RegisterProxy.RegisterTile(AdvTinyChest.class, "AdvTinyChest");
+		RegisterProxy.RegisterTile(blocks.storageBlock, 2, AdvTinyChest.class, "AdvTinyChest");
 		RegisterProxy.RegisterTile(blocks.storageBlock, 3, AdvTinyTank.class, "AdvTinyTank");
 		engine.setCurrentPath("storage");
 		engine.registerTexture(blocks.storageBlock, "TinyTank", "AdvTinyTank");

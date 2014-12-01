@@ -7,6 +7,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.Item;
@@ -326,6 +329,15 @@ public class OilGenerator extends AdvTile implements ISidedInventory, INBTRecive
 	public boolean isNormalCube()
 	{
 		return true;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
+	{
+		super.onItemInformation(par1, par2, par3);
+		par2.add("Make meat an bees into oil. 1 Item to 0.1mB oil");
+		par2.add("It takes "+MathUtils.getTicksInTimeShort(TotalTime)+" to finish the progress");
 	}
 
 	public class OilEntry

@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -68,6 +69,26 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 	}
 
 	
+	
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
+	{
+		par2.add("Allow to access Inventories");
+		par2.add("Require Redstone Cables and any Sort of TMT or IC2 Portable Power");
+		if(GuiScreen.isCtrlKeyDown())
+		{
+			par2.add("This machine Requires 1 PowerUnit per Sek when the gui is Open");
+			par2.add("1 EU = 1 PowerUnit");
+			par2.add("1 MJ = 2.5 PowerUnits");
+		}
+		else
+		{
+			par2.add("Press Ctrl to get Extra Infos");
+		}
+	}
+
 
 
 	@Override
@@ -589,6 +610,19 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 				else if(task == 3)
 				{
 					allowedClasses.remove(par1.readUTF());
+				}
+				else if(task == 4)
+				{
+					int number = par1.readInt();
+					if(this.isInRange(number))
+					{
+						BlockPosition pos = this.getTarget(number);
+						if(pos != null)
+						{
+							this.customNames.remove(pos.getAsList());
+							PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, this.getDescriptionPacket());
+						}
+					}
 				}
 
 

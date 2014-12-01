@@ -3,8 +3,6 @@ package speiger.src.tinymodularthings.common.blocks.crafting;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.lwjgl.input.Keyboard;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
@@ -19,6 +17,7 @@ import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.common.registry.recipes.output.RecipeOutput;
 import speiger.src.api.common.registry.recipes.uncrafter.UncrafterRecipeList;
 import speiger.src.api.common.utils.WorldReading;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.tiles.energy.EnergyProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergyProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergySubject;
@@ -26,13 +25,14 @@ import speiger.src.spmodapi.common.lib.bc.IStackFilter;
 import speiger.src.spmodapi.common.lib.bc.ITransactor;
 import speiger.src.spmodapi.common.lib.bc.Transactor;
 import speiger.src.spmodapi.common.tile.TileFacing;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import buildcraft.api.power.ILaserTarget;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.transport.IPipeTile;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -61,6 +61,14 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 	public IEnergySubject getEnergyProvider(ForgeDirection side)
 	{
 		return provider;
+	}
+	
+	
+
+	@Override
+	public void registerIcon(TextureEngine par1)
+	{
+		super.registerIcon(par1);
 	}
 
 	@Override
@@ -211,7 +219,7 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 	@Override
 	public boolean requiresLaserEnergy()
 	{
-		return currentItem != null;
+		return currentItem != null && provider.requestEnergy();
 	}
 
 	@Override
@@ -349,11 +357,11 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public void onItemInformation(EntityPlayer par1, List par2)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
 	{
-		super.onItemInformation(par1, par2);
+		super.onItemInformation(par1, par2, par3);
 		par2.add("Machine has No Gui");
-		par2.add("It requires 20k MJ for Each Progress");
+		par2.add("It requires 20k MJ for Each Progress and it uses Max 20MJ");
 		par2.add("It Imports from the Top");
 		par2.add("And Exports to the Front");
 		if(GuiScreen.isCtrlKeyDown())
@@ -361,6 +369,10 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 			par2.add("It has a general Chance for Success of 85%");
 			par2.add("With Lasers 95%");
 			par2.add("If you Rightclick with an Item on it it shows you what you get out");
+		}
+		else
+		{
+			par2.add("Press Ctrl to get Extra Infos");
 		}
 	}
 	

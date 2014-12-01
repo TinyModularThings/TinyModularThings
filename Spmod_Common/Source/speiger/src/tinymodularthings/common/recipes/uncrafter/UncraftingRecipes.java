@@ -23,6 +23,7 @@ import speiger.src.api.common.registry.recipes.uncrafter.UncrafterRecipeList;
 import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.spmodapi.common.util.data.ClassStorage;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import buildcraft.BuildCraftBuilders;
 import buildcraft.BuildCraftCore;
 import buildcraft.BuildCraftEnergy;
@@ -39,6 +40,10 @@ public class UncraftingRecipes
 		ClassStorage storage = ClassStorage.getInstance();
 		pp.addRecipe(new ShapedOreRecipe(new ItemStack(Block.pistonBase), "XXX", "YCY", "YVY", 'X', "plankWood", 'Y', "cobblestone", 'C', "ingotBronze", 'V', Item.redstone));
 		pp.addRecipe(new ShapedOreRecipe(new ItemStack(Block.pistonBase), "XXX", "YCY", "YVY", 'X', "plankWood", 'Y', "cobblestone", 'C', "ingotSilver", 'V', Item.redstone));
+//		pp.addRecipe(new ItemStack(TinyBlocks.craftingBlock, 1, 3), new Object[]{"", "", "",});
+		
+		
+		
 		
 		un.addUncraftingRecipe(new BlockData(Block.pistonBase, 0), new RecipeOutput(new ItemStack(Block.fenceIron, 2), 75), new RecipeOutput(Item.redstone, 40), new RecipeOutput(Block.planks, 70), new RecipeOutput(Block.cobblestone, 60));
 		un.addUncraftingRecipe(new ItemStack(Block.dropper), new RecipeOutput(new ItemStack(Block.cobblestone, 5), 90), new RecipeOutput(Item.redstone, 25));

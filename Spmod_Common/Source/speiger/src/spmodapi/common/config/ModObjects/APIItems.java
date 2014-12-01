@@ -24,7 +24,7 @@ public class APIItems
 	public static SpmodItem colorCard;
 	public static SpmodItem multiPlate;
 	public static SpmodItem trades;
-	public static SpmodItem redstoneCable;
+	public static SpmodItem tinyRedstoneDust;
 	
 	public static ItemStack[] hempPlates;
 	public static Item hempResinBucket;
@@ -49,4 +49,8 @@ public class APIItems
 	public static SpmodItem gasCell;
 	public static SpmodItem gasCellC;
 	
+	//Circuits
+	public static SpmodItem redstoneCable;
+	public static SpmodItem circuits;
+
 }

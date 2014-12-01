@@ -1,5 +1,7 @@
 package speiger.src.spmodapi.common.items.core;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -7,7 +9,10 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.TileIconMaker;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -19,7 +24,28 @@ public abstract class SpmodPlacerItem extends SpmodItem
 		super(par1);
 	}
 	
-    public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10)
+	
+	
+    @Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+	{
+		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+		BlockStack stack = this.getBlockToPlace(par1ItemStack.getItemDamage());
+		
+		if(stack != null)
+		{
+			AdvTile tile = TileIconMaker.getIconMaker().getTileEntityFormBlockAndMetadata(stack.getBlock(), stack.getMeta());
+			if(tile != null)
+			{
+				tile.onItemInformation(par2EntityPlayer, par3List, par1ItemStack);
+			}
+		}
+	}
+
+
+
+	public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10)
     {
         int blockID = world.getBlockId(x, y, z);
         

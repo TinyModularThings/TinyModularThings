@@ -1028,7 +1028,14 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		}
 		
 	}
-	
-	
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
+	{
+		super.onItemInformation(par1, par2, par3);
+		par2.add("A hollowed Multistructure made out of any Kind of brick or stone");
+		par2.add("Put this block then into any Horizontal Side. In the Middle");
+	}
 	
 }

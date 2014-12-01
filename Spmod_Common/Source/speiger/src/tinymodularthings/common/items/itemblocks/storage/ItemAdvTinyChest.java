@@ -51,6 +51,7 @@ public class ItemAdvTinyChest extends TinyPlacerItem implements IMetaItemRender
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
 	{
+		super.addInformation(par1, par2, par3, par4);
 		par3.add((1+par1.getItemDamage())+ (par1.getItemDamage() > 0 ? " Slots" : " Slot"));
 	}
 	

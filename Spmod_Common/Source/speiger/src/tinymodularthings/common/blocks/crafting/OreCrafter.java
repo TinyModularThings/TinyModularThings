@@ -3,6 +3,7 @@ package speiger.src.tinymodularthings.common.blocks.crafting;
 import java.io.DataInput;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -46,16 +47,32 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 	
 	
 	@Override
+	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
+	{
+		super.onItemInformation(par1, par2, par3);
+		par2.add("Item exchanger that uses the Oredictionary");
+	}
+	
+	@Override
 	public void registerIcon(TextureEngine par1)
 	{
-		par1.registerTexture(new BlockStack(TinyBlocks.craftingBlock, 1), "OreCrafter_Top", "OreCrafter_Side");
+		par1.registerTexture(new BlockStack(TinyBlocks.craftingBlock, 3), "craftingTableBottom", "OreCrafter_top", "OreCrafter_side", "OreCrafter_side2");
 	}
 	
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
-		Icon[] texture = TextureEngine.getIcon(TinyBlocks.craftingBlock, 1);
-		return side < 2 ? texture[0] : texture[1];
+		TextureEngine engine = TextureEngine.getTextures();
+		if(side >= 2)
+		{
+			int data = facing == 2 || facing == 3 ? side == 5 || side == 4 ? 2 : 3 : side == 5 || side == 4 ? 3 : 2;
+			return engine.getTexture(TinyBlocks.craftingBlock, 3, data);
+		}
+		else
+		{
+			return engine.getTexture(TinyBlocks.craftingBlock, 3, side);
+		}
 	}
 	
 	@Override
@@ -111,6 +128,16 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 		}
 	}
 	
+
+	
+	@Override
+	public void onPlaced(int facing)
+	{
+		setFacing(facing);
+	}
+
+
+
 	public boolean addItemsToInventory(ItemStack par1)
 	{
 		if(par1 != null)

@@ -7,8 +7,10 @@ import speiger.src.api.common.world.items.plates.PlateManager;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.fluids.hemp.ItemHempResin;
 import speiger.src.spmodapi.common.items.armor.HempArmor;
+import speiger.src.spmodapi.common.items.core.BasicItem;
 import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.items.crafting.ItemBlueDye;
+import speiger.src.spmodapi.common.items.crafting.ItemCircuit;
 import speiger.src.spmodapi.common.items.crafting.ItemColorCard;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemMobMachineHelper;
@@ -170,6 +172,17 @@ public class APIItemsConfig
 		items.gasCellC = new ItemGasCell(config.itemIDs.getCurrentID(), true);
 		RegisterProxy.RegisterItem(items.gasCellC);
 		engine.registerTexture(items.gasCellC, "CompressedGasCell");
+		config.itemIDs.updateToNextID();
+		
+		items.circuits = new ItemCircuit(config.itemIDs.getCurrentID());
+		RegisterProxy.RegisterItem(items.circuits);
+		items.circuits.registerTexture(engine);
+		config.itemIDs.updateToNextID();
+		
+		engine.setCurrentPath("crafting");
+		items.tinyRedstoneDust = new BasicItem(config.itemIDs.getCurrentID(), "Tiny Redstone Dust");
+		RegisterProxy.RegisterItem(items.tinyRedstoneDust);
+		engine.registerTexture(items.tinyRedstoneDust, "TinyRedstonePowder");
 		config.itemIDs.updateToNextID();
 		
 		initHempPlates();

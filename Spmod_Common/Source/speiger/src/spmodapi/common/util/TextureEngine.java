@@ -370,6 +370,36 @@ public class TextureEngine
 		return texture;
 	}
 	
+	public Icon[] getTextureInRange(Item par1, int min, int max)
+	{
+		return getTextureInRange(par1, 0, min, max);
+	}
+	
+	public Icon[] getTextureInRange(Block par1, int min, int max)
+	{
+		return getTextureInRange(par1, 0, min, max);
+	}
+	
+	public Icon[] getTextureInRange(Item par1, int meta, int min, int max)
+	{
+		Icon[] result = new Icon[max-min];
+		for(int i = min;i<max;i++)
+		{
+			result[i-min] = getTexture(par1, meta, i);
+		}
+		return result;
+	}
+	
+	public Icon[] getTextureInRange(Block par1, int meta, int min, int max)
+	{
+		Icon[] result = new Icon[max-min];
+		for(int i = min;i<max;i++)
+		{
+			result[i-min] = getTexture(par1, meta, i);
+		}
+		return result;
+	}
+	
 	public Icon getIconSafe(Icon par1)
 	{
 		if(par1 == null)

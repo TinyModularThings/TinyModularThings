@@ -3,9 +3,12 @@ package speiger.src.tinymodularthings.common.blocks.crafting;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -46,6 +49,29 @@ public class CraftingStation extends AdvTile
 		return iinv.get(par1.username).setContainer(par2);
 	}
 	
+	@Override
+	public float getBlockHardness()
+	{
+		return 2F;
+	}
+
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
+	{
+		super.onItemInformation(par1, par2, par3);
+		par2.add("Crafting table that store items");
+		par2.add("Every player has his own Inventory");
+	}
+
+	@Override
+	public float getExplosionResistance(Entity par1)
+	{
+		return 4F;
+	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{

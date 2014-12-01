@@ -1,6 +1,10 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
+import java.util.List;
+
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
@@ -21,6 +25,8 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class WaterGenerator extends AdvTile implements IFluidHandler,
 		IPowerReceptor, IEnergyProvider
@@ -52,6 +58,15 @@ public class WaterGenerator extends AdvTile implements IFluidHandler,
 		}
 	}
 	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
+	{
+		super.onItemInformation(par1, par2, par3);
+		par2.add("Generates Power out of Energy");
+		par2.add("50MJ per Bucket, Max Powerusage = 10000MJ");
+	}
+
 	@Override
 	public float getBlockHardness()
 	{

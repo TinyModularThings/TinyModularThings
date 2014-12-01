@@ -7,6 +7,7 @@ import speiger.src.spmodapi.common.util.TextureEngine;
 public class ItemGasCell extends SpmodItem
 {
 	boolean big;
+	
 	public ItemGasCell(int par1, boolean par2)
 	{
 		super(par1);

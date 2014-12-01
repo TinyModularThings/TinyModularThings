@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
 
+import buildcraft.api.core.SafeTimeTracker;
+
 import net.minecraft.block.Block;
 import net.minecraft.block.StepSound;
 import net.minecraft.client.gui.inventory.GuiContainer;
@@ -26,6 +28,7 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.world.Explosion;
+import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.common.utils.RedstoneUtils;
 import speiger.src.api.common.world.blocks.BlockPosition;
@@ -33,6 +36,7 @@ import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -40,6 +44,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 public abstract class AdvTile extends TileEntity
 {
 	public ArrayList<String> users = new ArrayList<String>();
+	public boolean init = false;
+	SafeTimeTracker tracker = new SafeTimeTracker();
+	private int clock = CodeProxy.getRandom().nextInt();
 	
 	public void onPlayerOpenContainer(EntityPlayer par1)
 	{
@@ -49,9 +56,33 @@ public abstract class AdvTile extends TileEntity
 		}
 	}
 	
+	public int getClockTime()
+	{
+		return clock;
+	}
+	
+	protected void onClockTick()
+	{
+		clock++;
+	}
+	
+	public boolean clockCanTick()
+	{
+		if(getWorldObj() == null)
+		{
+			setWorldObj(DimensionManager.getWorld(0));
+		}
+		return tracker.markTimeIfDelay(getWorldObj(), 20);
+	}
+	
 	public boolean hasUsers()
 	{
 		return !users.isEmpty();
+	}
+	
+	public void init()
+	{
+		
 	}
 	
 	public void onPlayerCloseContainer(EntityPlayer par1)
@@ -73,7 +104,7 @@ public abstract class AdvTile extends TileEntity
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public void onItemInformation(EntityPlayer par1, List par2)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
 	{
 		
 	}
@@ -174,6 +205,17 @@ public abstract class AdvTile extends TileEntity
 		if(!SpmodConfig.booleanInfos.get("LoadTileEntities"))
 		{
 			return;
+		}
+		
+		if(!init)
+		{
+			init = true;
+			init();
+		}
+		
+		if(clockCanTick())
+		{
+			onClockTick();
 		}
 		
 		onTick();

@@ -146,6 +146,7 @@ public class APIBlocksConfig
 		blocks.animalUtils = new BlockAnimalUtils(config.blockIDs.getCurrentID());
 		RegisterProxy.RegisterBlock(blocks.animalUtils, ItemBlockAnimalUtils.class, "AnimalUtils");
 		RegisterProxy.RegisterTile(blocks.animalUtils, 0, BasicAnimalChunkLoader.class, "BasisAnimalChunkloader");
+		blocks.animalUtils.registerTextures(engine);
 		config.blockIDs.updateToNextID();
 		
 		

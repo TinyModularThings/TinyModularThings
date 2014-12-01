@@ -1,5 +1,7 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
+import java.util.List;
+
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -15,6 +17,8 @@ import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class EnderChestReader extends AdvTile implements IInventory
 {
@@ -138,6 +142,21 @@ public class EnderChestReader extends AdvTile implements IInventory
 	
 	
 	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
+	{
+		super.onItemInformation(par1, par2, par3);
+		par2.add("Let you access the Vanilla EnderChest, Based on the Player which placed it");
+		if(this instanceof AdvancedEnderChestReader)
+		{
+		}
+		else
+		{
+			par2.add("Player Need to be online");
+		}
+	}
+
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{

@@ -198,6 +198,11 @@ public class GuiInventoryAccesser extends GuiInventoryCore
 				page = 0;
 				name = true;
 			}
+			else if(this.isCtrlKeyDown())
+			{
+				choosenTarget = (page*6)+id;
+				PacketDispatcher.sendPacketToServer(SpmodPacketHelper.getHelper().createNBTPacket(tile, getSpmodCore()).InjectNumbers(4, choosenTarget).finishPacket());
+			}
 			else
 			{
 				PacketDispatcher.sendPacketToServer(SpmodPacketHelper.getHelper().createNBTPacket(tile, getSpmodCore()).InjectNumbers(1, (page*6)+id).injetString(this.mc.thePlayer.username).finishPacket());

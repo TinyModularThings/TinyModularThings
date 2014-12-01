@@ -2,8 +2,6 @@ package speiger.src.spmodapi.common.items.core;
 
 import java.util.List;
 
-import com.google.common.base.Strings;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemBlock;
@@ -13,6 +11,9 @@ import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TileIconMaker;
+
+import com.google.common.base.Strings;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -41,7 +42,7 @@ public abstract class ItemBlockSpmod extends ItemBlock
 			AdvTile tile = TileIconMaker.getIconMaker().getTileEntityFormBlockAndMetadata(stack.getBlock(), stack.getMeta());
 			if(tile != null)
 			{
-				tile.onItemInformation(par2EntityPlayer, par3List);
+				tile.onItemInformation(par2EntityPlayer, par3List, par1ItemStack);
 			}
 		}
 	}

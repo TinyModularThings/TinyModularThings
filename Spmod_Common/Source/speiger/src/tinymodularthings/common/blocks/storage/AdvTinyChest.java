@@ -1,8 +1,10 @@
 package speiger.src.tinymodularthings.common.blocks.storage;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -51,8 +53,24 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 		return mode;
 	}
 	
-	
-	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
+	{
+		super.onItemInformation(par1, par2, par3);
+		if(GuiScreen.isCtrlKeyDown())
+		{
+			par2.add("A small chest that outputs a Redstone Signal");
+			par2.add("Empty means redstone Signal down");
+			par2.add("Full means redstone Signal Up");
+			par2.add("Between mean none Signal");
+		}
+		else
+		{
+			par2.add("Press Ctrl to get Extra Infos");
+		}
+	}
+
 	@Override
 	public boolean dropNormalBlock()
 	{

@@ -87,6 +87,7 @@ public class ItemTinyTank extends TinyPlacerItem implements IMetaItemRender
 	@SideOnly(Side.CLIENT)
 	public void addInformation(ItemStack par1, EntityPlayer par2, List par3, boolean par4)
 	{
+		super.addInformation(par1, par2, par3, par4);
 		int[] tankSizes = new int[] {1000, 2000, 4000, 8000, 12000, 16000, 24000, 32000, 64000};
 		par3.add("Tank Size: "+tankSizes[par1.getItemDamage()]+"mB");
 		if(NBTHelper.nbtCheck(par1, "Fluid"))

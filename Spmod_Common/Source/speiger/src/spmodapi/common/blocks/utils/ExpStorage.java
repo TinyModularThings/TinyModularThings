@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -586,5 +587,30 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	{
 		return this.canAbsorbDeath;
 	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
+	{
+		super.onItemInformation(par1, par2, par3);
+		par2.add("Stores Extreme much EXP");
+		
+		if(GuiScreen.isCtrlKeyDown())
+		{
+			par2.add("Supports Liquid form of XP");
+			par2.add("Drop all XP on breaking");
+			par2.add("Import every XP in a 10 block Radius");
+			par2.add("Power it with a redstone signal to force MFR MobEssens");
+			par2.add("Converting Rate Liquid XP: 20mB = 1XP and 1 XP = 20mB");
+			par2.add("Converting Rate Liquid MobEssens: 10mB = 1XP and 1XP = 1mB");
+			par2.add("Click with a Diamond on me and the i absorb Exp from dieing monsters");
+		}
+		else
+		{
+			par2.add("Press Ctrl to get Extra Info");
+		}
+	}
+	
+	
 	
 }

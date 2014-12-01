@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.common.util;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
@@ -8,14 +9,19 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.util.Icon;
 import speiger.src.api.common.data.utils.BlockData;
+import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.registry.helpers.Ticks;
+import speiger.src.api.common.registry.helpers.Ticks.ITickReader;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import cpw.mods.fml.relauncher.Side;
 
 public class TileIconMaker
 {
 	
 	private HashMap<Block, ArrayList<AdvTile>> allTiles = new HashMap<Block, ArrayList<AdvTile>>();
 	private HashMap<BlockData, Class<? extends AdvTile>> classes = new HashMap<BlockData, Class<? extends AdvTile>>();
-	
+	private boolean init = false;
 	private static TileIconMaker instance = new TileIconMaker();
 	
 	public static TileIconMaker getIconMaker()
@@ -48,9 +54,8 @@ public class TileIconMaker
 		{
 			allTiles.put(par1, new ArrayList<AdvTile>());
 		}
-		tile.onIconMakerLoading();
 		allTiles.get(par1).add(tile);
-		
+		tile.onIconMakerLoading();
 		classes.put(new BlockData(par1, meta), tile.getClass());
 	}
 	

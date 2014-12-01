@@ -22,7 +22,6 @@ import speiger.src.api.common.registry.animalgas.parts.IEntityDrinkInfo;
 import speiger.src.api.common.registry.animalgas.parts.IEntityFoodInfo;
 import speiger.src.api.common.registry.animalgas.parts.IEntityGasInfo;
 import speiger.src.api.common.registry.animalgas.parts.IEntityInfo;
-import speiger.src.api.common.registry.animalgas.parts.IEntityLogic;
 import speiger.src.api.common.registry.animalgas.parts.IEntityResistenceInfo;
 import speiger.src.api.common.registry.animalgas.parts.Resistence;
 import speiger.src.api.common.registry.animalgas.parts.Resistence.ResistanceType;
@@ -70,6 +69,10 @@ public final class AnimalGasRegistry
 				if(info instanceof IEntityResistenceInfo)
 				{
 					resistanceData.put(entity, (IEntityResistenceInfo)info);
+				}
+				if(info instanceof IEntityCustomInfo)
+				{
+					customData.put(entity, (IEntityCustomInfo)info);
 				}
 			}
 		}
