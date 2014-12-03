@@ -6,6 +6,7 @@ import net.minecraftforge.common.EnumHelper;
 import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.creativeTabs.TabCrafting;
+import speiger.src.spmodapi.common.creativeTabs.TabGas;
 import speiger.src.spmodapi.common.creativeTabs.TabHemp;
 import speiger.src.spmodapi.common.creativeTabs.TabHempDeko;
 import speiger.src.spmodapi.common.fluids.gas.FluidAnimalGas;
@@ -26,7 +27,11 @@ public class APIUtilsConfig
 		utils.tabCrafing = new TabCrafting();
 		utils.gasMaterial = new GasMaterial();
 		utils.animalGas = new FluidAnimalGas();
+		utils.tabGas = new TabGas();
+		
+		
 		OreDictionary.registerOre("bone", Item.bone);
+		OreDictionary.registerOre("ingotIron", Item.ingotIron);
 		
 	}
 }

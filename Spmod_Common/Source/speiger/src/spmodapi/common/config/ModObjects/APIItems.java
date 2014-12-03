@@ -1,5 +1,7 @@
 package speiger.src.spmodapi.common.config.ModObjects;
 
+import java.util.HashMap;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import speiger.src.spmodapi.common.items.core.SpmodItem;
@@ -52,5 +54,6 @@ public class APIItems
 	//Circuits
 	public static SpmodItem redstoneCable;
 	public static SpmodItem circuits;
+	public static HashMap<String, SpmodItem> damageableCircuits = new HashMap<String, SpmodItem>();
 
 }

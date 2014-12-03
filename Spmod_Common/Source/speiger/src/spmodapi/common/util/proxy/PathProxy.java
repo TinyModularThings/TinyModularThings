@@ -15,6 +15,7 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipe;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
@@ -43,9 +44,19 @@ public class PathProxy
 		CraftingManager.getInstance().getRecipeList().add(par1);
 	}
 	
+	public static void addOreRecipe(ItemStack output, Object... input)
+	{
+		CraftingManager.getInstance().getRecipeList().add(new ShapedOreRecipe(output, input));
+	}
+	
 	public static void addRecipe(ItemStack output, Object... input)
 	{
 		CraftingManager.getInstance().addRecipe(output, input);
+	}
+	
+	public static void addBlockRecipe(ItemStack output, ItemStack input)
+	{
+		CraftingManager.getInstance().addRecipe(output, new Object[]{"XXX", "XXX", "XXX", 'X', input});
 	}
 	
 	public static void addSRecipe(ItemStack output, Object... input)

@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -11,17 +12,23 @@ import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import speiger.src.api.client.gui.IBlockGui;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
+import speiger.src.spmodapi.client.render.core.RenderBlocksSpmod;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
+import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.crafting.GuiAdvCrafting;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -36,6 +43,7 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 		this.setResistance(4F);
 		this.dissableDrops(1);
 		this.dissableDrops(2);
+		
 	}
 	
 	@Override
@@ -162,4 +170,107 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 		}
 		return null;
 	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresRenderer(int meta)
+	{
+		return meta == 3;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresMultibleRenderPasses(int meta)
+	{
+		return meta == 3;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getRenderPasses(int meta)
+	{
+		return 2;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onRender(IBlockAccess world, int x, int y, int z, RenderBlocks render, BlockStack block, int renderPass)
+	{
+		AdvTile adv = getAdvTile(world, x, y, z);
+		if(adv != null)
+		{
+			Icon[] textures = new Icon[6];
+			for(int i = 0;i<6;i++)
+			{
+				textures[i] = adv.getIconFromSideAndMetadata(i, renderPass);
+			}
+			RenderBlocksSpmod spmod = (RenderBlocksSpmod)render;
+			spmod.setOverrideIcon(textures);
+			spmod.setRenderBounds(0, 0, 0, 1, 1, 1);
+			spmod.renderStandardBlock(this, x, y, z);
+			spmod.clearOverrideIcons();
+		}
+	}
+
+	@Override
+	public boolean dissableRendering(int meta)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean requiresRender()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean renderItemBlock(int meta)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean renderItemBlockBasic(int meta)
+	{
+		return meta != 3;
+	}
+
+	@Override
+	public float[] getBoundingBoxes(int meta)
+	{
+		return null;
+	}
+
+	@Override
+	public float[] getXYZForItemRenderer(ItemRenderType type, int meta)
+	{
+		return null;
+	}
+
+	@Override
+	public int getItemRenderPasses(int meta)
+	{
+		if(meta == 3)
+		{
+			return 2;
+		}
+		return 0;
+	}
+
+	@Override
+	public void onItemRendering(BlockRendererHelper render, ItemRenderType type, BlockStack stack, int renderPass, float x, float y, float z, Object... data)
+	{
+		AdvTile tile = TileIconMaker.getIconMaker().getTileEntityFormBlockAndMetadata(stack.getBlock(), stack.getMeta());
+		Icon[] texture = new Icon[6];
+		for(int i = 0;i<texture.length;i++)
+		{
+			texture[i] = tile.getIconFromSideAndMetadata(i, renderPass);
+		}
+		render.renderBlockStandart(texture, new float[]{0,0,0,1,1,1}, stack.getBlock(), new float[]{0F, 0F, 0F}, (RenderBlocks)data[1]);
+	}
+	
+	
+	
+	
 }

@@ -40,18 +40,19 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IIt
 				IBlockRenderer render = (IBlockRenderer)block;
 				if(render.requiresRenderer(meta))
 				{
+					RenderBlocksSpmod rendering = new RenderBlocksSpmod(renderer);
 					BlockStack stack = new BlockStack(block, meta);
 					if(render.requiresMultibleRenderPasses(meta))
 					{
 						int passes = render.getRenderPasses(meta);
 						for(int i = 0;i<passes;i++)
 						{
-							render.onRender(world, x, y, z, renderer, stack, i);
+							render.onRender(world, x, y, z, rendering, stack, i);
 						}
 					}
 					else
 					{
-						render.onRender(world, x, y, z, renderer, stack, 0);
+						render.onRender(world, x, y, z, rendering, stack, 0);
 					}
 				}
 				else if(render.dissableRendering(meta))
@@ -98,9 +99,10 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IIt
 		IBlockRenderer render = stack.getCastedBlock(IBlockRenderer.class);
 		if(render != null)
 		{
+			RenderBlocksSpmod renderer = new RenderBlocksSpmod((RenderBlocks)data[0]);
 			if(render.renderItemBlockBasic(item.getItemDamage()))
 			{
-				renderBlock(render, stack, (RenderBlocks)data[0], type);
+				renderBlock(render, stack, renderer, type);
 			}
 			else
 			{
@@ -118,11 +120,11 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IIt
 				{
 					if(type == type.INVENTORY)
 					{
-						render.onItemRendering(helper, type, stack, i, key[0], key[1], key[2], item, data[0]);
+						render.onItemRendering(helper, type, stack, i, key[0], key[1], key[2], item, renderer);
 					}
 					else
 					{
-						render.onItemRendering(helper, type, stack, i, key[0], key[1], key[2], item, data[0], data[1]);
+						render.onItemRendering(helper, type, stack, i, key[0], key[1], key[2], item, renderer, data[1]);
 					}
 				}
 			}
@@ -164,23 +166,23 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IIt
 		tessellator.draw();
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 1.0F, 0.0F);
-		par3.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, textureArray[0]);
+		par3.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, textureArray[1]);
 		tessellator.draw();
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 0.0F, -1.0F);
-		par3.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, textureArray[0]);
+		par3.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, textureArray[2]);
 		tessellator.draw();
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(0.0F, 0.0F, 1.0F);
-		par3.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, textureArray[0]);
+		par3.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, textureArray[3]);
 		tessellator.draw();
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-		par3.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, textureArray[0]);
+		par3.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, textureArray[4]);
 		tessellator.draw();
 		tessellator.startDrawingQuads();
 		tessellator.setNormal(1.0F, 0.0F, 0.0F);
-		par3.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, textureArray[0]);
+		par3.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, textureArray[5]);
 		tessellator.draw();
 		GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 		block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
@@ -211,25 +213,25 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IIt
 			tessellator.draw();
 			tessellator.startDrawingQuads();
 			tessellator.setNormal(0.0F, 1.0F, 0.0F);
-			render.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, texture[0]);
+			render.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, texture[1]);
 			tessellator.draw();
 			tessellator.startDrawingQuads();
 			tessellator.setNormal(0.0F, 0.0F, -1.0F);
-			render.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, texture[0]);
+			render.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, texture[2]);
 			tessellator.draw();
 			tessellator.startDrawingQuads();
 			tessellator.setNormal(0.0F, 0.0F, 1.0F);
-			render.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, texture[0]);
+			render.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, texture[3]);
 			tessellator.draw();
 			tessellator.startDrawingQuads();
 			tessellator.setNormal(-1.0F, 0.0F, 0.0F);
-			render.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, texture[0]);
+			render.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, texture[4]);
 			tessellator.draw();
 			tessellator.startDrawingQuads();
 			tessellator.setNormal(1.0F, 0.0F, 0.0F);
-			render.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, texture[0]);
+			render.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, texture[5]);
 			tessellator.draw();
-			GL11.glTranslatef(0.5F, 0.5F, 0.5F);
+			GL11.glTranslatef(-sizes[0], -sizes[1], -sizes[2]);
 			block.setBlockBounds(0.0F, 0.0F, 0.0F, 1.0F, 1.0F, 1.0F);
 		}
 	}

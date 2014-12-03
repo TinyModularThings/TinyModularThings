@@ -8,6 +8,7 @@ import java.util.Random;
 
 import cpw.mods.fml.common.FMLLog;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
@@ -378,6 +379,12 @@ public class BlockAnimalGas extends SpmodBlockBase implements IFluidBlock
 		for(int i = 2;i<6;i++)
 		{
 			int id = WorldReading.getBlockId(world, x, y, z, i);
+			
+			if(id > 0 && id != this.blockID && (Block.blocksList[id].isAirBlock(world, x, y, z) || Block.blocksList[id].isBlockReplaceable(world, x, y, z)))
+			{
+				id = 0;
+			}
+			
 			if(id == 0)
 			{
 				ints.add(new SideInfo(GasBlockInfo.EmptyBlock, i));

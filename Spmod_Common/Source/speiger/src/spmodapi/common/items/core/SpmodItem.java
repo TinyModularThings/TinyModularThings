@@ -11,6 +11,7 @@ import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -32,7 +33,10 @@ public abstract class SpmodItem extends Item implements ITextureRequester
 		return SpmodAPILib.ModID.toLowerCase();
 	}
 	
-	
+	public ItemStack getMetaLessItem()
+	{
+		return new ItemStack(this, 1, PathProxy.getRecipeBlankValue());
+	}
 
 	@Override
 	public String getItemDisplayName(ItemStack par1ItemStack)

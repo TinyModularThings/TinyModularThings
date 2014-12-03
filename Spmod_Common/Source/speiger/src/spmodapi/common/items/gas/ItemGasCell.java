@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.common.items.gas;
 
 import net.minecraft.item.ItemStack;
+import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
 
@@ -12,6 +13,7 @@ public class ItemGasCell extends SpmodItem
 	{
 		super(par1);
 		big = par2;
+		this.setCreativeTab(APIUtils.tabGas);
 	}
 
 	@Override

@@ -21,9 +21,13 @@ import speiger.src.api.common.registry.recipes.output.RecipeOutput;
 import speiger.src.api.common.registry.recipes.output.StackOutput;
 import speiger.src.api.common.registry.recipes.uncrafter.UncrafterRecipeList;
 import speiger.src.api.common.utils.InventoryUtil;
+import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
+import speiger.src.spmodapi.common.config.ModObjects.APIItems;
+import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.util.data.ClassStorage;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import buildcraft.BuildCraftBuilders;
 import buildcraft.BuildCraftCore;
 import buildcraft.BuildCraftEnergy;
@@ -40,7 +44,7 @@ public class UncraftingRecipes
 		ClassStorage storage = ClassStorage.getInstance();
 		pp.addRecipe(new ShapedOreRecipe(new ItemStack(Block.pistonBase), "XXX", "YCY", "YVY", 'X', "plankWood", 'Y', "cobblestone", 'C', "ingotBronze", 'V', Item.redstone));
 		pp.addRecipe(new ShapedOreRecipe(new ItemStack(Block.pistonBase), "XXX", "YCY", "YVY", 'X', "plankWood", 'Y', "cobblestone", 'C', "ingotSilver", 'V', Item.redstone));
-//		pp.addRecipe(new ItemStack(TinyBlocks.craftingBlock, 1, 3), new Object[]{"", "", "",});
+		pp.addRecipe(new ItemStack(TinyBlocks.craftingBlock, 1, 3), new Object[]{"XYX", "CVB", "XNX", 'X', new ItemStack(APIItems.circuits, 1, 1), 'V', GearType.Redstone.getItem(), 'Y', APIBlocks.blockUtils, 'C', TinyItems.advTinyChest, 'B', Block.dispenser, 'N', Block.anvil});
 		
 		
 		

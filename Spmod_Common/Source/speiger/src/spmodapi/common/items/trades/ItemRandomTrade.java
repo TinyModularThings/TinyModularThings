@@ -31,7 +31,7 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	{
 		super(par1);
 		this.setHasSubtypes(true);
-		this.setCreativeTab(APIUtils.tabHemp);
+//		this.setCreativeTab(APIUtils.tabHemp);
 	}
 	
 	@Override

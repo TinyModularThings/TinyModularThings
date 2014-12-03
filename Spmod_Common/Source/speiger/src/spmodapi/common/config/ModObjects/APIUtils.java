@@ -25,5 +25,6 @@ public class APIUtils
 	public static CreativeTabs tabHemp;
 	public static CreativeTabs tabHempDeko;
 	public static CreativeTabs tabCrafing;
+	public static CreativeTabs tabGas;
 	
 }

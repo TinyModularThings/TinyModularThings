@@ -1,10 +1,13 @@
 package speiger.src.spmodapi.common.config;
 
+import java.util.Arrays;
+
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import speiger.src.api.common.world.items.plates.PlateManager;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
+import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.fluids.hemp.ItemHempResin;
 import speiger.src.spmodapi.common.items.armor.HempArmor;
 import speiger.src.spmodapi.common.items.core.BasicItem;
@@ -12,6 +15,7 @@ import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.items.crafting.ItemBlueDye;
 import speiger.src.spmodapi.common.items.crafting.ItemCircuit;
 import speiger.src.spmodapi.common.items.crafting.ItemColorCard;
+import speiger.src.spmodapi.common.items.crafting.ItemDamageableCircuit;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemMobMachineHelper;
 import speiger.src.spmodapi.common.items.crafting.RedstoneCable;
@@ -181,8 +185,15 @@ public class APIItemsConfig
 		
 		engine.setCurrentPath("crafting");
 		items.tinyRedstoneDust = new BasicItem(config.itemIDs.getCurrentID(), "Tiny Redstone Dust");
+		items.tinyRedstoneDust.setCreativeTab(APIUtils.tabCrafing);
 		RegisterProxy.RegisterItem(items.tinyRedstoneDust);
 		engine.registerTexture(items.tinyRedstoneDust, "TinyRedstonePowder");
+		config.itemIDs.updateToNextID();
+		
+		SpmodItem data;
+		items.damageableCircuits.put("StorageLogicDiamond", data = new ItemDamageableCircuit(config.itemIDs.getCurrentID(), "Logic Diamond", 100, Arrays.asList("Storage Logic")));
+		RegisterProxy.RegisterItem(data);
+		engine.registerTexture(data, "StorageLogicDiamond");
 		config.itemIDs.updateToNextID();
 		
 		initHempPlates();

@@ -72,7 +72,7 @@ public abstract class AdvTile extends TileEntity
 		{
 			setWorldObj(DimensionManager.getWorld(0));
 		}
-		return tracker.markTimeIfDelay(getWorldObj(), 20);
+		return tracker.markTimeIfDelay(getWorldObj(), 1);
 	}
 	
 	public boolean hasUsers()

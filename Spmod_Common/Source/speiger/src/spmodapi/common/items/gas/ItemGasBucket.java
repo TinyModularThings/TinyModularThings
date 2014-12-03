@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
+import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.items.core.SpmodPlacerItem;
 
 public class ItemGasBucket extends SpmodPlacerItem
@@ -16,6 +17,7 @@ public class ItemGasBucket extends SpmodPlacerItem
 		super(par1);
 		this.setContainerItem(Item.bucketEmpty);
 		this.setMaxStackSize(1);
+		this.setCreativeTab(APIUtils.tabGas);
 	}
 
 	@Override

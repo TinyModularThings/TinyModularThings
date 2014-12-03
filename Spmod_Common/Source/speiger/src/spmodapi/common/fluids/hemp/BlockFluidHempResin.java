@@ -1,5 +1,8 @@
 package speiger.src.spmodapi.common.fluids.hemp;
 
+import speiger.src.spmodapi.common.util.TextureEngine;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -8,6 +11,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
+import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
@@ -22,6 +26,17 @@ public class BlockFluidHempResin extends BlockFluidClassic
 		this.setQuantaPerBlock(15);
 	}
 	
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public Icon getIcon(int par1, int par2)
+	{
+		return TextureEngine.getTextures().getTexture(this);
+	}
+
+
+
 	@Override
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
 	{

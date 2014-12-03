@@ -54,7 +54,24 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
-		return null;
+		TextureEngine engine = TextureEngine.getTextures();
+		if(side == getFacing() || side == 1)
+		{
+			return engine.getTexture(TinyBlocks.craftingBlock, 3, 0);
+		}
+		if(side == 0)
+		{
+			return engine.getTexture(TinyBlocks.craftingBlock, 3, 1);
+		}
+		if(renderPass == 1)
+		{
+			int percent = progress / 100;
+			return engine.getTexture(TinyBlocks.craftingBlock, 3, 3+percent);
+		}
+		else
+		{
+			return engine.getTexture(TinyBlocks.craftingBlock, 3, 2);
+		}
 	}
 
 	@Override
@@ -69,6 +86,10 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 	public void registerIcon(TextureEngine par1)
 	{
 		super.registerIcon(par1);
+		String id = "Uncrafter";
+		par1.registerTexture(TinyBlocks.craftingBlock, 3, id+"_Bottom", id+"_Top", id+"_Front", 
+				id+"_Overlay_0", id+"_Overlay_1", id+"_Overlay_2", id+"_Overlay_3", id+"_Overlay_4", id+"_Overlay_5",
+				id+"_Overlay_6", id+"_Overlay_7", id+"_Overlay_8", id+"_Overlay_9");
 	}
 
 	@Override
