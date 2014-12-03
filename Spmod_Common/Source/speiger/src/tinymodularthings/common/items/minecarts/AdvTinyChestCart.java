@@ -157,7 +157,8 @@ public class AdvTinyChestCart extends TinyItem implements IMetaItemRender
 		}
 	}
 
-	ModelMinecart cart = new ModelMinecart();
+	@SideOnly(Side.CLIENT)
+	public static ModelMinecart cart;
 	ModelTinyChest chest = new ModelTinyChest();
 	private static final ResourceLocation minecartTextures = new ResourceLocation("textures/entity/minecart.png");
 	private static final ResourceLocation advTCOpenTexture = new ResourceLocation(TinyModularThingsLib.ModID.toLowerCase() + ":textures/models/storage/ModelAdvTinyChest.png");

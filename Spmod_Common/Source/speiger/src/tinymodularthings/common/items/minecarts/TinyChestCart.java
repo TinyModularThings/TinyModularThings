@@ -27,6 +27,7 @@ import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTin
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import cpw.mods.fml.client.FMLClientHandler;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -154,8 +155,8 @@ public class TinyChestCart extends TinyItem implements IMetaItemRender
 			default: return null;
 		}
 	}
-
-	ModelMinecart cart = new ModelMinecart();
+	@SideOnly(Side.CLIENT)
+	public static ModelMinecart cart;
 	ModelTinyChest chest = new ModelTinyChest();
 	private static final ResourceLocation minecartTextures = new ResourceLocation("textures/entity/minecart.png");
 	private static final ResourceLocation tinyChestTexture = new ResourceLocation(TinyModularThingsLib.ModID.toLowerCase() + ":textures/models/storage/ModelTinyChest.png");

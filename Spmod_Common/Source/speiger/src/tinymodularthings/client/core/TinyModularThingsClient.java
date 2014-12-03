@@ -1,5 +1,6 @@
 package speiger.src.tinymodularthings.client.core;
 
+import net.minecraft.client.model.ModelMinecart;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.spmodapi.client.render.core.ItemRenderSpmodCore;
@@ -15,6 +16,8 @@ import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.core.TinyModularThingsCore;
 import speiger.src.tinymodularthings.common.entity.minecarts.TCarts;
+import speiger.src.tinymodularthings.common.items.minecarts.AdvTinyChestCart;
+import speiger.src.tinymodularthings.common.items.minecarts.TinyChestCart;
 import speiger.src.tinymodularthings.common.pipes.AluFluidExtractionPipe;
 import speiger.src.tinymodularthings.common.pipes.FluidRegstonePipe;
 import speiger.src.tinymodularthings.common.pipes.ItemRedstonePipe;
@@ -55,8 +58,9 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		{
 			NeiRegistry.getInstance().init();
 		}
-
 		
+		TinyChestCart.cart = new ModelMinecart();
+		AdvTinyChestCart.cart = new ModelMinecart();
 		
 		if(Loader.isModLoaded("BuildCraft|Core"))
 		{
