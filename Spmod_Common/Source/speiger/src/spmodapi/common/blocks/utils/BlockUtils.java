@@ -30,6 +30,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.common.MinecraftForge;
 import speiger.src.api.client.gui.IBlockGui;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
@@ -51,6 +52,11 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 	{
 		super(par1, Material.rock);
 		this.setCreativeTab(APIUtils.tabCrafing);
+		MinecraftForge.setBlockHarvestLevel(this, 0, "pickaxe", 0);
+		MinecraftForge.setBlockHarvestLevel(this, 1, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(this, 2, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(this, 3, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(this, 4, "pickaxe", 1);
 	}
 	
 	@Override

@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.common.MinecraftForge;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
 import speiger.src.tinymodularthings.common.blocks.crafting.BlockCrafting;
@@ -84,6 +85,7 @@ public class TinyBlocksConfig
 		blocks.bauxitOre.setCreativeTab(CreativeTabs.tabFood);
 		RegisterProxy.RegisterBlock(blocks.bauxitOre, ItemBlockMultiMineOre.class, "BauxitOreTiny");
 		ItemBlockMultiMineOre.addName(blocks.bauxitOre, "Bauxit Ore");
+		MinecraftForge.setBlockHarvestLevel(blocks.bauxitOre, "shovel", 0);
 		config.block.updateToNextID();
 		
 		

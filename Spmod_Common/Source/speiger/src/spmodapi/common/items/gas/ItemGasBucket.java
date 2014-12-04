@@ -31,12 +31,6 @@ public class ItemGasBucket extends SpmodPlacerItem
 	{
 		return new BlockStack(APIBlocks.animalGas, 10);
 	}
-
-	@Override
-	public boolean onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
-	{
-		return true;
-	}
 	
 	
 	

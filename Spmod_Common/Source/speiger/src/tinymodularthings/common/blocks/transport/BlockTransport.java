@@ -11,6 +11,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.common.MinecraftForge;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
@@ -32,6 +33,7 @@ public class BlockTransport extends SpmodBlockContainerBase
 		this.setHardness(4.0F);
 		this.setResistance(4.0F);
 		this.dissableDrops();
+		MinecraftForge.setBlockHarvestLevel(this, "pickaxe", 1);
 	}
 	
 	@Override

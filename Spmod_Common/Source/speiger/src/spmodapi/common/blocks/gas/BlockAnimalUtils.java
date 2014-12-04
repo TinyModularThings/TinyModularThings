@@ -4,6 +4,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import net.minecraftforge.common.MinecraftForge;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.util.TextureEngine;
@@ -17,6 +18,7 @@ public class BlockAnimalUtils extends SpmodBlockContainerBase
 	{
 		super(par1, Material.iron);
 		this.setCreativeTab(APIUtils.tabGas);
+		MinecraftForge.setBlockHarvestLevel(this, 0, "pickaxe", 1);
 	}
 
 	@Override

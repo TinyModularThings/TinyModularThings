@@ -1,6 +1,8 @@
 package speiger.src.spmodapi.common.blocks.hemp;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.world.World;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.items.core.ItemBlockSpmod;
 
@@ -41,7 +43,5 @@ public class ItemBlockHempDekoBase extends ItemBlockSpmod
 			default: return "No Name";
 		}
 	}
-	
-	
 	
 }

@@ -36,6 +36,7 @@ import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
@@ -356,7 +357,12 @@ public abstract class AdvTile extends TileEntity
 		{
 			try
 			{
-				drop.add(new ItemStack(this.getBlockType(), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord)));
+				ItemStack result = TileIconMaker.getIconMaker().getStackFromTile(this);
+				if(result == null)
+				{
+					result = new ItemStack(this.getBlockType(), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
+				}
+				drop.add(result);
 			}
 			catch(Exception e)
 			{

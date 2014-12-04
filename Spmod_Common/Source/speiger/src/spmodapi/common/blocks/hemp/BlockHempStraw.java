@@ -16,6 +16,7 @@ import net.minecraftforge.common.MinecraftForge;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -58,7 +59,8 @@ public class BlockHempStraw extends SpmodBlockBase
 		if(meta == 0)
 		{
 			ArrayList<ItemStack> stack = new ArrayList<ItemStack>();
-			stack.add(new ItemStack(this, 1, meta));
+			stack.add(new ItemStack(this));
+			return stack;
 		}
 		return super.onDrop(meta, fortune);
 	}

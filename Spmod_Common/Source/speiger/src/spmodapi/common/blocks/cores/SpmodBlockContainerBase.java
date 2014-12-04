@@ -28,12 +28,13 @@ import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEntityProvider
 {
-	public static HashMap<BlockPosition, ArrayList<ItemStack>> tileDrops = new HashMap<BlockPosition, ArrayList<ItemStack>>();
+	public static HashMap<List<Integer>, ArrayList<ItemStack>> tileDrops = new HashMap<List<Integer>, ArrayList<ItemStack>>();
 	
 	
 	public SpmodBlockContainerBase(int par1, Material par2Material)
@@ -517,12 +518,12 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
     {
     	AdvTile tile = getAdvTile(par1World, par2, par3, par4);
     	int meta = par1World.getBlockMetadata(par2, par3, par4);
-    	if(tile != null)
+    	if(tile != null && !par1World.isRemote)
     	{
     		tile.onBreaking();
     		if(hasTileDrops(meta))
     		{
-    			tileDrops.put(tile.getPosition(), tile.onDrop(0));
+    			tileDrops.put(tile.getPosition().getAsList(), tile.onDrop(0));
     		}
     	}
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
@@ -542,9 +543,9 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		ArrayList<ItemStack> drops = super.getBlockDropped(world, x, y, z, metadata, fortune);
 		BlockPosition pos = new BlockPosition(world, x, y, z);
 		
-		if(tileDrops.containsKey(pos))
+		if(tileDrops.containsKey(pos.getAsList()))
 		{
-			drops.addAll(tileDrops.remove(pos));
+			drops.addAll(tileDrops.remove(pos.getAsList()));
 		}
 		else
 		{

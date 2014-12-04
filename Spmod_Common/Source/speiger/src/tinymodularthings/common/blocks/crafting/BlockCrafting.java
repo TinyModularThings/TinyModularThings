@@ -15,6 +15,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import net.minecraftforge.common.MinecraftForge;
 import speiger.src.api.client.gui.IBlockGui;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.world.blocks.BlockPosition;
@@ -43,6 +44,11 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 		this.setResistance(4F);
 		this.dissableDrops(1);
 		this.dissableDrops(2);
+		this.dissableDrops(3);
+		MinecraftForge.setBlockHarvestLevel(this, 0, "pickaxe", 0);
+		MinecraftForge.setBlockHarvestLevel(this, 1, "pickaxe", 1);
+		MinecraftForge.setBlockHarvestLevel(this, 2, "axe", 0);
+		MinecraftForge.setBlockHarvestLevel(this, 3, "pickaxe", 1);
 		
 	}
 	

@@ -106,12 +106,16 @@ public abstract class ItemBlockSpmod extends ItemBlock
         	if(world.setBlock(x, y, z, stack.getBlockID(), stack.getMeta(), 3))
         	{
         		WorldReading.setupUser(world, x, y, z, player);
-        		WorldReading.setUpFacing(world, x, y, z, player, side);
         		boolean flag = onAfterPlaced(world, x, y, z, side, player, item);
+        		WorldReading.setUpFacing(world, x, y, z, player, side);
         		stack.getBlock().onBlockPlacedBy(world, x, y, z, player, item);
         		if(flag)
         		{
         			removeItem(player, item);
+        		}
+        		else
+        		{
+        			world.setBlockToAir(x, y, z);
         		}
         		return true;
         	}
@@ -124,7 +128,7 @@ public abstract class ItemBlockSpmod extends ItemBlock
 	
     public boolean onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
     {
-    	return false;
+    	return true;
     }
     
     public void removeItem(EntityPlayer par1, ItemStack par2)
