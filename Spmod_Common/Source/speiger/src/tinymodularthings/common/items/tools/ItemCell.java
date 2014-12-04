@@ -143,6 +143,7 @@ public class ItemCell extends TinyItem implements IFluidContainerItem
 			if (fluid == null)
 			{
 				list.add(EnumChatFormatting.BLUE + "Empty");
+				list.add(EnumChatFormatting.BLUE + "0 / 5000 mB");
 			}
 			else
 			{

@@ -109,6 +109,7 @@ public abstract class SpmodPlacerItem extends SpmodItem
         	{
         		WorldReading.setupUser(world, x, y, z, player);
         		boolean flag = onAfterPlaced(world, x, y, z, side, player, item);
+        		WorldReading.setUpFacing(world, x, y, z, player, side);
         		stack.getBlock().onBlockPlacedBy(world, x, y, z, player, item);
         		if(flag)
         		{
