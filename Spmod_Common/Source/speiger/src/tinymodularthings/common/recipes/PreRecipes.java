@@ -32,7 +32,7 @@ public class PreRecipes
 		PathProxy.addAssemblyRecipe(new ItemStack(TinyBlocks.transportBlock, 1, 4), 100000, new ItemStack(TinyBlocks.transportBlock, 1, 0));
 		PathProxy.addSRecipe(new ItemStack(TinyBlocks.craftingBlock, 1, 2), new Object[] {TinyBlocks.craftingBlock, Block.enderChest});
 
-		
+		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 5), new Object[]{"X X", "XYX", " X ", 'Y', new ItemStack(TinyItems.tinyTank, 2), 'X', Block.stone});
 		
 		
 	}

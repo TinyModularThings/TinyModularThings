@@ -4,11 +4,10 @@ import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.common.base.Strings;
-import com.google.common.math.DoubleMath;
-import com.google.common.primitives.Floats;
-
+import net.minecraft.entity.Entity;
 import net.minecraft.util.MathHelper;
+
+import com.google.common.math.DoubleMath;
 
 public class MathUtils
 {
@@ -132,5 +131,15 @@ public class MathUtils
 			return false;
 		}
 		return true;
+	}
+
+	public static void setEntityRotation(Entity effect, float rotation, float speed)
+	{
+	        float f1 = MathHelper.cos(rotation);
+	        float f2 = MathHelper.sin(rotation);
+	        double d0 = speed * (double)f1 + speed * (double)f2;
+	        double d2 = speed * (double)f1 - speed * (double)f2;
+	        effect.motionX = d0;
+	        effect.motionZ = d2;
 	}
 }

@@ -15,6 +15,7 @@ import speiger.src.tinymodularthings.common.blocks.crafting.Uncrafter;
 import speiger.src.tinymodularthings.common.blocks.machine.BlockMachine;
 import speiger.src.tinymodularthings.common.blocks.machine.BucketFillerBasic;
 import speiger.src.tinymodularthings.common.blocks.machine.ItemBlockMachine;
+import speiger.src.tinymodularthings.common.blocks.machine.MachineWaterSpender;
 import speiger.src.tinymodularthings.common.blocks.machine.OilGenerator;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import speiger.src.tinymodularthings.common.blocks.machine.SelfPoweredBucketFiller;
@@ -125,6 +126,7 @@ public class TinyBlocksConfig
 		RegisterProxy.RegisterTile(blocks.machine, 2, SelfPoweredBucketFiller.class, "SelfBucketFiller");
 		RegisterProxy.RegisterTile(blocks.machine, 3, WaterGenerator.class, "WaterGen");
 		RegisterProxy.RegisterTile(blocks.machine, 4, OilGenerator.class, "OilGenerator");
+		RegisterProxy.RegisterTile(blocks.machine, 5, MachineWaterSpender.class, "WaterSpender");
 		blocks.machine.registerTextures(engine);
 		config.block.updateToNextID();
 		

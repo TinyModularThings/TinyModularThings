@@ -34,6 +34,7 @@ public class ItemBlockMachine extends ItemBlockTinyChest
 			case 2: return "Selfpowered Bucket Filler";
 			case 3: return "Water Generator";
 			case 4: return "Oil Generator";
+			case 5: return "Water Spender";
 		}
 		return null;
 	}

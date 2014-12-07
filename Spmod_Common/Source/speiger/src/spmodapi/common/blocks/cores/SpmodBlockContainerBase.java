@@ -251,9 +251,13 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
 	{
 		AdvTile tile = getAdvTile(par1World, par2, par3, par4);
-		if(tile != null)
+ 		if(tile != null)
 		{
-			return tile.getColidingBox();
+ 			AxisAlignedBB bb = tile.getColidingBox();
+			if(bb != null)
+			{
+				return tile.getColidingBox();
+			}
 		}
 		return super.getCollisionBoundingBoxFromPool(par1World, par2, par3, par4);
 	}

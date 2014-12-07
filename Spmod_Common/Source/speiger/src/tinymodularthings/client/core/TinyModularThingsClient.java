@@ -6,8 +6,10 @@ import net.minecraftforge.common.ForgeDirection;
 import speiger.src.spmodapi.client.render.core.ItemRenderSpmodCore;
 import speiger.src.tinymodularthings.client.render.carts.RenderTCarts;
 import speiger.src.tinymodularthings.client.render.items.RendererItemCell;
+import speiger.src.tinymodularthings.client.render.machine.RenderWaterSpender;
 import speiger.src.tinymodularthings.client.render.storage.RenderStorageBlock;
 import speiger.src.tinymodularthings.client.render.transport.renderTransportTile;
+import speiger.src.tinymodularthings.common.blocks.machine.MachineWaterSpender;
 import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyChest;
 import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyTank;
 import speiger.src.tinymodularthings.common.blocks.storage.TinyChest;
@@ -44,7 +46,10 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		ClientRegistry.bindTileEntitySpecialRenderer(TinyTank.class, new RenderStorageBlock());
 		ClientRegistry.bindTileEntitySpecialRenderer(AdvTinyChest.class, new RenderStorageBlock());
 		ClientRegistry.bindTileEntitySpecialRenderer(AdvTinyTank.class, new RenderStorageBlock());
-
+		
+		//Machine Blocks
+		ClientRegistry.bindTileEntitySpecialRenderer(MachineWaterSpender.class, new RenderWaterSpender());
+		
 		// Transport Blocks
 		ClientRegistry.bindTileEntitySpecialRenderer(TinyHopper.class, new renderTransportTile());
 		

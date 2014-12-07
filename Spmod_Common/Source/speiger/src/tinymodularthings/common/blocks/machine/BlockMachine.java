@@ -3,14 +3,18 @@ package speiger.src.tinymodularthings.common.blocks.machine;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.MinecraftForge;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.tinymodularthings.client.render.machine.RenderWaterSpender;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -32,7 +36,7 @@ public class BlockMachine extends SpmodBlockContainerBase
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
-		for (int i = 0; i < 5; i++)
+		for (int i = 0; i < 6; i++)
 		{
 			par3.add(new ItemStack(par1, 1, i));
 		}
@@ -48,12 +52,20 @@ public class BlockMachine extends SpmodBlockContainerBase
 			case 2: return new SelfPoweredBucketFiller();
 			case 3: return new WaterGenerator();
 			case 4: return new OilGenerator();
+			case 5: return new MachineWaterSpender();
 			default: return null;
 		}
 	}
 	
 	
 	
+	
+	@Override
+	public boolean isOpaqueCube()
+	{
+		return false;
+	}
+
 	@Override
 	public boolean hasTileDrops(int meta)
 	{
@@ -72,5 +84,36 @@ public class BlockMachine extends SpmodBlockContainerBase
 		par1.registerTexture(new BlockStack(this, 2), "SelfPoweredBucketFiller_top", "SelfPoweredBucketFiller_bottom", "SelfPoweredBucketFiller_side");
 		par1.registerTexture(new BlockStack(this, 3), "waterGenerator_top", "waterGenerator_bottom", "waterGenerator_side");
 		par1.registerTexture(new BlockStack(this, 4), "oilGeneratorBottom", "oilGeneratorTop_off", "oilGeneratorTop_on", "oilGeneratorFront_off", "oilGeneratorFront_on");
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean requiresRenderer(int meta)
+	{
+		return false;
+	}
+	
+	@Override
+	public boolean dissableRendering(int meta)
+	{
+		return meta == 5;
+	}
+
+	@Override
+	public boolean requiresRender()
+	{
+		return true;
+	}
+
+	@Override
+	public boolean renderItemBlock(int meta)
+	{
+		return true;
+	}
+
+	@Override
+	public boolean renderItemBlockBasic(int meta)
+	{
+		return true;
 	}
 }
