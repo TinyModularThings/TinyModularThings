@@ -166,6 +166,8 @@ public class MultiPlate extends TileFacing
 			getWorldObj().markTileEntityForDespawn(this);
 		}
 	}
+	
+	
 
 	@Override
 	public boolean onClick(boolean sneak, EntityPlayer par1, Block par2, int side)
@@ -182,59 +184,6 @@ public class MultiPlate extends TileFacing
 			return true;
 		}
 		return false;
-	}
-
-	@Override
-	public void setupUser(EntityPlayer player)
-	{
-		switch(getFacing())
-		{
-			case 0:
-			case 1:
-				this.setRotation(MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3);
-				break;
-			case 2:
-			case 3:
-				int result = Math.round(player.rotationPitch) > 57 ? 2 : Math.round(player.rotationPitch) < -57 ? 0 : -1;
-				if(result == -1)
-				{
-					int data = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-					if(data == 0 || data == 2)
-					{
-						result = 0;
-					}
-					else
-					{
-						result = data;
-					}
-				}
-				this.setRotation(result);
-				break;
-			case 4:
-			case 5:
-				result = Math.round(player.rotationPitch) > 57 ? 2 : Math.round(player.rotationPitch) < -57 ? 0 : -1;
-				if(result == -1)
-				{
-					int data = MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3;
-					if(data == 1 || data == 3)
-					{
-						result = 0;
-					}
-					else
-					{
-						if(data == 2)
-						{
-							result = getFacing() == 4 ? 1 : 3;
-						}
-						else
-						{
-							result = getFacing() == 4 ? 3 : 1;
-						}
-					}
-				}
-				this.setRotation(result);
-				break;
-		}
 	}
 
 	@Override
@@ -297,7 +246,7 @@ public class MultiPlate extends TileFacing
 	@Override
 	public boolean isNormalCube()
 	{
-		return true;
+		return false;
 	}
 
 	public String getIdentity()

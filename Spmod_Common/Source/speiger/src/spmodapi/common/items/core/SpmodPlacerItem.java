@@ -12,7 +12,6 @@ import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -48,7 +47,10 @@ public abstract class SpmodPlacerItem extends SpmodItem
 	public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10)
     {
         int blockID = world.getBlockId(x, y, z);
-        
+        int metadata = world.getBlockMetadata(x, y, z);
+        int xCoord = x;
+        int yCoord = y;
+        int zCoord = z;
         if (blockID == Block.snow.blockID && (world.getBlockMetadata(x, y, z) & 7) < 1)
         {
             side = 1;
@@ -98,11 +100,15 @@ public abstract class SpmodPlacerItem extends SpmodItem
         {
             return false;
         }
-        else if (y == 255 && Block.blocksList[getBlockToPlace(item.getItemDamage()).getBlockID()].blockMaterial.isSolid())
+        else if (y == 255 && Block.blocksList[blockID].blockMaterial.isSolid())
         {
             return false;
         }
-        else if(getBlockToPlace(item.getItemDamage()) != null)
+        else if(world.getBlockId(x, y, z) != 0 && (!Block.blocksList[world.getBlockId(x, y, z)].isAirBlock(world, x, y, z) || !Block.blocksList[world.getBlockId(x, y, z)].isBlockReplaceable(world, x, y, z)))
+        {
+        	return false;
+        }	
+        else if(getBlockToPlace(item.getItemDamage()) != null && canPlaceBlock(world, xCoord, yCoord, zCoord, new BlockStack(blockID, metadata), side))
         {
         	BlockStack stack = getBlockToPlace(item.getItemDamage());
         	if(world.setBlock(x, y, z, stack.getBlockID(), stack.getMeta(), 3))
@@ -124,9 +130,14 @@ public abstract class SpmodPlacerItem extends SpmodItem
     
     public abstract BlockStack getBlockToPlace(int meta);
 	
+    public boolean canPlaceBlock(World world, int x, int y, int z, BlockStack block, int side)
+    {
+    	return true;
+    }
+    
     public boolean onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
     {
-    	return false;
+    	return true;
     }
     
     public void removeItem(EntityPlayer par1, ItemStack par2)

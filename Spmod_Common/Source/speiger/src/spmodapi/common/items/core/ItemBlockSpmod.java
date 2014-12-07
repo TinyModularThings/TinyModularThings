@@ -50,6 +50,10 @@ public abstract class ItemBlockSpmod extends ItemBlock
     public boolean onItemUse(ItemStack item, EntityPlayer player, World world, int x, int y, int z, int side, float par8, float par9, float par10)
     {
         int blockID = world.getBlockId(x, y, z);
+        int metadata = world.getBlockMetadata(x, y, z);
+        int xCoord = x;
+        int yCoord = y;
+        int zCoord = z;
         
         if (blockID == Block.snow.blockID && (world.getBlockMetadata(x, y, z) & 7) < 1)
         {
@@ -100,7 +104,7 @@ public abstract class ItemBlockSpmod extends ItemBlock
         {
             return false;
         }
-        else if(getBlockToPlace(item.getItemDamage()) != null)
+        else if(getBlockToPlace(item.getItemDamage()) != null && canPlaceBlock(world, xCoord, yCoord, zCoord, new BlockStack(blockID, metadata), side))
         {
         	BlockStack stack = getBlockToPlace(item.getItemDamage());
         	if(world.setBlock(x, y, z, stack.getBlockID(), stack.getMeta(), 3))
@@ -127,6 +131,11 @@ public abstract class ItemBlockSpmod extends ItemBlock
     public abstract BlockStack getBlockToPlace(int meta);
 	
     public boolean onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
+    {
+    	return true;
+    }
+    
+    public boolean canPlaceBlock(World world, int x, int y, int z, BlockStack block, int side)
     {
     	return true;
     }

@@ -2,11 +2,14 @@ package speiger.src.spmodapi.common.items.hemp;
 
 import java.util.List;
 
+import net.minecraft.block.Block;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.common.world.blocks.BlockStack;
@@ -18,6 +21,7 @@ import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.handler.PlateHandler;
 import speiger.src.spmodapi.common.items.core.SpmodPlacerItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -94,6 +98,14 @@ public class ItemMultiPlate extends SpmodPlacerItem
 	{
 		return new BlockStack(APIBlocks.multiPlate);
 	}
+	
+	
+
+	@Override
+	public boolean canPlaceBlock(World world, int x, int y, int z, BlockStack block, int side)
+	{
+		return block.getBlock().isBlockSolidOnSide(world, x, y, z, ForgeDirection.getOrientation(side));
+	}
 
 	@Override
 	public boolean onAfterPlaced(World world, int x, int y, int z, int side, EntityPlayer player, ItemStack item)
@@ -106,7 +118,11 @@ public class ItemMultiPlate extends SpmodPlacerItem
 			flag = false;
 			int meta = item.getItemDamage();
 			plate.setFacing(side);
-			if(!plate.canPlacedOnSide(ForgeDirection.getOrientation(side)))
+			if(side == 0 || side == 1)
+			{
+				plate.setRotation(MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3);
+			}
+			if(!plate.canPlacedOnSide(ForgeDirection.getOrientation(side).getOpposite()))
 			{
 				flag = true;
 			}
@@ -117,6 +133,10 @@ public class ItemMultiPlate extends SpmodPlacerItem
 				return true;
 			}
 			flag = true;
+		}
+		if(world.isRemote)
+		{
+			flag = false;
 		}
 		if(flag)
 		{

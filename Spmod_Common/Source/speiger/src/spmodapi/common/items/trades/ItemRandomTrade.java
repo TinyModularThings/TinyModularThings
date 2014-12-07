@@ -12,10 +12,13 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.village.MerchantRecipe;
+import net.minecraft.world.World;
 import speiger.src.api.client.gui.IItemGui;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.items.trades.GuiTrade;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
+import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.util.TickHelper;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
@@ -99,6 +102,18 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 		}
 	}
 	
+	
+	
+	@Override
+	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
+	{
+		if(!par2World.isRemote)
+		{
+			par3EntityPlayer.openGui(SpmodAPI.instance, EnumGuiIDs.Items.getID(), par2World, 0, 0, 0);
+		}
+		return par1ItemStack;
+	}
+
 	public static ItemStack[] getAllTrades()
 	{
 		ItemStack[] array = new ItemStack[recipeList.size()];

@@ -394,6 +394,13 @@ public class InventoryUtil
 		result.stackSize = size;
 		return result.copy();
 	}
+
+	public static ItemStack getItemWithStackSize(ItemStack par1, int par2)
+	{
+		ItemStack result = ItemStack.copyItemStack(par1);
+		result.stackSize = par2;
+		return result;
+	}
 	
 
 	

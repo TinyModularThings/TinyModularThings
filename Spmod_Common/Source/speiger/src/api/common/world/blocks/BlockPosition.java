@@ -4,6 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import net.minecraft.block.Block;
+import net.minecraft.dispenser.IBlockSource;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.MathHelper;
@@ -11,7 +12,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 
-public class BlockPosition
+public class BlockPosition implements IBlockSource
 {
 	// World
 	public World worldID;
@@ -292,6 +293,48 @@ public class BlockPosition
 	public BlockPosition add(ForgeDirection dir)
 	{
 		return add(dir.offsetX, dir.offsetY, dir.offsetZ);
+	}
+
+	@Override
+	public double getX()
+	{
+		return xCoord;
+	}
+
+	@Override
+	public double getY()
+	{
+		return yCoord;
+	}
+
+	@Override
+	public double getZ()
+	{
+		return zCoord;
+	}
+
+	@Override
+	public int getXInt()
+	{
+		return xCoord;
+	}
+
+	@Override
+	public int getYInt()
+	{
+		return yCoord;
+	}
+
+	@Override
+	public int getZInt()
+	{
+		return zCoord;
+	}
+
+	@Override
+	public TileEntity getBlockTileEntity()
+	{
+		return getTileEntity();
 	}
 	
 	

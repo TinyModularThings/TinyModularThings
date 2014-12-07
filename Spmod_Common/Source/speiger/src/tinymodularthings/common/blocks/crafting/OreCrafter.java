@@ -57,7 +57,7 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 	@Override
 	public void registerIcon(TextureEngine par1)
 	{
-		par1.registerTexture(new BlockStack(TinyBlocks.craftingBlock, 3), "craftingTableBottom", "OreCrafter_top", "OreCrafter_side", "OreCrafter_side2");
+		par1.registerTexture(new BlockStack(TinyBlocks.craftingBlock, 1), "craftingTableBottom", "OreCrafter_top", "OreCrafter_side", "OreCrafter_side2");
 	}
 	
 	@Override
@@ -67,11 +67,11 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 		if(side >= 2)
 		{
 			int data = facing == 2 || facing == 3 ? side == 5 || side == 4 ? 2 : 3 : side == 5 || side == 4 ? 3 : 2;
-			return engine.getTexture(TinyBlocks.craftingBlock, 3, data);
+			return engine.getTexture(TinyBlocks.craftingBlock, 1, data);
 		}
 		else
 		{
-			return engine.getTexture(TinyBlocks.craftingBlock, 3, side);
+			return engine.getTexture(TinyBlocks.craftingBlock, 1, side);
 		}
 	}
 	

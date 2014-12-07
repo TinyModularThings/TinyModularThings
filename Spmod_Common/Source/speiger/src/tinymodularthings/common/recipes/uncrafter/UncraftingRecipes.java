@@ -44,7 +44,7 @@ public class UncraftingRecipes
 		ClassStorage storage = ClassStorage.getInstance();
 		pp.addRecipe(new ShapedOreRecipe(new ItemStack(Block.pistonBase), "XXX", "YCY", "YVY", 'X', "plankWood", 'Y', "cobblestone", 'C', "ingotBronze", 'V', Item.redstone));
 		pp.addRecipe(new ShapedOreRecipe(new ItemStack(Block.pistonBase), "XXX", "YCY", "YVY", 'X', "plankWood", 'Y', "cobblestone", 'C', "ingotSilver", 'V', Item.redstone));
-		pp.addRecipe(new ItemStack(TinyBlocks.craftingBlock, 1, 3), new Object[]{"XYX", "CVB", "XNX", 'X', new ItemStack(APIItems.circuits, 1, 1), 'V', GearType.Redstone.getItem(), 'Y', APIBlocks.blockUtils, 'C', TinyItems.advTinyChest, 'B', Block.dispenser, 'N', Block.anvil});
+		pp.addRecipe(new ItemStack(TinyBlocks.craftingBlock, 1, 3), new Object[]{"XYX", "CVB", "XNX", 'X', new ItemStack(APIItems.circuits, 1, 1), 'V', GearType.Redstone.getItem(), 'Y', new ItemStack(APIBlocks.blockUtils), 'C', TinyItems.advTinyChest, 'B', Block.dispenser, 'N', Block.anvil});
 		
 		
 		

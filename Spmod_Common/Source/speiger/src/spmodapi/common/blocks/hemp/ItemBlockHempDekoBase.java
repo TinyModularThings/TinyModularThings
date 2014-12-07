@@ -1,5 +1,9 @@
 package speiger.src.spmodapi.common.blocks.hemp;
 
+import java.util.List;
+
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -43,5 +47,17 @@ public class ItemBlockHempDekoBase extends ItemBlockSpmod
 			default: return "No Name";
 		}
 	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+	{
+		if(par1ItemStack.getItemDamage() > 3)
+		{
+			par3List.add("Monster can not Spawn on me");
+		}
+	}
+	
+	
 	
 }

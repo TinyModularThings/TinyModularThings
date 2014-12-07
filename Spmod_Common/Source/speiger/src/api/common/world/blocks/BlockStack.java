@@ -19,7 +19,7 @@ import speiger.src.spmodapi.common.util.proxy.CodeProxy;
  * @author Speiger
  * 
  */
-public class BlockStack
+public class BlockStack 
 {
 	Block blocks;
 	int meta;
