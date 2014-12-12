@@ -12,8 +12,13 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.event.sound.SoundLoadEvent;
 import net.minecraftforge.event.ForgeSubscribe;
 import paulscode.sound.SoundSystem;
+import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.SpmodConfig;
+
+import com.google.common.base.Strings;
+
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -34,10 +39,8 @@ public class SoundRegistry
 	
 	@SideOnly(Side.CLIENT)
 	private SoundManager manager;
-	
-	private ArrayList<SoundWaiter> waitingList = new ArrayList<SoundWaiter>();
-	
-	private List<String> soundsToRegister = new ArrayList<String>();
+			
+	private HashMap<List<Integer>, String> soundKeepers = new HashMap<List<Integer>, String>();
 	
 	/**
 	 * My Sound Controll
@@ -57,44 +60,18 @@ public class SoundRegistry
 		manager = evt.manager;
 		system = evt.manager.sndSystem;
 		settings = Minecraft.getMinecraft().gameSettings;
-		tryToRegist();
 		SpmodAPI.log.print("Register " + sounds.size() + " Sounds");
 	}
 	
 	public void registerSound(String name, String path)
 	{
-		if (manager != null)
+		SoundPoolEntry sound = new SoundPoolEntry(path, SoundRegistry.class.getClassLoader().getResource(path));
+		if (sound != null && sound.getSoundName().equals(path) && sound.getSoundUrl() != null)
 		{
-			manager.soundPoolSounds.addSound(path);
-			while (!sounds.containsKey(name))
-			{
-				String newString = path.substring(0, path.lastIndexOf("."));
-				SoundPoolEntry sound = manager.soundPoolSounds.getRandomSoundFromSoundPool(newString);
-				if (sound != null && sound.getSoundName().equals(path) && !sounds.containsValue(sound))
-				{
-					waitingList.remove(new SoundWaiter(name, path));
-					sounds.put(name, sound);
-				}
-			}
+			sounds.put(name, sound);
 			return;
 		}
-		else
-		{
-			waitingList.add(new SoundWaiter(name, path));
-		}
-		
-	}
-	
-	public void tryToRegist()
-	{
-		for (int i = 0; i < waitingList.size(); i++)
-		{
-			SoundWaiter current = waitingList.get(i);
-			if (current != null)
-			{
-				registerSound(current.getName(), current.getPath());
-			}
-		}
+		System.exit(0);
 	}
 	
 	/**
@@ -104,18 +81,12 @@ public class SoundRegistry
 	 */
 	public void playSound(World world, int x, int y, int z, String name, float volume, float pitch)
 	{
-		
 		if (!SpmodConfig.booleanInfos.get("PlaySounds"))
 		{
 			return;
 		}
 		
-		if (system == null)
-		{
-			system = manager.sndSystem;
-			playSound(world, x, y, z, name, volume, pitch);
-			return;
-		}
+		checkSounds();
 		
 		SoundPoolEntry sound = getSoundPoolEntry(name);
 		if (system != null && sound != null && sound.getSoundName() != null && sound.getSoundUrl() != null && volume > 0.0F)
@@ -127,7 +98,7 @@ public class SoundRegistry
 			{
 				f5 *= volume;
 			}
-			
+			soundKeepers.put(new BlockPosition(world, x, y, z).getAsList(), id);
 			system.newSource(volume > 1.0F, id, sound.getSoundUrl(), sound.getSoundName(), false, x, y, z, 2, f5);
 			
 			if (volume > 1.0F)
@@ -143,32 +114,118 @@ public class SoundRegistry
 		else if(system != null && sound == null)
 		{
 			SoundPoolEntry entry = manager.soundPoolSounds.getRandomSoundFromSoundPool(name);
-			sounds.put(name, entry);
-			playSound(world, x, y, z, name, volume, pitch);
+			if(entry != null)
+			{
+				sounds.put(name, entry);
+				playSound(world, x, y, z, name, volume, pitch);
+			}
 			return;
 		}
 		
 	}
 	
-	public void restartSound(String name, World world, int x, int y, int z, float newLoudness, float newPitch)
+	public String getSoundID(World world, int x, int y, int z)
 	{
-		stopSound(world, x, y, z, name);
-		playSound(world, x, y, z, name, newLoudness, newPitch);
+		return soundKeepers.get(new BlockPosition(world, x, y, z).getAsList());
 	}
 	
-	public void stopSound(World world, int x, int y, int z, String name)
+	public void restartSound(World world, int x, int y, int z, float newLoudness, float newPitch)
+	{
+		String name = getSoundID(world, x, y, z);
+		if(!Strings.isNullOrEmpty(name))
+		{
+			system.stop(name);
+			system.play(name);
+		}
+	}
+	
+	public void stopAndRemoveSound(World world, int x, int y, int z, String name)
+	{
+		checkSounds();
+		String id = createID(name, world, x, y, z);
+		system.stop(id);
+		system.removeSource(id);
+		
+	}
+	
+	public void pauseSound(String name)
+	{
+		checkSounds();
+		system.pause(name);
+	}
+	
+	public void stopSound(String name)
+	{
+		checkSounds();
+		system.stop(name);
+	}
+	
+	public void playSound(String name)
+	{
+		checkSounds();
+		system.play(name);
+	}
+	
+	public void setLoop(String name, boolean par2)
+	{
+		checkSounds();
+		system.setLooping(name, par2);
+	}
+	
+	public void stopAndRemoveSound(String name)
+	{
+		checkSounds();
+		system.stop(name);
+		system.removeSource(name);
+	}
+	
+	public void changeSoundVolumeAndPitch(String name, float loudness, float pitch)
+	{
+		checkSounds();
+		system.setPitch(name, pitch);
+		system.setVolume(name, loudness);
+	}
+	
+	public boolean isPlayingSound(String id)
+	{
+		checkSounds();
+		return system.playing(id);
+	}
+	
+	public String createSound(String soundName, World world, int x, int y, int z, boolean priority)
+	{
+		if (!SpmodConfig.booleanInfos.get("PlaySounds"))
+		{
+			return "SoundDissabled";
+		}
+		checkSounds();
+		SoundPoolEntry sound = getSoundPoolEntry(soundName);
+		if (system != null && sound != null && sound.getSoundName() != null && sound.getSoundUrl() != null)
+		{
+			String id = createID(soundName, world, x, y, z);
+			soundKeepers.put(new BlockPosition(world, x, y, z).getAsList(), id);
+			system.newSource(priority, id, sound.getSoundUrl(), sound.getSoundName(), false, x, y, z, 2, 16);
+			return id;
+		}
+		else if(system != null && sound == null)
+		{
+			SoundPoolEntry entry = manager.soundPoolSounds.getRandomSoundFromSoundPool(soundName);
+			if(entry != null)
+			{
+				sounds.put(soundName, entry);
+				return createSound(soundName, world, x, y, z, priority);
+			}
+		}
+		return "No Sound";
+		
+	}
+	
+	private void checkSounds()
 	{
 		if (system == null)
 		{
 			system = manager.sndSystem;
-			stopSound(world, x, y, z, name);
-			return;
 		}
-		String id = createID(name, world, x, y, z);
-		
-		system.stop(id);
-		system.removeSource(id);
-		
 	}
 	
 	private SoundPoolEntry getSoundPoolEntry(String name)
@@ -201,6 +258,14 @@ public class SoundRegistry
 		{
 			return path;
 		}
+
+		@Override
+		public String toString()
+		{
+			return "Sound Waiter: "+name+":"+path;
+		}
+		
+		
 	}
 	
 }

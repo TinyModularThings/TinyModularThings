@@ -27,13 +27,13 @@ import speiger.src.api.common.world.tiles.interfaces.IWindmill;
 import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.client.gui.GuiWindmill;
 import speiger.src.compactWindmills.common.utils.WindmillType;
-import speiger.src.spmodapi.common.tile.TileIC2Facing;
+import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class WindMill extends TileIC2Facing implements IInventory,
+public class WindMill extends TileFacing implements IInventory,
 		IEnergySource, IWindmill, IWrenchable
 {
 	public ItemStack[] inv = new ItemStack[1];

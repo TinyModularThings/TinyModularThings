@@ -69,7 +69,7 @@ public class ItemBlockLightDekoBlock extends ItemBlockSpmod implements IMetaItem
 		if(tile != null && tile instanceof TileLamp)
 		{
 			TileLamp lamp = (TileLamp)tile;
-			lamp.setFacing(ForgeDirection.getOrientation(side).getOpposite().ordinal());
+			lamp.setFacing((short)ForgeDirection.getOrientation(side).getOpposite().ordinal());
 			lamp.setMetadata(meta);
 			lamp.setType(type(meta));
 			lamp.setInverted(inverted(meta));

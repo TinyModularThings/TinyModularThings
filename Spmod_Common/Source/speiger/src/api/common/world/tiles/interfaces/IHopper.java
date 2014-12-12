@@ -45,7 +45,7 @@ public abstract interface IHopper
 	/**
 	 * @return the HopperFacing
 	 */
-	public abstract int getFacing();
+	public abstract short getFacing();
 	
 	/**
 	 * @return if the Hopper has a Rotation
@@ -55,7 +55,7 @@ public abstract interface IHopper
 	/**
 	 * @return the Hopper Rotation
 	 */
-	public abstract int getRotation();
+	public abstract short getRotation();
 	
 	/**
 	 * @return if the hopper has a inventory

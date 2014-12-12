@@ -46,12 +46,12 @@ public class FluidRegstonePipe extends Pipe<PipeTransportFluids>
 		if (!this.getWorld().isRemote)
 		{
 			int i = ((PipeTransportFluids) this.transport).internalTanks[ForgeDirection.UNKNOWN.ordinal()].getAvailable();
-			if (i < 250 && isFull)
+			if (i < 230 && isFull)
 			{
 				isFull = false;
 				this.updateNeighbors(true);
 			}
-			else if (!isFull && !(i < 250))
+			else if (!isFull && !(i < 230))
 			{
 				isFull = true;
 				this.updateNeighbors(true);

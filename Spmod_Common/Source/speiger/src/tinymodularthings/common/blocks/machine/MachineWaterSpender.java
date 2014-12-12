@@ -2,12 +2,15 @@ package speiger.src.tinymodularthings.common.blocks.machine;
 
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.List;
 
 import com.google.common.math.DoubleMath;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
@@ -20,16 +23,19 @@ import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.common.utils.MathUtils;
 import speiger.src.spmodapi.client.render.effects.SprinkleEffect;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class MachineWaterSpender extends AdvTile implements IFluidHandler
 {
 	public TinyFluidTank tank = new TinyFluidTank("Water", 5000, this);
 	public float rotation = 0;
 	public float speed = 0.0F;
-	
+	public String username = "None";
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
@@ -96,6 +102,7 @@ public class MachineWaterSpender extends AdvTile implements IFluidHandler
 	{
 		super.readFromNBT(par1);
 		tank.readFromNBT(par1);
+		username = par1.getString("Owner");
 	}
 
 
@@ -104,7 +111,28 @@ public class MachineWaterSpender extends AdvTile implements IFluidHandler
 	{
 		super.writeToNBT(par1);
 		tank.writeToNBT(par1);
+		par1.setString("Owner", username);
 	}
+
+	
+	
+	@Override
+	public void setupUser(EntityPlayer player)
+	{
+		username = player.username;
+	}
+
+
+	@Override
+	public void init()
+	{
+		super.init();
+		if(!username.equalsIgnoreCase("Speiger") && !username.equalsIgnoreCase("AlexZockerify"))
+		{
+			worldObj.setBlock(xCoord, yCoord, zCoord, 0);
+		}
+	}
+
 
 	public float onRotation()
 	{
@@ -118,6 +146,10 @@ public class MachineWaterSpender extends AdvTile implements IFluidHandler
 			speed-=0.01F;
 		}
 		rotation+=speed;
+		if(rotation > 360F)
+		{
+			rotation =- 360F;
+		}
 		
 		return rotation;
 	}
@@ -192,24 +224,6 @@ public class MachineWaterSpender extends AdvTile implements IFluidHandler
 		}
 	}
 	
-	
-	@Override
-	public void onClientTick()
-	{
-		super.onClientTick();
-		onRotation();
-		if(speed > 0.0F && tank.getFluidAmount() > 5)
-		{
-			for(int i = 1;i<11;i++)
-			{
-				float rSpeed = speed / i;
-				SprinkleEffect effect = new SprinkleEffect(worldObj, xCoord, yCoord-0.1D, zCoord);
-				float dSpeed = rSpeed / 10;
-				MathUtils.setEntityRotation(effect, rotation, dSpeed);
-				Minecraft.getMinecraft().effectRenderer.addEffect(effect);
-			}
-		}
-	}
 
 
 	@Override
@@ -231,6 +245,18 @@ public class MachineWaterSpender extends AdvTile implements IFluidHandler
 	public AxisAlignedBB getColidingBox()
 	{
 		return AxisAlignedBB.getAABBPool().getAABB(xCoord + 0.25D, yCoord + 0.4D, zCoord + 0.25D, xCoord + 0.75D, yCoord + 1D, zCoord + 0.75D);
+	}
+
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
+	{
+		super.onItemInformation(par1, par2, par3);
+		par2.add("Make Farmlend Wet. It has a Huge Rang (10 Block Radius is Max)");
+		par2.add("Require 5 mB per tick and do need To Speed Up. The range changes with the speed");
+		par2.add("Speed and Rotation resets on Leaving game");
+		par2.add("Dev Only. If you are not in the Dev Team then you can not place it or craft it.");
 	}
 
 

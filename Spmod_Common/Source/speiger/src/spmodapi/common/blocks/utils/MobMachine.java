@@ -201,7 +201,7 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 	@Override
 	public void onIconMakerLoading()
 	{
-		this.setFacing(5);
+		this.setFacing((short)5);
 	}
 
 	public static int[] getMobMachineFromFoodItem(ItemStack par1)
@@ -877,7 +877,7 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 	@Override
 	public void onPlaced(int facing)
 	{
-		this.setFacing(facing);
+		this.setFacing((short)facing);
 	}
 
 	@Override

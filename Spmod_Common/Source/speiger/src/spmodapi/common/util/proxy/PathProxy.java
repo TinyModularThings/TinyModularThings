@@ -169,8 +169,20 @@ public class PathProxy
 	public static ItemStack getIC2Item(String name, int qty)
 	{
 		ItemStack result = Items.getItem(name);
+		if(result == null)
+		{
+			return null;
+		}
 		result.stackSize = qty;
 		return result;
+	}
+	
+	public static int getIC2ItemID(String name)
+	{
+		ItemStack stack = Items.getItem(name);
+		if(stack == null)
+			return 0;
+		return stack.itemID;
 	}
 	
 	public static boolean isSingelPlayer()

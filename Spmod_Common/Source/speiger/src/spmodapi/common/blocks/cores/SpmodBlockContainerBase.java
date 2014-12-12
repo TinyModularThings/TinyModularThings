@@ -22,6 +22,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ForgeHooks;
+import net.minecraftforge.event.ForgeEventFactory;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
@@ -308,7 +309,18 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		{
 			if(tile.removeAbleByPlayer(par1EntityPlayer))
 			{
-				return ForgeHooks.blockStrength(this, par1EntityPlayer, par2World, par3, par4, par5);
+				float hardness = tile.getHardnessForPlayer(par1EntityPlayer);
+				int meta = par2World.getBlockMetadata(par3, par4, par5);
+				boolean canHarvest = ForgeHooks.canHarvestBlock(this, par1EntityPlayer, meta);
+				if(!canHarvest)
+				{
+		            float speed = ForgeEventFactory.getBreakSpeed(par1EntityPlayer, this, meta, 1.0f);
+		            return (speed < 0 ? 0 : speed) / hardness / 100F;
+				}
+				else
+				{
+					 return par1EntityPlayer.getCurrentPlayerStrVsBlock(this, false, meta) / hardness / 30F;
+				}
 			}
 			else
 			{
@@ -522,7 +534,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
     {
     	AdvTile tile = getAdvTile(par1World, par2, par3, par4);
     	int meta = par1World.getBlockMetadata(par2, par3, par4);
-    	if(tile != null && !par1World.isRemote)
+    	if(tile != null)
     	{
     		tile.onBreaking();
     		if(hasTileDrops(meta))

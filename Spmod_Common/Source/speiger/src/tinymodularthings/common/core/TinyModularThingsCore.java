@@ -253,4 +253,9 @@ public class TinyModularThingsCore implements IGuiHandler
 	{
 		HopperRegistry.registerHopperUpgrade(new FilterUpgrade());
 	}
+
+	public void spawnParticle(World world, double x, double y, double z, float speed, float rotation)
+	{
+		
+	}
 }

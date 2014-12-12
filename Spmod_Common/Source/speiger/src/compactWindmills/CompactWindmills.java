@@ -118,12 +118,6 @@ public class CompactWindmills implements SpmodMod
 	}
 	
 	@Override
-	public String getLangFolder()
-	{
-		return "/assets/compactwindmills/lang";
-	}
-	
-	@Override
 	public LogProxy getLogger()
 	{
 		return logger;

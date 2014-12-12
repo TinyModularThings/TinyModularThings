@@ -11,6 +11,7 @@ import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 import net.minecraftforge.fluids.FluidTankInfo;
 import net.minecraftforge.fluids.IFluidHandler;
+import speiger.src.spmodapi.common.lib.bc.IStackFilter;
 
 public class FluidUtils
 {
@@ -31,6 +32,11 @@ public class FluidUtils
 		}
 		
 		return -1;
+	}
+	
+	public static FluidItemFilter getFluidFilter(Fluid...par1)
+	{
+		return new FluidItemFilter(par1);
 	}
 	
 	public static Fluid getMobEssens()
@@ -198,5 +204,39 @@ public class FluidUtils
 		}
 		
 		return true;
+	}
+	
+	static class FluidItemFilter implements IStackFilter
+	{
+		Fluid[] fluids;
+		
+		public FluidItemFilter(Fluid...par1)
+		{
+			fluids = par1;
+			if(fluids == null)
+			{
+				fluids = new Fluid[0];
+			}
+			
+		}
+		
+		@Override
+		public boolean matches(ItemStack stack)
+		{
+			if(fluids == null || fluids.length == 0 || stack == null)
+			{
+				return false;
+			}
+			for(int i = 0;i<fluids.length;i++)
+			{
+				FluidStack fluid = new FluidStack(fluids[i], 1);
+				if(FluidContainerRegistry.containsFluid(stack, fluid))
+				{
+					return true;
+				}
+			}
+			return false;
+		}
+		
 	}
 }

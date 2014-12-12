@@ -174,10 +174,10 @@ public class MultiPlate extends TileFacing
 	{
 		if(sneak)
 		{
-			this.setRotation(this.getRotation()+1);
+			this.setRotation((short)((short)this.getRotation()+1));
 			if(getRotation() > 3)
 			{
-				this.setRotation(0);
+				this.setRotation((short)0);
 			}
 			this.updateNeighbors(true);
 			this.updateBlock();

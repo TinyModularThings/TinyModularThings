@@ -117,10 +117,10 @@ public class ItemMultiPlate extends SpmodPlacerItem
 			MultiPlate plate = (MultiPlate)tile;
 			flag = false;
 			int meta = item.getItemDamage();
-			plate.setFacing(side);
+			plate.setFacing((short)side);
 			if(side == 0 || side == 1)
 			{
-				plate.setRotation(MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3);
+				plate.setRotation((short)((short)MathHelper.floor_double(player.rotationYaw * 4.0F / 360.0F + 0.5D) & 3));
 			}
 			if(!plate.canPlacedOnSide(ForgeDirection.getOrientation(side).getOpposite()))
 			{

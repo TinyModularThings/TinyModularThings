@@ -1,9 +1,14 @@
 package speiger.src.tinymodularthings.client.core;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.ModelMinecart;
+import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.api.common.utils.MathUtils;
 import speiger.src.spmodapi.client.render.core.ItemRenderSpmodCore;
+import speiger.src.spmodapi.client.render.effects.SprinkleEffect;
+import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import speiger.src.tinymodularthings.client.render.carts.RenderTCarts;
 import speiger.src.tinymodularthings.client.render.items.RendererItemCell;
 import speiger.src.tinymodularthings.client.render.machine.RenderWaterSpender;
@@ -102,6 +107,26 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		catch (Exception e)
 		{
 			
+		}
+	}
+	
+	@Override
+	public void spawnParticle(World world, double x, double y, double z, float speed, float rotation)
+	{
+		try
+		{
+			for(int g = 0;g<3;g++)
+			{
+				int i = 1 + CodeProxy.getRandom().nextInt(10);
+				float rSpeed = speed / i;
+				SprinkleEffect effect = new SprinkleEffect(world, x, y, z);
+				float dSpeed = rSpeed / 10;
+				MathUtils.setEntityRotation(effect, rotation, dSpeed);
+				Minecraft.getMinecraft().effectRenderer.addEffect(effect);
+			}
+		}
+		catch(Exception e)
+		{
 		}
 	}
 	

@@ -101,14 +101,14 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	@Override
 	public void onIconMakerLoading()
 	{
-		this.setFacing(4);
+		this.setFacing((short)4);
 	}
 
 	@Override
 	public void onPlaced(int facing)
 	{
-		setFacing(facing);
-		setRotation(ForgeDirection.getOrientation(facing).getOpposite().ordinal());
+		setFacing((short)facing);
+		setRotation((short)ForgeDirection.getOrientation(facing).getOpposite().ordinal());
 		if(worldObj != null)
 		{
 			HopperBackupSystem.getSystem().backupData(this);
@@ -359,7 +359,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 					if (sneak)
 					{
 						int nextFacing = this.setNextFacing();
-						this.setFacing(nextFacing);
+						this.setFacing((short)nextFacing);
 						if (nextFacing == this.getRotation())
 						{
 							this.setFacing(this.setNextFacing());
@@ -368,7 +368,7 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 					else
 					{
 						int nextRotation = this.setNextRotation();
-						this.setRotation(nextRotation);
+						this.setRotation((short)nextRotation);
 						if (nextRotation == this.getFacing())
 						{
 							this.setRotation(this.setNextRotation());
@@ -567,13 +567,13 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	}
 	
 	@Override
-	public int getRotation()
+	public short getRotation()
 	{
 		return rotation;
 	}
 	
 	@Override
-	public int getFacing()
+	public short getFacing()
 	{
 		return super.getFacing();
 	}
@@ -668,8 +668,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		transferlimits[2] = nbt.getInteger("EnergyTrans");
 		speed = nbt.getBoolean("SpeedUpgrade");
 		allSlots = nbt.getBoolean("AllSlots");
-		facing = nbt.getInteger("facing");
-		rotation = nbt.getInteger("rotation");
 		owner = nbt.getString("Owner");
 		energy.readFromNBT(nbt);
 		
@@ -718,8 +716,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		nbt.setInteger("EnergyTrans", transferlimits[2]);
 		nbt.setBoolean("SpeedUpgrade", speed);
 		nbt.setBoolean("AllSlots", allSlots);
-		nbt.setInteger("facing", facing);
-		nbt.setInteger("rotation", rotation);
 		nbt.setString("Owner", owner);
 		energy.writeToNBT(nbt);
 		

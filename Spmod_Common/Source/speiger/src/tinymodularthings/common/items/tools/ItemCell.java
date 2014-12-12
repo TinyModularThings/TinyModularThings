@@ -153,6 +153,23 @@ public class ItemCell extends TinyItem implements IFluidContainerItem
 				list.add(EnumChatFormatting.BLUE + name);
 				list.add(EnumChatFormatting.BLUE + String.valueOf(fluid.amount) + " / " + String.valueOf(capacity) + " mB");
 			}
+			
+		}
+		else
+		{
+			list.add(EnumChatFormatting.BLUE + "Empty");
+			list.add(EnumChatFormatting.BLUE + "0 / 5000 mB");
+		}
+		if(NBTHelper.nbtCheck(stack, "Transport"))
+		{
+			NBTTagCompound data = NBTHelper.getTag(stack, "Transport");
+			list.add(EnumChatFormatting.BLUE + "Transferlimit: "+array[data.getInteger("Size")]+"mB");
+		}
+		else
+		{
+			NBTTagCompound data = NBTHelper.getTag(stack, "Transport");
+			list.add(EnumChatFormatting.BLUE + "Transferlimit: 50mB");
+
 		}
 	}
 	

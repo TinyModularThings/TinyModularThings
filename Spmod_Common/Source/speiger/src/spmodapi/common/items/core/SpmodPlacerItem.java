@@ -119,6 +119,7 @@ public abstract class SpmodPlacerItem extends SpmodItem
         		stack.getBlock().onBlockPlacedBy(world, x, y, z, player, item);
         		if(flag)
         		{
+                    world.playSoundEffect((double)((float)x + 0.5F), (double)((float)y + 0.5F), (double)((float)z + 0.5F), stack.getBlock().stepSound.getPlaceSound(), (stack.getBlock().stepSound.getVolume() + 1.0F) / 2.0F, stack.getBlock().stepSound.getPitch() * 0.8F);
             		removeItem(player, item);
         		}
         		return true;

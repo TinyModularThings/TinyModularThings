@@ -92,12 +92,6 @@ public class TinyModularThings implements SpmodMod
 	}
 	
 	@Override
-	public String getLangFolder()
-	{
-		return "/assets/tinymodularthings/lang";
-	}
-	
-	@Override
 	public LogProxy getLogger()
 	{
 		return log;

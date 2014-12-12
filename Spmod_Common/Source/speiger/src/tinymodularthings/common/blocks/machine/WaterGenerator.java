@@ -50,7 +50,7 @@ public class WaterGenerator extends AdvTile implements IFluidHandler,
 			this.provider.update();
 			produceWater();
 			sendWater();
-			if (worldObj.getWorldTime() % 10 == 0)
+			if (worldObj.getWorldTime() % 20 == 0)
 			{
 				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 				this.updateBlock();
@@ -107,24 +107,23 @@ public class WaterGenerator extends AdvTile implements IFluidHandler,
 	public void produceWater()
 	{
 		int energy = this.provider.getStoredEnergy();
-		int can = energy / 50;
+		float can = energy / 50;
 		if (can > 0)
 		{
-			int added = tank.fill(new FluidStack(FluidRegistry.WATER, can * 1000), false);
+			int added = tank.fill(new FluidStack(FluidRegistry.WATER, (int)(can * 1000)), false);
 			if (added <= 0)
 			{
 				return;
 			}
-			double add = 1000 / added;
-			double adde = add / 100;
-			tank.fill(new FluidStack(FluidRegistry.WATER, can * 1000), true);
-			if (adde > 0 && adde < 1)
+			double add = (double)added / (double)1000;
+			tank.fill(new FluidStack(FluidRegistry.WATER, (int)(can * 1000)), true);
+			if (add > 0.0D && add < 1.0D)
 			{
 				this.provider.useEnergy(1, false);
 				return;
 			}
 			
-			this.provider.useEnergy(added, false);
+			this.provider.useEnergy((int)(add*50), false);
 		}
 		
 	}

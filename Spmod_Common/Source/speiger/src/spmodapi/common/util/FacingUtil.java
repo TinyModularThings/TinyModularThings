@@ -2,7 +2,7 @@ package speiger.src.spmodapi.common.util;
 
 public class FacingUtil
 {
-	public static int getNextFacing(int lastFacing, boolean six)
+	public static short getNextFacing(short lastFacing, boolean six)
 	{
 		if (six)
 		{

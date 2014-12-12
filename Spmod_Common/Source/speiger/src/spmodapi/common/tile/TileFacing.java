@@ -7,13 +7,12 @@ import java.util.Map.Entry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import speiger.src.spmodapi.common.interfaces.IRotation;
 import speiger.src.spmodapi.common.util.FacingUtil;
 
-public abstract class TileFacing extends AdvTile implements IRotation
+public abstract class TileFacing extends AdvTile
 {
-	public int facing = 0;
-	public int rotation = 0;
+	public short facing = 0;
+	public short rotation = 0;
 	
 	public HashMap<String, Integer> sideOpened = new HashMap<String, Integer>();
 	
@@ -50,8 +49,8 @@ public abstract class TileFacing extends AdvTile implements IRotation
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		facing = nbt.getInteger("facing");
-		rotation = nbt.getInteger("rotation");
+		facing = nbt.getShort("facing");
+		rotation = nbt.getShort("rotation");
 		NBTTagList list = nbt.getTagList("Opened");
 		for(int i = 0;i<list.tagCount();i++)
 		{
@@ -67,8 +66,8 @@ public abstract class TileFacing extends AdvTile implements IRotation
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		nbt.setInteger("facing", facing);
-		nbt.setInteger("rotation", rotation);
+		nbt.setShort("facing", facing);
+		nbt.setShort("rotation", rotation);
 		NBTTagList list = new NBTTagList();
 		Iterator<Entry<String, Integer>> iter = this.sideOpened.entrySet().iterator();
 		for(;iter.hasNext();)
@@ -82,40 +81,34 @@ public abstract class TileFacing extends AdvTile implements IRotation
 		nbt.setTag("Opened", list);
 	}
 	
-	@Override
-	public void setFacing(int i)
+	public void setFacing(short i)
 	{
 		facing = i;
 	}
 	
-	@Override
-	public int getFacing()
+	public short getFacing()
 	{
 		return facing;
 	}
 	
-	@Override
-	public void setRotation(int side)
+	public void setRotation(short side)
 	{
 		rotation = side;
 	}
 	
-	@Override
-	public int getRotation()
+	public short getRotation()
 	{
 		return rotation;
 	}
 	
-	@Override
-	public int setNextFacing()
+	public short setNextFacing()
 	{
 		return FacingUtil.getNextFacing(facing, isSixSidedFacing());
 	}
 	
 	public abstract boolean isSixSidedFacing();
 	
-	@Override
-	public int setNextRotation()
+	public short setNextRotation()
 	{
 		
 		return FacingUtil.getNextFacing(rotation, isSixSidedRotation());

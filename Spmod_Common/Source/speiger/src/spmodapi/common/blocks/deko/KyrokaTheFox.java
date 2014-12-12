@@ -55,7 +55,7 @@ public class KyrokaTheFox extends TileFacing
 		{
 			facing = 2;
 		}
-		this.setFacing(facing);
+		this.setFacing((short)facing);
 	}
 
 

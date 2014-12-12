@@ -85,7 +85,7 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 	@Override
 	public void onPlaced(int facing)
 	{
-		setFacing(facing);
+		setFacing((short)facing);
 		if (isValidMode())
 		{
 			updateInventory();

@@ -112,7 +112,7 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 	@Override
 	public void onPlaced(int facing)
 	{
-		this.setFacing(facing);
+		this.setFacing((short)facing);
 	}
 	
 	@Override

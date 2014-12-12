@@ -65,7 +65,7 @@ public class ItemTinyHopper extends TinyPlacerItem implements IMetaItemRender
 			tiny.updateMode();
 			if(player.isSneaking())
 			{
-				tiny.setRotation(ForgeDirection.getOrientation(side).getOpposite().ordinal());
+				tiny.setRotation((short)ForgeDirection.getOrientation(side).getOpposite().ordinal());
 			}
 			return true;
 		}

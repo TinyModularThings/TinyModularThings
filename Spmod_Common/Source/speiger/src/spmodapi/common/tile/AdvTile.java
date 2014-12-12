@@ -39,6 +39,7 @@ import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -241,6 +242,15 @@ public abstract class AdvTile extends TileEntity
 		
 	}
 	
+	@Override
+	public void onInventoryChanged()
+	{
+		super.onInventoryChanged();
+		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 10, worldObj.provider.dimensionId, getDescriptionPacket());
+		this.notifyBlocksOfNeighborChange(ForgeDirection.UNKNOWN);
+		this.updateNeighbors(true);
+	}
+
 	public boolean onClick(boolean sneak, EntityPlayer par1, Block par2, int side)
 	{
 		return false;

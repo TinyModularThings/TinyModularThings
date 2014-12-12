@@ -133,7 +133,7 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 	@Override
 	public void onPlaced(int facing)
 	{
-		setFacing(facing);
+		setFacing((short)facing);
 	}
 
 
