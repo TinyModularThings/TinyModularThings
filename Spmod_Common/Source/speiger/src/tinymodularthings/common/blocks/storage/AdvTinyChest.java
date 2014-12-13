@@ -136,7 +136,7 @@ public class AdvTinyChest extends TileFacing implements IInventory,
 		isFull = nbt.getBoolean("isFull");
 		isEmpty = nbt.getBoolean("isEmpty");
 		NBTTagList nbttaglist = nbt.getTagList("Items");
-		inventory = new ItemStack[getSizeInventory()];
+		inventory = new ItemStack[mode < 0 ? 0 : mode];
 		
 		for (int i = 0; i < nbttaglist.tagCount(); ++i)
 		{

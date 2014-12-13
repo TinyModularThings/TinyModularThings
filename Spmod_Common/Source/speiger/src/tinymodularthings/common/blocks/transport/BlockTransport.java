@@ -13,13 +13,16 @@ import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.MinecraftForge;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore;
 import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
+import speiger.src.tinymodularthings.client.core.TinyModularThingsClient;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.utils.HopperType;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -81,121 +84,27 @@ public class BlockTransport extends SpmodBlockContainerBase
 	
 	
 	@Override
-	public void registerTextures(TextureEngine par1)
-	{
-		par1.setCurrentPath("transport");
-		par1.registerTexture(this, 1, "ItemTransport");
-		par1.registerTexture(this, 2, "FluidTransport");
-		par1.registerTexture(this, 3, "EnergyTransport");
-		TileIconMaker.registerIcon(this, par1);
-		par1.removePath();
-	}
-
-	@Override
-	public boolean isOpaqueCube()
-	{
-		return false;
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean requiresRenderer(int meta)
-	{
-		switch(meta)
-		{
-			case 1:
-			case 2:
-			case 3: return true;
-		}
-		return false;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean requiresMultibleRenderPasses(int meta)
-	{
-		switch(meta)
-		{
-			case 1:
-			case 2:
-			case 3: return true;
-		}
-		return false;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getRenderPasses(int meta)
-	{
-		switch(meta)
-		{
-			case 1:
-			case 2:
-			case 3: return 2;
-		}
-		return 0;
-	}
-	
-	@Override
-	public boolean requiresRenderPass(int meta)
-	{
-		switch(meta)
-		{
-			case 1:
-			case 2:
-			case 3: return true;
-		}
-		return super.requiresRenderPass(meta);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void onRender(IBlockAccess world, int x, int y, int z, RenderBlocks render, BlockStack block, int renderPass)
-	{
-		int meta = block.getMeta();
-		if(meta > 0 && meta < 4)
-		{
-			AdvTile tile = getAdvTile(world, x, y, z);
-			if(tile != null)
-			{
-				this.setRenderPass(meta, renderPass);
-				render.renderStandardBlock(block.getBlock(), x, y, z);
-			}
-		}
-	}
-	
-	@Override
-	public boolean dissableRendering(int meta)
-	{
-		return meta >= 10;
-	}
-	
-	@Override
 	public boolean requiresRender()
 	{
 		return true;
 	}
-	
+
 	@Override
 	public boolean renderItemBlock(int meta)
 	{
-		switch(meta)
-		{
-			case 0:
-			case 4: return true;
-		}
-		return false;
+		return true;
 	}
-	
+
 	@Override
 	public boolean renderItemBlockBasic(int meta)
 	{
-		switch(meta)
-		{
-			case 0:
-			case 4: return true;
-		}
-		return false;
+		return true;
+	}
+
+	@Override
+	public boolean requiresRenderPass(int meta)
+	{
+		return meta > 0 && meta < 3;
 	}
 	
 	@Override
@@ -221,4 +130,28 @@ public class BlockTransport extends SpmodBlockContainerBase
 	{
 		
 	}
+
+	@Override
+	public void registerTextures(TextureEngine par1)
+	{
+		par1.setCurrentPath("transport");
+		par1.registerTexture(this, 1, "ItemTransport");
+		par1.registerTexture(this, 2, "FluidTransport");
+		par1.registerTexture(this, 3, "EnergyTransport");
+		TileIconMaker.registerIcon(this, par1);
+		par1.removePath();
+	}
+
+	@Override
+	public boolean isOpaqueCube()
+	{
+		return false;
+	}
+
+	@Override
+	public int getRenderType()
+	{
+		return TinyModularThingsClient.MultiID;
+	}
+	
 }

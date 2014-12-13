@@ -29,9 +29,10 @@ public class RenderLamp extends TileEntitySpecialRenderer
 	
 	private void renderLamp(TileLamp Lamp, double x, double y, double z)
 	{
+		GL11.glPushMatrix();
 		try
 		{
-			GL11.glPushMatrix();
+			
 			float f = 1.0F;
 			GL11.glTranslatef((float) x + 0.5F, (float) y + 0.5F, (float) z + 0.5F);
 			EnumLampType type = Lamp.getType();
@@ -84,11 +85,12 @@ public class RenderLamp extends TileEntitySpecialRenderer
 			lamp.render(0.0625F, type.getRenderType());
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 			lamp.renderAfter(0.0625F, type.getRenderType());
-			GL11.glPopMatrix();
+			
 		}
 		catch(Exception e)
 		{
 		}
+		GL11.glPopMatrix();
 	}
 	
 }

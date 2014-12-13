@@ -13,6 +13,7 @@ import speiger.src.tinymodularthings.client.render.carts.RenderTCarts;
 import speiger.src.tinymodularthings.client.render.items.RendererItemCell;
 import speiger.src.tinymodularthings.client.render.machine.RenderWaterSpender;
 import speiger.src.tinymodularthings.client.render.storage.RenderStorageBlock;
+import speiger.src.tinymodularthings.client.render.transport.RenderTransport;
 import speiger.src.tinymodularthings.client.render.transport.renderTransportTile;
 import speiger.src.tinymodularthings.common.blocks.machine.MachineWaterSpender;
 import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyChest;
@@ -41,7 +42,7 @@ import cpw.mods.fml.common.Loader;
 
 public class TinyModularThingsClient extends TinyModularThingsCore
 {
-	
+	public static int MultiID = RenderingRegistry.getNextAvailableRenderId();
 	@Override
 	public void registerRenderer()
 	{
@@ -57,6 +58,7 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		
 		// Transport Blocks
 		ClientRegistry.bindTileEntitySpecialRenderer(TinyHopper.class, new renderTransportTile());
+		RenderingRegistry.registerBlockHandler(MultiID, new RenderTransport());
 		
 		// Entities
 		RenderingRegistry.registerEntityRenderingHandler(TCarts.class, new RenderTCarts());

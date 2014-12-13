@@ -15,6 +15,7 @@ import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.client.core.RenderHelper;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.common.FMLLog;
 
 public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IItemRenderer
 {	
@@ -99,7 +100,7 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler, IIt
 		IBlockRenderer render = stack.getCastedBlock(IBlockRenderer.class);
 		if(render != null)
 		{
-			RenderBlocksSpmod renderer = new RenderBlocksSpmod((RenderBlocks)data[0]);
+			RenderBlocks renderer = (RenderBlocks)data[0];
 			if(render.renderItemBlockBasic(item.getItemDamage()))
 			{
 				renderBlock(render, stack, renderer, type);
