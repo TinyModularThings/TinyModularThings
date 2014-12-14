@@ -10,18 +10,18 @@ import java.io.File;
 import java.util.HashMap;
 
 import net.minecraftforge.common.Configuration;
-import net.minecraftforge.common.MinecraftForge;
 import speiger.src.api.common.utils.config.ConfigBoolean;
 import speiger.src.ic2Fixes.common.core.IC2FixesCore;
-import cpw.mods.fml.common.FMLLog;
+import speiger.src.ic2Fixes.common.energy.GlobalEnergyNet;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 
-@Mod(modid = ModID, name = Name, version = Version)
+@Mod(modid = ModID, name = Name, version = Version, dependencies = "required-after:IC2")
 public class IC2Fixes
 {
 	@Instance(ModID)
@@ -57,6 +57,12 @@ public class IC2Fixes
 	@EventHandler
 	public void init(FMLInitializationEvent evt)
 	{
+	}
+	
+	@EventHandler
+	public void posInit(FMLPostInitializationEvent evt)
+	{
+		new GlobalEnergyNet();
 	}
 	
 }
