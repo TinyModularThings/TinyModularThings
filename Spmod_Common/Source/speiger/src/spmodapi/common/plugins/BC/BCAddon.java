@@ -2,12 +2,17 @@ package speiger.src.spmodapi.common.plugins.BC;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.oredict.OreDictionary;
+import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumColor;
+import speiger.src.spmodapi.common.util.ForgeRegister;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
+import buildcraft.BuildCraftCore;
 import buildcraft.BuildCraftTransport;
 import buildcraft.api.fuels.IronEngineFuel;
 import buildcraft.api.gates.ActionManager;
@@ -26,8 +31,15 @@ public class BCAddon
 	public static IAction[] colorBlocks = new IAction[16];
 	public static IAction[] colorAllBlocks = new IAction[16];
 	
+	public static BCAddon instance = new BCAddon();
+	
+	private BCAddon()
+	{
+		ForgeRegister.regist(this);
+	}
 	public static void loadBC()
 	{
+		OreDictionary.registerOre("gearCobble", BuildCraftCore.stoneGearItem);
 		for (int i = 0; i < 16; i++)
 		{
 			FacadeManager.addFacade(new ItemStack(APIBlocks.hempBlock, 1, i));
@@ -72,5 +84,24 @@ public class BCAddon
 		}
 		
 		ActionManager.registerActionProvider(new SpmodActionHelper());
+	}
+	
+	@ForgeSubscribe
+	public void onOreRegister(OreRegisterEvent par0)
+	{
+		if (par0.Name.equalsIgnoreCase("gearStone"))
+		{
+			
+			try
+			{
+				if (par0.Ore.itemID == BuildCraftCore.stoneGearItem.itemID)
+				{
+					OreDictionary.getOres(par0.Name).remove(par0.Ore);
+				}
+			}
+			catch (Exception e)
+			{
+			}
+		}
 	}
 }

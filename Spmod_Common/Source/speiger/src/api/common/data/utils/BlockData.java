@@ -57,4 +57,14 @@ public class BlockData implements IStackInfo
 		return new ItemStack(block, 1, meta);
 	}
 	
+	public Block getBlock()
+	{
+		return block;
+	}
+	
+	public int getMeta()
+	{
+		return meta;
+	}
+	
 }

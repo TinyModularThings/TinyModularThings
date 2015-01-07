@@ -53,7 +53,6 @@ public class TinyConfig
 				TinyModularThings.log.disable();
 			}
 			
-			BCRegistry.overrideVanilla = getBoolean(general, "Vanilla BC Intigration", true).setComment("Make the Vanilla Furnace Compatioble to Gates").getResult(config);
 			
 			block = new ConfigBlock(ConfigBlock.getConfig(config, blocks, 1300));
 			item = new ConfigItem(ConfigItem.getConfig(config, items, 13000));

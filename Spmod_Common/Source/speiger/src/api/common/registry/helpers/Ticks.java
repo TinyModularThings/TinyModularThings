@@ -18,7 +18,7 @@ public class Ticks
 		{
 			for (ITickReader tick : ticks)
 			{
-				if (SpmodModRegistry.isModRegistered(tick.getOwner()))
+				if(SpmodModRegistry.isModRegistered(tick.getOwner()) && tick.needTick())
 				{
 					tick.onTick(sender, side);
 				}
@@ -40,6 +40,8 @@ public class Ticks
 	public static interface ITickReader
 	{
 		public void onTick(SpmodMod sender, Side side);
+		
+		public boolean needTick();
 		
 		public SpmodMod getOwner();
 	}

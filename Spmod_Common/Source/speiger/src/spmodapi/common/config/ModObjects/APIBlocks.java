@@ -9,6 +9,7 @@ public class APIBlocks
 	public static Block hempCrop;
 	public static SpmodBlockBase hempStraw;
 	
+	//Full Blocks
 	public static SpmodBlockBase hempBlockBase;
 	public static SpmodBlockBase hempBlock;
 	public static SpmodBlockBase hempBrick;
@@ -19,16 +20,22 @@ public class APIBlocks
 	public static SpmodBlockBase savedHempBlockPlated;
 	public static SpmodBlockBase savedHempBrickPlated;
 	
+	
+	public static SpmodBlockBase multiPlate;
+
+	
 	public static Block fluidHempResin;
+	
+	//Animal Stuff
 	public static SpmodBlockBase animalGas;
 	public static SpmodBlockBase animalUtils;
 	
+	//Deco
 	public static SpmodBlockBase hempLamp;
 	public static Block blueFlower;
-	
-	public static SpmodBlockBase multiPlate;
-	
-	public static SpmodBlockBase blockUtils;
 	public static SpmodBlockBase statues;
+	
+	//Utilis
+	public static SpmodBlockBase blockUtils;
 	
 }

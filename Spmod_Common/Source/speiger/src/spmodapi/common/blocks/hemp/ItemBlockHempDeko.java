@@ -14,7 +14,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class ItemBlockHempDeko extends ItemBlockSpmod
 {
 	
-	public String[] colorsnames = new String[] { "Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "Light Gray", "Gray", "Pink", "Lime", "Yellow", "Light Blue", "Magenta", "Orange", "White" };
+	public static String[] colorsnames = new String[] { "Black", "Red", "Green", "Brown", "Blue", "Purple", "Cyan", "Light Gray", "Gray", "Pink", "Lime", "Yellow", "Light Blue", "Magenta", "Orange", "White" };
 	
 	public ItemBlockHempDeko(int par1)
 	{

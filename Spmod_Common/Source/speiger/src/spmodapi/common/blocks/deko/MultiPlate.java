@@ -22,6 +22,14 @@ public class MultiPlate extends TileFacing
 {
 	public String identity = "";
 	
+	
+	
+	@Override
+	public boolean canUpdate()
+	{
+		return false;
+	}
+
 	@Override
 	public boolean isSixSidedFacing()
 	{

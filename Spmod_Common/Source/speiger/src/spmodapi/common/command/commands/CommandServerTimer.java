@@ -211,12 +211,6 @@ public class CommandServerTimer implements ISpmodCommand, ITickReader
 			return;
 		}
 		
-		long t = System.currentTimeMillis();
-		if (t - lastTime < 50)
-		{
-			return;
-		}
-		lastTime = t;
 		if (isActive)
 		{
 			if (time > 0)
@@ -235,6 +229,12 @@ public class CommandServerTimer implements ISpmodCommand, ITickReader
 	public SpmodMod getOwner()
 	{
 		return SpmodAPI.instance;
+	}
+
+	@Override
+	public boolean needTick()
+	{
+		return isActive;
 	}
 	
 }

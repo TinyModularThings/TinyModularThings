@@ -9,6 +9,7 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
@@ -25,6 +26,7 @@ import forestry.core.GameMode;
 import forestry.core.utils.RecipeUtil;
 import forestry.factory.gadgets.MachineFermenter;
 import forestry.factory.gadgets.MachineFermenter.Recipe;
+import forestry.plugins.PluginArboriculture;
 
 public class AddonForestry
 {
@@ -37,7 +39,6 @@ public class AddonForestry
 		Collection<IFarmable> list = Farmables.farmables.get("farmWheat");
 		list.add(new Hanfaddon());
 		Farmables.farmables.put("farmWheat", list);
-		
 	}
 	
 	public void loadGas()
@@ -65,7 +66,7 @@ public class AddonForestry
 		
 		if (SpmodConfig.booleanInfos.get("ForestrySeedOil"))
 		{
-			FMLLog.getLogger().info("Start Overriding Recipes");
+			SpmodAPI.log.print("Start Overriding Recipes");
 			
 			FluidStack stack = FluidRegistry.getFluidStack("biomass", 1);
 			FluidStack seed = FluidRegistry.getFluidStack("seedoil", 1);
@@ -95,7 +96,7 @@ public class AddonForestry
 			{
 			}
 			
-			FMLLog.getLogger().info("Finish Overriding Recipes");
+			SpmodAPI.log.print("Finish Overriding Recipes");
 		}
 		
 	}

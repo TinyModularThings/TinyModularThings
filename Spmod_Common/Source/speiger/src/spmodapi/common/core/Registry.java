@@ -3,10 +3,8 @@ package speiger.src.spmodapi.common.core;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.oredict.OreDictionary;
-import net.minecraftforge.oredict.OreDictionary.OreRegisterEvent;
 import speiger.src.api.common.data.nbt.DataStorage;
 import speiger.src.api.common.data.packets.SpmodPacketHelper;
 import speiger.src.spmodapi.SpmodAPI;
@@ -24,9 +22,7 @@ import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.recipes.SpmodRecipeRegistry;
 import speiger.src.spmodapi.common.tile.MobMachineLoader;
-import speiger.src.spmodapi.common.util.ForgeRegister;
 import speiger.src.spmodapi.common.util.TileIconMaker;
-import buildcraft.BuildCraftCore;
 import cpw.mods.fml.common.registry.EntityRegistry;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.LanguageRegistry;
@@ -65,20 +61,8 @@ public class Registry
 		LanguageRegistry.instance().addStringLocalization("attribute.name.generic.jump", "Jump Boost");
 	}
 	
-	public static void register()
-	{
-		ForgeRegister.regist(instance);
-	}
-	
 	public void initOres()
 	{
-		try
-		{
-			OreDictionary.registerOre("gearCobble", BuildCraftCore.stoneGearItem);
-		}
-		catch (Exception e)
-		{
-		}
 		OreDictionary.registerOre("gearWood", ItemGear.getGearFromType(GearType.Wood));
 		OreDictionary.registerOre("gearCobble", ItemGear.getGearFromType(GearType.Cobblestone));
 		OreDictionary.registerOre("gearStone", ItemGear.getGearFromType(GearType.Stone));
@@ -89,23 +73,6 @@ public class Registry
 		OreDictionary.registerOre("gearBone", ItemGear.getGearFromType(GearType.Bone));
 	}
 	
-	@ForgeSubscribe
-	public void onOreRegister(OreRegisterEvent par0)
-	{
-		if (par0.Name.equalsIgnoreCase("gearStone"))
-		{
-			
-			try
-			{
-				if (par0.Ore.itemID == BuildCraftCore.stoneGearItem.itemID)
-				{
-					OreDictionary.getOres(par0.Name).remove(par0.Ore);
-				}
-			}
-			catch (Exception e)
-			{
-			}
-		}
-	}
+
 	
 }

@@ -52,21 +52,17 @@ public class BlockDetector implements ITickReader
 			return;
 		}
 		
-		if(placed.size() <= 0 || placed.isEmpty() || placed == null)
+		if(placed.size() <= 0 || placed.isEmpty())
 		{
 			return;
 		}
-		ArrayList<PlacePosition> remove = new ArrayList<PlacePosition>();
-		for(PlacePosition cu : placed)
+		for(int i = 0;i<placed.size();i++)
 		{
-			if(cu.check())
+			PlacePosition pos = placed.get(i);
+			if(pos.check())
 			{
-				remove.add(cu);
+				placed.remove(i--);
 			}
-		}
-		if(remove.size() > 0)
-		{
-			placed.removeAll(remove);
 		}
 		
 	}
@@ -219,5 +215,11 @@ public class BlockDetector implements ITickReader
 	public SpmodMod getOwner()
 	{
 		return SpmodAPI.instance;
+	}
+
+	@Override
+	public boolean needTick()
+	{
+		return placed.size() > 0;
 	}
 }

@@ -65,7 +65,6 @@ public class TickHelper implements ITickReader
 				regainOre.add(cuOre);
 			}
 		}
-		cDelay++;
 		if (cDelay > SpmodConfig.integerInfos.get("SavingDelay"))
 		{
 			cDelay = 0;
@@ -120,6 +119,13 @@ public class TickHelper implements ITickReader
 	public SpmodMod getOwner()
 	{
 		return SpmodAPI.instance;
+	}
+
+	@Override
+	public boolean needTick()
+	{
+		cDelay++;
+		return cDelay > SpmodConfig.integerInfos.get("SavingDelay") || cDelay > 40 && DataStorage.hasRequest() || !recipesLoaded || regainOre.size() > 0;
 	}
 	
 }

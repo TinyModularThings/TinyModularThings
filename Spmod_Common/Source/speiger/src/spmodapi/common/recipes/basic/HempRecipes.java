@@ -1,8 +1,12 @@
 package speiger.src.spmodapi.common.recipes.basic;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import speiger.src.api.common.data.utils.BlockData;
 import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
@@ -11,6 +15,8 @@ import speiger.src.spmodapi.common.util.proxy.PathProxy;
 
 public class HempRecipes
 {
+	public static HashMap<BlockData, BlockData> slabRecipes = new HashMap<BlockData, BlockData>();
+	
 	public static void load(PathProxy pp)
 	{
 		//Hemp Plates
@@ -72,9 +78,20 @@ public class HempRecipes
 		pp.addRecipe(new ItemStack(APIItems.hempChestPlate), new Object[] { "X X", "XXX", "XXX", 'X', APIItems.hemp });
 		pp.addRecipe(new ItemStack(APIItems.hempLeggings), new Object[] { "XXX", "X X", "X X", 'X', APIItems.hemp });		
 		pp.addRecipe(new ItemStack(APIItems.hempResinBucket), new Object[] { "XBX", "XXX", "CVC", 'C', Block.stone, 'V', Item.bucketEmpty, 'B', Item.flint, 'X', APIBlocks.hempStraw });
+		
+		
+		for(Entry<BlockData, BlockData> data : slabRecipes.entrySet())
+		{
+			ItemStack stack = data.getValue().getResult();
+			if(stack != null)
+			{
+				stack.stackSize = 6;
+				pp.addRecipe(stack, new Object[]{"XXX", 'X', data.getKey().getResult()});
+			}
+		}
 	}
 	
-	public static void addHempRecipe(PathProxy par0, Block output, Block input)
+	public static void addHempRecipe(PathProxy par0, Block input, Block output)
 	{
 		for(int i = 0;i<16;i++)
 		{
@@ -115,4 +132,5 @@ public class HempRecipes
 			pp.addSRecipe(new ItemStack(par1, 8, i), new Object[]{new ItemStack(Item.dyePowder, 1, i-startMeta), input, input, input, input, input, input, input, input});
 		}
 	}
+	
 }

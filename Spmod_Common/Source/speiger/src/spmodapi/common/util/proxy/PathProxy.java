@@ -21,6 +21,7 @@ import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipe;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
 import buildcraft.api.recipes.AssemblyRecipe;
 import cpw.mods.fml.common.FMLCommonHandler;
+import cpw.mods.fml.relauncher.Side;
 
 public class PathProxy
 {
@@ -187,7 +188,7 @@ public class PathProxy
 	
 	public static boolean isSingelPlayer()
 	{
-		return FMLCommonHandler.instance().getMinecraftServerInstance() != null;
+		return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
 	}
 	
 }

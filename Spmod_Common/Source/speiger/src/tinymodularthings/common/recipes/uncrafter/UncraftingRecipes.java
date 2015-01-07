@@ -1,16 +1,10 @@
 package speiger.src.tinymodularthings.common.recipes.uncrafter;
 
-import forestry.core.config.ForestryBlock;
-import forestry.core.config.ForestryItem;
 import ic2.api.item.Items;
 
 import java.util.Arrays;
 import java.util.List;
 
-import mods.railcraft.common.blocks.RailcraftBlocks;
-import mods.railcraft.common.blocks.anvil.BlockRCAnvil;
-import mods.railcraft.common.blocks.detector.BlockDetector;
-import mods.railcraft.common.items.ItemGear;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -20,7 +14,6 @@ import speiger.src.api.common.registry.recipes.output.RandomOutput;
 import speiger.src.api.common.registry.recipes.output.RecipeOutput;
 import speiger.src.api.common.registry.recipes.output.StackOutput;
 import speiger.src.api.common.registry.recipes.uncrafter.UncrafterRecipeList;
-import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
@@ -28,12 +21,6 @@ import speiger.src.spmodapi.common.util.data.ClassStorage;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
-import buildcraft.BuildCraftBuilders;
-import buildcraft.BuildCraftCore;
-import buildcraft.BuildCraftEnergy;
-import buildcraft.BuildCraftFactory;
-import buildcraft.BuildCraftSilicon;
-import buildcraft.BuildCraftTransport;
 import cpw.mods.fml.common.Loader;
 
 public class UncraftingRecipes
@@ -46,9 +33,6 @@ public class UncraftingRecipes
 		pp.addRecipe(new ShapedOreRecipe(new ItemStack(Block.pistonBase), "XXX", "YCY", "YVY", 'X', "plankWood", 'Y', "cobblestone", 'C', "ingotSilver", 'V', Item.redstone));
 		pp.addRecipe(new ItemStack(TinyBlocks.craftingBlock, 1, 3), new Object[]{"XYX", "CVB", "XNX", 'X', new ItemStack(APIItems.circuits, 1, 1), 'V', GearType.Redstone.getItem(), 'Y', new ItemStack(APIBlocks.blockUtils), 'C', TinyItems.advTinyChest, 'B', Block.dispenser, 'N', Block.anvil});
 		
-		
-		
-		
 		un.addUncraftingRecipe(new BlockData(Block.pistonBase, 0), new RecipeOutput(new ItemStack(Block.fenceIron, 2), 75), new RecipeOutput(Item.redstone, 40), new RecipeOutput(Block.planks, 70), new RecipeOutput(Block.cobblestone, 60));
 		un.addUncraftingRecipe(new ItemStack(Block.dropper), new RecipeOutput(new ItemStack(Block.cobblestone, 5), 90), new RecipeOutput(Item.redstone, 25));
 		un.addUncraftingRecipe(new ItemStack(Block.dispenser), new RecipeOutput(new ItemStack(Block.cobblestone, 5), 90), new RecipeOutput(Item.redstone, 25), new RecipeOutput(Item.bow, 75));
@@ -60,24 +44,6 @@ public class UncraftingRecipes
 		un.addUncraftingRecipe(new ItemStack(Block.anvil, 1, 1), new RecipeOutput(Block.blockIron, 75), new RecipeOutput(Block.blockIron, 75), new RecipeOutput(new ItemStack(Item.ingotIron, 4), 50));
 		un.addUncraftingRecipe(new ItemStack(Block.anvil, 1, 2), new RecipeOutput(Block.blockIron, 75), new RecipeOutput(new ItemStack(Item.ingotIron, 4), 50));
 		un.addUncraftingRecipe(new ItemStack(Block.hopperBlock), new RecipeOutput(new ItemStack(Item.ingotIron, 2), 75), new RecipeOutput(Item.ingotIron, 50), new RecipeOutput(Item.ingotIron, 50));
-		
-		if(Loader.isModLoaded("BuildCraft|Core"))
-		{
-			un.addUncraftingRecipe(new ItemStack(BuildCraftEnergy.engineBlock), new RecipeOutput(Block.pistonBase, 80));
-			un.addUncraftingRecipe(new ItemStack(BuildCraftEnergy.engineBlock), new RecipeOutput(Block.pistonBase, 60));
-			un.addUncraftingRecipe(new ItemStack(BuildCraftEnergy.engineBlock), new RecipeOutput(Block.pistonBase, 40), new RecipeOutput(BuildCraftCore.ironGearItem, 40), new RecipeOutput(BuildCraftCore.ironGearItem, 40));
-			un.addUncraftingRecipe(new ItemStack(BuildCraftBuilders.architectBlock), new RecipeOutput(BuildCraftCore.goldGearItem, 60), new RecipeOutput(Block.workbench, 95), new RecipeOutput(Block.chest, 95));
-			un.addUncraftingRecipe(new ItemStack(BuildCraftFactory.hopperBlock), new RecipeOutput(new ItemStack(Item.ingotIron, 2), 75), new RecipeOutput(Item.ingotIron, 50), new RecipeOutput(Item.ingotIron, 50));
-			un.addUncraftingRecipe(new ItemStack(BuildCraftFactory.refineryBlock), new RecipeOutput(Item.diamond, 75), new RecipeOutput(new ItemStack(BuildCraftFactory.tankBlock, 2), 80), new RecipeOutput(BuildCraftFactory.tankBlock, 60));
-			un.addUncraftingRecipe(new ItemStack(BuildCraftFactory.miningWellBlock), new RecipeOutput(BuildCraftCore.ironGearItem, 75), new RecipeOutput(Item.pickaxeIron, 50));
-			un.addUncraftingRecipe(new ItemStack(BuildCraftFactory.pumpBlock), new RecipeOutput(BuildCraftFactory.miningWellBlock, 95), new RecipeOutput(BuildCraftFactory.tankBlock, 25));
-			un.addUncraftingRecipe(new ItemStack(BuildCraftFactory.floodGateBlock), new RecipeOutput(BuildCraftCore.ironGearItem, 85), new RecipeOutput(BuildCraftFactory.tankBlock, 75), new RecipeOutput(new ItemStack(Item.ingotIron, 2), 50), new RecipeOutput(new ItemStack(Item.ingotIron, 2), 50));
-			un.addUncraftingRecipe(new ItemStack(BuildCraftFactory.quarryBlock), new RecipeOutput(new ItemStack(BuildCraftCore.diamondGearItem, 2), 65), new RecipeOutput(new ItemStack(BuildCraftCore.goldGearItem, 2), 75), new RecipeOutput(new ItemStack(BuildCraftCore.ironGearItem, 2), 90), new RecipeOutput(Item.pickaxeDiamond, 75));
-			un.addUncraftingRecipe(new ItemStack(BuildCraftTransport.filteredBufferBlock), new RecipeOutput(Block.pistonBase, 75), new RecipeOutput(BuildCraftTransport.pipeItemsDiamond, 60), new RecipeOutput(Block.chest, 85));
-			un.addUncraftingRecipe(new ItemStack(BuildCraftSilicon.laserBlock), new RecipeOutput(new ItemStack(Item.diamond, 2), 50), new RecipeOutput(new ItemStack(Item.redstone, 3), 75), new RecipeOutput(Block.obsidian, 80));
-			un.addUncraftingRecipe(new ItemStack(BuildCraftSilicon.assemblyTableBlock, 1, 0), new RecipeOutput(new ItemStack(Block.obsidian, 3), 50), new RecipeOutput(new ItemStack(Block.obsidian, 3), 50), new RecipeOutput(Item.diamond, 60), new RecipeOutput(BuildCraftCore.diamondGearItem, 40));
-			un.addUncraftingRecipe(new ItemStack(BuildCraftSilicon.assemblyTableBlock, 1, 1), new RecipeOutput(new ItemStack(Block.obsidian, 3), 50), new RecipeOutput(new ItemStack(Block.obsidian, 3), 50), new RecipeOutput(Block.workbench, 87), new RecipeOutput(Block.chest, 80));
-		}
 		
 		if(Loader.isModLoaded("IC2"))
 		{
@@ -153,122 +119,6 @@ public class UncraftingRecipes
 			un.addUncraftingRecipe(Items.getItem("nanoSaber"), new RecipeOutput(Items.getItem("energyCrystal"), 55));
 			un.addUncraftingRecipe(Items.getItem("solarHelmet"), new RecipeOutput(Items.getItem("solarPanel"), 95));
 		}
-		
-		if(Loader.isModLoaded("Railcraft"))
-		{
-			try
-			{
-				ItemStack steel = InventoryUtil.getItemFromModAndOreDictWithSize("ingotSteel", "Railcraft", true, 2);
-				ItemStack blockSteel = InventoryUtil.getItemFromModAndOreDictWithSize("blockSteel", "Railcraft", true, 1);
-				if(steel != null && blockSteel != null)
-				{
-					un.addUncraftingRecipe(new ItemStack(BlockRCAnvil.getBlock(), 1, 0), new RecipeOutput(steel, 75), new RecipeOutput(blockSteel, 69), new RecipeOutput(blockSteel, 69), new RecipeOutput(blockSteel, 69));
-					un.addUncraftingRecipe(new ItemStack(BlockRCAnvil.getBlock(), 1, 1), new RecipeOutput(steel, 75), new RecipeOutput(blockSteel, 69), new RecipeOutput(blockSteel, 69));
-					un.addUncraftingRecipe(new ItemStack(BlockRCAnvil.getBlock(), 1, 2), new RecipeOutput(steel, 75), new RecipeOutput(blockSteel, 69));
-					Block alpha = RailcraftBlocks.getBlockMachineAlpha();
-					if(alpha != null)
-					{
-						steel.stackSize = 6;
-						un.addUncraftingRecipe(new ItemStack(alpha, 1, 1), new RecipeOutput(steel, 82), new RecipeOutput(steel, 82));
-						un.addUncraftingRecipe(new ItemStack(alpha, 1, 9), new RecipeOutput(Block.dispenser, 88));
-						steel.stackSize = 1;
-						un.addUncraftingRecipe(new ItemStack(alpha, 1, 15), new RecipeOutput(Block.pistonBase, 77), new RecipeOutput(steel, 37), new RecipeOutput(Item.diamond, 5));
-					}
-				}
-				Block gamma = RailcraftBlocks.getBlockMachineGamma();
-				Block detector = BlockDetector.getBlock();
-				if(gamma != null && detector != null)
-				{
-					un.addUncraftingRecipe(new ItemStack(gamma, 1, 0), new RecipeOutput(Block.hopperBlock, 75), new RecipeOutput(new ItemStack(detector, 1, 0), 75));					
-					un.addUncraftingRecipe(new ItemStack(gamma, 1, 1), new RecipeOutput(Block.hopperBlock, 75), new RecipeOutput(new ItemStack(detector, 1, 0), 75));
-					un.addUncraftingRecipe(new ItemStack(gamma, 1, 2), new RecipeOutput(gamma, 95));
-					un.addUncraftingRecipe(new ItemStack(gamma, 1, 3), new RecipeOutput(new ItemStack(gamma, 1, 1), 95));
-					un.addUncraftingRecipe(new ItemStack(gamma, 1, 4), new RecipeOutput(Block.hopperBlock, 75), new RecipeOutput(new ItemStack(detector, 1, 8), 75));					
-					un.addUncraftingRecipe(new ItemStack(gamma, 1, 5), new RecipeOutput(Block.hopperBlock, 75), new RecipeOutput(new ItemStack(detector, 1, 8), 75));	
-					ItemStack machine = Items.getItem("machine");
-					if(machine != null)
-					{
-						un.addUncraftingRecipe(new ItemStack(gamma, 1, 6), new RecipeOutput(Block.hopperBlock, 75), new RecipeOutput(new ItemStack(detector, 1, 10), 75), new RecipeOutput(machine, 85));
-						un.addUncraftingRecipe(new ItemStack(gamma, 1, 7), new RecipeOutput(Block.hopperBlock, 75), new RecipeOutput(new ItemStack(detector, 1, 10), 75), new RecipeOutput(machine, 85));
-					}
-					un.addUncraftingRecipe(new ItemStack(gamma, 1, 8), new RecipeOutput(Block.dispenser, 89));
-					un.addUncraftingRecipe(new ItemStack(gamma, 1, 9), new RecipeOutput(new ItemStack(gamma, 1, 8), 89));
-				}
-				Block beta = RailcraftBlocks.getBlockMachineBeta();
-				if(beta != null)
-				{
-					ItemStack goldPlate = ItemGear.getGoldPlateGear();
-					if(goldPlate != null) un.addUncraftingRecipe(new ItemStack(beta, 1, 7), new RecipeOutput(Block.pistonBase, 73), new RecipeOutput(goldPlate, 25), new RecipeOutput(goldPlate, 25));
-					else un.addUncraftingRecipe(new ItemStack(beta, 1, 7), new RecipeOutput(Block.pistonBase, 73));
-						
-					ItemStack iron = ItemGear.getIronGear();
-					if(iron != null) un.addUncraftingRecipe(new ItemStack(beta, 1, 8), new RecipeOutput(Block.pistonBase, 73), new RecipeOutput(iron, 25), new RecipeOutput(iron, 25));
-					else un.addUncraftingRecipe(new ItemStack(beta, 1, 8), new RecipeOutput(Block.pistonBase, 73));
-					
-					ItemStack steelGear = ItemGear.getSteelGear();
-					if(steelGear != null) un.addUncraftingRecipe(new ItemStack(beta, 1, 9), new RecipeOutput(Block.pistonBase, 73), new RecipeOutput(steelGear, 25), new RecipeOutput(steelGear, 25));
-					else un.addUncraftingRecipe(new ItemStack(beta, 1, 9), new RecipeOutput(Block.pistonBase, 73));
-				}
-			}
-			catch(Exception e)
-			{
-			}
-		}
-		
-		if(Loader.isModLoaded("Forestry"))
-		{
-			try
-			{
-				Block engine = ForestryBlock.engine;
-				ItemStack basicCasing = ForestryItem.sturdyCasing.getItemStack();
-				if(engine != null)
-				{
-					un.addUncraftingRecipe(new ItemStack(engine, 1, 0), new RecipeOutput(Block.pistonBase, 74));
-					un.addUncraftingRecipe(new ItemStack(engine, 1, 1), new RecipeOutput(Block.pistonBase, 74));
-					un.addUncraftingRecipe(new ItemStack(engine, 1, 2), new RecipeOutput(Block.pistonBase, 74));
-					un.addUncraftingRecipe(new ItemStack(engine, 1, 4), new RecipeOutput(Block.pistonBase, 74), new RecipeOutput(Item.pocketSundial, 25));
-					if(basicCasing != null)
-					{
-						un.addUncraftingRecipe(new ItemStack(engine, 1, 3), new RecipeOutput(basicCasing, 81));
-					}
-				}
-				Block machine = ForestryBlock.factoryTESR;
-				if(machine != null && basicCasing != null)
-				{
-					un.addUncraftingRecipe(new ItemStack(machine, 1, 0), new RecipeOutput(basicCasing, 91));
-					un.addUncraftingRecipe(new ItemStack(machine, 1, 1), new RecipeOutput(basicCasing, 91));
-					un.addUncraftingRecipe(new ItemStack(machine, 1, 2), new RecipeOutput(basicCasing, 91));
-					ItemStack gear = ForestryItem.gearBronze.getItemStack();
-					if(gear != null)
-					{
-						un.addUncraftingRecipe(new ItemStack(machine, 1, 3), new RecipeOutput(basicCasing, 91), new RecipeOutput(gear, 34), new RecipeOutput(gear, 34), new RecipeOutput(gear, 34), new RecipeOutput(gear, 34));
-					}
-					gear = ForestryItem.gearCopper.getItemStack();
-					if(gear != null)
-					{
-						un.addUncraftingRecipe(new ItemStack(machine, 1, 4), new RecipeOutput(basicCasing, 91), new RecipeOutput(gear, 34), new RecipeOutput(gear, 34), new RecipeOutput(gear, 34), new RecipeOutput(gear, 34));
-					}
-					ItemStack hardCasing = ForestryItem.hardenedCasing.getItemStack();
-					gear = ForestryItem.gearTin.getItemStack();
-					if(hardCasing != null && gear != null)
-					{
-						un.addUncraftingRecipe(new ItemStack(machine, 1, 7), new RecipeOutput(hardCasing, 91), new RecipeOutput(gear, 34), new RecipeOutput(gear, 34), new RecipeOutput(gear, 34), new RecipeOutput(gear, 34));
-					}
-					un.addUncraftingRecipe(new ItemStack(machine, 1, 5), new RecipeOutput(basicCasing, 91));
-					un.addUncraftingRecipe(new ItemStack(machine, 1, 6), new RecipeOutput(basicCasing, 91));
-				}
-				Block utils = ForestryBlock.factoryPlain;
-				if(utils != null && basicCasing != null)
-				{
-					un.addUncraftingRecipe(new ItemStack(utils, 1, 0), new RecipeOutput(basicCasing, 91), new RecipeOutput(Block.chest, 95));
-					un.addUncraftingRecipe(new ItemStack(utils, 1, 1), new RecipeOutput(basicCasing, 91));
-				}
-			}
-			catch(Exception e)
-			{
-			}
-		}
-	
 		
 		if(Loader.isModLoaded("ThermalExpansion"))
 		{

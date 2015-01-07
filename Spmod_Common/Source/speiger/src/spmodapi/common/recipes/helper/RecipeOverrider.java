@@ -2,10 +2,7 @@ package speiger.src.spmodapi.common.recipes.helper;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
@@ -21,15 +18,25 @@ import net.minecraftforge.oredict.ShapelessOreRecipe;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
+import speiger.src.spmodapi.common.util.data.ClassStorage;
+import speiger.src.spmodapi.common.util.data.ClassStorage.DataStack;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
-import buildcraft.BuildCraftCore;
-import buildcraft.BuildCraftTransport;
 import cpw.mods.fml.common.FMLLog;
 
 public class RecipeOverrider
 {
 	public static void loadTransmutationRecipes()
 	{
+		ClassStorage clz = ClassStorage.getInstance();
+		try
+		{
+			Class core = Class.forName("buildcraft.BuildCraftCore");
+			clz.requestItem(core, Arrays.asList("woodGear", "stoneGear", "ironGear", "goldGear", "diaGear"), Arrays.asList("woodenGearItem", "stoneGearItem", "ironGearItem", "goldGearItem", "diamondGearItem"));
+			
+		}
+		catch(Exception e)
+		{
+		}
 		Map<ItemStack, String> replacements = new HashMap<ItemStack, String>();
 		
 		replacements.put(ItemGear.getGearFromType(GearType.Wood), "gearWood");
@@ -38,11 +45,11 @@ public class RecipeOverrider
 		replacements.put(ItemGear.getGearFromType(GearType.Iron), "gearIron");
 		replacements.put(ItemGear.getGearFromType(GearType.Gold), "gearGold");
 		replacements.put(ItemGear.getGearFromType(GearType.Diamond), "gearDiamond");
-		replacements.put(new ItemStack(BuildCraftCore.woodenGearItem), "gearWood");
-		replacements.put(new ItemStack(BuildCraftCore.stoneGearItem), "gearCobble");
-		replacements.put(new ItemStack(BuildCraftCore.ironGearItem), "gearIron");
-		replacements.put(new ItemStack(BuildCraftCore.goldGearItem), "gearGold");
-		replacements.put(new ItemStack(BuildCraftCore.diamondGearItem), "gearDiamond");
+		replacements.put(clz.getStack("woodGear").getResult(), "gearWood");
+		replacements.put(clz.getStack("stoneGear").getResult(), "gearCobble");
+		replacements.put(clz.getStack("ironGear").getResult(), "gearIron");
+		replacements.put(clz.getStack("goldGear").getResult(), "gearGold");
+		replacements.put(clz.getStack("diaGear").getResult(), "gearDiamond");
 		replacements.put(new ItemStack(Item.stick), "stickWood");
 		replacements.put(new ItemStack(Block.planks), "plankWood");
 		replacements.put(new ItemStack(Block.planks, 1, Short.MAX_VALUE), "plankWood");
@@ -54,7 +61,31 @@ public class RecipeOverrider
 		ItemStack[] replaceStacks = replacements.keySet().toArray(new ItemStack[replacements.keySet().size()]);
 		FMLLog.getLogger().info("Start");
 		// Ignore recipes for the following items
-		ItemStack[] exclusions = new ItemStack[] {ItemGear.getGearFromType(GearType.Wood), ItemGear.getGearFromType(GearType.Cobblestone), ItemGear.getGearFromType(GearType.Stone), ItemGear.getGearFromType(GearType.Iron), ItemGear.getGearFromType(GearType.Gold), ItemGear.getGearFromType(GearType.Diamond), new ItemStack(BuildCraftCore.woodenGearItem), new ItemStack(BuildCraftCore.stoneGearItem), new ItemStack(BuildCraftCore.ironGearItem), new ItemStack(BuildCraftCore.goldGearItem), new ItemStack(BuildCraftCore.diamondGearItem), new ItemStack(Block.blockLapis), new ItemStack(Item.cookie), new ItemStack(Block.stoneBrick), new ItemStack(Block.stoneSingleSlab), new ItemStack(Block.stairsCobblestone), new ItemStack(Block.cobblestoneWall), new ItemStack(Block.stairsWoodOak), new ItemStack(Block.stairsWoodBirch), new ItemStack(Block.stairsWoodJungle), new ItemStack(Block.stairsWoodSpruce), getBCPipeWire() };
+		ItemStack[] exclusions = new ItemStack[] 
+		{
+			ItemGear.getGearFromType(GearType.Wood), 
+			ItemGear.getGearFromType(GearType.Cobblestone), 
+			ItemGear.getGearFromType(GearType.Stone),
+			ItemGear.getGearFromType(GearType.Iron), 
+			ItemGear.getGearFromType(GearType.Gold), 
+			ItemGear.getGearFromType(GearType.Diamond), 
+			clz.getStack("woodGear").getResult(), 
+			clz.getStack("stoneGear").getResult(), 
+			clz.getStack("ironGear").getResult(), 
+			clz.getStack("goldGear").getResult(), 
+			clz.getStack("diaGear").getResult(), 
+			new ItemStack(Block.blockLapis), 
+			new ItemStack(Item.cookie), 
+			new ItemStack(Block.stoneBrick), 
+			new ItemStack(Block.stoneSingleSlab), 
+			new ItemStack(Block.stairsCobblestone), 
+			new ItemStack(Block.cobblestoneWall), 
+			new ItemStack(Block.stairsWoodOak), 
+			new ItemStack(Block.stairsWoodBirch), 
+			new ItemStack(Block.stairsWoodJungle), 
+			new ItemStack(Block.stairsWoodSpruce), 
+			getBCPipeWire() 
+		};
 		
 		List recipes = CraftingManager.getInstance().getRecipeList();
 		List<IRecipe> recipesToRemove = new ArrayList<IRecipe>();
@@ -291,7 +322,7 @@ public class RecipeOverrider
 	{
 		try
 		{
-			return new ItemStack(BuildCraftTransport.pipeWaterproof);
+			return new DataStack(Class.forName("buildcraft.BuildCraftTransport"), "pipeWaterproof").getResult();
 		}
 		catch(Exception e)
 		{

@@ -1,6 +1,5 @@
 package speiger.src.tinymodularthings.common.config;
 
-import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
@@ -8,11 +7,8 @@ import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.spmodapi.common.util.proxy.RegisterProxy;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
-import speiger.src.tinymodularthings.common.enums.EnumIngots;
 import speiger.src.tinymodularthings.common.items.ItemIngots;
 import speiger.src.tinymodularthings.common.items.ItemTinyItem;
 import speiger.src.tinymodularthings.common.items.energy.Batteries;
@@ -31,21 +27,6 @@ import speiger.src.tinymodularthings.common.items.tools.ItemNetherCrystal;
 import speiger.src.tinymodularthings.common.items.tools.ItemPotionBag;
 import speiger.src.tinymodularthings.common.items.tools.ItemTinyInfo;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
-import speiger.src.tinymodularthings.common.pipes.AluFluidExtractionPipe;
-import speiger.src.tinymodularthings.common.pipes.FluidRegstonePipe;
-import speiger.src.tinymodularthings.common.pipes.ItemRedstonePipe;
-import speiger.src.tinymodularthings.common.pipes.PipeEmeraldExtractionPower;
-import speiger.src.tinymodularthings.common.pipes.PipeEmeraldPower;
-import speiger.src.tinymodularthings.common.pipes.RefinedDiamondPowerPipe;
-import speiger.src.tinymodularthings.common.pipes.SpmodPipe;
-import buildcraft.BuildCraftSilicon;
-import buildcraft.BuildCraftTransport;
-import buildcraft.api.recipes.AssemblyRecipe;
-import buildcraft.transport.BlockGenericPipe;
-import buildcraft.transport.ItemPipe;
-import buildcraft.transport.Pipe;
-import buildcraft.transport.PipeTransportPower;
-import cpw.mods.fml.common.FMLLog;
 
 public class TinyItemsConfig
 {
@@ -172,76 +153,5 @@ public class TinyItemsConfig
 	public static void RegisterItem(Item par1, String name)
 	{
 		RegisterProxy.RegisterItem(TinyModularThingsLib.ModID, name, par1);
-	}
-	
-	public static void onPipeLoad()
-	{
-		try
-		{
-			PipeTransportPower.powerCapacities.put(PipeEmeraldExtractionPower.class, 2048);
-			items.emeraldPowerPipeE = BuildItem(config.pipes.getCurrentID(), PipeEmeraldExtractionPower.class, "Emerald Power Extraction Pipe");
-			config.pipes.updateToNextID();
-			AssemblyRecipe.assemblyRecipes.add(new AssemblyRecipe(new ItemStack[] { new ItemStack(BuildCraftTransport.pipeItemsEmerald, 8), new ItemStack(Item.redstone, 8) }, 10000, new ItemStack(items.emeraldPowerPipeE, 8)));
-			PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeItemsEmerald), new Object[] { items.emeraldPowerPipeE });
-			
-			
-			PipeTransportPower.powerCapacities.put(PipeEmeraldPower.class, 2048);
-			items.emeraldPowerPipe = BuildItem(config.pipes.getCurrentID(), PipeEmeraldPower.class, "Emerald Power Pipe");
-			config.pipes.updateToNextID();
-			PathProxy.addSRecipe(new ItemStack(items.emeraldPowerPipe), new Object[] { BuildCraftTransport.pipeItemsEmerald, Item.redstone });
-			PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeItemsEmerald), new Object[] { items.emeraldPowerPipe });
-			
-			items.redstoneFluidPipe = BuildItem(config.pipes.getCurrentID(), FluidRegstonePipe.class, "Redstone Fluid Pipe");
-			config.pipes.updateToNextID();
-			PathProxy.addSRecipe(new ItemStack(items.redstoneFluidPipe, 1), new Object[] { new ItemStack(BuildCraftTransport.pipeFluidsGold), new ItemStack(Item.redstone) });
-			PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipeFluidsGold, 1), new Object[] { items.redstoneFluidPipe });
-			
-			
-			PipeTransportPower.powerCapacities.put(RefinedDiamondPowerPipe.class, 512);
-			items.refinedDiamondPowerPipe = BuildItem(config.pipes.getCurrentID(), RefinedDiamondPowerPipe.class, "Diamond Power Pipe");
-			AssemblyRecipe.assemblyRecipes.add(new AssemblyRecipe(new ItemStack[] { new ItemStack(BuildCraftTransport.pipePowerDiamond), new ItemStack(BuildCraftSilicon.redstoneChipset, 2, 2) }, 1000000, new ItemStack(items.refinedDiamondPowerPipe)));
-			PathProxy.addSRecipe(new ItemStack(BuildCraftTransport.pipePowerDiamond), new Object[] { items.refinedDiamondPowerPipe });
-			PathProxy.addRecipe(new ItemStack(items.refinedDiamondPowerPipe), new Object[] { "XXX", "XYX", "XXX", 'X', new ItemStack(BuildCraftSilicon.redstoneChipset, 1, 3), 'Y', BuildCraftTransport.pipePowerDiamond });
-			config.pipes.updateToNextID();
-			
-			items.redstoneItemPipe = BuildItem(config.pipes.getCurrentID(), ItemRedstonePipe.class, "Item Redstone Pipe");
-			config.pipes.updateToNextID();
-			PathProxy.addSRecipe(new ItemStack(items.redstoneItemPipe), new Object[]{BuildCraftTransport.pipeItemsGold, Item.redstone});
-			PathProxy.addSRecipe(new ItemStack(items.redstoneFluidPipe), new Object[]{items.redstoneItemPipe, BuildCraftTransport.pipeWaterproof});
-			
-			items.aluPipe = BuildItem(config.pipes.getCurrentID(), AluFluidExtractionPipe.class, "Aluminium Fluid Pipe");
-			AluFluidExtractionPipe.init(items.aluPipe.itemID);
-			PathProxy.addRecipe(new ItemStack(items.aluPipe, 8), new Object[]{"XYX", "CVC", "XBX", 'V', Block.glass, 'C', EnumIngots.Aluminum.getIngot(), 'X', BuildCraftTransport.pipeWaterproof, 'B', new ItemStack(BuildCraftSilicon.redstoneChipset, 1, 2), 'Y', new ItemStack(BuildCraftTransport.pipeGateAutarchic, 1, 1)});
-			config.pipes.updateToNextID();
-			
-		}
-		catch (Exception e)
-		{
-			
-		}
-	}
-	
-	public static Item BuildItem(int defaultID, Class<? extends Pipe> clas, String descr)
-	{
-		try
-		{
-			ItemPipe res = new SpmodPipe(defaultID, descr);
-			RegisterProxy.RegisterItem(TinyModularThingsLib.ModID, res);
-			if (res != null)
-			{
-				BlockGenericPipe.pipes.put(res.itemID, clas);
-				TinyModularThings.core.loadPipe(res, res.itemID, clas);
-			}
-			
-			return res;
-		}
-		catch (Exception e)
-		{
-			for (int i = 0; i < e.getStackTrace().length; i++)
-			{
-				FMLLog.getLogger().info("" + e.getStackTrace()[i]);
-			}
-			return null;
-		}
 	}
 }

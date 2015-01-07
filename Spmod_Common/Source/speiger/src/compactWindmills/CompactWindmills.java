@@ -35,7 +35,7 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 
-@Mod(modid = ModID, version = ModVersion, name = ModName, dependencies = "required-after:SpmodAPI")
+@Mod(modid = ModID, version = ModVersion, name = ModName, dependencies = "required-after:SpmodAPI;required-after:IC2")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
 public class CompactWindmills implements SpmodMod
 {

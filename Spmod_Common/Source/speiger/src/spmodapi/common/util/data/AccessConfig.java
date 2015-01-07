@@ -1,6 +1,5 @@
 package speiger.src.spmodapi.common.util.data;
 
-import ic2.bcIntegration.core.TileEntityPersonalChestBc32x;
 import ic2.core.block.machine.tileentity.TileEntityIronFurnace;
 import ic2.core.block.machine.tileentity.TileEntityPump;
 import ic2.core.block.personal.TileEntityEnergyOMat;
@@ -155,7 +154,7 @@ public class AccessConfig
 			}
 			if(Loader.isModLoaded("IC2"))
 			{
-				list.addAll(Arrays.asList(TileEntityTradeOMat.class.getSimpleName(), TileEntityEnergyOMat.class.getSimpleName(), TileEntityPersonalChest.class.getSimpleName(), TileEntityPersonalChestBc32x.class.getSimpleName(),
+				list.addAll(Arrays.asList(TileEntityTradeOMat.class.getSimpleName(), TileEntityEnergyOMat.class.getSimpleName(), TileEntityPersonalChest.class.getSimpleName(),
 						TileEntityPump.class.getSimpleName(), TileEntityIronFurnace.class.getSimpleName()));
 			}
 			if(Loader.isModLoaded("AppliedEnergistics"))

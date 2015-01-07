@@ -3,6 +3,7 @@ package speiger.src.compactWindmills.common.blocks;
 import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySource;
+import ic2.api.energy.tile.IEnergySourceInfo;
 import ic2.api.tile.IWrenchable;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
@@ -34,7 +35,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class WindMill extends TileFacing implements IInventory,
-		IEnergySource, IWindmill, IWrenchable
+		IEnergySource, IWindmill, IWrenchable, IEnergySourceInfo
 {
 	public ItemStack[] inv = new ItemStack[1];
 	public boolean loaded = false;
@@ -588,6 +589,12 @@ public class WindMill extends TileFacing implements IInventory,
 	public boolean isFake()
 	{
 		return false;
+	}
+
+	@Override
+	public int getMaxEnergyAmount()
+	{
+		return type.getOutput();
 	}
 	
 }

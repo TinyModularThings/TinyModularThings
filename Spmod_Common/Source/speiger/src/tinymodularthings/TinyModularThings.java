@@ -69,12 +69,6 @@ public class TinyModularThings implements SpmodMod
 	}
 	
 	@EventHandler
-	public void serverStarted(FMLServerStartedEvent evt)
-	{
-		
-	}
-	
-	@EventHandler
 	public void modsLoaded(FMLPostInitializationEvent evt)
 	{
 		ModularModLoader.LoadAddonsSave();
