@@ -1,7 +1,6 @@
 package speiger.src.spmodapi.common.util.proxy;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;

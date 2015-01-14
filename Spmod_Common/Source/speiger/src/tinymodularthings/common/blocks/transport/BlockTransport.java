@@ -3,26 +3,15 @@ package speiger.src.tinymodularthings.common.blocks.transport;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.MinecraftForge;
-import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore;
-import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
-import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
-import speiger.src.tinymodularthings.client.core.TinyModularThingsClient;
-import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.utils.HopperType;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -90,48 +79,6 @@ public class BlockTransport extends SpmodBlockContainerBase
 	}
 
 	@Override
-	public boolean renderItemBlock(int meta)
-	{
-		return true;
-	}
-
-	@Override
-	public boolean renderItemBlockBasic(int meta)
-	{
-		return true;
-	}
-
-	@Override
-	public boolean requiresRenderPass(int meta)
-	{
-		return meta > 0 && meta < 3;
-	}
-	
-	@Override
-	public float[] getBoundingBoxes(int meta)
-	{
-		return null;
-	}
-	
-	@Override
-	public float[] getXYZForItemRenderer(ItemRenderType type, int meta)
-	{
-		return null;
-	}
-	
-	@Override
-	public int getItemRenderPasses(int meta)
-	{
-		return 0;
-	}
-	
-	@Override
-	public void onItemRendering(BlockRendererHelper render, ItemRenderType type, BlockStack stack, int renderPass, float x, float y, float z, Object... data)
-	{
-		
-	}
-
-	@Override
 	public void registerTextures(TextureEngine par1)
 	{
 		par1.setCurrentPath("transport");
@@ -148,10 +95,5 @@ public class BlockTransport extends SpmodBlockContainerBase
 		return false;
 	}
 
-	@Override
-	public int getRenderType()
-	{
-		return TinyModularThingsClient.MultiID;
-	}
 	
 }

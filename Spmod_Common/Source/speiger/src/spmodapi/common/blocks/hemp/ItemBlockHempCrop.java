@@ -1,9 +1,8 @@
 package speiger.src.spmodapi.common.blocks.hemp;
 
+import net.minecraft.item.ItemStack;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.items.core.ItemBlockSpmod;
-import net.minecraft.item.ItemBlock;
-import net.minecraft.item.ItemStack;
 
 public class ItemBlockHempCrop extends ItemBlockSpmod
 {

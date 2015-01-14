@@ -2,13 +2,12 @@ package speiger.src.spmodapi.common.blocks.hemp;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.items.core.ItemBlockSpmod;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemBlockHempDekoBase extends ItemBlockSpmod
 {

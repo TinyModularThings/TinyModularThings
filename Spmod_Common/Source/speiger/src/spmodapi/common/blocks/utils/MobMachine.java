@@ -1,15 +1,9 @@
 package speiger.src.spmodapi.common.blocks.utils;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -193,15 +187,7 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 				}
 			}
 		}
-		
-
 		return MathUtils.getArrayFromList(ints);
-	}
-	
-	@Override
-	public void onIconMakerLoading()
-	{
-		this.setFacing((short)5);
 	}
 
 	public static int[] getMobMachineFromFoodItem(ItemStack par1)
@@ -365,7 +351,7 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 	}
 	
 	@Override
-	public void registerIcon(TextureEngine par1)
+	public void registerIcon(TextureEngine par1, Block par2)
 	{
 		par1.markForDelay(this);
 	}
@@ -872,14 +858,6 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 		return true;
 	}
 	
-	
-	
-	@Override
-	public void onPlaced(int facing)
-	{
-		this.setFacing((short)facing);
-	}
-
 	@Override
 	public boolean hasContainer()
 	{
@@ -990,7 +968,7 @@ public class MobMachine extends TileFacing implements ISidedInventory,
 			if(this.isValid())
 			{
 				ItemStack item = new ItemStack(APIItems.mobMachineHelper, 1, type);
-				InventoryUtil.dropItem(this, item);
+				InventoryUtil.dropItem(this, item, false);
 			}
 		}
 	}

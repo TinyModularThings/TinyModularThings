@@ -5,17 +5,12 @@ import ic2.api.item.Items;
 import java.util.Collection;
 import java.util.Stack;
 
-import speiger.src.spmodapi.common.util.TextureEngine;
-
 import net.minecraft.block.Block;
-import net.minecraft.client.renderer.texture.TextureMap;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
-import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import cpw.mods.fml.common.FMLLog;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import forestry.api.farming.Farmables;

@@ -1,13 +1,7 @@
 package speiger.src.spmodapi.common.blocks.utils;
 
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
-import speiger.src.api.common.registry.helpers.SpmodMod;
-import speiger.src.api.common.registry.helpers.SpmodModRegistry;
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.items.core.ItemBlockSpmod;
 
 public class ItemBlockUtils extends ItemBlockSpmod

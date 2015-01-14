@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.blocks.hemp.BlockHempDeko.HempBlockInformation;
 import speiger.src.spmodapi.common.items.core.ItemBlockSpmod;

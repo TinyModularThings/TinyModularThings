@@ -2,6 +2,8 @@ package speiger.src.tinymodularthings.common.blocks.transport;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -23,6 +25,8 @@ import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInterfaceBlock;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class MultiStructureFluidInterface extends AdvTile implements
 		IFluidHandler, IAcceptor
@@ -302,5 +306,21 @@ public class MultiStructureFluidInterface extends AdvTile implements
 		super.writeToNBT(par1);
 		par1.setIntArray("BlockStack", new int[] { blockID, metadata });
 		par1.setIntArray("Coords", new int[] { x, y, z });
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onRenderInv(BlockStack stack, RenderBlocks render)
+	{
+	}
+
+	@Override
+	public void onRenderWorld(Block block, RenderBlocks renderer)
+	{
+		for(int i = 0;i<2;i++)
+		{
+			this.setRenderPass(i);
+			renderer.renderStandardBlock(block, xCoord, yCoord, zCoord);
+		}
 	}
 }

@@ -11,7 +11,6 @@ import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.data.OreDictonaryLister;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
-import speiger.src.tinymodularthings.common.plugins.BC.BCRegistry;
 
 public class TinyConfig
 {

@@ -2,14 +2,11 @@ package speiger.src.spmodapi.common.blocks.gas;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockAnimalUtils extends SpmodBlockContainerBase
 {

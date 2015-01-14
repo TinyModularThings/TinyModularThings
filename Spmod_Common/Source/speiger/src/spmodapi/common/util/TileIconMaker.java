@@ -30,7 +30,7 @@ public class TileIconMaker
 		ArrayList<AdvTile> tiles = instance.allTiles.get(block);
 		for (AdvTile tile : tiles)
 		{
-			tile.registerIcon(par1);
+			tile.registerIcon(par1, block);
 		}
 	}
 	
@@ -120,7 +120,7 @@ public class TileIconMaker
 			{
 				if (match(clz, tile))
 				{
-					return TextureEngine.getTextures().getIconSafe(tile.getIconFromSideAndMetadata(side, 0));
+					return TextureEngine.getTextures().getIconSafe(tile.getIconFromSideAndMetadata(side, tile.getRenderPass()));
 				}
 			}
 		}

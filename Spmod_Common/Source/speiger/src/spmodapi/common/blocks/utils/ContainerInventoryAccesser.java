@@ -16,7 +16,7 @@ public class ContainerInventoryAccesser extends AdvContainer
 {
 	public ContainerInventoryAccesser(InventoryPlayer par1, InventoryAccesser par2)
 	{
-		super(par1, par2);
+		super(par2);
 		for(int i = 0;i<4;i++)
 		{
 			this.addSpmodSlotToContainer(new SlotItemAdjustSlot(par2, i, 150, 0+i*18, new ItemData(APIItems.redstoneCable)));

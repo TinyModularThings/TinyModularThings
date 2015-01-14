@@ -3,16 +3,14 @@ package speiger.src.tinymodularthings.common.plugins.forestry;
 import java.util.ArrayList;
 import java.util.Collection;
 
-import speiger.src.api.common.registry.recipes.output.RecipeOutput;
-import speiger.src.api.common.registry.recipes.uncrafter.UncrafterRecipeList;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import speiger.src.api.common.registry.recipes.output.RecipeOutput;
+import speiger.src.api.common.registry.recipes.uncrafter.UncrafterRecipeList;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 import forestry.api.circuits.ChipsetManager;
-import forestry.api.core.ItemInterface;
 import forestry.api.farming.Farmables;
 import forestry.api.farming.IFarmable;
 import forestry.core.circuits.Circuit;

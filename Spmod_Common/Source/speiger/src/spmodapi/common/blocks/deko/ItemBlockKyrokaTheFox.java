@@ -1,16 +1,17 @@
 package speiger.src.spmodapi.common.blocks.deko;
 
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.client.FMLClientHandler;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+
+import org.lwjgl.opengl.GL11;
+
 import speiger.src.api.client.render.IMetaItemRender;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.client.render.deko.RenderKyroka;
 import speiger.src.spmodapi.common.items.core.ItemBlockSpmod;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class ItemBlockKyrokaTheFox extends ItemBlockSpmod implements IMetaItemRender
 {

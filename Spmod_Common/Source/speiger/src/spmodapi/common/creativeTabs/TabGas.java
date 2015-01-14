@@ -1,10 +1,10 @@
 package speiger.src.spmodapi.common.creativeTabs;
 
+import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.ItemStack;
 
 public class TabGas extends CreativeTabs
 {

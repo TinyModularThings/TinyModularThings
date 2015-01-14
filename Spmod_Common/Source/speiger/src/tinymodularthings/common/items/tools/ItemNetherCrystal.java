@@ -1,10 +1,7 @@
 package speiger.src.tinymodularthings.common.items.tools;
 
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
@@ -483,16 +480,16 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
-		Icon[] texture = TextureEngine.getIcon(this, 0);
+		TextureEngine textures = TextureEngine.getTextures();
 		if (par1 == 3)
 		{
-			return texture[1];
+			return textures.getTexture(this, 1);
 		}
 		else if(par1 == 5)
 		{
-			return texture[2];
+			return textures.getTexture(this, 2);
 		}
-		return texture[0];
+		return textures.getTexture(this, 0);
 	}
 	
 	@Override

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -55,9 +56,9 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 	}
 	
 	@Override
-	public void registerIcon(TextureEngine par1)
+	public void registerIcon(TextureEngine par1, Block par2)
 	{
-		par1.registerTexture(new BlockStack(TinyBlocks.craftingBlock, 1), "craftingTableBottom", "OreCrafter_top", "OreCrafter_side", "OreCrafter_side2");
+		par1.registerTexture(new BlockStack(par2, 1), "craftingTableBottom", "OreCrafter_top", "OreCrafter_side", "OreCrafter_side2");
 	}
 	
 	@Override
@@ -128,16 +129,6 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 		}
 	}
 	
-
-	
-	@Override
-	public void onPlaced(int facing)
-	{
-		setFacing((short)facing);
-	}
-
-
-
 	public boolean addItemsToInventory(ItemStack par1)
 	{
 		if(par1 != null)

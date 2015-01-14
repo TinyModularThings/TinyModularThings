@@ -16,8 +16,6 @@ public abstract class TileFacing extends AdvTile
 	
 	public HashMap<String, Integer> sideOpened = new HashMap<String, Integer>();
 	
-	
-	
 	@Override
 	public void onPlayerCloseContainer(EntityPlayer par1)
 	{
@@ -110,7 +108,6 @@ public abstract class TileFacing extends AdvTile
 	
 	public short setNextRotation()
 	{
-		
 		return FacingUtil.getNextFacing(rotation, isSixSidedRotation());
 	}
 	
@@ -119,4 +116,38 @@ public abstract class TileFacing extends AdvTile
 		return false;
 	}
 	
+	@Override
+	public void onIconMakerLoading()
+	{
+		super.onIconMakerLoading();
+		this.setFacing((short)3);
+	}
+	
+	@Override
+	public void onPlaced(int facing)
+	{
+		if(!isSixSidedFacing() && facing < 2)
+		{
+			facing = 2;
+		}
+		setFacing((short)facing);
+	}
+	
+	@Override
+	public void onAdvPlacing(int rotation, int facing)
+	{
+		super.onAdvPlacing(rotation, facing);
+		if(hasRotation())
+		{
+			if(!isSixSidedRotation() && rotation < 2)
+			{
+				setRotation((short)rotation);
+			}
+		}
+	}
+	
+	public boolean hasRotation()
+	{
+		return false;
+	}
 }

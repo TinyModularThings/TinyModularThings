@@ -347,9 +347,16 @@ public class InventoryUtil
 		player.worldObj.spawnEntityInWorld(drop);
 	}
 	
-	public static void dropItem(TileEntity tile, ItemStack item)
+	public static void dropItem(TileEntity tile, ItemStack item, boolean move)
 	{
 		EntityItem drop = new EntityItem(tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord, item);
+		if(move)
+		{
+			float f3 = 0.05F;
+			drop.motionX = (float) tile.worldObj.rand.nextGaussian() * f3;
+			drop.motionY = (float) tile.worldObj.rand.nextGaussian() * f3 + 0.2F;
+			drop.motionZ = (float) tile.worldObj.rand.nextGaussian() * f3;
+		}
 		tile.worldObj.spawnEntityInWorld(drop);
 	}
 	

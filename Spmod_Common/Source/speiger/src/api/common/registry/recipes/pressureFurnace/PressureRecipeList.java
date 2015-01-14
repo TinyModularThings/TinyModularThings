@@ -1,9 +1,6 @@
 package speiger.src.api.common.registry.recipes.pressureFurnace;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
@@ -11,7 +8,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.oredict.OreDictionary;
-import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipe;
 
 public class PressureRecipeList
 {

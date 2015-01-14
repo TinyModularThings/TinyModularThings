@@ -2,8 +2,6 @@ package speiger.src.spmodapi.common.items.hemp;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -21,7 +19,6 @@ import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.handler.PlateHandler;
 import speiger.src.spmodapi.common.items.core.SpmodPlacerItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

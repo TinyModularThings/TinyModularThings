@@ -5,6 +5,7 @@ import java.util.List;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -17,7 +18,6 @@ import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.common.registry.recipes.output.RecipeOutput;
 import speiger.src.api.common.registry.recipes.uncrafter.UncrafterRecipeList;
 import speiger.src.api.common.utils.WorldReading;
-import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.tiles.energy.EnergyProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergyProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergySubject;
@@ -83,11 +83,11 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 	
 
 	@Override
-	public void registerIcon(TextureEngine par1)
+	public void registerIcon(TextureEngine par1, Block par2)
 	{
-		super.registerIcon(par1);
+		super.registerIcon(par1, par2);
 		String id = "Uncrafter";
-		par1.registerTexture(TinyBlocks.craftingBlock, 3, id+"_Bottom", id+"_Top", id+"_Front", 
+		par1.registerTexture(par2, 3, id+"_Bottom", id+"_Top", id+"_Front", 
 				id+"_Overlay_0", id+"_Overlay_1", id+"_Overlay_2", id+"_Overlay_3", id+"_Overlay_4", id+"_Overlay_5",
 				id+"_Overlay_6", id+"_Overlay_7", id+"_Overlay_8", id+"_Overlay_9");
 	}
@@ -396,8 +396,14 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 			par2.add("Press Ctrl to get Extra Infos");
 		}
 	}
-	
-	
-	
-	
+
+	@Override
+	public void onRenderWorld(Block block, RenderBlocks renderer)
+	{
+		for(int i = 0;i<2;i++)
+		{
+			this.setRenderPass(i);
+			renderer.renderStandardBlock(block, xCoord, yCoord, zCoord);
+		}
+	}
 }

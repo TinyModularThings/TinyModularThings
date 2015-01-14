@@ -2,8 +2,6 @@ package speiger.src.tinymodularthings.common.items.minecarts;
 
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.BlockRailBase;
 import net.minecraft.client.model.ModelMinecart;
 import net.minecraft.creativetab.CreativeTabs;
@@ -13,6 +11,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+
+import org.lwjgl.opengl.GL11;
+
 import speiger.src.api.client.render.IMetaItemRender;
 import speiger.src.tinymodularthings.client.models.storage.ModelTinyChest;
 import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart.EightSlotTinyChestCart;
@@ -27,7 +28,6 @@ import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTin
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import cpw.mods.fml.client.FMLClientHandler;
-import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

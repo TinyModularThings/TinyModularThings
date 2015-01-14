@@ -3,18 +3,14 @@ package speiger.src.tinymodularthings.common.blocks.machine;
 import java.util.List;
 
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.tileentity.TileEntityRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.MinecraftForge;
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.tinymodularthings.client.render.machine.RenderWaterSpender;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -57,9 +53,6 @@ public class BlockMachine extends SpmodBlockContainerBase
 		}
 	}
 	
-	
-	
-	
 	@Override
 	public boolean isOpaqueCube()
 	{
@@ -87,33 +80,9 @@ public class BlockMachine extends SpmodBlockContainerBase
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean requiresRenderer(int meta)
-	{
-		return false;
-	}
-	
-	@Override
-	public boolean dissableRendering(int meta)
-	{
-		return meta == 5;
-	}
-
-	@Override
 	public boolean requiresRender()
 	{
 		return true;
 	}
 
-	@Override
-	public boolean renderItemBlock(int meta)
-	{
-		return true;
-	}
-
-	@Override
-	public boolean renderItemBlockBasic(int meta)
-	{
-		return true;
-	}
 }

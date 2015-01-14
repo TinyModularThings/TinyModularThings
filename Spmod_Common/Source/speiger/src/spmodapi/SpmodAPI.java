@@ -13,7 +13,6 @@ import speiger.src.api.common.utils.LogProxy;
 import speiger.src.spmodapi.common.command.CommandRegistry;
 import speiger.src.spmodapi.common.command.commands.CommandServerTimer;
 import speiger.src.spmodapi.common.config.SpmodConfig;
-import speiger.src.spmodapi.common.core.Registry;
 import speiger.src.spmodapi.common.core.SpmodAPICore;
 import speiger.src.spmodapi.common.handler.SpmodPacketHandler;
 import speiger.src.spmodapi.common.plugins.PluginLoader;

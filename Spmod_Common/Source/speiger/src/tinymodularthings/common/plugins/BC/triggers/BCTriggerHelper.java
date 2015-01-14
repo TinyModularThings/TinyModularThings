@@ -11,7 +11,6 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.tinymodularthings.common.pipes.PipeEmeraldExtractionPower;
 import speiger.src.tinymodularthings.common.plugins.BC.BCVariables;
-import buildcraft.BuildCraftTransport;
 import buildcraft.api.gates.ITrigger;
 import buildcraft.api.gates.ITriggerProvider;
 import buildcraft.api.power.IPowerReceptor;

@@ -77,12 +77,6 @@ public class WindMill extends TileFacing implements IInventory,
 	}
 	
 	@Override
-	public void onPlaced(int facing)
-	{
-		this.setFacing((short) facing);
-	}
-	
-	@Override
 	public void setFacing(short i)
 	{
 		super.setFacing(i);

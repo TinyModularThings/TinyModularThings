@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -67,9 +68,9 @@ public class ExpStorage extends AdvTile implements IInventory, IFluidHandler, IE
 	}
 	
 	@Override
-	public void registerIcon(TextureEngine par1)
+	public void registerIcon(TextureEngine par1, Block par2)
 	{
-		par1.registerTexture(new BlockStack(APIBlocks.blockUtils, 1), "expBench.side","expBench.top");
+		par1.registerTexture(new BlockStack(par2, 1), "expBench.side","expBench.top");
 	}
 	
 	@Override

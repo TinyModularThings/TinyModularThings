@@ -2,17 +2,14 @@ package speiger.src.spmodapi.common.blocks.deko;
 
 import java.util.HashMap;
 
+import net.minecraft.block.Block;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import cpw.mods.fml.common.network.PacketDispatcher;
 
 public class KyrokaTheFox extends TileFacing
 {
@@ -46,22 +43,8 @@ public class KyrokaTheFox extends TileFacing
 		}
 	}
 	
-	
-
 	@Override
-	public void onPlaced(int facing)
-	{
-		if(facing < 2)
-		{
-			facing = 2;
-		}
-		this.setFacing((short)facing);
-	}
-
-
-
-	@Override
-	public void registerIcon(TextureEngine par1)
+	public void registerIcon(TextureEngine par1, Block par2)
 	{
 		textures.put(0, new ResourceLocation(SpmodAPILib.ModID.toLowerCase()+":textures/models/armor/ModelKyrokaTheFox.png"));
 		textures.put(1, new ResourceLocation(SpmodAPILib.ModID.toLowerCase()+":textures/models/armor/ModelKyrokaTheFoxDark.png"));
@@ -93,51 +76,24 @@ public class KyrokaTheFox extends TileFacing
 	{
 		return null;
 	}
-
-
-
+	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
 		type = nbt.getInteger("Type");
 	}
-
-
-
+	
 	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
 		nbt.setInteger("Type", type);
 	}
-
-
-
-	@Override
-	public void onTick()
-	{
-		if(!worldObj.isRemote)
-		{
-			if(worldObj.getWorldTime() % 200 == 0)
-			{
-				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
-			}
-		}
-	}
 	
 	@Override
-	public Packet getDescriptionPacket()
+	public boolean canUpdate()
 	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
+		return false;
 	}
-	
-	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		readFromNBT(pkt.data);
-	}
-	
 }

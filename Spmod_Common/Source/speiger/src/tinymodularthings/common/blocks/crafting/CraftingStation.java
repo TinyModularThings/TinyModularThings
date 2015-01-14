@@ -1,12 +1,9 @@
 package speiger.src.tinymodularthings.common.blocks.crafting;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -73,6 +70,12 @@ public class CraftingStation extends AdvTile
 	}
 
 	@Override
+	public boolean canUpdate()
+	{
+		return false;
+	}
+
+	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
@@ -110,9 +113,9 @@ public class CraftingStation extends AdvTile
 	}
 	
 	@Override
-	public void registerIcon(TextureEngine par1)
+	public void registerIcon(TextureEngine par1, Block par2)
 	{
-		par1.registerTexture(TinyBlocks.craftingBlock, 2, "CraftingStation_Bottom", "CraftingStation_Top", "CraftingStation_Side");
+		par1.registerTexture(par2, 2, "CraftingStation_Bottom", "CraftingStation_Top", "CraftingStation_Side");
 	}
 
 	@Override

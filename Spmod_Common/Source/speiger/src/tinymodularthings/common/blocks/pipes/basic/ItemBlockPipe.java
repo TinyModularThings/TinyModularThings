@@ -2,13 +2,9 @@ package speiger.src.tinymodularthings.common.blocks.pipes.basic;
 
 import java.util.List;
 
-import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
-import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.common.data.nbt.NBTHelper;
-import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.tinymodularthings.common.interfaces.IBasicPipe;
 import speiger.src.tinymodularthings.common.items.core.ItemBlockTinyChest;

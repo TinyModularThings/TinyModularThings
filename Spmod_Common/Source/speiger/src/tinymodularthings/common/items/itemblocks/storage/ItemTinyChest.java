@@ -2,14 +2,15 @@ package speiger.src.tinymodularthings.common.items.itemblocks.storage;
 
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+
+import org.lwjgl.opengl.GL11;
+
 import speiger.src.api.client.render.IMetaItemRender;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.tinymodularthings.client.render.storage.RenderStorageBlock;

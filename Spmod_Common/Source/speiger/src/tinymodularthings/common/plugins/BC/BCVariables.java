@@ -1,11 +1,6 @@
 package speiger.src.tinymodularthings.common.plugins.BC;
 
-import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerEnergyFlow;
-import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerFuel;
-import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerHasWork;
-import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerPipeRequestPower;
-import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerRequestPower;
-import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerTank;
+import speiger.src.tinymodularthings.common.plugins.BC.triggers.*;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.ITrigger;
 

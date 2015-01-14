@@ -1,11 +1,8 @@
 package speiger.src.spmodapi.client.render.core;
 
-import java.util.ArrayList;
-
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.client.IItemRenderer;
 import speiger.src.api.client.render.IMetaItemRender;
-import cpw.mods.fml.common.registry.ItemData;
 
 public class ItemRenderSpmodCore implements IItemRenderer
 {

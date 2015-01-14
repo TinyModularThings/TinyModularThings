@@ -82,12 +82,6 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	}
 	
 	@Override
-	public void onIconMakerLoading()
-	{
-		this.setFacing((short)3);
-	}
-	
-	@Override
 	public void onTick()
 	{
 		super.onTick();
@@ -585,12 +579,6 @@ public class PressureFurnace extends TileFacing implements IInventory,
 			return true;
 		}
 		return false;
-	}
-	
-	@Override
-	public void onPlaced(int facing)
-	{
-		setFacing((short)facing);
 	}
 	
 	@Override

@@ -1,10 +1,11 @@
 package speiger.src.tinymodularthings.client.render.machine;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+
+import org.lwjgl.opengl.GL11;
+
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.models.machine.WaterSpenderModel;
 import speiger.src.tinymodularthings.common.blocks.machine.MachineWaterSpender;

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -14,6 +15,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.ForgeDirection;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.interfaces.ISharedInventory;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.tinymodularthings.TinyModularThings;
@@ -166,7 +168,7 @@ public class TinyChest extends TileFacing implements IInventory,
 	@Override
 	public void onPlaced(int facing)
 	{
-		setFacing((short)facing);
+		super.onPlaced(facing);
 		if (isValidMode())
 		{
 			updateInventory();
@@ -335,5 +337,18 @@ public class TinyChest extends TileFacing implements IInventory,
 	{
 		return new ItemStack(TinyItems.tinyChest, 1, mode - 1);
 	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onRenderInv(BlockStack stack, RenderBlocks render)
+	{
+	}
+
+	@Override
+	public void onRenderWorld(Block block, RenderBlocks renderer)
+	{
+	}
+	
+	
 	
 }

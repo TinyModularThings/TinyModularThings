@@ -1,8 +1,5 @@
 package speiger.src.spmodapi.common.fluids.hemp;
 
-import speiger.src.spmodapi.common.util.TextureEngine;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.item.EntityItem;
@@ -15,7 +12,10 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.fluids.BlockFluidClassic;
 import net.minecraftforge.fluids.Fluid;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import buildcraft.BuildCraftTransport;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class BlockFluidHempResin extends BlockFluidClassic
 {

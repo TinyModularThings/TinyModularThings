@@ -4,6 +4,8 @@ import ic2.api.tile.IWrenchable;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -11,11 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.AdvTile;
@@ -26,7 +24,6 @@ import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
 import buildcraft.BuildCraftFactory;
 import buildcraft.api.tools.IToolWrench;
 import buildcraft.factory.TileTank;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -814,5 +811,41 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 		this.droped = true;
 		return drop;
 	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onRenderInv(BlockStack stack, RenderBlocks render)
+	{
+	}
+
+	@Override
+	public void onRenderWorld(Block block, RenderBlocks render)
+	{
+		if(tank.getFluidAmount() > 0)
+		{
+			FluidStack stack = tank.getFluid();
+			if(stack != null && stack.getFluid() != null && renderLiquid() && !renderTank())
+			{
+				Fluid fluid = stack.getFluid();
+				Icon icon = fluid.getIcon(stack);
+				double amount = ((double)stack.amount / (double)tank.getCapacity()) * 75;
+				amount /= 100;
+				
+				render.setRenderBounds(0.125, 0.125, 0.125, 0.875, 0.125+amount, 0.875);
+				render.setOverrideBlockTexture(icon);
+				render.renderAllFaces = true;
+				render.renderStandardBlock(block, xCoord, yCoord, zCoord);
+				render.clearOverrideBlockTexture();
+				render.renderAllFaces = false;
+			}
+			
+			if(renderTank())
+			{
+				render.renderStandardBlock(block, xCoord, yCoord, zCoord);
+			}
+		}
+	}
+	
+	
 	
 }

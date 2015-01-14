@@ -1,6 +1,6 @@
 package speiger.src.spmodapi.common.sound;
 
-import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
 
@@ -18,7 +18,8 @@ import speiger.src.spmodapi.common.config.SpmodConfig;
 
 import com.google.common.base.Strings;
 
-import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.ITickHandler;
+import cpw.mods.fml.common.TickType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -27,7 +28,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author Speiger
  * 
  */
-public class SoundRegistry
+public class SoundRegistry implements ITickHandler
 {
 	
 	@SideOnly(Side.CLIENT)
@@ -41,6 +42,8 @@ public class SoundRegistry
 	private SoundManager manager;
 			
 	private HashMap<List<Integer>, String> soundKeepers = new HashMap<List<Integer>, String>();
+	
+	private float lastLoudness = 1.0F;
 	
 	/**
 	 * My Sound Controll
@@ -60,6 +63,7 @@ public class SoundRegistry
 		manager = evt.manager;
 		system = evt.manager.sndSystem;
 		settings = Minecraft.getMinecraft().gameSettings;
+		lastLoudness = settings.soundVolume;
 		SpmodAPI.log.print("Register " + sounds.size() + " Sounds");
 	}
 	
@@ -175,7 +179,10 @@ public class SoundRegistry
 	public void stopAndRemoveSound(String name)
 	{
 		checkSounds();
-		system.stop(name);
+		if(system.playing(name))
+		{
+			system.stop(name);
+		}
 		system.removeSource(name);
 	}
 	
@@ -266,6 +273,43 @@ public class SoundRegistry
 		}
 		
 		
+	}
+
+	@Override
+	public void tickStart(EnumSet<TickType> type, Object... tickData)
+	{
+		if(lastLoudness != settings.soundVolume)
+		{
+			if(system != null)
+			{
+				for(String par1 : soundKeepers.values())
+				{
+					float oldSound = system.getVolume(par1);
+					oldSound /= lastLoudness;
+					oldSound *= settings.soundVolume;
+					system.setVolume(par1, oldSound);
+				}
+			}
+			lastLoudness = settings.soundVolume;
+		}
+	}
+
+	@Override
+	public void tickEnd(EnumSet<TickType> type, Object... tickData)
+	{
+		
+	}
+
+	@Override
+	public EnumSet<TickType> ticks()
+	{
+		return EnumSet.of(TickType.CLIENT);
+	}
+
+	@Override
+	public String getLabel()
+	{
+		return "Spmod SoundHandler";
 	}
 	
 }

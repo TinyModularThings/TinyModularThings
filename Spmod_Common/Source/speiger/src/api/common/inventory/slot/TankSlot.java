@@ -5,8 +5,6 @@ import java.util.List;
 
 import net.minecraftforge.fluids.FluidTank;
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.spmodapi.common.util.proxy.LangProxy;
-import speiger.src.tinymodularthings.TinyModularThings;
 
 public class TankSlot
 {
@@ -36,7 +34,7 @@ public class TankSlot
 		return y;
 	}
 	
-	public List getTankInfo()
+	public List<String> getTankInfo()
 	{
 		ArrayList<String> texts = new ArrayList<String>();
 		if (tank != null)
@@ -60,13 +58,13 @@ public class TankSlot
 				}
 				else
 				{
-					if (tank.getFluid().getFluid().getLocalizedName().startsWith("tile."))
+					if (tank.getFluid().getFluid().getName().startsWith("tile."))
 					{
 						return "Unknowen Fluid";
 					}
 					else
 					{
-						return tank.getFluid().getFluid().getLocalizedName();
+						return tank.getFluid().getFluid().getName();
 					}
 				}
 			}

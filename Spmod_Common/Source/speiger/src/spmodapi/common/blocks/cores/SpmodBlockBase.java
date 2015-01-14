@@ -4,33 +4,29 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import net.minecraft.block.Block;
-import net.minecraft.block.StepSound;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.client.render.IBlockRenderer;
+import speiger.src.api.client.render.BlockRenderHelper;
+import speiger.src.api.client.render.IBlockRender;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.core.RenderHelper;
-import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRenderer
+public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRender
 {
 	public boolean[] ignoreRightClick = new boolean[16];
 	public boolean[] removeBasicDrops = new boolean[16];
@@ -376,40 +372,6 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 	{
 		return requiresRender() ? RenderHelper.getGlobalRenderID() : 0;
 	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean requiresRenderer(int meta)
-	{
-		return false;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean requiresMultibleRenderPasses(int meta)
-	{
-		return false;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getRenderPasses(int meta)
-	{
-		return 0;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void onRender(IBlockAccess world, int x, int y, int z, RenderBlocks render, BlockStack block, int renderPass)
-	{
-		
-	}
-
-	@Override
-	public boolean dissableRendering(int meta)
-	{
-		return false;
-	}
 
 	@Override
 	public boolean requiresRender()
@@ -418,39 +380,16 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 	}
 
 	@Override
-	public boolean renderItemBlock(int meta)
+	public void onRenderInv(BlockStack par1, RenderBlocks render)
 	{
-		return false;
+		BlockRenderHelper.renderInInv(par1, render);
 	}
 
 	@Override
-	public boolean renderItemBlockBasic(int meta)
+	public void onRenderWorld(IBlockAccess world, int x, int y, int z, RenderBlocks renderer)
 	{
-		return false;
-	}
-
-	@Override
-	public float[] getBoundingBoxes(int meta)
-	{
-		return null;
-	}
-
-	@Override
-	public float[] getXYZForItemRenderer(ItemRenderType type, int meta)
-	{
-		return null;
-	}
-
-	@Override
-	public int getItemRenderPasses(int meta)
-	{
-		return 0;
-	}
-
-	@Override
-	public void onItemRendering(BlockRendererHelper render, ItemRenderType type, BlockStack stack, int renderPass, float x, float y, float z, Object... data)
-	{
-		
+		renderer.renderStandardBlock(this, x, y, z);
 	}
 	
+
 }

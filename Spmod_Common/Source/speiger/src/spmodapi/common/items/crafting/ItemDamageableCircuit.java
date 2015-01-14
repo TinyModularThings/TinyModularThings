@@ -2,12 +2,11 @@ package speiger.src.spmodapi.common.items.crafting;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import speiger.src.spmodapi.common.items.core.SpmodItem;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemDamageableCircuit extends SpmodItem
 {

@@ -4,13 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 import speiger.src.spmodapi.common.lib.bc.IStackFilter;
 
 public class FluidUtils
@@ -217,22 +211,31 @@ public class FluidUtils
 			{
 				fluids = new Fluid[0];
 			}
-			
 		}
 		
 		@Override
 		public boolean matches(ItemStack stack)
 		{
-			if(fluids == null || fluids.length == 0 || stack == null)
+			if(fluids == null || fluids.length == 0 || stack == null || (FluidContainerRegistry.getFluidForFilledItem(stack) == null && !(stack.getItem() instanceof IFluidContainerItem)))
 			{
 				return false;
 			}
 			for(int i = 0;i<fluids.length;i++)
 			{
-				FluidStack fluid = new FluidStack(fluids[i], 1);
-				if(FluidContainerRegistry.containsFluid(stack, fluid))
+				if(stack.getItem() instanceof IFluidContainerItem)
 				{
-					return true;
+					IFluidContainerItem item = (IFluidContainerItem)stack.getItem();
+					if(item.getFluid(stack) != null && item.getFluid(stack).fluidID == fluids[i].getID())
+					{
+						return true;
+					}
+				}
+				else
+				{
+					if(FluidContainerRegistry.getFluidForFilledItem(stack).fluidID == fluids[i].getID())
+					{
+						return true;
+					}
 				}
 			}
 			return false;

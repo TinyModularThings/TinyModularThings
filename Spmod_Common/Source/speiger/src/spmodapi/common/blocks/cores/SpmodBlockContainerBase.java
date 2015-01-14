@@ -7,9 +7,7 @@ import java.util.Random;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
-import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -23,13 +21,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
-import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.blocks.BlockPosition;
-import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -593,17 +588,5 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
     {
     	return par1.getIconSafe();
     }
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void onRender(IBlockAccess world, int x, int y, int z, RenderBlocks render, BlockStack block, int renderPass)
-	{
-		AdvTile tile = getAdvTile(world, x, y, z);
-		if(tile != null)
-		{
-			tile.onRender(render, block, renderPass);
-		}
-	}
-    
     
 }

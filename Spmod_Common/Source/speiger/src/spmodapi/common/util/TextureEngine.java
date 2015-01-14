@@ -10,6 +10,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.client.event.TextureStitchEvent;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -44,10 +45,13 @@ public class TextureEngine
 	private TextureMap map;
 	HashMap<BlockData, String[]> blockString = new HashMap<BlockData, String[]>();
 	HashMap<ItemData, String[]> itemString = new HashMap<ItemData, String[]>();
-	
+	HashMap<ItemData, String[]> itemBlockString = new HashMap<ItemData, String[]>();
 	
 	HashMap<BlockData, Icon[]> blockTextures = new HashMap<BlockData, Icon[]>();
 	HashMap<ItemData, Icon[]> itemTextures = new HashMap<ItemData, Icon[]>();
+	HashMap<ItemData, Icon[]> itemBlockTextures = new HashMap<ItemData, Icon[]>();
+	
+	HashMap<String, ResourceLocation> guiTextures = new HashMap<String, ResourceLocation>();
 	
 	String currentMod = "";
 	String currentPath = "";
@@ -80,6 +84,16 @@ public class TextureEngine
 	public void removePath()
 	{
 		currentPath = "";
+	}
+	
+	public void registerGuiTexture(String key, String filename)
+	{
+		guiTextures.put(key, new ResourceLocation(currentMod+":textures/gui/"+currentPath+filename+".png"));
+	}
+	
+	public ResourceLocation getTexture(String key)
+	{
+		return guiTextures.get(key);
 	}
 	
 	public void markForDelay(ITextureRequester par1)
@@ -129,22 +143,43 @@ public class TextureEngine
 	
 	public void registerTexture(Item par1, int par2, String...par3)
 	{
-		ItemData data = new ItemData(par1, par2);
-		ArrayList<String> textures = new ArrayList<String>();
-		String[] before = itemString.get(data);
-		if(before != null && before.length > 0)
+		if(par1.getSpriteNumber() == 1)
 		{
-			for(String key : before)
+			ItemData data = new ItemData(par1, par2);
+			ArrayList<String> textures = new ArrayList<String>();
+			String[] before = itemString.get(data);
+			if(before != null && before.length > 0)
 			{
-				textures.add(key);
+				for(String key : before)
+				{
+					textures.add(key);
+				}
 			}
-		}
-		for(String key : par3)
-		{
-			textures.add(currentMod+":"+currentPath+key);
-		}
+			for(String key : par3)
+			{
+				textures.add(currentMod+":"+currentPath+key);
+			}
 
-		itemString.put(data, textures.toArray(new String[textures.size()]));
+			itemString.put(data, textures.toArray(new String[textures.size()]));
+		}
+		else
+		{
+			ItemData data = new ItemData(par1, par2);
+			ArrayList<String> textures = new ArrayList<String>();
+			String[] before = itemBlockString.get(data);
+			if(before != null && before.length > 0)
+			{
+				for(String key : before)
+				{
+					textures.add(key);
+				}
+			}
+			for(String key : par3)
+			{
+				textures.add(currentMod+":"+currentPath+key);
+			}
+			itemBlockString.put(data, textures.toArray(new String[textures.size()]));
+		}
 	}
 	
 	public void registerTexture(Block par1, int par2, String...par3)
@@ -205,6 +240,21 @@ public class TextureEngine
 				}
 				blockTextures.put(texture.getKey(), icons);
 			}
+			Iterator<Entry<ItemData, String[]>> itemIter = itemBlockString.entrySet().iterator();
+			for(;itemIter.hasNext();)
+			{
+				Entry<ItemData, String[]> texture = itemIter.next();
+				Icon[] icons = new Icon[texture.getValue().length];
+				for(int i = 0;i<icons.length;i++)
+				{
+					icons[i] = par1.map.registerIcon(texture.getValue()[i]);
+					if(!isTextureRegistered(icons[i], map))
+					{
+						icons[i] = this.getIconSafe(missingTexture[0]);
+					}
+				}
+				itemBlockTextures.put(texture.getKey(), icons);
+			}
 		}
 		else
 		{
@@ -259,12 +309,27 @@ public class TextureEngine
 				for(int i = 0;i<icons.length;i++)
 				{
 					icons[i] = par1.map.registerIcon(texture.getValue()[i]);
-					if(icons[i].getIconName().equalsIgnoreCase("missingno"))
+					if(!isTextureRegistered(icons[i], map))
 					{
 						icons[i] = this.getIconSafe(missingTexture[0]);
 					}
 				}
 				blockTextures.put(texture.getKey(), icons);
+			}
+			Iterator<Entry<ItemData, String[]>> itemIter = itemBlockString.entrySet().iterator();
+			for(;itemIter.hasNext();)
+			{
+				Entry<ItemData, String[]> texture = itemIter.next();
+				Icon[] icons = new Icon[texture.getValue().length];
+				for(int i = 0;i<icons.length;i++)
+				{
+					icons[i] = par1.map.registerIcon(texture.getValue()[i]);
+					if(!isTextureRegistered(icons[i], map))
+					{
+						icons[i] = this.getIconSafe(missingTexture[0]);
+					}
+				}
+				itemBlockTextures.put(texture.getKey(), icons);
 			}
 		}
 		else
@@ -278,7 +343,7 @@ public class TextureEngine
 				for(int i = 0;i<icons.length;i++)
 				{
 					icons[i] = par1.map.registerIcon(texture.getValue()[i]);
-					if(icons[i].getIconName().equalsIgnoreCase("missingno"))
+					if(!isTextureRegistered(icons[i], map))
 					{
 						icons[i] = this.getIconSafe(missingTexture[1]);
 					}
@@ -347,6 +412,11 @@ public class TextureEngine
 		{
 			return texture[key];
 		}
+		texture = itemBlockTextures.get(new ItemData(par1, meta));
+		if(texture != null && texture.length > key)
+		{
+			return texture[key];
+		}
 		return getIconSafe();
 	}
 	
@@ -363,6 +433,11 @@ public class TextureEngine
 	public static Icon[] getIcon(Item par1, int par2)
 	{
 		Icon[] texture = instance.itemTextures.get(new ItemData(par1, par2));
+		if(texture == null)
+		{
+			texture = new Icon[]{instance.getIconSafe()};
+		}
+		texture = instance.itemBlockTextures.get(new ItemData(par1, par2));
 		if(texture == null)
 		{
 			texture = new Icon[]{instance.getIconSafe()};

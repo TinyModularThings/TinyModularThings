@@ -4,10 +4,10 @@ import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import speiger.src.api.client.render.BlockRenderHelper;
 import speiger.src.api.client.render.IMetaItemRender;
-import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
+import speiger.src.api.common.world.blocks.BlockStack;
 import buildcraft.BuildCraftTransport;
-import buildcraft.core.CoreConstants;
 import buildcraft.transport.ItemPipe;
 
 public class SpmodPipe extends ItemPipe implements IMetaItemRender
@@ -61,7 +61,11 @@ public class SpmodPipe extends ItemPipe implements IMetaItemRender
 	@Override
 	public void onRender(ItemRenderType type, ItemStack item, int renderPass, float x, float y, float z, Object... data)
 	{
-		BlockRendererHelper.renderBlockStandart(getTexture(), new float[]{CoreConstants.PIPE_MIN_POS, 0.0F, CoreConstants.PIPE_MIN_POS, CoreConstants.PIPE_MAX_POS, 1.0F, CoreConstants.PIPE_MAX_POS}, BuildCraftTransport.genericPipeBlock, new float[]{x,y,z}, (RenderBlocks)data[0]);
+		BuildCraftTransport.genericPipeBlock.setBlockBounds(0.25F, 0.0F, 0.25F, 0.75F, 1.0F, 0.75F);
+		((RenderBlocks)data[0]).setOverrideBlockTexture(getIconFromDamage(item.getItemDamage()));
+		BlockRenderHelper.renderInv(new BlockStack(BuildCraftTransport.genericPipeBlock, 0), (RenderBlocks)data[0]);
+		BuildCraftTransport.genericPipeBlock.setBlockBoundsForItemRender();
+		((RenderBlocks)data[0]).clearOverrideBlockTexture();
 	}
 	
 	

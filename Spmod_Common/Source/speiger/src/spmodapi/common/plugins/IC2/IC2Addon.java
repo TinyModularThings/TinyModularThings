@@ -1,21 +1,20 @@
 package speiger.src.spmodapi.common.plugins.IC2;
 
-import buildcraft.api.fuels.IronEngineCoolant;
 import ic2.api.crops.Crops;
 import ic2.api.item.Items;
 import ic2.api.recipe.RecipeInputItemStack;
-import ic2.api.recipe.RecipeOutput;
 import ic2.api.recipe.Recipes;
 import ic2.core.block.crop.IC2Crops;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
+import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
+import buildcraft.api.fuels.IronEngineCoolant;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 

@@ -2,8 +2,6 @@ package speiger.src.tinymodularthings.common.items.itemblocks.transport;
 
 import java.util.List;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.creativetab.CreativeTabs;
@@ -15,11 +13,11 @@ import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
+import speiger.src.api.client.render.BlockRenderHelper;
 import speiger.src.api.client.render.IMetaItemRender;
 import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
-import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
@@ -223,7 +221,7 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 	@Override
 	public void onRender(ItemRenderType type, ItemStack item, int renderPass, float x, float y, float z, Object... data)
 	{
-		BlockRendererHelper.renderBlockStandart(getTextureArray(item.getItemDamage()), new float[]{0.35F, 0.35F, 0.35F, 0.65F, 0.65F, 0.65F}, TinyBlocks.transportBlock, new float[]{x,y,z}, ((RenderBlocks)data[0]));
+		BlockRenderHelper.renderInInv(getBlockToPlace(item.getItemDamage()), (RenderBlocks)data[0]);
 	}
 	
 }

@@ -16,7 +16,6 @@ import net.minecraftforge.common.MinecraftForge;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

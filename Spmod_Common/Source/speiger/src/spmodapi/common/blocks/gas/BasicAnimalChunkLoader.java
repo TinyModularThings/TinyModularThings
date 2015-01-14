@@ -20,7 +20,6 @@ import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -95,7 +94,6 @@ public class BasicAnimalChunkLoader extends AdvTile
 	@Override
 	public void onIconMakerLoading()
 	{
-		super.onIconMakerLoading();
 		rotate = true;
 	}
 

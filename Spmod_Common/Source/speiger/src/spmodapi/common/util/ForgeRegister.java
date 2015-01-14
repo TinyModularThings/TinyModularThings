@@ -42,6 +42,7 @@ public class ForgeRegister
 	public static void regsiterClient()
 	{
 		regist(SoundRegistry.getInstance());
+		TickRegistry.registerTickHandler(SoundRegistry.getInstance(), Side.CLIENT);
 	}
 	
 	public static void regist(Object par1)

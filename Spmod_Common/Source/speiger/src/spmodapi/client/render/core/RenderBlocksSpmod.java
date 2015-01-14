@@ -1,10 +1,10 @@
 package speiger.src.spmodapi.client.render.core;
 
-import speiger.src.spmodapi.common.util.TextureEngine;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

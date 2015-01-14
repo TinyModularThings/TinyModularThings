@@ -17,7 +17,6 @@ import speiger.src.api.client.gui.IItemGui;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.items.trades.GuiTrade;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
-import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.util.TickHelper;

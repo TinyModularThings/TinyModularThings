@@ -2,6 +2,8 @@ package speiger.src.tinymodularthings.common.blocks.transport;
 
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
@@ -25,6 +27,8 @@ import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class MultiStructureEnergyInterface extends AdvTile implements
 		IEnergyProvider, IPowerReceptor, IAcceptor
@@ -263,4 +267,19 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 		par1.setIntArray("Coords", new int[] { x, y, z });
 	}
 	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onRenderInv(BlockStack stack, RenderBlocks render)
+	{
+	}
+
+	@Override
+	public void onRenderWorld(Block block, RenderBlocks renderer)
+	{
+		for(int i = 0;i<2;i++)
+		{
+			this.setRenderPass(i);
+			renderer.renderStandardBlock(block, xCoord, yCoord, zCoord);
+		}
+	}
 }

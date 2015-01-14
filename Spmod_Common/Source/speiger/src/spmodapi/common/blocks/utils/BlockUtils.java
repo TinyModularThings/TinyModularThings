@@ -3,8 +3,6 @@ package speiger.src.spmodapi.common.blocks.utils;
 import java.util.List;
 import java.util.Random;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
@@ -29,12 +27,11 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.MinecraftForge;
 import speiger.src.api.client.gui.IBlockGui;
+import speiger.src.api.client.render.BlockRenderHelper;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.entity.EntityOverridenEnderman;
@@ -279,72 +276,6 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 		}
 		return null;
 	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean requiresRenderer(int meta)
-	{
-		return meta == 3;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean requiresMultibleRenderPasses(int meta)
-	{
-		return meta == 3;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getRenderPasses(int meta)
-	{
-		return meta == 3 ? 2 : 0;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void onRender(IBlockAccess world, int x, int y, int z, RenderBlocks render, BlockStack block, int renderPass)
-	{
-		if(renderPass == 0)
-		{
-			render.renderStandardBlock(block.getBlock(), x, y, z);
-		}
-		else
-		{
-			Tessellator tes = Tessellator.instance;
-			Minecraft mc = FMLClientHandler.instance().getClient();
-			tes.draw();
-			mc.renderEngine.bindTexture(TextureMap.locationItemsTexture);
-			tes.startDrawingQuads();
-			tes.setNormal(1F, 1F, 0F);
-			render.setOverrideBlockTexture(Item.porkRaw.getIconFromDamage(0));
-			render.renderCrossedSquares(block.getBlock(), x, y, z);
-			render.clearOverrideBlockTexture();
-			tes.draw();
-			tes.startDrawingQuads();
-			mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-		}
-	}
-	
-	@Override
-	public void onItemRendering(BlockRendererHelper render, ItemRenderType type, BlockStack stack, int renderPass, float x, float y, float z, Object... data)
-	{
-		render.renderBlockStandart(this, stack, (RenderBlocks)data[1], type);
-		Tessellator tessellator = Tessellator.instance;
-		tessellator.startDrawingQuads();
-		tessellator.setNormal(1.0F, 1.0F, 0.0F);
-		Minecraft mc = FMLClientHandler.instance().getClient();
-		mc.renderEngine.bindTexture(TextureMap.locationItemsTexture);
-		((RenderBlocks)data[1]).renderFaceXPos(this, -0.5D, 0.0D, 0.0D, TextureEngine.getTextures().getIconSafe(Item.porkRaw.getIconFromDamage(0)));
-		tessellator.draw();
-		mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
-	}
-
-	@Override
-	public boolean dissableRendering(int meta)
-	{
-		return false;
-	}
 
 	@Override
 	public boolean requiresRender()
@@ -353,40 +284,43 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 	}
 
 	@Override
-	public boolean renderItemBlock(int meta)
+	public void onRenderInv(BlockStack par1, RenderBlocks render)
 	{
-		return true;
-	}
-
-	@Override
-	public boolean renderItemBlockBasic(int meta)
-	{
-		return meta != 3;
-	}
-
-	@Override
-	public float[] getBoundingBoxes(int meta)
-	{
-		return null;
-	}
-
-	@Override
-	public float[] getXYZForItemRenderer(ItemRenderType type, int meta)
-	{
-		switch (type)
+		if(par1.getMeta() == 3)
 		{
-			case ENTITY: return new float[]{-0.5f, -0.5f, -0.5f};
-			case EQUIPPED_FIRST_PERSON: return new float[]{-0.3f, 0.2f, 0.3f};
-			case EQUIPPED: return new float[]{-0.4f, 0.50f, 0.35f};
-			case INVENTORY: return new float[]{-0.5f, -0.5f, -0.5f};
-			default: return null;
+			Tessellator tessellator = Tessellator.instance;
+			tessellator.startDrawingQuads();
+			tessellator.setNormal(1.0F, 1.0F, 0.0F);
+			Minecraft mc = FMLClientHandler.instance().getClient();
+			mc.renderEngine.bindTexture(TextureMap.locationItemsTexture);
+			render.renderFaceXPos(this, -0.5D, 0.0D, 0.0D, TextureEngine.getTextures().getIconSafe(Item.porkRaw.getIconFromDamage(0)));
+			tessellator.draw();
+			mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
+			BlockRenderHelper.renderInInv(par1, render);
+		}
+		else
+		{
+			super.onRenderInv(par1, render);
 		}
 	}
 
 	@Override
-	public int getItemRenderPasses(int meta)
+	public void onRenderWorld(IBlockAccess world, int x, int y, int z, RenderBlocks render)
 	{
-		return meta == 3 ? 2 : 0;
+		render.renderStandardBlock(this, x, y, z);
+		Tessellator tes = Tessellator.instance;
+		Minecraft mc = FMLClientHandler.instance().getClient();
+		tes.draw();
+		mc.renderEngine.bindTexture(TextureMap.locationItemsTexture);
+		tes.startDrawingQuads();
+		tes.setNormal(1F, 1F, 0F);
+		render.setOverrideBlockTexture(Item.porkRaw.getIconFromDamage(0));
+		render.renderCrossedSquares(this, x, y, z);
+		render.clearOverrideBlockTexture();
+		tes.draw();
+		tes.startDrawingQuads();
+		mc.renderEngine.bindTexture(TextureMap.locationBlocksTexture);
 	}
+	
 	
 }

@@ -4,11 +4,7 @@ import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
 import java.io.DataInput;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
@@ -62,10 +58,10 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 	
 	
 	@Override
-	public void registerIcon(TextureEngine par1)
+	public void registerIcon(TextureEngine par1, Block par2)
 	{
-		super.registerIcon(par1);
-		par1.registerTexture(new BlockStack(APIBlocks.blockUtils, 4), "InventoryAccesser_Top", "InventoryAccesser_Side", "InventoryAccesser_Front");
+		super.registerIcon(par1, par2);
+		par1.registerTexture(new BlockStack(par2, 4), "InventoryAccesser_Top", "InventoryAccesser_Side", "InventoryAccesser_Front");
 	}
 
 	

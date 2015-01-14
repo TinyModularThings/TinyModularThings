@@ -2,8 +2,6 @@ package speiger.src.tinymodularthings.common.world.gen;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import speiger.src.api.common.registry.helpers.SpmodMod;

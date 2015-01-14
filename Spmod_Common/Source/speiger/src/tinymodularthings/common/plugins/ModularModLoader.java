@@ -1,11 +1,8 @@
 package speiger.src.tinymodularthings.common.plugins;
 
-import speiger.src.tinymodularthings.common.config.TinyConfig;
-import speiger.src.tinymodularthings.common.config.TinyItemsConfig;
 import speiger.src.tinymodularthings.common.plugins.BC.BCRegistry;
 import speiger.src.tinymodularthings.common.plugins.Railcraft.PluginRailcraft;
 import speiger.src.tinymodularthings.common.plugins.forestry.ForestryPlugin;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.Loader;
 
 public class ModularModLoader

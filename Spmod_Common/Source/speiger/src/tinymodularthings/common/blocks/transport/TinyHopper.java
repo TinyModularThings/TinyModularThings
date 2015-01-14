@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -18,11 +19,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 import speiger.src.api.common.inventory.container.CopiedIInventory;
 import speiger.src.api.common.inventory.slot.TankSlot;
 import speiger.src.api.common.inventory.tank.CopiedFluidTank;
@@ -31,15 +28,11 @@ import speiger.src.api.common.registry.hopper.HopperRegistry.HopperEffect;
 import speiger.src.api.common.registry.hopper.HopperRegistry.HopperEffect.EffectType;
 import speiger.src.api.common.utils.FluidUtils;
 import speiger.src.api.common.utils.InventoryUtil;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.blocks.IAdvancedPipeProvider;
 import speiger.src.api.common.world.items.IHopperUpgradeItem;
 import speiger.src.api.common.world.tiles.energy.EnergyProvider;
-import speiger.src.api.common.world.tiles.interfaces.HopperUpgrade;
-import speiger.src.api.common.world.tiles.interfaces.IFilteredInventory;
-import speiger.src.api.common.world.tiles.interfaces.IHopper;
-import speiger.src.api.common.world.tiles.interfaces.IHopperInventory;
-import speiger.src.api.common.world.tiles.interfaces.IOwner;
-import speiger.src.api.common.world.tiles.interfaces.IOwnerProvider;
+import speiger.src.api.common.world.tiles.interfaces.*;
 import speiger.src.spmodapi.common.handler.FakePlayer;
 import speiger.src.spmodapi.common.tile.AdvancedFluidTank;
 import speiger.src.spmodapi.common.tile.TileFacing;
@@ -1112,7 +1105,16 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 		HopperBackupSystem.getSystem().removeBackupData(this);
 	}
 
-	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onRenderInv(BlockStack stack, RenderBlocks render)
+	{
+	}
+
+	@Override
+	public void onRenderWorld(Block block, RenderBlocks renderer)
+	{
+	}
 	
 	
 	

@@ -6,7 +6,6 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.common.blocks.ContainerWindmill;
 import speiger.src.compactWindmills.common.blocks.WindMill;
 import speiger.src.compactWindmills.common.core.CWPreference;

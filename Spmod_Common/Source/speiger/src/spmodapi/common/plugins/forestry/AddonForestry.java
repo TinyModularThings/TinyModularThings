@@ -14,7 +14,6 @@ import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
-import cpw.mods.fml.common.FMLLog;
 import forestry.api.apiculture.FlowerManager;
 import forestry.api.farming.Farmables;
 import forestry.api.farming.IFarmable;
@@ -26,7 +25,6 @@ import forestry.core.GameMode;
 import forestry.core.utils.RecipeUtil;
 import forestry.factory.gadgets.MachineFermenter;
 import forestry.factory.gadgets.MachineFermenter.Recipe;
-import forestry.plugins.PluginArboriculture;
 
 public class AddonForestry
 {

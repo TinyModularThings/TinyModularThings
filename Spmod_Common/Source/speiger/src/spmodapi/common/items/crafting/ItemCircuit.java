@@ -3,10 +3,7 @@ package speiger.src.spmodapi.common.items.crafting;
 import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagInt;
-import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.util.TextureEngine;

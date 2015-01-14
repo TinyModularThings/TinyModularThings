@@ -1,10 +1,6 @@
 package speiger.src.tinymodularthings;
 
-import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.Client;
-import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.Core;
-import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.ModID;
-import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.Name;
-import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.Version;
+import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.*;
 
 import java.io.File;
 
@@ -27,7 +23,6 @@ import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
 import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
-import cpw.mods.fml.common.event.FMLServerStartedEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkMod;
 import cpw.mods.fml.common.network.NetworkRegistry;

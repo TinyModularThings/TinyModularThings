@@ -1,7 +1,5 @@
 package speiger.src.spmodapi.common.items.core;
 
-import com.google.common.base.Strings;
-
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -12,6 +10,9 @@ import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
+
+import com.google.common.base.Strings;
+
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

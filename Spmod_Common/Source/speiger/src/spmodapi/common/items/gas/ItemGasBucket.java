@@ -1,9 +1,7 @@
 package speiger.src.spmodapi.common.items.gas;
 
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.world.World;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;

@@ -4,7 +4,6 @@ import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemStack;
-import net.minecraft.util.Icon;
 import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import cpw.mods.fml.relauncher.Side;

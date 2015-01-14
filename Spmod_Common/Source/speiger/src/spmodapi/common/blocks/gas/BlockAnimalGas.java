@@ -6,8 +6,6 @@ import ic2.api.item.Items;
 import java.util.ArrayList;
 import java.util.Random;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.entity.Entity;

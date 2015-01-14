@@ -14,18 +14,15 @@ import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
-import net.minecraftforge.client.IItemRenderer.ItemRenderType;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.blocks.IAdvancedPipeProvider;
 import speiger.src.api.common.world.blocks.IBasicPipeProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergyProvider;
-import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore.BlockRendererHelper;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
-import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.interfaces.IBasicPipe;
 import speiger.src.tinymodularthings.common.utils.PipeInformation;
 import buildcraft.api.power.IPowerReceptor;
@@ -40,7 +37,6 @@ import cpw.mods.fml.relauncher.SideOnly;
 @Deprecated
 public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 {
-	
 	public PipeInformation info;
 	
 	public BlockPipe(int par1, PipeInformation par2, TextureEngine par3)
@@ -98,7 +94,7 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 	@Override
 	public PipeInformation getItemInformation(ItemStack par1)
 	{
-		if (blockID != par1.itemID)
+		if(blockID != par1.itemID)
 		{
 			return null;
 		}
@@ -113,7 +109,7 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 	
 	public static Block[] getBasicPipes()
 	{
-		Block[] array = new Block[] { TinyBlocks.smallPipe, TinyBlocks.normalPipe, TinyBlocks.mediumPipe, TinyBlocks.bigPipe, TinyBlocks.biggerPipe, TinyBlocks.largePipe, TinyBlocks.hugePipe };
+		Block[] array = new Block[] {TinyBlocks.smallPipe, TinyBlocks.normalPipe, TinyBlocks.mediumPipe, TinyBlocks.bigPipe, TinyBlocks.biggerPipe, TinyBlocks.largePipe, TinyBlocks.hugePipe };
 		return array;
 	}
 	
@@ -124,7 +120,7 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 	
 	public static BlockStack[] getSlabs()
 	{
-		BlockStack[] array = new BlockStack[] { new BlockStack(Block.stoneSingleSlab, 2), new BlockStack(Block.stoneSingleSlab, 3), new BlockStack(Block.stoneSingleSlab, 1), new BlockStack(Block.stoneSingleSlab, 5), new BlockStack(Block.stoneSingleSlab, 4), new BlockStack(Block.stoneSingleSlab, 6), new BlockStack(Block.stoneSingleSlab, 7) };
+		BlockStack[] array = new BlockStack[] {new BlockStack(Block.stoneSingleSlab, 2), new BlockStack(Block.stoneSingleSlab, 3), new BlockStack(Block.stoneSingleSlab, 1), new BlockStack(Block.stoneSingleSlab, 5), new BlockStack(Block.stoneSingleSlab, 4), new BlockStack(Block.stoneSingleSlab, 6), new BlockStack(Block.stoneSingleSlab, 7) };
 		return array;
 	}
 	
@@ -145,8 +141,6 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 		return 0;
 	}
 	
-	
-
 	@Override
 	public boolean isOpaqueCube()
 	{
@@ -186,9 +180,15 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 	{
 		double[] box = getBoxes(par1iBlockAccess, par2, par3, par4);
 		
-		setBlockBounds((float) box[0], (float) box[1], (float) box[2], (float) box[3], (float) box[4], (float) box[5]);
+		setBlockBounds((float)box[0], (float)box[1], (float)box[2], (float)box[3], (float)box[4], (float)box[5]);
 	}
 	
+	@Override
+	public void setBlockBoundsForItemRender()
+	{
+		setBlockBounds(0.25F, 0.25F, 0.0F, 0.75F, 0.75F, 1.0F);
+	}
+
 	public double[] getBoxes(IBlockAccess world, int x, int y, int z)
 	{
 		double[] array = new double[6];
@@ -206,27 +206,27 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 		double maxY = pipeMax;
 		double maxZ = pipeMax;
 		
-		if (valids.contains(ForgeDirection.UP))
+		if(valids.contains(ForgeDirection.UP))
 		{
 			maxY = 1.0D;
 		}
-		if (valids.contains(ForgeDirection.DOWN))
+		if(valids.contains(ForgeDirection.DOWN))
 		{
 			minY = 0.0D;
 		}
-		if (valids.contains(ForgeDirection.EAST))
+		if(valids.contains(ForgeDirection.EAST))
 		{
 			maxX = 1.0F;
 		}
-		if (valids.contains(ForgeDirection.WEST))
+		if(valids.contains(ForgeDirection.WEST))
 		{
 			minX = 0.0F;
 		}
-		if (valids.contains(ForgeDirection.NORTH))
+		if(valids.contains(ForgeDirection.NORTH))
 		{
 			minZ = 0.0F;
 		}
-		if (valids.contains(ForgeDirection.SOUTH))
+		if(valids.contains(ForgeDirection.SOUTH))
 		{
 			maxZ = 1.0F;
 		}
@@ -244,16 +244,16 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 	public ArrayList<ForgeDirection> getPossibleSides(IBlockAccess world, int x, int y, int z)
 	{
 		ArrayList<ForgeDirection> directions = new ArrayList<ForgeDirection>();
-		for (int i = 0; i < 6; i++)
+		for(int i = 0;i < 6;i++)
 		{
 			ForgeDirection cuDirection = ForgeDirection.getOrientation(i);
-			if (isConnected(cuDirection, world, x, y, z))
+			if(isConnected(cuDirection, world, x, y, z))
 			{
 				directions.add(cuDirection);
 			}
 		}
 		ForgeDirection direction = ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z) % 6);
-		if (isPossibleReciver(direction, world, x, y, z))
+		if(isPossibleReciver(direction, world, x, y, z))
 		{
 			directions.add(direction);
 		}
@@ -269,19 +269,19 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 		int id = world.getBlockId(x, y, z);
 		int meta = world.getBlockMetadata(x, y, z) % 6;
 		
-		if (id == 0 || Block.blocksList[id] == null)
+		if(id == 0 || Block.blocksList[id] == null)
 		{
 			return false;
 		}
-		if (Block.blocksList[id].hasTileEntity(meta))
+		if(Block.blocksList[id].hasTileEntity(meta))
 		{
 			TileEntity tile = world.getBlockTileEntity(x, y, z);
-			if (tile instanceof IInventory || tile instanceof IFluidHandler || tile instanceof IPowerReceptor || tile instanceof IEnergyProvider || tile instanceof IPipeTile)
+			if(tile instanceof IInventory || tile instanceof IFluidHandler || tile instanceof IPowerReceptor || tile instanceof IEnergyProvider || tile instanceof IPipeTile)
 			{
 				return true;
 			}
 		}
-		if (Block.blocksList[id] instanceof IBasicPipe)
+		if(Block.blocksList[id] instanceof IBasicPipe)
 		{
 			return true;
 		}
@@ -297,50 +297,49 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 		int id = world.getBlockId(xCoord, yCoord, zCoord);
 		int meta = world.getBlockMetadata(xCoord, yCoord, zCoord) % 6;
 		
-		if (id == 0 || Block.blocksList[id] == null)
+		if(id == 0 || Block.blocksList[id] == null)
 		{
 			return false;
 		}
-		if (Block.blocksList[id].hasTileEntity(meta))
+		if(Block.blocksList[id].hasTileEntity(meta))
 		{
 			TileEntity tile = world.getBlockTileEntity(xCoord, yCoord, zCoord);
-			if (tile != null)
+			if(tile != null)
 			{
 				
-				if (tile instanceof IAdvancedPipeProvider)
+				if(tile instanceof IAdvancedPipeProvider)
 				{
-					IAdvancedPipeProvider pipe = (IAdvancedPipeProvider) tile;
+					IAdvancedPipeProvider pipe = (IAdvancedPipeProvider)tile;
 					return pipe.canConnect(direction.getOpposite());
 				}
 				
-				if (tile instanceof IBasicPipeProvider)
+				if(tile instanceof IBasicPipeProvider)
 				{
-					ForgeDirection provider = ((IBasicPipeProvider) tile).getConnectionSide(world, xCoord, yCoord, zCoord);
-					if (x == xCoord + provider.offsetX && y == yCoord + provider.offsetY && z == zCoord + provider.offsetZ)
+					ForgeDirection provider = ((IBasicPipeProvider)tile).getConnectionSide(world, xCoord, yCoord, zCoord);
+					if(x == xCoord + provider.offsetX && y == yCoord + provider.offsetY && z == zCoord + provider.offsetZ)
 					{
 						return true;
 					}
 				}
 			}
 		}
-		
-		if (Block.blocksList[id] instanceof IAdvancedPipeProvider)
+		if(Block.blocksList[id] instanceof IAdvancedPipeProvider)
 		{
-			return ((IAdvancedPipeProvider) Block.blocksList[id]).canConnect(direction.getOpposite());
+			return ((IAdvancedPipeProvider)Block.blocksList[id]).canConnect(direction.getOpposite());
 		}
 		
-		if (Block.blocksList[id] instanceof IBasicPipeProvider)
+		if(Block.blocksList[id] instanceof IBasicPipeProvider)
 		{
-			ForgeDirection provider = ((IBasicPipeProvider) Block.blocksList[id]).getConnectionSide(world, xCoord, yCoord, zCoord);
-			if (x == xCoord + provider.offsetX && y == yCoord + provider.offsetY && z == zCoord + provider.offsetZ)
+			ForgeDirection provider = ((IBasicPipeProvider)Block.blocksList[id]).getConnectionSide(world, xCoord, yCoord, zCoord);
+			if(x == xCoord + provider.offsetX && y == yCoord + provider.offsetY && z == zCoord + provider.offsetZ)
 			{
 				return true;
 			}
 		}
-		if (Block.blocksList[id] instanceof IBasicPipe)
+		if(Block.blocksList[id] instanceof IBasicPipe)
 		{
-			ForgeDirection provider = ((IBasicPipe) Block.blocksList[id]).getNextDirection(world, xCoord, yCoord, zCoord);
-			if (x == xCoord + provider.offsetX && y == yCoord + provider.offsetY && z == zCoord + provider.offsetZ)
+			ForgeDirection provider = ((IBasicPipe)Block.blocksList[id]).getNextDirection(world, xCoord, yCoord, zCoord);
+			if(x == xCoord + provider.offsetX && y == yCoord + provider.offsetY && z == zCoord + provider.offsetZ)
 			{
 				return true;
 			}
@@ -364,7 +363,7 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 	@Override
 	public int tickRate(World par1World)
 	{
-		if (isRedstonePipe())
+		if(isRedstonePipe())
 		{
 			return 4;
 		}
@@ -394,73 +393,50 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 		notifyNeighbors(world, i, j, k);
 	}
 	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean requiresRenderer(int meta)
-	{
-		return true;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean requiresMultibleRenderPasses(int meta)
-	{
-		return false;
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getRenderPasses(int meta)
-	{
-		return 0;
-	}
 	double min = 0.25;
 	double max = 0.75;
-	double[][] facings = new double[][] { { min, 0.0D, min, max, min, max }, { min, max, min, max, 1.0D, max }, { min, min, 0.0D, max, max, min }, { min, min, max, max, max, 1.0D }, { 0.0D, min, min, min, max, max }, { max, min, min, 1.0D, max, max } };
-
+	double[][] facings = new double[][] { {min, 0.0D, min, max, min, max }, {min, max, min, max, 1.0D, max }, {min, min, 0.0D, max, max, min }, {min, min, max, max, max, 1.0D }, {0.0D, min, min, min, max, max }, {max, min, min, 1.0D, max, max } };
 	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public void onRender(IBlockAccess world, int x, int y, int z, RenderBlocks render, BlockStack block, int renderPass)
+	public void onRenderWorld(IBlockAccess world, int x, int y, int z, RenderBlocks render)
 	{
-		ForgeDirection front = ForgeDirection.getOrientation(block.getMeta());
+		ForgeDirection front = ForgeDirection.getOrientation(world.getBlockMetadata(x, y, z));
 		
 		render.setRenderBounds(min, min, min, max, max, max);
 		render.renderStandardBlock(this, x, y, z);
 		
-		if (isConnected(ForgeDirection.UP, world, x, y, z))
+		if(isConnected(ForgeDirection.UP, world, x, y, z))
 		{
 			render.setRenderBounds(min, max, min, max, 1.0D, max);
 			render.renderStandardBlock(this, x, y, z);
 		}
-		if (isConnected(ForgeDirection.DOWN, world, x, y, z))
+		if(isConnected(ForgeDirection.DOWN, world, x, y, z))
 		{
 			render.setRenderBounds(min, 0.0D, min, max, min, max);
 			render.renderStandardBlock(this, x, y, z);
 		}
-		if (isConnected(ForgeDirection.SOUTH, world, x, y, z))
+		if(isConnected(ForgeDirection.SOUTH, world, x, y, z))
 		{
 			render.setRenderBounds(min, min, max, max, max, 1.0D);
 			render.renderStandardBlock(this, x, y, z);
 		}
-		if (isConnected(ForgeDirection.NORTH, world, x, y, z))
+		if(isConnected(ForgeDirection.NORTH, world, x, y, z))
 		{
 			render.setRenderBounds(min, min, 0.0D, max, max, min);
 			render.renderStandardBlock(this, x, y, z);
 		}
-		if (isConnected(ForgeDirection.EAST, world, x, y, z))
+		if(isConnected(ForgeDirection.EAST, world, x, y, z))
 		{
 			render.setRenderBounds(max, min, min, 1.0D, max, max);
 			render.renderStandardBlock(this, x, y, z);
 		}
-		if (isConnected(ForgeDirection.WEST, world, x, y, z))
+		if(isConnected(ForgeDirection.WEST, world, x, y, z))
 		{
 			render.setRenderBounds(0.0D, min, min, min, max, max);
 			render.renderStandardBlock(this, x, y, z);
 			
 		}
-		
-		if (isPossibleReciver(front, world, x, y, z))
+		if(isPossibleReciver(front, world, x, y, z))
 		{
 			render.setOverrideBlockTexture(info.getDirectionIcon());
 			double[] array = facings[front.ordinal()];
@@ -471,65 +447,10 @@ public class BlockPipe extends SpmodBlockBase implements IBasicPipe
 	}
 
 	@Override
-	public boolean dissableRendering(int meta)
-	{
-		return false;
-	}
-	
-	@Override
-	public int damageDropped(int par1)
-	{
-		return 0;
-	}
-
-	@Override
 	public boolean requiresRender()
 	{
 		return true;
 	}
-
-	@Override
-	public boolean renderItemBlock(int meta)
-	{
-		return true;
-	}
-
-	@Override
-	public boolean renderItemBlockBasic(int meta)
-	{
-		return false;
-	}
-
-	@Override
-	public float[] getBoundingBoxes(int meta)
-	{
-		return new float[]{0.0F, 0.25F, 0.25F, 1.0F, 0.75F, 0.75F};
-	}
-
-	@Override
-	public float[] getXYZForItemRenderer(ItemRenderType type, int meta)
-	{
-		switch(type)
-		{
-			case ENTITY: return new float[]{-0.5F, -0.5F, -0.5F};
-			case EQUIPPED: return new float[]{-0.4F, 0.50F, 0.35F};
-			case EQUIPPED_FIRST_PERSON: return new float[]{-0.4F, 0.50F, 0.35F};
-			case INVENTORY: return new float[]{-0.5F, -0.5F, -0.5F};
-			default: return null;
-			
-		}
-	}
-
-	@Override
-	public int getItemRenderPasses(int meta)
-	{
-		return 0;
-	}
-
-	@Override
-	public void onItemRendering(BlockRendererHelper render, ItemRenderType type, BlockStack stack, int renderPass, float x, float y, float z, Object... data)
-	{
-		render.renderBlockStandart(this, stack, (RenderBlocks)data[1], type);
-	}
+	
 	
 }

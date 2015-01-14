@@ -4,7 +4,9 @@ import java.io.DataInput;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
@@ -500,4 +502,19 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 		return null;
 	}
 	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onRenderInv(BlockStack stack, RenderBlocks render)
+	{
+	}
+
+	@Override
+	public void onRenderWorld(Block block, RenderBlocks renderer)
+	{
+		for(int i = 0;i<2;i++)
+		{
+			this.setRenderPass(i);
+			renderer.renderStandardBlock(block, xCoord, yCoord, zCoord);
+		}
+	}
 }

@@ -2,8 +2,6 @@ package speiger.src.spmodapi.common.world.genHelper;
 
 import java.util.Random;
 
-import cpw.mods.fml.common.FMLLog;
-
 import net.minecraft.block.Block;
 import net.minecraft.util.MathHelper;
 import net.minecraft.world.World;
