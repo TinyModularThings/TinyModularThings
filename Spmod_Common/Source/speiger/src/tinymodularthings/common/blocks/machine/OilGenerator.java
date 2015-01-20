@@ -1,6 +1,10 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.entity.player.EntityPlayer;
@@ -11,7 +15,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.common.data.nbt.INBTReciver;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.utils.MathUtils;

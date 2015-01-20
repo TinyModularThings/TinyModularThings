@@ -4,16 +4,21 @@ import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
 import java.io.DataInput;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiScreen;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.GuiTextField;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -22,32 +27,40 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.nbt.NBTTagString;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.common.data.nbt.INBTReciver;
 import speiger.src.api.common.data.packets.IPacketReciver;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.utils.MathUtils;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.items.IBCBattery;
 import speiger.src.spmodapi.SpmodAPI;
-import speiger.src.spmodapi.client.gui.utils.GuiInventoryAccesser;
+import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
-import speiger.src.spmodapi.common.enums.EnumGuiIDs;
-import speiger.src.spmodapi.common.tile.TileFacing;
+import speiger.src.spmodapi.common.config.ModObjects.APIItems;
+import speiger.src.spmodapi.common.tile.FacedInventory;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class InventoryAccesser extends TileFacing implements ISidedInventory, INBTReciver, IPacketReciver
+public class InventoryAccesser extends FacedInventory implements ISidedInventory, INBTReciver, IPacketReciver
 {
+
 	public static ArrayList<String> allowedClasses = new ArrayList<String>();
 	public HashMap<List<Integer>, String> customNames = new HashMap<List<Integer>, String>();
 	public ArrayList<List<Integer>> canBeOpened = new ArrayList<List<Integer>>();
-	public ItemStack[] redstoneCables = new ItemStack[5];
 	public double power = 0;
 	
+
+	public InventoryAccesser()
+	{
+		super(5);
+	}
 	
 	@Override
 	public boolean isSixSidedFacing()
@@ -55,18 +68,6 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 		return true;
 	}
 	
-	
-	
-	@Override
-	public void registerIcon(TextureEngine par1, Block par2)
-	{
-		super.registerIcon(par1, par2);
-		par1.registerTexture(new BlockStack(par2, 4), "InventoryAccesser_Top", "InventoryAccesser_Side", "InventoryAccesser_Front");
-	}
-
-	
-	
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
@@ -84,9 +85,7 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 			par2.add("Press Ctrl to get Extra Infos");
 		}
 	}
-
-
-
+	
 	@Override
 	public float getBlockHardness()
 	{
@@ -96,6 +95,13 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 	public float getExplosionResistance(Entity par1)
 	{
 		return 5F;
+	}
+	
+	@Override
+	public void registerIcon(TextureEngine par1, Block par2)
+	{
+		super.registerIcon(par1, par2);
+		par1.registerTexture(new BlockStack(par2, 4), "InventoryAccesser_Top", "InventoryAccesser_Side", "InventoryAccesser_Front");
 	}
 
 	@Override
@@ -124,7 +130,6 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 	
 	public boolean hasCustomName(List<Integer> par1)
 	{
-		
 		return customNames.containsKey(par1);
 	}
 	
@@ -142,35 +147,6 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 	{
 		return power <= 0;
 	}
-	
-	@Override
-	public boolean onActivated(EntityPlayer par1, int side)
-	{
-		
-		if(!worldObj.isRemote)
-		{
-			if(getUserSize() == 0)
-			{
-				reloadData();
-			}
-			
-			par1.openGui(SpmodAPI.instance, EnumGuiIDs.Tiles.getID(), getWorldObj(), xCoord, yCoord, zCoord);
-		}
-		return true;
-	}
-	
-	
-
-	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
-	{
-		ArrayList<ItemStack> drop = super.onDrop(fortune);
-		for(ItemStack stack : redstoneCables)
-		{
-			drop.add(stack);
-		}
-		return drop;
-	}
 
 	@Override
 	public void onTick()
@@ -187,7 +163,6 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 				{
 					power-=1;
 				}
-				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 			}
 		}
 	}
@@ -207,11 +182,39 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 			}
 		}
 	}
-
+	
 	@Override
-	public Container getInventory(InventoryPlayer par1)
+	public boolean onActivated(EntityPlayer par1)
 	{
-		return new ContainerInventoryAccesser(par1, this);
+		if(!worldObj.isRemote)
+		{
+			reloadData();
+		}
+		return super.onActivated(par1);
+	}
+	
+	@Override
+	public boolean canMergeItem(ItemStack par1, int slotID)
+	{
+		if(par1 != null)
+		{
+			if(slotID >= 0 && slotID < 4)
+			{
+				return par1.itemID == APIItems.redstoneCable.itemID;
+			}
+			if(slotID == 4)
+			{
+				if(par1.getItem() instanceof IElectricItem)
+				{
+					return ElectricItem.manager.getCharge(par1) > 0;
+				}
+				if(par1.getItem() instanceof IBCBattery)
+				{
+					return !((IBCBattery)par1.getItem()).isEmpty(par1);
+				}
+			}
+		}
+		return super.canMergeItem(par1, slotID);
 	}
 
 	@Override
@@ -219,16 +222,224 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 	{
 		return true;
 	}
+	
+	@Override
+	public void addContainerSlots(AdvContainer par1)
+	{
+		for(int i = 0;i<4;i++)
+		{
+			par1.addSpmodSlot(this, i, 150, 0+i*18).addUsage("Redstone Cable Slot");
+		}
+		par1.addSpmodSlot(this, 4, 150, 90).addUsage("Power Slot", "Accept EU Batteries", "Accept BC Batteries");
+	}
+	
+	@Override
+	public boolean renderInnerInv()
+	{
+		return false;
+	}
+	
+	@Override
+	public void onReciveGuiInfo(int key, int val)
+	{
+		if(key == 0)
+		{
+			power = val;
+		}
+	}
+
+	@Override
+	public void onSendingGuiInfo(Container par1, ICrafting par2)
+	{
+		par2.sendProgressBarUpdate(par1, 0, (int)power);
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiContainer getGui(InventoryPlayer par1)
+	public ResourceLocation getTexture()
 	{
-		return new GuiInventoryAccesser(par1, this);
+		return getEngine().getTexture("Clear");
 	}
 	
+	@Override
+	public int getNameColor()
+	{
+		return 0xffffff;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getInvNameYOffset()
+	{
+		return 55;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getNameYOffset()
+	{
+		return -15;
+	}
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onGuiLoad(GuiInventoryCore par1, int guiX, int guiY)
+	{
+		par1.setupExtraGuiObjects(1);
+		GuiTextField field = new GuiTextField(par1.getFontRenderer(), 20, 40, 100, 10);
+		field.setCanLoseFocus(true);
+		field.setFocused(true);
+		par1.getGuiObject(0).setObject(field);
+	}
+	
+	
 
+	@Override
+	@SideOnly(Side.CLIENT)
+	public boolean onKeyTyped(GuiInventoryCore par1, char par2, int par3)
+	{
+		NBTTagCompound data = par1.getExtraData();
+		if(data.getBoolean("TextInited"))
+		{
+			par1.getGuiObject(0).getObject(GuiTextField.class).textboxKeyTyped(par2, par3);
+			if(par2 == Character.valueOf('E') || par2 == Character.valueOf('c'))
+			{
+				return true;
+			}
+		}
+		return super.onKeyTyped(par1, par2, par3);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onButtonClick(GuiInventoryCore par1, GuiButton par2)
+	{
+		int id = par2.id;
+		NBTTagCompound nbt = par1.getExtraData();
+		if(id == 6)
+		{
+			int page = nbt.getInteger("Page");
+			if(isInRange((page+1)*6))
+			{
+				nbt.setInteger("Page", page+1);
+			}
+		}
+		else if(id == 7)
+		{
+			int page = nbt.getInteger("Page");
+			if(page > 0)
+			{
+				nbt.setInteger("Page", page-1);
+			}
+		}
+		else if(id == 8)
+		{
+			nbt.setBoolean("Name", false);
+			nbt.setBoolean("TextInited", false);
+			nbt.setInteger("TargetID", 0);
+			par1.getGuiObject(0).getObject(GuiTextField.class).setText("");
+		}
+		else if(id == 9)
+		{
+			ModularPacket packet = createBasicPacket(SpmodAPI.instance);
+			packet.InjectNumbers(0, nbt.getInteger("TargetID"));
+			packet.injetString(par1.getGuiObject(0).getObject(GuiTextField.class).getText());
+			this.sendPacketToServer(packet.finishPacket());
+			nbt.setBoolean("Name", false);
+			nbt.setBoolean("TextInited", false);
+			nbt.setInteger("TargetID", 0);
+			par1.getGuiObject(0).getObject(GuiTextField.class).setText("");
+		}
+		else 
+		{
+			nbt.setInteger("TargetID", ((nbt.getInteger("Page") * 6) + id));
+			if(par1.isShiftKeyDown())
+			{
+				nbt.setInteger("Page", 0);
+				nbt.setBoolean("Name", true);
+			}
+			else if(par1.isCtrlKeyDown())
+			{
+				this.sendPacketToServer(createBasicPacket(SpmodAPI.instance).InjectNumbers(4, nbt.getInteger("TargetID")).finishPacket());
+			}
+			else
+			{
+				this.sendPacketToServer(createBasicPacket(SpmodAPI.instance).InjectNumbers(1, nbt.getInteger("TargetID")).injetString(par1.getMC().thePlayer.username).finishPacket());
+			}
+		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void drawFrontExtras(GuiInventoryCore par1, int guiX, int guiY, int mouseX, int mouseY)
+	{
+		par1.getButtonsList().clear();
+		
+		int lvl = (int)(((double)power / (double)2000D) * 100);
+		par1.getFontRenderer().drawString("Charge: "+lvl+"%", 116, 127, 0xffffff);
+		if(power <= 0)
+		{
+			return;
+		}
+		NBTTagCompound data = par1.getExtraData();
+		if(data.getBoolean("Name"))
+		{
+			if(!isInRange(data.getInteger("TargetID")))
+			{
+				data.setBoolean("Name", false);
+				data.setBoolean("TextInited", false);
+				par1.getGuiObject(0).getObject(GuiTextField.class).setText("");
+				data.setInteger("TargetID", 0);
+				return;
+			}
+			BlockPosition pos = getTarget(data.getInteger("TargetID"));
+			ItemStack stack = pos.getAsBlockStack().getPicketBlock(getPosition(), getSideFromPlayer(par1.getMC().thePlayer.username));
+			par1.renderItem(stack, 60, 20);
+			
+			if(!data.getBoolean("TextInited"))
+			{
+				data.setBoolean("TextInited", true);
+				if(hasCustomName(pos.getAsList()))
+				{
+					par1.getGuiObject(0).getObject(GuiTextField.class).setText(getCustomName(pos.getAsList()));
+				}
+			}
+			par1.getGuiObject(0).getObject(GuiTextField.class).drawTextBox();
+			par1.getButtonsList().add(new GuiButton(8, guiX+10, guiY+70, 50, 20, "Back"));
+			par1.getButtonsList().add(new GuiButton(9, guiX+70, guiY+70, 50, 20, "Confirm"));
+		}
+		else
+		{
+			par1.getFontRenderer().drawString(""+data.getInteger("Page"), 72, 7, 0xffffff);
+			par1.getButtonsList().add(new GuiButton(6, guiX+90, guiY, 20, 20, "+"));
+			par1.getButtonsList().add(new GuiButton(7, guiX+40, guiY, 20, 20, "-"));
+			
+			for(int i = 0;i<6;i++)
+			{
+				if(!isInRange((data.getInteger("Page")* 6 )+ i))
+				{
+					return;
+				}
+				BlockPosition pos = getTarget((data.getInteger("Page") * 6) + i);
+				String name = pos.getAsBlockStack().getPickedBlockDisplayName(pos, getSideFromPlayer(par1.getMC().thePlayer.username));
+				
+				if(hasCustomName(pos.getAsList()))
+				{
+					name = getCustomName(pos.getAsList());
+				}
+				par1.getButtonsList().add(new GuiButton(i, guiX, guiY + 20 + (20*i), 145, 20, name));
+				ItemStack stack = pos.getAsBlockStack().getPicketBlock(pos, getSideFromPlayer(par1.getMC().thePlayer.username));
+				
+				if(stack == null)
+				{
+					continue;
+				}
+				par1.renderItem(stack, -17, 28 + (20*i));
+			}
+		}
+	}
+	
+	
 
 	public void reloadData()
 	{
@@ -236,7 +447,7 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 		int size = 0;
 		for(int i = 0;i<4;i++)
 		{
-			ItemStack stack = redstoneCables[i];
+			ItemStack stack = this.getStackInSlot(i);
 			if(stack != null)
 			{
 				size += stack.stackSize;
@@ -326,12 +537,9 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 			}
 		}
 		canBeOpened.addAll(added);
-		
-		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
+		this.sendPacketToClient(getDescriptionPacket(), 20);
 	}
 	
-	
-
 	@Override
 	public void onInventoryChanged()
 	{
@@ -342,22 +550,10 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 		}
 	}
 	
-
-
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		NBTTagList items = nbt.getTagList("Items");
-		for(int i = 0;i<items.tagCount();i++)
-		{
-			NBTTagCompound data = (NBTTagCompound)items.tagAt(i);
-			int slot = data.getInteger("Slot");
-			if(slot >= 0 && slot < redstoneCables.length)
-			{
-				redstoneCables[slot] = ItemStack.loadItemStackFromNBT(data);
-			}
-		}
 		NBTTagList names = nbt.getTagList("CustomNames");
 		for(int i = 0;i<names.tagCount();i++)
 		{
@@ -383,20 +579,6 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		NBTTagList list = new NBTTagList();
-		for(int i = 0;i<redstoneCables.length;i++)
-		{
-			ItemStack stack = redstoneCables[i];
-			if(stack != null)
-			{
-				NBTTagCompound data = new NBTTagCompound();
-				data.setInteger("Slot", i);
-				stack.writeToNBT(data);
-				list.appendTag(data);
-			}
-		}
-		
-		nbt.setTag("Items", list);
 		NBTTagList names = new NBTTagList();
 		Iterator<Entry<List<Integer>, String>> iter = customNames.entrySet().iterator();
 		for(;iter.hasNext();)
@@ -419,110 +601,13 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 		
 		nbt.setDouble("Power", power);
 	}
-
 	
-	
-	public ItemStack getStackInSlot(int par1)
-	{
-		return this.redstoneCables[par1];
-	}
-	
-	public ItemStack decrStackSize(int par1, int par2)
-	{
-		if (this.redstoneCables[par1] != null)
-		{
-			ItemStack itemstack;
-			
-			if (this.redstoneCables[par1].stackSize <= par2)
-			{
-				itemstack = this.redstoneCables[par1];
-				this.redstoneCables[par1] = null;
-				return itemstack;
-			}
-			else
-			{
-				itemstack = this.redstoneCables[par1].splitStack(par2);
-				
-				if (this.redstoneCables[par1].stackSize == 0)
-				{
-					this.redstoneCables[par1] = null;
-				}
-				
-				return itemstack;
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	public ItemStack getStackInSlotOnClosing(int par1)
-	{
-		if (this.redstoneCables[par1] != null)
-		{
-			ItemStack itemstack = this.redstoneCables[par1];
-			this.redstoneCables[par1] = null;
-			return itemstack;
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-	{
-		this.redstoneCables[par1] = par2ItemStack;
-		
-		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-		{
-			par2ItemStack.stackSize = this.getInventoryStackLimit();
-		}
-	}
-
 	@Override
 	public String getInvName()
 	{
 		return "Inventory Accesser";
 	}
-
-	@Override
-	public boolean isInvNameLocalized()
-	{
-		return false;
-	}
-
-	@Override
-	public int getInventoryStackLimit()
-	{
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer)
-	{
-		return true;
-	}
-
-	@Override
-	public void openChest()
-	{
-		
-	}
-
-	@Override
-	public void closeChest()
-	{
-		
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack)
-	{
-		return false;
-	}
-
+	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1)
 	{
@@ -540,13 +625,7 @@ public class InventoryAccesser extends TileFacing implements ISidedInventory, IN
 	{
 		return false;
 	}
-
-	@Override
-	public int getSizeInventory()
-	{
-		return 5;
-	}
-
+	
 	public static void addTileEntity(String cu)
 	{
 		if(!allowedClasses.contains(cu))

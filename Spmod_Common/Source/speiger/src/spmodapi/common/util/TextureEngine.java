@@ -52,6 +52,7 @@ public class TextureEngine
 	HashMap<ItemData, Icon[]> itemBlockTextures = new HashMap<ItemData, Icon[]>();
 	
 	HashMap<String, ResourceLocation> guiTextures = new HashMap<String, ResourceLocation>();
+	HashMap<String, int[]> guiPositions = new HashMap<String, int[]>();
 	
 	String currentMod = "";
 	String currentPath = "";
@@ -94,6 +95,16 @@ public class TextureEngine
 	public ResourceLocation getTexture(String key)
 	{
 		return guiTextures.get(key);
+	}
+	
+	public void registerGuiPos(String key, int x, int y)
+	{
+		guiPositions.put(key, new int[]{x,y});
+	}
+	
+	public int[] getGuiPos(String key)
+	{
+		return guiPositions.get(key);
 	}
 	
 	public void markForDelay(ITextureRequester par1)

@@ -48,7 +48,6 @@ public class TickHelper implements ITickReader
 		if(!recipesLoaded)
 		{
 			recipesLoaded = true;
-			PressureRecipeList.getInstance().addFurnaceRecipes();
 			loadRecipes(FakePlayerFactory.getMinecraft(DimensionManager.getWorld(0)));
 			MobMachine.addDrops(22, DropType.Common, ItemRandomTrade.getAllTrades());
 			AccessConfig config = new AccessConfig(SpmodConfig.getInstance());

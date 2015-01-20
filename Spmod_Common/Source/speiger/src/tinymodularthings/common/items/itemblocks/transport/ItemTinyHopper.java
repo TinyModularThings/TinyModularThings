@@ -40,6 +40,7 @@ public class ItemTinyHopper extends TinyPlacerItem implements IMetaItemRender
 	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
 	{
 		par3List.add(type + " Hopper");
+		par3List.add("Not Placeable.. Totally Dissabled!");
 	}
 	
 	@SideOnly(Side.CLIENT)
@@ -87,7 +88,7 @@ public class ItemTinyHopper extends TinyPlacerItem implements IMetaItemRender
 	@Override
 	public BlockStack getBlockToPlace(int meta)
 	{
-		return new BlockStack(TinyBlocks.transportBlock, 10 + type.ordinal());
+		return null;//new BlockStack(TinyBlocks.transportBlock, 10 + type.ordinal());
 	}
 	
 	@Override

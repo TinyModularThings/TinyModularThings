@@ -36,7 +36,6 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 	public boolean[] ItemNoRightClick = new boolean[16];
 	public int[] renderPass = new int[16];
 	
-	
 	public SpmodBlockBase(int par1, Material par2Material)
 	{
 		super(par1, par2Material);
@@ -321,10 +320,6 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 		return lightOpacity[this.blockID];
 	}
 	
-	
-
-	
-
 	@Override
 	public int getLightValue(IBlockAccess world, int x, int y, int z)
 	{

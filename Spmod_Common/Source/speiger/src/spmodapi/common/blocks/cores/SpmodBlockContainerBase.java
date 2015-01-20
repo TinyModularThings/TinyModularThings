@@ -188,11 +188,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		int meta = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
 		if(tile != null)
 		{
-			if(requiresRenderPass(meta))
-			{
-				return TextureEngine.getTextures().getIconSafe(tile.getIconFromSideAndMetadata(par5, getRenderPass(meta)));
-			}
-			return TextureEngine.getTextures().getIconSafe(tile.getIconFromSideAndMetadata(par5, 0));
+			return TextureEngine.getTextures().getIconSafe(tile.getIconFromSideAndMetadata(par5, tile.getRenderPass()));
 		}
 		return getIcon(par5, meta);
 	}

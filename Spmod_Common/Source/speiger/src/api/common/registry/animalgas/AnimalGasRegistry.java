@@ -1,6 +1,11 @@
 package speiger.src.api.common.registry.animalgas;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.List;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import net.minecraft.command.IEntitySelector;
 import net.minecraft.entity.Entity;
@@ -11,7 +16,14 @@ import speiger.src.api.common.data.utils.FluidData;
 import speiger.src.api.common.data.utils.IFluidInfo;
 import speiger.src.api.common.data.utils.IStackInfo;
 import speiger.src.api.common.data.utils.ItemData;
-import speiger.src.api.common.registry.animalgas.parts.*;
+import speiger.src.api.common.registry.animalgas.parts.EntitySpeed;
+import speiger.src.api.common.registry.animalgas.parts.IEntityCustomInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityDrinkInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityFoodInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityGasInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityResistenceInfo;
+import speiger.src.api.common.registry.animalgas.parts.Resistence;
 import speiger.src.api.common.registry.animalgas.parts.Resistence.ResistanceType;
 
 public final class AnimalGasRegistry

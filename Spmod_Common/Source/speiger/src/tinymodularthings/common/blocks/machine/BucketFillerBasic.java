@@ -1,39 +1,46 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
 import java.io.DataInput;
-import java.util.ArrayList;
+import java.util.HashMap;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.event.ForgeSubscribe;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
+import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerRegisterEvent;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.common.data.packets.IPacketReciver;
-import speiger.src.api.common.utils.InventoryUtil;
+import speiger.src.api.common.data.packets.SpmodPacketHelper;
+import speiger.src.api.common.data.utils.IStackInfo;
+import speiger.src.api.common.data.utils.ItemData;
+import speiger.src.api.common.inventory.slot.TankSlot;
 import speiger.src.api.common.world.tiles.energy.EnergyProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergyProvider;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.client.gui.GuiInventoryCore;
+import speiger.src.spmodapi.common.tile.AdvInventory;
 import speiger.src.spmodapi.common.tile.AdvancedFluidTank;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.TinyModularThings;
-import speiger.src.tinymodularthings.client.gui.machine.BucketFillerGui;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
-import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.plugins.BC.actions.BucketFillerAction;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionReceptor;
-import buildcraft.api.inventory.ISpecialInventory;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
@@ -41,21 +48,26 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
-		ISidedInventory, IEnergyProvider, IFluidHandler, IPacketReciver,
-		IPowerReceptor, IActionReceptor
+public class BucketFillerBasic extends AdvInventory implements ISidedInventory,
+		IEnergyProvider, IFluidHandler, IPacketReciver, IPowerReceptor,
+		IActionReceptor
 {
-	public ItemStack[] inv = new ItemStack[2];
+	
 	public AdvancedFluidTank tank = new AdvancedFluidTank(this, "bucketFiller", 16000);
 	public EnergyProvider provider = new EnergyProvider(this, 10000).setPowerLoss(2);
 	
-	public static ArrayList<FluidContainerData> recipes = new ArrayList<FluidContainerData>();
+	public static HashMap<FluidItemData, FluidContainerData> fillList = new HashMap<FluidItemData, FluidContainerData>();
+	public static HashMap<IStackInfo, FluidContainerData> drainList = new HashMap<IStackInfo, FluidContainerData>();
 	
 	public boolean drain = false;
 	public int progress = 0;
 	public int max = 200;
 	public FluidContainerData cuRecipe = null;
-	public static boolean start = false;
+	
+	public BucketFillerBasic()
+	{
+		super(2);
+	}
 	
 	@Override
 	public boolean hasContainer()
@@ -76,258 +88,151 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 	}
 	
 	@Override
-	public Container getInventory(InventoryPlayer par1)
-	{
-		return new InventoryBucketFiller(par1, this);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiContainer getGui(InventoryPlayer par1)
-	{
-		return new BucketFillerGui(par1, this);
-	}
-	
-	@Override
-	public boolean onActivated(EntityPlayer par1)
-	{
-		if (hasContainer() && !worldObj.isRemote)
-		{
-			par1.openGui(TinyModularThings.instance, EnumIDs.ADVTiles.getId(), worldObj, xCoord, yCoord, zCoord);
-			return true;
-		}
-		return false;
-	}
-	
-	@Override
-	public int getSizeInventory()
-	{
-		return this.inv.length;
-	}
-	
-	@Override
-	public ItemStack getStackInSlot(int par1)
-	{
-		return this.inv[par1];
-	}
-	
-	@Override
-	public ItemStack decrStackSize(int par1, int par2)
-	{
-		if (this.inv[par1] != null)
-		{
-			ItemStack itemstack;
-			
-			if (this.inv[par1].stackSize <= par2)
-			{
-				itemstack = this.inv[par1];
-				this.inv[par1] = null;
-				return itemstack;
-			}
-			else
-			{
-				itemstack = this.inv[par1].splitStack(par2);
-				
-				if (this.inv[par1].stackSize == 0)
-				{
-					this.inv[par1] = null;
-				}
-				
-				return itemstack;
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	@Override
 	public void onTick()
 	{
 		super.onTick();
-		if (!worldObj.isRemote)
+		if(worldObj.isRemote)
 		{
-			provider.update();
-			
-			if (!start)
+			return;
+		}
+		provider.update();
+		if(cuRecipe != null && !hasRecipe())
+		{
+			cuRecipe = null;
+		}
+		if(cuRecipe == null && hasRecipe())
+		{
+			cuRecipe = getRecipe();
+		}
+		if(provider.getStoredEnergy() >= 10)
+		{
+			if(cuRecipe != null && canRun())
 			{
-				start = true;
-				for (FluidContainerData cu : FluidContainerRegistry.getRegisteredFluidContainerData())
+				provider.useEnergy(10, false);
+				progress++;
+				if(progress >= max)
 				{
-					if(cu.filledContainer != null && cu.filledContainer.itemID == TinyItems.netherCrystal.itemID)
+					progress = 0;
+					ItemStack result = null;
+					if(drain) 
 					{
-						continue;
+						result = cuRecipe.emptyContainer.copy();
+						tank.fill(cuRecipe.fluid, true);
 					}
-					this.recipes.add(cu);
-				}
-			}
-			
-			if (cuRecipe != null && !hasRecipe())
-			{
-				cuRecipe = null;
-			}
-			if (cuRecipe == null)
-			{
-				cuRecipe = findRecipe();
-			}
-			if (worldObj.getWorldTime() % 20 == 0)
-			{
-				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
-			}
-			
-			if(provider.getStoredEnergy() > 10)
-			{
-				if (cuRecipe != null && canWork())
-				{
-					provider.useEnergy(10, false);
-					progress++;
-					if (progress >= max)
+					else 
 					{
-						progress = 0;
-						if (drain)
-						{
-							ItemStack output = cuRecipe.emptyContainer.copy();
-							tank.fill(cuRecipe.fluid, true);
-							
-							if (inv[0].getItem().hasContainerItem())
-							{
-								output = inv[0].getItem().getContainerItemStack(inv[0]);
-							}
-							
-							if (inv[1] == null)
-							{
-								inv[1] = output;
-							}
-							else if (inv[1] != null)
-							{
-								inv[1].stackSize++;
-							}
-							
-							inv[0].stackSize--;
-							if (inv[0].stackSize <= 0)
-							{
-								inv[0] = null;
-							}
-						}
-						else
-						{
-							ItemStack output = cuRecipe.filledContainer.copy();
-							tank.drain(cuRecipe.fluid.amount, true);
-							
-							if (inv[1] == null)
-							{
-								inv[1] = output;
-							}
-							else if (inv[1] != null)
-							{
-								inv[1].stackSize++;
-							}
-							
-							inv[0].stackSize--;
-							if (inv[0].stackSize <= 0)
-							{
-								inv[0] = null;
-							}
-						}
-						this.onInventoryChanged();
-						this.updateBlock();
+						result = cuRecipe.filledContainer.copy();
+						tank.drain(cuRecipe.fluid.amount, true);
 					}
-				}
-				else if(cuRecipe == null && inv[0] != null)
-				{
-					if(inv[0].getItem() instanceof IFluidContainerItem)
+					
+					inv[0].stackSize--;
+					if(inv[0].stackSize <= 0)
 					{
-						progress = 0;
-						IFluidContainerItem fluid = (IFluidContainerItem)inv[0].getItem();
-						if(drain)
-						{
-							if(canFillFluid(fluid.getFluid(inv[0])))
-							{
-								FluidStack fill = fluid.drain(inv[0], 100, false);
-								if((fill == null || fill.amount <= 0) && inv[1] == null)
-								{
-									inv[1] = inv[0].copy();
-									inv[0] = null;
-									return;
-								}
-								int amount = this.tank.fill(fill, true);
-								fluid.drain(inv[0], amount, true);
-								provider.useEnergy(10, false);
-							}
-							else if(fluid.getFluid(inv[0]) == null && inv[1] == null)
-							{
-								inv[1] = inv[0].copy();
-								inv[0] = null;
-							}
-						}
-						else
-						{
-							FluidStack drained = tank.drain(100, false);
-							if(drained != null && drained.amount > 0)
-							{
-								int filled = fluid.fill(inv[0], drained, true);
-								if(filled <= 0 && inv[1] == null)
-								{
-									inv[1] = inv[0].copy();
-									inv[0] = null;
-									return;
-								}
-								tank.drain(filled, true);
-								provider.useEnergy(10, false);
-							}
-							else if(inv[1] == null)
-							{
-								inv[1] = inv[0].copy();
-								inv[0] = null;
-							}
-						}
+						inv[0] = null;
 					}
-					else if(inv[0].itemID == TinyItems.netherCrystal.itemID && drain)
+					if(inv[1] == null)
 					{
-						if(inv[0].getItemDamage() == 3)
-						{
-							if(tank.getFluid() == null || (tank.getFluid().isFluidEqual(new FluidStack(FluidRegistry.LAVA, 1)) && tank.fill(new FluidStack(FluidRegistry.LAVA, 1000), false) == 1000))
-							{
-								progress++;
-								provider.useEnergy(10, false);
-								if(progress >= this.max)
-								{
-									progress = 0;
-									tank.fill(new FluidStack(FluidRegistry.LAVA, 1000), true);
-									inv[0] = inv[0].getItem().getContainerItemStack(inv[0]);
-									if(inv[0].getItemDamage() != 3 && inv[1] == null)
-									{
-										inv[1] = inv[0].copy();
-										inv[0] = null;
-									}
-								}
-							}
-						}
-						else
-						{
-							inv[1] = inv[0].copy();
-							inv[0] = null;
-							progress = 0;
-						}
-
+						inv[1] = result;
 					}
 					else
 					{
-						this.progress = 0;
+						inv[1].stackSize += result.stackSize;
 					}
 				}
-				else if(inv[0] != null && inv[1] == null)
+			}
+			else if(cuRecipe == null && inv[0] != null)
+			{
+				if(inv[0].getItem() instanceof IFluidContainerItem)
 				{
-					inv[1] = inv[0].copy();
-					inv[0] = null;
-					progress = 0;
+					IFluidContainerItem fluid = (IFluidContainerItem)inv[0].getItem();
+					if(drain)
+					{
+						if(canFillFluid(fluid.getFluid(inv[0])))
+						{
+							provider.useEnergy(10, false);
+							FluidStack fill = fluid.drain(inv[0], 100, false);
+							if((fill == null || fill.amount <= 0) && inv[1] == null)
+							{
+								inv[1] = inv[0].copy();
+								inv[0] = null;
+								return;
+							}
+							int amount = this.tank.fill(fill, true);
+							fluid.drain(inv[0], amount, true);
+							provider.useEnergy(10, false);
+						}
+						else if(fluid.getFluid(inv[0]) == null && inv[1] == null)
+						{
+							inv[1] = inv[0].copy();
+							inv[0] = null;
+						}
+					}
+					else
+					{
+						FluidStack drained = tank.drain(100, false);
+						if(drained != null && drained.amount > 0)
+						{
+							provider.useEnergy(10, false);
+							int filled = fluid.fill(inv[0], drained, true);
+							if(filled <= 0 && inv[1] == null)
+							{
+								inv[1] = inv[0].copy();
+								inv[0] = null;
+								return;
+							}
+							tank.drain(filled, true);
+							provider.useEnergy(10, false);
+						}
+						else if(inv[1] == null)
+						{
+							inv[1] = inv[0].copy();
+							inv[0] = null;
+						}
+					}
+				}
+				else if(inv[0].itemID == TinyItems.netherCrystal.itemID && drain)
+				{
+					if(inv[0].getItemDamage() == 3)
+					{
+						if(tank.getFluid() == null || (tank.getFluid().isFluidEqual(new FluidStack(FluidRegistry.LAVA, 1)) && tank.fill(new FluidStack(FluidRegistry.LAVA, 1000), false) == 1000))
+						{
+							progress++;
+							provider.useEnergy(10, false);
+							if(progress >= this.max)
+							{
+								progress = 0;
+								tank.fill(new FluidStack(FluidRegistry.LAVA, 1000), true);
+								inv[0] = inv[0].getItem().getContainerItemStack(inv[0]);
+								if(inv[0].getItemDamage() != 3 && inv[1] == null)
+								{
+									inv[1] = inv[0].copy();
+									inv[0] = null;
+								}
+							}
+						}
+					}
+					else
+					{
+						inv[1] = inv[0].copy();
+						inv[0] = null;
+						progress = 0;
+					}
+
 				}
 				else
 				{
 					this.progress = 0;
 				}
-				
+			}
+			else if(inv[0] != null && inv[1] == null)
+			{
+				inv[1] = inv[0].copy();
+				inv[0] = null;
+				progress = 0;
+			}
+			else
+			{
+				this.progress = 0;
 			}
 		}
 	}
@@ -346,250 +251,139 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 		
 		return true;
 	}
-
-	public boolean canWork()
+	
+	public boolean canRun()
 	{
-		if (drain)
+		if(inv[1] == null)
 		{
-			ItemStack stack = this.cuRecipe.emptyContainer;
-			if (inv[1] == null)
+			return true;
+		}
+		ItemStack result = null;
+		if(drain)
+		{
+			result = cuRecipe.emptyContainer;
+			if(tank.getFluidAmount() + cuRecipe.fluid.amount > tank.getCapacity())
 			{
-				return true;
-			}
-			else if (inv[1] != null && inv[1].isItemEqual(stack))
-			{
-				int max = inv[1].getMaxStackSize();
-				return inv[1].stackSize + 1 <= max;
+				return false;
 			}
 		}
 		else
 		{
-			ItemStack stack = this.cuRecipe.filledContainer;
-			if (inv[1] == null)
+			result = cuRecipe.filledContainer;
+			if(cuRecipe.fluid.amount > tank.getFluidAmount())
 			{
-				return true;
+				return false;
 			}
-			else if (inv[1] != null && inv[1].isItemEqual(stack))
-			{
-				int max = inv[1].getMaxStackSize();
-				return inv[1].stackSize + 1 <= max;
-			}
-		}
-		return false;
-	}
-	
-	public FluidContainerData findRecipe()
-	{
-		if (inv[0] == null)
-		{
-			return null;
 		}
 		
-		if (drain)
+		if(!inv[1].isItemEqual(result))
 		{
-			
-			FluidContainerData list = getListFromInputItem();
-			if (list == null)
-			{
-				return null;
-			}
-			
-			if (tank.fill(list.fluid, false) != list.fluid.amount)
-			{
-				return null;
-			}
-			if (inv[1] != null && inv[1].stackSize + 1 > 64)
-			{
-				return null;
-			}
-			return list;
-			
+			return false;
 		}
-		else
-		{
-			
-			ArrayList<FluidContainerData> list = getListFromFluid();
-			FluidContainerData end = null;
-			for (FluidContainerData data : list)
-			{
-				if (data.emptyContainer.isItemEqual(inv[0]))
-				{
-					end = data;
-					break;
-				}
-			}
-			if (end != null)
-			{
-				if (tank.drain(end.fluid.amount, false).isFluidStackIdentical(end.fluid))
-				{
-					if (inv[1] == null || (inv[1] != null && inv[1].isItemEqual(end.filledContainer) && inv[1].stackSize + 1 <= 64))
-					{
-						return end;
-					}
-				}
-			}
-		}
-		return null;
-	}
-	
-	public ArrayList<FluidContainerData> getListFromFluid()
-	{
-		ArrayList<FluidContainerData> data = new ArrayList<FluidContainerData>();
-		if (tank.getFluid() == null)
-		{
-			return data;
-		}
-		
-		for (FluidContainerData cu : recipes)
-		{
-			if (cu.fluid.isFluidEqual(tank.getFluid()))
-			{
-				data.add(cu);
-			}
-		}
-		return data;
-	}
-	
-	public FluidContainerData getListFromInputItem()
-	{
-		
-		if (inv[0] == null)
-		{
-			return null;
-		}
-		
-		for (FluidContainerData cu : recipes)
-		{
-			if (cu.filledContainer.isItemEqual(inv[0]))
-			{
-				return cu;
-			}
-		}
-		return null;
+		return inv[1].stackSize + 1 < inv[1].getMaxStackSize();
 	}
 	
 	public boolean hasRecipe()
 	{
-		if (cuRecipe == null)
-		{
-			return false;
-		}
-		if (inv[0] == null)
-		{
-			return false;
-		}
-		if (drain)
-		{
-			if (!cuRecipe.filledContainer.isItemEqual(inv[0]))
-			{
-				return false;
-			}
-			if (this.tank.fill(cuRecipe.fluid, false) != cuRecipe.fluid.amount)
-			{
-				return false;
-			}
-			if (inv[1] != null && !inv[1].isItemEqual(cuRecipe.emptyContainer))
-			{
-				return false;
-			}
-			if (inv[1] != null && inv[1].stackSize + 1 > 64)
-			{
-				return false;
-			}
-		}
-		else
-		{
-			if (!cuRecipe.emptyContainer.isItemEqual(inv[0]))
-			{
-				return false;
-			}
-			if (tank.getFluid() == null || !tank.getFluid().isFluidEqual(cuRecipe.fluid))
-			{
-				return false;
-			}
-			if (tank.getFluidAmount() < cuRecipe.fluid.amount)
-			{
-				return false;
-			}
-			if (inv[1] != null && !inv[1].isItemEqual(cuRecipe.filledContainer))
-			{
-				return false;
-			}
-			if (inv[1] != null && inv[1].stackSize + 1 > 64)
-			{
-				return false;
-			}
-		}
-		
-		return true;
+		return getRecipe() != null;
 	}
 	
-	@Override
-	public ItemStack getStackInSlotOnClosing(int par1)
+	public FluidContainerData getRecipe()
 	{
-		if (this.inv[par1] != null)
-		{
-			ItemStack itemstack = this.inv[par1];
-			this.inv[par1] = null;
-			return itemstack;
-		}
-		else
+		if(inv[0] == null)
 		{
 			return null;
 		}
-	}
-	
-	@Override
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-	{
-		this.inv[par1] = par2ItemStack;
 		
-		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
+		if(drain)
 		{
-			par2ItemStack.stackSize = this.getInventoryStackLimit();
+			return drainList.get(new ItemData(inv[0]));
 		}
+		else
+		{
+			FluidContainerData data = fillList.get(new FluidItemData(new ItemData(inv[0]), tank.getFluid()));
+			if(data != null && tank.getFluidAmount() >= data.fluid.amount)
+			{
+				return data;
+			}
+		}
+		return null;
 	}
 	
 	@Override
 	public String getInvName()
 	{
-		return "BasicBucketFiller";
+		return "Basic Bucket Filler";
 	}
 	
 	@Override
-	public boolean isInvNameLocalized()
+	public void addContainerSlots(AdvContainer par1)
 	{
+		par1.addSpmodSlot(this, 0, 50, 41).addUsage("Input Slot");
+		par1.addSpmodSlot(this, 1, 104, 41).addUsage("Output Slot");
+		par1.addTankSlot(new TankSlot(tank, 150, 15));
+	}
+	
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onGuiLoad(GuiInventoryCore par1, int guiX, int guiY)
+	{
+		par1.getButtonsList().clear();
+		par1.getButtonsList().add(new GuiButton(0, guiX + 15, guiY + 37, 30, 20, drain ? "Drain" : "Fill"));
+	}
+	
+	
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onButtonClick(GuiInventoryCore par1, GuiButton par2)
+	{
+		String change = !drain ? "Drain" : "Fill";
+		if(par2.id == 0)
+		{
+			par2.displayString = change;
+			this.sendPacketToServer(SpmodPacketHelper.getHelper().createNBTPacket(this, TinyModularThings.instance).InjectNumber(!drain ? 0 : 1).finishPacket());
+		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void drawExtras(GuiInventoryCore par1, int guiX, int guiY, int mouseX, int mouseY)
+	{
+		par1.setTexture(getEngine().getTexture("Objects"));
+		par1.defineSlot("ProgBarH");
+		par1.drawSlotPros(75, 41, 22, 16);
+		if(progress > 0)
+		{
+			int maximum = (int)(((double)progress / (double)max) * 22);
+			par1.defineSlot("ProgBarHOverlay");
+			par1.drawSlotPros(75, 41, maximum, 16);
+		}
+	}
+
+	@Override
+	public boolean canMergeItem(ItemStack par1, int slotID)
+	{
+		if(slotID == 0 && par1 != null)
+		{
+			if(drain)
+			{
+				boolean flag = par1.getItem() instanceof IFluidContainerItem;
+				return flag || FluidContainerRegistry.isFilledContainer(par1);
+			}
+			else
+			{
+				boolean flag = par1.getItem() instanceof IFluidContainerItem;
+				return flag || FluidContainerRegistry.isEmptyContainer(par1);
+			}
+		}
 		return false;
 	}
 	
-	@Override
-	public int getInventoryStackLimit()
-	{
-		return 64;
-	}
 	
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer)
-	{
-		return true;
-	}
-	
-	@Override
-	public void openChest()
-	{
-	}
-	
-	@Override
-	public void closeChest()
-	{
-	}
-	
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack)
-	{
-		return this.containesContainer(itemstack);
-	}
-	
+
 	@Override
 	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
 	{
@@ -623,7 +417,7 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 	@Override
 	public FluidTankInfo[] getTankInfo(ForgeDirection from)
 	{
-		return new FluidTankInfo[] { tank.getInfo() };
+		return new FluidTankInfo[] {tank.getInfo() };
 	}
 	
 	@Override
@@ -633,106 +427,18 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 	}
 	
 	@Override
-	public int addItem(ItemStack stack, boolean doAdd, ForgeDirection from)
-	{
-		if (this.containesContainer(stack))
-		{
-			ItemStack cu = inv[0];
-			if (cu != null)
-			{
-				if (cu.isItemEqual(stack))
-				{
-					if (cu.stackSize >= cu.getMaxStackSize())
-					{
-						return 0;
-					}
-					
-					int left = stack.getMaxStackSize() - (stack.stackSize + cu.stackSize);
-					if (left < 0)
-					{
-						if (doAdd)
-						{
-							cu.stackSize = cu.getMaxStackSize();
-							inv[0] = cu;
-						}
-						return stack.stackSize - left;
-					}
-					else
-					{
-						if (doAdd)
-						{
-							cu.stackSize += stack.stackSize;
-							inv[0] = cu;
-						}
-						return stack.stackSize;
-					}
-				}
-			}
-			else
-			{
-				if (doAdd)
-				{
-					inv[0] = stack;
-				}
-				return stack.stackSize;
-			}
-		}
-		return 0;
-	}
-	
-	@Override
-	public ItemStack[] extractItem(boolean doRemove, ForgeDirection from, int maxItemCount)
-	{
-		if (inv[1] == null)
-		{
-			return new ItemStack[0];
-		}
-		ItemStack stack = this.inv[1].copy();
-		ItemStack removed = InventoryUtil.splitStack(stack, maxItemCount);
-		
-		if (doRemove)
-		{
-			this.inv[1] = stack;
-		}
-		
-		return new ItemStack[] { removed };
-	}
-	
-	public boolean containesContainer(ItemStack par1)
-	{
-		for (FluidContainerData cu : recipes)
-		{
-			if (drain)
-			{
-				if (cu.filledContainer.isItemEqual(par1))
-				{
-					return true;
-				}
-			}
-			else
-			{
-				if (cu.emptyContainer.isItemEqual(par1))
-				{
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-	
-	@Override
 	public void recivePacket(DataInput par1)
 	{
 		try
 		{
-			if (!worldObj.isRemote)
+			if(!worldObj.isRemote)
 			{
 				this.drain = par1.readInt() == 1 ? false : true;
 				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 				
 			}
 		}
-		catch (Exception e)
+		catch(Exception e)
 		{
 		}
 		
@@ -759,17 +465,17 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 	@Override
 	public void actionActivated(IAction action)
 	{
-		if (action != null && !worldObj.isRemote)
+		if(action != null && !worldObj.isRemote)
 		{
 			try
 			{
-				if (action instanceof BucketFillerAction)
+				if(action instanceof BucketFillerAction)
 				{
-					BucketFillerAction bc = (BucketFillerAction) action;
+					BucketFillerAction bc = (BucketFillerAction)action;
 					drain = !bc.fill;
 				}
 			}
-			catch (Exception e)
+			catch(Exception e)
 			{
 				
 			}
@@ -790,18 +496,6 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 		this.provider.readFromNBT(nbt);
 		drain = nbt.getBoolean("drain");
 		progress = nbt.getInteger("progress");
-		NBTTagList nbttaglist = nbt.getTagList("Items");
-		this.inv = new ItemStack[this.getSizeInventory()];
-		for (int i = 0; i < nbttaglist.tagCount(); ++i)
-		{
-			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
-			byte b0 = nbttagcompound1.getByte("Slot");
-			
-			if (b0 >= 0 && b0 < this.inv.length)
-			{
-				this.inv[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-			}
-		}
 	}
 	
 	@Override
@@ -812,69 +506,45 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 		this.provider.writeToNBT(nbt);
 		nbt.setBoolean("drain", drain);
 		nbt.setInteger("progress", progress);
-		NBTTagList nbttaglist = new NBTTagList();
-		for (int i = 0; i < this.inv.length; ++i)
-		{
-			if (this.inv[i] != null)
-			{
-				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("Slot", (byte) i);
-				this.inv[i].writeToNBT(nbttagcompound1);
-				nbttaglist.appendTag(nbttagcompound1);
-			}
-		}
-		nbt.setTag("Items", nbttaglist);
 	}
 	
 	@Override
 	public void onReciveGuiInfo(int key, int val)
 	{
-		switch (key)
+		if(key == 0)
 		{
-			case 0:
-				if (tank.getFluid() == null)
-				{
-					tank.setFluid(new FluidStack(key, val));
-				}
-				else
-				{
-					tank.getFluid().fluidID = val;
-				}
-				break;
-			case 1:
-				if (tank.getFluid() == null)
-				{
-					tank.setFluid(new FluidStack(0, val));
-				}
-				else
-				{
-					tank.getFluid().amount = val;
-				}
-				break;
-		}
-	}
-	
-	
-	
-	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
-	{
-		ArrayList<ItemStack> drop = super.onDrop(fortune);
-		for(ItemStack stack : this.inv)
-		{
-			if(stack != null)
+			if(tank.getFluid() == null)
 			{
-				drop.add(stack);
+				tank.setFluid(new FluidStack(key, val));
+			}
+			else
+			{
+				tank.getFluid().fluidID = val;
 			}
 		}
-		return drop;
+		if(key == 1)
+		{
+			if(tank.getFluid() == null)
+			{
+				tank.setFluid(new FluidStack(0, val));
+			}
+			else
+			{
+				tank.getFluid().amount = val;
+			}
+		}
+		if(key == 2)
+		{
+			progress = val;
+		}
 	}
-
+	
 	@Override
 	public void onSendingGuiInfo(Container par1, ICrafting par2)
 	{
 		par2.sendProgressBarUpdate(par1, 0, tank.getFluid() != null ? tank.getFluid().fluidID : 0);
 		par2.sendProgressBarUpdate(par1, 1, tank.getFluid() != null ? tank.getFluid().amount : 0);
+		par2.sendProgressBarUpdate(par1, 2, progress);
 	}
 	
 	@Override
@@ -886,17 +556,17 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1)
 	{
-		if (var1 < 2)
+		if(var1 < 2)
 		{
-			return new int[] { 0 };
+			return new int[] {0 };
 		}
-		return new int[] { 1 };
+		return new int[] {1 };
 	}
 	
 	@Override
 	public boolean canInsertItem(int i, ItemStack itemstack, int j)
 	{
-		if (!(i < 2))
+		if(!(i < 2))
 		{
 			return false;
 		}
@@ -909,4 +579,59 @@ public class BucketFillerBasic extends AdvTile implements ISpecialInventory,
 		return true;
 	}
 	
+	@Override
+	public boolean requireForgeRegistration()
+	{
+		return true;
+	}
+	
+	@ForgeSubscribe
+	public void onLoad(FluidContainerRegisterEvent evt)
+	{
+		for(FluidContainerData data : FluidContainerRegistry.getRegisteredFluidContainerData())
+		{
+			if(data.filledContainer != null && data.emptyContainer != null)
+			{
+				fillList.put(new FluidItemData(new ItemData(data.emptyContainer), data.fluid), data);
+				drainList.put(new ItemData(data.filledContainer), data);
+			}
+		}
+	}
+	
+	public static class FluidItemData
+	{
+		ItemData data;
+		FluidStack fluid;
+		
+		public FluidItemData(ItemData par1, FluidStack par2)
+		{
+			data = par1;
+			fluid = par2;
+		}
+		
+		@Override
+		public boolean equals(Object obj)
+		{
+			if(obj == null || !(obj instanceof FluidItemData))
+			{
+				return false;
+			}
+			FluidItemData data = (FluidItemData)obj;
+			if(data.data == null || data.fluid == null || this.data == null || fluid == null)
+			{
+				return false;
+			}
+			if(fluid.equals(data.fluid) && this.data.equals(data.data))
+			{
+				return true;
+			}
+			return false;
+		}
+		
+		@Override
+		public int hashCode()
+		{
+			return data.hashCode() + (fluid != null ? fluid.hashCode() : 0);
+		}
+	}
 }

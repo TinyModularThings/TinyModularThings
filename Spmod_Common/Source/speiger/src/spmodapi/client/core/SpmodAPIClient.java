@@ -49,8 +49,23 @@ public class SpmodAPIClient extends SpmodAPICore
 		TextureEngine engine = TextureEngine.getTextures();
 		engine.setCurrentMod(SpmodAPILib.ModID.toLowerCase());
 		engine.setCurrentPath("core");
-		engine.registerGuiTexture("SlotTexture", "GuiSlot");
-		engine.registerGuiTexture("TankSlotTexture", "GuiTankSlot");
+		engine.registerGuiTexture("BasicFrame", "BasicGuiFrame");
+		engine.registerGuiTexture("BigFrame", "BigGuiFrame");
+		engine.registerGuiTexture("Clear", "ClearTexture");
+		engine.registerGuiTexture("Objects", "GuiObjects");
+		engine.registerGuiPos("Slot", 0, 0);
+		engine.registerGuiPos("Tank", 0, 19);
+		engine.registerGuiPos("TankOverlay", 18, 19);
+		engine.registerGuiPos("ProgBarH", 19, 0);
+		engine.registerGuiPos("ProgBarHOverlay", 44, 0);
+		engine.registerGuiPos("ProgBarV", 41, 19);
+		engine.registerGuiPos("ProgBarVOverlay", 48, 19);
+		engine.registerGuiPos("ProgBarHV", 0, 82);
+		engine.registerGuiPos("ProgBarHVOverlay", 19, 82);
+		engine.registerGuiPos("Fire", 59, 19);
+		engine.registerGuiPos("FireOverlay", 59, 36);
+		engine.removePath();
+		engine.finishMod();
 	}
 	
 	@Override

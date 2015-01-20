@@ -274,7 +274,7 @@ public class MultiStructureFluidInterface extends AdvTile implements
 			return TextureEngine.getTextures().getTexture(TinyBlocks.transportBlock, 2, 0);
 		}
 		
-		if (blockID != -1 && metadata != -1 && renderPass == 1)
+		if (blockID != -1 && metadata != -1)
 		{
 			return new BlockStack(blockID, metadata).getTexture(side);
 		}
@@ -322,5 +322,84 @@ public class MultiStructureFluidInterface extends AdvTile implements
 			this.setRenderPass(i);
 			renderer.renderStandardBlock(block, xCoord, yCoord, zCoord);
 		}
+	}
+	
+	@Override
+	public boolean isBlockPresent(BlockStack par1)
+	{
+		boolean flag = false;
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
+			BlockPosition pos = getPosition().add(dir);
+			if(par1.match(pos.getAsBlockStack()))
+			{
+				flag = true;
+				break;
+			}
+		}
+		return flag;
+	}
+
+	@Override
+	public int getSideFromBlock(BlockStack par1)
+	{
+		int side = 0;
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
+			BlockPosition pos = getPosition().add(dir);
+			if(par1.match(pos.getAsBlockStack()))
+			{
+				side = dir.ordinal();
+				break;
+			}
+		}
+		return side;
+	}
+
+	@Override
+	public boolean isTilePressent(Class par1)
+	{
+		boolean flag = false;
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
+			BlockPosition pos = getPosition().add(dir);
+			if(pos.hasTileEntity() && par1.isAssignableFrom(pos.getTileEntity().getClass()))
+			{
+				flag = true;
+				break;
+			}
+		}
+		
+		return flag;
+	}
+
+	@Override
+	public <T> T getTileEntity(Class<T> par1)
+	{
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
+			BlockPosition pos = getPosition().add(dir);
+			if(pos.hasTileEntity() && par1.isAssignableFrom(pos.getTileEntity().getClass()))
+			{
+				return (T)pos.getBlockTileEntity();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public int getSideFromTile(Class par1)
+	{
+		int side = 0;
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
+			BlockPosition pos = getPosition().add(dir);
+			if(pos.hasTileEntity() && par1.isAssignableFrom(pos.getTileEntity().getClass()))
+			{
+				side = dir.ordinal();
+				break;
+			}
+		}
+		return side;
 	}
 }

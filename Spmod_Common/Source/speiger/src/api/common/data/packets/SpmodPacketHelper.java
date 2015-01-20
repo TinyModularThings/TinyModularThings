@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.HashMap;
 
+import net.minecraft.nbt.NBTBase;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -95,6 +96,19 @@ public class SpmodPacketHelper
 			stream = new DataOutputStream(bytes);
 			this.injetString(par0.getName());
 			this.InjectNumber(type);
+		}
+		
+		public ModularPacket InjectNBT(NBTBase par1)
+		{
+			try
+			{
+				NBTBase.writeNamedTag(par1, stream);
+			}
+			catch(Exception e)
+			{
+				FMLLog.getLogger().info("Error Injecting NBTData");
+			}
+			return this;
 		}
 		
 		public ModularPacket InjectNumber(Object par1)

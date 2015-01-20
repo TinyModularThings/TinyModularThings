@@ -7,18 +7,17 @@ import java.util.List;
 
 import mods.railcraft.common.plugins.forge.ItemRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipe;
+import speiger.src.api.common.registry.recipes.pressureFurnace.IPressureFurnaceRecipe;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
+import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.api.common.utils.MathUtils;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
-import speiger.src.tinymodularthings.client.gui.machine.PressureFurnaceGui;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import speiger.src.tinymodularthings.common.utils.slot.SlotCoal;
 import codechicken.core.gui.GuiDraw;
@@ -68,11 +67,6 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 		GuiDraw.drawTexturedModalRect(0, -11, 5, 11, 165, 70);
 	}
 	
-	@Override
-	public Class<? extends GuiContainer> getGuiClass()
-	{
-		return PressureFurnaceGui.class;
-	}
 	
 	@Override
 	public String getOverlayIdentifier()
@@ -130,9 +124,9 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient)
 	{
-		for (PressureRecipe cu : PressureRecipeList.getInstance().getRecipeList())
+		for (IPressureFurnaceRecipe cu : PressureRecipeList.getInstance().getRecipeList())
 		{
-			if (cu.combinerEquals(ingredient) || cu.firstInputEquals(ingredient) || cu.secondInputEquals(ingredient))
+			if(InventoryUtil.isItemEqual(ingredient, cu.getInput()) || InventoryUtil.isItemEqual(ingredient, cu.getSecondInput()) || InventoryUtil.isItemEqual(ingredient, cu.getCombiner()))
 			{
 				arecipes.add(new ChancedIOPressureRecipe(cu));
 			}
@@ -147,7 +141,7 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 	public void loadCraftingRecipes(ItemStack result)
 	{
 		
-		for (PressureRecipe cu : PressureRecipeList.getInstance().getRecipeList())
+		for (IPressureFurnaceRecipe cu : PressureRecipeList.getInstance().getRecipeList())
 		{
 			if (NEIServerUtils.areStacksSameTypeCrafting(result, cu.getOutput()))
 			{
@@ -163,7 +157,7 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 		{
 			if(((Boolean)results[0]))
 			{
-				for (PressureRecipe cu : PressureRecipeList.getInstance().getRecipeList())
+				for (IPressureFurnaceRecipe cu : PressureRecipeList.getInstance().getRecipeList())
 				{
 					arecipes.add(new ChancedIOPressureRecipe(cu));
 				}
@@ -183,13 +177,13 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 	
 	public class ChancedIOPressureRecipe extends TemplateRecipeHandler.CachedRecipe
 	{
-		ArrayList<PressureRecipe> recipeList = new ArrayList<PressureRecipe>();
-		PressureRecipe par1 = null;
+		ArrayList<IPressureFurnaceRecipe> recipeList = new ArrayList<IPressureFurnaceRecipe>();
+		IPressureFurnaceRecipe par1 = null;
 		List<PositionedStack> fuels = new ArrayList<PositionedStack>();
 		PositionedStack last;
 		boolean flag;
 		
-		public ChancedIOPressureRecipe(PressureRecipe par1)
+		public ChancedIOPressureRecipe(IPressureFurnaceRecipe par1)
 		{
 			recipeList.add(par1);
 			flag = true;
@@ -227,7 +221,7 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 		{
 			flag = false;
 			fuels.add(new PositionedStack(fuel, 8, 31));
-			recipeList.addAll((Collection<? extends PressureRecipe>)PressureRecipeList.getInstance().getRecipeList().clone());
+			recipeList.addAll((Collection<? extends IPressureFurnaceRecipe>)PressureRecipeList.getInstance().getRecipeList().clone());
 			onTick();
 		}
 		
@@ -262,7 +256,7 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 					
 				}
 			}
-			recipeList.addAll((Collection<? extends PressureRecipe>)PressureRecipeList.getInstance().getRecipeList().clone());
+			recipeList.addAll((Collection<? extends IPressureFurnaceRecipe>)PressureRecipeList.getInstance().getRecipeList().clone());
 			onTick();
 		}
 		
@@ -312,7 +306,7 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 
 		public boolean isSpecialRecipe()
 		{
-			return par1.hasCombiner();
+			return par1.getCombiner() != null;
 		}
 		
 		@Override
@@ -337,15 +331,15 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 			{
 				return list;
 			}
-			if (par1.hasFirstInput())
+			if (par1.getInput() != null)
 			{
-				list.add(new PositionedStack(par1.getFirstInput(), 53, 15, false));
+				list.add(new PositionedStack(par1.getInput(), 53, 15, false));
 			}
-			if (par1.hasSecondInput())
+			if (par1.getSecondInput() != null)
 			{
 				list.add(new PositionedStack(par1.getSecondInput(), 53, 36, false));
 			}
-			if (par1.hasCombiner())
+			if (par1.getCombiner() != null)
 			{
 				list.add(new PositionedStack(par1.getCombiner(), 96, -2, false));
 			}
@@ -354,7 +348,7 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 		
 		public boolean useCombiner()
 		{
-			return par1.useCombiner();
+			return par1.usesCombiner();
 		}
 		
 	}

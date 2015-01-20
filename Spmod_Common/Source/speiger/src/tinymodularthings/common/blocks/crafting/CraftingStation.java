@@ -1,26 +1,33 @@
 package speiger.src.tinymodularthings.common.blocks.crafting;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.CraftingManager;
+import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
+import net.minecraft.world.World;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.tinymodularthings.TinyModularThings;
-import speiger.src.tinymodularthings.client.gui.crafting.CraftingStationGui;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
+import speiger.src.spmodapi.common.util.slot.SpmodCraftingSlot;
+import speiger.src.spmodapi.common.util.slot.SpmodSlot;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
-import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -36,14 +43,14 @@ public class CraftingStation extends AdvTile
 		return side < 2 ? par1[side] : par1[2];
 	}
 	
-	public CraftingInventory getInventoryFromPlayer(EntityPlayer par1, Container par2)
+	public CraftingInventory getInventoryFromPlayer(EntityPlayer par1)
 	{
 		if(!iinv.containsKey(par1.username))
 		{
 			CraftingInventory inv = new CraftingInventory(this);
 			iinv.put(par1.username, inv);
 		}
-		return iinv.get(par1.username).setContainer(par2);
+		return iinv.get(par1.username);
 	}
 	
 	@Override
@@ -51,8 +58,6 @@ public class CraftingStation extends AdvTile
 	{
 		return 2F;
 	}
-
-	
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -113,19 +118,74 @@ public class CraftingStation extends AdvTile
 	}
 	
 	@Override
-	public void registerIcon(TextureEngine par1, Block par2)
+	public boolean tilehandlesItemMoving()
 	{
-		par1.registerTexture(par2, 2, "CraftingStation_Bottom", "CraftingStation_Top", "CraftingStation_Side");
+		return true;
 	}
 
 	@Override
-	public boolean onActivated(EntityPlayer par1)
+	public ItemStack transferStackInSlot(AdvContainer par1, EntityPlayer par2, int par3)
 	{
-		if(!worldObj.isRemote)
-		{
-			par1.openGui(TinyModularThings.instance, EnumIDs.ADVTiles.getId(), getWorldObj(), xCoord, yCoord, zCoord);
-		}
-		return true;
+        ItemStack itemstack = null;
+        Slot slot = (Slot)par1.inventorySlots.get(par3);
+
+        if (slot != null && slot.getHasStack())
+        {
+            ItemStack itemstack1 = slot.getStack();
+            itemstack = itemstack1.copy();
+
+            if (par3 >= 0 && par3 < 9)
+            {
+                if (!par1.mergeItemStack(itemstack1, 18, 54, true))
+                {
+                    return null;
+                }
+
+                slot.onSlotChange(itemstack1, itemstack);
+            }
+            else if (par3 >= 18 && par3 < 45)
+            {
+                if (!par1.mergeItemStack(itemstack1, 45, 54, false))
+                {
+                    return null;
+                }
+            }
+            else if (par3 >= 45 && par3 < 54)
+            {
+                if (!par1.mergeItemStack(itemstack1, 18, 45, false))
+                {
+                    return null;
+                }
+            }
+            else if (!par1.mergeItemStack(itemstack1, 18, 54, false))
+            {
+                return null;
+            }
+
+            if (itemstack1.stackSize == 0)
+            {
+                slot.putStack((ItemStack)null);
+            }
+            else
+            {
+                slot.onSlotChanged();
+            }
+
+            if (itemstack1.stackSize == itemstack.stackSize)
+            {
+                return null;
+            }
+
+            slot.onPickupFromSlot(par2, itemstack1);
+        }
+
+        return itemstack;
+    }
+
+	@Override
+	public void registerIcon(TextureEngine par1, Block par2)
+	{
+		par1.registerTexture(par2, 2, "CraftingStation_Bottom", "CraftingStation_Top", "CraftingStation_Side");
 	}
 	
 	@Override
@@ -147,16 +207,52 @@ public class CraftingStation extends AdvTile
 	}
 	
 	@Override
-	public Container getInventory(InventoryPlayer par1)
+	public void addContainerSlots(AdvContainer par1)
 	{
-		return new CraftingStationInventory(par1, this);
+		CraftingInventory inv = this.getInventoryFromPlayer(par1.getOwner());
+		inv.setContainer(par1);
+		for(int x = 0;x<3;x++)
+		{
+			for(int y = 0;y<3;y++)
+			{
+				par1.addSpmodSlotToContainer(new SpmodSlot(inv, y + x * 3, 10 + y * 18, 17 + x * 18));
+			}
+		}
+		for(int x = 0;x<3;x++)
+		{
+			for(int y = 0;y<3;y++)
+			{
+				par1.addSpmodSlotToContainer(new SpmodCraftingSlot(par1.getOwner(), inv, inv, 9+x+y*3, 110 + x * 18, 18 + y * 18));
+			}
+		}
 	}
-
+	
 	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiContainer getGui(InventoryPlayer par1)
+	public void onPlayerCloseContainer(EntityPlayer par1)
 	{
-		return new CraftingStationGui(par1, this);
+		super.onPlayerCloseContainer(par1);
+		CraftingInventory inv = this.getInventoryFromPlayer(par1);
+		inv.leaveContainer();
+	}
+	
+	@Override
+	public boolean canMergeItem(ItemStack par1, int slotID)
+	{
+		if(slotID < 9)
+		{
+			return true;
+		}
+		return super.canMergeItem(par1, slotID);
+	}
+	
+	@Override
+	public void onMatrixChanged(AdvContainer par1, IInventory par2)
+	{
+		CraftingInventory inv = getInventoryFromPlayer(par1.getOwner());
+		if(inv != null)
+		{
+			inv.onMatrixChange(par2, worldObj);
+		}
 	}
 	
 	public static class CraftingInventory extends InventoryCrafting
@@ -184,7 +280,36 @@ public class CraftingStation extends AdvTile
 		@Override
 		public int getSizeInventory()
 		{
-			return 9;
+			return 18;
+		}
+		
+		public void onMatrixChange(IInventory par1, World par2)
+		{
+			List<IRecipe> recipes = (List<IRecipe>)((ArrayList)CraftingManager.getInstance().getRecipeList()).clone();
+			ArrayList<IRecipe> results = new ArrayList<IRecipe>();
+			for(IRecipe cuRecipe : recipes)
+			{
+				if(cuRecipe.matches(this, par2))
+				{
+					results.add(cuRecipe);
+				}
+			}
+			if(results.size() > 9)
+			{
+				Collections.shuffle(results);
+			}
+			
+			for(int i = 0;i<9;i++)
+			{
+				if(i < results.size())
+				{
+					setInventorySlotContents(9+i, results.get(i).getCraftingResult(this));
+				}
+				else
+				{
+					setInventorySlotContents(9+i, null);
+				}
+			}
 		}
 		
 		@Override

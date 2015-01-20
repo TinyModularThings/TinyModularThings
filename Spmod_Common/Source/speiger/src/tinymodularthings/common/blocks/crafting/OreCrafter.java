@@ -6,36 +6,35 @@ import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
-import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Icon;
+import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.api.common.data.packets.IPacketReciver;
-import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.spmodapi.common.tile.TileFacing;
+import speiger.src.spmodapi.client.gui.GuiInventoryCore;
+import speiger.src.spmodapi.common.tile.FacedInventory;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.TinyModularThings;
-import speiger.src.tinymodularthings.client.gui.crafting.GuiOreCrafter;
 import speiger.src.tinymodularthings.common.config.TinyConfig;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
-import speiger.src.tinymodularthings.common.enums.EnumIDs;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class OreCrafter extends TileFacing implements IPacketReciver, IInventory, ISidedInventory
+public class OreCrafter extends FacedInventory implements IPacketReciver, ISidedInventory
 {
-	ItemStack[] inv = new ItemStack[48];
+	public OreCrafter()
+	{
+		super(48);
+	}
+
 	ArrayList<ItemStack> currentItems = new ArrayList<ItemStack>();
 	boolean packetRequired = false;
 	
@@ -166,23 +165,17 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 		}
 		return false;
 	}
-	
-	
-	
-	@Override
-	public void onBreaking()
-	{
-		if(!worldObj.isRemote)
-		{
-			InventoryUtil.dropInventory(worldObj, xCoord, yCoord, zCoord, this);
-		}
-	}
 
 	public void updateOre()
 	{
 		int id = OreDictionary.getOreID(inv[13]);
+		
 		if(id != -1 && TinyConfig.allowedOres.isAllowed(OreDictionary.getOreName(id)))
 		{
+			if(worldObj.getWorldTime() % 20 == 0)
+			{
+				FMLLog.getLogger().info("CurrentItems: ");
+			}
 			ArrayList<ItemStack> stacks = (ArrayList<ItemStack>)OreDictionary.getOres(id).clone();
 			for(ItemStack stack : stacks)
 			{
@@ -206,6 +199,7 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 				}
 			}
 		}
+
 	}
 	
 	public void handleOpenInventory()
@@ -293,43 +287,6 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 		}
 	}
 
-
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
-		NBTTagList list = new NBTTagList();
-		for(int i = 0;i<this.getSizeInventory();i++)
-		{
-			ItemStack stack = this.getStackInSlot(i);
-			if(stack != null)
-			{
-				NBTTagCompound data = new NBTTagCompound();
-				data.setInteger("Slot", i);
-				stack.writeToNBT(data);
-				list.appendTag(data);
-			}
-		}
-		nbt.setTag("Item", list);		
-	}
-
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
-		super.readFromNBT(nbt);
-		inv = new ItemStack[this.getSizeInventory()];
-		NBTTagList list = nbt.getTagList("Item");
-		for(int i = 0;i<list.tagCount();i++)
-		{
-			NBTTagCompound data = (NBTTagCompound)list.tagAt(i);
-			int slot = data.getInteger("Slot");
-			if(slot >= 0 && slot < inv.length)
-			{
-				inv[slot] = ItemStack.loadItemStackFromNBT(data);
-			}
-		}
-	}
-
 	@Override
 	public void recivePacket(DataInput par1)
 	{
@@ -345,7 +302,7 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 	
 	public void slotClick(int slot)
 	{
-		if(inv[13] != null)
+		if(inv[13] != null && inv[slot] != null)
 		{
 			ItemStack stack = inv[slot].copy();
 			stack.stackSize = inv[13].stackSize;
@@ -362,121 +319,13 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 	{
 		return null;
 	}
-
-
-	@Override
-	public int getSizeInventory()
-	{
-		return inv.length;
-	}
 	
-	@Override
-	public ItemStack getStackInSlot(int var1)
-	{
-		return inv[var1];
-	}
-	
-	@Override
-	public ItemStack decrStackSize(int var1, int var2)
-	{
-		
-		if (inv[var1] != null)
-		{
-			ItemStack var3;
-			
-			if (inv[var1].stackSize <= var2)
-			{
-				var3 = inv[var1];
-				inv[var1] = null;
-				return var3;
-			}
-			else
-			{
-				var3 = inv[var1].splitStack(var2);
-				
-				if (inv[var1].stackSize == 0)
-				{
-					inv[var1] = null;
-				}
-				
-				return var3;
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	@Override
-	public ItemStack getStackInSlotOnClosing(int var1)
-	{
-
-		if (inv[var1] != null)
-		{
-			ItemStack var2 = inv[var1];
-			inv[var1] = null;
-			return var2;
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	@Override
-	public void setInventorySlotContents(int var1, ItemStack var2)
-	{
-		inv[var1] = var2;
-		
-		if (var2 != null && var2.stackSize > getInventoryStackLimit())
-		{
-			var2.stackSize = getInventoryStackLimit();
-		}
-		
-	}
-	
-
 	@Override
 	public String getInvName()
 	{
 		return "Ore Crafter";
 	}
-
-	@Override
-	public boolean isInvNameLocalized()
-	{
-		return false;
-	}
-
-	@Override
-	public int getInventoryStackLimit()
-	{
-		return 64;
-	}
-
-	@Override
-	public boolean isUseableByPlayer(EntityPlayer entityplayer)
-	{
-		return true;
-	}
-
-	@Override
-	public void openChest()
-	{		
-	}
-
-	@Override
-	public void closeChest()
-	{		
-	}
-
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack)
-	{
-		return true;
-	}
-
+	
 	@Override
 	public boolean hasContainer()
 	{
@@ -484,32 +333,78 @@ public class OreCrafter extends TileFacing implements IPacketReciver, IInventory
 	}
 
 	
+	@Override
+	public void addContainerSlots(AdvContainer par1)
+	{	
+		par1.setOffset(14, 59);
+		int slot = 0;
+		for(int i = 0;i<10;i++)
+		{
+			par1.addSpmodSlot(this, slot++, 10 + i * 18, 20).setMaxStackSize(1).addUsage("Choosing Slot", "Click on the Slot to the Item you want to exchange");
+		}
+		for(int i = 0;i<3;i++)
+		{
+			par1.addSpmodSlot(this, slot++, 20 + i * 18, 48);
+		}
+		par1.addSpmodSlot(this, slot++, 93, 48).setMaxStackSize(1).addUsage("Ore Slot", "Main Slot where you can put a item in to exchange it manually");
+		for(int i = 0;i<3;i++)
+		{
+			par1.addSpmodSlot(this, slot++, 130 + i * 18, 48);
+		}
+		for(int z = 0;z<3;z++)
+		{
+			for(int i = 0;i<10;i++)
+			{
+				par1.addSpmodSlot(this, slot++, 12 + i * 18, 75 + z * 18).setMaxStackSize(1).addUsage("Auto Exchanging Slot", "Put Item as filter in");
+			}
+		}
+	}
 	
 	@Override
-	public boolean onActivated(EntityPlayer par1)
+	@SideOnly(Side.CLIENT)
+	public ResourceLocation getTexture()
 	{
-		if(!worldObj.isRemote)
-		{
-			par1.openGui(TinyModularThings.instance, EnumIDs.ADVTiles.getId(), worldObj, xCoord, yCoord, zCoord);
-		}
-		return true;
+		return getEngine().getTexture("BigFrame");
 	}
-
-
 
 	@Override
-	public Container getInventory(InventoryPlayer par1)
+	public boolean canMergeItem(ItemStack par1, int slotID)
 	{
-		return new OreCrafterInventory(par1, this);
+		if(slotID == 13 || slotID > 16)
+		{
+			return OreDictionary.getOreID(par1) != -1;
+		}
+		if(slotID < 10)
+		{
+			return false;
+		}
+		if(slotID > 9 && slotID <= 12 || slotID > 13 && slotID <= 16)
+		{
+			return true;
+		}
+		return false;
 	}
-
+	
+	@Override
+	public boolean onSlotClicked(AdvContainer par1, int slotID, int mouseButton, int modifier, EntityPlayer player)
+	{
+		if(slotID >= 0 && slotID < 10)
+		{
+			this.slotClick(slotID);
+			sendPacketToServer(createBasicPacket(TinyModularThings.instance).InjectNumber(slotID).finishPacket());
+			return true;
+		}
+		return super.onSlotClicked(par1, slotID, mouseButton, modifier, player);
+	}
+	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiContainer getGui(InventoryPlayer par1)
+	public void onGuiConstructed(GuiInventoryCore par1)
 	{
-		return new GuiOreCrafter(par1, this);
+		par1.setX(210);
+		par1.setY(225);
 	}
-
+	
 	@Override
 	public int[] getAccessibleSlotsFromSide(int var1)
 	{

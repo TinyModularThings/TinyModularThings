@@ -3,11 +3,9 @@ package speiger.src.spmodapi.common.items.trades;
 import java.util.ArrayList;
 import java.util.List;
 
-import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
@@ -15,12 +13,13 @@ import net.minecraft.village.MerchantRecipe;
 import net.minecraft.world.World;
 import speiger.src.api.client.gui.IItemGui;
 import speiger.src.spmodapi.SpmodAPI;
-import speiger.src.spmodapi.client.gui.items.trades.GuiTrade;
+import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.util.TickHelper;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -62,9 +61,9 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getGui(InventoryPlayer par1, ItemStack par2)
+	public GuiInventoryCore getGui(InventoryPlayer par1, ItemStack par2)
 	{
-		return new GuiTrade(par1, (IItemGui) par2.getItem());
+		return new GuiInventoryCore(getContainer(par1, par2));
 	}
 	
 	@Override
@@ -74,9 +73,9 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	}
 	
 	@Override
-	public Container getContainer(InventoryPlayer par1, ItemStack par2)
+	public AdvContainer getContainer(InventoryPlayer par1, ItemStack par2)
 	{
-		return new TradeInventory(par1, new BasicTradeInventory(3));
+		return new AdvContainer(par1, new BasicTradeInventory()).setInventory(par1);
 	}
 	
 	public static void addRecipes(ArrayList<MerchantRecipe> par1)

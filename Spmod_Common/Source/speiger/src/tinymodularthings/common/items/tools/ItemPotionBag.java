@@ -1,11 +1,10 @@
 package speiger.src.tinymodularthings.common.items.tools;
 
-import net.minecraft.client.gui.GuiScreen;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
@@ -15,9 +14,10 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import speiger.src.api.client.gui.IItemGui;
 import speiger.src.api.common.data.nbt.NBTHelper;
+import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.TinyModularThings;
-import speiger.src.tinymodularthings.client.gui.items.GuiPotionBag;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
@@ -45,9 +45,9 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiScreen getGui(InventoryPlayer par1, ItemStack par2)
+	public GuiContainer getGui(InventoryPlayer par1, ItemStack par2)
 	{
-		return new GuiPotionBag(par1, getContainer(par1, par2));
+		return new GuiInventoryCore(getContainer(par1, par2)).setAutoDrawing();
 	}
 
 	@Override
@@ -94,9 +94,9 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 	}
 
 	@Override
-	public Container getContainer(InventoryPlayer par1, ItemStack par2)
+	public AdvContainer getContainer(InventoryPlayer par1, ItemStack par2)
 	{
-		return new ContainerPotionBag(par1, new PotionInventory(par1.player, par2));
+		return new AdvContainer(par1, new PotionInventory(par1.player, par2));
 	}
 	
 	
@@ -162,11 +162,11 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 		}
 		ItemStack stack = evt.entityItem.getEntityItem();
 		EntityPlayer player = evt.player;
-		if(player != null && player.openContainer != null && player.openContainer instanceof ContainerPotionBag)
+		if(player != null && player.openContainer != null && player.openContainer instanceof AdvContainer && ((AdvContainer)player.openContainer).getInvName().equals("Potion Bag"))
 		{
 			if(stack.itemID == TinyItems.potionBag.itemID)
 			{
-				((ContainerPotionBag)player.openContainer).saveInventory();
+				((AdvContainer)player.openContainer).onContainerClosed(player);
 				player.closeScreen();
 				delay = true;
 			}

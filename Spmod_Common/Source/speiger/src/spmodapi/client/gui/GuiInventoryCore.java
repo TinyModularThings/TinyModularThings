@@ -1,13 +1,20 @@
 package speiger.src.spmodapi.client.gui;
 
 import java.util.ArrayList;
+import java.util.List;
 
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.FontRenderer;
+import net.minecraft.client.gui.Gui;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.fluids.Fluid;
@@ -21,17 +28,30 @@ import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
+import speiger.src.spmodapi.common.util.slot.PlayerSlot;
 import speiger.src.spmodapi.common.util.slot.SpmodSlot;
 
+/**
+ * 
+ * @author Speiger
+ * 
+ *         This gui class is extremly Experimental! The Basic Time it rquires
+ *         are 30-40 qm (40000 NanoSeconds) for each client tick Because i
+ *         render every slot extra. Which mean less Textures to loadand that
+ *         mean less ram usage. And because you have only max 1 gui open at the
+ *         time the open that mean it should not effect your performance..
+ * 
+ */
 public class GuiInventoryCore extends GuiContainer
 {
 	public static TextureEngine engine = TextureEngine.getTextures();
 	boolean defined = false;
 	boolean autoDrawing = false;
-	int x = 0;
-	int y = 0;
+	public int x = 0;
+	public int y = 0;
 	AdvTile tile = null;
-	
+	NBTTagCompound extraData;
+	GuiObject[] extraObjects = new GuiObject[0];
 	
 	public GuiInventoryCore(InventoryPlayer par1, AdvTile par2)
 	{
@@ -42,11 +62,32 @@ public class GuiInventoryCore extends GuiContainer
 	{
 		super(par1);
 		this.tile = par1.getTile();
+		extraData = new NBTTagCompound();
+		if(tile != null)
+		{
+			tile.onGuiConstructed(this);
+		}
+	}
+	
+	public GuiInventoryCore setupExtraGuiObjects(int amount)
+	{
+		extraObjects = new GuiObject[amount];
+		for(int i = 0;i < amount;i++)
+		{
+			extraObjects[i] = new GuiObject();
+		}
+		return this;
 	}
 	
 	public GuiInventoryCore setAutoDrawing()
 	{
 		this.autoDrawing = true;
+		return this;
+	}
+	
+	public GuiInventoryCore setAutoDrawingDissabled()
+	{
+		this.autoDrawing = false;
 		return this;
 	}
 	
@@ -57,14 +98,50 @@ public class GuiInventoryCore extends GuiContainer
 		defined = true;
 	}
 	
+	public void defineSlot(String key)
+	{
+		int[] data = engine.getGuiPos(key);
+		if(data != null && data.length == 2)
+		{
+			defineSlot(data[0], data[1]);
+		}
+	}
+	
+	public void defineSlot(String key, int x, int y)
+	{
+		int[] data = engine.getGuiPos(key);
+		if(data != null && data.length == 2)
+		{
+			defineSlot(data[0] + x, data[1] + y);
+		}
+	}
+	
 	public void drawSlot(Slot par1)
 	{
 		this.drawSlot(par1.xDisplayPosition, par1.yDisplayPosition);
 	}
 	
-	public void drawTankSlot(TankSlot par1)
+	public void renderItem(ItemStack par1, int x, int y)
 	{
-		this.drawSlot(par1.getXCoord(), par1.getYCoord(), 18, 60);
+		GL11.glTranslatef(0.0F, 0.0F, 32.0F);
+		this.zLevel = 200.0F;
+		itemRenderer.zLevel = 200.0F;
+		try
+		{
+			itemRenderer.renderItemAndEffectIntoGUI(fontRenderer, this.mc.getTextureManager(), par1, x, y);
+			itemRenderer.renderItemOverlayIntoGUI(fontRenderer, mc.getTextureManager(), par1, x, y);
+		}
+		catch(Throwable e)
+		{
+		}
+		this.zLevel = 0.0F;
+		itemRenderer.zLevel = 0.0F;
+	}
+	
+	public void drawTankSlot(TankSlot par1, int x, int y)
+	{
+		this.defineSlot("Tank");
+		this.drawSlotPros(par1.getXCoord(), par1.getYCoord(), 18, 61);
 		drawFluidInTank(par1, 18, 60);
 	}
 	
@@ -73,6 +150,8 @@ public class GuiInventoryCore extends GuiContainer
 		int k = (this.width - this.xSize) / 2;
 		int l = (this.height - this.ySize) / 2;
 		FluidTank tank = par1.getTank();
+		int tankX = par1.getXCoord();
+		int tankY = par1.getYCoord();
 		if(tank == null)
 		{
 			return;
@@ -80,7 +159,7 @@ public class GuiInventoryCore extends GuiContainer
 		int prepair = tank.getCapacity() / 58;
 		int squaled = tank.getFluidAmount() / prepair;
 		FluidStack liquid = tank.getFluid();
-		if(liquid == null)
+		if(liquid == null || liquid.getFluid() == null)
 		{
 			return;
 		}
@@ -93,12 +172,12 @@ public class GuiInventoryCore extends GuiContainer
 			texture = fluid.getStillIcon();
 		}
 		this.mc.getTextureManager().bindTexture(TextureMap.locationBlocksTexture);
-		if (texture != null)
+		if(texture != null)
 		{
-			while (true)
+			while(true)
 			{
 				int z;
-				if (squaled > 16)
+				if(squaled > 16)
 				{
 					z = 16;
 					squaled -= 16;
@@ -109,22 +188,23 @@ public class GuiInventoryCore extends GuiContainer
 					squaled = 0;
 				}
 				
-				drawTexturedModelRectFromIcon(k + x, l + y + 58 - x - start, texture, 16, 16 - (16 - z));
+				drawTexturedModelRectFromIcon(k + tankX, l + tankY + 58 - z - start, texture, 16, 16 - (16 - z));
 				start += 16;
 				
-				if ((z == 0) || (squaled == 0))
+				if((z == 0) || (squaled == 0))
 				{
 					break;
 				}
 			}
 		}
-		mc.getTextureManager().bindTexture(engine.getTexture("TankOverlayTexture"));
-		drawTexturedModalRect(k + x, l + y, this.x, this.y, 18, 60);
+		setTexture(engine.getTexture("Objects"));
+		this.defineSlot("TankOverlay");
+		drawTexturedModalRect(k + tankX - 2, l + tankY - 1, this.x, this.y, x, y);
 	}
 	
 	public void drawSlot(int SlotX, int SlotY)
 	{
-		if (defined)
+		if(defined)
 		{
 			this.drawSlot(SlotX, SlotY, x, y);
 		}
@@ -149,11 +229,25 @@ public class GuiInventoryCore extends GuiContainer
 	
 	public void drawSlotPros(int SlotX, int SlotY, int xSize, int ySize)
 	{
-		if (defined)
+		if(defined)
 		{
 			int var5 = (width - this.xSize) / 2;
 			int var6 = (height - this.ySize) / 2;
-			drawTexturedModalRect(var5 + SlotX - 1, var6 + SlotY - 1, x, y, xSize, ySize);
+			drawTexturedModalRect(var5 + SlotX - 1, var6 + SlotY - 1, this.x, this.y, xSize, ySize);
+		}
+		else
+		{
+			SpmodAPI.log.print("Slot Texture is not defined");
+		}
+	}
+	
+	public void drawSlotPros(int SlotX, int SlotY, int offsetX, int offsetY, int xSize, int ySize)
+	{
+		if(defined)
+		{
+			int var5 = (width - this.xSize) / 2;
+			int var6 = (height - this.ySize) / 2;
+			drawTexturedModalRect(var5 + SlotX - 1, var6 + SlotY - 1, this.x + offsetX, this.y + offsetY, xSize, ySize);
 		}
 		else
 		{
@@ -163,63 +257,105 @@ public class GuiInventoryCore extends GuiContainer
 	
 	public void drawSlots(int x, int y)
 	{
-		this.mc.getTextureManager().bindTexture(engine.getTexture("SlotTexture"));
-		ArrayList<SpmodSlot> slotToDraw = ((AdvContainer) this.inventorySlots).getAllSlots();
-		for (int i = 0; i < slotToDraw.size(); i++)
+		setTexture(engine.getTexture("Objects"));
+		List<SpmodSlot> slotToDraw = ((AdvContainer)this.inventorySlots).getAllSlots();
+		for(int i = 0;i < slotToDraw.size();i++)
 		{
 			SpmodSlot slot = slotToDraw.get(i);
 			this.drawSlot(slot);
+		}
+		List<PlayerSlot> playerSlot = ((AdvContainer)this.inventorySlots).getPlayerSlots();
+		for(int i = 0;i < playerSlot.size();i++)
+		{
+			PlayerSlot slot = playerSlot.get(i);
+			this.drawSlot(slot);
+		}
+		ArrayList<TankSlot> tankSlots = ((AdvContainer)this.inventorySlots).getTanks();
+		for(int i = 0;i < tankSlots.size();i++)
+		{
+			TankSlot slot = tankSlots.get(i);
+			this.drawTankSlot(slot, x, y);
+		}
+		
+	}
+	
+	private void drawSlotInfo(int x, int y)
+	{
+		List<SpmodSlot> slotToDraw = ((AdvContainer)this.inventorySlots).getAllSlots();
+		for(int i = 0;i < slotToDraw.size();i++)
+		{
+			SpmodSlot slot = slotToDraw.get(i);
 			if(this.isMouseOverSlot(slot, x, y) && isCtrlKeyDown() && slot.hasUsage())
 			{
 				this.drawHoveringText(slot.getUsage(), x, y, fontRenderer);
 			}
 		}
-		this.mc.getTextureManager().bindTexture(engine.getTexture("TankSlotTexture"));
 		ArrayList<TankSlot> tankSlots = ((AdvContainer)this.inventorySlots).getTanks();
-		for(int i = 0;i<tankSlots.size();i++)
+		for(int i = 0;i < tankSlots.size();i++)
 		{
 			TankSlot slot = tankSlots.get(i);
-			this.drawTankSlot(slot);
 			if(isMouseOverTankSlot(slot, x, y))
 			{
 				this.drawHoveringText(slot.getTankInfo(), x, y, fontRenderer);
 			}
 		}
-		
 	}
 	
 	@Override
-	public void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
+	protected void drawGuiContainerBackgroundLayer(float par1, int par2, int par3)
 	{
 		GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 		int k = (this.width - this.xSize) / 2;
 		int l = (this.height - this.ySize) / 2;
-		ResourceLocation resource = tile.getTexture();
-		if(resource != null)
+		ResourceLocation resource = getGuiTexture();
+		setTexture(resource);
+		this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
+		if(autoDrawing)
 		{
-			this.mc.getTextureManager().bindTexture(resource);
-			this.drawTexturedModalRect(k, l, 0, 0, this.xSize, this.ySize);
+			this.defineSlot("Slot");
+			drawSlots(par2, par3);
 		}
 		if(autoDrawing)
 		{
-			this.defineSlot(0, 0);
-			drawSlots(par2, par3);
+			setTexture(resource);
 		}
-		if(resource != null && autoDrawing)
+		if(tile != null)
 		{
-			this.mc.getTextureManager().bindTexture(resource);
+			tile.drawExtras(this, k, l, par2, par3);
 		}
-		tile.drawExtras(this, k, l, par2, par3);
+		drawSlotInfo(par2, par3);
 	}
 	
+	@Override
 	protected void drawGuiContainerForegroundLayer(int par1, int par2)
 	{
-		String s = tile.getInvName();
-		this.fontRenderer.drawString(s, this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2, 6, 4210752);
-		this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
+		String s = "";
+		if(tile != null)
+		{
+			s = tile.getInvName();
+		}
+		int offsetX = 0;
+		int offsetY = 0;
+		int offsetCX = 0;
+		int offsetCY = 0;
+		int nameColor = 0;
+		
+		if(tile != null)
+		{
+			offsetX = tile.getNameXOffset();
+			offsetY = tile.getNameYOffset();
+			offsetCX = tile.getInvNameXOffset();
+			offsetCY = tile.getInvNameYOffset();
+			nameColor = tile.getNameColor();
+		}
+		this.fontRenderer.drawString(s, (this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2) + offsetX, 4 + offsetY, nameColor);
+		this.fontRenderer.drawString(I18n.getString("container.inventory"), 8 + offsetCX, this.ySize - 96 + 2 + offsetCY, nameColor);
 		int k = (this.width - this.xSize) / 2;
 		int l = (this.height - this.ySize) / 2;
-		tile.drawFrontExtras(this, k, l, par1, par2);
+		if(tile != null)
+		{
+			tile.drawFrontExtras(this, k, l, par1, par2);
+		}
 	}
 	
 	@Override
@@ -228,9 +364,22 @@ public class GuiInventoryCore extends GuiContainer
 		super.initGui();
 		int k = (this.width - this.xSize) / 2;
 		int l = (this.height - this.ySize) / 2;
-		tile.onGuiLoad(this, k, l);
+		if(tile != null)
+		{
+			tile.onGuiLoad(this, k, l);
+		}
 	}
-
+	
+	@Override
+	protected void keyTyped(char par1, int par2)
+	{
+		if(tile != null && tile.onKeyTyped(this, par1, par2))
+		{
+			return;
+		}
+		super.keyTyped(par1, par2);
+	}
+	
 	protected boolean isMouseOverSlot(SpmodSlot par1, int x, int y)
 	{
 		return this.isPointInRegion(par1.xDisplayPosition, par1.yDisplayPosition, 16, 16, x, y);
@@ -240,13 +389,124 @@ public class GuiInventoryCore extends GuiContainer
 	{
 		return this.isPointInRegion(par1.getXCoord(), par1.getYCoord(), 18, 60, x, y);
 	}
-
+	
+	@Override
+	public void drawItemStackTooltip(ItemStack par1ItemStack, int par2, int par3)
+	{
+		super.drawItemStackTooltip(par1ItemStack, par2, par3);
+	}
+	
+	@Override
+	public boolean isPointInRegion(int par1, int par2, int par3, int par4, int par5, int par6)
+	{
+		return super.isPointInRegion(par1, par2, par3, par4, par5, par6);
+	}
+	
 	@Override
 	protected void actionPerformed(GuiButton par1GuiButton)
 	{
-		tile.onButtonClick(this, par1GuiButton);
+		if(tile != null)
+		{
+			tile.onButtonClick(this, par1GuiButton);
+		}
 	}
 	
+	public int getX()
+	{
+		return x;
+	}
 	
+	public int getY()
+	{
+		return y;
+	}
+	
+	public FontRenderer getFontRenderer()
+	{
+		return this.fontRenderer;
+	}
+	
+	public RenderItem getItemRenderer()
+	{
+		return this.itemRenderer;
+	}
+	
+	public void setTexture(ResourceLocation par1)
+	{
+		if(par1 == null)
+		{
+			return;
+		}
+		this.mc.getTextureManager().bindTexture(par1);
+	}
+	
+	public void setX(int x)
+	{
+		this.xSize = x;
+	}
+	
+	public void setY(int y)
+	{
+		this.ySize = y;
+	}
+	
+	public Minecraft getMC()
+	{
+		return this.mc;
+	}
+	
+	public List getButtonsList()
+	{
+		return this.buttonList;
+	}
+	
+	/**
+	 * instead of declaring new variables inside of the TileEntity/New GuiClass
+	 * that is based on this you use the NBTData which you can access in the gui
+	 * which is only client based!
+	 */
+	public NBTTagCompound getExtraData()
+	{
+		return extraData;
+	}
+	
+	public GuiObject getGuiObject(int par1)
+	{
+		return extraObjects[par1];
+	}
+	
+	public GuiObject[] getGuiObjects()
+	{
+		return extraObjects;
+	}
+	
+	public ResourceLocation getGuiTexture()
+	{
+		if(tile != null)
+		{
+			return tile.getTexture();
+		}
+		return null;
+	}
+	
+	public static class GuiObject
+	{
+		Gui object;
+		
+		public void setObject(Gui par1)
+		{
+			object = par1;
+		}
+		
+		public Gui getObject()
+		{
+			return object;
+		}
+		
+		public <T> T getObject(Class<T> par1)
+		{
+			return (T)object;
+		}
+	}
 	
 }

@@ -10,6 +10,7 @@ public class ContainerWindmill extends AdvContainer
 {
 	public ContainerWindmill(InventoryPlayer par1, WindMill par2)
 	{
+		super(par1, par2);
 		this.addSlotToContainer(new WindMillSlot(par2, 0, 80, 26));
 		this.setInventory(par1);
 	}

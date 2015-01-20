@@ -5,36 +5,35 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.inventory.GuiContainer;
+import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
+import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.common.data.packets.IPacketReciver;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
 import speiger.src.api.common.world.tiles.interfaces.InterfaceAcceptor;
+import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.data.StructureStorage;
-import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.TinyModularThings;
-import speiger.src.tinymodularthings.client.gui.transport.ItemInterfaceGui;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
-import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInterfaceBlock;
 import speiger.src.tinymodularthings.common.plugins.BC.actions.ActionOneSlotChange;
 import speiger.src.tinymodularthings.common.plugins.BC.actions.GateChangeToSlot;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionReceptor;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -57,7 +56,54 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	public boolean textureUpdate = false;
 	public boolean changed = false;
 	public boolean active = false;
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void drawFrontExtras(GuiInventoryCore par1, int guiX, int guiY, int mouseX, int mouseY)
+	{
+		BlockPosition pos = new BlockPosition(worldObj, x, y, z);
+		if(pos != null && pos.doesBlockExsist() && pos.hasTileEntity())
+		{
+			String target = pos.getAsBlockStack().getBlockDisplayName();
+			if (pos != null)
+			{
+				par1.getFontRenderer().drawString("Target: " + target, guiX - 40 - par1.getFontRenderer().getStringWidth("Target: " + target) / 2, 20, 4210752);
+				par1.getFontRenderer().drawString("Choosen Slot", 50, 35, 4210752);
+				par1.getFontRenderer().drawString("" + choosenSlot, 80, 56, 4210752);
+			}
+			
+			par1.getButtonsList().clear();
+			par1.getButtonsList().add(new GuiButton(0, guiX + 40, guiY + 50, 20, 20, "-"));
+			par1.getButtonsList().add(new GuiButton(1, guiX + 105, guiY + 50, 20, 20, "+"));
+		}
+		else
+		{
+			par1.getFontRenderer().drawString("No Target", 60, 35, 4210752);
+		}
+	}
 	
+	
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onButtonClick(GuiInventoryCore par1, GuiButton par2)
+	{
+		if(target != null)
+		{
+			int id = par2.id;
+			if(id == 0)
+			{
+				sendPacketToServer(createBasicPacket(TinyModularThings.instance).InjectNumber(0).injectBoolean(false).finishPacket());
+			}
+			else if(id == 1)
+			{
+				sendPacketToServer(createBasicPacket(TinyModularThings.instance).InjectNumber(0).injectBoolean(true).finishPacket());
+			}
+		}
+	}
+
+
+
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
@@ -89,28 +135,22 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	@Override
 	public void onTick()
 	{
-		
-		if ((!worldObj.isRemote && textureUpdate) || (!worldObj.isRemote && worldObj.getWorldTime() % 200 == 0))
+		if ((!worldObj.isRemote && textureUpdate))
 		{
 			textureUpdate = false;
 			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
 		}
 		
-		if (worldObj.isRemote || worldObj.getWorldTime() % 20 != 0)
+		if (worldObj.getWorldTime() % 20 != 0)
 		{
 			return;
 		}
-		
 		if (!active)
 		{
 			changed = false;
 		}
 		active = false;
-		
-		if (!worldObj.isRemote)
-		{
-			updateInventory();
-		}
+		updateInventory();
 		
 	}
 	
@@ -132,12 +172,10 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	{
 		if ((x == 0 && y == 0 && z == 0) || !doesExsist() || (doesExsist() && target == null))
 		{
-			
 			if (!doesExsist())
 			{
 				if (target == null)
 				{
-					
 					return;
 				}
 				removeInventory();
@@ -179,6 +217,7 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 						y = tile.yCoord;
 						z = tile.zCoord;
 						worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
+						textureUpdate = true;
 					}
 				}
 			}
@@ -193,13 +232,12 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 				
 				if (tile instanceof InterfaceAcceptor)
 				{
-					
 					InterfaceAcceptor inter = (InterfaceAcceptor) tile;
 					if (inter.acceptItems(this) && inter.addAcceptor(this))
 					{
-						
 						target = (IInventory) tile;
 						worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
+						textureUpdate = true;
 					}
 				}
 				
@@ -263,7 +301,6 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 				z = 0;
 			}
 		}
-		
 	}
 	
 	@Override
@@ -341,43 +378,9 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	}
 	
 	@Override
-	public boolean onActivated(EntityPlayer par1)
-	{
-		
-		if (hasContainer())
-		{
-			par1.openGui(TinyModularThings.instance, EnumIDs.ADVTiles.getId(), worldObj, xCoord, yCoord, zCoord);
-			return true;
-		}
-		return false;
-	}
-	
-	@Override
 	public boolean hasContainer()
 	{
 		return true;
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiContainer getGui(InventoryPlayer par1)
-	{
-		return new ItemInterfaceGui(this, par1);
-	}
-	
-	@Override
-	public Container getInventory(InventoryPlayer par1)
-	{
-		return new AdvContainer(par1)
-		{
-			
-			@Override
-			public boolean canInteractWith(EntityPlayer entityplayer)
-			{
-				return true;
-			}
-			
-		};
 	}
 	
 	@Override
@@ -418,20 +421,34 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	{
 		if (!worldObj.isRemote)
 		{
-			int nextID;
 			try
 			{
-				nextID = par1.readInt();
-				
+				int eventID = par1.readInt();
+				if(eventID == 0 && target != null)
+				{
+					boolean plus = par1.readBoolean();
+					if(plus)
+					{
+						if(choosenSlot + 1 < target.getSizeInventory())
+						{
+							choosenSlot++;
+						}
+					}
+					else
+					{
+						if(choosenSlot > 0)
+						{
+							choosenSlot--;
+						}
+					}
+					textureUpdate = true;
+				}
 			}
 			catch (IOException e)
 			{
 				return;
 			}
-			if (nextID != choosenSlot)
-			{
-				choosenSlot = nextID;
-			}
+
 		}
 		
 	}
@@ -516,5 +533,84 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 			this.setRenderPass(i);
 			renderer.renderStandardBlock(block, xCoord, yCoord, zCoord);
 		}
+	}
+
+	@Override
+	public boolean isBlockPresent(BlockStack par1)
+	{
+		boolean flag = false;
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
+			BlockPosition pos = getPosition().add(dir);
+			if(par1.match(pos.getAsBlockStack()))
+			{
+				flag = true;
+				break;
+			}
+		}
+		return flag;
+	}
+
+	@Override
+	public int getSideFromBlock(BlockStack par1)
+	{
+		int side = 0;
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
+			BlockPosition pos = getPosition().add(dir);
+			if(par1.match(pos.getAsBlockStack()))
+			{
+				side = dir.ordinal();
+				break;
+			}
+		}
+		return side;
+	}
+
+	@Override
+	public boolean isTilePressent(Class par1)
+	{
+		boolean flag = false;
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
+			BlockPosition pos = getPosition().add(dir);
+			if(pos.hasTileEntity() && par1.isAssignableFrom(pos.getTileEntity().getClass()))
+			{
+				flag = true;
+				break;
+			}
+		}
+		
+		return flag;
+	}
+
+	@Override
+	public <T> T getTileEntity(Class<T> par1)
+	{
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
+			BlockPosition pos = getPosition().add(dir);
+			if(pos.hasTileEntity() && par1.isAssignableFrom(pos.getTileEntity().getClass()))
+			{
+				return (T)pos.getBlockTileEntity();
+			}
+		}
+		return null;
+	}
+
+	@Override
+	public int getSideFromTile(Class par1)
+	{
+		int side = 0;
+		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+		{
+			BlockPosition pos = getPosition().add(dir);
+			if(pos.hasTileEntity() && par1.isAssignableFrom(pos.getTileEntity().getClass()))
+			{
+				side = dir.ordinal();
+				break;
+			}
+		}
+		return side;
 	}
 }

@@ -8,7 +8,12 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+import speiger.src.api.common.data.nbt.DataStorage;
+import speiger.src.api.common.data.nbt.INBTReciver;
+import speiger.src.api.common.data.packets.IPacketReciver;
+import speiger.src.api.common.data.packets.SpmodPacketHelper;
 import speiger.src.api.common.data.utils.BlockData;
+import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.AdvTile;
 
 public class TileIconMaker
@@ -44,6 +49,16 @@ public class TileIconMaker
 		return null;
 	}
 	
+	public AdvTile getTileEntityFormBlockAndMetadata(BlockStack par1)
+	{
+		Class<? extends AdvTile> tile = classes.get(new BlockData(par1));
+		if(tile != null)
+		{
+			return getTileEntityFromClass(par1.getBlock(), tile);
+		}
+		return null;
+	}
+	
 	public void addTileEntity(Block par1, int meta, AdvTile tile)
 	{
 		if (allTiles.get(par1) == null)
@@ -52,8 +67,25 @@ public class TileIconMaker
 		}
 		allTiles.get(par1).add(tile);
 		tile.onIconMakerLoading();
+		extraIniting(tile);
 		classes.put(new BlockData(par1, meta), tile.getClass());
 		ids.put(tile.getClass(), new BlockData(par1, meta));
+	}
+	
+	private void extraIniting(AdvTile par1)
+	{
+		if(par1.requireForgeRegistration())
+		{
+			ForgeRegister.regist(par1);
+		}
+		if(par1 instanceof IPacketReciver)
+		{
+			SpmodPacketHelper.getHelper().registerPacketReciver((IPacketReciver)par1);
+		}
+		if(par1 instanceof INBTReciver)
+		{
+			DataStorage.registerNBTReciver((INBTReciver)par1);
+		}
 	}
 	
 	public <T> T getTileEntityFromClass(Class<T> tile)

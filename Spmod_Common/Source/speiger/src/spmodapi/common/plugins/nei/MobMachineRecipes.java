@@ -5,26 +5,25 @@ import static codechicken.core.gui.GuiDraw.drawTexturedModalRect;
 
 import java.awt.Rectangle;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.item.ItemStack;
 
 import org.lwjgl.opengl.GL11;
 
+import speiger.src.api.common.data.utils.ResultData;
 import speiger.src.api.common.utils.MathUtils;
-import speiger.src.spmodapi.client.gui.utils.GuiMobMachine;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine.DropType;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
-import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.util.TextureEngine;
 import codechicken.core.gui.GuiDraw;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
 
 public class MobMachineRecipes extends TemplateRecipeHandler
 {
+	TextureEngine engine = TextureEngine.getTextures();
 
 	@Override
 	public String getRecipeName()
@@ -35,14 +34,14 @@ public class MobMachineRecipes extends TemplateRecipeHandler
 	@Override
 	public String getGuiTexture()
 	{
-		return SpmodAPILib.ModID.toLowerCase()+":textures/gui/utils/mobMachine.png";
+		return engine.getTexture("BasicFrame").toString();
 	}
 
-	@Override
-	public Class<? extends GuiContainer> getGuiClass()
-	{
-		return GuiMobMachine.class;
-	}
+//	@Override
+//	public Class<? extends GuiContainer> getGuiClass()
+//	{
+//		return GuiMobMachine.class;
+//	}
 
 	@Override
 	public int recipiesPerPage()
@@ -71,32 +70,37 @@ public class MobMachineRecipes extends TemplateRecipeHandler
         GL11.glColor4f(1, 1, 1, 1);
         changeTexture(getGuiTexture());
         drawTexturedModalRect(0, 0, 5, 11, 166, 65);
-        drawTexturedModalRect(105, 13, 176, 0, 18, 18);
-        drawTexturedModalRect(123, 13, 176, 0, 18, 18);
-        drawTexturedModalRect(141, 13, 176, 0, 18, 18);
-        drawTexturedModalRect(105, 31, 176, 0, 18, 18);
-        drawTexturedModalRect(123, 31, 176, 0, 18, 18);
-        drawTexturedModalRect(141, 31, 176, 0, 18, 18);
-        drawTexturedModalRect(105, 49, 176, 0, 18, 18);
-        drawTexturedModalRect(123, 49, 176, 0, 18, 18);
-        drawTexturedModalRect(141, 49, 176, 0, 18, 18);
+        changeTexture(engine.getTexture("Objects").toString());
+        int[] data = engine.getGuiPos("Slot");
+        int par1 = data[0];
+        int par2 = data[1];
+        drawTexturedModalRect(105, 13, par1, par2, 18, 18);
+        drawTexturedModalRect(123, 13, par1, par2, 18, 18);
+        drawTexturedModalRect(141, 13, par1, par2, 18, 18);
+        drawTexturedModalRect(105, 31, par1, par2, 18, 18);
+        drawTexturedModalRect(123, 31, par1, par2, 18, 18);
+        drawTexturedModalRect(141, 31, par1, par2, 18, 18);
+        drawTexturedModalRect(105, 49, par1, par2, 18, 18);
+        drawTexturedModalRect(123, 49, par1, par2, 18, 18);
+        drawTexturedModalRect(141, 49, par1, par2, 18, 18);
         if(cu.needMoreSpace())
         {
-          drawTexturedModalRect(105, 67, 176, 0, 18, 18);
-          drawTexturedModalRect(123, 67, 176, 0, 18, 18);
-          drawTexturedModalRect(141, 67, 176, 0, 18, 18);
-          drawTexturedModalRect(105, 85, 176, 0, 18, 18);
-          drawTexturedModalRect(123, 85, 176, 0, 18, 18);
-          drawTexturedModalRect(141, 85, 176, 0, 18, 18);
-          drawTexturedModalRect(105, 103, 176, 0, 18, 18);
-          drawTexturedModalRect(123, 103, 176, 0, 18, 18);
-          drawTexturedModalRect(141, 103, 176, 0, 18, 18);
+          drawTexturedModalRect(105, 67, par1, par2, 18, 18);
+          drawTexturedModalRect(123, 67, par1, par2, 18, 18);
+          drawTexturedModalRect(141, 67, par1, par2, 18, 18);
+          drawTexturedModalRect(105, 85, par1, par2, 18, 18);
+          drawTexturedModalRect(123, 85, par1, par2, 18, 18);
+          drawTexturedModalRect(141, 85, par1, par2, 18, 18);
+          drawTexturedModalRect(105, 103, par1, par2, 18, 18);
+          drawTexturedModalRect(123, 103, par1, par2, 18, 18);
+          drawTexturedModalRect(141, 103, par1, par2, 18, 18);
         }
-        drawTexturedModalRect(6, 49, 176, 0, 18, 18);
-        drawTexturedModalRect(30, 49, 176, 0, 18, 18);
-        drawTexturedModalRect(54, 49, 176, 0, 18, 18);
-        drawTexturedModalRect(13, 4, 176, 19, 4, 43);
-        drawTexturedModalRect(62, 4, 176, 19, 4, 43);
+        drawTexturedModalRect(6, 49, par1, par2, 18, 18);
+        drawTexturedModalRect(30, 49, par1, par2, 18, 18);
+        drawTexturedModalRect(54, 49, par1, par2, 18, 18);
+        int[] progBar = engine.getGuiPos("ProgBarV");
+        drawTexturedModalRect(13, 4, progBar[0], progBar[1], 4, 43);
+        drawTexturedModalRect(62, 4, progBar[0], progBar[1], 4, 43);
 	}
 
 
@@ -104,7 +108,6 @@ public class MobMachineRecipes extends TemplateRecipeHandler
 	@Override
 	public void loadCraftingRecipes(ItemStack result)
 	{
-		
 		int[] mobMachines = MobMachine.getMobMachineResultItem(result);
 		if(mobMachines != null && mobMachines.length > 0)
 		{
@@ -158,9 +161,7 @@ public class MobMachineRecipes extends TemplateRecipeHandler
 	public void drawExtras(int recipe)
 	{
 		MobMachineRecipe cu = (MobMachineRecipe)this.arecipes.get(recipe);
-		
-		
-		
+		changeTexture(engine.getTexture("Objects"));
         if(cu.type == 0)
         {
             GuiDraw.fontRenderer.drawString("Exp Call Every: "+MathUtils.getTicksInTimeShort(12000)+" Min", 0, 70, 4210752);
@@ -172,17 +173,19 @@ public class MobMachineRecipes extends TemplateRecipeHandler
         }
         else
         {
-        	int ticks = (this.cycleticks ) % 43;
-            drawTexturedModalRect(17, 47, 185, 62, -4, -43+ticks);
+        	int ticks = this.cycleticks % 43;
+        	int[] tex = engine.getGuiPos("ProgBarVOverlay");
+            drawTexturedModalRect(13, 4 + 43 - ticks, tex[0], tex[1] + 43 - ticks, 4, ticks);
             
             ticks = ticks * 3 % 43;
-            drawTexturedModalRect(66, 47, 185, 62, -4, -43+ticks);
+            drawTexturedModalRect(62, 4 + 43 - ticks, tex[0], tex[1] + 43 - ticks, 4, ticks);
         
             try
 			{
-                GuiDraw.fontRenderer.drawString("Food Time: "+MathUtils.getTicksInTimeShort(MobMachine.foodList.get(cu.type).get(Arrays.asList(cu.lastFood.item.itemID, cu.lastFood.item.getItemDamage()))*20), 0, 70, 4210752);
+                GuiDraw.fontRenderer.drawString("Food Time: "+MathUtils.getTicksInTimeShort(MobMachine.foodList.get(cu.type).get(new ResultData(cu.lastFood.item))*20), 0, 70, 4210752);
                 String exp = MobMachine.needExp.get(cu.type) ? "Use Exp: " : "Create Exp: ";
                 GuiDraw.fontRenderer.drawString(exp+MobMachine.neededExp.get(cu.type), 0, 80, 4210752);
+
 			}
 			catch(Exception e)
 			{

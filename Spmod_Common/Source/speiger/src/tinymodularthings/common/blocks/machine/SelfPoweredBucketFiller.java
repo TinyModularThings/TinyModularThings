@@ -19,6 +19,7 @@ public class SelfPoweredBucketFiller extends BucketFillerBasic
 	@Override
 	public void onTick()
 	{
+		
 		if (!worldObj.isRemote)
 		{
 			if (this.provider.getStoredEnergy() < 100)
@@ -51,6 +52,12 @@ public class SelfPoweredBucketFiller extends BucketFillerBasic
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		return TextureEngine.getTextures().getTexture(TinyBlocks.machine, 2, side == 0 ? 1 : side == 1 ? 0 : 2);
+	}
+
+	@Override
+	public String getInvName()
+	{
+		return "SelfPowered Bucket Filler";
 	}
 	
 	

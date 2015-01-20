@@ -16,15 +16,7 @@ import org.lwjgl.opengl.GL11;
 
 import speiger.src.api.client.render.IMetaItemRender;
 import speiger.src.tinymodularthings.client.models.storage.ModelTinyChest;
-import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart.EightSlotTinyChestCart;
-import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart.FiveSlotTinyChestCart;
-import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart.FourSlotTinyChestCart;
-import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart.NineSlotTinyChestCart;
-import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart.OneSlotTinyChestCart;
-import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart.SevenSlotTinyChestCart;
-import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart.SixSlotTinyChestCart;
-import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart.ThreeSlotTinyChestCart;
-import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart.TwoSlotTinyChestCart;
+import speiger.src.tinymodularthings.common.entity.minecarts.tinychest.EntityTinyChestCart;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import cpw.mods.fml.client.FMLClientHandler;
@@ -88,29 +80,13 @@ public class TinyChestCart extends TinyItem implements IMetaItemRender
 	
 	public EntityMinecart getMinecartFromMeta(World world, int x, int y, int z, int meta)
 	{
-		switch (meta)
+		if(meta >= 9)
 		{
-			case 0:
-				return new OneSlotTinyChestCart(world, x, y, z);
-			case 1:
-				return new TwoSlotTinyChestCart(world, x, y, z);
-			case 2:
-				return new ThreeSlotTinyChestCart(world, x, y, z);
-			case 3:
-				return new FourSlotTinyChestCart(world, x, y, z);
-			case 4:
-				return new FiveSlotTinyChestCart(world, x, y, z);
-			case 5:
-				return new SixSlotTinyChestCart(world, x, y, z);
-			case 6:
-				return new SevenSlotTinyChestCart(world, x, y, z);
-			case 7:
-				return new EightSlotTinyChestCart(world, x, y, z);
-			case 8:
-				return new NineSlotTinyChestCart(world, x, y, z);
-			default:
-				return EntityMinecart.createMinecart(world, x, y, z, 0);
+			return EntityMinecart.createMinecart(world, x, y, z, 0);
 		}
+		EntityTinyChestCart cart = new EntityTinyChestCart(world, x, y, z);
+		cart.setupSize(meta+1);
+		return cart;
 	}
 
 	@Override

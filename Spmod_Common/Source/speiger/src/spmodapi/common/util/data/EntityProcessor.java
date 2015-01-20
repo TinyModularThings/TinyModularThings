@@ -1,7 +1,11 @@
 package speiger.src.spmodapi.common.util.data;
 
-import java.util.*;
+import java.util.EnumSet;
+import java.util.Iterator;
+import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Random;
+import java.util.WeakHashMap;
 
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.item.ItemStack;
@@ -14,7 +18,14 @@ import net.minecraftforge.fluids.FluidStack;
 import speiger.src.api.common.data.utils.IFluidInfo;
 import speiger.src.api.common.data.utils.IStackInfo;
 import speiger.src.api.common.registry.animalgas.AnimalGasRegistry;
-import speiger.src.api.common.registry.animalgas.parts.*;
+import speiger.src.api.common.registry.animalgas.parts.EntitySpeed;
+import speiger.src.api.common.registry.animalgas.parts.IEntityCustomInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityDrinkInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityFoodInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityGasInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityLogic;
+import speiger.src.api.common.registry.animalgas.parts.IEntityResistenceInfo;
+import speiger.src.api.common.registry.animalgas.parts.Resistence;
 import speiger.src.api.common.registry.animalgas.parts.Resistence.ResistanceType;
 import speiger.src.api.common.utils.DoubleCounter;
 import speiger.src.spmodapi.common.blocks.gas.AnimalChunkLoader;

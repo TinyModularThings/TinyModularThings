@@ -2,7 +2,12 @@ package speiger.src.tinymodularthings.common.world;
 
 import speiger.src.api.common.world.gen.ISpmodWorldGen;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
-import speiger.src.tinymodularthings.common.world.gen.*;
+import speiger.src.tinymodularthings.common.world.gen.BauxitOreGen;
+import speiger.src.tinymodularthings.common.world.gen.CopperOreGen;
+import speiger.src.tinymodularthings.common.world.gen.IridiumOreGen;
+import speiger.src.tinymodularthings.common.world.gen.LeadOreGen;
+import speiger.src.tinymodularthings.common.world.gen.SilverOreGen;
+import speiger.src.tinymodularthings.common.world.gen.TinOreGen;
 
 public class WorldRegister
 {

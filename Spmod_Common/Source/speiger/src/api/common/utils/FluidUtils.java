@@ -4,7 +4,14 @@ import java.util.ArrayList;
 
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTank;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.spmodapi.common.lib.bc.IStackFilter;
 
 public class FluidUtils
@@ -51,6 +58,11 @@ public class FluidUtils
 	public static boolean OpenBlocksExp()
 	{
 		return getLiquidExp() != null;
+	}
+	
+	public static boolean liquidExpAviable()
+	{
+		return MFRExp() || OpenBlocksExp();
 	}
 	
 	/**

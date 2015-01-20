@@ -19,6 +19,11 @@ public class ItemData implements IStackInfo
 		meta = par2;
 	}
 	
+	public ItemData(int par1, int par2)
+	{
+		this(Item.itemsList[par1], par2);
+	}
+	
 	public ItemData(Item par1)
 	{
 		this(par1, 0);

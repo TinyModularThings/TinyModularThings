@@ -1,6 +1,10 @@
 package speiger.src.spmodapi.common.util.data;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -73,10 +77,21 @@ public class StructureStorage implements INBTReciver
 		structures.remove(pos.getAsList());
 	}
 	
+	public void removeStorage(BlockPosition pos, BlockPosition core)
+	{
+		structures.remove(pos.getAsList());
+		cores.remove(core.getAsList());
+	}
+	
+	public void removeCore(BlockPosition target)
+	{
+		cores.remove(target.getAsList());
+	}
+	
 	@ForgeSubscribe
 	public void onClickBlock(PlayerInteractEvent evt)
 	{
-		if (!evt.entity.worldObj.isRemote && evt.action == Action.RIGHT_CLICK_BLOCK && evt.entityPlayer.getCurrentEquippedItem() == null)
+		if (!evt.entity.worldObj.isRemote && evt.action == Action.RIGHT_CLICK_BLOCK && !evt.entityPlayer.isSneaking())
 		{
 			BlockPosition pos = new BlockPosition(evt.entityPlayer.worldObj, evt.x, evt.y, evt.z);
 			if (isRegistered(pos))
@@ -102,13 +117,13 @@ public class StructureStorage implements INBTReciver
 		}
 	}
 	
+	// Loading and Writing to data
 	public static void registerForgeEvent()
 	{
 		MinecraftForge.EVENT_BUS.register(instance);
 		DataStorage.registerNBTReciver(instance);
 	}
 	
-	// Loading and Writing to data
 	private void addStructure(List<Integer> key, List<Integer> val)
 	{
 		if (key != null && val != null && key.size() == 4 && val.size() == 4)
@@ -180,5 +195,7 @@ public class StructureStorage implements INBTReciver
 	{
 		
 	}
+
+
 	
 }

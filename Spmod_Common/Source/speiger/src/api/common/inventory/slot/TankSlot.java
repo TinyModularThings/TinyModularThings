@@ -40,8 +40,8 @@ public class TankSlot
 		if (tank != null)
 		{
 			texts.add("Fluid Tank");
-			texts.add("Stored Fluid: " + getFluidName());
-			texts.add("Stored Amount: " + tank.getFluidAmount() + "mB / " + tank.getCapacity() + "mB");
+			texts.add("" + getFluidName());
+			texts.add("" + tank.getFluidAmount() + "mB / " + tank.getCapacity() + "mB");
 		}
 		return texts;
 	}
@@ -50,7 +50,7 @@ public class TankSlot
 	{
 		if (tank != null)
 		{
-			if (tank.getFluid() != null)
+			if (tank.getFluid() != null && tank.getFluid().getFluid() != null)
 			{
 				if (tank.getFluid().getFluid().canBePlacedInWorld())
 				{

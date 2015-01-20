@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.tile;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.logging.Logger;
 
 import net.minecraft.block.Block;
@@ -31,6 +32,9 @@ import net.minecraft.world.Explosion;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.client.render.BlockRenderHelper;
+import speiger.src.api.common.data.packets.SpmodPacketHelper;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
+import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.utils.RedstoneUtils;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
@@ -39,12 +43,15 @@ import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
+import speiger.src.spmodapi.common.templates.ITemplateProvider;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import buildcraft.api.core.SafeTimeTracker;
 import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -52,6 +59,7 @@ public abstract class AdvTile extends TileEntity
 {
 	public ArrayList<String> users = new ArrayList<String>();
 	public boolean init = false;
+	public Random rand = new Random();
 	String owner = "";
 	SafeTimeTracker tracker = new SafeTimeTracker();
 	private int clock = CodeProxy.getRandom().nextInt();
@@ -59,7 +67,7 @@ public abstract class AdvTile extends TileEntity
 	
 	
 	
-	//Custom Functions TODO
+	//TODO Custom Functions
 	
 	public boolean clockCanTick()
 	{
@@ -85,6 +93,11 @@ public abstract class AdvTile extends TileEntity
 		
 	}
 	
+	public TextureEngine getEngine()
+	{
+		return TextureEngine.getTextures();
+	}
+	
 	public boolean hasContainer()
 	{
 		return false;
@@ -98,7 +111,7 @@ public abstract class AdvTile extends TileEntity
 	@SideOnly(Side.CLIENT)
 	public GuiInventoryCore getGui(InventoryPlayer par1)
 	{
-		return new GuiInventoryCore(par1, this);
+		return new GuiInventoryCore(par1, this).setAutoDrawing();
 	}
 	
 	public void updateNeighbors(boolean needSelf)
@@ -142,6 +155,11 @@ public abstract class AdvTile extends TileEntity
 		return FMLLog.getLogger();
 	}
 	
+	public boolean requireForgeRegistration()
+	{
+		return false;
+	}
+	
 	public int upcastShort(int value)
 	{
 		if(value < 0)
@@ -156,7 +174,28 @@ public abstract class AdvTile extends TileEntity
 		owner = player.username;
 	}
 	
-	//TileEntity functions TODO
+	public void sendPacketToServer(Packet par1)
+	{
+		PacketDispatcher.sendPacketToServer(par1);
+	}
+	
+	public void sendPacketToClient(Packet par1, int range)
+	{
+		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, range, worldObj.provider.dimensionId, par1);
+	}
+	
+	public void sendPacketToPlayer(Packet par1, EntityPlayer par2)
+	{
+		PacketDispatcher.sendPacketToPlayer(par1, (Player)par2);
+	}
+	
+	public ModularPacket createBasicPacket(SpmodMod mod)
+	{
+		ModularPacket packet = SpmodPacketHelper.getHelper().createNBTPacket(this, mod);
+		return packet;
+	}
+	
+	//TODO TileEntity functions
 	
 	public void init()
 	{
@@ -223,6 +262,12 @@ public abstract class AdvTile extends TileEntity
 			NBTTagString text = (NBTTagString)list.tagAt(i);
 			users.add(text.data);
 		}
+		if(this instanceof ITemplateProvider)
+		{
+			ITemplateProvider provider = (ITemplateProvider)this;
+			NBTTagCompound nbt = par1.getCompoundTag("Template");
+			provider.getTemplate().readFromNBT(nbt);
+		}
 	}
 
 	@Override
@@ -236,9 +281,55 @@ public abstract class AdvTile extends TileEntity
 			list.appendTag(new NBTTagString("Key", user));
 		}
 		par1.setTag("Users", list);
+		if(this instanceof ITemplateProvider)
+		{
+			ITemplateProvider provider = (ITemplateProvider)this;
+			NBTTagCompound nbt = new NBTTagCompound();
+			provider.getTemplate().writeToNBT(nbt);
+			par1.setCompoundTag("Template", nbt);
+		}
 	}
 	
-	//Gui Functions TODO
+	@Override
+	public void invalidate()
+	{
+		super.invalidate();
+		if(this instanceof ITemplateProvider)
+		{
+			ITemplateProvider provider = (ITemplateProvider)this;
+			provider.getTemplate().onUnload();
+		}
+	}
+
+	@Override
+	public void validate()
+	{
+		super.validate();
+		if(this instanceof ITemplateProvider)
+		{
+			ITemplateProvider provider = (ITemplateProvider)this;
+			provider.initTemplate();
+		}
+	}
+
+	@Override
+	public void onChunkUnload()
+	{
+		super.onChunkUnload();
+		if(this instanceof ITemplateProvider)
+		{
+			ITemplateProvider provider = (ITemplateProvider)this;
+			provider.getTemplate().onUnload();
+		}
+	}
+	
+	//TODO Gui Functions
+
+	@SideOnly(Side.CLIENT)
+	public void onGuiConstructed(GuiInventoryCore par1)
+	{
+		
+	}
 	
 	@SideOnly(Side.CLIENT)
 	public void onGuiLoad(GuiInventoryCore par1, int guiX, int guiY)
@@ -270,12 +361,48 @@ public abstract class AdvTile extends TileEntity
 	}
 	
 	@SideOnly(Side.CLIENT)
-	public ResourceLocation getTexture()
+	public int getNameXOffset()
 	{
-		return null;
+		return 0;
 	}
 	
-	//Container Functions TODO
+	@SideOnly(Side.CLIENT)
+	public int getNameYOffset()
+	{
+		return 0;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public int getInvNameXOffset()
+	{
+		return 0;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public int getInvNameYOffset()
+	{
+		return 0;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public int getNameColor()
+	{
+		return 4210752;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public boolean onKeyTyped(GuiInventoryCore par1, char par2, int par3)
+	{
+		return false;
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public ResourceLocation getTexture()
+	{
+		return getEngine().getTexture("BasicFrame");
+	}
+	
+	//TODO Container Functions
 	
 	public void onPlayerOpenContainer(EntityPlayer par1)
 	{
@@ -333,7 +460,7 @@ public abstract class AdvTile extends TileEntity
 		return false;
 	}
 	
-	public void onMatrixChanged(IInventory par1)
+	public void onMatrixChanged(AdvContainer par1, IInventory par2)
 	{
 		
 	}
@@ -343,7 +470,27 @@ public abstract class AdvTile extends TileEntity
 		return 0;
 	}
 	
-	//Block Functions TODO
+	public boolean renderInnerInv()
+	{
+		return true;
+	}
+	
+	public boolean renderOuterInv()
+	{
+		return true;
+	}
+	
+	public boolean tilehandlesItemMoving()
+	{
+		return false;
+	}
+	
+	public ItemStack transferStackInSlot(AdvContainer par1, EntityPlayer par2, int par3)
+	{
+		return null;
+	}
+	
+	//TODO Block Functions
 	
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(int side)
@@ -558,6 +705,11 @@ public abstract class AdvTile extends TileEntity
 	
 	public void onBreaking()
 	{
+		if(this instanceof ITemplateProvider)
+		{
+			ITemplateProvider template = (ITemplateProvider)this;
+			template.getTemplate().onBreaking();
+		}
 	}
 	
 	public void onDistroyedByExplosion(Explosion par0)
@@ -609,7 +761,7 @@ public abstract class AdvTile extends TileEntity
 	{
 	}
 	
-	//Render Functions TODO
+	//TODO Render Functions
 	
 	@SideOnly(Side.CLIENT)
 	public void onRenderInv(BlockStack stack, RenderBlocks render)
@@ -637,7 +789,7 @@ public abstract class AdvTile extends TileEntity
 		return false;
 	}
 	
-	//Item Functions TODO
+	//TODO Item Functions
 	
 	@SideOnly(Side.CLIENT)
 	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
@@ -645,7 +797,7 @@ public abstract class AdvTile extends TileEntity
 		
 	}
 	
-	//Texture Functions TODO
+	//TODO Texture Functions
 	
 	public void registerIcon(TextureEngine par1, Block par2)
 	{

@@ -1,6 +1,7 @@
 package speiger.src.api.common.world.tiles.interfaces;
 
 import net.minecraft.tileentity.TileEntity;
+import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
 
 public interface IAcceptor
@@ -23,5 +24,17 @@ public interface IAcceptor
 	
 	// Leaving the Multistructure.
 	void targetLeave(TileEntity tile);
+	
+	BlockPosition getPosition();
+	
+	boolean isBlockPresent(BlockStack par1);
+	
+	int getSideFromBlock(BlockStack par1);
+	
+	boolean isTilePressent(Class par1);
+	
+	public <T> T getTileEntity(Class<T> par1);
+	
+	public int getSideFromTile(Class par1);
 	
 }

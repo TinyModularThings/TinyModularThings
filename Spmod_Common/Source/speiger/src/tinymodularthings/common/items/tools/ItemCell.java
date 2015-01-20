@@ -19,10 +19,17 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.IFluidBlock;
+import net.minecraftforge.fluids.IFluidContainerItem;
+import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -194,6 +201,7 @@ public class ItemCell extends TinyItem implements IFluidContainerItem
 					{
 						size++;
 					}
+					player.sendChatToPlayer(LangProxy.getText("Changed Transferlimit to: "+array[size], EnumChatFormatting.BLUE));
 					NBTHelper.getTag(stack, "Transport").setInteger("Size", size);
 				}
 				return stack;

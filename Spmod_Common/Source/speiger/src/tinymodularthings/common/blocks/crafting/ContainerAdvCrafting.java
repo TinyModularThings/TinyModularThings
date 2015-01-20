@@ -6,12 +6,17 @@ import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.item.crafting.IRecipe;
 import net.minecraft.world.World;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
+import speiger.src.spmodapi.common.util.slot.SpmodCraftingSlot;
+import speiger.src.spmodapi.common.util.slot.SpmodSlot;
 
 public class ContainerAdvCrafting extends AdvContainer
 {
@@ -21,6 +26,7 @@ public class ContainerAdvCrafting extends AdvContainer
 	
 	public ContainerAdvCrafting(InventoryPlayer par1)
 	{
+		super(par1);
 		world = par1.player.worldObj;
 		for(int i = 0;i<result.length;i++)
 		{
@@ -31,8 +37,8 @@ public class ContainerAdvCrafting extends AdvContainer
 		{
 			for(int y = 0;y<3;y++)
 			{
-				this.addSpmodSlotToContainer(new SlotCrafting(par1.player, matrix, result[x+y*3], x+y*3, 110 + x * 18, 18 + y * 18));
-				this.addSpmodSlotToContainer(new Slot(this.matrix, y + x * 3, 10 + y * 18, 17 + x * 18));
+				this.addSpmodSlotToContainer(new SpmodCraftingSlot(par1.player, matrix, result[x+y*3], x+y*3, 110 + x * 18, 18 + y * 18));
+				this.addSpmodSlotToContainer(new SpmodSlot(this.matrix, y + x * 3, 10 + y * 18, 17 + x * 18));
 			}
 		}
 		this.setInventory(par1);

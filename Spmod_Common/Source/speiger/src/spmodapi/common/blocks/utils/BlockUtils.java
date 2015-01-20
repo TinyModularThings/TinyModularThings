@@ -18,7 +18,6 @@ import net.minecraft.entity.ai.EntityAIWander;
 import net.minecraft.entity.monster.EntityEnderman;
 import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -38,6 +37,7 @@ import speiger.src.spmodapi.common.entity.EntityOverridenEnderman;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -56,6 +56,16 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 		MinecraftForge.setBlockHarvestLevel(this, 4, "pickaxe", 1);
 	}
 	
+	
+	
+	@Override
+	public boolean hasTileDrops(int meta)
+	{
+		return true;
+	}
+
+
+
 	@Override
 	public float getBlockHardness(int meta)
 	{
@@ -268,7 +278,7 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 	}
 
 	@Override
-	public Container getInventory(int meta, InventoryPlayer par1, BlockPosition par2)
+	public AdvContainer getInventory(int meta, InventoryPlayer par1, BlockPosition par2)
 	{
 		if(meta == 0)
 		{

@@ -1,6 +1,10 @@
 package speiger.src.tinymodularthings;
 
-import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.*;
+import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.Client;
+import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.Core;
+import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.ModID;
+import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.Name;
+import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.Version;
 
 import java.io.File;
 

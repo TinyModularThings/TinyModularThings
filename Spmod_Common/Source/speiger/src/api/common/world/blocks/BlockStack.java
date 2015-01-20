@@ -74,6 +74,15 @@ public class BlockStack
 		this(par1.getBlockID());
 	}
 	
+	public BlockStack(IBlockAccess world, int x, int y, int z, boolean removeAir)
+	{
+		this(world, x, y, z);
+		if(removeAir && world.isAirBlock(x, y, z))
+		{
+			blocks = null;
+		}
+	}
+	
 	public BlockStack(Block block, int metadata)
 	{
 		blocks = block;

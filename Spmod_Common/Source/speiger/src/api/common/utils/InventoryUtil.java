@@ -23,11 +23,14 @@ public class InventoryUtil
 	// My Version of a ItemStack Check. Not the best but it is working
 	public static boolean isItemEqual(ItemStack par1, ItemStack par2)
 	{
-		if (par1.itemID == par2.itemID)
+		if(par1 != null && par2 != null)
 		{
-			if ((par1.getItemDamage() == par2.getItemDamage()) || (par1.getItemDamage() == OreDictionary.WILDCARD_VALUE || par2.getItemDamage() == OreDictionary.WILDCARD_VALUE) || (par1.getItemDamage() == -1 || par2.getItemDamage() == -1))
+			if (par1.itemID == par2.itemID)
 			{
-				return true;
+				if ((par1.getItemDamage() == par2.getItemDamage()) || (par1.getItemDamage() == OreDictionary.WILDCARD_VALUE || par2.getItemDamage() == OreDictionary.WILDCARD_VALUE))
+				{
+					return true;
+				}
 			}
 		}
 		return false;

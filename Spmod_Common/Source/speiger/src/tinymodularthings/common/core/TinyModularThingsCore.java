@@ -15,8 +15,6 @@ import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.tiles.interfaces.HopperUpgrade;
 import speiger.src.api.common.world.tiles.interfaces.IHopper;
 import speiger.src.spmodapi.common.tile.AdvTile;
-import speiger.src.spmodapi.common.util.TileIconMaker;
-import speiger.src.tinymodularthings.common.blocks.machine.OilGenerator;
 import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 import speiger.src.tinymodularthings.common.commands.RenderCommand;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
@@ -27,7 +25,6 @@ import speiger.src.tinymodularthings.common.handler.TinyCraftingHandler;
 import speiger.src.tinymodularthings.common.interfaces.IEntityGuiProvider;
 import speiger.src.tinymodularthings.common.interfaces.IPipeGuiProvider;
 import speiger.src.tinymodularthings.common.items.tools.ItemNetherCrystal;
-import speiger.src.tinymodularthings.common.upgrades.hoppers.all.FilterUpgrade;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
 import buildcraft.transport.TileGenericPipe;
@@ -238,7 +235,6 @@ public class TinyModularThingsCore implements IGuiHandler
 		GameRegistry.registerCraftingHandler(new TinyCraftingHandler());
 		FuelHandler.init();
 		DataStorage.registerNBTReciver((ItemNetherCrystal) TinyItems.netherCrystal);
-		DataStorage.registerNBTReciver(TileIconMaker.getIconMaker().getTileEntityFromClass(OilGenerator.class));
 		new RenderCommand();
 		initHopperUpgrades();
 	}
@@ -250,7 +246,6 @@ public class TinyModularThingsCore implements IGuiHandler
 	
 	public void initHopperUpgrades()
 	{
-		HopperRegistry.registerHopperUpgrade(new FilterUpgrade());
 	}
 
 	public void spawnParticle(World world, double x, double y, double z, float speed, float rotation)

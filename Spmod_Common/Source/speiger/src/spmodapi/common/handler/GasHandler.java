@@ -5,13 +5,30 @@ import java.util.EnumSet;
 import java.util.List;
 
 import net.minecraft.entity.EntityAgeable;
-import net.minecraft.entity.passive.*;
+import net.minecraft.entity.passive.EntityChicken;
+import net.minecraft.entity.passive.EntityCow;
+import net.minecraft.entity.passive.EntityHorse;
+import net.minecraft.entity.passive.EntityMooshroom;
+import net.minecraft.entity.passive.EntityOcelot;
+import net.minecraft.entity.passive.EntityPig;
+import net.minecraft.entity.passive.EntitySheep;
+import net.minecraft.entity.passive.EntityVillager;
+import net.minecraft.entity.passive.EntityWolf;
 import net.minecraft.item.Item;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidRegistry;
-import speiger.src.api.common.data.utils.*;
+import speiger.src.api.common.data.utils.FluidData;
+import speiger.src.api.common.data.utils.IFluidInfo;
+import speiger.src.api.common.data.utils.IStackInfo;
+import speiger.src.api.common.data.utils.ItemAData;
+import speiger.src.api.common.data.utils.ItemData;
 import speiger.src.api.common.registry.animalgas.AnimalGasRegistry;
-import speiger.src.api.common.registry.animalgas.parts.*;
+import speiger.src.api.common.registry.animalgas.parts.EntitySpeed;
+import speiger.src.api.common.registry.animalgas.parts.IEntityDrinkInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityFoodInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityGasInfo;
+import speiger.src.api.common.registry.animalgas.parts.IEntityResistenceInfo;
+import speiger.src.api.common.registry.animalgas.parts.Resistence;
 import speiger.src.api.common.registry.animalgas.parts.Resistence.ResistanceType;
 
 public class GasHandler

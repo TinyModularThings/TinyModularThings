@@ -17,8 +17,6 @@ import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
-import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipe;
-import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
 import buildcraft.api.recipes.AssemblyRecipe;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -28,11 +26,6 @@ public class PathProxy
 	public static void addFurnaceRecipe(ItemStack input, ItemStack output, float exp)
 	{
 		FurnaceRecipes.smelting().addSmelting(input.itemID, input.getItemDamage(), output, exp);
-	}
-	
-	public static void addPressureRecipes(ItemStack input, ItemStack input2, ItemStack combiner, ItemStack output, boolean stacksize, boolean useCombiner)
-	{
-		PressureRecipeList.getInstance().addRecipe(new PressureRecipe(input, input2, combiner, output, stacksize, useCombiner));
 	}
 	
 	public static int getRecipeBlankValue()

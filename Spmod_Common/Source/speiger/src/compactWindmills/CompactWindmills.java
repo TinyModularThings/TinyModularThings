@@ -1,6 +1,10 @@
 package speiger.src.compactWindmills;
 
-import static speiger.src.compactWindmills.common.core.CWPreference.*;
+import static speiger.src.compactWindmills.common.core.CWPreference.ModClient;
+import static speiger.src.compactWindmills.common.core.CWPreference.ModCore;
+import static speiger.src.compactWindmills.common.core.CWPreference.ModID;
+import static speiger.src.compactWindmills.common.core.CWPreference.ModName;
+import static speiger.src.compactWindmills.common.core.CWPreference.ModVersion;
 
 import java.io.File;
 

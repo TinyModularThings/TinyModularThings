@@ -3,42 +3,46 @@ package speiger.src.tinymodularthings.common.blocks.machine;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Random;
 
 import mods.railcraft.common.items.firestone.ItemFirestoneRefined;
+import mods.railcraft.common.plugins.forge.ItemRegistry;
 import net.minecraft.block.Block;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
-import net.minecraft.inventory.IInventory;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipe;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
+import speiger.src.api.common.registry.recipes.pressureFurnace.IPressureFurnaceRecipe;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
+import speiger.src.api.common.utils.FluidUtils;
+import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.api.common.world.blocks.BlockPosition;
-import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor.AcceptorType;
 import speiger.src.api.common.world.tiles.interfaces.InterfaceAcceptor;
-import speiger.src.spmodapi.common.tile.TileFacing;
+import speiger.src.spmodapi.client.gui.GuiInventoryCore;
+import speiger.src.spmodapi.common.blocks.utils.ExpStorage;
+import speiger.src.spmodapi.common.templates.ITemplate;
+import speiger.src.spmodapi.common.templates.ITemplateProvider;
+import speiger.src.spmodapi.common.tile.FacedInventory;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.spmodapi.common.util.data.StructureStorage;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.TinyModularThings;
-import speiger.src.tinymodularthings.client.gui.machine.PressureFurnaceGui;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
-import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerFuel;
 import speiger.src.tinymodularthings.common.plugins.BC.triggers.TriggerHasWork;
+import speiger.src.tinymodularthings.common.templates.TemplatePressureFurnace;
 import buildcraft.BuildCraftCore;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionReceptor;
@@ -48,10 +52,8 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class PressureFurnace extends TileFacing implements IInventory,
-		InterfaceAcceptor, IOverrideDefaultTriggers, IActionReceptor
+public class PressureFurnace extends FacedInventory implements IFluidHandler, InterfaceAcceptor, IOverrideDefaultTriggers, IActionReceptor, ITemplateProvider
 {
-	
 	public boolean update = true;
 	public boolean valid = false;
 	public boolean firstTime = true;
@@ -59,12 +61,20 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	public final int MaxProgress = 200;
 	public int heat = 0;
 	public int fuel = 0;
+	public int maxFuel = 0;
 	public int progress = 0;
-	public PressureRecipe currentRecipe = null;
-	public ItemStack[] inv = new ItemStack[7];
-	public int interfaces = 0;
+	public IPressureFurnaceRecipe currentRecipe = null;
+	public IAcceptor fluidInterface = null;
+	public IAcceptor[] itemInterfaces = new IAcceptor[3];
 	public boolean paused = false;
 	public int matches = 0;
+	public int exp = 0;
+	ITemplate temp = null;
+	
+	public PressureFurnace()
+	{
+		super(5);
+	}
 	
 	public boolean hasFuel()
 	{
@@ -82,42 +92,147 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	}
 	
 	@Override
+	public boolean canMergeItem(ItemStack par1, int slotID)
+	{
+		if(slotID == 0)
+		{
+			int i = par1.itemID;
+			
+			if (i == Item.coal.itemID || i == Block.coalBlock.blockID)
+			{
+				return true;
+			}
+			
+			try
+			{
+				if (par1.getItem() instanceof ItemFirestoneRefined)
+				{
+					return true;
+				}
+				else if (ItemRegistry.getItem("railcraft.cube.coke", 1) != null && i == ItemRegistry.getItem("railcraft.cube.coke", 1).itemID)
+				{
+					return true;
+				}
+				else if (ItemRegistry.getItem("railcraft.fuel.coke", 1) != null && i == ItemRegistry.getItem("railcraft.fuel.coke", 1).itemID)
+				{
+					return true;
+				}
+			}
+			catch (Exception e)
+			{
+				
+			}
+		}
+		if(slotID == 4)
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	@Override
+	public void addContainerSlots(AdvContainer par1)
+	{
+		par1.addSpmodSlot(this, 0, 13, 53).addUsage("Fuel Slot");
+		par1.addSpmodSlot(this, 1, 58, 37).addUsage("First Input Slot");
+		par1.addSpmodSlot(this, 2, 58, 58).addUsage("Second Input Slot");
+		par1.addSpmodSlot(this, 3, 101, 20).addUsage("Combiner Slot");
+		par1.addSpmodSlot(this, 4, 150, 48).addUsage("Output Slot");
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getInvNameYOffset()
+	{
+		return 2;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void drawFrontExtras(GuiInventoryCore par1, int guiX, int guiY, int mouseX, int mouseY)
+	{
+		par1.getFontRenderer().drawString("Heat:", 32, 50, 4210752);
+		int pro = (int)(((double)heat / (double)MaxHeat) * 100);
+		par1.getFontRenderer().drawString(pro+"%", 32, 60, 4210752);
+		
+		if(heat < MaxHeat)
+		{
+			par1.getFontRenderer().drawString("Heating up", 80, 66, 4210752);
+		}
+		else
+		{
+			if(currentRecipe == null)
+			{
+				par1.getFontRenderer().drawString("Need Recipe", 80, 66, 4210752);
+			}
+			else
+			{
+				int max = Math.max(100, currentRecipe.getRequiredCookTime());
+				int prog = (int)(((double)progress / (double)max) * 100);
+				par1.getFontRenderer().drawString("Progress: "+prog+"%", 80, 68, 4210752);
+			}
+		}
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void drawExtras(GuiInventoryCore par1, int guiX, int guiY, int mouseX, int mouseY)
+	{
+		par1.setTexture(par1.engine.getTexture("Objects"));
+		par1.defineSlot("Fire");
+		par1.drawSlotPros(13, 35, 17, 15);
+		int amount = (int)Math.min(15D, (((double)fuel / (double)maxFuel) * 15));
+		if(amount > 0)
+		{
+			par1.defineSlot("FireOverlay");
+			par1.drawSlotPros(13, 36 + 15 - amount, 0, 15-amount, 17, amount);
+		}
+		
+		if(currentRecipe == null)
+		{
+			par1.defineSlot("ProgBarH", 2, 0);
+			par1.drawSlotPros(80, 49, 12, 16);
+			par1.drawSlotPros(92, 49, 12, 16);
+			par1.drawSlotPros(104, 49, 12, 16);
+			par1.drawSlotPros(116, 49, 12, 16);
+			par1.drawSlotPros(122, 49, 20, 16);
+			par1.defineSlot("ProgBarHV", 0, 1);
+			par1.drawSlotPros(101, 43, 20, 13);
+		}
+		else
+		{
+			par1.defineSlot("ProgBarHOverlay", 2, 0);
+			par1.drawSlotPros(80, 49, 12, 16);
+			par1.drawSlotPros(92, 49, 12, 16);
+			par1.drawSlotPros(104, 49, 12, 16);
+			par1.drawSlotPros(116, 49, 12, 16);
+			par1.drawSlotPros(122, 49, 20, 16);
+			if(currentRecipe.getCombiner() != null)
+			{
+				par1.defineSlot("ProgBarHVOverlay", 0, 1);
+				par1.drawSlotPros(101, 42, 20, 13);
+			}
+			else
+			{
+				par1.defineSlot("ProgBarHV", 0, 1);
+				par1.drawSlotPros(101, 42, 20, 13);
+			}
+		}
+		
+	}
+
+	@Override
 	public void onTick()
 	{
 		super.onTick();
 		if (!worldObj.isRemote)
 		{
-			if ((firstTime && worldObj.getWorldTime() % 5 == 0) || (!firstTime && worldObj.getWorldTime() % 50 == 0))
-			{
-				updateStructure();
-				updateBlock();
-				if (firstTime)
-				{
-					firstTime = false;
-				}
-			}
-			
+			handleTemplate();
 			if (valid)
 			{
-				if (fuel < 100)
-				{
-					refuel();
-				}
-				if (fuel <= 0 && heat > 0)
-				{
-					if (worldObj.getWorldTime() % 5 == 0)
-					{
-						heat--;
-					}
-				}
+				handleFuel();
+				handleExp();
 				doWork();
-			}
-			else
-			{
-				if (worldObj.getWorldTime() % 50 == 0)
-				{
-					removeFromStorage();
-				}
 			}
 			
 			if (update)
@@ -126,6 +241,116 @@ public class PressureFurnace extends TileFacing implements IInventory,
 				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 30, worldObj.provider.dimensionId, getDescriptionPacket());
 				updateBlock();
 				update = false;
+			}
+		}
+		else
+		{
+			if(valid)
+			{
+				doWork();
+			}
+		}
+		
+
+	}
+	
+	public void handleExp()
+	{
+		if(worldObj.getWorldTime() % 40 != 0 || fluidInterface == null || exp == 0)
+		{
+			return;
+		}
+		if(fluidInterface.isTilePressent(ExpStorage.class))
+		{
+			ExpStorage storage = fluidInterface.getTileEntity(ExpStorage.class);
+			storage.addExp(exp);
+			exp = 0;
+			return;
+		}
+		else if(FluidUtils.liquidExpAviable() && fluidInterface.isTilePressent(IFluidHandler.class))
+		{
+			IFluidHandler handler = fluidInterface.getTileEntity(IFluidHandler.class);
+			ForgeDirection dir = ForgeDirection.getOrientation(fluidInterface.getSideFromTile(IFluidHandler.class)).getOpposite();
+			if(FluidUtils.OpenBlocksExp())
+			{
+				int converting = exp * 20;
+				if(handler.canFill(dir, FluidUtils.getLiquidExp()))
+				{
+					int added = handler.fill(dir, new FluidStack(FluidUtils.getLiquidExp(), converting), true);
+					if(added > 0)
+					{
+						exp -= (added / 20);
+					}
+				}
+			}
+			else
+			{
+				if(handler.canFill(dir, FluidUtils.getMobEssens()))
+				{
+					exp -= handler.fill(dir, new FluidStack(FluidUtils.getMobEssens(), exp), true);
+				}
+			}
+		}
+		else
+		{
+			if(this.hasUsers() && this.getUserSize() == 1)
+			{
+				EntityPlayer player = this.worldObj.getPlayerEntityByName(this.users.get(0));
+				if(player != null)
+				{
+					player.addExperience(exp);
+					exp = 0;
+				}
+			}
+		}
+	}
+	
+	public void handleTemplate()
+	{
+		if ((firstTime && worldObj.getWorldTime() % 5 == 0) || (!firstTime && worldObj.getWorldTime() % 50 == 0))
+		{
+			boolean old = valid;
+			valid = temp.match();
+			if(old != valid)
+			{
+				update = true;
+			}
+			matches = temp.getTotalPatternSize();
+			updateBlock();
+			if (firstTime)
+			{
+				firstTime = false;
+			}
+		}
+	}
+	
+	public void handleFuel()
+	{
+		if(maxFuel <= 0)
+		{
+			maxFuel = fuel;
+		}
+		if (fuel < 100)
+		{
+			refuel();
+		}
+		if (fuel <= 0 && heat > 0)
+		{
+			if (worldObj.getWorldTime() % 5 == 0)
+			{
+				heat--;
+			}
+		}
+		if(fuel > 0)
+		{
+			fuel--;
+			if (heat < MaxHeat)
+			{
+				fuel -= 35;
+				if (worldObj.getWorldTime() % 5 == 0)
+				{
+					heat += 1;
+				}
 			}
 		}
 	}
@@ -149,436 +374,110 @@ public class PressureFurnace extends TileFacing implements IInventory,
 							inv[0] = fuelItem.getItem().getContainerItemStack(fuelItem);
 						}
 						heat = Math.min(heat + 100, MaxHeat);
-					}
-				}
-				else
-				{
-					int gainingFuel = TileEntityFurnace.getItemBurnTime(fuelItem) * 4;
-					if (gainingFuel > 0)
-					{
-						fuel += gainingFuel;
-						fuelItem.stackSize--;
-						if (fuelItem.stackSize <= 0)
-						{
-							inv[0] = null;
-						}
+						return;
 					}
 				}
 			}
 			catch (Exception e)
 			{
-				int gainingFuel = TileEntityFurnace.getItemBurnTime(fuelItem) * 4;
-				if (gainingFuel > 0)
+			}
+			int gainingFuel = TileEntityFurnace.getItemBurnTime(fuelItem) * 4;
+			if (gainingFuel > 0)
+			{
+				fuel += gainingFuel;
+				fuelItem.stackSize--;
+				if (fuelItem.stackSize <= 0)
 				{
-					fuel += gainingFuel;
-					fuelItem.stackSize--;
-					if (fuelItem.stackSize <= 0)
-					{
-						inv[0] = null;
-					}
+					inv[0] = null;
 				}
 			}
+			maxFuel = fuel;
 		}
 	}
 	
 	public void doWork()
 	{
-		if (fuel > 0)
+		if (heat >= MaxHeat)
 		{
-			fuel--;
-			
-			if (heat < MaxHeat)
+			PressureRecipeList list = PressureRecipeList.getInstance();
+			if(currentRecipe != null && !currentRecipe.recipeMatches(inv[1], inv[2], inv[3], 1))
 			{
-				fuel -= 35;
-				if (worldObj.getWorldTime() % 5 == 0)
-				{
-					heat += 1;
-				}
+				currentRecipe = null;
+			}
+			if(currentRecipe == null && list.hasRecipe(inv[1], inv[2], inv[3]))
+			{
+				currentRecipe = list.getRecipe(inv[1], inv[2], inv[3]);
+			}
+			if(paused)
+			{
+				paused = false;
+				return;
 			}
 			
-			if (heat >= MaxHeat)
+			if(currentRecipe != null)
 			{
-				if (currentRecipe != null && !PressureRecipeList.getInstance().hasRecipe(inv[1], inv[2], inv[3]))
+				if(canRun())
 				{
-					currentRecipe = null;
-				}
-				
-				if ((currentRecipe == null && PressureRecipeList.getInstance().hasRecipe(inv[1], inv[2], inv[3])) || (currentRecipe != null && currentRecipe != PressureRecipeList.getInstance().getRecipeOutput(inv[1], inv[2], inv[3])))
-				{
-					currentRecipe = PressureRecipeList.getInstance().getRecipeOutput(inv[1], inv[2], inv[3]);
-				}
-				
-				if (paused)
-				{
-					paused = false;
-					return;
-				}
-				
-				if (currentRecipe != null && (inv[4] == null || (inv[4] != null && inv[4].isItemEqual(currentRecipe.getOutput()) && inv[4].stackSize + currentRecipe.getOutput().stackSize <= inv[4].getMaxStackSize())))
-				{
-					if (currentRecipe.isStackSizeSensitive())
+					progress++;
+					fuel--;
+					int maxProgress = Math.max(currentRecipe.getRequiredCookTime(), 100);
+					if(progress >= maxProgress)
 					{
-						boolean first = false;
-						boolean second = false;
-						boolean combiner = false;
-						
-						if (currentRecipe.hasFirstInput())
+						progress = 0;
+						int max = currentRecipe.isMultiRecipe() ? 5 : 1;
+
+						for(;max > 1 && !currentRecipe.recipeMatches(inv[1], inv[2], inv[3], max);)
 						{
-							if (currentRecipe.getFirstInput().stackSize <= inv[1].stackSize)
+							max--;
+						}
+						currentRecipe.runRecipe(inv[1], inv[2], inv[3], max);
+						ItemStack result = currentRecipe.getOutput();
+						exp += (FurnaceRecipes.smelting().getExperience(result) * max);
+						
+						for(int i = 1;i<4;i++)
+						{
+							if(inv[i] != null && inv[i].stackSize <= 0)
 							{
-								first = true;
+								inv[i] = null;
 							}
+						}
+						
+						if(inv[4] == null)
+						{
+							inv[4] = result;
 						}
 						else
 						{
-							first = true;
-						}
-						
-						if (currentRecipe.hasSecondInput())
-						{
-							if (currentRecipe.getSecondInput().stackSize <= inv[2].stackSize)
-							{
-								second = true;
-							}
-						}
-						else
-						{
-							second = true;
-						}
-						
-						if (currentRecipe.hasCombiner())
-						{
-							if (currentRecipe.getCombiner().stackSize <= inv[3].stackSize)
-							{
-								combiner = true;
-							}
-						}
-						else
-						{
-							combiner = true;
-						}
-						
-						if (combiner && first && second)
-						{
-							progress += 1;
-							fuel--;
-							if (progress >= MaxProgress)
-							{
-								progress = 0;
-								ItemStack output = currentRecipe.getOutput().copy();
-								
-								inv[1] = currentRecipe.consumeInput(inv[1]);
-								inv[2] = currentRecipe.consumeSecondInput(inv[2]);
-								if (currentRecipe.useCombiner())
-								{
-									inv[3] = currentRecipe.consumeCombiner(inv[3]);
-								}
-								
-								if (inv[4] == null)
-								{
-									inv[4] = output.copy();
-									return;
-								}
-								if (inv[4] != null && inv[4].isItemEqual(output))
-								{
-									inv[4].stackSize += output.stackSize;
-								}
-							}
+							inv[4].stackSize += result.stackSize;
 						}
 					}
-					else
-					{
-						progress += 1;
-						fuel--;
-						if (progress > MaxProgress)
-						{
-							progress = 0;
-							int maxConsume = 5;
-							ItemStack output = currentRecipe.getOutput().copy();
-							if (inv[1] != null)
-							{
-								maxConsume = Math.min(maxConsume, inv[1].stackSize);
-							}
-							if (inv[2] != null)
-							{
-								maxConsume = Math.min(maxConsume, inv[2].stackSize);
-							}
-							if (inv[3] != null)
-							{
-								maxConsume = Math.min(maxConsume, inv[3].stackSize);
-							}
-							if (inv[4] != null)
-							{
-								maxConsume = Math.min(maxConsume, 64 - inv[4].stackSize);
-							}
-							
-							output.stackSize *= maxConsume;
-							inv[1] = currentRecipe.consumeItem(inv[1], maxConsume);
-							inv[2] = currentRecipe.consumeItem(inv[2], maxConsume);
-							if (currentRecipe.useCombiner())
-							{
-								inv[3] = currentRecipe.consumeItem(inv[3], maxConsume);
-							}
-							if (inv[4] == null)
-							{
-								inv[4] = output.copy();
-								return;
-							}
-							if (inv[4] != null && inv[4].isItemEqual(output))
-							{
-								inv[4].stackSize += output.stackSize;
-							}
-						}
-					}
+				
 				}
 				else
 				{
 					progress = 0;
 				}
+				
+			}
+			else
+			{
+				progress = 0;
 			}
 		}
 	}
 	
-	public void updateStructure()
+	public boolean canRun()
 	{
-		ForgeDirection oppo = ForgeDirection.getOrientation(getFacing()).getOpposite();
-		BlockPosition pos = new BlockPosition(worldObj, xCoord + oppo.offsetX, yCoord - 1, zCoord + oppo.offsetZ, oppo.getOpposite());
-		int match = 0;
-		int inter = 0;
-		for (int x = -1; x < 2; x++)
+		if(inv[4] == null)
 		{
-			for (int y = 0; y < 3; y++)
-			{
-				for (int z = -1; z < 2; z++)
-				{
-					int posX = pos.getXCoord() + x;
-					int posY = pos.getYCoord() + y;
-					int posZ = pos.getZCoord() + z;
-					BlockStack cuBlock = getBlockFromCoords(x, y, z);
-					BlockStack realBlock = new BlockStack(worldObj, posX, posY, posZ);
-					BlockStack item = new BlockStack(TinyBlocks.transportBlock, 1);
-					
-					if (realBlock.getBlock() != null && worldObj.isAirBlock(posX, posY, posZ))
-					{
-						realBlock = new BlockStack();
-					}
-					
-					if (realBlock.match(cuBlock) || realBlock.match(item))
-					{
-						if (realBlock.match(item))
-						{
-							inter++;
-						}
-						match++;
-					}
-					else if (realBlock.getBlock() != null && cuBlock.getBlock() != null && cuBlock.getBlockID() == Block.cobblestone.blockID)
-					{
-						String name = realBlock.getHiddenName();
-						boolean ore = name.contains("Ore") || name.contains("ore");
-						if ((!ore && (name.contains("cobble") || name.contains("sandStone") || name.contains("brick") || name.contains("stone"))))
-						{
-							if (realBlock.getBlock().isBlockNormalCube(worldObj, posX, posY, posZ))
-							{
-								match++;
-							}
-							else if (!realBlock.getBlock().isBlockNormalCube(worldObj, posX, posY, posZ) && name.contains("railcraft") && realBlock.getBlock().isBlockSolidOnSide(worldObj, posX, posY, posZ, ForgeDirection.WEST))
-							{
-								match++;
-							}
-						}
-					}
-				}
-			}
-		}
-		
-		if (inter > 3)
-		{
-			match = match - inter;
-		}
-		
-		boolean save = valid;
-		matches = match;
-		if (match == 27)
-		{
-			addToStorage();
-			valid = true;
-		}
-		else
-		{
-			valid = false;
-			int rand = new Random().nextInt(25);
-			if (rand == 0)
-			{
-				heat = 0;
-			}
-			if (save != valid)
-			{
-				removeFromStorage();
-			}
-		}
-		
-		if (save != valid)
-		{
-			worldObj.markBlockForRenderUpdate(xCoord, yCoord, zCoord);
-		}
-		
-		update = true;
-	}
-	
-	public BlockStack getBlockFromCoords(int x, int y, int z)
-	{
-		ForgeDirection face = ForgeDirection.getOrientation(getFacing());
-		if (x == 0 && y == 1 && z == 0)
-		{
-			return new BlockStack();
-		}
-		if (x == 0 + face.offsetX && y == 1 && z == 0 + face.offsetZ)
-		{
-			return new BlockStack(getBlockType(), getBlockMetadata());
-		}
-		return new BlockStack(Block.cobblestone);
-	}
-	
-	public void addToStorage()
-	{
-		ForgeDirection oppo = ForgeDirection.getOrientation(getFacing()).getOpposite();
-		BlockPosition pos = new BlockPosition(worldObj, xCoord + oppo.offsetX, yCoord - 1, zCoord + oppo.offsetZ, oppo.getOpposite());
-		
-		BlockPosition here = new BlockPosition(worldObj, xCoord, yCoord, zCoord);
-		
-		int matches = 0;
-		
-		for (int x = -1; x < 2; x++)
-		{
-			for (int y = 0; y < 3; y++)
-			{
-				for (int z = -1; z < 2; z++)
-				{
-					if (y == 1 && x == 0 && z == 0)
-					{
-						continue;
-					}
-					
-					int posX = pos.getXCoord() + x;
-					int posY = pos.getYCoord() + y;
-					int posZ = pos.getZCoord() + z;
-					
-					BlockPosition target = new BlockPosition(worldObj, posX, posY, posZ);
-					
-					boolean mine = StructureStorage.instance.isRegisteredToMe(here, target);
-					if (StructureStorage.instance.isRegistered(target) && mine)
-					{
-						matches++;
-					}
-					else if (!StructureStorage.instance.isRegistered(target))
-					{
-						matches++;
-					}
-				}
-			}
-		}
-		
-		if (matches != 26)
-		{
-			return;
-		}
-		
-		for (int x = -1; x < 2; x++)
-		{
-			for (int y = 0; y < 3; y++)
-			{
-				for (int z = -1; z < 2; z++)
-				{
-					
-					if (y == 1 && x == 0 && z == 0)
-					{
-						continue;
-					}
-					
-					int posX = pos.getXCoord() + x;
-					int posY = pos.getYCoord() + y;
-					int posZ = pos.getZCoord() + z;
-					
-					BlockPosition target = new BlockPosition(worldObj, posX, posY, posZ);
-					
-					StructureStorage.instance.isRegisteredToMe(here, target);
-					
-					if (!StructureStorage.instance.isRegistered(target))
-					{
-						StructureStorage.instance.registerStorage(here, target);
-					}
-					
-				}
-			}
-		}
-	}
-	
-	public void removeFromStorage()
-	{
-		BlockPosition here = new BlockPosition(worldObj, xCoord, yCoord, zCoord);
-		
-		ForgeDirection oppo = ForgeDirection.getOrientation(getFacing()).getOpposite();
-		BlockPosition pos = new BlockPosition(worldObj, xCoord + oppo.offsetX, yCoord - 1, zCoord + oppo.offsetZ, oppo.getOpposite());
-		for (int x = -1; x < 2; x++)
-		{
-			for (int y = 0; y < 3; y++)
-			{
-				for (int z = -1; z < 2; z++)
-				{
-					int posX = pos.getXCoord() + x;
-					int posY = pos.getYCoord() + y;
-					int posZ = pos.getZCoord() + z;
-					
-					BlockPosition end = new BlockPosition(worldObj, posX, posY, posZ);
-					
-					if (StructureStorage.instance.isRegisteredToMe(here, end))
-					{
-						StructureStorage.instance.removePosition(end);
-						if (end.doesBlockExsist() && end.hasTileEntity() && end.getTileEntity() instanceof IAcceptor)
-						{
-							IAcceptor acept = (IAcceptor) end.getTileEntity();
-							acept.targetLeave(this);
-						}
-					}
-					
-				}
-			}
-		}
-	}
-	
-	public int getRecipeModeFromInventory(ItemStack[] par1)
-	{
-		if (heat < MaxHeat)
-		{
-			return 0;
-		}
-		if (par1[3] != null)
-		{
-			if (PressureRecipeList.getInstance().hasRecipe(par1[1], par1[2], par1[3]))
-			{
-				return 2;
-			}
-		}
-		else
-		{
-			if (PressureRecipeList.getInstance().hasRecipe(par1[1], par1[2], par1[3]))
-			{
-				return 1;
-			}
-		}
-		
-		return 0;
-	}
-	
-	@Override
-	public boolean onActivated(EntityPlayer par1)
-	{
-		if (valid)
-		{
-			par1.openGui(TinyModularThings.instance, EnumIDs.ADVTiles.getId(), worldObj, xCoord, yCoord, zCoord);
 			return true;
 		}
-		return false;
+		ItemStack result = currentRecipe.getOutput();
+		if(!InventoryUtil.isItemEqual(inv[4], result))
+		{
+			return false;
+		}
+		return inv[4].stackSize + result.stackSize <= inv[4].getMaxStackSize();
 	}
 	
 	@Override
@@ -603,8 +502,6 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		return valid;
 	}
 	
-	
-	
 	@Override
 	public float getBlockHardness()
 	{
@@ -616,101 +513,11 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	{
 		return 10F;
 	}
-
-	@Override
-	public Container getInventory(InventoryPlayer par1)
-	{
-		return new PressureFurnaceInventory(par1, this);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiContainer getGui(InventoryPlayer par1)
-	{
-		return new PressureFurnaceGui(par1, this);
-	}
-	
-	@Override
-	public int getSizeInventory()
-	{
-		return inv.length;
-	}
-	
-	@Override
-	public ItemStack getStackInSlot(int var1)
-	{
-		return inv[var1];
-	}
-	
-	@Override
-	public ItemStack decrStackSize(int var1, int var2)
-	{
-		
-		if (inv[var1] != null)
-		{
-			ItemStack var3;
-			
-			if (inv[var1].stackSize <= var2)
-			{
-				var3 = inv[var1];
-				inv[var1] = null;
-				return var3;
-			}
-			else
-			{
-				var3 = inv[var1].splitStack(var2);
-				
-				if (inv[var1].stackSize == 0)
-				{
-					inv[var1] = null;
-				}
-				
-				return var3;
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	@Override
-	public ItemStack getStackInSlotOnClosing(int var1)
-	{
-		if (inv[var1] != null)
-		{
-			ItemStack var2 = inv[var1];
-			inv[var1] = null;
-			return var2;
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	@Override
-	public void setInventorySlotContents(int var1, ItemStack var2)
-	{
-		inv[var1] = var2;
-		
-		if (var2 != null && var2.stackSize > getInventoryStackLimit())
-		{
-			var2.stackSize = getInventoryStackLimit();
-		}
-		
-	}
 	
 	@Override
 	public String getInvName()
 	{
-		return "Updating Chest";
-	}
-	
-	@Override
-	public int getInventoryStackLimit()
-	{
-		return 64;
+		return "Presure Furnace";
 	}
 	
 	@Override
@@ -720,92 +527,29 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	}
 	
 	@Override
-	public void openChest()
-	{
-	}
-	
-	@Override
-	public void closeChest()
-	{
-	}
-	
-	@Override
-	public boolean isInvNameLocalized()
-	{
-		return false;
-	}
-	
-	@Override
-	public boolean isItemValidForSlot(int i, ItemStack itemstack)
-	{
-		return true;
-	}
-	
-	@Override
 	public void writeToNBT(NBTTagCompound nbt)
 	{
 		super.writeToNBT(nbt);
-		
-		NBTTagList var2 = new NBTTagList();
-		
-		for (int var3 = 0; var3 < inv.length; ++var3)
-		{
-			if (inv[var3] != null)
-			{
-				NBTTagCompound var4 = new NBTTagCompound();
-				var4.setByte("Slot", (byte) var3);
-				inv[var3].writeToNBT(var4);
-				var2.appendTag(var4);
-			}
-		}
-		
-		nbt.setTag("Items", var2);
 		nbt.setBoolean("Valid", valid);
 		nbt.setInteger("Fuel", fuel);
 		nbt.setInteger("Heat", heat);
 		nbt.setInteger("Progress", progress);
 		nbt.setInteger("Matches", matches);
 		nbt.setBoolean("Paused", paused);
+		nbt.setInteger("Exp", exp);
 	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{
 		super.readFromNBT(nbt);
-		NBTTagList var2 = nbt.getTagList("Items");
-		inv = new ItemStack[getSizeInventory()];
-		
-		for (int var3 = 0; var3 < var2.tagCount(); ++var3)
-		{
-			NBTTagCompound var4 = (NBTTagCompound) var2.tagAt(var3);
-			byte var5 = var4.getByte("Slot");
-			
-			if (var5 >= 0 && var5 < inv.length)
-			{
-				inv[var5] = ItemStack.loadItemStackFromNBT(var4);
-			}
-		}
-		
 		valid = nbt.getBoolean("Valid");
 		fuel = nbt.getInteger("Fuel");
 		heat = nbt.getInteger("Heat");
 		progress = nbt.getInteger("Progress");
 		matches = nbt.getInteger("Matches");
 		paused = nbt.getBoolean("Paused");
-	}
-	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound var1 = new NBTTagCompound();
-		writeToNBT(var1);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 1, var1);
-	}
-	
-	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		readFromNBT(pkt.data);
+		exp = nbt.getInteger("Exp");
 	}
 	
 	@Override
@@ -839,6 +583,14 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		{
 			fuel = (helper | (val << 16));
 		}
+		if(key == 5)
+		{
+			helper = this.upcastShort(val);
+		}
+		if(key == 6)
+		{
+			maxFuel = (helper | val << 16);
+		}
 	}
 	
 	@Override
@@ -849,15 +601,9 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		par2.sendProgressBarUpdate(par1, 2, heat);
 		par2.sendProgressBarUpdate(par1, 3, progress);
 		par2.sendProgressBarUpdate(par1, 4, fuel >> 16);
+		par2.sendProgressBarUpdate(par1, 5, maxFuel);
+		par2.sendProgressBarUpdate(par1, 6, maxFuel >> 16);
 	}
-	
-	@Override
-	public void onBreaking()
-	{
-		removeFromStorage();
-	}
-	
-	
 	
 	@Override
 	public ArrayList<ItemStack> onDrop(int fortune)
@@ -927,7 +673,7 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	@Override
 	public boolean acceptFluids(IAcceptor par1)
 	{
-		return false;
+		return fluidInterface == null;
 	}
 	
 	@Override
@@ -939,10 +685,27 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	@Override
 	public boolean addAcceptor(IAcceptor par1)
 	{
-		if (interfaces < 3)
+		if(par1.getType() == AcceptorType.Fluids)
 		{
-			interfaces++;
-			return true;
+			if(fluidInterface == null)
+			{
+				fluidInterface = par1;
+				return true;
+			}
+		}
+		else if(par1.getType() == AcceptorType.Items)
+		{
+			boolean flag = false;
+			for(int i = 0;i<itemInterfaces.length;i++)
+			{
+				if(itemInterfaces[i] == null)
+				{
+					itemInterfaces[i] = par1;
+					flag = true;
+					break;
+				}
+			}
+			return flag;
 		}
 		return false;
 	}
@@ -950,10 +713,27 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	@Override
 	public boolean removeAcceptor(IAcceptor par1)
 	{
-		if (interfaces > 0)
+		if(par1.getType() == AcceptorType.Fluids)
 		{
-			interfaces--;
-			return true;
+			if(fluidInterface != null)
+			{
+				fluidInterface = null;
+				return true;
+			}
+		}
+		else if(par1.getType() == AcceptorType.Items)
+		{
+			boolean flag = false;
+			for(int i = 0;i<itemInterfaces.length;i++)
+			{
+				IAcceptor accept = itemInterfaces[i];
+				if(accept != null && accept.getPosition().match(par1.getPosition().getAsList()))
+				{
+					flag = true;
+					itemInterfaces[i] = null;
+					break;
+				}
+			}
 		}
 		return false;
 	}
@@ -993,9 +773,9 @@ public class PressureFurnace extends TileFacing implements IInventory,
 	{
 		if(!valid)
 		{
-			if(interfaces > 3)
+			if(itemInterfaces.length > 3)
 			{
-				par1.add("To Many Interfaces");
+				par1.add("To Many ItemInterfaces Interfaces");
 			}
 			BlockPosition pos = this.getPosition().getPosFromFSide(ForgeDirection.getOrientation(facing).getOpposite());
 			if(!pos.isAirBlock())
@@ -1024,6 +804,62 @@ public class PressureFurnace extends TileFacing implements IInventory,
 		super.onItemInformation(par1, par2, par3);
 		par2.add("A hollowed Multistructure made out of any Kind of brick or stone");
 		par2.add("Put this block then into any Horizontal Side. In the Middle");
+	}
+
+	@Override
+	public ITemplate getTemplate()
+	{
+		if(temp == null)
+		{
+			initTemplate();
+		}
+		return temp;
+	}
+
+	@Override
+	public void initTemplate()
+	{		
+		if(temp == null)
+		{
+			temp = new TemplatePressureFurnace(this);
+		}
+		temp.setup(worldObj, xCoord, yCoord, zCoord, getFacing());
+	}
+
+	@Override
+	public int fill(ForgeDirection from, FluidStack resource, boolean doFill)
+	{
+		return 0;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, FluidStack resource, boolean doDrain)
+	{
+		return null;
+	}
+
+	@Override
+	public FluidStack drain(ForgeDirection from, int maxDrain, boolean doDrain)
+	{
+		return null;
+	}
+
+	@Override
+	public boolean canFill(ForgeDirection from, Fluid fluid)
+	{
+		return false;
+	}
+
+	@Override
+	public boolean canDrain(ForgeDirection from, Fluid fluid)
+	{
+		return false;
+	}
+
+	@Override
+	public FluidTankInfo[] getTankInfo(ForgeDirection from)
+	{
+		return new FluidTankInfo[]{new FluidTankInfo(new FluidStack(FluidRegistry.WATER, 0), 1)};
 	}
 	
 }

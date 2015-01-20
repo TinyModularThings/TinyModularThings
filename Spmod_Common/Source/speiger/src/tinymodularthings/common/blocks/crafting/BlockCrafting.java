@@ -7,7 +7,6 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
@@ -20,6 +19,7 @@ import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.crafting.GuiAdvCrafting;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
@@ -161,7 +161,7 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 	}
 
 	@Override
-	public Container getInventory(int meta, InventoryPlayer par1, BlockPosition par2)
+	public AdvContainer getInventory(int meta, InventoryPlayer par1, BlockPosition par2)
 	{
 		if(meta == 0)
 		{

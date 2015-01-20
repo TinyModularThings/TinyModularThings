@@ -6,6 +6,7 @@ import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.gui.GuiTextField;
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.resources.I18n;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -16,7 +17,6 @@ import org.lwjgl.opengl.GL11;
 import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
 import speiger.src.api.common.data.packets.SpmodPacketHelper.PacketType;
 import speiger.src.spmodapi.SpmodAPI;
-import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.command.CommandRegistry;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
@@ -24,7 +24,7 @@ import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
-public class GuiCommands extends GuiInventoryCore
+public class GuiCommands extends GuiContainer
 {
 	EntityPlayer sender;
 	ArrayList<ISpmodCommand> pCommand = new ArrayList<ISpmodCommand>();
@@ -43,16 +43,7 @@ public class GuiCommands extends GuiInventoryCore
 	
 	public GuiCommands(InventoryPlayer par1)
 	{
-		super(new AdvContainer(par1, 24, 143)
-		{
-			
-			@Override
-			public boolean canInteractWith(EntityPlayer entityplayer)
-			{
-				return true;
-			}
-			
-		});
+		super(new AdvContainer(par1).setOffset(16, 59).setInventory(par1));
 		sender = par1.player;
 		this.ySize = 224;
 		this.xSize = 210;
@@ -254,8 +245,6 @@ public class GuiCommands extends GuiInventoryCore
 		int k = (width - xSize) / 2;
 		int l = (height - ySize) / 2;
 		drawTexturedModalRect(k, l, 0, 0, xSize, ySize);
-		defineSlot(176, 4);
-		this.drawSlots();
 	}
 	
 	@Override

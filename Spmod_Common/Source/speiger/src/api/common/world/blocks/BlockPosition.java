@@ -336,6 +336,15 @@ public class BlockPosition implements IBlockSource
 	{
 		return getTileEntity();
 	}
+
+	public boolean match(List<Integer> list)
+	{
+		if(worldID.provider.dimensionId == list.get(0) && xCoord == list.get(1) && yCoord == list.get(2) && zCoord == list.get(3))
+		{
+			return true;
+		}
+		return false;
+	}
 	
 	
 }

@@ -8,34 +8,45 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.item.EntityMinecart;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.spmodapi.common.interfaces.ISharedInventory;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
+import speiger.src.spmodapi.common.util.slot.SpmodSlot;
 import speiger.src.tinymodularthings.TinyModularThings;
-import speiger.src.tinymodularthings.client.gui.storage.GuiTinyChest;
-import speiger.src.tinymodularthings.common.blocks.storage.TinyChestInventory;
+import speiger.src.tinymodularthings.client.gui.entity.GuiTinyChestCart;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.entity.minecarts.TCarts;
 import speiger.src.tinymodularthings.common.enums.EnumIDs;
 
-public abstract class EntityTinyChestCart extends TCarts implements
+public class EntityTinyChestCart extends TCarts implements
 		IItemTransfer
 {
-	
 	public EntityTinyChestCart(World world)
 	{
 		super(world);
 	}
-	
+
 	public EntityTinyChestCart(World par1World, double par2, double par4, double par6)
 	{
 		super(par1World, par2, par4, par6);
+	}
+	
+	@Override
+	protected void entityInit()
+	{
+		super.entityInit();
+		this.dataWatcher.addObject(23, new Integer(0));
+	}
+
+	public void setupSize(int par1)
+	{
+		this.dataWatcher.updateObject(23, new Integer(par1));
 	}
 	
 	@Override
@@ -287,657 +298,91 @@ public abstract class EntityTinyChestCart extends TCarts implements
 		{
 			return (damage == -1) || (damage == 32767);
 		}
-		
 	}
 	
-	public static class OneSlotTinyChestCart extends EntityTinyChestCart
-			implements ISharedInventory
+	public String getInvName()
 	{
-		
-		public OneSlotTinyChestCart(World world)
-		{
-			super(world);
-		}
-		
-		public OneSlotTinyChestCart(World par1World, double par2, double par4, double par6)
-		{
-			super(par1World, par2, par4, par6);
-		}
-		
-		@Override
-		public boolean hasGui()
-		{
-			return true;
-		}
-		
-		@Override
-		public GuiContainer getGui(InventoryPlayer par0)
-		{
-			return new GuiTinyChest(par0, this);
-		}
-		
-		@Override
-		public boolean isEntity()
-		{
-			return true;
-		}
-		
-		@Override
-		public Container getInventory(InventoryPlayer par0)
-		{
-			return new TinyChestInventory(par0, this);
-		}
-		
-		@Override
-		public int getSizeInventory()
-		{
-			return 1;
-		}
-		
-		@Override
-		public BlockStack getRenderedBlock()
-		{
-			return new BlockStack(TinyBlocks.storageBlock, 0);
-		}
-		
-		@Override
-		public IInventory getIInventory()
-		{
-			return this;
-		}
-		
-		@Override
-		public boolean interactFirst(EntityPlayer par1EntityPlayer)
-		{
-			if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, par1EntityPlayer)))
-			{
-				return true;
-			}
-			if (!worldObj.isRemote)
-			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
-			}
-			
-			return true;
-		}
-		
+		return "Tiny Chest Cart";
+	}
+
+	@Override
+	public int getSizeInventory()
+	{
+		return this.dataWatcher.getWatchableObjectInt(23);
 	}
 	
-	public static class TwoSlotTinyChestCart extends EntityTinyChestCart
-			implements ISharedInventory
+    public boolean interactFirst(EntityPlayer par1)
+    {
+        if(MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, par1))) 
+        {
+            return true;
+        }
+        if (!this.worldObj.isRemote)
+        {
+        	par1.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, this.entityId, -1, 0);
+        }
+
+        return true;
+    }
+
+	@Override
+	public boolean hasGui()
 	{
-		
-		public TwoSlotTinyChestCart(World world)
+		return true;
+	}
+
+	@Override
+	public GuiContainer getGui(InventoryPlayer par0)
+	{
+		return new GuiTinyChestCart(getInventory(par0), this);
+	}
+
+	static int[][] SlotX = new int[][] { {}, { 80 }, { 70, 88 }, { 62, 80, 98 }, { 52, 70, 88, 106 }, { 44, 62, 80, 98, 116 }, { 34, 52, 70, 88, 106, 124 }, { 26, 44, 62, 80, 98, 116, 134 }, { 16, 34, 52, 70, 88, 106, 124, 142 }, { 8, 26, 44, 62, 80, 98, 116, 134, 152 } };
+
+	
+	@Override
+	public AdvContainer getInventory(InventoryPlayer par0)
+	{
+		AdvContainer cont = new AdvContainer(par0);
+		for(int i = 0;i<this.getSizeInventory();i++)
 		{
-			super(world);
+			cont.addSpmodSlotToContainer(new SpmodSlot(this, i,  SlotX[getSizeInventory()][i], 30));
 		}
+		cont.setInventory(par0);
+		return cont;
+	}
+
+	@Override
+	protected void writeEntityToNBT(NBTTagCompound par1nbtTagCompound)
+	{
+		super.writeEntityToNBT(par1nbtTagCompound);
+		par1nbtTagCompound.setInteger("Sized", dataWatcher.getWatchableObjectInt(23));
 		
-		public TwoSlotTinyChestCart(World par1World, double par2, double par4, double par6)
-		{
-			super(par1World, par2, par4, par6);
-		}
-		
-		@Override
-		public boolean hasGui()
-		{
-			return true;
-		}
-		
-		@Override
-		public boolean isEntity()
-		{
-			return true;
-		}
-		
-		@Override
-		public GuiContainer getGui(InventoryPlayer par0)
-		{
-			return new GuiTinyChest(par0, this);
-		}
-		
-		@Override
-		public Container getInventory(InventoryPlayer par0)
-		{
-			return new TinyChestInventory(par0, this);
-		}
-		
-		@Override
-		public int getSizeInventory()
-		{
-			return 2;
-		}
-		
-		@Override
-		public BlockStack getRenderedBlock()
-		{
-			return new BlockStack(TinyBlocks.storageBlock, 0);
-		}
-		
-		@Override
-		public IInventory getIInventory()
-		{
-			return this;
-		}
-		
-		@Override
-		public boolean interactFirst(EntityPlayer par1EntityPlayer)
-		{
-			if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, par1EntityPlayer)))
-			{
-				return true;
-			}
-			if (!worldObj.isRemote)
-			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
-			}
-			
-			return true;
-		}
+	}
+
+	@Override
+	protected void readEntityFromNBT(NBTTagCompound par1nbtTagCompound)
+	{
+		int data = par1nbtTagCompound.getInteger("Sized");
+		dataWatcher.updateObject(23, data);
+		super.readEntityFromNBT(par1nbtTagCompound);
+	}
+
+	@Override
+	public BlockStack getRenderedBlock()
+	{
+		return new BlockStack(TinyBlocks.storageBlock, 0);
+	}
+
+	@Override
+	public String getEntityName()
+	{
+		return getInvName();
 	}
 	
-	public static class ThreeSlotTinyChestCart extends EntityTinyChestCart
-			implements ISharedInventory
-	{
-		
-		public ThreeSlotTinyChestCart(World world)
-		{
-			super(world);
-		}
-		
-		public ThreeSlotTinyChestCart(World par1World, double par2, double par4, double par6)
-		{
-			super(par1World, par2, par4, par6);
-		}
-		
-		@Override
-		public boolean hasGui()
-		{
-			return true;
-		}
-		
-		@Override
-		public boolean isEntity()
-		{
-			return true;
-		}
-		
-		@Override
-		public GuiContainer getGui(InventoryPlayer par0)
-		{
-			return new GuiTinyChest(par0, this);
-		}
-		
-		@Override
-		public Container getInventory(InventoryPlayer par0)
-		{
-			return new TinyChestInventory(par0, this);
-		}
-		
-		@Override
-		public int getSizeInventory()
-		{
-			return 3;
-		}
-		
-		@Override
-		public BlockStack getRenderedBlock()
-		{
-			return new BlockStack(TinyBlocks.storageBlock, 0);
-		}
-		
-		@Override
-		public IInventory getIInventory()
-		{
-			return this;
-		}
-		
-		@Override
-		public boolean interactFirst(EntityPlayer par1EntityPlayer)
-		{
-			if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, par1EntityPlayer)))
-			{
-				return true;
-			}
-			if (!worldObj.isRemote)
-			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
-			}
-			
-			return true;
-		}
-	}
 	
-	public static class FourSlotTinyChestCart extends EntityTinyChestCart
-			implements ISharedInventory
-	{
-		
-		public FourSlotTinyChestCart(World world)
-		{
-			super(world);
-		}
-		
-		public FourSlotTinyChestCart(World par1World, double par2, double par4, double par6)
-		{
-			super(par1World, par2, par4, par6);
-		}
-		
-		@Override
-		public boolean hasGui()
-		{
-			return true;
-		}
-		
-		@Override
-		public GuiContainer getGui(InventoryPlayer par0)
-		{
-			return new GuiTinyChest(par0, this);
-		}
-		
-		@Override
-		public boolean isEntity()
-		{
-			return true;
-		}
-		
-		@Override
-		public Container getInventory(InventoryPlayer par0)
-		{
-			return new TinyChestInventory(par0, this);
-		}
-		
-		@Override
-		public int getSizeInventory()
-		{
-			return 4;
-		}
-		
-		@Override
-		public BlockStack getRenderedBlock()
-		{
-			return new BlockStack(TinyBlocks.storageBlock, 0);
-		}
-		
-		@Override
-		public IInventory getIInventory()
-		{
-			return this;
-		}
-		
-		@Override
-		public boolean interactFirst(EntityPlayer par1EntityPlayer)
-		{
-			if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, par1EntityPlayer)))
-			{
-				return true;
-			}
-			if (!worldObj.isRemote)
-			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
-			}
-			
-			return true;
-		}
-	}
 	
-	public static class FiveSlotTinyChestCart extends EntityTinyChestCart
-			implements ISharedInventory
-	{
-		
-		public FiveSlotTinyChestCart(World world)
-		{
-			super(world);
-		}
-		
-		public FiveSlotTinyChestCart(World par1World, double par2, double par4, double par6)
-		{
-			super(par1World, par2, par4, par6);
-		}
-		
-		@Override
-		public boolean hasGui()
-		{
-			return true;
-		}
-		
-		@Override
-		public GuiContainer getGui(InventoryPlayer par0)
-		{
-			return new GuiTinyChest(par0, this);
-		}
-		
-		@Override
-		public Container getInventory(InventoryPlayer par0)
-		{
-			return new TinyChestInventory(par0, this);
-		}
-		
-		@Override
-		public int getSizeInventory()
-		{
-			return 5;
-		}
-		
-		@Override
-		public BlockStack getRenderedBlock()
-		{
-			return new BlockStack(TinyBlocks.storageBlock, 0);
-		}
-		
-		@Override
-		public IInventory getIInventory()
-		{
-			return this;
-		}
-		
-		@Override
-		public boolean interactFirst(EntityPlayer par1EntityPlayer)
-		{
-			if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, par1EntityPlayer)))
-			{
-				return true;
-			}
-			if (!worldObj.isRemote)
-			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
-			}
-			
-			return true;
-		}
-		
-		@Override
-		public boolean isEntity()
-		{
-			return true;
-		}
-	}
 	
-	public static class SixSlotTinyChestCart extends EntityTinyChestCart
-			implements ISharedInventory
-	{
-		
-		public SixSlotTinyChestCart(World world)
-		{
-			super(world);
-		}
-		
-		public SixSlotTinyChestCart(World par1World, double par2, double par4, double par6)
-		{
-			super(par1World, par2, par4, par6);
-		}
-		
-		@Override
-		public boolean hasGui()
-		{
-			return true;
-		}
-		
-		@Override
-		public GuiContainer getGui(InventoryPlayer par0)
-		{
-			return new GuiTinyChest(par0, this);
-		}
-		
-		@Override
-		public boolean isEntity()
-		{
-			return true;
-		}
-		
-		@Override
-		public Container getInventory(InventoryPlayer par0)
-		{
-			return new TinyChestInventory(par0, this);
-		}
-		
-		@Override
-		public int getSizeInventory()
-		{
-			return 6;
-		}
-		
-		@Override
-		public BlockStack getRenderedBlock()
-		{
-			return new BlockStack(TinyBlocks.storageBlock, 0);
-		}
-		
-		@Override
-		public IInventory getIInventory()
-		{
-			return this;
-		}
-		
-		@Override
-		public boolean interactFirst(EntityPlayer par1EntityPlayer)
-		{
-			if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, par1EntityPlayer)))
-			{
-				return true;
-			}
-			if (!worldObj.isRemote)
-			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
-			}
-			
-			return true;
-		}
-		
-	}
 	
-	public static class SevenSlotTinyChestCart extends EntityTinyChestCart
-			implements ISharedInventory
-	{
-		
-		public SevenSlotTinyChestCart(World world)
-		{
-			super(world);
-		}
-		
-		public SevenSlotTinyChestCart(World par1World, double par2, double par4, double par6)
-		{
-			super(par1World, par2, par4, par6);
-		}
-		
-		@Override
-		public boolean hasGui()
-		{
-			return true;
-		}
-		
-		@Override
-		public boolean isEntity()
-		{
-			return true;
-		}
-		
-		@Override
-		public GuiContainer getGui(InventoryPlayer par0)
-		{
-			return new GuiTinyChest(par0, this);
-		}
-		
-		@Override
-		public Container getInventory(InventoryPlayer par0)
-		{
-			return new TinyChestInventory(par0, this);
-		}
-		
-		@Override
-		public int getSizeInventory()
-		{
-			return 7;
-		}
-		
-		@Override
-		public BlockStack getRenderedBlock()
-		{
-			return new BlockStack(TinyBlocks.storageBlock, 0);
-		}
-		
-		@Override
-		public IInventory getIInventory()
-		{
-			return this;
-		}
-		
-		@Override
-		public boolean interactFirst(EntityPlayer par1EntityPlayer)
-		{
-			if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, par1EntityPlayer)))
-			{
-				return true;
-			}
-			if (!worldObj.isRemote)
-			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
-			}
-			
-			return true;
-		}
-	}
-	
-	public static class EightSlotTinyChestCart extends EntityTinyChestCart
-			implements ISharedInventory
-	{
-		
-		public EightSlotTinyChestCart(World world)
-		{
-			super(world);
-		}
-		
-		public EightSlotTinyChestCart(World par1World, double par2, double par4, double par6)
-		{
-			super(par1World, par2, par4, par6);
-		}
-		
-		@Override
-		public boolean hasGui()
-		{
-			return true;
-		}
-		
-		@Override
-		public boolean isEntity()
-		{
-			return true;
-		}
-		
-		@Override
-		public GuiContainer getGui(InventoryPlayer par0)
-		{
-			return new GuiTinyChest(par0, this);
-		}
-		
-		@Override
-		public Container getInventory(InventoryPlayer par0)
-		{
-			return new TinyChestInventory(par0, this);
-		}
-		
-		@Override
-		public int getSizeInventory()
-		{
-			return 8;
-		}
-		
-		@Override
-		public BlockStack getRenderedBlock()
-		{
-			return new BlockStack(TinyBlocks.storageBlock, 0);
-		}
-		
-		@Override
-		public IInventory getIInventory()
-		{
-			return this;
-		}
-		
-		@Override
-		public boolean interactFirst(EntityPlayer par1EntityPlayer)
-		{
-			if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, par1EntityPlayer)))
-			{
-				return true;
-			}
-			if (!worldObj.isRemote)
-			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
-			}
-			return true;
-		}
-	}
-	
-	public static class NineSlotTinyChestCart extends EntityTinyChestCart
-			implements ISharedInventory
-	{
-		
-		public NineSlotTinyChestCart(World world)
-		{
-			super(world);
-		}
-		
-		public NineSlotTinyChestCart(World par1World, double par2, double par4, double par6)
-		{
-			super(par1World, par2, par4, par6);
-		}
-		
-		@Override
-		public boolean hasGui()
-		{
-			return true;
-		}
-		
-		@Override
-		public boolean isEntity()
-		{
-			return true;
-		}
-		
-		@Override
-		public GuiContainer getGui(InventoryPlayer par0)
-		{
-			return new GuiTinyChest(par0, this);
-		}
-		
-		@Override
-		public Container getInventory(InventoryPlayer par0)
-		{
-			return new TinyChestInventory(par0, this);
-		}
-		
-		@Override
-		public int getSizeInventory()
-		{
-			return 9;
-		}
-		
-		@Override
-		public BlockStack getRenderedBlock()
-		{
-			return new BlockStack(TinyBlocks.storageBlock, 0);
-		}
-		
-		@Override
-		public IInventory getIInventory()
-		{
-			return this;
-		}
-		
-		@Override
-		public boolean interactFirst(EntityPlayer par1EntityPlayer)
-		{
-			if (MinecraftForge.EVENT_BUS.post(new MinecartInteractEvent(this, par1EntityPlayer)))
-			{
-				return true;
-			}
-			if (!worldObj.isRemote)
-			{
-				par1EntityPlayer.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, entityId, -1, 0);
-			}
-			
-			return true;
-		}
-		
-	}
 	
 }

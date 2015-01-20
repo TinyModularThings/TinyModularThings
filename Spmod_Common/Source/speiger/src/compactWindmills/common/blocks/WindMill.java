@@ -5,10 +5,8 @@ import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySource;
 import ic2.api.energy.tile.IEnergySourceInfo;
 import ic2.api.tile.IWrenchable;
-import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -28,8 +26,10 @@ import speiger.src.api.common.world.tiles.interfaces.IWindmill;
 import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.client.gui.GuiWindmill;
 import speiger.src.compactWindmills.common.utils.WindmillType;
+import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -94,14 +94,14 @@ public class WindMill extends TileFacing implements IInventory,
 	}
 	
 	@Override
-	public Container getInventory(InventoryPlayer par1)
+	public AdvContainer getInventory(InventoryPlayer par1)
 	{
 		return new ContainerWindmill(par1, this);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiContainer getGui(InventoryPlayer par1)
+	public GuiInventoryCore getGui(InventoryPlayer par1)
 	{
 		return new GuiWindmill(par1, this);
 	}

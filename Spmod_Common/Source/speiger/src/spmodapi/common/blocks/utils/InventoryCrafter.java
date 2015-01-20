@@ -2,7 +2,11 @@ package speiger.src.spmodapi.common.blocks.utils;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.*;
+import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.InventoryCraftResult;
+import net.minecraft.inventory.InventoryCrafting;
+import net.minecraft.inventory.Slot;
+import net.minecraft.inventory.SlotCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.CraftingManager;
 import net.minecraft.world.World;
@@ -19,6 +23,7 @@ public class InventoryCrafter extends AdvContainer
 	
 	public InventoryCrafter(InventoryPlayer par1, World world, int x, int y, int z)
 	{
+		super(par1);
 		worldObj = world;
 		this.x = x;
 		this.y = y;

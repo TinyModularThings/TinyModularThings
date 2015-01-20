@@ -2,7 +2,7 @@ package speiger.src.tinymodularthings.common.interfaces;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.InventoryPlayer;
-import net.minecraft.inventory.Container;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
 
 public interface IEntityGuiProvider
 {
@@ -10,5 +10,7 @@ public interface IEntityGuiProvider
 	
 	public GuiContainer getGui(InventoryPlayer par0);
 	
-	public Container getInventory(InventoryPlayer par0);
+	public AdvContainer getInventory(InventoryPlayer par0);
+	
+	public String getInvName();
 }

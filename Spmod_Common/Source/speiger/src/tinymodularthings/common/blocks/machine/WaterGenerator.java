@@ -9,7 +9,11 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.tiles.energy.EnergyProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergyProvider;
@@ -20,7 +24,6 @@ import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -46,11 +49,6 @@ public class WaterGenerator extends AdvTile implements IFluidHandler,
 			this.provider.update();
 			produceWater();
 			sendWater();
-			if (worldObj.getWorldTime() % 20 == 0)
-			{
-				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
-				this.updateBlock();
-			}
 		}
 	}
 	

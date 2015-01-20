@@ -13,7 +13,11 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.*;
+import net.minecraftforge.fluids.Fluid;
+import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.FluidStack;
+import net.minecraftforge.fluids.FluidTankInfo;
+import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.AdvTile;
@@ -527,7 +531,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 				}
 			}
 		}
-		return true;
+		return false;
 	}
 
 	

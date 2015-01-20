@@ -62,15 +62,7 @@ public class SpmodAPICore implements IGuiHandler
 		}
 		else if (ID == EnumGuiIDs.Commands.getID())
 		{
-			AdvContainer con = new AdvContainer(player.inventory)
-			{
-				
-				@Override
-				public boolean canInteractWith(EntityPlayer entityplayer)
-				{
-					return true;
-				}
-			};
+			AdvContainer con = new AdvContainer(player).setOffset(16, 59).setInventory(player.inventory);
 			if (con != null)
 			{
 				return con;
