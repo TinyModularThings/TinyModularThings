@@ -76,7 +76,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		AdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
 		if(tile != null)
 		{
-			return tile.shouldCheckWeakPower(par5);
+			return tile.shouldSideBeRendered(par5);
 		}
 		return super.shouldSideBeRendered(par1iBlockAccess, par2, par3, par4, par5);
 	}
