@@ -46,6 +46,7 @@ public class SpmodConfig implements IConfigHelper
 		{
 			SpmodAPI.log.print("Start Loading Config");
 			booleanInfos.put("Logging", getBoolean(general, "Active Log", true).setComment(String.format("%s%n%s", "This Config disable every Log in this Mod", "Also the Crashreport!")).getResult(config));
+			booleanInfos.put("APIOnly", getBoolean(general, "SpmodAPI only API", false).setComment("Set SpmodAPI Only to API State. No Loadings of Items and Blocks. TMT Require SpmodAPI! any other addon not.").getResult(config));
 			if (!booleanInfos.get("Logging"))
 			{
 				System.out.println("[SpmodAPI] Disabeling Log. This is the last i am doing which does not come from Forge/FML)");
@@ -57,9 +58,6 @@ public class SpmodConfig implements IConfigHelper
 			booleanInfos.put("LoadTileEntities", getBoolean(general, "LoadTileEntites", true).setComment("If you get crashes with my Blocks then just set this to false and load the game. My Block are frozen and do nothing in this time").getResult(config));
 			booleanInfos.put("MobMachineEggs", getBoolean(general, "MobMachine Spawn Eggs", true).setComment("Enable that MobMachine drops Spawneggs").getResult(config));
 			booleanInfos.put("ForestrySeedOil", getBoolean(general, "Forestry Seed Oil in Fermenter", true).setComment("Enable the usage of SeedOil in a fermenter").getResult(config));
-			
-			blockIDs = new ConfigBlock(ConfigBlock.getConfig(config, blocks, 950));
-			itemIDs = new ConfigItem(ConfigItem.getConfig(config, items, 15000));
 			
 			Property tick = config.get(general, "Round Roubin Speed", "1:2:5:10:20:50", "Every number will be math as number * 5 ticks and please write it as the default with a : ");
 			String[] result = tick.getString().split(":");
@@ -74,6 +72,15 @@ public class SpmodConfig implements IConfigHelper
 			this.handleNumber(1, 3, "AnimalChunkLoaderRange");
 			this.handleNumber(1, 9, "RealisticChunkloaderRange");
 			
+			if(booleanInfos.get("APIOnly"))
+			{
+				config.save();
+				SpmodAPI.log.print("API Mode Activated!");
+				return;
+			}
+			
+			blockIDs = new ConfigBlock(ConfigBlock.getConfig(config, blocks, 950));
+			itemIDs = new ConfigItem(ConfigItem.getConfig(config, items, 15000));
 			
 			TextureEngine.getTextures().setCurrentMod(SpmodAPILib.ModID.toLowerCase());
 			SpmodAPI.log.print("Load Utils");

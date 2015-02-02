@@ -121,7 +121,7 @@ public abstract class TileFacing extends AdvTile
 	public void onIconMakerLoading()
 	{
 		super.onIconMakerLoading();
-		this.setFacing((short)3);
+		facing = 3;
 	}
 	
 	@Override

@@ -1,14 +1,18 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+
+import com.google.common.math.DoubleMath;
 
 import mods.railcraft.common.items.firestone.ItemFirestoneRefined;
 import mods.railcraft.common.plugins.forge.ItemRegistry;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.Item;
@@ -35,6 +39,7 @@ import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.blocks.utils.ExpStorage;
 import speiger.src.spmodapi.common.templates.ITemplate;
 import speiger.src.spmodapi.common.templates.ITemplateProvider;
+import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.tile.FacedInventory;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
@@ -48,6 +53,7 @@ import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionReceptor;
 import buildcraft.api.gates.IOverrideDefaultTriggers;
 import buildcraft.api.gates.ITrigger;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -68,8 +74,9 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 	public IAcceptor[] itemInterfaces = new IAcceptor[3];
 	public boolean paused = false;
 	public int matches = 0;
-	public int exp = 0;
+	public double storedExp = 0;
 	ITemplate temp = null;
+	public static Class<? extends GuiInventoryCore> guiClass = null;
 	
 	public PressureFurnace()
 	{
@@ -217,8 +224,27 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 				par1.defineSlot("ProgBarHV", 0, 1);
 				par1.drawSlotPros(101, 42, 20, 13);
 			}
+		}	
+	}
+	
+	
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public GuiInventoryCore getGui(InventoryPlayer par1)
+	{
+		if(guiClass != null)
+		{
+			try
+			{
+				return guiClass.getConstructor(InventoryPlayer.class, AdvTile.class).newInstance(par1, this);
+			}
+			catch(Exception e)
+			{
+			}
+			
 		}
-		
+		return super.getGui(par1);
 	}
 
 	@Override
@@ -256,15 +282,17 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 	
 	public void handleExp()
 	{
-		if(worldObj.getWorldTime() % 40 != 0 || fluidInterface == null || exp == 0)
+		if(worldObj.getWorldTime() % 40 != 0 || fluidInterface == null || storedExp < 1.0D)
 		{
 			return;
 		}
+		int exp = DoubleMath.roundToInt(storedExp, RoundingMode.DOWN);
+		
 		if(fluidInterface.isTilePressent(ExpStorage.class))
 		{
 			ExpStorage storage = fluidInterface.getTileEntity(ExpStorage.class);
-			storage.addExp(exp);
-			exp = 0;
+			int added = storage.addExp(exp);
+			storedExp -= added;
 			return;
 		}
 		else if(FluidUtils.liquidExpAviable() && fluidInterface.isTilePressent(IFluidHandler.class))
@@ -279,7 +307,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 					int added = handler.fill(dir, new FluidStack(FluidUtils.getLiquidExp(), converting), true);
 					if(added > 0)
 					{
-						exp -= (added / 20);
+						storedExp -= (added / 20);
 					}
 				}
 			}
@@ -287,7 +315,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 			{
 				if(handler.canFill(dir, FluidUtils.getMobEssens()))
 				{
-					exp -= handler.fill(dir, new FluidStack(FluidUtils.getMobEssens(), exp), true);
+					storedExp -= handler.fill(dir, new FluidStack(FluidUtils.getMobEssens(), exp), true);
 				}
 			}
 		}
@@ -299,7 +327,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 				if(player != null)
 				{
 					player.addExperience(exp);
-					exp = 0;
+					storedExp = 0;
 				}
 			}
 		}
@@ -431,8 +459,9 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 							max--;
 						}
 						currentRecipe.runRecipe(inv[1], inv[2], inv[3], max);
-						ItemStack result = currentRecipe.getOutput();
-						exp += (FurnaceRecipes.smelting().getExperience(result) * max);
+						ItemStack result = currentRecipe.getOutput().copy();
+						result.stackSize *= max;
+						storedExp += (double)(FurnaceRecipes.smelting().getExperience(result) * max);
 						
 						for(int i = 1;i<4;i++)
 						{
@@ -536,7 +565,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		nbt.setInteger("Progress", progress);
 		nbt.setInteger("Matches", matches);
 		nbt.setBoolean("Paused", paused);
-		nbt.setInteger("Exp", exp);
+		nbt.setDouble("Exp", storedExp);
 	}
 	
 	@Override
@@ -549,7 +578,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		progress = nbt.getInteger("Progress");
 		matches = nbt.getInteger("Matches");
 		paused = nbt.getBoolean("Paused");
-		exp = nbt.getInteger("Exp");
+		storedExp = nbt.getDouble("Exp");
 	}
 	
 	@Override

@@ -26,13 +26,8 @@ import speiger.src.tinymodularthings.common.core.TinyModularThingsCore;
 import speiger.src.tinymodularthings.common.entity.minecarts.TCarts;
 import speiger.src.tinymodularthings.common.items.minecarts.AdvTinyChestCart;
 import speiger.src.tinymodularthings.common.items.minecarts.TinyChestCart;
-import speiger.src.tinymodularthings.common.pipes.AluFluidExtractionPipe;
-import speiger.src.tinymodularthings.common.pipes.FluidRegstonePipe;
-import speiger.src.tinymodularthings.common.pipes.ItemRedstonePipe;
-import speiger.src.tinymodularthings.common.pipes.PipeEmeraldExtractionPower;
-import speiger.src.tinymodularthings.common.pipes.PipeEmeraldPower;
-import speiger.src.tinymodularthings.common.pipes.RefinedDiamondPowerPipe;
-import speiger.src.tinymodularthings.common.utils.nei.NeiRegistry;
+import speiger.src.tinymodularthings.common.pipes.*;
+import speiger.src.tinymodularthings.common.plugins.Nei.core.NeiRegistry;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
 import buildcraft.transport.PipeToolTipManager;
@@ -65,11 +60,6 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		
 		//Items
 		MinecraftForgeClient.registerItemRenderer(TinyItems.cell.itemID, new RendererItemCell());
-		
-		if(Loader.isModLoaded("NotEnoughItems"))
-		{
-			NeiRegistry.getInstance().init();
-		}
 		
 		TinyChestCart.cart = new ModelMinecart();
 		AdvTinyChestCart.cart = new ModelMinecart();

@@ -3,6 +3,7 @@ package speiger.src.spmodapi.common.items.trades;
 import java.util.ArrayList;
 import java.util.List;
 
+import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
@@ -61,7 +62,7 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	
 	@Override
 	@SideOnly(Side.CLIENT)
-	public GuiInventoryCore getGui(InventoryPlayer par1, ItemStack par2)
+	public GuiContainer getGui(InventoryPlayer par1, ItemStack par2)
 	{
 		return new GuiInventoryCore(getContainer(par1, par2));
 	}

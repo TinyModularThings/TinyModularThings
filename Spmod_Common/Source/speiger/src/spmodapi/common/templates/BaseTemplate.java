@@ -86,6 +86,7 @@ public abstract class BaseTemplate implements ITemplate
 		{
 			storage.removePosition(pos);
 		}
+		storage.removeCore(getCore());
 	}
 	
 	public boolean checkStorage(List<BlockPosition> oldPos)

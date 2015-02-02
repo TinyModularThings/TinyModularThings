@@ -16,10 +16,17 @@ public class SpmodSlot extends Slot
 	AdvTile tile;
 	int maxStackSize = 64;
 	boolean blocked = false;
+	boolean onlyPick = false;
 	
 	public SpmodSlot setAdvTile(AdvTile par1)
 	{
 		tile = par1;
+		return this;
+	}
+	
+	public SpmodSlot setOnlyPicking()
+	{
+		onlyPick = true;
 		return this;
 	}
 	
@@ -70,7 +77,7 @@ public class SpmodSlot extends Slot
 	@Override
 	public boolean isItemValid(ItemStack par1ItemStack)
 	{
-		if(blocked)
+		if(blocked || onlyPick)
 		{
 			return false;
 		}

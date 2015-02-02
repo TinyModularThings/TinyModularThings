@@ -12,4 +12,7 @@ public class TinyModularThingsLib
 	
 	public static final String Client = "speiger.src.tinymodularthings.client.core.TinyModularThingsClient";
 	
+	public static final String PluginClient = "speiger.src.tinymodularthings.client.core.PluginLoaderClient";
+	
+	public static final String PluginCore = "speiger.src.tinymodularthings.common.plugins.PluginLoader";
 }

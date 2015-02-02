@@ -1,10 +1,6 @@
 package speiger.src.tinymodularthings;
 
-import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.Client;
-import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.Core;
-import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.ModID;
-import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.Name;
-import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.Version;
+import static speiger.src.tinymodularthings.common.lib.TinyModularThingsLib.*;
 
 import java.io.File;
 
@@ -16,7 +12,7 @@ import speiger.src.spmodapi.common.util.TickHelper;
 import speiger.src.tinymodularthings.common.config.TinyConfig;
 import speiger.src.tinymodularthings.common.core.TinyModularThingsCore;
 import speiger.src.tinymodularthings.common.entity.EntityRegister;
-import speiger.src.tinymodularthings.common.plugins.ModularModLoader;
+import speiger.src.tinymodularthings.common.plugins.PluginLoader;
 import speiger.src.tinymodularthings.common.recipes.RecipesCore;
 import speiger.src.tinymodularthings.common.utils.HopperBackupSystem;
 import speiger.src.tinymodularthings.common.world.WorldRegister;
@@ -38,6 +34,9 @@ public class TinyModularThings implements SpmodMod
 	
 	@SidedProxy(clientSide = Client, serverSide = Core)
 	public static TinyModularThingsCore core;
+	
+	@SidedProxy(clientSide = PluginClient, serverSide = PluginCore)
+	public static PluginLoader addons;
 	
 	@Instance(ModID)
 	public static TinyModularThings instance;
@@ -70,7 +69,7 @@ public class TinyModularThings implements SpmodMod
 	@EventHandler
 	public void modsLoaded(FMLPostInitializationEvent evt)
 	{
-		ModularModLoader.LoadAddonsSave();
+		addons.loadPlugins();
 	}
 	
 	@EventHandler

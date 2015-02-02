@@ -16,6 +16,7 @@ import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -457,6 +458,10 @@ public abstract class AdvTile extends TileEntity
 	
 	public boolean canMergeItem(ItemStack par1, int slotID)
 	{
+		if(this instanceof ISidedInventory)
+		{
+			return ((ISidedInventory)this).canInsertItem(slotID, par1, 0);
+		}
 		return false;
 	}
 	

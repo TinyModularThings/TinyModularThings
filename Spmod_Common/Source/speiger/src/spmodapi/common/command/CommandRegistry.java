@@ -10,6 +10,7 @@ import speiger.src.spmodapi.common.command.commands.CommandAccesser;
 import speiger.src.spmodapi.common.command.commands.CommandReadTexture;
 import speiger.src.spmodapi.common.command.commands.SpeigerCommand;
 import speiger.src.spmodapi.common.command.commands.TimerCommand;
+import speiger.src.spmodapi.common.config.SpmodConfig;
 
 public class CommandRegistry
 {
@@ -65,7 +66,10 @@ public class CommandRegistry
 		reg.registerCommand(new ButcherCommand());
 		reg.registerCommand(new SpeigerCommand());
 		reg.registerCommand(new CommandReadTexture());
-		reg.registerCommand(new CommandAccesser());
+		if(!SpmodConfig.booleanInfos.get("APIOnly"))
+		{
+			reg.registerCommand(new CommandAccesser());
+		}
 	}
 	
 	

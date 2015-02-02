@@ -57,7 +57,7 @@ public class ItemMobMachineHelper extends SpmodItem
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
-		return TextureEngine.getIcon(APIBlocks.blockUtils, 2)[(par1*2)+1];
+		return TextureEngine.getTextures().getTexture(APIBlocks.blockUtils, 2, (par1*2)+1);
 	}
 
 	@Override

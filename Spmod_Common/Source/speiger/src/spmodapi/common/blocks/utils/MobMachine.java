@@ -12,6 +12,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.ISidedInventory;
@@ -34,10 +35,12 @@ import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.tile.FacedInventory;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -53,6 +56,7 @@ public class MobMachine extends FacedInventory implements ISidedInventory,
 	public static HashMap<Integer, String[]> texture = new HashMap<Integer, String[]>();
 	public static HashMap<Integer, String> names = new HashMap<Integer, String>();
 	public static HashMap<IStackInfo, Integer> activators = new HashMap<IStackInfo, Integer>();
+	public static Class<? extends GuiInventoryCore> guiClass = null;
 	public static int totalTicks = 12000;
 	
 	// None Static variables
@@ -209,7 +213,7 @@ public class MobMachine extends FacedInventory implements ISidedInventory,
 			Integer result = data.get(new ResultData(par1));
 			if(result != null)
 			{
-				ints.add(result);
+				ints.add(entry.getKey());
 			}
 		}
 		return MathUtils.getArrayFromList(ints);
@@ -849,6 +853,25 @@ public class MobMachine extends FacedInventory implements ISidedInventory,
 		return isValid();
 	}
 	
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public GuiInventoryCore getGui(InventoryPlayer par1)
+	{
+		if(guiClass != null)
+		{
+			try
+			{
+				return guiClass.getConstructor(InventoryPlayer.class, AdvTile.class).newInstance(par1, this);
+			}
+			catch(Exception e)
+			{
+			}
+		}
+		return super.getGui(par1);
+	}
+
 	@Override
 	public void readFromNBT(NBTTagCompound nbt)
 	{

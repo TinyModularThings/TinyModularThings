@@ -3,6 +3,8 @@ package speiger.src.tinymodularthings.common.recipes.pressureFurnace;
 
 import java.util.List;
 
+import cpw.mods.fml.common.FMLLog;
+
 import net.minecraft.item.ItemStack;
 import speiger.src.api.common.registry.recipes.pressureFurnace.IPressureFurnaceRecipe;
 import speiger.src.api.common.utils.InventoryUtil;
@@ -15,7 +17,7 @@ public class FurnaceRecipe implements IPressureFurnaceRecipe
 	
 	public FurnaceRecipe(int id, ItemStack item)
 	{
-		input = new ItemStack(id, 1, PathProxy.getRecipeBlankValue());
+		input = new ItemStack(id, 1, 0);
 		output = item.copy();
 	}
 	
@@ -52,7 +54,7 @@ public class FurnaceRecipe implements IPressureFurnaceRecipe
 	@Override
 	public boolean recipeMatches(ItemStack input, ItemStack secondInput, ItemStack combiner, int times)
 	{
-		if(input != null && secondInput == null && combiner != null)
+		if(input != null && secondInput == null && combiner == null)
 		{
 			if(InventoryUtil.isItemEqual(input, this.input) && input.stackSize >= times)
 			{
@@ -71,7 +73,7 @@ public class FurnaceRecipe implements IPressureFurnaceRecipe
 	@Override
 	public boolean isMultiRecipe()
 	{
-		return false;
+		return true;
 	}
 	
 	@Override

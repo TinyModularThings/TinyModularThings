@@ -37,7 +37,7 @@ public class BasicTradeInventory extends AdvInventory
 	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
 	{
 		super.setInventorySlotContents(par1, par2ItemStack);
-		if(par1 == 2)
+		if(par1 != 2)
 		{
 			container.onCraftMatrixChanged(this);
 		}
@@ -63,6 +63,11 @@ public class BasicTradeInventory extends AdvInventory
 	@SideOnly(Side.CLIENT)
 	public void drawExtras(GuiInventoryCore par1, int guiX, int guiY, int mouseX, int mouseY)
 	{
+		par1.setAutoDrawing();
+		par1.setTexture(getEngine().getTexture("Objects"));
+		par1.defineSlot("ProgBarH");
+		par1.drawSlotPros(100, 25, 22, 16);
+		par1.drawSlotPros(100, 50, 22, 16);
 		GL11.glPushMatrix();
 		ItemStack itemstack = currentRecipe.getItemToBuy();
 		ItemStack itemstack1 = currentRecipe.getSecondItemToBuy();
@@ -137,6 +142,7 @@ public class BasicTradeInventory extends AdvInventory
 		ItemStack key2 = getStackInSlot(1);
 		if (!currentRecipe.func_82784_g() && InventoryUtil.isItemEqualSave(currentRecipe.getItemToBuy(), key1) && InventoryUtil.isItemEqualSave(currentRecipe.getSecondItemToBuy(), key2))
 		{
+			currentRecipe.incrementToolUses();
 			setInventorySlotContents(2, currentRecipe.getItemToSell().copy());
 		}
 		else

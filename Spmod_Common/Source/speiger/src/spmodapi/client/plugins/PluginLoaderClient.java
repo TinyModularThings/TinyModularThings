@@ -1,8 +1,9 @@
 package speiger.src.spmodapi.client.plugins;
 
+import java.util.List;
+
+import speiger.src.api.common.registry.helpers.IPlugin;
 import speiger.src.spmodapi.common.plugins.PluginLoader;
-import speiger.src.spmodapi.common.plugins.nei.PluginNei;
-import cpw.mods.fml.common.Loader;
 
 public class PluginLoaderClient extends PluginLoader
 {
@@ -11,9 +12,10 @@ public class PluginLoaderClient extends PluginLoader
 	public void loadModAdditions()
 	{
 		super.loadModAdditions();
-		if(Loader.isModLoaded("NotEnoughItems"))
+		List<IPlugin> plugins = getPlugins("Nei");
+		for(IPlugin plugin : plugins)
 		{
-			PluginNei.init();
+			initPlugin(plugin);
 		}
 	}
 	

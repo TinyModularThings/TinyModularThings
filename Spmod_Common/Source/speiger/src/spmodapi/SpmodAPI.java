@@ -60,9 +60,7 @@ public class SpmodAPI implements SpmodMod
 	public static SpmodAPI instance;
 	
 	public static LogProxy log;
-	
-	public static ArrayList<String> allowedAddons = new ArrayList<String>();
-	
+		
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt)
 	{

@@ -45,6 +45,14 @@ public class AdvContainer extends Container
 	{
 		return super.addSlotToContainer(par1Slot);
 	}
+	
+	public SpmodSlot addNormalSlot(AdvTile par1, int id, int x, int y)
+	{
+		SpmodSlot slot = new SpmodSlot(par1, id, x, y);
+		slot.setAdvTile(getTile());
+		this.addSlotToContainer(slot);
+		return slot;
+	}
 
 	public AdvContainer(InventoryPlayer par1, AdvTile par2)
 	{

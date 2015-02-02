@@ -11,6 +11,7 @@ import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.resources.I18n;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
@@ -30,6 +31,8 @@ import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.spmodapi.common.util.slot.PlayerSlot;
 import speiger.src.spmodapi.common.util.slot.SpmodSlot;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 /**
  * 
@@ -42,6 +45,7 @@ import speiger.src.spmodapi.common.util.slot.SpmodSlot;
  *         time the open that mean it should not effect your performance..
  * 
  */
+@SideOnly(Side.CLIENT)
 public class GuiInventoryCore extends GuiContainer
 {
 	public static TextureEngine engine = TextureEngine.getTextures();
@@ -82,6 +86,12 @@ public class GuiInventoryCore extends GuiContainer
 	public GuiInventoryCore setAutoDrawing()
 	{
 		this.autoDrawing = true;
+		return this;
+	}
+	
+	public GuiInventoryCore setNoDefiningRequired()
+	{
+		defined = true;
 		return this;
 	}
 	
@@ -279,7 +289,7 @@ public class GuiInventoryCore extends GuiContainer
 		
 	}
 	
-	private void drawSlotInfo(int x, int y)
+	protected void drawSlotInfo(int x, int y)
 	{
 		List<SpmodSlot> slotToDraw = ((AdvContainer)this.inventorySlots).getAllSlots();
 		for(int i = 0;i < slotToDraw.size();i++)
@@ -468,6 +478,16 @@ public class GuiInventoryCore extends GuiContainer
 	public NBTTagCompound getExtraData()
 	{
 		return extraData;
+	}
+	
+	public EntityPlayer getPlayer()
+	{
+		return this.mc.thePlayer;
+	}
+	
+	public AdvTile getTile()
+	{
+		return tile;
 	}
 	
 	public GuiObject getGuiObject(int par1)

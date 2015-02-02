@@ -16,7 +16,6 @@ public class WorldLoader
 	
 	public void registerOres()
 	{
-		
 		registerAPIOres();
 	}
 	

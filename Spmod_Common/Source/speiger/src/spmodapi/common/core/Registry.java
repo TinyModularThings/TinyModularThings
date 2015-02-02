@@ -7,6 +7,7 @@ import net.minecraftforge.fluids.FluidContainerRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.api.common.data.nbt.DataStorage;
 import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
@@ -35,9 +36,15 @@ public class Registry
 	
 	public static void registerStuff()
 	{
+		MinecraftForge.EVENT_BUS.register(ChatHandler.getInstance());
+		instance.registerText();
+		if(SpmodConfig.booleanInfos.get("APIOnly"))
+		{
+			return;
+		}
+		
 		MinecraftForge.addGrassSeed(new ItemStack(APIItems.hempSeed, 1), 5);
 		MinecraftForge.addGrassPlant(APIBlocks.blueFlower, 0, 10);
-		instance.registerText();
 		instance.initOres();
 		PlayerHandler tracker = new PlayerHandler();
 		GameRegistry.registerPlayerTracker(tracker);
@@ -45,7 +52,6 @@ public class Registry
 		DataStorage.registerNBTReciver(SpmodFoodStats.food);
 		SpmodRecipeRegistry.loadRecipes();
 		EntityRegistry.registerModEntity(EntityOverridenEnderman.class, "newEndermann", 1, SpmodAPI.instance, 256, 3, true);
-		MinecraftForge.EVENT_BUS.register(ChatHandler.getInstance());
 		FluidContainerRegistry.registerFluidContainer(APIUtils.hempResin, new ItemStack(APIItems.hempResinBucket), new ItemStack(Item.bucketEmpty));
 		MobMachineLoader.initMobMachines();
 		GameRegistry.registerFuelHandler(new InventoryHandler());

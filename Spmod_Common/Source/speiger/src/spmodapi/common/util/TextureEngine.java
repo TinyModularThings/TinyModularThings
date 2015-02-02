@@ -19,6 +19,7 @@ import speiger.src.api.common.data.utils.ItemData;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -29,6 +30,7 @@ public class TextureEngine
 	private TextureEngine()
 	{
 		MinecraftForge.EVENT_BUS.register(this);
+		currentSide = FMLCommonHandler.instance().getEffectiveSide();
 	}
 	
 	public static TextureEngine getTextures()
@@ -58,6 +60,8 @@ public class TextureEngine
 	String currentPath = "";
 	
 	ArrayList<RequestData> requestLaterRegistration = new ArrayList<RequestData>();
+	
+	final Side currentSide;
 	
 	public void setCurrentMod(String modID)
 	{
@@ -154,6 +158,10 @@ public class TextureEngine
 	
 	public void registerTexture(Item par1, int par2, String...par3)
 	{
+		if(currentSide == Side.SERVER)
+		{
+			return;
+		}
 		if(par1.getSpriteNumber() == 1)
 		{
 			ItemData data = new ItemData(par1, par2);
@@ -195,6 +203,11 @@ public class TextureEngine
 	
 	public void registerTexture(Block par1, int par2, String...par3)
 	{
+		if(currentSide == Side.SERVER)
+		{
+			return;
+		}
+		
 		BlockData data = new BlockData(par1, par2);
 		ArrayList<String> textures = new ArrayList<String>();
 		String[] before = blockString.get(data);

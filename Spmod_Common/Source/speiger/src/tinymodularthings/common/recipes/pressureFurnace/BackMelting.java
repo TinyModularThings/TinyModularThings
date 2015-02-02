@@ -64,7 +64,7 @@ public class BackMelting implements IPressureFurnaceRecipe
 	@Override
 	public boolean isMultiRecipe()
 	{
-		return true;
+		return false;
 	}
 	
 	@Override

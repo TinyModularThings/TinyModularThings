@@ -20,10 +20,10 @@ import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
-import speiger.src.spmodapi.common.plugins.BC.ActionAdvLoop;
-import speiger.src.spmodapi.common.plugins.BC.ActionChange;
-import speiger.src.spmodapi.common.plugins.BC.ActionRandomLoop;
-import speiger.src.spmodapi.common.plugins.BC.ColorChangeAdv;
+import speiger.src.spmodapi.common.plugins.BC.actions.ActionAdvLoop;
+import speiger.src.spmodapi.common.plugins.BC.actions.ActionChange;
+import speiger.src.spmodapi.common.plugins.BC.actions.ActionColorChangeAdv;
+import speiger.src.spmodapi.common.plugins.BC.actions.ActionRandomLoop;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
@@ -421,9 +421,9 @@ public class TileLamp extends TileFacing implements IActionReceptor
 				{
 					changeGateState(((ActionChange)action).active(), ForgeDirection.UNKNOWN);
 				}
-				else if(action instanceof ColorChangeAdv)
+				else if(action instanceof ActionColorChangeAdv)
 				{
-					ColorChangeAdv colors = (ColorChangeAdv) action;
+					ActionColorChangeAdv colors = (ActionColorChangeAdv) action;
 					if(colors.adv)
 					{
 						this.sendColor(colors.color.ordinal(), ForgeDirection.UNKNOWN);

@@ -68,9 +68,4 @@ public class SpmodWorldGen implements IWorldGenerator
 		}
 	}
 	
-	static
-	{
-		init.registerWorldGen(new BlueFlowerGen());
-	}
-	
 }

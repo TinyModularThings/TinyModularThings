@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.common.items.core;
 
 import net.minecraft.client.renderer.texture.IconRegister;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -29,6 +30,15 @@ public abstract class SpmodItem extends Item implements ITextureRequester
 		return SpmodAPI.instance;
 	}
 	
+	
+	
+	@Override
+	public SpmodItem setCreativeTab(CreativeTabs par1CreativeTabs)
+	{
+		super.setCreativeTab(par1CreativeTabs);
+		return this;
+	}
+
 	public String getModID()
 	{
 		return SpmodAPILib.ModID.toLowerCase();

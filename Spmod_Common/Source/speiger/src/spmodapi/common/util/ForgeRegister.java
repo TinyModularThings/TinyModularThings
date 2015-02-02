@@ -27,15 +27,18 @@ public class ForgeRegister
 		regist(ChunkCollector.getInstance());
 		regist(new BlockDetector());
 		TickRegistry.registerTickHandler(new CountdownTick(), Side.SERVER);
-		regist(LivingHandler.instance);
 		regist(new WorldCrafter());
+		StructureStorage.registerForgeEvent();
+		TickRegistry.registerTickHandler(new ServerTick(), Side.SERVER);
 		if (SpmodConfig.booleanInfos.get("Retrogen"))
 		{
 			TickRegistry.registerTickHandler(RetroGenTickHandler.getTicks(), Side.SERVER);
 		}
-		StructureStorage.registerForgeEvent();
-		regist(new BucketHandler());
-		TickRegistry.registerTickHandler(new ServerTick(), Side.SERVER);
+		if(!SpmodConfig.booleanInfos.get("APIOnly"))
+		{
+			regist(new BucketHandler());
+			regist(LivingHandler.instance);
+		}
 
 	}
 	
