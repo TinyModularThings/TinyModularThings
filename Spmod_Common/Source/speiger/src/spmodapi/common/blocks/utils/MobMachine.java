@@ -863,7 +863,7 @@ public class MobMachine extends FacedInventory implements ISidedInventory,
 		{
 			try
 			{
-				return guiClass.getConstructor(InventoryPlayer.class, AdvTile.class).newInstance(par1, this);
+				return guiClass.getConstructor(InventoryPlayer.class, AdvTile.class).newInstance(par1, this).setAutoDrawing();
 			}
 			catch(Exception e)
 			{

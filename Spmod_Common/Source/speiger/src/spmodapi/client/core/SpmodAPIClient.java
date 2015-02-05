@@ -78,4 +78,12 @@ public class SpmodAPIClient extends SpmodAPICore
 	public void onEngineLoad()
 	{
 	}
+
+	@Override
+	public int getRenderID()
+	{
+		return RenderHelper.getGlobalRenderID();
+	}
+	
+	
 }

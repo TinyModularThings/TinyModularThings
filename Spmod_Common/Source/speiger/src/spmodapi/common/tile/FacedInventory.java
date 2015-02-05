@@ -1,5 +1,7 @@
 package speiger.src.spmodapi.common.tile;
 
+import java.util.ArrayList;
+
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
@@ -122,6 +124,23 @@ public abstract class FacedInventory extends TileFacing implements IInventory
 		
 	}
 	
+	
+	
+	@Override
+	public ArrayList<ItemStack> onDrop(int fortune)
+	{
+		ArrayList<ItemStack> drops = super.onDrop(fortune);
+		for(int i = 0;i<inv.length;i++)
+		{
+			ItemStack stack = inv[i];
+			if(stack != null)
+			{
+				drops.add(stack);
+			}
+		}
+		return drops;
+	}
+
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{

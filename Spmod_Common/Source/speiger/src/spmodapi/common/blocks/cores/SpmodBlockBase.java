@@ -20,7 +20,6 @@ import speiger.src.api.client.render.IBlockRender;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.SpmodAPI;
-import speiger.src.spmodapi.client.core.RenderHelper;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import cpw.mods.fml.relauncher.Side;
@@ -176,20 +175,16 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 		{
 			return false;
 		}
-		
-		if(!par1.isRemote)
+		int guiID = getGuiIDForMeta(meta);
+		if(guiID != -1)
 		{
-			int guiID = getGuiIDForMeta(meta);
-			if(guiID != -1)
+			SpmodMod mod = getModInstance(meta);
+			if(mod == null)
 			{
-				SpmodMod mod = getModInstance(meta);
-				if(mod == null)
-				{
-					mod = SpmodAPI.instance;
-				}
-				par5.openGui(mod, guiID, par1, par2, par3, par4);
-				return true;
+				mod = SpmodAPI.instance;
 			}
+			par5.openGui(mod, guiID, par1, par2, par3, par4);
+			return true;
 		}
 		return false;
 	}
@@ -365,7 +360,7 @@ public class SpmodBlockBase extends Block implements ITextureRequester, IBlockRe
 	@Override
 	public int getRenderType()
 	{
-		return requiresRender() ? RenderHelper.getGlobalRenderID() : 0;
+		return requiresRender() ? SpmodAPI.core.getRenderID() : 0;
 	}
 
 	@Override
