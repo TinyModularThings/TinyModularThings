@@ -36,6 +36,25 @@ public class InventoryUtil
 		return false;
 	}
 	
+	public static boolean isItemEqualTotal(ItemStack par1, ItemStack par2)
+	{
+		if(par1 != null && par2 != null)
+		{
+			if (par1.itemID == par2.itemID)
+			{
+				if ((par1.getItemDamage() == par2.getItemDamage()) || (par1.getItemDamage() == OreDictionary.WILDCARD_VALUE || par2.getItemDamage() == OreDictionary.WILDCARD_VALUE))
+				{
+					return true;
+				}
+			}
+		}
+		if(par1 == null && par2 == null)
+		{
+			return true;
+		}
+		return false;
+	}
+	
 	public static boolean isItemEqualSave(ItemStack par1, ItemStack par2)
 	{
 		if (par1 != null && par2 != null)

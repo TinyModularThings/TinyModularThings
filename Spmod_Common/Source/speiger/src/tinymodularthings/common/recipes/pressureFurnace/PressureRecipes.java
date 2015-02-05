@@ -23,22 +23,12 @@ public class PressureRecipes
 		pp.addFurnaceRecipe(new ItemStack(TinyBlocks.ores, 1, 2), EnumIngots.Silver.getIngot(), 0.5F);
 		pp.addFurnaceRecipe(new ItemStack(TinyBlocks.ores, 1, 1), EnumIngots.Tin.getIngot(), 0.5F);
 		
-		
 		PressureRecipeList list = PressureRecipeList.getInstance();
-		FurnaceRecipes furnace = FurnaceRecipes.smelting();
-		Map<Integer, ItemStack> map = furnace.getSmeltingList();
-		for(Entry<Integer, ItemStack> cu : map.entrySet())
-		{
-			list.addRecipe(new FurnaceRecipe(cu.getKey(), cu.getValue()));
-		}
-		for(Entry<List<Integer>, ItemStack> cu : furnace.getMetaSmeltingList().entrySet())
-		{
-			list.addRecipe(new FurnaceRecipe(cu.getKey(), cu.getValue()));
-		}
-//		list.addRecipe(new BackMelting(new ItemStack(TinyItems.bauxitDust, 8, 0), new ItemStack(Block.sand, 2), new ItemStack(Item.coal, 1, 0), new ItemStack(TinyItems.ingots, 2, EnumIngots.Aluminum.getIngotMeta()), true, true);
-//		list.addRecipe(new BackMelting(new ItemStack(TinyItems.bauxitDust, 8, 0), new ItemStack(Block.sand, 2), new ItemStack(Item.coal, 1, 1), new ItemStack(TinyItems.ingots, 2, EnumIngots.Aluminum.getIngotMeta()), true, true);
-//		list.addRecipe(new BackMelting(new ItemStack(TinyBlocks.ores, 3, 0), new ItemStack(TinyBlocks.ores, 1, 1), (ItemStack) null, new ItemStack(TinyItems.ingots, 8, EnumIngots.Bronze.getIngotMeta()), true, true);
-//		list.addRecipe(new BackMelting(new ItemStack(TinyItems.ingots, 3, EnumIngots.Copper.getIngotMeta()), new ItemStack(TinyItems.ingots, 1, EnumIngots.Tin.getIngotMeta()), (ItemStack) null, new ItemStack(TinyItems.ingots, 4, EnumIngots.Bronze.getIngotMeta()), true, true);
+
+		list.addRecipe(new MetalMixing(new ItemStack(TinyItems.bauxitDust, 8), new ItemStack(Block.sand, 2), new ItemStack(Item.coal, 1, 0), new ItemStack(TinyItems.ingots, 2, EnumIngots.Aluminum.getIngotMeta())).setTime(350).setMulti());
+		list.addRecipe(new MetalMixing(new ItemStack(TinyItems.bauxitDust, 8), new ItemStack(Block.sand, 2), new ItemStack(Item.coal, 1, 1), new ItemStack(TinyItems.ingots, 2, EnumIngots.Aluminum.getIngotMeta())).setTime(350).setMulti());
+		list.addRecipe(new MetalMixing(new ItemStack(TinyBlocks.ores, 3, 0), new ItemStack(TinyBlocks.ores, 1, 1), (ItemStack) null, new ItemStack(TinyItems.ingots, 8, EnumIngots.Bronze.getIngotMeta())).setTime(150));
+		list.addRecipe(new MetalMixing(new ItemStack(TinyItems.ingots, 3, EnumIngots.Copper.getIngotMeta()), new ItemStack(TinyItems.ingots, 1, EnumIngots.Tin.getIngotMeta()), (ItemStack) null, new ItemStack(TinyItems.ingots, 4, EnumIngots.Bronze.getIngotMeta())));
 		list.addRecipe(new BackMelting(new ItemStack(Item.minecartEmpty), new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 5)));
 		list.addRecipe(new BackMelting(new ItemStack(Item.bucketEmpty), new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 3)));
 		list.addRecipe(new BackMelting(new ItemStack(Item.horseArmorIron), new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 7)));

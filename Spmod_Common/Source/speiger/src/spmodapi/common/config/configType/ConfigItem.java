@@ -27,7 +27,7 @@ public class ConfigItem
 		if (Item.itemsList[ID + 256] != null)
 		{
 			int end = ID + 256;
-			throw new IndexOutOfBoundsException("ItemID is already used: " + end);
+			throw new IndexOutOfBoundsException("ItemID is already used: " + end+" The ExsitingItem: "+Item.itemsList[ID + 256].getUnlocalizedName());
 		}
 		return ID;
 	}

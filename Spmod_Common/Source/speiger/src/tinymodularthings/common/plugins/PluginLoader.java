@@ -2,12 +2,18 @@ package speiger.src.tinymodularthings.common.plugins;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 
+import net.minecraft.item.ItemStack;
+import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.MinecraftForge;
 
 import speiger.src.api.common.registry.helpers.IPlugin;
+import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.tinymodularthings.TinyModularThings;
+import speiger.src.tinymodularthings.common.recipes.pressureFurnace.FurnaceRecipe;
 
 
 public class PluginLoader
@@ -18,6 +24,17 @@ public class PluginLoader
 		for(IPlugin plugin : plugins)
 		{
 			initPlugin(plugin);
+		}
+		PressureRecipeList list = PressureRecipeList.getInstance();
+		FurnaceRecipes furnace = FurnaceRecipes.smelting();
+		Map<Integer, ItemStack> map = furnace.getSmeltingList();
+		for(Entry<Integer, ItemStack> cu : map.entrySet())
+		{
+			list.addRecipe(new FurnaceRecipe(cu.getKey(), cu.getValue()));
+		}
+		for(Entry<List<Integer>, ItemStack> cu : furnace.getMetaSmeltingList().entrySet())
+		{
+			list.addRecipe(new FurnaceRecipe(cu.getKey(), cu.getValue()));
 		}
 	}
 	

@@ -127,4 +127,9 @@ public class SpmodAPICore implements IGuiHandler
 	public void onEngineLoad()
 	{		
 	}
+	
+	public int getRenderID()
+	{
+		return 0;
+	}
 }

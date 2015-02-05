@@ -31,7 +31,7 @@ public class GuiAdvCrafting extends GuiInventoryCore
 		int l = (height - ySize) / 2;
 		setTexture(engine.getTexture("Objects"));
 		defineSlot("ProgBarH");
-		this.drawTexturedModalRect(k - 52, l, getX(), getY(), 23, 16);
+		this.drawTexturedModalRect(75, 35, getX(), getY(), 23, 16);
 	}
 
 

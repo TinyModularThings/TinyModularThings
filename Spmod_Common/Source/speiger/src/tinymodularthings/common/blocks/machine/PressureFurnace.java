@@ -237,7 +237,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		{
 			try
 			{
-				return guiClass.getConstructor(InventoryPlayer.class, AdvTile.class).newInstance(par1, this);
+				return guiClass.getConstructor(InventoryPlayer.class, AdvTile.class).newInstance(par1, this).setAutoDrawing();
 			}
 			catch(Exception e)
 			{
@@ -454,7 +454,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 						progress = 0;
 						int max = currentRecipe.isMultiRecipe() ? 5 : 1;
 
-						for(;max > 1 && !currentRecipe.recipeMatches(inv[1], inv[2], inv[3], max);)
+						for(;max > 1 && (!currentRecipe.recipeMatches(inv[1], inv[2], inv[3], max) || (inv[4] != null && inv[4].stackSize + (currentRecipe.getOutput().stackSize * max) > inv[4].getMaxStackSize()));)
 						{
 							max--;
 						}

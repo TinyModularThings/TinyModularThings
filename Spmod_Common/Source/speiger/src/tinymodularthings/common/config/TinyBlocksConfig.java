@@ -154,7 +154,7 @@ public class TinyBlocksConfig
 		blocks.craftingBlock = new BlockCrafting(config.block.getCurrentID());
 		RegisterProxy.RegisterBlock(blocks.craftingBlock, ItemBlockCrafting.class, "CraftingBlock");
 		RegisterProxy.RegisterTile(blocks.craftingBlock, 1, OreCrafter.class, "OreCrafter");
-		RegisterProxy.RegisterTile(blocks.craftingBlock, 2, CraftingStation.class, "CraftingStation");
+		RegisterProxy.RegisterTile(blocks.craftingBlock, 2, CraftingStation.class, "SpmodCraftingStation");
 		RegisterProxy.RegisterTile(blocks.craftingBlock, 3, Uncrafter.class, "Deconstructor");
 		blocks.craftingBlock.registerTextures(engine);
 		config.block.updateToNextID();
