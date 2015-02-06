@@ -67,6 +67,6 @@ public class BasicRecipes
 		pp.addOreRecipe(new ItemStack(APIItems.circuits, 1, 1), "XXX", "CVB", "XXX", 'X', APIItems.redstoneCable, 'V', Item.ingotGold, 'C', "ingotIron", 'B', "ingotSilver");
 		pp.addOreRecipe(new ItemStack(APIItems.circuits, 1, 1), "XXX", "CVB", "XXX", 'X', APIItems.redstoneCable, 'V', Item.ingotGold, 'B', "ingotIron", 'C', "ingotSilver");
 		pp.addRecipe(new ItemStack(APIItems.circuits, 1, 2), new Object[]{"XYX", "YCY", "XYX", 'X', new ItemStack(APIItems.circuits, 1, 0), 'Y', new ItemStack(APIItems.circuits, 1, 1), 'C', Item.diamond});
-		
+		pp.addRecipe(new ItemStack(APIBlocks.blockUtils, 1, 5), new Object[]{"XYX", "X X", "XXX", 'X', Block.cobblestone, 'Y', new ItemStack(Block.stoneSingleSlab, 1, 3)});
 	}
 }

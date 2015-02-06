@@ -88,7 +88,7 @@ public class ExpStorage extends AdvInventory implements IFluidHandler, IExpProvi
 	@SideOnly(Side.CLIENT)
 	public void drawFrontExtras(GuiInventoryCore par1, int guiX, int guiY, int mouseX, int mouseY)
 	{
-		par1.getFontRenderer().drawString("Stored Exp: " + exp, 55, guiY - 10, 4210752);
+		par1.getFontRenderer().drawString("Stored Exp: " + exp, 55, 25, 4210752);
 	}
 
 	@Override

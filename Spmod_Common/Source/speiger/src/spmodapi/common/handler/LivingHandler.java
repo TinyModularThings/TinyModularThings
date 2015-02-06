@@ -18,6 +18,7 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.client.GuiIngameForge;
@@ -34,6 +35,7 @@ import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.tiles.interfaces.IExpProvider;
 import speiger.src.spmodapi.client.core.RenderHelper;
 import speiger.src.spmodapi.common.blocks.gas.AnimalChunkLoader;
+import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
@@ -128,10 +130,12 @@ public class LivingHandler
 					}
 				}
 			}
-			
+			if(SpmodConfig.booleanInfos.get("APIOnly"))
+			{
+				return;
+			}
 			Entity en = evt.source.getSourceOfDamage();
-			
-			if(entity instanceof EntityAgeable && en != null && en instanceof EntityPlayer)
+			if(entity instanceof EntityAgeable && en != null && en instanceof EntityPlayer && PlayerWantToCreateGas((EntityPlayer)en))
 			{
 				EntityAgeable age = (EntityAgeable)entity;
 				AnimalChunkLoader.onEntityDeath(age);
@@ -159,6 +163,10 @@ public class LivingHandler
 	@ForgeSubscribe
 	public void onEntityDropsByDeath(LivingDropsEvent evt)
 	{
+		if(SpmodConfig.booleanInfos.get("APIOnly"))
+		{
+			return;
+		}
 		EntityLivingBase entity = evt.entityLiving;
 		if(entity != null)
 		{
@@ -224,6 +232,10 @@ public class LivingHandler
 				}
 			}
 			
+			if(SpmodConfig.booleanInfos.get("APIOnly"))
+			{
+				return;
+			}
 			if (entity instanceof EntityPlayer)
 			{
 				
@@ -264,6 +276,10 @@ public class LivingHandler
 	@SideOnly(Side.CLIENT)
 	public void zoomingEffect(FOVUpdateEvent evt)
 	{
+		if(SpmodConfig.booleanInfos.get("APIOnly"))
+		{
+			return;
+		}
 		EntityPlayerSP player = evt.entity;
 		ItemStack stack = player.getCurrentArmor(0);
 		if (stack != null && stack.itemID == APIItems.hempBoots.itemID && player.isInWater())
@@ -291,5 +307,19 @@ public class LivingHandler
 		{
 			evt.setCanceled(true);
 		}
+	}
+	
+	private boolean PlayerWantToCreateGas(EntityPlayer par1)
+	{
+		if(par1 == null)
+		{
+			return false;
+		}
+		NBTTagCompound data = par1.getEntityData();
+		if(data != null)
+		{
+			return data.getBoolean("GasDrops");
+		}
+		return false;
 	}
 }

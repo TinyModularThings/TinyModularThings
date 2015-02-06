@@ -730,7 +730,7 @@ public class MobMachine extends FacedInventory implements ISidedInventory,
 	public void drawFrontExtras(GuiInventoryCore par1, int guiX, int guiY, int mouseX, int mouseY)
 	{
 		String name = getName(type);
-		par1.getFontRenderer().drawString(name, guiX+15-par1.getFontRenderer().getStringWidth(name) / 2, guiY+33, 4210752);
+		par1.getFontRenderer().drawString(name, 85+par1.getFontRenderer().getStringWidth(name) / 2, 70, 4210752);
 	}
 
 	public boolean isValid()

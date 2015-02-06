@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.handler;
 
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import cpw.mods.fml.common.IFuelHandler;
 
@@ -11,6 +12,10 @@ public class InventoryHandler implements IFuelHandler
 	@Override
 	public int getBurnTime(ItemStack fuel)
 	{
+		if(SpmodConfig.booleanInfos.get("APIOnly"))
+		{
+			return 0;
+		}
 		if(fuel != null)
 		{
 			int id = fuel.itemID;

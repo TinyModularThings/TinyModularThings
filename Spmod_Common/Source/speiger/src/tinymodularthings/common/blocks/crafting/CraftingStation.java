@@ -22,6 +22,7 @@ import net.minecraft.nbt.NBTTagList;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
+import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
@@ -121,6 +122,17 @@ public class CraftingStation extends AdvTile
 	public boolean tilehandlesItemMoving()
 	{
 		return true;
+	}
+	
+	
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void drawExtras(GuiInventoryCore par1, int guiX, int guiY, int mouseX, int mouseY)
+	{
+		par1.setTexture(getEngine().getTexture("Objects"));
+		par1.defineSlot("ProgBarH");
+		par1.drawSlotPros(76, 37, 23, 16);
 	}
 
 	@Override

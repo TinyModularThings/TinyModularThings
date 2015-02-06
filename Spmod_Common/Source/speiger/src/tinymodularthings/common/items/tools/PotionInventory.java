@@ -39,9 +39,12 @@ public class PotionInventory extends AdvInventory
 	public void onInventoryChanged()
 	{
 		ItemStack bag = this.getBagFromInventory();
-		NBTTagCompound nbt = new NBTTagCompound();
-		this.writeToNBT(nbt);
-		NBTHelper.getTag(bag, "Bag").setCompoundTag("Inventory", nbt);
+		if(bag != null)
+		{
+			NBTTagCompound nbt = new NBTTagCompound();
+			this.writeToNBT(nbt);
+			NBTHelper.getTag(bag, "Bag").setCompoundTag("Inventory", nbt);
+		}
 	}
 	
 	

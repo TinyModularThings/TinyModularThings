@@ -76,7 +76,7 @@ public class BlockHempStraw extends SpmodBlockBase
 	{
 		if (!par1World.isRemote)
 		{
-			List<EntityAnimal> list = par1World.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getAABBPool().getAABB(par2, par3, par4, par2 + 1, par3 + 1, par4 + 1).expand(10, 5, 10));
+			List<EntityAnimal> list = par1World.getEntitiesWithinAABB(EntityAnimal.class, AxisAlignedBB.getAABBPool().getAABB(par2, par3, par4, par2 + 1, par3 + 1, par4 + 1).expand(5, 5, 5));
 			for (int i = 0; i < list.size(); i++)
 			{
 				EntityAnimal current = list.get(i);

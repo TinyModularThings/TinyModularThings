@@ -3,6 +3,7 @@ package speiger.src.spmodapi.common.items.trades;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
+import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.village.MerchantRecipe;
@@ -135,6 +136,27 @@ public class BasicTradeInventory extends AdvInventory
 	
 	
 	
+	@Override
+	public boolean onSlotClicked(AdvContainer par1, int slotID, int mouseButton, int modifier, EntityPlayer player)
+	{
+		Slot slot = (Slot)par1.inventorySlots.get(slotID);
+		if(slot != null && slot.getHasStack())
+		{
+			if(slot.getStack().isItemEqual(player.getCurrentEquippedItem()))
+			{
+				return true;
+			}
+		}
+		return super.onSlotClicked(par1, slotID, mouseButton, modifier, player);
+	}
+
+	@Override
+	public void onPlayerCloseContainer(EntityPlayer par1)
+	{
+		super.onPlayerCloseContainer(par1);
+		par1.getCurrentEquippedItem().stackSize--;
+	}
+
 	@Override
 	public void onMatrixChanged(AdvContainer par1, IInventory par2)
 	{

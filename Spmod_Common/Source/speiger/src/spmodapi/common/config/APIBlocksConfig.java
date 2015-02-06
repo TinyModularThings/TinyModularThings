@@ -1,5 +1,6 @@
 package speiger.src.spmodapi.common.config;
 
+import net.minecraft.block.Block;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.blocks.deko.BlockBlueFlower;
 import speiger.src.spmodapi.common.blocks.deko.BlockKyrokaTheFox;
@@ -25,11 +26,7 @@ import speiger.src.spmodapi.common.blocks.hemp.ItemBlockHempCrop;
 import speiger.src.spmodapi.common.blocks.hemp.ItemBlockHempDeko;
 import speiger.src.spmodapi.common.blocks.hemp.ItemBlockHempDekoBase;
 import speiger.src.spmodapi.common.blocks.hemp.ItemBlockHempStraw;
-import speiger.src.spmodapi.common.blocks.utils.BlockUtils;
-import speiger.src.spmodapi.common.blocks.utils.ExpStorage;
-import speiger.src.spmodapi.common.blocks.utils.InventoryAccesser;
-import speiger.src.spmodapi.common.blocks.utils.ItemBlockUtils;
-import speiger.src.spmodapi.common.blocks.utils.MobMachine;
+import speiger.src.spmodapi.common.blocks.utils.*;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumHempBlocks;
@@ -129,6 +126,7 @@ public class APIBlocksConfig
 		RegisterProxy.RegisterTile(blocks.blockUtils, 1, ExpStorage.class, "ExpStorage");
 		RegisterProxy.RegisterTile(blocks.blockUtils, 2, MobMachine.class, "MobMachine");
 		RegisterProxy.RegisterTile(blocks.blockUtils, 4, InventoryAccesser.class, "InventoryAccesser");
+		RegisterProxy.RegisterTile(blocks.blockUtils, 5, CobbleChest.class, "CobbleStorageChest");
 		((SpmodBlockBase)blocks.blockUtils).registerTextures(engine);
 		config.blockIDs.updateToNextID();
 		
