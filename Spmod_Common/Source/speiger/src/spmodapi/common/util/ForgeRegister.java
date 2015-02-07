@@ -12,7 +12,6 @@ import speiger.src.spmodapi.common.world.event.BlockDetector;
 import speiger.src.spmodapi.common.world.retrogen.ChunkCollector;
 import speiger.src.spmodapi.common.world.retrogen.RetroGenTickHandler;
 import speiger.src.spmodapi.common.world.retrogen.RetrogenSave;
-import speiger.src.tinymodularthings.common.world.WorldCrafter;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.common.registry.TickRegistry;
 import cpw.mods.fml.relauncher.Side;
@@ -27,7 +26,6 @@ public class ForgeRegister
 		regist(ChunkCollector.getInstance());
 		regist(new BlockDetector());
 		TickRegistry.registerTickHandler(new CountdownTick(), Side.SERVER);
-		regist(new WorldCrafter());
 		StructureStorage.registerForgeEvent();
 		TickRegistry.registerTickHandler(new ServerTick(), Side.SERVER);
 		if (SpmodConfig.booleanInfos.get("Retrogen"))
