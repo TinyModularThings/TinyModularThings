@@ -18,18 +18,19 @@ public class PluginLoader
 	
 	public void loadModAdditions()
 	{
+		if(SpmodConfig.booleanInfos.get("APIOnly"))
+		{
+			return;
+		}
 		try
 		{
-			if(!SpmodConfig.booleanInfos.get("APIOnly"))
-			{
-				RecipeOverrider.loadTransmutationRecipes();
-			}
+			RecipeOverrider.loadTransmutationRecipes();
 		}
 		catch(Exception e)
 		{
 			
 		}
-		
+
 		List<IPlugin> plugins = getPlugins("BC", "Forestry", "IC2", "MFR", "RailCraft");
 		for(IPlugin plug : plugins)
 		{
