@@ -5,7 +5,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.common.inventory.slot.TankSlot;
-import speiger.src.tinymodularthings.common.utils.HopperType;
 
 public abstract interface IHopperInventory
 {

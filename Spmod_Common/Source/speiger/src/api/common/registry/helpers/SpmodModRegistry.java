@@ -3,6 +3,8 @@ package speiger.src.api.common.registry.helpers;
 import java.util.Collection;
 import java.util.HashMap;
 
+import speiger.src.api.common.utils.LogProxy;
+
 import com.google.common.base.Strings;
 
 import cpw.mods.fml.common.FMLLog;
@@ -11,6 +13,7 @@ import cpw.mods.fml.common.Mod;
 public class SpmodModRegistry
 {
 	private static HashMap<String, SpmodMod> addons = new HashMap<String, SpmodMod>();
+	private static LogProxy defaultProxy;
 	
 	public static void registerMod(SpmodMod par1)
 	{
@@ -46,4 +49,38 @@ public class SpmodModRegistry
 	{
 		return addons.values();
 	}
+	
+	public static LogProxy getDefaultProxy(SpmodMod par1)
+	{
+		if(!isModRegistered(par1))
+		{
+			return null;
+		}
+		return defaultProxy;
+	}
+	
+	static
+	{
+		SpmodMod fakeMod = new FakeSpmodMod();
+		addons.put("Spmod Mod", fakeMod);
+		defaultProxy = new LogProxy(fakeMod);
+	}
+	
+	static class FakeSpmodMod implements SpmodMod
+	{
+
+		@Override
+		public String getName()
+		{
+			return "Spmod Mod";
+		}
+
+		@Override
+		public LogProxy getLogger()
+		{
+			return defaultProxy;
+		}
+		
+	}
+	
 }

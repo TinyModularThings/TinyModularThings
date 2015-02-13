@@ -1,4 +1,4 @@
-package speiger.src.tinymodularthings.common.interfaces;
+package speiger.src.api.common.world.gen;
 
 import net.minecraft.world.World;
 

@@ -16,7 +16,6 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.common.data.packets.IPacketReciver;
-import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
@@ -33,7 +32,6 @@ import speiger.src.tinymodularthings.common.plugins.BC.actions.ActionOneSlotChan
 import speiger.src.tinymodularthings.common.plugins.BC.actions.GateChangeToSlot;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionReceptor;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;

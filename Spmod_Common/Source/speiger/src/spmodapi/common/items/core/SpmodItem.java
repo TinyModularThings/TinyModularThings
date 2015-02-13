@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.items.core;
 
 import net.minecraft.client.renderer.texture.IconRegister;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.EnumRarity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
@@ -19,6 +20,9 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class SpmodItem extends Item implements ITextureRequester
 {
+	static TextureEngine engine = TextureEngine.getTextures();
+	
+	public EnumRarity rare = null;
 	
 	public SpmodItem(int par1)
 	{
@@ -30,8 +34,28 @@ public abstract class SpmodItem extends Item implements ITextureRequester
 		return SpmodAPI.instance;
 	}
 	
+	public TextureEngine getEngine()
+	{
+		return engine;
+	}
 	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public EnumRarity getRarity(ItemStack par1ItemStack)
+	{
+		if(rare != null)
+		{
+			return rare;
+		}
+		return super.getRarity(par1ItemStack);
+	}
 	
+	public SpmodItem setRarity(EnumRarity par1)
+	{
+		rare = par1;
+		return this;
+	}
+
 	@Override
 	public SpmodItem setCreativeTab(CreativeTabs par1CreativeTabs)
 	{

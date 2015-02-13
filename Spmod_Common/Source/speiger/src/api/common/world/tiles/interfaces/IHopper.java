@@ -11,7 +11,6 @@ import net.minecraftforge.fluids.FluidStack;
 import speiger.src.api.common.inventory.tank.CopiedFluidTank;
 import speiger.src.api.common.registry.hopper.HopperRegistry.HopperEffect;
 import speiger.src.api.common.world.tiles.energy.EnergyProvider;
-import speiger.src.tinymodularthings.common.utils.HopperType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 

@@ -8,10 +8,12 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
+import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.api.common.world.tiles.interfaces.HopperType;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
+import speiger.src.spmodapi.common.templates.BaseTemplate;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
-import speiger.src.tinymodularthings.common.utils.HopperType;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -26,6 +28,9 @@ public class BlockTransport extends SpmodBlockContainerBase
 		this.setResistance(4.0F);
 		this.dissableDrops();
 		MinecraftForge.setBlockHarvestLevel(this, "pickaxe", 1);
+		BaseTemplate.item = new BlockStack(this, 1);
+		BaseTemplate.fluid = new BlockStack(this, 2);
+		BaseTemplate.energy = new BlockStack(this, 3);
 	}
 	
 	@Override

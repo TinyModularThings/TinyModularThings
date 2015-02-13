@@ -11,6 +11,7 @@ import java.io.File;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraftforge.common.Configuration;
+import speiger.src.advgenerators.AdvGenerators;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.registry.helpers.SpmodModRegistry;
 import speiger.src.api.common.utils.LogProxy;
@@ -79,6 +80,7 @@ public class CompactWindmills implements SpmodMod
 		}
 		catch (Exception e)
 		{
+			logger.print("Error with IDs Please Check that before you run this Mod!");
 			for (StackTraceElement stack : e.getStackTrace())
 			{
 				logger.print(stack);

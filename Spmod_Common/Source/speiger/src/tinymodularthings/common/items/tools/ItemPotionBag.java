@@ -1,33 +1,24 @@
 package speiger.src.tinymodularthings.common.items.tools;
 
-import net.minecraft.client.gui.inventory.GuiContainer;
+import java.util.List;
+
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
-import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.event.entity.item.ItemTossEvent;
-import speiger.src.api.client.gui.IItemGui;
-import speiger.src.api.common.data.nbt.NBTHelper;
-import speiger.src.spmodapi.client.gui.GuiInventoryCore;
+import speiger.src.spmodapi.common.handler.InventoryHandler;
+import speiger.src.spmodapi.common.items.core.ItemInventory;
+import speiger.src.spmodapi.common.items.core.SpmodInventoryItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import speiger.src.tinymodularthings.TinyModularThings;
-import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
-import speiger.src.tinymodularthings.common.enums.EnumIDs;
-import speiger.src.tinymodularthings.common.items.core.TinyItem;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemPotionBag extends TinyItem implements IItemGui
+public class ItemPotionBag extends SpmodInventoryItem
 {
-	
-	
 	public ItemPotionBag(int par1)
 	{
 		super(par1);
@@ -35,92 +26,30 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 		this.setMaxStackSize(1);
 		this.setCreativeTab(CreativeTabs.tabFood);
 		MinecraftForge.EVENT_BUS.register(this);
+		InventoryHandler.registerItemGui(this.itemID, PotionInventory.getInventoryName());
 	}
 
 	@Override
-	public boolean hasGui(ItemStack par1)
+	public boolean tickInventory(ItemStack par1)
+	{
+		NBTTagCompound data = this.getItemData(par1);
+		return data.getBoolean("Active");
+	}
+	@Override
+	public boolean hasTickRate(ItemStack par1)
 	{
 		return true;
 	}
 
 	@Override
-	@SideOnly(Side.CLIENT)
-	public GuiContainer getGui(InventoryPlayer par1, ItemStack par2)
+	public int getTickRate(ItemStack par1)
 	{
-		return new GuiInventoryCore(getContainer(par1, par2)).setAutoDrawing();
-	}
-
-	@Override
-	public boolean hasContainer(ItemStack par1)
-	{
-		return true;
-	}
-	
-	@Override
-	public Icon getIcon(ItemStack stack, int renderPass, EntityPlayer player, ItemStack usingItem, int useRemaining)
-	{
-		return getIcon(stack, renderPass);
-	}
-
-	@Override
-	public Icon getIcon(ItemStack stack, int pass)
-	{
-		NBTTagCompound nbt = NBTHelper.getTag(stack, "Bag");
-		NBTTagCompound data = nbt.getCompoundTag("BagData");
-		if(!data.getBoolean("Active"))
+		NBTTagCompound data = this.getItemData(par1).getCompoundTag("Inventory");
+		if(data.getBoolean("Delay"))
 		{
-			return TextureEngine.getTextures().getTexture(this, 2);
+			return 40;
 		}
-		
-		PotionInventory inv = new PotionInventory(null, stack);
-		if(!inv.hasPotions())
-		{
-			return TextureEngine.getTextures().getTexture(this, 1);
-		}
-		return TextureEngine.getTextures().getTexture(this, 0);
-	}
-	
-	@Override
-	@SideOnly(Side.CLIENT)
-	public boolean requiresMultipleRenderPasses()
-	{
-		return true;
-	}
-	
-	@Override
-	public int getRenderPasses(int metadata)
-	{
-		return 1;
-	}
-
-	@Override
-	public AdvContainer getContainer(InventoryPlayer par1, ItemStack par2)
-	{
-		return new AdvContainer(par1, new PotionInventory(par1.player, par2));
-	}
-	
-	
-	
-	@Override
-	public void onUpdate(ItemStack par1, World par2, Entity par3, int par4, boolean par5)
-	{
-		super.onUpdate(par1, par2, par3, par4, par5);
-		if(!par2.isRemote && par3 != null && par3 instanceof EntityPlayer)
-		{
-			if(!NBTHelper.getTag(par1, "Bag").hasKey("BagData"))
-			{
-				NBTTagCompound data = new NBTTagCompound();
-				data.setBoolean("Active", true);
-				NBTHelper.getTag(par1, "Bag").setCompoundTag("BagData", data);
-			}
-			boolean active = NBTHelper.getTag(par1, "Bag").getCompoundTag("BagData").getBoolean("Active");
-			if(active)
-			{
-				PotionInventory inv = new PotionInventory(((EntityPlayer)par3), par1);
-				inv.onTick(par1);
-				inv.onInventoryChanged();
-			}
-		}
+		return 0;
 	}
 
 	@Override
@@ -130,54 +59,56 @@ public class ItemPotionBag extends TinyItem implements IItemGui
 		{
 			if(par3.isSneaking())
 			{
-				NBTTagCompound nbt = NBTHelper.getTag(par1, "Bag").getCompoundTag("BagData");
-				nbt.setBoolean("Active", !nbt.getBoolean("Active"));
-			}
-			else
-			{
-				par3.openGui(TinyModularThings.instance, EnumIDs.Items.getId(), par2, 0, 0, 0);
+				NBTTagCompound data = this.getItemData(par1);
+				data.setBoolean("Active", !data.getBoolean("Active"));
+				return par1;
 			}
 		}
-		return par1;
-	}
-
-	public static ItemStack createEmptyPotionBag(int id)
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		nbt.setString("ID", ("Bag:"+System.currentTimeMillis()));
-		ItemStack stack = new ItemStack(id, 1, 0);
-		stack.setTagInfo("Bag", nbt);
-		return stack;
+		return super.onItemRightClick(par1, par2, par3);
 	}
 	
-	public static boolean delay = false;
-	
-	@ForgeSubscribe
-	public void onDrop(ItemTossEvent evt)
-	{
-		if(delay)
-		{
-			delay = false;
-			return;
-		}
-		ItemStack stack = evt.entityItem.getEntityItem();
-		EntityPlayer player = evt.player;
-		if(player != null && player.openContainer != null && player.openContainer instanceof AdvContainer && ((AdvContainer)player.openContainer).getInvName().equals("Potion Bag"))
-		{
-			if(stack.itemID == TinyItems.potionBag.itemID)
-			{
-				((AdvContainer)player.openContainer).onContainerClosed(player);
-				player.closeScreen();
-				delay = true;
-			}
-		}
-	}
 
 	@Override
 	public String getName(ItemStack par1)
 	{
 		return "Potion Bag";
 	}
+
+	@Override
+	public ItemInventory createNewInventory(EntityPlayer par1, ItemStack par2)
+	{
+		return new PotionInventory(par1, par2);
+	}
+
+	@Override
+	public String createNewInventoryID()
+	{
+		return "BagID:"+System.currentTimeMillis();
+	}
+
+	@Override
+	public Icon getTexture(ItemStack stack)
+	{
+		NBTTagCompound nbt = this.getItemData(stack);
+		if(!nbt.getBoolean("Active"))
+		{
+			return getEngine().getTexture(this, 2);
+		}
+		PotionInventory inv = (PotionInventory)this.createNewInventory(null, stack);
+		if(inv != null && !inv.hasPotions())
+		{
+			return TextureEngine.getTextures().getTexture(this, 1);
+		}
+		return TextureEngine.getTextures().getTexture(this, 0);
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
+	{
+		par3List.add(createItem(0));
+	}
+	
 	
 	
 }

@@ -2,52 +2,28 @@ package speiger.src.tinymodularthings.common.items.tools;
 
 import java.util.List;
 
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
-
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemPotion;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.potion.Potion;
 import net.minecraft.potion.PotionEffect;
-import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
-import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
-import speiger.src.spmodapi.common.tile.AdvInventory;
+import speiger.src.spmodapi.common.items.core.ItemInventory;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
-public class PotionInventory extends AdvInventory
+public class PotionInventory extends ItemInventory
 {
-	EntityPlayer player;
-	String id;
+	boolean delay = false;
 	
 	public PotionInventory(EntityPlayer par1, ItemStack par2)
 	{
-		super(45);
-		player = par1;
-		id = NBTHelper.getTag(par2, "Bag").getString("ID");
-		readFromNBT(NBTHelper.getTag(par2, "Bag").getCompoundTag("Inventory"));
+		super(par1, par2, 45);
 	}
-
-	@Override
-	public void onInventoryChanged()
-	{
-		ItemStack bag = this.getBagFromInventory();
-		if(bag != null)
-		{
-			NBTTagCompound nbt = new NBTTagCompound();
-			this.writeToNBT(nbt);
-			NBTHelper.getTag(bag, "Bag").setCompoundTag("Inventory", nbt);
-		}
-	}
-	
-	
 	
 	@Override
 	public void addContainerSlots(AdvContainer par1)
@@ -67,20 +43,11 @@ public class PotionInventory extends AdvInventory
 		}
 	}
 	
-	
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public ResourceLocation getTexture()
 	{
 		return getEngine().getTexture("BigFrame");
-	}
-
-	@Override
-	public void onPlayerCloseContainer(EntityPlayer par1)
-	{
-		super.onPlayerCloseContainer(par1);
-		this.closeChest();
 	}
 
 	@Override
@@ -114,78 +81,67 @@ public class PotionInventory extends AdvInventory
 		}
 		return super.canMergeItem(par1, slotID);
 	}
+	
+	@Override
+	public boolean stopTickingOnGuiOpen()
+	{
+		return true;
+	}
 
 	@Override
-	public void closeChest()
+	public void readFromNBT(NBTTagCompound par1)
 	{
-		this.onInventoryChanged();
-	}
-	
-	public ItemStack getBagFromInventory()
-	{
-		InventoryPlayer inv = player.inventory;
-		for(int i = 0;i<inv.getSizeInventory();i++)
-		{
-			ItemStack cu = inv.getStackInSlot(i);
-			if(cu != null && cu.itemID == TinyItems.potionBag.itemID)
-			{
-				String id = NBTHelper.getTag(cu, "Bag").getString("ID");
-				if(id.equalsIgnoreCase(this.id))
-				{
-					return cu;
-				}
-			}
-		}
-		if(inv.getCurrentItem() != null && inv.getCurrentItem().itemID == TinyItems.potionBag.itemID)
-		{
-			String may = NBTHelper.getTag(inv.getCurrentItem(), "Bag").getString("ID");
-			if(may.equalsIgnoreCase(id))
-			{
-				return inv.getCurrentItem();
-			}
-		}
-		return null;
+		super.readFromNBT(par1);
+		delay = par1.getBoolean("Delay");
 	}
 
-	public void onTick(ItemStack stack)
+	@Override
+	public void writeToNBT(NBTTagCompound par1)
 	{
-		if(!player.worldObj.isRemote)
-		{
-			if(player.openContainer != null && player.openContainer instanceof AdvContainer && ((AdvContainer)player.openContainer).getInvName().equals("Potion Bag"))
-			{
-				return;
-			}
-			
-			NBTTagCompound nbt = NBTHelper.getTag(this.getBagFromInventory(), "Bag").getCompoundTag("BagData");
+		super.writeToNBT(par1);
+		par1.setBoolean("Delay", delay);
+	}
 
-			for(int x = 0;x<9;x++)
+	@Override
+	public void onItemTick()
+	{
+		delay = false;
+		boolean noWork = true;
+		for(int x = 0;x<9;x++)
+		{
+			ItemPotion potion = getPotionFromFilter(x);
+			boolean stop = false;
+			if(potion != null)
 			{
-				ItemPotion potion = getPotionFromFilter(x);
-				if(potion != null)
+				List<PotionEffect> effects = potion.getEffects(getPotionStackFromFilter(x));
+				if(effects != null)
 				{
-					List<PotionEffect> effects = potion.getEffects(getPotionStackFromFilter(x));
-					if(effects != null)
+					for(PotionEffect ef : effects)
 					{
-						for(PotionEffect ef : effects)
+						PotionEffect effect = player.getActivePotionEffect(Potion.potionTypes[ef.getPotionID()]);
+						if(effect == null || effect.getDuration() < 200)
 						{
-							PotionEffect effect = player.getActivePotionEffect(Potion.potionTypes[ef.getPotionID()]);
-							if(effect == null || effect.getDuration() < 200)
+							if(applyEffect(ef))
 							{
-								if(applyEffect(ef))
-								{
-									NBTHelper.getTag(this.getBagFromInventory(), "Bag").setCompoundTag("BagData", nbt);
-									return;
-								}
+								stop = true;
+								noWork = false;
+								break;
 							}
 						}
 					}
 				}
 			}
-		
-			NBTHelper.getTag(this.getBagFromInventory(), "Bag").setCompoundTag("BagData", nbt);
+			if(stop)
+			{
+				break;
+			}
+		}
+		if(noWork)
+		{
+			delay = true;
 		}
 	}
-	
+
 	public boolean applyEffect(PotionEffect par1)
 	{
 		for(int i = 0;i<36;i++)
@@ -292,28 +248,13 @@ public class PotionInventory extends AdvInventory
 		}
 		return false;
 	}
-
-	@Override
-	public Icon getIconFromSideAndMetadata(int side, int renderPass)
-	{
-		return null;
-	}
 	
-	
-
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void onGuiConstructed(GuiInventoryCore par1)
 	{
 		par1.setY(225);
 		par1.setX(202);
-	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public int getNameYOffset()
-	{
-		return super.getNameYOffset();
 	}
 
 	@Override
@@ -326,40 +267,11 @@ public class PotionInventory extends AdvInventory
 	@Override
 	public String getInvName()
 	{
-		return "Potion Bag";
+		return getInventoryName();
 	}
 	
-	@Override
-	public void readFromNBT(NBTTagCompound par1)
+	public static String getInventoryName()
 	{
-		inv = new ItemStack[getSizeInventory()];
-		NBTTagList list = par1.getTagList("Inventory");
-		for(int i = 0;i<list.tagCount();i++)
-		{
-			NBTTagCompound data = (NBTTagCompound)list.tagAt(i);
-			byte slotID = data.getByte("SlotID");
-			if(slotID >= 0 && slotID < getSizeInventory())
-			{
-				inv[slotID] = ItemStack.loadItemStackFromNBT(data);
-			}
-		}
-	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound par1)
-	{
-		NBTTagList list = new NBTTagList();
-		for(int i = 0;i<getSizeInventory();i++)
-		{
-			ItemStack stack = inv[i];
-			if(stack != null)
-			{
-				NBTTagCompound data = new NBTTagCompound();
-				data.setByte("SlotID", (byte)i);
-				stack.writeToNBT(data);
-				list.appendTag(data);
-			}
-		}
-		par1.setTag("Inventory", list);
+		return "Potion Bag";
 	}
 }

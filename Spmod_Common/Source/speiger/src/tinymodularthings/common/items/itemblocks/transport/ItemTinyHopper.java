@@ -17,7 +17,6 @@ import speiger.src.api.client.render.IMetaItemRender;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.tinymodularthings.client.render.transport.renderTransportTile;
 import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
-import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.items.core.TinyPlacerItem;
 import cpw.mods.fml.client.FMLClientHandler;
 import cpw.mods.fml.relauncher.Side;
@@ -126,12 +125,12 @@ public class ItemTinyHopper extends TinyPlacerItem implements IMetaItemRender
 	{
 		switch(type)
 		{
-			case AdvFluids: return speiger.src.tinymodularthings.common.utils.HopperType.Fluids.getTexture(true);
-			case AdvItems: return speiger.src.tinymodularthings.common.utils.HopperType.Items.getTexture(true);
-			case AdvancedEnergy: return speiger.src.tinymodularthings.common.utils.HopperType.Energy.getTexture(true);
-			case Energy: return speiger.src.tinymodularthings.common.utils.HopperType.Energy.getTexture(false);
-			case Fluids: return speiger.src.tinymodularthings.common.utils.HopperType.Fluids.getTexture(false);
-			case Items: return speiger.src.tinymodularthings.common.utils.HopperType.Items.getTexture(false);
+			case AdvFluids: return speiger.src.api.common.world.tiles.interfaces.HopperType.Fluids.getTexture(true);
+			case AdvItems: return speiger.src.api.common.world.tiles.interfaces.HopperType.Items.getTexture(true);
+			case AdvancedEnergy: return speiger.src.api.common.world.tiles.interfaces.HopperType.Energy.getTexture(true);
+			case Energy: return speiger.src.api.common.world.tiles.interfaces.HopperType.Energy.getTexture(false);
+			case Fluids: return speiger.src.api.common.world.tiles.interfaces.HopperType.Fluids.getTexture(false);
+			case Items: return speiger.src.api.common.world.tiles.interfaces.HopperType.Items.getTexture(false);
 			default: return null;
 		}
 	}

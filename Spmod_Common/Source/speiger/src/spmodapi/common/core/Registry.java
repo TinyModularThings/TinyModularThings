@@ -54,7 +54,7 @@ public class Registry
 		EntityRegistry.registerModEntity(EntityOverridenEnderman.class, "newEndermann", 1, SpmodAPI.instance, 256, 3, true);
 		FluidContainerRegistry.registerFluidContainer(APIUtils.hempResin, new ItemStack(APIItems.hempResinBucket), new ItemStack(Item.bucketEmpty));
 		MobMachineLoader.initMobMachines();
-		GameRegistry.registerFuelHandler(new InventoryHandler());
+		GameRegistry.registerFuelHandler(InventoryHandler.instance);
 		GasHandler.init();
 	}
 	

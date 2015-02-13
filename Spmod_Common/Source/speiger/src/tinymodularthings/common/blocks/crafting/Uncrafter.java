@@ -29,10 +29,12 @@ import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import buildcraft.api.power.ILaserTarget;
+import buildcraft.api.power.ILaserTargetRegistry;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.transport.IPipeTile;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -141,7 +143,7 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 		{
 			if(provider.useEnergy(20, true) == 20)
 			{
-				progress++;
+				progress+=1;
 				provider.useEnergy(20, false);
 				if(progress >= maxprogress)
 				{
@@ -272,6 +274,36 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 	public int getZCoord()
 	{
 		return zCoord;
+	}
+	
+	@Override
+	public void onChunkUnload()
+	{
+		super.onChunkUnload();
+		if(!worldObj.isRemote)
+		{
+			ILaserTargetRegistry.removeTarget(this);
+		}
+	}
+
+	@Override
+	public void validate()
+	{
+		super.validate();
+		if(!worldObj.isRemote)
+		{
+			ILaserTargetRegistry.addTarget(this);
+		}
+	}
+
+	@Override
+	public void invalidate()
+	{
+		super.invalidate();
+		if(!worldObj.isRemote)
+		{
+			ILaserTargetRegistry.removeTarget(this);
+		}
 	}
 
 	@Override

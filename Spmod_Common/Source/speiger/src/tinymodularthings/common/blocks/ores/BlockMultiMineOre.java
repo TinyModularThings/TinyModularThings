@@ -9,10 +9,10 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.api.common.world.gen.IMultimineOre;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
 import speiger.src.spmodapi.common.util.TickHelper;
 import speiger.src.spmodapi.common.world.retrogen.RetroGenTickHandler.OreReplacer;
-import speiger.src.tinymodularthings.common.interfaces.IMultimineOre;
 
 public abstract class BlockMultiMineOre extends SpmodBlockBase implements IMultimineOre
 {

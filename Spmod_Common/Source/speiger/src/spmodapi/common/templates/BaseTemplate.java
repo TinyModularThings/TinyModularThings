@@ -11,15 +11,14 @@ import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.data.StructureStorage;
-import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 
 public abstract class BaseTemplate implements ITemplate
 {
 	public StructureStorage storage = StructureStorage.instance;
 	
-	private BlockStack item;
-	private BlockStack fluid;
-	private BlockStack energy;
+	public static BlockStack item;
+	public static BlockStack fluid;
+	public static BlockStack energy;
 	private BlockPosition target;
 	private ArrayList<BlockPosition> structure = new ArrayList<BlockPosition>();
 	
@@ -33,7 +32,7 @@ public abstract class BaseTemplate implements ITemplate
 	{
 		if(item == null)
 		{
-			item = new BlockStack(TinyBlocks.transportBlock, 1);
+			item = new BlockStack();
 		}
 		return item;
 	}
@@ -42,7 +41,7 @@ public abstract class BaseTemplate implements ITemplate
 	{
 		if(fluid == null)
 		{
-			fluid = new BlockStack(TinyBlocks.transportBlock, 2);
+			fluid = new BlockStack();
 		}
 		return fluid;
 	}
@@ -51,7 +50,7 @@ public abstract class BaseTemplate implements ITemplate
 	{
 		if(energy == null)
 		{
-			energy = new BlockStack(TinyBlocks.transportBlock, 3);
+			energy = new BlockStack();
 		}
 		return energy;
 	}

@@ -3,6 +3,7 @@ package speiger.src.spmodapi.common.util;
 import net.minecraftforge.common.MinecraftForge;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.handler.BucketHandler;
+import speiger.src.spmodapi.common.handler.InventoryHandler;
 import speiger.src.spmodapi.common.handler.LivingHandler;
 import speiger.src.spmodapi.common.sound.SoundRegistry;
 import speiger.src.spmodapi.common.util.data.ServerTick;
@@ -28,6 +29,7 @@ public class ForgeRegister
 		TickRegistry.registerTickHandler(new CountdownTick(), Side.SERVER);
 		StructureStorage.registerForgeEvent();
 		TickRegistry.registerTickHandler(new ServerTick(), Side.SERVER);
+		regist(InventoryHandler.instance);
 		if (SpmodConfig.booleanInfos.get("Retrogen"))
 		{
 			TickRegistry.registerTickHandler(RetroGenTickHandler.getTicks(), Side.SERVER);

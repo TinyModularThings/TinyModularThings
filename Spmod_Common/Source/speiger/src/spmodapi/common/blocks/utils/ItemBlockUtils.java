@@ -37,6 +37,7 @@ public class ItemBlockUtils extends ItemBlockSpmod
 			case 2: return "Mob Machine";
 			case 3: return "Entity Lurer";
 			case 4: return "Inventory Accesser";
+			case 5: return "Cobble Storage";
 			default: return "No Name";
 		}
 	}
