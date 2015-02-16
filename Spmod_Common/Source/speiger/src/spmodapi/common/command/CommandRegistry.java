@@ -61,7 +61,7 @@ public class CommandRegistry
 		reg.registerCommand(new ButcherCommand());
 		reg.registerCommand(new SpeigerCommand());
 		reg.registerCommand(new CommandReadTexture());
-		reg.registerCommand(new PlayerGasCommand());
+		reg.registerCommand(new CommandPlayerInfos());
 		if(!SpmodConfig.booleanInfos.get("APIOnly"))
 		{
 			reg.registerCommand(new CommandAccesser());

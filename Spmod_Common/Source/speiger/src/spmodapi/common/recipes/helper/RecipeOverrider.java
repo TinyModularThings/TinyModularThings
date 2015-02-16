@@ -271,7 +271,7 @@ public class RecipeOverrider
 			try
 			{
 				Class clz = Class.forName("net.minecraftforge.oredict.ShapedOreRecipe");
-				Constructor cons = clz.getDeclaredConstructors()[0];
+				Constructor cons = clz.getDeclaredConstructor(cu.getClass(), Map.class);
 				cons.setAccessible(true);
 				shape = (ShapedOreRecipe)cons.newInstance(cu, repl);
 			}

@@ -1,10 +1,13 @@
 package speiger.src.spmodapi.common.util;
 
 import java.util.EnumSet;
+import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.util.EnumChatFormatting;
 import speiger.src.spmodapi.common.entity.SpmodFoodStats;
+import speiger.src.spmodapi.common.handler.PlayerHandler;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
@@ -29,27 +32,19 @@ public class CountdownTick implements ITickHandler
 	public void tickEnd(EnumSet<TickType> type, Object... tickData)
 	{
 		EntityPlayer player = (EntityPlayer) tickData[0];
-		
-		NBTTagCompound playerNBT = player.getEntityData();
-		
-		if (playerNBT.hasKey("SpmodAPIData"))
+		PlayerHandler handler = PlayerHandler.getInstance();
+		HashMap<String, Integer> numb = handler.numbers.get(player.username);
+		if(numb != null && numb.containsKey("Counter"))
 		{
-			NBTTagCompound nbt = playerNBT.getCompoundTag("SpmodAPIData");
-			if (nbt.hasKey("CountdownTime"))
+			int counter = numb.get("Counter");
+			counter--;
+			if(counter < 0 && counter > -50)
 			{
-				int time = nbt.getInteger("CountdownTime");
-				time--;
-				nbt.setInteger("CountdownTime", time);
-				if (time <= 0)
-				{
-					player.addChatMessage("Countdown is over");
-					
-					if (time <= -50)
-					{
-						nbt.removeTag("CountdownTime");
-					}
-				}
-				
+				player.sendChatToPlayer(LangProxy.getText("Countdown is Over", EnumChatFormatting.AQUA));
+			}
+			else if(counter <= -50)
+			{
+				numb.remove("Counter");
 			}
 		}
 		

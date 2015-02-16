@@ -358,10 +358,11 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		{
 			maxFuel = fuel;
 		}
-		if (fuel < 100)
+		if (fuel < 100 && inv[0] != null)
 		{
 			refuel();
 		}
+		
 		if (fuel <= 0 && heat > 0)
 		{
 			if (worldObj.getWorldTime() % 5 == 0)

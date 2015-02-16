@@ -18,7 +18,7 @@ public class IC2IridiumPlugin
 				try
 				{
 					ItemStack iridum = Items.getItem("iridiumOre");
-					Class.forName("factorization.common.TileEntityCrystallizer").getMethod("addRecipe", ItemStack.class, Float.class).invoke(null, new ItemStack(TinyBlocks.ores, 5), iridum, 2.0F, new ItemStack(Item.diamond));
+					Class.forName("factorization.oreprocessing.TileEntityCrystallizer").getMethod("addRecipe", ItemStack.class, Float.class).invoke(null, new ItemStack(TinyBlocks.ores, 5), iridum, 2.0F, new ItemStack(Item.diamond));
 				}
 				catch (Exception e)
 				{

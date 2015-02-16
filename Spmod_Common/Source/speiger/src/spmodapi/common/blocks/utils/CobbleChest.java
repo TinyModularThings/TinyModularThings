@@ -1,19 +1,21 @@
 package speiger.src.spmodapi.common.blocks.utils;
 
-import org.lwjgl.opengl.GL11;
-
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
+
+import org.lwjgl.opengl.GL11;
+
+import speiger.src.api.client.render.BlockRenderHelper;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.tile.FacedInventory;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class CobbleChest extends FacedInventory
 {
@@ -79,11 +81,10 @@ public class CobbleChest extends FacedInventory
 	@SideOnly(Side.CLIENT)
 	public void onRenderWorld(Block block, RenderBlocks renderer)
 	{
-		for(int i = 0;i<2;i++)
-		{
-			this.setRenderPass(i);
-			super.onRenderWorld(block, renderer);
-		}
+		this.setRenderPass(0);
+		super.onRenderWorld(block, renderer);
+		this.setRenderPass(1);
+		BlockRenderHelper.renderSide(this, xCoord, yCoord, zCoord, renderer, getFacing());
 	}
 
 	@Override

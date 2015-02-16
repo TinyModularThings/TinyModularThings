@@ -46,7 +46,7 @@ public class Registry
 		MinecraftForge.addGrassSeed(new ItemStack(APIItems.hempSeed, 1), 5);
 		MinecraftForge.addGrassPlant(APIBlocks.blueFlower, 0, 10);
 		instance.initOres();
-		PlayerHandler tracker = new PlayerHandler();
+		PlayerHandler tracker = PlayerHandler.getInstance();
 		GameRegistry.registerPlayerTracker(tracker);
 		DataStorage.registerNBTReciver(tracker);
 		DataStorage.registerNBTReciver(SpmodFoodStats.food);
@@ -55,6 +55,7 @@ public class Registry
 		FluidContainerRegistry.registerFluidContainer(APIUtils.hempResin, new ItemStack(APIItems.hempResinBucket), new ItemStack(Item.bucketEmpty));
 		MobMachineLoader.initMobMachines();
 		GameRegistry.registerFuelHandler(InventoryHandler.instance);
+		GameRegistry.registerCraftingHandler(InventoryHandler.instance);
 		GasHandler.init();
 	}
 	

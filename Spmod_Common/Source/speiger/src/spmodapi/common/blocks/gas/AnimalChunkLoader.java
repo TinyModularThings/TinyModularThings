@@ -242,12 +242,12 @@ public class AnimalChunkLoader extends AdvTile implements INBTReciver
 
 	public void playEatingSound(EntityAgeable par1)
 	{
-		SoundRegistry.getInstance().playSound(worldObj, (int)par1.posX, (int)par1.posY, (int)par1.posZ, "random.burp", 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
+		SpmodAPI.soundEngine.playSound(worldObj, (int)par1.posX, (int)par1.posY, (int)par1.posZ, "random.burp", 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
 	}
 	
 	public void playDrinkingSound(EntityAgeable par1)
 	{
-		SoundRegistry.getInstance().playSound(worldObj, (int)par1.posX, (int)par1.posY, (int)par1.posZ, "random.drink", 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
+		SpmodAPI.soundEngine.playSound(worldObj, (int)par1.posX, (int)par1.posY, (int)par1.posZ, "random.drink", 0.5F, worldObj.rand.nextFloat() * 0.1F + 0.9F);
 	}
 	
 	public boolean isFeedingTime()

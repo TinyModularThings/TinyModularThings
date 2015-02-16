@@ -32,25 +32,7 @@ public class IceRotor extends SpmodItem implements IRotorItem
 		this.setMaxDamage(Short.MAX_VALUE);
 		this.setMaxStackSize(1);
 	}
-	
-	@Override
-	public boolean ignoreTier(ItemStack par1)
-	{
-		return true;
-	}
-	
-	@Override
-	public boolean canWorkWithWindmillTier(ItemStack par1, int tier)
-	{
-		return true;
-	}
-	
-	@Override
-	public int getTier(ItemStack par1)
-	{
-		return 0;
-	}
-	
+
 	@Override
 	public void damageRotor(ItemStack par1, int damage, IWindmill windmill)
 	{
@@ -61,36 +43,12 @@ public class IceRotor extends SpmodItem implements IRotorItem
 		}
 	}
 	
-	
-	
 	public static ItemStack getRotor(int id)
 	{
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setInteger("Damage", 0);
-		nbt.setFloat("Eff", 0.2F);
 		ItemStack item = new ItemStack(id, 1, 0);
 		return item;
-	}
-	
-	
-
-	@Override
-	public void onUpdate(ItemStack par1, World par2, Entity par3, int par4, boolean par5)
-	{
-		if(!par2.isRemote)
-		{
-			if(!NBTHelper.nbtCheck(par1, "Rotor"))
-			{
-				par1.setTagInfo("Rotor", new NBTTagCompound());
-			}
-			
-			NBTTagCompound data = NBTHelper.getTag(par1, "Rotor");
-			float eff = data.getFloat("Eff");
-			if(eff > 0.2F)
-			{
-				data.setFloat("Eff", 0.2F);
-			}
-		}
 	}
 
 	@Override
@@ -134,57 +92,22 @@ public class IceRotor extends SpmodItem implements IRotorItem
 	@Override
 	public void onRotorTick(IWindmill windMill, World world, ItemStack rotor)
 	{
-		if(!world.isRemote)
+		if(world.isRemote || windMill.getFacing() != 0 && windMill.getFacing() != 1)
 		{
-			if(!NBTHelper.nbtCheck(rotor, "Rotor"))
+			if(!world.isRemote)
 			{
-				rotor.setTagInfo("Rotor", new NBTTagCompound());
+				windMill.setNewSpeed(0.0F);
 			}
-			if(windMill.getFacing() != 0 && windMill.getFacing() != 1)
-			{
-				return;
-			}
-			
-			float eff = NBTHelper.getTag(rotor, "Rotor").getFloat("Eff");
-			if(eff < 15F && world.rand.nextFloat() > 0.9F)
-			{
-				eff+=(world.rand.nextFloat() / 10);
-				rotor.setItemDamage(rotor.getItemDamage()+world.rand.nextInt(4));
-				ChunkCoordinates coord = windMill.getChunkCoordinates();
-				world.playSoundEffect((double)((float)coord.posX + 0.5F), (double)((float)coord.posY + 0.5F), (double)((float)coord.posZ + 0.5F), "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
-			}
-			if(eff > 0.000F)
-			{
-				eff-=0.001F;
-			}
-			NBTHelper.getTag(rotor, "Rotor").setFloat("Eff", eff);
+			return;
 		}
-	}
-	
-	@Override
-	public float getRotorEfficeny(ItemStack par1, IWindmill par2)
-	{
-		if(par2.getFacing() != 0 && par2.getFacing() != 1)
+		float currentSpeed = windMill.getActualSpeed();
+		if(currentSpeed < 1.0F)
 		{
-			return 0F;
-		}
-		if(!par2.isFake() && !par2.getWindmill().getWorldObj().provider.isHellWorld)
-		{
-			return 0.01F;
-		}
-		
-		if(!NBTHelper.nbtCheck(par1, "Rotor"))
-		{
-			par1.setTagInfo("Rotor", new NBTTagCompound());
-		}
-		
-		return NBTHelper.getTag(par1, "Rotor").getFloat("Eff");
-	}
-	
-	@Override
-	public boolean isAdvancedRotor(ItemStack par1)
-	{
-		return false;
+			windMill.setNewSpeed(1.0F);
+			damageRotor(rotor, 2, windMill);
+			ChunkCoordinates coord = windMill.getChunkCoordinates();
+			world.playSoundEffect((double)((float)coord.posX + 0.5F), (double)((float)coord.posY + 0.5F), (double)((float)coord.posZ + 0.5F), "random.fizz", 0.5F, 2.6F + (world.rand.nextFloat() - world.rand.nextFloat()) * 0.8F);
+		}		
 	}
 	
 	@Override
@@ -194,7 +117,7 @@ public class IceRotor extends SpmodItem implements IRotorItem
 	}
 	
 	@Override
-	public IRotorModel getCustomModel(ItemStack par1, int size)
+	public IRotorModel getCustomModel(ItemStack par1)
 	{
 		return null;
 	}
@@ -203,6 +126,18 @@ public class IceRotor extends SpmodItem implements IRotorItem
 	public String getName(ItemStack par1)
 	{
 		return "Ice Rotor";
+	}
+
+	@Override
+	public boolean hasCustomSpeedMath(IWindmill par1, ItemStack rotor)
+	{
+		return true;
+	}
+
+	@Override
+	public RotorWeight getRotorWeight(IWindmill par1, ItemStack par2)
+	{
+		return RotorWeight.Medium;
 	}
 	
 	

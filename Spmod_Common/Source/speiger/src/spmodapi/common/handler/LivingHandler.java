@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.common.handler;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
@@ -315,11 +316,11 @@ public class LivingHandler
 		{
 			return false;
 		}
-		NBTTagCompound data = par1.getEntityData();
-		if(data != null)
+		HashMap<String, Boolean> result = PlayerHandler.flags.get(par1.username);
+		if(result == null)
 		{
-			return data.getBoolean("GasDrops");
+			return false;
 		}
-		return false;
+		return result.get("GasByKill");
 	}
 }

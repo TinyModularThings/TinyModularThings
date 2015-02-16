@@ -4,52 +4,66 @@ import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySource;
 import ic2.api.energy.tile.IEnergySourceInfo;
+import ic2.api.network.INetworkDataProvider;
+import ic2.api.network.INetworkUpdateListener;
 import ic2.api.tile.IWrenchable;
+import ic2.core.IC2;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.network.INetworkManager;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.network.packet.Packet132TileEntityData;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.MinecraftForge;
-import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.items.IRotorItem;
+import speiger.src.api.common.world.items.IRotorItem.RotorWeight;
 import speiger.src.api.common.world.tiles.interfaces.IWindmill;
 import speiger.src.compactWindmills.CompactWindmills;
 import speiger.src.compactWindmills.client.gui.GuiWindmill;
 import speiger.src.compactWindmills.common.utils.WindmillType;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
-import speiger.src.spmodapi.common.tile.TileFacing;
-import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.tile.FacedInventory;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class WindMill extends TileFacing implements IInventory,
-		IEnergySource, IWindmill, IWrenchable, IEnergySourceInfo
+public class WindMill extends FacedInventory implements IInventory,
+		IEnergySource, IWindmill, IWrenchable, IEnergySourceInfo, INetworkDataProvider, INetworkUpdateListener
 {
-	public ItemStack[] inv = new ItemStack[1];
 	public boolean loaded = false;
 	public boolean damageActive = false;
 	public WindmillType type;
-	public double cuOutput = 0;
+	public double storedEnergy = 0.0D;
+	public double maxEnergy = 0.0D;
+	
+	public boolean rotorInited = false;
+	public boolean basicRotation = false;
+	public int rotorID = 0;
+	public int rotorMeta = 0;
+	public RotorWeight weight = null;
+	
+	public float speed = 0.0F;
+	public float requestedSpeed = 0.0F;
+	
+	public float Rotated = 0F;
 	
 	public WindMill()
 	{
-		type = WindmillType.Nothing;
+		this(WindmillType.Nothing);
 	}
 	
 	public WindMill(WindmillType par1)
 	{
+		super(1);
 		type = par1;
 	}
 	
@@ -62,29 +76,17 @@ public class WindMill extends TileFacing implements IInventory,
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
-		TextureEngine engine = TextureEngine.getTextures();
 		if(side == 0 && side != getFacing())
 		{
-			return engine.getTexture(CompactWindmills.windmill, type.ordinal(), 0);
+			return getEngine().getTexture(CompactWindmills.windmill, type.ordinal(), 0);
 		}
 		
 		if(side == getFacing())
 		{
-			return engine.getTexture(CompactWindmills.windmill, type.ordinal(), 1);
+			return getEngine().getTexture(CompactWindmills.windmill, type.ordinal(), 1);
 		}
 		
-		return engine.getTexture(CompactWindmills.windmill, type.ordinal(), 2);
-	}
-	
-	@Override
-	public void setFacing(short i)
-	{
-		super.setFacing(i);
-		if (worldObj != null)
-		{
-			this.updateBlock();
-			this.onInventoryChanged();
-		}
+		return getEngine().getTexture(CompactWindmills.windmill, type.ordinal(), 2);
 	}
 	
 	@Override
@@ -105,95 +107,13 @@ public class WindMill extends TileFacing implements IInventory,
 	{
 		return new GuiWindmill(par1, this);
 	}
-	
-	@Override
-	public int getSizeInventory()
-	{
-		return 1;
-	}
-	
-	public ItemStack getStackInSlot(int par1)
-	{
-		return this.inv[par1];
-	}
-	
-	public ItemStack decrStackSize(int par1, int par2)
-	{
-		if (this.inv[par1] != null)
-		{
-			ItemStack itemstack;
-			
-			if (this.inv[par1].stackSize <= par2)
-			{
-				itemstack = this.inv[par1];
-				this.inv[par1] = null;
-				return itemstack;
-			}
-			else
-			{
-				itemstack = this.inv[par1].splitStack(par2);
-				
-				if (this.inv[par1].stackSize == 0)
-				{
-					this.inv[par1] = null;
-				}
-				
-				return itemstack;
-			}
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	public ItemStack getStackInSlotOnClosing(int par1)
-	{
-		if (this.inv[par1] != null)
-		{
-			ItemStack itemstack = this.inv[par1];
-			this.inv[par1] = null;
-			return itemstack;
-		}
-		else
-		{
-			return null;
-		}
-	}
-	
-	public void setInventorySlotContents(int par1, ItemStack par2ItemStack)
-	{
-		if (par2ItemStack != null && !(par2ItemStack.getItem() instanceof IRotorItem))
-		{
-			return;
-		}
 		
-		this.inv[par1] = par2ItemStack;
-		
-		if (par2ItemStack != null && par2ItemStack.stackSize > this.getInventoryStackLimit())
-		{
-			par2ItemStack.stackSize = this.getInventoryStackLimit();
-		}
-	}
-	
 	@Override
 	public String getInvName()
 	{
 		return "WindMill";
 	}
-	
-	@Override
-	public boolean isInvNameLocalized()
-	{
-		return false;
-	}
-	
-	@Override
-	public int getInventoryStackLimit()
-	{
-		return 1;
-	}
-	
+		
 	@Override
 	public boolean isUseableByPlayer(EntityPlayer entityplayer)
 	{
@@ -201,19 +121,9 @@ public class WindMill extends TileFacing implements IInventory,
 	}
 	
 	@Override
-	public void openChest()
-	{
-	}
-	
-	@Override
-	public void closeChest()
-	{
-	}
-	
-	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
-		return itemstack != null && itemstack.getItem() instanceof IRotorItem && ((IRotorItem) itemstack.getItem()).ignoreTier(itemstack) ? true : ((IRotorItem) itemstack.getItem()).canWorkWithWindmillTier(itemstack, type.ordinal());
+		return itemstack != null && itemstack.getItem() instanceof IRotorItem;
 	}
 	
 	@Override
@@ -233,113 +143,287 @@ public class WindMill extends TileFacing implements IInventory,
 			loaded = true;
 		}
 		
-		if (!worldObj.isRemote)
+		if (worldObj.isRemote)
 		{
-			if (inv[0] != null)
+			return;
+		}
+		
+		if(getClockTime() % 20 == 0)
+		{
+			if(inv[0] == null && rotorInited)
 			{
-				if (worldObj.getWorldTime() % 64 == 0)
+				clearRotor();
+			}
+			else if(inv[0] != null && !rotorInited)
+			{
+				initRotor();
+			}
+			else if(inv[0] != null && rotorID != inv[0].itemID && rotorMeta != inv[0].getItemDamage())
+			{
+				refreshRotor();
+			}
+		}
+		if(hasRotor() && rotorInited)
+		{
+			if(getClockTime() % 64 == 0)
+			{
+				if(this.basicRotation)
 				{
-					double oldOutput = cuOutput;
-					((IRotorItem) inv[0].getItem()).onRotorTick(this, this.worldObj, inv[0]);
-					cuOutput = getCurrentOutput();
-					// FMLLog.getLogger().info("Damage: ");
-					if (oldOutput != cuOutput)
+					updateWindSpeed();
+				}
+				getRotor().onRotorTick(this, worldObj, inv[0]);
+				if(this.damageActive)
+				{
+					int calculatedDamage = calculateDamage();
+					if(calculatedDamage > 0)
 					{
-						PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 100, worldObj.provider.dimensionId, this.getDescriptionPacket());
+						getRotor().damageRotor(inv[0], calculatedDamage, this);
 					}
 				}
 			}
-			else
-			{
-				double oldOutput = cuOutput;
-				cuOutput = 0;
-				if (oldOutput != cuOutput)
-				{
-					PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 100, worldObj.provider.dimensionId, this.getDescriptionPacket());
-				}
-			}
+			adjustRotorSpeed();
+			generateEnergy();
 		}
 	}
 	
-	public double getCurrentOutput()
+	@Override
+	public void readFromNBT(NBTTagCompound nbt)
 	{
-		int blocks = getNoneAirBlocks();
-		float weather = getWeather();
-		// Needed for SuperFlat Worlds. Testing Stuff and co. You know Aroma :P
-		int heigt = worldObj.provider.getAverageGroundLevel();
-		float totalEfficiency = Math.min(1.0F, (yCoord - heigt - blocks / type.getRadius() / 37.5F)) * weather;
-		float energy = type.getOutput() * totalEfficiency;
-		if (!CompactWindmills.oldIC2)
+		super.readFromNBT(nbt);
+		damageActive = nbt.getBoolean("Damage");
+		type = WindmillType.values()[nbt.getInteger("Type")];
+		storedEnergy = nbt.getDouble("Stored");
+		rotorInited = nbt.getBoolean("Inited");
+		if(rotorInited)
 		{
-			energy *= rotorUpdate();
+			basicRotation = nbt.getBoolean("BasicRotor");
+			rotorID = nbt.getInteger("RotorID");
+			rotorMeta = nbt.getInteger("RotorMeta");
+			weight = RotorWeight.values()[nbt.getInteger("Weight")];
 		}
-		else
-		{
-			energy *= 0.5F + worldObj.rand.nextFloat() / 2;
-		}
-		if (energy > type.getOutput())
-		{
-			energy = type.getOutput();
-		}
-		
-		if ((int) energy < 0)
-		{
-			return 0;
-		}
-		return energy;
+		speed = nbt.getFloat("Speed");
+		requestedSpeed = nbt.getFloat("RSpeed");
 	}
 	
-	public float rotorUpdate()
+	@Override
+	public void writeToNBT(NBTTagCompound nbt)
 	{
-		if (hasRotor())
+		super.writeToNBT(nbt);
+		nbt.setBoolean("Damage", damageActive);
+		nbt.setInteger("Type", type.ordinal());
+		nbt.setDouble("Stored", storedEnergy);
+		if(rotorInited)
 		{
-			IRotorItem rotor = getRotor();
-			float effiziens = rotor.getRotorEfficeny(inv[0], this);
-			if (!rotor.isInfinite(inv[0]) && damageActive)
-			{
-				int damage = calculateDamage();
-				
-				rotor.damageRotor(inv[0], damage, this);
-				this.onInventoryChanged();
-			}
-			damageActive = false;
-			return effiziens;
+			nbt.setBoolean("Inited", rotorInited);
+			nbt.setBoolean("BasicRotor", basicRotation);
+			nbt.setInteger("RotorID", rotorID);
+			nbt.setInteger("RotorMeta", rotorMeta);
+			nbt.setInteger("Weight", weight.ordinal());
 		}
-		return 0.0F;
+		nbt.setFloat("Speed", speed);
+		nbt.setFloat("RSpeed", requestedSpeed);
+	}
+	
+	@Override
+	public List<String> getNetworkedFields()
+	{
+		List<String> list = new ArrayList<String>();
+		list.add("type");
+		list.add("rotorInited");
+		list.add("basicRotation");
+		list.add("rotorID");
+		list.add("rotorMeta");
+		list.add("weight");
+		list.add("speed");
+		list.add("requestedSpeed");
+		list.add("facing");
+		return list;
+	}
+	
+	public double getProducingEnergy()
+	{
+		double maxProduce = (double)type.getOutput();
+		maxProduce *= speed;
+		return maxProduce;
+	}
+	
+	public void handleClientSpeed()
+	{
+		Rotated += speed;
+		if(Rotated >= 360F)
+		{
+			Rotated-=360F;
+		}
+	}
+	
+	@Override
+	public void onNetworkUpdate(String field)
+	{
+		if(field.equals("facing"))
+		{
+			this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		}
+	}
+
+	@Override
+	public void init()
+	{
+		maxEnergy = type.getOutput() * 10;
+	}
+
+	public void generateEnergy()
+	{
+		if(storedEnergy >= maxEnergy)
+		{
+			return;
+		}
+		double maxProduce = (double)type.getOutput();
+		maxProduce *= speed;
+		storedEnergy = maxProduce;
+		if(storedEnergy > maxEnergy)
+		{
+			storedEnergy = maxEnergy;
+		}
+		this.damageActive = true;
 	}
 	
 	public int calculateDamage()
 	{
-		int Wtier = getType().ordinal();
-		int RTier = getRotor().getTier(inv[0]);
-		
-		if (getRotor().isAdvancedRotor(inv[0]))
+		IRotorItem rotor = getRotor();
+		if(rotor.isInfinite(inv[0]))
 		{
-			if (Wtier > RTier)
+			return 0;
+		}
+		float diff = requestedSpeed - speed;
+		int damage = 0;
+		if(diff >= 0.8F)
+		{
+			if(rand.nextBoolean())
 			{
-				int damage = (Wtier - RTier);
-				return 1 + (worldObj.rand.nextBoolean() ? damage : 0);
-			}
-			else if (Wtier == RTier)
-			{
-				return 1;
+				damage = 2 + rand.nextInt(5);
 			}
 			else
 			{
-				double chance = ((double) Wtier / (double) RTier) * 100;
-				int rounded = (int) chance;
-				int damage = 0;
-				if (worldObj.rand.nextInt(100) < chance)
-				{
-					damage = 1;
-				}
-				return damage;
+				damage = 2;
+			}
+		}
+		else if(diff >= 0.4F)
+		{
+			if(rand.nextBoolean())
+			{
+				damage = 1 + rand.nextInt(5);
+			}
+			else
+			{
+				damage = 1;
+			}
+			
+		}
+		else if(diff < 0.4 && diff > -0.4F)
+		{
+			damage = 1;
+		}
+		else if(diff <= -0.4F)
+		{
+			if(rand.nextBoolean())
+			{
+				damage = 1 + rand.nextInt(5);
+			}
+			else
+			{
+				damage = 1;
 			}
 		}
 		else
 		{
-			return 1;
+			if(rand.nextBoolean())
+			{
+				damage = 2 + rand.nextInt(5);
+			}
+			else
+			{
+				damage = 2;
+			}
 		}
+		if(speed > 1.1F && rand.nextBoolean() && weight != null && weight.ordinal() <= 2)
+		{
+			if(weight.ordinal() == 2)
+			{
+				damage += 2;
+			}
+			else
+			{
+				damage+=3;
+			}
+		}
+		return damage;
+	}
+	
+	public void updateWindSpeed()
+	{
+		this.requestedSpeed = getWindSpeed();
+	}
+	
+	public void adjustRotorSpeed()
+	{
+		float oldSpeed = speed;
+		if(requestedSpeed > speed)
+		{
+			speed+=weight.getSpeedChange();
+		}
+		else if(requestedSpeed < speed)
+		{
+			speed-=weight.getSpeedChange();
+		}
+		if(oldSpeed != speed)
+		{
+			IC2.network.updateTileEntityField(this, "speed");
+		}
+	}
+	
+	public void initRotor()
+	{
+		rotorInited = true;
+		rotorID = inv[0].itemID;
+		rotorMeta = inv[0].getItemDamage();
+		basicRotation = !getRotor().hasCustomSpeedMath(this, inv[0]);
+		weight = getRotor().getRotorWeight(this, inv[0]);
+		if(weight == null)
+		{
+			clearRotor();
+			return;
+		}
+		IC2.network.updateTileEntityField(this, "rotorInited");
+		IC2.network.updateTileEntityField(this, "rotorID");
+		IC2.network.updateTileEntityField(this, "rotorMeta");
+		IC2.network.updateTileEntityField(this, "basicRotation");
+		IC2.network.updateTileEntityField(this, "requestedSpeed");
+		IC2.network.updateTileEntityField(this, "weight");
+		IC2.network.updateTileEntityField(this, "speed");
+
+	}
+	
+	public void clearRotor()
+	{
+		rotorInited = false;
+		rotorID = 0;
+		rotorMeta = 0;
+		basicRotation = false;
+		weight = null;
+		requestedSpeed = 0.0F;
+		speed = 0.0F;
+		IC2.network.updateTileEntityField(this, "rotorInited");
+		IC2.network.updateTileEntityField(this, "rotorID");
+		IC2.network.updateTileEntityField(this, "rotorMeta");
+		IC2.network.updateTileEntityField(this, "basicRotation");
+		IC2.network.updateTileEntityField(this, "requestedSpeed");
+		IC2.network.updateTileEntityField(this, "speed");
+	}
+	
+	public void refreshRotor()
+	{
+		clearRotor();
+		initRotor();
 	}
 	
 	public float getWeather()
@@ -357,7 +441,7 @@ public class WindMill extends TileFacing implements IInventory,
 	
 	public int getNoneAirBlocks()
 	{
-		int radius = type.getRadius();
+		int radius = 12;
 		int totalBlocks = 0;
 		for (int x = xCoord - radius; x <= xCoord + radius; x++)
 		{
@@ -372,7 +456,12 @@ public class WindMill extends TileFacing implements IInventory,
 				}
 			}
 		}
-		return totalBlocks - type.getRadius() - 1;
+		totalBlocks -= 11;
+		if(totalBlocks < 0)
+		{
+			totalBlocks = 0;
+		}
+		return totalBlocks;
 	}
 	
 	@Override
@@ -384,15 +473,6 @@ public class WindMill extends TileFacing implements IInventory,
 			MinecraftForge.EVENT_BUS.post(unloadEvent);
 		}
 		super.invalidate();
-	}
-	
-	@Override
-	public void onBreaking()
-	{
-		if (!worldObj.isRemote)
-		{
-			InventoryUtil.dropInventory(worldObj, xCoord, yCoord, zCoord, this);
-		}
 	}
 	
 	public boolean hasRotor()
@@ -431,16 +511,13 @@ public class WindMill extends TileFacing implements IInventory,
 	@Override
 	public double getOfferedEnergy()
 	{
-		return cuOutput;
+		return Math.min(storedEnergy, type.getOutput());
 	}
 	
 	@Override
 	public void drawEnergy(double amount)
 	{
-		if (amount > 0)
-		{
-			damageActive = true;
-		}
+		storedEnergy-=amount;
 	}
 	
 	@Override
@@ -473,82 +550,14 @@ public class WindMill extends TileFacing implements IInventory,
 	}
 	
 	@Override
-	public int getRadius()
-	{
-		return type.getRadius();
-	}
-	
-	@Override
 	public void distroyRotor()
 	{
 		if (!worldObj.isRemote)
 		{
 			inv[0] = null;
+			this.clearRotor();
 			this.onInventoryChanged();
 		}
-	}
-	
-	@Override
-	public void onInventoryChanged()
-	{
-		super.onInventoryChanged();
-		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 100, worldObj.provider.dimensionId, this.getDescriptionPacket());
-	}
-	
-	@Override
-	public Packet getDescriptionPacket()
-	{
-		NBTTagCompound nbt = new NBTTagCompound();
-		writeToNBT(nbt);
-		return new Packet132TileEntityData(xCoord, yCoord, zCoord, 0, nbt);
-	}
-	
-	@Override
-	public void onDataPacket(INetworkManager net, Packet132TileEntityData pkt)
-	{
-		readFromNBT(pkt.data);
-	}
-	
-	@Override
-	public void readFromNBT(NBTTagCompound nbt)
-	{
-		super.readFromNBT(nbt);
-		NBTTagList nbttaglist = nbt.getTagList("Items");
-		this.inv = new ItemStack[this.getSizeInventory()];
-		for (int i = 0; i < nbttaglist.tagCount(); ++i)
-		{
-			NBTTagCompound nbttagcompound1 = (NBTTagCompound) nbttaglist.tagAt(i);
-			byte b0 = nbttagcompound1.getByte("Slot");
-			
-			if (b0 >= 0 && b0 < this.inv.length)
-			{
-				this.inv[b0] = ItemStack.loadItemStackFromNBT(nbttagcompound1);
-			}
-		}
-		cuOutput = nbt.getDouble("Output");
-		damageActive = nbt.getBoolean("Damage");
-		type = WindmillType.values()[nbt.getInteger("Type")];
-	}
-	
-	@Override
-	public void writeToNBT(NBTTagCompound nbt)
-	{
-		super.writeToNBT(nbt);
-		NBTTagList nbttaglist = new NBTTagList();
-		for (int i = 0; i < this.inv.length; ++i)
-		{
-			if (this.inv[i] != null)
-			{
-				NBTTagCompound nbttagcompound1 = new NBTTagCompound();
-				nbttagcompound1.setByte("Slot", (byte) i);
-				this.inv[i].writeToNBT(nbttagcompound1);
-				nbttaglist.appendTag(nbttagcompound1);
-			}
-		}
-		nbt.setTag("Items", nbttaglist);
-		nbt.setDouble("Output", cuOutput);
-		nbt.setBoolean("Damage", damageActive);
-		nbt.setInteger("Type", type.ordinal());
 	}
 	
 	@Override
@@ -590,5 +599,27 @@ public class WindMill extends TileFacing implements IInventory,
 	{
 		return type.getOutput();
 	}
-	
+
+	@Override
+	public void setNewSpeed(float amount)
+	{
+		requestedSpeed = amount;
+	}
+
+	@Override
+	public float getWindSpeed()
+	{
+		float speed = ((float)IC2.windStrength * 4.8F) / 100F;
+		speed *= (((float)15625F - (float)getNoneAirBlocks()) / (float)15625F);
+		speed *= getWeather();
+		return speed;
+	}
+
+	@Override
+	public float getActualSpeed()
+	{
+		return speed;
+	}
+
+
 }

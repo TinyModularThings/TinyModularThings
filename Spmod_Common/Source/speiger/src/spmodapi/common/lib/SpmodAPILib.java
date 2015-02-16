@@ -21,4 +21,8 @@ public class SpmodAPILib
 	
 	public static final String CoreMods = "speiger.src.spmodapi.common.plugins.PluginLoader";
 	
+	public static final String ClientSounds = "speiger.src.spmodapi.common.sound.SoundRegistryClient";
+	
+	public static final String CoreSounds = "speiger.src.spmodapi.common.sound.SoundRegistry";
+	
 }

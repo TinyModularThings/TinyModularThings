@@ -27,12 +27,6 @@ public class WindmillFake implements IWindmill
 	}
 	
 	@Override
-	public int getRadius()
-	{
-		return 0;
-	}
-	
-	@Override
 	public void distroyRotor()
 	{
 		
@@ -48,6 +42,23 @@ public class WindmillFake implements IWindmill
 	public boolean isFake()
 	{
 		return true;
+	}
+
+	@Override
+	public void setNewSpeed(float amount)
+	{
+	}
+
+	@Override
+	public float getWindSpeed()
+	{
+		return 0;
+	}
+
+	@Override
+	public float getActualSpeed()
+	{
+		return 0;
 	}
 	
 }

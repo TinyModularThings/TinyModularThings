@@ -85,10 +85,13 @@ public class EnergyProvider implements IEnergySubject
 			if (count >= countdown)
 			{
 				count = 0;
-				applyPowerLoss();
+				if(storedEnergy <= 0)
+				{
+					applyPowerLoss();
+				}
 			}
 		}
-		if (BCPower != null)
+		if (BCPower != null && BCPower.getEnergyStored() >= 1.0F)
 		{
 			BCUpdate();
 		}

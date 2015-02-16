@@ -6,6 +6,8 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
+import cpw.mods.fml.common.FMLLog;
+
 import speiger.src.compactWindmills.common.blocks.ContainerWindmill;
 import speiger.src.compactWindmills.common.blocks.WindMill;
 import speiger.src.compactWindmills.common.core.CWPreference;
@@ -26,13 +28,17 @@ public class GuiWindmill extends GuiInventoryCore
 		this.fontRenderer.drawString("Windmill", this.xSize / 2 - this.fontRenderer.getStringWidth("Windmill") / 2, 6, 4210752);
 		this.fontRenderer.drawString(I18n.getString("container.inventory"), 8, this.ySize - 96 + 2, 4210752);
 		this.fontRenderer.drawString("Rotor:", 44, 30, 0x404040);
-		String eu = String.valueOf(mill.cuOutput);
+		String eu = String.valueOf(mill.getProducingEnergy());
 		if(eu.length() > 4)
 		{
 			int size = eu.substring(eu.indexOf(".")).length();
 			eu = eu.substring(0, eu.indexOf(".")+ (size < 3 ? size : 3));
 		}
-		this.fontRenderer.drawSplitString("Output " + eu + "EU", 105, 15, 70, 0x404040);
+		this.fontRenderer.drawSplitString("Generating: " + eu + "EU", 105, 20, 70, 0x404040);
+		if(mill.speed >= 1.1F && mill.weight == null || (mill.weight.ordinal() < 3))
+		{
+			fontRenderer.drawString("Rotorblade is Spinning To Fast!", 11, 50, 0x404040);
+		}
 	}
 	
 	private static final ResourceLocation furnaceGuiTextures = new ResourceLocation(CWPreference.ModID.toLowerCase() + ":textures/gui/GuiWindmill.png");

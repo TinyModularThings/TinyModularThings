@@ -365,6 +365,22 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		return super.isBlockSolidOnSide(world, x, y, z, side);
 	}
 	
+	
+	
+	@Override
+	public void onBlockClicked(World par1, int par2, int par3, int par4, EntityPlayer par5)
+	{
+		super.onBlockClicked(par1, par2, par3, par4, par5);
+		if(!par1.isRemote)
+		{
+			AdvTile tile = getAdvTile(par1, par2, par3, par4);
+			if(tile != null)
+			{
+				tile.onLeftClick(par5);
+			}
+		}
+	}
+
 	@Override
 	public boolean onBlockActivated(World par1, int par2, int par3, int par4, EntityPlayer par5, int par6, float par7, float par8, float par9)
 	{

@@ -34,20 +34,7 @@ public class WindMillSlot extends Slot
 		{
 			return false;
 		}
-		IRotorItem item = (IRotorItem) par1.getItem();
-		if (item.ignoreTier(par1))
-		{
-			return true;
-		}
-		else
-		{
-			if (item.canWorkWithWindmillTier(par1, mill.type.ordinal()))
-			{
-				return true;
-			}
-			return false;
-		}
-		
+		return true;
 	}
 	
 }

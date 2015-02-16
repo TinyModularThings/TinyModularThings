@@ -47,8 +47,14 @@ public class WaterGenerator extends AdvTile implements IFluidHandler,
 		if (!worldObj.isRemote)
 		{
 			this.provider.update();
-			produceWater();
-			sendWater();
+			if(provider.getStoredEnergy() >= 1)
+			{
+				produceWater();
+			}
+			if(tank.getFluidAmount() > 0)
+			{
+				sendWater();
+			}
 		}
 	}
 	

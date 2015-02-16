@@ -66,8 +66,6 @@ public abstract class AdvTile extends TileEntity
 	private int clock = CodeProxy.getRandom().nextInt();
 	private int renderPass = 0;
 	
-	
-	
 	//TODO Custom Functions
 	
 	public boolean clockCanTick()
@@ -223,8 +221,8 @@ public abstract class AdvTile extends TileEntity
 		{
 			onClockTick();
 		}
-		
 		onTick();
+
 	}
 	
 	public void onTick()
@@ -619,6 +617,11 @@ public abstract class AdvTile extends TileEntity
 	public boolean onClick(boolean sneak, EntityPlayer par1, Block par2, int side)
 	{
 		return false;
+	}
+	
+	public void onLeftClick(EntityPlayer par1)
+	{
+		
 	}
 	
 	public boolean canPlaceTorchOnTop()

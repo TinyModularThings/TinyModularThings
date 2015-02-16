@@ -38,12 +38,6 @@ public class ItemRotor extends SpmodItem implements IRotorItem
 		this.setNoRepair();
 	}
 	
-	@Override
-	public boolean ignoreTier(ItemStack par1)
-	{
-		return false;
-	}
-	
 	public static ItemStack createRotor(BasicRotorType par1)
 	{
 		ItemStack stack = new ItemStack(CompactWindmills.rotor, 1, par1.ordinal());
@@ -78,15 +72,15 @@ public class ItemRotor extends SpmodItem implements IRotorItem
 	}
 	
 	@Override
-	public boolean canWorkWithWindmillTier(ItemStack par1, int tier)
+	public boolean hasCustomSpeedMath(IWindmill par1, ItemStack rotor)
 	{
-		return BasicRotorType.values()[par1.getItemDamage()].matchTier(tier);
+		return false;
 	}
-	
+
 	@Override
-	public int getTier(ItemStack par1)
+	public RotorWeight getRotorWeight(IWindmill par1, ItemStack par2)
 	{
-		return BasicRotorType.values()[par1.getItemDamage()].getTier();
+		return BasicRotorType.values()[par2.getItemDamage()].getWeight();
 	}
 	
 	@Override
@@ -130,23 +124,13 @@ public class ItemRotor extends SpmodItem implements IRotorItem
 	}
 	
 	@Override
-	public float getRotorEfficeny(ItemStack par1, IWindmill par2)
-	{
-		if(par2.getFacing() == 1 || par2.getFacing() == 0)
-		{
-			return 0.01F;
-		}
-		return BasicRotorType.values()[par1.getItemDamage()].getEfficeny();
-	}
-	
-	@Override
 	public boolean isInfinite(ItemStack par1)
 	{
 		return BasicRotorType.values()[par1.getItemDamage()].getMaxDamage() == 0;
 	}
 	
 	@Override
-	public IRotorModel getCustomModel(ItemStack par1, int size)
+	public IRotorModel getCustomModel(ItemStack par1)
 	{
 		return null;
 	}
@@ -193,12 +177,6 @@ public class ItemRotor extends SpmodItem implements IRotorItem
 	}
 	
 	@Override
-	public boolean isAdvancedRotor(ItemStack par1)
-	{
-		return false;
-	}
-	
-	@Override
 	public String getName(ItemStack par1)
 	{
 		switch(par1.getItemDamage())
@@ -215,25 +193,27 @@ public class ItemRotor extends SpmodItem implements IRotorItem
 	
 	public static enum BasicRotorType
 	{
-		WoodenRotor(2250, 0, 0.5F, "rotor.basic.wood"),
-		WoolRotor(562, 1, 0.9F, "rotor.basic.wool"),
-		IronRotor(18000, 2, 0.68F, "rotor.basic.iron"),
-		CarbonRotor(27000, 2, 0.75F, "rotor.basic.carbon"),
-		AlloyRotor(6750, 3, 0.9F, "rotor.basic.alloy"),
-		IridiumRotor(0, 4, 1.0F, "rotor.basic.iridium");
+		WoodenRotor(2250, 0, 0.5F, "rotor.basic.wood", RotorWeight.Leight),
+		WoolRotor(562, 1, 0.9F, "rotor.basic.wool", RotorWeight.VeryLeight),
+		IronRotor(18000, 2, 0.68F, "rotor.basic.iron", RotorWeight.Heavy),
+		CarbonRotor(27000, 2, 0.75F, "rotor.basic.carbon", RotorWeight.Medium),
+		AlloyRotor(6750, 3, 0.9F, "rotor.basic.alloy", RotorWeight.Heavy),
+		IridiumRotor(0, 4, 1.0F, "rotor.basic.iridium", RotorWeight.VeryHeavy);
 		
 		int maxDamage;
 		int tier;
 		float eff;
 		String displayName;
 		ResourceLocation texture;
+		RotorWeight weight;
 		
-		private BasicRotorType(int par1, int par2, float par3, String par4)
+		private BasicRotorType(int par1, int par2, float par3, String par4, RotorWeight par5)
 		{
 			maxDamage = par1;
 			tier = par2;
 			eff = par3;
 			displayName = par4;
+			weight = par5;
 		}
 		
 		public static BasicRotorType addRotor(String name, int maxDamage, int tier, float effiency, String names)
@@ -289,7 +269,14 @@ public class ItemRotor extends SpmodItem implements IRotorItem
 			}
 			return false;
 		}
+		
+		public RotorWeight getWeight()
+		{
+			return weight;
+		}
 	}
+
+
 
 
 	

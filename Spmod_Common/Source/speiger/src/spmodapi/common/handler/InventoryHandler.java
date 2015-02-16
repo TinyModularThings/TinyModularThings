@@ -3,6 +3,7 @@ package speiger.src.spmodapi.common.handler;
 import java.util.HashMap;
 
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.ForgeSubscribe;
@@ -10,10 +11,10 @@ import net.minecraftforge.event.entity.item.ItemTossEvent;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
+import cpw.mods.fml.common.ICraftingHandler;
 import cpw.mods.fml.common.IFuelHandler;
 
-public class InventoryHandler implements IFuelHandler
+public class InventoryHandler implements IFuelHandler, ICraftingHandler
 {
 	HashMap<Integer, String> ids = new HashMap<Integer, String>();
 	
@@ -78,6 +79,31 @@ public class InventoryHandler implements IFuelHandler
 			((AdvContainer)player.openContainer).getTile().onPlayerCloseContainer(player);
 			player.closeScreen();
 		}
+	}
+
+	@Override
+	public void onCrafting(EntityPlayer player, ItemStack item, IInventory craftMatrix)
+	{
+		HashMap<String, Boolean> flag = PlayerHandler.flags.get(player.username);
+		if(flag != null && flag.containsKey("CraftHungry") && flag.get("CraftHungry"))
+		{
+			int amount = 0;
+			for(int i = 0;i<craftMatrix.getSizeInventory();i++)
+			{
+				if(craftMatrix.getStackInSlot(i) != null)
+				{
+					amount++;
+				}
+			}
+			float result = (float)amount * 0.025F;
+			player.getFoodStats().addExhaustion(result);
+		}
+	}
+
+	@Override
+	public void onSmelting(EntityPlayer player, ItemStack item)
+	{
+		
 	}
 	
 }

@@ -43,10 +43,10 @@ public class WindmillRenderer extends TileEntitySpecialRenderer
 			}
 			if (model == null)
 			{
-				IRotorModel rotor = tile.getRotor().getCustomModel(tile.inv[0], tile.getType().getRadius());
+				IRotorModel rotor = tile.getRotor().getCustomModel(tile.inv[0]);
 				if (rotor == null)
 				{
-					model = new ModelRotor(tile.getType().getRadius());
+					model = new ModelRotor();
 				}
 				else
 				{
@@ -94,7 +94,8 @@ public class WindmillRenderer extends TileEntitySpecialRenderer
 		{
 			GL11.glRotatef(-90.0F, 0.0F, 0.0F, 1.0F);
 		}
-		GL11.glRotatef(360 - System.currentTimeMillis() / 30 % 360, 1.0F, 0.0F, 0.0F);
+		tile.handleClientSpeed();
+		GL11.glRotatef(tile.Rotated, 1.0F, 0.0F, 0.0F);
 		GL11.glTranslatef(-0.25F, 0.0F, 0.0F);
 		
 		bindTexture(tile.getRotor().getRenderTexture(tile.inv[0]));
@@ -137,10 +138,10 @@ public class WindmillRenderer extends TileEntitySpecialRenderer
 		{
 			return Rmodel;
 		}
-		Rmodel = rotor.getCustomModel(par1.getStackInSlot(0), par1.type.getRadius());
+		Rmodel = rotor.getCustomModel(par1.getStackInSlot(0));
 		if (Rmodel == null)
 		{
-			Rmodel = new ModelRotor(par1.type.getRadius());
+			Rmodel = new ModelRotor();
 		}
 		
 		models.put(pos.getAsList(), Rmodel);

@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.command.commands;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 
 import net.minecraft.command.ICommandSender;
@@ -11,6 +12,7 @@ import net.minecraft.util.EnumChatFormatting;
 import speiger.src.api.common.utils.MathUtils;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
+import speiger.src.spmodapi.common.handler.PlayerHandler;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 
 public class TimerCommand implements ISpmodCommand
@@ -104,17 +106,20 @@ public class TimerCommand implements ISpmodCommand
 	{
 		if (sub != null)
 		{
-			EntityPlayer player = par1.getEntityWorld().getPlayerEntityByName(par1.getCommandSenderName());
-			NBTTagCompound nbt = player.getEntityData();
 			String key = sub.getSubCommandName();
-			
+			HashMap<String, Integer> nrs = PlayerHandler.numbers.get(par1.getCommandSenderName());
+			if(nrs == null)
+			{
+				nrs = new HashMap<String, Integer>();
+				PlayerHandler.numbers.put(par1.getCommandSenderName(), nrs);
+			}
 			if (key.equalsIgnoreCase("check"))
 			{
 				int totalTime = 0;
 				boolean flag = false;
-				if (nbt.hasKey("SpmodAPIData") && nbt.getCompoundTag("SpmodAPIData").hasKey("CountdownTime") && nbt.getCompoundTag("SpmodAPIData").getInteger("CountdownTime") > 0)
+				if (nrs.containsKey("Counter") && nrs.get("Counter") > 0)
 				{
-					totalTime = nbt.getCompoundTag("SpmodAPIData").getInteger("CountdownTime");
+					totalTime = nrs.get("Counter");
 					flag = true;
 				}
 				
@@ -167,19 +172,19 @@ public class TimerCommand implements ISpmodCommand
 				
 				if (total > 0)
 				{
-					if (nbt.hasKey("SpmodAPIData") && nbt.getCompoundTag("SpmodAPIData").hasKey("CountdownTime"))
+					if (nrs.containsKey("Counter"))
 					{
-						int totalTime = nbt.getCompoundTag("SpmodAPIData").getInteger("CountdownTime") - total;
+						int totalTime = nrs.get("Counter") - total;
 						if (totalTime <= 0)
 						{
-							nbt.getCompoundTag("SpmodAPIData").removeTag("CountdownTime");
+							nrs.remove("Counter");
 							par1.sendChatToPlayer(LangProxy.getText("Removed Timer", EnumChatFormatting.BLUE));
 						}
 						else
 						{
 							int result = total - totalTime;
 							String time = "Set TotalTime to: "+MathUtils.getTicksInTimeShort(result)+" Total Ticks: "+result;
-							nbt.getCompoundTag("SpmodAPIData").setInteger("CountdownTime", result);
+							nrs.put("Counter", result);
 							par1.sendChatToPlayer(LangProxy.getText(time, EnumChatFormatting.AQUA));
 						}
 					}
@@ -195,9 +200,9 @@ public class TimerCommand implements ISpmodCommand
 			}
 			else if (key.equalsIgnoreCase("Stop"))
 			{
-				if (nbt.hasKey("SpmodAPIData") && nbt.getCompoundTag("SpmodAPIData").hasKey("CountdownTime"))
+				if (nrs.containsKey("Counter"))
 				{
-					nbt.getCompoundTag("SpmodAPIData").removeTag("CountdownTime");
+					nrs.remove("Counter");
 					par1.sendChatToPlayer(LangProxy.getText("Removed Timer", EnumChatFormatting.GREEN));
 				}
 				else
@@ -245,19 +250,9 @@ public class TimerCommand implements ISpmodCommand
 				if (total > 0)
 				{
 					int cont = 0;
-					if (nbt.hasKey("SpmodAPIData"))
-					{
-						cont = nbt.getCompoundTag("SpmodAPIData").getInteger("CountdownTime");
-						nbt.getCompoundTag("SpmodAPIData").setInteger("CountdownTime", cont + total);
-						par1.sendChatToPlayer(LangProxy.getText("Total Ticks Added: " + total));
-					}
-					else
-					{
-						NBTTagCompound time = new NBTTagCompound();
-						time.setInteger("CountdownTime", total);
-						nbt.setTag("SpmodAPIData", time);
-						par1.sendChatToPlayer(LangProxy.getText("Total Ticks Added: " + total));
-					}
+					cont = nrs.get("Counter");
+					nrs.put("Counter", cont + total);
+					par1.sendChatToPlayer(LangProxy.getText("Total Ticks Added: " + total));
 				}
 				else
 				{
@@ -303,18 +298,8 @@ public class TimerCommand implements ISpmodCommand
 				
 				if (total > 0)
 				{
-					if (nbt.hasKey("SpmodAPIData"))
-					{
-						nbt.getCompoundTag("SpmodAPIData").setInteger("CountdownTime", total);
-						par1.sendChatToPlayer(LangProxy.getText("Set Total Time to: " + total));
-					}
-					else
-					{
-						NBTTagCompound time = new NBTTagCompound();
-						time.setInteger("CountdownTime", total);
-						nbt.setTag("SpmodAPIData", time);
-						par1.sendChatToPlayer(LangProxy.getText("Set Total Time to: " + total));
-					}
+					nrs.put("Counter", total);
+					par1.sendChatToPlayer(LangProxy.getText("Set Total Time to: " + total));
 				}
 				else
 				{

@@ -96,6 +96,10 @@ public class BucketFillerBasic extends AdvInventory implements ISidedInventory,
 			return;
 		}
 		provider.update();
+		if(provider.getStoredEnergy() < 10)
+		{
+			return;
+		}
 		if(cuRecipe != null && !hasRecipe())
 		{
 			cuRecipe = null;

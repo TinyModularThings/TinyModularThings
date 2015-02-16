@@ -1,11 +1,12 @@
 package speiger.src.spmodapi.common.util;
 
 import net.minecraftforge.common.MinecraftForge;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.handler.BucketHandler;
 import speiger.src.spmodapi.common.handler.InventoryHandler;
 import speiger.src.spmodapi.common.handler.LivingHandler;
-import speiger.src.spmodapi.common.sound.SoundRegistry;
+import speiger.src.spmodapi.common.sound.SoundRegistryClient;
 import speiger.src.spmodapi.common.util.data.ServerTick;
 import speiger.src.spmodapi.common.util.data.StructureStorage;
 import speiger.src.spmodapi.common.world.SpmodWorldGen;
@@ -44,8 +45,8 @@ public class ForgeRegister
 	
 	public static void regsiterClient()
 	{
-		regist(SoundRegistry.getInstance());
-		TickRegistry.registerTickHandler(SoundRegistry.getInstance(), Side.CLIENT);
+		regist(SpmodAPI.soundEngine);
+		TickRegistry.registerTickHandler((SoundRegistryClient)SpmodAPI.soundEngine, Side.CLIENT);
 	}
 	
 	public static void regist(Object par1)

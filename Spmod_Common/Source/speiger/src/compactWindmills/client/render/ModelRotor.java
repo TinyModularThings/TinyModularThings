@@ -17,8 +17,9 @@ public class ModelRotor extends ModelBase implements IRotorModel
 	ModelRenderer arm8;
 	int size;
 	
-	public ModelRotor(int radius)
+	public ModelRotor()
 	{
+		int radius = 12;
 		textureWidth = 32;
 		textureHeight = 256;
 		size = radius;
