@@ -18,8 +18,9 @@ import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeLis
 import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.api.common.utils.MathUtils;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
+import speiger.src.spmodapi.common.util.proxy.PathProxy;
+import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
-import speiger.src.tinymodularthings.common.utils.slot.SlotCoal;
 import codechicken.core.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
@@ -130,7 +131,7 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 				arecipes.add(new ChancedIOPressureRecipe(cu));
 			}
 		}
-		if(SlotCoal.isFuel(ingredient))
+		if(PressureFurnace.isValidFuel(ingredient))
 		{
 			arecipes.add(new ChancedIOPressureRecipe(ingredient));
 		}
@@ -186,32 +187,15 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 		{
 			recipeList.add(par1);
 			flag = true;
-			fuels.add(new PositionedStack(new ItemStack(Item.coal), 8, 31));
-			fuels.add(new PositionedStack(new ItemStack(Item.coal, 1, 1), 8, 31));
-			fuels.add(new PositionedStack(new ItemStack(Block.coalBlock), 8, 31));
-			if(Loader.isModLoaded("Railcraft"))
+			for(Integer ids : PressureFurnace.validFuels)
 			{
-				try
+				if(PressureFurnace.fuelMeta.containsKey(ids))
 				{
-					ItemStack stack = ItemRegistry.getItem("railcraft.cube.coke", 1);
-					if(stack != null)
-					{
-						fuels.add(new PositionedStack(stack, 8, 31));
-					}
-					stack = ItemRegistry.getItem("railcraft.fuel.coke", 1);
-					if(stack != null)
-					{
-						fuels.add(new PositionedStack(stack, 8, 31));
-					}
-					stack = ItemRegistry.getItem("firestone.refined", 1);
-					if(stack != null)
-					{
-						fuels.add(new PositionedStack(stack, 8, 31));
-					}
+					fuels.add(new PositionedStack(new ItemStack(ids, 1, PressureFurnace.fuelMeta.get(ids)), 8, 31));
 				}
-				catch(Exception e)
+				else
 				{
-					
+					fuels.add(new PositionedStack(new ItemStack(ids, 1, 0), 8, 31));
 				}
 			}
 		}
@@ -227,32 +211,15 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 		public ChancedIOPressureRecipe()
 		{
 			flag = false;
-			fuels.add(new PositionedStack(new ItemStack(Item.coal), 8, 31));
-			fuels.add(new PositionedStack(new ItemStack(Item.coal, 1, 1), 8, 31));
-			fuels.add(new PositionedStack(new ItemStack(Block.coalBlock), 8, 31));
-			if(Loader.isModLoaded("Railcraft"))
+			for(Integer ids : PressureFurnace.validFuels)
 			{
-				try
+				if(PressureFurnace.fuelMeta.containsKey(ids))
 				{
-					ItemStack stack = ItemRegistry.getItem("railcraft.cube.coke", 1);
-					if(stack != null)
-					{
-						fuels.add(new PositionedStack(stack, 8, 31));
-					}
-					stack = ItemRegistry.getItem("railcraft.fuel.coke", 1);
-					if(stack != null)
-					{
-						fuels.add(new PositionedStack(stack, 8, 31));
-					}
-					stack = ItemRegistry.getItem("firestone.refined", 1);
-					if(stack != null)
-					{
-						fuels.add(new PositionedStack(stack, 8, 31));
-					}
+					fuels.add(new PositionedStack(new ItemStack(ids, 1, PressureFurnace.fuelMeta.get(ids)), 8, 31));
 				}
-				catch(Exception e)
+				else
 				{
-					
+					fuels.add(new PositionedStack(new ItemStack(ids, 1, 0), 8, 31));
 				}
 			}
 			recipeList.addAll((Collection<? extends IPressureFurnaceRecipe>)PressureRecipeList.getInstance().getRecipeList().clone());
@@ -276,6 +243,7 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 				{
 					par1 = recipeList.remove(0);
 					recipeList.add(par1);
+					NeiPressureFurnace.this.cycleticks++;
 				}
 			}
 		}

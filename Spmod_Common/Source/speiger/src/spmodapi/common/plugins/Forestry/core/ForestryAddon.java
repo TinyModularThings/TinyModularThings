@@ -14,6 +14,7 @@ import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
+import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import forestry.api.apiculture.FlowerManager;
 import forestry.api.farming.Farmables;
 import forestry.api.farming.IFarmable;
@@ -22,6 +23,7 @@ import forestry.api.fuels.EngineCopperFuel;
 import forestry.api.fuels.FuelManager;
 import forestry.api.recipes.RecipeManagers;
 import forestry.core.GameMode;
+import forestry.core.config.ForestryItem;
 import forestry.core.utils.RecipeUtil;
 import forestry.factory.gadgets.MachineFermenter;
 import forestry.factory.gadgets.MachineFermenter.Recipe;
@@ -46,6 +48,12 @@ public class ForestryAddon
 	
 	static void loadRecipes()
 	{
+		PathProxy.removeRecipe(ForestryItem.gearBronze.getItemStack());
+		PathProxy.removeRecipe(ForestryItem.gearCopper.getItemStack());
+		PathProxy.removeRecipe(ForestryItem.gearTin.getItemStack());
+		PathProxy.addOreRecipe(ForestryItem.gearBronze.getItemStack(), new Object[]{" X ", "XYX", " X ", 'X', "ingotBronze", 'Y', "gearStone"});
+		PathProxy.addOreRecipe(ForestryItem.gearCopper.getItemStack(), new Object[]{" X ", "XYX", " X ", 'X', "ingotCopper", 'Y', "gearStone"});
+		PathProxy.addOreRecipe(ForestryItem.gearTin.getItemStack(), new Object[]{" X ", "XYX", " X ", 'X', "ingotTin", 'Y', "gearStone"});
 		RecipeManagers.squeezerManager.addRecipe(10, new ItemStack[] { new ItemStack(APIItems.hempSeed) }, FluidRegistry.getFluidStack("seedoil", 50));
 		RecipeManagers.squeezerManager.addRecipe(10, new ItemStack[] { new ItemStack(APIItems.hemp) }, FluidRegistry.getFluidStack("hemp.resin", 25), new ItemStack(APIItems.compressedHemp), 10);
 		RecipeManagers.squeezerManager.addRecipe(10, new ItemStack[] { new ItemStack(APIBlocks.hempStraw) }, FluidRegistry.getFluidStack("hemp.resin", 250), new ItemStack(APIItems.compressedHemp), 100);

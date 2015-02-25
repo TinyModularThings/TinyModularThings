@@ -16,7 +16,9 @@ import speiger.src.api.client.gui.IBlockGui;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
+import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
@@ -112,7 +114,7 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 	{
 		switch(meta)
 		{
-			case 0: return EnumIDs.BlockGui.getId();
+			case 0: return EnumGuiIDs.BlockGui.getID();
 		}
 		return super.getGuiIDForMeta(meta);
 	}
@@ -122,7 +124,7 @@ public class BlockCrafting extends SpmodBlockContainerBase implements IBlockGui
 	{
 		switch(meta)
 		{
-			case 0: return TinyModularThings.instance;
+			case 0: return SpmodAPI.instance;
 		}
 		return super.getModInstance(meta);
 	}

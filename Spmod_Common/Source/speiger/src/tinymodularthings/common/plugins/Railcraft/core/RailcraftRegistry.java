@@ -1,16 +1,25 @@
 package speiger.src.tinymodularthings.common.plugins.Railcraft.core;
 
 import ic2.api.item.Items;
+
+import java.util.ArrayList;
+import java.util.List;
+
 import mods.railcraft.common.blocks.RailcraftBlocks;
+import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
 import mods.railcraft.common.blocks.anvil.BlockRCAnvil;
 import mods.railcraft.common.blocks.detector.BlockDetector;
 import mods.railcraft.common.items.ItemGear;
+import mods.railcraft.common.items.RailcraftToolItems;
+import mods.railcraft.common.items.firestone.ItemFirestoneCracked;
+import mods.railcraft.common.items.firestone.ItemFirestoneRefined;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.common.registry.recipes.output.RecipeOutput;
 import speiger.src.api.common.registry.recipes.uncrafter.UncrafterRecipeList;
 import speiger.src.api.common.utils.InventoryUtil;
+import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 
 public class RailcraftRegistry
 {
@@ -25,6 +34,23 @@ public class RailcraftRegistry
 		UncrafterRecipeList un = UncrafterRecipeList.getInstance();
 		try
 		{
+			PressureFurnace.bonusHeat.put(ItemFirestoneRefined.item.itemID, 100);
+			PressureFurnace.bonusHeat.put(ItemFirestoneCracked.item.itemID, 100);
+			PressureFurnace.validFuels.add(ItemFirestoneRefined.item.itemID);
+			PressureFurnace.validFuels.add(ItemFirestoneCracked.item.itemID);
+			ItemStack stack = RailcraftToolItems.getCoalCoke();
+			if(stack != null)
+			{
+				PressureFurnace.validFuels.add(stack.itemID);
+			}
+			stack = EnumCube.COKE_BLOCK.getItem();
+			if(stack != null)
+			{
+				PressureFurnace.validFuels.add(stack.itemID);
+				PressureFurnace.fuelMeta.put(stack.itemID, stack.getItemDamage());
+			}
+			
+			
 			ItemStack steel = InventoryUtil.getItemFromModAndOreDictWithSize("ingotSteel", "Railcraft", true, 2);
 			ItemStack blockSteel = InventoryUtil.getItemFromModAndOreDictWithSize("blockSteel", "Railcraft", true, 1);
 			if(steel != null && blockSteel != null)

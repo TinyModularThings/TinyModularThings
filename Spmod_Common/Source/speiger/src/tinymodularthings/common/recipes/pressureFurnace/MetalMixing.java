@@ -27,6 +27,12 @@ public class MetalMixing implements IPressureFurnaceRecipe
 		this.result = ItemStack.copyItemStack(output);
 	}
 	
+	public MetalMixing setCombinerUse()
+	{
+		combUse = true;
+		return this;
+	}
+	
 	public MetalMixing setMulti()
 	{
 		multi = true;

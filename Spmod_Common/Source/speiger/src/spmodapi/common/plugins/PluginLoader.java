@@ -22,6 +22,13 @@ public class PluginLoader
 		{
 			return;
 		}
+		
+		List<IPlugin> plugins = getPlugins("BC", "Forestry", "IC2", "MFR", "RailCraft");
+		for(IPlugin plug : plugins)
+		{
+			initPlugin(plug);
+		}
+		
 		try
 		{
 			RecipeOverrider.loadTransmutationRecipes();
@@ -31,11 +38,17 @@ public class PluginLoader
 			
 		}
 
-		List<IPlugin> plugins = getPlugins("BC", "Forestry", "IC2", "MFR", "RailCraft");
-		for(IPlugin plug : plugins)
-		{
-			initPlugin(plug);
-		}
+
+	}
+	
+	public boolean isPluginLoaded(String plugin)
+	{
+		return loadedPlugins.containsKey(plugin);
+	}
+	
+	public IPlugin getPlugin(String plugin)
+	{
+		return loadedPlugins.get(plugin);
 	}
 	
 	public void initPlugin(IPlugin plugin)
@@ -57,7 +70,7 @@ public class PluginLoader
 		}
 		else
 		{
-			array = new Object[] {par1 };
+			array = new Object[] {par1};
 		}
 		for(Object obj : array)
 		{
@@ -81,6 +94,7 @@ public class PluginLoader
 					{
 						SpmodAPI.log.print("Loaded Current Plugin: " + key);
 						plugin.add(plug);
+						loadedPlugins.put(key, plug);
 					}
 					else
 					{

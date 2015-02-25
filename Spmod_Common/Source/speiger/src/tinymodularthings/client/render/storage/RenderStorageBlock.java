@@ -1,19 +1,21 @@
 package speiger.src.tinymodularthings.client.render.storage;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.ResourceLocation;
+import net.minecraftforge.client.ForgeHooksClient;
 
 import org.lwjgl.opengl.GL11;
 
+import speiger.src.spmodapi.client.core.RenderHelper;
+import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.tinymodularthings.client.models.storage.ModelAdvTinyChest;
 import speiger.src.tinymodularthings.client.models.storage.ModelTinyChest;
 import speiger.src.tinymodularthings.client.models.storage.ModelTinyTank;
-import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyChest;
-import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyTank;
-import speiger.src.tinymodularthings.common.blocks.storage.TinyChest;
-import speiger.src.tinymodularthings.common.blocks.storage.TinyTank;
+import speiger.src.tinymodularthings.common.blocks.storage.*;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
+import cpw.mods.fml.client.FMLClientHandler;
 
 public class RenderStorageBlock extends TileEntitySpecialRenderer
 {
@@ -29,37 +31,73 @@ public class RenderStorageBlock extends TileEntitySpecialRenderer
 	@Override
 	public void renderTileEntityAt(TileEntity tile, double d0, double d1, double d2, float f)
 	{
-		if (tile != null)
+		if(tile != null)
 		{
-			if (tile instanceof TinyTank)
+			if(tile instanceof TinyTank)
 			{
-				renderTinyTank((TinyTank) tile, d0, d1, d2);
+				renderTinyTank((TinyTank)tile, d0, d1, d2);
 			}
-			else if (tile instanceof TinyChest)
+			else if(tile instanceof TinyChest)
 			{
-				renderTinyChest((TinyChest) tile, d0, d1, d2);
+				renderTinyChest((TinyChest)tile, d0, d1, d2);
 			}
-			else if (tile instanceof AdvTinyChest)
+			else if(tile instanceof AdvTinyChest)
 			{
-				renderAdvTinyChest((AdvTinyChest) tile, d0, d1, d2);
+				renderAdvTinyChest((AdvTinyChest)tile, d0, d1, d2);
 			}
+			else if(tile instanceof TinyBarrel)
+			{
+				renderTinyBarrel((TinyBarrel)tile, d0, d1, d2);
+			}
+		}
+	}
+	
+	public void renderTinyBarrel(TinyBarrel tile, double x, double y, double z)
+	{
+		if(tile.hasItem())
+		{
+			GL11.glPushMatrix();
+			
+			tile.applyRotation((float)x, (float)y, (float)z);
+			tile.applySize(8F, 65D, 75D, -0.001D);
+			
+			Minecraft mc = FMLClientHandler.instance().getClient();
+			if(!ForgeHooksClient.renderInventoryItem(RenderHelper.getBlockRenderer(), mc.getTextureManager(), tile.getItem(), true, 0.0F, 0.0F, 0.0F))
+			{
+				RenderHelper.getItemRenderer().renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), tile.getItem(), 0, 0);
+			}
+			
+			String barrelString = tile.getBarrelString();
+			int lenght = mc.fontRenderer.getStringWidth(barrelString);
+			
+			GL11.glScalef(0.5F, 0.5F, 1.0F);
+			
+			GL11.glDepthMask(false);
+			GL11.glDisable(2896);
+			
+			mc.fontRenderer.drawString(barrelString, -lenght / 2 + 15, -10, EnumColor.WHITE.getAsHex());
+			
+			GL11.glDepthMask(true);
+			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
+			
+			GL11.glPopMatrix();
 		}
 	}
 	
 	public void renderTinyTank(TinyTank tile, double x, double y, double z)
 	{
-		if (tile.renderTank())
+		if(tile.renderTank())
 		{
 			return;
 		}
 		
 		GL11.glPushMatrix();
-		GL11.glTranslatef((float) x + 0.5f, (float) y + 1.5f, (float) z + 0.5f);
-		if (tile instanceof AdvTinyTank)
+		GL11.glTranslatef((float)x + 0.5f, (float)y + 1.5f, (float)z + 0.5f);
+		if(tile instanceof AdvTinyTank)
 		{
-			AdvTinyTank tank = (AdvTinyTank) tile;
+			AdvTinyTank tank = (AdvTinyTank)tile;
 			boolean win = tank.isTankFull();
-			if (win)
+			if(win)
 			{
 				bindTexture(advTCClosedTexture);
 			}
@@ -80,9 +118,9 @@ public class RenderStorageBlock extends TileEntitySpecialRenderer
 	public void renderTinyChest(TinyChest par1, double x, double y, double z)
 	{
 		GL11.glPushMatrix();
-		GL11.glTranslatef((float) x + 0.5f, (float) y + 1.5f, (float) z + 0.5f);
+		GL11.glTranslatef((float)x + 0.5f, (float)y + 1.5f, (float)z + 0.5f);
 		bindTexture(basicTCTexture);
-		switch (par1.getFacing())
+		switch(par1.getFacing())
 		{
 			case 2:
 				GL11.glRotatef(0, 0.0F, 1.0F, 0.0F);
@@ -105,17 +143,17 @@ public class RenderStorageBlock extends TileEntitySpecialRenderer
 	public void renderAdvTinyChest(AdvTinyChest par1, double x, double y, double z)
 	{
 		GL11.glPushMatrix();
-		GL11.glTranslatef((float) x + 0.5f, (float) y + 1.5f, (float) z + 0.5f);
+		GL11.glTranslatef((float)x + 0.5f, (float)y + 1.5f, (float)z + 0.5f);
 		ResourceLocation texture = advTCOpenTexture;
 		
-		if (par1.isFull)
+		if(par1.isFull)
 		{
 			texture = advTCClosedTexture;
 		}
 		
 		bindTexture(texture);
 		
-		switch (par1.getFacing())
+		switch(par1.getFacing())
 		{
 			case 2:
 				GL11.glRotatef(0, 0.0F, 1.0F, 0.0F);

@@ -198,7 +198,7 @@ public class GuiInventoryCore extends GuiContainer
 					squaled = 0;
 				}
 				
-				drawTexturedModelRectFromIcon(k + tankX, l + tankY + 58 - z - start, texture, 16, 16 - (16 - z));
+				drawTexturedModelRectFromIcon(k + tankX, l + tankY + 57 - z - start, texture, 16, 16 - (16 - z));
 				start += 16;
 				
 				if((z == 0) || (squaled == 0))
@@ -333,7 +333,6 @@ public class GuiInventoryCore extends GuiContainer
 		{
 			tile.drawExtras(this, k, l, par2, par3);
 		}
-		drawSlotInfo(par2, par3);
 	}
 	
 	@Override
@@ -359,13 +358,17 @@ public class GuiInventoryCore extends GuiContainer
 			nameColor = tile.getNameColor();
 		}
 		this.fontRenderer.drawString(s, (this.xSize / 2 - this.fontRenderer.getStringWidth(s) / 2) + offsetX, 4 + offsetY, nameColor);
-		this.fontRenderer.drawString(I18n.getString("container.inventory"), 8 + offsetCX, this.ySize - 96 + 2 + offsetCY, nameColor);
+		if(tile.renderInnerInv() || tile.renderOuterInv())
+		{
+			this.fontRenderer.drawString(I18n.getString("container.inventory"), 8 + offsetCX, this.ySize - 96 + 2 + offsetCY, nameColor);
+		}
 		int k = (this.width - this.xSize) / 2;
 		int l = (this.height - this.ySize) / 2;
 		if(tile != null)
 		{
 			tile.drawFrontExtras(this, k, l, par1, par2);
 		}
+		drawSlotInfo(par1, par2);
 	}
 	
 	@Override
@@ -413,7 +416,7 @@ public class GuiInventoryCore extends GuiContainer
 	}
 	
 	@Override
-	protected void actionPerformed(GuiButton par1GuiButton)
+	public void actionPerformed(GuiButton par1GuiButton)
 	{
 		if(tile != null)
 		{

@@ -87,6 +87,11 @@ public abstract class AdvTile extends TileEntity
 		clock++;
 	}
 	
+	protected void setClockTime(int time)
+	{
+		clock = time;
+	}
+	
 	public void loadInformation(List par1)
 	{
 		

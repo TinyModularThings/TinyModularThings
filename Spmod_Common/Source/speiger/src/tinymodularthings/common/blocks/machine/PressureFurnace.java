@@ -1,32 +1,21 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
 import java.math.RoundingMode;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-
-import com.google.common.math.DoubleMath;
+import java.util.*;
 
 import mods.railcraft.common.items.firestone.ItemFirestoneRefined;
-import mods.railcraft.common.plugins.forge.ItemRegistry;
-import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 import speiger.src.api.common.registry.recipes.pressureFurnace.IPressureFurnaceRecipe;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
 import speiger.src.api.common.utils.FluidUtils;
@@ -53,7 +42,9 @@ import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionReceptor;
 import buildcraft.api.gates.IOverrideDefaultTriggers;
 import buildcraft.api.gates.ITrigger;
-import cpw.mods.fml.common.FMLLog;
+
+import com.google.common.math.DoubleMath;
+
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -77,6 +68,9 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 	public double storedExp = 0;
 	ITemplate temp = null;
 	public static Class<? extends GuiInventoryCore> guiClass = null;
+	public static HashSet<Integer> validFuels = new HashSet<Integer>();
+	public static HashMap<Integer, Integer> fuelMeta = new HashMap<Integer, Integer>();
+	public static HashMap<Integer, Integer> bonusHeat = new HashMap<Integer, Integer>();
 	
 	public PressureFurnace()
 	{
@@ -104,30 +98,9 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		if(slotID == 0)
 		{
 			int i = par1.itemID;
-			
-			if (i == Item.coal.itemID || i == Block.coalBlock.blockID)
+			if(!validFuels.contains(i))
 			{
-				return true;
-			}
-			
-			try
-			{
-				if (par1.getItem() instanceof ItemFirestoneRefined)
-				{
-					return true;
-				}
-				else if (ItemRegistry.getItem("railcraft.cube.coke", 1) != null && i == ItemRegistry.getItem("railcraft.cube.coke", 1).itemID)
-				{
-					return true;
-				}
-				else if (ItemRegistry.getItem("railcraft.fuel.coke", 1) != null && i == ItemRegistry.getItem("railcraft.fuel.coke", 1).itemID)
-				{
-					return true;
-				}
-			}
-			catch (Exception e)
-			{
-				
+				return false;
 			}
 		}
 		if(slotID == 4)
@@ -389,27 +362,25 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		ItemStack fuelItem = inv[0];
 		if (fuelItem != null)
 		{
-			try
+			int fuelID = fuelItem.itemID;
+			if(!validFuels.contains(fuelID))
 			{
-				if (fuelItem.getItem() instanceof ItemFirestoneRefined)
+				return;
+			}
+			if(fuelMeta.containsKey(fuelID))
+			{
+				int meta = fuelMeta.get(fuelID);
+				if(meta != fuelItem.getItemDamage())
 				{
-					ItemFirestoneRefined refined = (ItemFirestoneRefined) fuelItem.getItem();
-					if (refined.getHeatValue(fuelItem) > 0)
-					{
-						fuel += 20;
-						inv[0].stackSize--;
-						if (fuelItem.stackSize <= 0)
-						{
-							inv[0] = fuelItem.getItem().getContainerItemStack(fuelItem);
-						}
-						heat = Math.min(heat + 100, MaxHeat);
-						return;
-					}
+					return;
 				}
 			}
-			catch (Exception e)
+			if(bonusHeat.containsKey(fuelID))
 			{
+				heat+=bonusHeat.get(fuelID);
+				heat = Math.min(heat, MaxHeat);
 			}
+			
 			int gainingFuel = TileEntityFurnace.getItemBurnTime(fuelItem) * 4;
 			if (gainingFuel > 0)
 			{
@@ -890,6 +861,26 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 	public FluidTankInfo[] getTankInfo(ForgeDirection from)
 	{
 		return new FluidTankInfo[]{new FluidTankInfo(new FluidStack(FluidRegistry.WATER, 0), 1)};
+	}
+
+	public static boolean isValidFuel(ItemStack ingredient)
+	{
+		if(ingredient == null)
+		{
+			return false;
+		}
+		if(!validFuels.contains(ingredient.itemID))
+		{
+			return false;
+		}
+		if(fuelMeta.containsKey(ingredient.itemID))
+		{
+			if(fuelMeta.get(ingredient.itemID) != ingredient.getItemDamage())
+			{
+				return false;
+			}
+		}
+		return true;
 	}
 	
 }

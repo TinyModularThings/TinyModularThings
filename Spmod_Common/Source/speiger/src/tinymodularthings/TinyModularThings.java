@@ -51,7 +51,6 @@ public class TinyModularThings implements SpmodMod
 		log = new LogProxy(this);
 		TinyConfig.getConfig().loadTinyConfig(new File(evt.getModConfigurationDirectory().getAbsolutePath() + "/Spmod/TinyModularThings.cfg"));
 		instance = this;
-		NetworkRegistry.instance().registerGuiHandler(instance, core);
 	}
 	
 	@EventHandler

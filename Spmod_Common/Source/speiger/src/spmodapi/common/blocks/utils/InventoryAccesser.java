@@ -4,11 +4,7 @@ import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
 import java.io.DataInput;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
@@ -36,7 +32,7 @@ import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.utils.MathUtils;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.api.common.world.items.IBCBattery;
+import speiger.src.api.common.world.items.energy.IBCBattery;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
@@ -101,7 +97,7 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 	public void registerIcon(TextureEngine par1, Block par2)
 	{
 		super.registerIcon(par1, par2);
-		par1.registerTexture(new BlockStack(par2, 4), "InventoryAccesser_Top", "InventoryAccesser_Side", "InventoryAccesser_Front");
+		par1.registerTexture(new BlockStack(par2, 4), "Accesser_Bottom_Top", "Accesser_Side", "Accesser_Front");
 	}
 
 	@Override
@@ -174,7 +170,7 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 		{
 			if(stack.getItem() instanceof IBCBattery)
 			{
-				power += (2.5*((IBCBattery)stack.getItem()).discharge(stack, 1, false, false));
+				power += (2.5*((IBCBattery)stack.getItem()).discharge(stack, 1, false));
 			}
 			else if(stack.getItem() instanceof IElectricItem)
 			{

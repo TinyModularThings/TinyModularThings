@@ -7,21 +7,24 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.InventoryEnderChest;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
+import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.FoodStats;
 import speiger.src.api.common.data.nbt.INBTReciver;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.entity.SpmodFoodStats;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.IPlayerTracker;
+import cpw.mods.fml.common.Loader;
 
 public class PlayerHandler implements IPlayerTracker, INBTReciver
 {
 	public static HashMap<String, InventoryEnderChest> enderInventory = new HashMap<String, InventoryEnderChest>();
 	static PlayerHandler instance = new PlayerHandler();
-	public static HashMap<String, HashMap<String, Integer>> numbers = new HashMap<String, HashMap<String, Integer>>();
-	public static HashMap<String, HashMap<String, Boolean>> flags = new HashMap<String, HashMap<String, Boolean>>();
+	static HashMap<String, HashMap<String, Integer>> numbers = new HashMap<String, HashMap<String, Integer>>();
+	static HashMap<String, HashMap<String, Boolean>> flags = new HashMap<String, HashMap<String, Boolean>>();
 	
 	
 	
@@ -44,6 +47,11 @@ public class PlayerHandler implements IPlayerTracker, INBTReciver
 		}
 		this.clearData(player);
 		this.loadDataFromPlayer(player);
+		
+		if(Loader.isModLoaded("inventorytweaks"))
+		{
+			player.sendChatToPlayer(LangProxy.getText("You have Inventory Tweaks installed, That means that you can not use Shiftlicking Items into a Inventory in any of the mods that require SpmodAPI!", EnumChatFormatting.RED));
+		}
 	}
 	
 	@Override
@@ -67,6 +75,80 @@ public class PlayerHandler implements IPlayerTracker, INBTReciver
 			this.initSpeiger(player);
 		}
 	}
+	
+	public void setPlayerNumber(EntityPlayer par1, String req, int value)
+	{
+		setPlayerNumber(par1.username, req, value);
+	}
+	
+	public void setPlayerNumber(String par1, String req, int value)
+	{
+		checkValidNumberData(par1, req);
+		numbers.get(par1).put(req, value);
+	}
+	
+	
+	public int getPlayerNumber(EntityPlayer par1, String req)
+	{
+		return getPlayerNumber(par1.username, req);
+	}
+	
+	public int getPlayerNumber(String par1, String req)
+	{
+		checkValidNumberData(par1, req);
+		return numbers.get(par1).get(req);
+	}
+	
+	private void checkValidNumberData(String par1, String req)
+	{
+		HashMap<String, Integer> data = numbers.get(par1);
+		if(data == null)
+		{
+			data = new HashMap<String, Integer>();
+			numbers.put(par1, data);
+		}
+		if(!data.containsKey(req))
+		{
+			loadDefaultValue(par1, req, true);
+		}
+	}
+	
+	public void setPlayerFlag(EntityPlayer par1, String flag, boolean value)
+	{
+		setPlayerFlag(par1.username, flag, value);
+	}
+	
+	public void setPlayerFlag(String par1, String flag, boolean value)
+	{
+		this.checkValidFlagData(par1, flag);
+		flags.get(par1).put(flag, value);
+	}
+	
+	public boolean getPlayerFlag(EntityPlayer par1, String flag)
+	{
+		return getPlayerFlag(par1.username, flag);
+	}
+	
+	public boolean getPlayerFlag(String par1, String flag)
+	{
+		checkValidFlagData(par1, flag);
+		return flags.get(par1).get(flag);
+	}
+	
+	private void checkValidFlagData(String par1, String flag)
+	{
+		HashMap<String, Boolean> data = flags.get(par1);
+		if(data == null)
+		{
+			data = new HashMap<String, Boolean>();
+			flags.put(par1, data);
+		}
+		if(!data.containsKey(flag))
+		{
+			loadDefaultValue(par1, flag, false);
+		}
+	}
+	
 	
 	public void clearData(EntityPlayer par1)
 	{
@@ -294,6 +376,28 @@ public class PlayerHandler implements IPlayerTracker, INBTReciver
 			return player.getInventoryEnderChest();
 		}
 		return null;
+	}
+	
+	
+	void loadDefaultValue(String username, String key, boolean number)
+	{
+		if(number)
+		{
+			HashMap<String, Integer> data = numbers.get(username);
+			int defaultValue = 0;
+			if(key.equalsIgnoreCase("Counter"))
+			{
+				defaultValue = -50;
+			}
+			data.put(key, defaultValue);
+		}
+		else
+		{
+			HashMap<String, Boolean> data = flags.get(username);
+			boolean defaultValue = false;
+			
+			data.put(key, defaultValue);
+		}
 	}
 	
 }

@@ -232,7 +232,11 @@ public class ExpStorage extends AdvInventory implements IFluidHandler, IExpProvi
 			}
 			else
 			{
-				fluid = new FluidStack(FluidUtils.getLiquidExp(), this.requestExp(maxDrain, doDrain) * 20);
+				if(maxDrain < 20)
+				{
+					return null;
+				}
+				fluid = new FluidStack(FluidUtils.getLiquidExp(), this.requestExp((maxDrain / 20), doDrain) * 20);
 			}
 		}
 		else if (mobEssens || liquidExp)
@@ -243,10 +247,13 @@ public class ExpStorage extends AdvInventory implements IFluidHandler, IExpProvi
 			}
 			else if (liquidExp)
 			{
-				fluid = new FluidStack(FluidUtils.getLiquidExp(), this.requestExp(maxDrain, doDrain) * 20);
+				if(maxDrain < 20)
+				{
+					return null;
+				}
+				fluid = new FluidStack(FluidUtils.getLiquidExp(), this.requestExp((maxDrain / 20), doDrain) * 20);
 			}
 		}
-		
 		return fluid;
 	}
 	

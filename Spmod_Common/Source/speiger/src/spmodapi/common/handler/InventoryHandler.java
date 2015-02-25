@@ -84,19 +84,22 @@ public class InventoryHandler implements IFuelHandler, ICraftingHandler
 	@Override
 	public void onCrafting(EntityPlayer player, ItemStack item, IInventory craftMatrix)
 	{
-		HashMap<String, Boolean> flag = PlayerHandler.flags.get(player.username);
-		if(flag != null && flag.containsKey("CraftHungry") && flag.get("CraftHungry"))
+		if(player != null)
 		{
-			int amount = 0;
-			for(int i = 0;i<craftMatrix.getSizeInventory();i++)
+			HashMap<String, Boolean> flag = PlayerHandler.flags.get(player.username);
+			if(flag != null && flag.containsKey("CraftHungry") && flag.get("CraftHungry"))
 			{
-				if(craftMatrix.getStackInSlot(i) != null)
+				int amount = 0;
+				for(int i = 0;i<craftMatrix.getSizeInventory();i++)
 				{
-					amount++;
+					if(craftMatrix.getStackInSlot(i) != null)
+					{
+						amount++;
+					}
 				}
+				float result = (float)amount * 0.025F;
+				player.getFoodStats().addExhaustion(result);
 			}
-			float result = (float)amount * 0.025F;
-			player.getFoodStats().addExhaustion(result);
 		}
 	}
 

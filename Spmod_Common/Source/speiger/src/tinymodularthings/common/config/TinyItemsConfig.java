@@ -114,7 +114,7 @@ public class TinyItemsConfig
 		
 		items.hugeMJBattery = new Batteries(config.item.getCurrentID(), "Huge", BatterieType.Huge);
 		RegisterItem(items.hugeMJBattery, "HugeMJBattery");
-		BatterieType.registerTextures(engine);
+		items.hugeMJBattery.registerTexture(engine);
 		config.item.updateToNextID();
 
 		items.advTinyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvItems);

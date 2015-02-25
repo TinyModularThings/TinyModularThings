@@ -107,25 +107,20 @@ public class TimerCommand implements ISpmodCommand
 		if (sub != null)
 		{
 			String key = sub.getSubCommandName();
-			HashMap<String, Integer> nrs = PlayerHandler.numbers.get(par1.getCommandSenderName());
-			if(nrs == null)
-			{
-				nrs = new HashMap<String, Integer>();
-				PlayerHandler.numbers.put(par1.getCommandSenderName(), nrs);
-			}
+			int counter = PlayerHandler.getInstance().getPlayerNumber(par1.getCommandSenderName(), "Counter");
 			if (key.equalsIgnoreCase("check"))
 			{
 				int totalTime = 0;
 				boolean flag = false;
-				if (nrs.containsKey("Counter") && nrs.get("Counter") > 0)
+				if (counter > 0)
 				{
-					totalTime = nrs.get("Counter");
+					totalTime = counter;
 					flag = true;
 				}
 				
 				if (flag)
 				{
-					String time = "TotalTime: "+MathUtils.getTicksInTimeShort(totalTime);
+					String time = "TotalTime: "+MathUtils.getTicksInTimeShort(totalTime)+" Sec";
 					par1.sendChatToPlayer(LangProxy.getText(time));
 				}
 				else
@@ -172,19 +167,19 @@ public class TimerCommand implements ISpmodCommand
 				
 				if (total > 0)
 				{
-					if (nrs.containsKey("Counter"))
+					if (counter < -50)
 					{
-						int totalTime = nrs.get("Counter") - total;
+						int totalTime = counter - total;
 						if (totalTime <= 0)
 						{
-							nrs.remove("Counter");
+							PlayerHandler.getInstance().setPlayerNumber(par1.getCommandSenderName(), "Counter", -50);
 							par1.sendChatToPlayer(LangProxy.getText("Removed Timer", EnumChatFormatting.BLUE));
 						}
 						else
 						{
 							int result = total - totalTime;
 							String time = "Set TotalTime to: "+MathUtils.getTicksInTimeShort(result)+" Total Ticks: "+result;
-							nrs.put("Counter", result);
+							PlayerHandler.getInstance().setPlayerNumber(par1.getCommandSenderName(), "Counter", result);
 							par1.sendChatToPlayer(LangProxy.getText(time, EnumChatFormatting.AQUA));
 						}
 					}
@@ -200,9 +195,9 @@ public class TimerCommand implements ISpmodCommand
 			}
 			else if (key.equalsIgnoreCase("Stop"))
 			{
-				if (nrs.containsKey("Counter"))
+				if (counter > 0)
 				{
-					nrs.remove("Counter");
+					PlayerHandler.getInstance().setPlayerNumber(par1.getCommandSenderName(), "Counter", -50);
 					par1.sendChatToPlayer(LangProxy.getText("Removed Timer", EnumChatFormatting.GREEN));
 				}
 				else
@@ -249,9 +244,9 @@ public class TimerCommand implements ISpmodCommand
 				
 				if (total > 0)
 				{
-					int cont = 0;
-					cont = nrs.get("Counter");
-					nrs.put("Counter", cont + total);
+					int cont = counter;
+					PlayerHandler.getInstance().setPlayerNumber(par1.getCommandSenderName(), "Counter", cont + total);
+
 					par1.sendChatToPlayer(LangProxy.getText("Total Ticks Added: " + total));
 				}
 				else
@@ -298,7 +293,8 @@ public class TimerCommand implements ISpmodCommand
 				
 				if (total > 0)
 				{
-					nrs.put("Counter", total);
+					PlayerHandler.getInstance().setPlayerNumber(par1.getCommandSenderName(), "Counter", total);
+
 					par1.sendChatToPlayer(LangProxy.getText("Set Total Time to: " + total));
 				}
 				else

@@ -171,18 +171,50 @@ public class WindMill extends FacedInventory implements IInventory,
 				{
 					updateWindSpeed();
 				}
+				if(!damageActive && rand.nextBoolean())
+				{
+					activateDamageRandomly();
+				}
 				getRotor().onRotorTick(this, worldObj, inv[0]);
 				if(this.damageActive)
 				{
+					damageActive = false;
 					int calculatedDamage = calculateDamage();
 					if(calculatedDamage > 0)
 					{
 						getRotor().damageRotor(inv[0], calculatedDamage, this);
 					}
+					damageActive = false;
 				}
 			}
 			adjustRotorSpeed();
 			generateEnergy();
+		}
+	}
+	
+	public void activateDamageRandomly()
+	{
+		if(speed < 0.25F)
+		{
+			return;
+		}
+		if(speed >= 0.25F && speed <= 0.5F)
+		{
+			if(rand.nextInt(3) == 0)
+			{
+				damageActive = true;
+			}
+		}
+		else if(speed >= 0.5F && speed <= 1.1F)
+		{
+			if(rand.nextBoolean())
+			{
+				damageActive = true;
+			}
+		}
+		else
+		{
+			damageActive = true;
 		}
 	}
 	
@@ -356,11 +388,13 @@ public class WindMill extends FacedInventory implements IInventory,
 				damage+=3;
 			}
 		}
+		
 		return damage;
 	}
 	
 	public void updateWindSpeed()
 	{
+		IC2.windStrength = 20;
 		this.requestedSpeed = getWindSpeed();
 	}
 	

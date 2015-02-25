@@ -1,8 +1,10 @@
 package speiger.src.tinymodularthings.common.handler;
 
+import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import cpw.mods.fml.common.IFuelHandler;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -12,6 +14,10 @@ public class FuelHandler implements IFuelHandler
 	public static void init()
 	{
 		GameRegistry.registerFuelHandler(new FuelHandler());
+		PressureFurnace.validFuels.add(Item.coal.itemID);
+		PressureFurnace.fuelMeta.put(Item.coal.itemID, 0);
+		PressureFurnace.fuelMeta.put(Item.coal.itemID, 1);
+		PressureFurnace.validFuels.add(Block.coalBlock.blockID);
 	}
 	
 	@Override

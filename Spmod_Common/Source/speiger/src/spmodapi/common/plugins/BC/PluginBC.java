@@ -24,30 +24,11 @@ public class PluginBC implements IPlugin
 		BCAddon.init();
 	}
 
-	
-	
-	@ForgeSubscribe
-	public void onOreRegister(OreRegisterEvent par0)
-	{
-		if (par0.Name.equalsIgnoreCase("gearStone"))
-		{
-			try
-			{
-				if (par0.Ore.getItem() == GameRegistry.findItem("BuildCraft|Core", "stoneGearItem"))
-				{
-					OreDictionary.getOres(par0.Name).remove(par0.Ore);
-				}
-			}
-			catch (Exception e)
-			{
-			}
-		}
-	}
 
 	@Override
 	public Object getForgeClasses()
 	{
-		return new BCAddon();
+		return null;
 	}
 	
 }

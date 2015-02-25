@@ -127,6 +127,7 @@ public class ClassStorage
 				}
 				catch(Exception e)
 				{
+					result = new ItemStack(Block.bedrock);
 				}
 			}
 			return result;

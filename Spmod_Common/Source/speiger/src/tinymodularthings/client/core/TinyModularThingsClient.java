@@ -16,10 +16,7 @@ import speiger.src.tinymodularthings.client.render.storage.RenderStorageBlock;
 import speiger.src.tinymodularthings.client.render.transport.RenderTransport;
 import speiger.src.tinymodularthings.client.render.transport.renderTransportTile;
 import speiger.src.tinymodularthings.common.blocks.machine.MachineWaterSpender;
-import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyChest;
-import speiger.src.tinymodularthings.common.blocks.storage.AdvTinyTank;
-import speiger.src.tinymodularthings.common.blocks.storage.TinyChest;
-import speiger.src.tinymodularthings.common.blocks.storage.TinyTank;
+import speiger.src.tinymodularthings.common.blocks.storage.*;
 import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.core.TinyModularThingsCore;
@@ -47,6 +44,7 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		ClientRegistry.bindTileEntitySpecialRenderer(TinyTank.class, new RenderStorageBlock());
 		ClientRegistry.bindTileEntitySpecialRenderer(AdvTinyChest.class, new RenderStorageBlock());
 		ClientRegistry.bindTileEntitySpecialRenderer(AdvTinyTank.class, new RenderStorageBlock());
+		ClientRegistry.bindTileEntitySpecialRenderer(TinyBarrel.class, new RenderStorageBlock());
 		
 		//Machine Blocks
 		ClientRegistry.bindTileEntitySpecialRenderer(MachineWaterSpender.class, new RenderWaterSpender());

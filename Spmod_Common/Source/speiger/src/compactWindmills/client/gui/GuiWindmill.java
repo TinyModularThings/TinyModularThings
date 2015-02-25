@@ -35,7 +35,7 @@ public class GuiWindmill extends GuiInventoryCore
 			eu = eu.substring(0, eu.indexOf(".")+ (size < 3 ? size : 3));
 		}
 		this.fontRenderer.drawSplitString("Generating: " + eu + "EU", 105, 20, 70, 0x404040);
-		if(mill.speed >= 1.1F && mill.weight == null || (mill.weight.ordinal() < 3))
+		if(mill.speed >= 1.1F && (mill.weight == null || mill.weight.ordinal() < 3))
 		{
 			fontRenderer.drawString("Rotorblade is Spinning To Fast!", 11, 50, 0x404040);
 		}

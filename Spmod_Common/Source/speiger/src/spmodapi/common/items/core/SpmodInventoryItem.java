@@ -1,10 +1,7 @@
 package speiger.src.spmodapi.common.items.core;
 
 import java.util.HashMap;
-
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
+import java.util.List;
 
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.Entity;
@@ -20,9 +17,9 @@ import speiger.src.api.common.utils.config.EntityCounter;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
-import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import speiger.src.tinymodularthings.common.items.tools.PotionInventory;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 {
@@ -34,10 +31,30 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 	}
 	
 	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void addInformation(ItemStack par1ItemStack, EntityPlayer par2EntityPlayer, List par3List, boolean par4)
+	{
+		super.addInformation(par1ItemStack, par2EntityPlayer, par3List, par4);
+		if(par4)
+		{
+			par3List.add("InventoryID: "+getInventoryID(par1ItemStack));
+		}
+	}
+
+
+
 	public abstract ItemInventory createNewInventory(EntityPlayer par1, ItemStack par2);
 	
 	public String getInventoryID(ItemStack par1)
 	{
+		if(!getItemData(par1).hasKey("Inited"))
+		{
+			initData(par1);
+			getItemData(par1).setBoolean("Inited", true);
+		}
+		
 		return NBTHelper.getTag(par1, "Data").getString("ID");
 	}
 	
@@ -47,15 +64,13 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 	{
 		
 	}
-	
-	public ItemStack createItem(int meta)
+
+	private void initData(ItemStack par1)
 	{
-		ItemStack itemStack = new ItemStack(this.itemID, 1, meta);
 		NBTTagCompound data = new NBTTagCompound();
 		initExtraData(data);
 		data.setString("ID", createNewInventoryID());
-		itemStack.setTagInfo("Data", data);
-		return itemStack;
+		par1.setTagInfo("Data", data);
 	}
 	
 	@Override
@@ -154,8 +169,13 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 	@Override
 	public void onUpdate(ItemStack par1, World par2, Entity par3, int par4, boolean par5)
 	{
-		if(par2.isRemote || !tickInventory(par1) || (hasTickRate(par1) && !tickRateReady(par1)))
+		if(par2.isRemote || !tickInventory(par1) || (hasTickRate(par1) && !tickRateReady(par1)) || !getItemData(par1).hasKey("Inited"))
 		{
+			if(!getItemData(par1).hasKey("Inited"))
+			{
+				initData(par1);
+				getItemData(par1).setBoolean("Inited", true);
+			}
 			return;
 		}
 		
@@ -184,7 +204,6 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 		{
 			return;
 		}
-		FMLLog.getLogger().info("Test");
 		inv.onTick();
 		inv.onInventoryChanged();
 	}

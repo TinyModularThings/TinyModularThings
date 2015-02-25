@@ -17,6 +17,8 @@ import speiger.src.api.common.data.packets.IPacketReciver;
 import speiger.src.api.common.data.packets.SpmodPacketHelper;
 import speiger.src.api.common.utils.RedstoneUtils;
 import speiger.src.api.common.utils.WorldReading;
+import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.pipes.GuiAluPipe;
@@ -268,7 +270,7 @@ public class AluFluidExtractionPipe extends Pipe<PipeTransportFluids> implements
 				}
 				else
 				{
-					entityplayer.openGui(TinyModularThings.instance, EnumIDs.BCPipes.getId(), getWorld(), container.xCoord, container.yCoord, container.zCoord);
+					entityplayer.openGui(SpmodAPI.instance, EnumGuiIDs.Pipes.getID(), getWorld(), container.xCoord, container.yCoord, container.zCoord);
 				}
 			}
 		}

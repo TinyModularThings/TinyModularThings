@@ -6,6 +6,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
+import speiger.src.tinymodularthings.common.blocks.storage.ItemBlockStorage;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 
@@ -40,6 +41,7 @@ public class TinyRecipes
 			pp.addSRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i), new Object[] { new ItemStack(TinyItems.advTinyChest, 1, i), Item.minecartEmpty });
 			pp.addRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i), new Object[] { "XYX", "CVC", "XBX", 'X', GearType.Redstone.getItem(), 'C', Block.torchRedstoneActive, 'Y', Block.stoneButton, 'B', Block.pressurePlateStone, 'V', new ItemStack(TinyItems.tinyStorageCart, 1, i) });
 			pp.addRecipe(new ItemStack(TinyItems.advTinyChest, 1, i), new Object[] { "XYX", "CVC", "XBX", 'X', GearType.Redstone.getItem(), 'C', Block.torchRedstoneActive, 'Y', Block.stoneButton, 'B', Block.pressurePlateStone, 'V', new ItemStack(TinyItems.tinyChest, 1, i) });
+			pp.addRecipe(ItemBlockStorage.createTinyBarrel(i), new Object[] {"XYX", "XCX", "XYX", 'Y', Block.chest, 'X', GearType.Wood.getItem(), 'C', new ItemStack(TinyItems.tinyChest, 1, i)});
 		}
 		pp.addRecipe(new ItemStack(TinyBlocks.transportBlock, 4, 0), new Object[] { "XXX", "XYX", "XXX", 'X', Block.obsidian, 'Y', Item.enderPearl });
 		pp.addRecipe(new ItemStack(TinyBlocks.machine), new Object[] { "XXX", "XYX", "XXX", 'X', Block.cobblestone, 'Y', new ItemStack(Item.coal, 1, pp.getRecipeBlankValue()) });
@@ -65,5 +67,6 @@ public class TinyRecipes
 			pp.addRecipe(new ItemStack(TinyItems.tinyStorageCart, 1, i - 2), new Object[] { " X ", "XYX", " X ", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.tinyStorageCart, 1, i) });
 			pp.addRecipe(new ItemStack(TinyItems.advTinyStorageCart, 1, i - 2), new Object[] { " X ", "XYX", " X ", 'X', GearType.Stone.getItem(), 'Y', new ItemStack(TinyItems.advTinyStorageCart, 1, i) });
 		}
+		
 	}
 }

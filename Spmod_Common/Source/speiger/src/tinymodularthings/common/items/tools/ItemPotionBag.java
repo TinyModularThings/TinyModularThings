@@ -101,13 +101,6 @@ public class ItemPotionBag extends SpmodInventoryItem
 		}
 		return TextureEngine.getTextures().getTexture(this, 0);
 	}
-
-	@Override
-	@SideOnly(Side.CLIENT)
-	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
-	{
-		par3List.add(createItem(0));
-	}
 	
 	
 	

@@ -50,7 +50,7 @@ public class RecipeOverrider
 		replacements.put(ItemGear.getGearFromType(GearType.Gold), "gearGold");
 		replacements.put(ItemGear.getGearFromType(GearType.Diamond), "gearDiamond");
 		replacements.put(clz.getStack("woodGear").getResult(), "gearWood");
-		replacements.put(clz.getStack("stoneGear").getResult(), "gearCobble");
+		replacements.put(clz.getStack("stoneGear").getResult(), "gearStone");
 		replacements.put(clz.getStack("ironGear").getResult(), "gearIron");
 		replacements.put(clz.getStack("goldGear").getResult(), "gearGold");
 		replacements.put(clz.getStack("diaGear").getResult(), "gearDiamond");
@@ -75,7 +75,6 @@ public class RecipeOverrider
 			ItemGear.getGearFromType(GearType.Diamond), 
 			clz.getStack("woodGear").getResult(), 
 			clz.getStack("stoneGear").getResult(), 
-			clz.getStack("ironGear").getResult(), 
 			clz.getStack("goldGear").getResult(), 
 			clz.getStack("diaGear").getResult(), 
 			new ItemStack(Block.blockLapis), 
@@ -134,7 +133,8 @@ public class RecipeOverrider
 						
 						if(cu instanceof ItemStack)
 						{
-							items[i] = (ItemStack)cu;
+							ItemStack check = (ItemStack)cu;
+							items[i] = check;
 						}
 					}
 				}
@@ -211,6 +211,7 @@ public class RecipeOverrider
 		if(recipesToRemove.size() > 0)
 		{
 			SpmodAPI.log.print("Replaced " + recipesToRemove.size() + " ore recipies");
+			
 		}
 	}
 	
@@ -243,6 +244,7 @@ public class RecipeOverrider
 	
 	static ShapedOreRecipe getRecipeChange(int[] size, ItemStack output, Object[] recipe, Map<ItemStack, String> repl)
 	{
+		ClassStorage clzst = ClassStorage.getInstance();
 		ItemStack[] att = new ItemStack[recipe.length];
 		for(int i = 0;i < recipe.length;i++)
 		{
@@ -253,12 +255,12 @@ public class RecipeOverrider
 				if(cu instanceof ArrayList)
 				{
 					ArrayList<ItemStack> list = (ArrayList<ItemStack>)cu;
-					repl.put((ItemStack)list.get(0), OreDictionary.getOreName(OreDictionary.getOreID((ItemStack)list.get(0))));
+					repl.put(list.get(0), OreDictionary.getOreName(OreDictionary.getOreID(list.get(0))));
 					att[i] = list.get(0);
 					continue;
 				}
-				
-				att[i] = (ItemStack)cu;
+				ItemStack current = (ItemStack)cu;
+				att[i] = current;
 			}
 		}
 		

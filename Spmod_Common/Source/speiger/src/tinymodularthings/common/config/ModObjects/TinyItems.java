@@ -1,6 +1,7 @@
 package speiger.src.tinymodularthings.common.config.ModObjects;
 
 import net.minecraft.item.Item;
+import speiger.src.spmodapi.common.items.core.SpmodItem;
 
 public class TinyItems
 {
@@ -45,10 +46,10 @@ public class TinyItems
 	public static Item advEnergyHopper;
 	
 	// Energy Items
-	public static Item smallMJBattery;
-	public static Item mediumMJBattery;
-	public static Item bigMJBattery;
-	public static Item hugeMJBattery;
+	public static SpmodItem smallMJBattery;
+	public static SpmodItem mediumMJBattery;
+	public static SpmodItem bigMJBattery;
+	public static SpmodItem hugeMJBattery;
 	
 	// Pipes
 	public static Item emeraldPowerPipeE;

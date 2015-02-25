@@ -1,6 +1,7 @@
 package speiger.src.spmodapi.common.core;
 
 import net.minecraft.block.Block;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
@@ -8,11 +9,16 @@ import net.minecraft.world.World;
 import speiger.src.api.client.gui.IBlockGui;
 import speiger.src.api.client.gui.IItemGui;
 import speiger.src.api.common.world.blocks.BlockPosition;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.commands.GuiCommands;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.ForgeRegister;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
+import speiger.src.tinymodularthings.common.interfaces.IEntityGuiProvider;
+import speiger.src.tinymodularthings.common.interfaces.IPipeGuiProvider;
+import buildcraft.api.transport.IPipe;
+import buildcraft.api.transport.IPipeTile;
 import cpw.mods.fml.common.network.IGuiHandler;
 
 /**
@@ -80,6 +86,37 @@ public class SpmodAPICore implements IGuiHandler
 				}
 			}
 		}
+		else if((ID == EnumGuiIDs.Entities.getID()))
+		{
+			if (y < 0)
+			{
+				Entity entity = world.getEntityByID(x);
+				if (entity != null && entity instanceof IEntityGuiProvider)
+				{
+					IEntityGuiProvider gui = (IEntityGuiProvider) entity;
+					if (gui.hasGui())
+					{
+						return gui.getInventory(player.inventory);
+					}
+					
+				}
+			}
+		}
+		else if(ID == EnumGuiIDs.Pipes.getID())
+		{
+			if(SpmodAPI.plugins.isPluginLoaded("BC"))
+			{
+				TileEntity tile = world.getBlockTileEntity(x, y, z);
+				if(tile != null && tile instanceof IPipeTile)
+				{
+					IPipe pipe = ((IPipeTile)tile).getPipe();
+					if(pipe != null && pipe instanceof IPipeGuiProvider)
+					{
+						return ((IPipeGuiProvider)pipe).getInventory(player.inventory);
+					}
+				}
+			}
+		}
 		return null;
 	}
 	
@@ -118,6 +155,37 @@ public class SpmodAPICore implements IGuiHandler
 				if (container.hasGui(stack))
 				{
 					return container.getGui(player.inventory, stack);
+				}
+			}
+		}
+		else if(ID == EnumGuiIDs.Entities.getID())
+		{
+			if (y < 0)
+			{
+				Entity entity = world.getEntityByID(x);
+				if(entity != null && entity instanceof IEntityGuiProvider)
+				{
+					IEntityGuiProvider gui = (IEntityGuiProvider)entity;
+					if(gui.hasGui())
+					{
+						return gui.getGui(player.inventory);
+					}
+					
+				}
+			}
+		}
+		else if(ID == EnumGuiIDs.Pipes.getID())
+		{
+			if(SpmodAPI.plugins.isPluginLoaded("BC"))
+			{
+				TileEntity tile = world.getBlockTileEntity(x, y, z);
+				if(tile != null && tile instanceof IPipeTile)
+				{
+					IPipe pipe = ((IPipeTile)tile).getPipe();
+					if(pipe != null && pipe instanceof IPipeGuiProvider)
+					{
+						return ((IPipeGuiProvider)pipe).getGui(player.inventory);
+					}
 				}
 			}
 		}

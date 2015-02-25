@@ -73,26 +73,14 @@ public class CommandPlayerInfos implements ISpmodCommand
 				boolean result = Boolean.parseBoolean(arg[0]);
 				String test = result ? "Enable" : "Dissable";
 				par1.sendChatToPlayer(LangProxy.getText(test+" Gas Drops when you kill Peacefull living Entities", EnumChatFormatting.GREEN));
-				HashMap<String, Boolean> flag = PlayerHandler.flags.get(par1.getCommandSenderName());
-				if(flag == null)
-				{
-					flag = new HashMap<String, Boolean>();
-					PlayerHandler.flags.put(par1.getCommandSenderName(), flag);
-				}
-				flag.put("GasByKill", result);
+				PlayerHandler.getInstance().setPlayerFlag(par1.getCommandSenderName(), "GasByKill", result);
 			}
 			else if(sub.getSubCommandName().equalsIgnoreCase("Craft Make Hunger"))
 			{
 				boolean result = Boolean.parseBoolean(arg[0]);
 				String test = result ? "Enable" : "Dissable";
 				par1.sendChatToPlayer(LangProxy.getText(test+" Crafting Make You Hungry", EnumChatFormatting.GREEN));
-				HashMap<String, Boolean> flag = PlayerHandler.flags.get(par1.getCommandSenderName());
-				if(flag == null)
-				{
-					flag = new HashMap<String, Boolean>();
-					PlayerHandler.flags.put(par1.getCommandSenderName(), flag);
-				}
-				flag.put("CraftHungry", result);
+				PlayerHandler.getInstance().setPlayerFlag(par1.getCommandSenderName(), "CraftHungry", result);
 			}
 		}
 		

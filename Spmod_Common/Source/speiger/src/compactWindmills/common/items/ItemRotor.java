@@ -154,7 +154,6 @@ public class ItemRotor extends SpmodItem implements IRotorItem
 				par3.add("Time the Rotor will stay at Least: ");
 				par3.add(MathUtils.getTicksInTime(damageLeft * 64));
 			}
-			par3.add("Rotor Efficency: " + eff + "%");
 			if(Keyboard.isKeyDown(42) || Keyboard.isKeyDown(54))
 			{
 				par3.add("Damage: " + damage + " / " + type.getMaxDamage());
@@ -193,12 +192,12 @@ public class ItemRotor extends SpmodItem implements IRotorItem
 	
 	public static enum BasicRotorType
 	{
-		WoodenRotor(2250, 0, 0.5F, "rotor.basic.wood", RotorWeight.Leight),
-		WoolRotor(562, 1, 0.9F, "rotor.basic.wool", RotorWeight.VeryLeight),
-		IronRotor(18000, 2, 0.68F, "rotor.basic.iron", RotorWeight.Heavy),
-		CarbonRotor(27000, 2, 0.75F, "rotor.basic.carbon", RotorWeight.Medium),
-		AlloyRotor(6750, 3, 0.9F, "rotor.basic.alloy", RotorWeight.Heavy),
-		IridiumRotor(0, 4, 1.0F, "rotor.basic.iridium", RotorWeight.VeryHeavy);
+		WoodenRotor(11250, "rotor.basic.wood", RotorWeight.Leight),
+		WoolRotor(5675, "rotor.basic.wool", RotorWeight.VeryLeight),
+		IronRotor(136875, "rotor.basic.iron", RotorWeight.Heavy),
+		CarbonRotor(68437, "rotor.basic.carbon", RotorWeight.Medium),
+		AlloyRotor(273750, "rotor.basic.alloy", RotorWeight.Heavy),
+		IridiumRotor(0, "rotor.basic.iridium", RotorWeight.VeryHeavy);
 		
 		int maxDamage;
 		int tier;
@@ -207,12 +206,10 @@ public class ItemRotor extends SpmodItem implements IRotorItem
 		ResourceLocation texture;
 		RotorWeight weight;
 		
-		private BasicRotorType(int par1, int par2, float par3, String par4, RotorWeight par5)
+		private BasicRotorType(int par1, String par2, RotorWeight par5)
 		{
 			maxDamage = par1;
-			tier = par2;
-			eff = par3;
-			displayName = par4;
+			displayName = par2;
 			weight = par5;
 		}
 		

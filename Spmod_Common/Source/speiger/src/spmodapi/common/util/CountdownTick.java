@@ -12,9 +12,7 @@ import cpw.mods.fml.common.ITickHandler;
 import cpw.mods.fml.common.TickType;
 
 public class CountdownTick implements ITickHandler
-{
-	
-	
+{	
 	@Override
 	public void tickStart(EnumSet<TickType> type, Object... tickData)
 	{
@@ -33,19 +31,15 @@ public class CountdownTick implements ITickHandler
 	{
 		EntityPlayer player = (EntityPlayer) tickData[0];
 		PlayerHandler handler = PlayerHandler.getInstance();
-		HashMap<String, Integer> numb = handler.numbers.get(player.username);
-		if(numb != null && numb.containsKey("Counter"))
+		int counter = handler.getPlayerNumber(player, "Counter");
+		if(counter > -50)
 		{
-			int counter = numb.get("Counter");
 			counter--;
 			if(counter < 0 && counter > -50)
 			{
 				player.sendChatToPlayer(LangProxy.getText("Countdown is Over", EnumChatFormatting.AQUA));
 			}
-			else if(counter <= -50)
-			{
-				numb.remove("Counter");
-			}
+			handler.setPlayerNumber(player, "Counter", counter);
 		}
 		
 	}

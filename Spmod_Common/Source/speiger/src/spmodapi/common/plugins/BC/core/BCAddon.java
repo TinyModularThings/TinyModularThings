@@ -1,5 +1,6 @@
 package speiger.src.spmodapi.common.plugins.BC.core;
 
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.registry.GameRegistry;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -11,6 +12,7 @@ import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.enums.EnumColor;
+import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.plugins.BC.actions.*;
 import speiger.src.spmodapi.common.util.ForgeRegister;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
@@ -25,6 +27,13 @@ public class BCAddon
 {	
 	public static void init()
 	{
+		for(String oreName : OreDictionary.getOreNames())
+		{
+			for(ItemStack ore : OreDictionary.getOres(oreName))
+			{
+				onOreRegister(new OreDictionary.OreRegisterEvent(oreName, ore));
+			}
+		}
 		loadRecipes();
 		loadFacades();
 		ActionLoader.init();
@@ -48,8 +57,27 @@ public class BCAddon
 	static void loadRecipes()
 	{
 		OreDictionary.registerOre("gearCobble", BuildCraftCore.stoneGearItem);
+		PathProxy.addFurnaceRecipe(new ItemStack(BuildCraftCore.stoneGearItem), GearType.Stone.getItem(), 0.1F);
 		PathProxy.addRecipe(new ItemStack(BuildCraftTransport.pipeWaterproof, 16), new Object[] { "XXX", "XYX", "XXX", 'X', APIItems.hemp, 'Y', Item.slimeBall });
 		PathProxy.removeRecipeS(new ItemStack(APIItems.colorCard, 1, EnumColor.GREEN.getAsDye()), BuildCraftTransport.pipeWaterproof);
 		IronEngineFuel.addFuel(APIUtils.animalGas, 3, 7500);
+	}
+	
+	
+	public static void onOreRegister(OreRegisterEvent par0)
+	{
+		if (par0.Name.equalsIgnoreCase("gearStone"))
+		{
+			try
+			{
+				if (par0.Ore.getItem() == GameRegistry.findItem("BuildCraft|Core", "stoneGearItem"))
+				{
+					OreDictionary.getOres(par0.Name).remove(par0.Ore);
+				}
+			}
+			catch (Exception e)
+			{
+			}
+		}
 	}
 }

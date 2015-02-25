@@ -312,15 +312,6 @@ public class LivingHandler
 	
 	private boolean PlayerWantToCreateGas(EntityPlayer par1)
 	{
-		if(par1 == null)
-		{
-			return false;
-		}
-		HashMap<String, Boolean> result = PlayerHandler.flags.get(par1.username);
-		if(result == null)
-		{
-			return false;
-		}
-		return result.get("GasByKill");
+		return PlayerHandler.getInstance().getPlayerFlag(par1, "GasByKill");
 	}
 }

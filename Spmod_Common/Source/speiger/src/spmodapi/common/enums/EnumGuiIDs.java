@@ -5,7 +5,9 @@ public enum EnumGuiIDs
 	BlockGui(10),
 	Tiles(11),
 	Commands(12),
-	Items(13);
+	Items(13),
+	Pipes(14),
+	Entities(15);
 	
 	int id;
 	

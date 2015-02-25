@@ -4,10 +4,13 @@ import java.util.List;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
+import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.spmodapi.common.util.TileIconMaker;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -29,13 +32,17 @@ public class BlockStorage extends SpmodBlockContainerBase
 		MinecraftForge.setBlockHarvestLevel(this, 2, "axe", 0);
 		MinecraftForge.setBlockHarvestLevel(this, 3, "pickaxe", 0);
 		MinecraftForge.setBlockHarvestLevel(this, 3, "axe", 0);
+		MinecraftForge.setBlockHarvestLevel(this, 4, "axe", 0);
 	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
-		
+		for(int i = 0;i<9;i++)
+		{
+			par3.add(ItemBlockStorage.createTinyBarrel(i));
+		}
 	}
 
 	@Override
@@ -53,6 +60,7 @@ public class BlockStorage extends SpmodBlockContainerBase
 			case 1: return new TinyTank();
 			case 2: return new AdvTinyChest();
 			case 3: return new AdvTinyTank();
+			case 4: return new TinyBarrel();
 			default: return null;
 		}
 	}

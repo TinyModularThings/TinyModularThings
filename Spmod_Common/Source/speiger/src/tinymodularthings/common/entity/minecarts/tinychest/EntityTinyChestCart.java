@@ -15,14 +15,14 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.entity.minecart.MinecartInteractEvent;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.spmodapi.common.util.slot.SpmodSlot;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.entity.GuiTinyChestCart;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.entity.minecarts.TCarts;
-import speiger.src.tinymodularthings.common.enums.EnumIDs;
 
 public class EntityTinyChestCart extends TCarts implements
 		IItemTransfer
@@ -319,7 +319,7 @@ public class EntityTinyChestCart extends TCarts implements
         }
         if (!this.worldObj.isRemote)
         {
-        	par1.openGui(TinyModularThings.instance, EnumIDs.Entities.getId(), worldObj, this.entityId, -1, 0);
+        	par1.openGui(SpmodAPI.instance, EnumGuiIDs.Entities.getID(), worldObj, this.entityId, -1, 0);
         }
 
         return true;

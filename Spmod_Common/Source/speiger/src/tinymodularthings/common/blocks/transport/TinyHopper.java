@@ -324,17 +324,6 @@ public class TinyHopper extends TileFacing implements IFluidHandler, IHopper, IS
 	}
 	
 	@Override
-	public boolean onActivated(EntityPlayer par1)
-	{
-		if (hasContainer())
-		{
-			par1.openGui(TinyModularThings.instance, EnumIDs.ADVTiles.getId(), worldObj, xCoord, yCoord, zCoord);
-			return true;
-		}
-		return false;
-	}
-	
-	@Override
 	public boolean onClick(boolean sneak, EntityPlayer par1, Block par2, int side)
 	{
 		if (!worldObj.isRemote)
