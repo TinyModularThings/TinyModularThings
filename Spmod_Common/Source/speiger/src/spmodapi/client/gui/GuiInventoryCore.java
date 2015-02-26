@@ -49,6 +49,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class GuiInventoryCore extends GuiContainer
 {
 	public static TextureEngine engine = TextureEngine.getTextures();
+	private GuiButton currentButton;
 	boolean defined = false;
 	boolean autoDrawing = false;
 	public int x = 0;
@@ -418,12 +419,41 @@ public class GuiInventoryCore extends GuiContainer
 	@Override
 	public void actionPerformed(GuiButton par1GuiButton)
 	{
+		currentButton = par1GuiButton;
 		if(tile != null)
 		{
 			tile.onButtonClick(this, par1GuiButton);
 		}
+		
 	}
 	
+	public void onButtonUpdate(GuiButton par1)
+	{
+		if(tile != null)
+		{
+			tile.onButtonUpdate(this, par1);
+		}
+	}
+	
+	@Override
+	protected void mouseMovedOrUp(int par1, int par2, int par3)
+	{
+		super.mouseMovedOrUp(par1, par2, par3);
+        if (this.currentButton != null && par3 == 0)
+        {
+            this.currentButton.mouseReleased(par1, par2);
+            this.currentButton = null;
+        }
+	}
+	
+	public void releaseButton(GuiButton par1)
+	{
+		if(tile != null)
+		{
+			tile.onButtonReleased(this, par1);
+		}
+	}
+
 	public int getX()
 	{
 		return x;
@@ -433,6 +463,17 @@ public class GuiInventoryCore extends GuiContainer
 	{
 		return y;
 	}
+	
+	public int getGuiX()
+	{
+		return (this.width - this.xSize) / 2;
+	}
+	
+	public int getGuiY()
+	{
+		return (this.height - this.ySize) / 2;
+	}
+	
 	
 	public FontRenderer getFontRenderer()
 	{

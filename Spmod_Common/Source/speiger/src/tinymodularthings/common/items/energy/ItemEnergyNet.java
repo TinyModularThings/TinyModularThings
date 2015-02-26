@@ -11,6 +11,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.api.common.world.items.energy.IBCBattery;
 import speiger.src.api.common.world.items.energy.IBCBattery.BatteryType;
+import speiger.src.spmodapi.SpmodAPI;
 
 public class ItemEnergyNet
 {
@@ -22,7 +23,6 @@ public class ItemEnergyNet
 	}
 	
 	boolean randomMode = false;
-	boolean ignoreTransferlimit = false;
 	boolean setMultiPacket = false;
 	SendingMode send = SendingMode.All;
 	RequestingMode req = RequestingMode.All;
@@ -30,12 +30,6 @@ public class ItemEnergyNet
 	public ItemEnergyNet activeRandomMode()
 	{
 		randomMode = true;
-		return this;
-	}
-	
-	public ItemEnergyNet setIgnoreTransferlimit()
-	{
-		ignoreTransferlimit = true;
 		return this;
 	}
 	
@@ -53,14 +47,10 @@ public class ItemEnergyNet
 	
 	public ItemEnergyNet loadSettingsFromItem(ItemStack par1)
 	{
-		NBTTagCompound data = NBTHelper.getTag(par1, "EnergyNet");
+		NBTTagCompound data = NBTHelper.getTag(par1, "Data").getCompoundTag("EnergyNet");
 		if(data.getBoolean("Random"))
 		{
 			randomMode = true;
-		}
-		if(data.getBoolean("Limit"))
-		{
-			ignoreTransferlimit = true;
 		}
 		if(data.getBoolean("Multi"))
 		{
@@ -90,7 +80,6 @@ public class ItemEnergyNet
 	private void resetSettings()
 	{
 		randomMode = false;
-		ignoreTransferlimit = false;
 		send = SendingMode.All;
 		req = RequestingMode.All;
 	}
@@ -112,7 +101,7 @@ public class ItemEnergyNet
 		
 		if(randomMode)
 		{
-			List<Integer> ints = getValidReceivers(inv, true);
+			List<Integer> ints = getValidReceivers(inv, sender, true);
 			if(!ints.isEmpty())
 			{
 				Collections.shuffle(ints);
@@ -138,20 +127,27 @@ public class ItemEnergyNet
 					if(slotStack.getItem() instanceof IBCBattery)
 					{
 						BatteryContainer receiver = new BatteryContainer(slotStack);
-						BatteryType type = receiver.getType();
-						if((send == SendingMode.All && (type == BatteryType.Machine || type == BatteryType.Storage)) || (send == SendingMode.Battery && type == BatteryType.Storage) || (send == SendingMode.Machine && type == BatteryType.Machine))
+						if(!receiver.isSame(sender))
 						{
-							boolean flag = sendEnergy(sender, receiver);
-							if(flag && setMultiPacket)
+							BatteryType type = receiver.getType();
+							if((send == SendingMode.All && (type == BatteryType.Machine || type == BatteryType.Storage)) || (send == SendingMode.Battery && type == BatteryType.Storage) || (send == SendingMode.Machine && type == BatteryType.Machine))
 							{
-								continue;
+								if(receiver.requestedEnergy() > 0)
+								{
+									boolean flag = sendEnergy(sender, receiver);
+									if(flag && setMultiPacket)
+									{
+										continue;
+									}
+									break;
+								}
 							}
-							break;
 						}
 					}
 				}
 			}
 		}
+		SpmodAPI.core.updatePlayerInf(par2);
 		resetSettings();
 	}
 	
@@ -165,7 +161,7 @@ public class ItemEnergyNet
 		InventoryPlayer inv = par2.inventory;
 		if(randomMode)
 		{
-			List<Integer> ints = getValidReceivers(inv, false);
+			List<Integer> ints = getValidReceivers(inv, receiver, false);
 			if(!ints.isEmpty())
 			{
 				Collections.shuffle(ints);
@@ -191,27 +187,31 @@ public class ItemEnergyNet
 					if(slotStack.getItem() instanceof IBCBattery)
 					{
 						BatteryContainer sender = new BatteryContainer(slotStack);
-						BatteryType type = sender.getType();
-						if((req == RequestingMode.All && (type == BatteryType.Generator || type == BatteryType.Storage) || (req == RequestingMode.Battery && type == BatteryType.Storage) || (req == RequestingMode.Generator && type == BatteryType.Storage)))
+						if(!sender.isSame(receiver))
 						{
-							boolean flag = sendEnergy(sender, receiver);
-							if(flag && setMultiPacket)
+							BatteryType type = sender.getType();
+							if((req == RequestingMode.All && (type == BatteryType.Generator || type == BatteryType.Storage) || (req == RequestingMode.Battery && type == BatteryType.Storage) || (req == RequestingMode.Generator && type == BatteryType.Storage)))
 							{
-								continue;
+								boolean flag = sendEnergy(sender, receiver);
+								if(flag && setMultiPacket)
+								{
+									continue;
+								}
+								break;
 							}
-							break;
 						}
 					}
 				}
 			}
 		}
+		SpmodAPI.core.updatePlayerInf(par2);
 		resetSettings();
 	}
 	
 	/**
 	 * Provider Means the Sender is a Provider!
 	 */
-	private List<Integer> getValidReceivers(InventoryPlayer par1, boolean provider)
+	private List<Integer> getValidReceivers(InventoryPlayer par1, BatteryContainer par2, boolean provider)
 	{
 		ArrayList<Integer> ints = new ArrayList<Integer>();
 		for(int i = 0;i<par1.getSizeInventory();i++)
@@ -224,24 +224,30 @@ public class ItemEnergyNet
 					if(provider)
 					{
 						BatteryContainer receiver = new BatteryContainer(stack);
-						BatteryType type = receiver.getType();
-						if((send == SendingMode.All && (type == BatteryType.Machine || type == BatteryType.Storage)) || (send == SendingMode.Battery && type == BatteryType.Storage) || (send == SendingMode.Machine && type == BatteryType.Machine))
+						if(!receiver.isSame(par2))
 						{
-							if(receiver.requestedEnergy() > 0)
+							BatteryType type = receiver.getType();
+							if((send == SendingMode.All && (type == BatteryType.Machine || type == BatteryType.Storage)) || (send == SendingMode.Battery && type == BatteryType.Storage) || (send == SendingMode.Machine && type == BatteryType.Machine))
 							{
-								ints.add(i);
+								if(receiver.requestedEnergy() > 0)
+								{
+									ints.add(i);
+								}
 							}
 						}
 					}
 					else
 					{
 						BatteryContainer sender = new BatteryContainer(stack);
-						BatteryType type = sender.getType();
-						if((req == RequestingMode.All && (type == BatteryType.Generator || type == BatteryType.Storage) || (req == RequestingMode.Battery && type == BatteryType.Storage) || (req == RequestingMode.Generator && type == BatteryType.Storage)))
+						if(!sender.isSame(par2))
 						{
-							if(sender.getEnergyToSend() > 0)
+							BatteryType type = sender.getType();
+							if((req == RequestingMode.All && (type == BatteryType.Generator || type == BatteryType.Storage) || (req == RequestingMode.Battery && type == BatteryType.Storage) || (req == RequestingMode.Generator && type == BatteryType.Storage)))
 							{
-								ints.add(i);
+								if(sender.getEnergyToSend() > 0)
+								{
+									ints.add(i);
+								}
 							}
 						}
 					}
@@ -253,39 +259,22 @@ public class ItemEnergyNet
 	
 	private boolean sendEnergy(BatteryContainer sender, BatteryContainer receiver)
 	{
-		if(ignoreTransferlimit)
+		int toSend = Math.min(sender.getEnergyToSend(), sender.getTransferlimit());
+		if(toSend <= 0)
 		{
-			int toSend = sender.getEnergyToSend();
-			if(toSend <= 0)
-			{
-				return false;
-			}
-			int toDraw = receiver.charge(toSend);
-			if(toDraw <= 0)
-			{
-				return false;
-			}
-			sender.discharge(toDraw);
+			return false;
 		}
-		else
+		int toReceive = Math.min(toSend, receiver.getTransferlimit());
+		if(toReceive <= 0)
 		{
-			int toSend = Math.min(sender.getEnergyToSend(), sender.getTransferlimit());
-			if(toSend <= 0)
-			{
-				return false;
-			}
-			int toReceive = Math.min(toSend, receiver.getTransferlimit());
-			if(toReceive <= 0)
-			{
-				return false;
-			}
-			int received = receiver.charge(toReceive);
-			if(received <= 0)
-			{
-				return false;
-			}
-			sender.discharge(received);
+			return false;
 		}
+		int received = receiver.charge(toReceive);
+		if(received <= 0)
+		{
+			return false;
+		}
+		sender.discharge(received);
 		return true;
 	}
 	
@@ -317,6 +306,16 @@ public class ItemEnergyNet
 		{
 			battery = par1;
 			batteryData = par2;
+		}
+		
+		public boolean isSame(BatteryContainer par1)
+		{
+			return getBatteryID().equalsIgnoreCase(par1.getBatteryID());
+		}
+		
+		public String getBatteryID()
+		{
+			return battery.getBatteryID(batteryData);
 		}
 		
 		public BatteryType getType()

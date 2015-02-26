@@ -339,7 +339,7 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 		{
 			ModularPacket packet = createBasicPacket(SpmodAPI.instance);
 			packet.InjectNumbers(0, nbt.getInteger("TargetID"));
-			packet.injetString(par1.getGuiObject(0).getObject(GuiTextField.class).getText());
+			packet.injectString(par1.getGuiObject(0).getObject(GuiTextField.class).getText());
 			this.sendPacketToServer(packet.finishPacket());
 			nbt.setBoolean("Name", false);
 			nbt.setBoolean("TextInited", false);
@@ -360,7 +360,7 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 			}
 			else
 			{
-				this.sendPacketToServer(createBasicPacket(SpmodAPI.instance).InjectNumbers(1, nbt.getInteger("TargetID")).injetString(par1.getMC().thePlayer.username).finishPacket());
+				this.sendPacketToServer(createBasicPacket(SpmodAPI.instance).InjectNumbers(1, nbt.getInteger("TargetID")).injectString(par1.getMC().thePlayer.username).finishPacket());
 			}
 		}
 	}

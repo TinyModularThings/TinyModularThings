@@ -44,7 +44,7 @@ public class ItemPotionBag extends SpmodInventoryItem
 	@Override
 	public int getTickRate(ItemStack par1)
 	{
-		NBTTagCompound data = this.getItemData(par1).getCompoundTag("Inventory");
+		NBTTagCompound data = this.getItemData(par1);
 		if(data.getBoolean("Delay"))
 		{
 			return 40;

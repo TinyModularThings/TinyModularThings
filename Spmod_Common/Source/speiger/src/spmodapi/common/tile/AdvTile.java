@@ -354,6 +354,18 @@ public abstract class AdvTile extends TileEntity
 	}
 	
 	@SideOnly(Side.CLIENT)
+	public void onButtonUpdate(GuiInventoryCore par1, GuiButton par2)
+	{
+		
+	}
+	
+	@SideOnly(Side.CLIENT)
+	public void onButtonReleased(GuiInventoryCore par1, GuiButton par2)
+	{
+		
+	}
+	
+	@SideOnly(Side.CLIENT)
 	public void drawFrontExtras(GuiInventoryCore par1, int guiX, int guiY, int mouseX, int mouseY)
 	{
 		

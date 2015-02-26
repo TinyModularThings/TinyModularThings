@@ -3,6 +3,7 @@ package speiger.src.spmodapi.common.handler;
 import java.io.ByteArrayInputStream;
 import java.io.DataInputStream;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.network.INetworkManager;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
@@ -14,6 +15,8 @@ import speiger.src.api.common.data.packets.SpmodPacketHelper.PacketType;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.registry.helpers.SpmodModRegistry;
 import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IPacketHandler;
 import cpw.mods.fml.common.network.Player;
@@ -66,6 +69,22 @@ public class SpmodPacketHandler implements IPacketHandler
 					((IPacketReciver) tile).recivePacket(stream);
 				}
 			}
+			else if(type == type.ItemInventoryGui)
+			{
+				World world = DimensionManager.getWorld(stream.readInt());
+				if(world != null)
+				{
+					EntityPlayer player = world.getPlayerEntityByName(stream.readUTF());
+					if(player != null && player.openContainer instanceof AdvContainer)
+					{
+						AdvTile tile = ((AdvContainer)player.openContainer).getTile();
+						if(tile != null && tile instanceof IPacketReciver)
+						{
+							((IPacketReciver)tile).recivePacket(stream);
+						}
+					}
+				}
+			}
 			else if (type == type.Custom)
 			{
 				IPacketReciver recive = SpmodPacketHelper.getHelper().getReciverFromName(stream.readUTF());
@@ -99,6 +118,22 @@ public class SpmodPacketHandler implements IPacketHandler
 				if (tile != null && tile instanceof IPacketReciver)
 				{
 					((IPacketReciver) tile).recivePacket(stream);
+				}
+			}
+			else if(type == type.ItemInventoryGui)
+			{
+				World world = DimensionManager.getWorld(stream.readInt());
+				if(world != null)
+				{
+					EntityPlayer player = world.getPlayerEntityByName(stream.readUTF());
+					if(player != null && player.openContainer instanceof AdvContainer)
+					{
+						AdvTile tile = ((AdvContainer)player.openContainer).getTile();
+						if(tile != null && tile instanceof IPacketReciver)
+						{
+							((IPacketReciver)tile).recivePacket(stream);
+						}
+					}
 				}
 			}
 			else if (type == type.Custom)

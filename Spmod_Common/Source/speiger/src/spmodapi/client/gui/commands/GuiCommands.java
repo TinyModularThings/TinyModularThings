@@ -323,7 +323,7 @@ public class GuiCommands extends GuiContainer
 			}
 			ModularPacket packet = new ModularPacket(SpmodAPI.instance, PacketType.Custom, "Command.Reciver");
 			packet.InjectNumber(sender.worldObj.provider.dimensionId);
-			packet.injetString(sender.username);
+			packet.injectString(sender.username);
 			packet.InjectNumbers(this.subCommand == null ? (byte) 0 : (byte) 1, (int) pCommand.indexOf(commands[this.choosenCom]), subCommand == null ? (int) 0 : (int) sub.get(subCommand).indexOf(subCommands[this.choosenSubCom]));
 			packet.InjectNumber((Integer) length);
 			packet.InjectStrings(string);

@@ -17,17 +17,13 @@ public class GuiSliderButton extends GuiButton
 	
 	GuiInventoryCore core;
 	
-	public GuiSliderButton(int par1, int par2, int par3, String par4, float par5)
+	public GuiSliderButton(int par1, int par2, int par3, String par4, float par5, GuiInventoryCore par6)
 	{
 		super(par1, par2, par3, 150, 20, par4);
 		this.sliderValue = par5;
 		originalName = par4;
-	}
-	
-	public GuiSliderButton setGui(GuiInventoryCore par1)
-	{
-		core = par1;
-		return this;
+		core = par6;
+		core.onButtonUpdate(this);
 	}
 	
 	protected int getHoverState(boolean par1)
@@ -52,8 +48,15 @@ public class GuiSliderButton extends GuiButton
 				{
 					this.sliderValue = 1.0F;
 				}
-				int newNumber = (int)(sliderValue * 100);
-				this.displayString = originalName + ": "+newNumber;
+				if(core != null)
+				{
+					core.onButtonUpdate(this);
+				}
+				else
+				{
+					int newNumber = (int)(sliderValue * 100);
+					this.displayString = originalName + ": "+newNumber+"%";
+				}
 			}
 			
 			GL11.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
@@ -78,7 +81,15 @@ public class GuiSliderButton extends GuiButton
 				this.sliderValue = 1.0F;
 			}
 			
-			
+			if(core != null)
+			{
+				core.onButtonUpdate(this);
+			}
+			else
+			{
+				int newNumber = (int)(sliderValue * 100);
+				this.displayString = originalName + ": "+newNumber+"%";
+			}
 			
 			this.dragging = true;
 			return true;
@@ -92,8 +103,10 @@ public class GuiSliderButton extends GuiButton
 	public void mouseReleased(int par1, int par2)
 	{
 		this.dragging = false;
-		core.actionPerformed(this);
-		
+		if(core != null)
+		{
+			core.releaseButton(this);
+		}
 	}
 	
 }

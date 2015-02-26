@@ -3,6 +3,7 @@ package speiger.src.spmodapi.common.core;
 import net.minecraft.block.Block;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.EntityPlayerMP;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
@@ -199,5 +200,14 @@ public class SpmodAPICore implements IGuiHandler
 	public int getRenderID()
 	{
 		return 0;
+	}
+	
+	public void updatePlayerInf(EntityPlayer par1)
+	{
+		if(par1 != null && par1 instanceof EntityPlayerMP)
+		{
+			EntityPlayerMP mp = (EntityPlayerMP)par1;
+			mp.sendContainerToPlayer(par1.inventoryContainer);
+		}
 	}
 }

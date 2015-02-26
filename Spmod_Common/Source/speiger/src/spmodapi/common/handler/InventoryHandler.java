@@ -8,6 +8,8 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
+import net.minecraftforge.event.entity.player.ItemTooltipEvent;
+import speiger.src.api.common.world.items.energy.IBCBattery;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
@@ -109,4 +111,15 @@ public class InventoryHandler implements IFuelHandler, ICraftingHandler
 		
 	}
 	
+	@ForgeSubscribe
+	public void onItemToolTipp(ItemTooltipEvent evt)
+	{
+		ItemStack stack = evt.itemStack;
+		if(stack != null && stack.getItem() instanceof IBCBattery)
+		{
+			IBCBattery battery = (IBCBattery)stack.getItem();
+			evt.toolTip.add("Transferlimit: "+battery.getTransferlimit(stack)+" MJ");
+			evt.toolTip.add("Stored Energy: "+battery.getStoredMJ(stack)+" / "+battery.getMaxMJStorage(stack)+" MJ");
+		}
+	}
 }

@@ -24,7 +24,8 @@ public abstract class ItemInventory extends AdvInventory
 		this.player = player;
 		id = data.getString("ID");
 		itemID = provider.itemID;
-		readFromNBT(data.getCompoundTag("Inventory"));
+		readInventory(data.getCompoundTag("Inventory"));
+		readFromNBT(data);
 	}
 	
 	@Override
@@ -41,6 +42,17 @@ public abstract class ItemInventory extends AdvInventory
 	@Override
 	public void readFromNBT(NBTTagCompound par1)
 	{
+		
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound par1)
+	{
+		
+	}
+	
+	public void readInventory(NBTTagCompound par1)
+	{
 		inv = new ItemStack[getSizeInventory()];
 		NBTTagList list = par1.getTagList("Inventory");
 		for(int i = 0;i<list.tagCount();i++)
@@ -53,9 +65,8 @@ public abstract class ItemInventory extends AdvInventory
 			}
 		}
 	}
-
-	@Override
-	public void writeToNBT(NBTTagCompound par1)
+	
+	public void writeInventory(NBTTagCompound par1)
 	{
 		NBTTagList list = new NBTTagList();
 		for(int i = 0;i<getSizeInventory();i++)
@@ -121,8 +132,9 @@ public abstract class ItemInventory extends AdvInventory
 		if(inventory != null && !player.worldObj.isRemote)
 		{
 			NBTTagCompound nbt = new NBTTagCompound();
-			writeToNBT(nbt);
+			writeInventory(nbt);
 			NBTTagCompound data = NBTHelper.getTag(inventory, "Data");
+			writeToNBT(data);
 			data.setCompoundTag("Inventory", nbt);
 		}
 	}

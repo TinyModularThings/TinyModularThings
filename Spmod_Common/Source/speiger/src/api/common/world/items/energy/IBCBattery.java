@@ -28,6 +28,8 @@ public interface IBCBattery
 	
 	public int getTransferlimit(ItemStack par1);
 	
+	public String getBatteryID(ItemStack par1);
+	
 	public static enum BatteryType
 	{
 		Machine(false, true),

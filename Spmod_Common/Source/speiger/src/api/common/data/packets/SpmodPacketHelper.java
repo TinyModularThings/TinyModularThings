@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.DataOutputStream;
 import java.util.HashMap;
 
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.network.packet.Packet250CustomPayload;
 import net.minecraft.tileentity.TileEntity;
@@ -44,6 +45,11 @@ public class SpmodPacketHelper
 		return null;
 	}
 	
+	public ModularPacket createPlayerTilePacket(EntityPlayer player, SpmodMod mod)
+	{
+		return new ModularPacket(mod, player);
+	}
+	
 	public ModularPacket createNBTPacket(TileEntity tile, SpmodMod mod)
 	{
 		return this.createNBTPacket(tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord, mod);
@@ -66,7 +72,9 @@ public class SpmodPacketHelper
 	
 	public static enum PacketType
 	{
-		TileEntity, Custom;
+		TileEntity, 
+		ItemInventoryGui,
+		Custom;
 	}
 	
 	public static class ModularPacket
@@ -81,7 +89,7 @@ public class SpmodPacketHelper
 		public ModularPacket(SpmodMod par0, PacketType type, String key)
 		{
 			this(par0, (byte) type.ordinal());
-			this.injetString(key);
+			this.injectString(key);
 		}
 		
 		private ModularPacket(SpmodMod mod, int dimID, int x, int y, int z)
@@ -90,11 +98,18 @@ public class SpmodPacketHelper
 			InjectNumbers(dimID, x, y, z);
 		}
 		
+		private ModularPacket(SpmodMod mod, EntityPlayer par1)
+		{
+			this(mod, (byte)PacketType.ItemInventoryGui.ordinal());
+			InjectNumber(par1.worldObj.provider.dimensionId);
+			injectString(par1.username);
+		}
+		
 		private ModularPacket(SpmodMod par0, byte type)
 		{
 			bytes = new ByteArrayOutputStream();
 			stream = new DataOutputStream(bytes);
-			this.injetString(par0.getName());
+			this.injectString(par0.getName());
 			this.InjectNumber(type);
 		}
 		
@@ -164,12 +179,12 @@ public class SpmodPacketHelper
 			ModularPacket packet = this;
 			for (String cu : par1)
 			{
-				packet = injetString(cu);
+				packet = injectString(cu);
 			}
 			return packet;
 		}
 		
-		public ModularPacket injetString(String par1)
+		public ModularPacket injectString(String par1)
 		{
 			try
 			{

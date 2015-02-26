@@ -1,5 +1,10 @@
 package speiger.src.tinymodularthings.common.items.energy;
 
+import java.util.List;
+
+import cpw.mods.fml.common.FMLLog;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -11,6 +16,7 @@ import speiger.src.api.common.world.items.energy.IBCBattery;
 import speiger.src.spmodapi.common.items.core.ItemInventory;
 import speiger.src.spmodapi.common.items.core.SpmodInventoryItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
+import speiger.src.tinymodularthings.common.items.energy.Batteries.BatterieType;
 
 public class Batteries extends SpmodInventoryItem implements IBCBattery
 {
@@ -45,13 +51,16 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	}
 	
 	
-
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1, World par2, EntityPlayer par3)
 	{
 		if(par3.isSneaking())
 		{
 			return super.onItemRightClick(par1, par2, par3);
+		}
+		if(!par2.isRemote)
+		{
+			ItemEnergyNet.getEnergyNet().sendEnergyToItems(par1, par3);
 		}
 		return par1;
 	}
@@ -77,13 +86,13 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	@Override
 	public boolean requestEnergy(ItemStack par1)
 	{
-		return getRequestedAmount(par1) > 0;
+		return getItemData(par1).getBoolean("Input");
 	}
 
 	@Override
 	public int getRequestedAmount(ItemStack par1)
 	{
-		return 0;
+		return getMaxMJStorage(par1) - getStoredMJ(par1);
 	}
 
 	@Override
@@ -95,7 +104,7 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	@Override
 	public int energyToSend(ItemStack par1)
 	{
-		return 0;
+		return getStoredMJ(par1);
 	}
 
 	@Override
@@ -139,7 +148,11 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	@Override
 	public int getTransferlimit(ItemStack par1)
 	{
-		return type.getTransferlimit();
+		if(!getItemData(par1).hasKey("Limit"))
+		{
+			return type.getTransferlimit();
+		}
+		return (int)(this.getItemData(par1).getFloat("Limit") * type.getTransferlimit());
 	}
 	
 	
@@ -177,7 +190,12 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 			return maxStorage;
 		}
 	}
-
+	
+	@Override
+	public String getBatteryID(ItemStack par1)
+	{
+		return getInventoryID(par1);
+	}
 
 	@Override
 	public ItemInventory createNewInventory(EntityPlayer par1, ItemStack par2)
@@ -196,5 +214,29 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	{
 		return getEngine().getTexture(this);
 	}
-	
+
+	public BatterieType getType()
+	{
+		return type;
+	}
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
+	{
+		ItemStack empty = new ItemStack(this);
+		this.discharge(empty, type.getMaxStorage(), false);
+		par3.add(empty);
+		
+		ItemStack full = new ItemStack(this);
+		this.charge(full, type.getMaxStorage(), false);
+		par3.add(full);
+	}
+
+	@Override
+	public int getDisplayDamage(ItemStack stack)
+	{
+		int storage = (int)(((double)getStoredMJ(stack) / (double)getMaxMJStorage(stack)) * (double)100);
+		return storage;
+	}
 }
