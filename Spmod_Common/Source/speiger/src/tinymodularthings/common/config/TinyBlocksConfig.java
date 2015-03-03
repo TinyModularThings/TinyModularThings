@@ -128,6 +128,8 @@ public class TinyBlocksConfig
 		RegisterProxy.RegisterTile(blocks.transportBlock, 3, MultiStructureEnergyInterface.class, "EnergyInterface");
 		RegisterProxy.RegisterTile(TinyHopper.class, "ModularTinyHopper");
 		RegisterProxy.RegisterTile(blocks.transportBlock, 4, AdvancedEnderChestReader.class, "AdvEnderChestProxy");
+		RegisterProxy.RegisterTile(blocks.transportBlock, 5, ChargingBench.class, "BCEnergyChargingBench");
+		RegisterProxy.RegisterTile(blocks.transportBlock, 6, BatteryStation.class, "BCEnergyBatteryStation");
 		blocks.transportBlock.registerTextures(engine);
 		config.block.updateToNextID();
 		

@@ -1,5 +1,6 @@
 package speiger.src.tinymodularthings.common.plugins.BC.core;
 
+import ic2.api.item.Items;
 import mods.railcraft.api.fuel.FuelManager;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
@@ -10,6 +11,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.oredict.OreDictionary;
 import speiger.src.api.common.registry.recipes.output.RecipeOutput;
 import speiger.src.api.common.registry.recipes.uncrafter.UncrafterRecipeList;
+import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
@@ -20,24 +22,14 @@ import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.enums.EnumIngots;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
-import speiger.src.tinymodularthings.common.pipes.AluFluidExtractionPipe;
-import speiger.src.tinymodularthings.common.pipes.FluidRegstonePipe;
-import speiger.src.tinymodularthings.common.pipes.ItemRedstonePipe;
-import speiger.src.tinymodularthings.common.pipes.PipeEmeraldExtractionPower;
-import speiger.src.tinymodularthings.common.pipes.PipeEmeraldPower;
-import speiger.src.tinymodularthings.common.pipes.RefinedDiamondPowerPipe;
-import speiger.src.tinymodularthings.common.pipes.SpmodPipe;
+import speiger.src.tinymodularthings.common.pipes.*;
 import speiger.src.tinymodularthings.common.plugins.BC.actions.ActionOneSlotChange;
 import speiger.src.tinymodularthings.common.plugins.BC.actions.BCActionHelper;
 import speiger.src.tinymodularthings.common.plugins.BC.actions.BucketFillerAction;
 import speiger.src.tinymodularthings.common.plugins.BC.actions.GateChangeToSlot;
 import speiger.src.tinymodularthings.common.plugins.BC.triggers.BCTriggerHelper;
-import buildcraft.BuildCraftBuilders;
-import buildcraft.BuildCraftCore;
-import buildcraft.BuildCraftEnergy;
-import buildcraft.BuildCraftFactory;
-import buildcraft.BuildCraftSilicon;
-import buildcraft.BuildCraftTransport;
+import speiger.src.tinymodularthings.common.recipes.recipeMaker.EnergyRecipes;
+import buildcraft.*;
 import buildcraft.api.fuels.IronEngineFuel;
 import buildcraft.api.fuels.IronEngineFuel.Fuel;
 import buildcraft.api.gates.ActionManager;
@@ -125,7 +117,10 @@ public class BCRegistry
 	
 	static void loadRecipes()
 	{
-		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 1), new Object[] {" X ", "YCY", " V ", 'X', BuildCraftTransport.pipeFluidsWood, 'V', BuildCraftTransport.pipeFluidsGold, 'Y', ItemGear.getGearFromType(GearType.Cobblestone), 'C', BuildCraftFactory.tankBlock });
+		PathProxy.addOreRecipe(new ItemStack(TinyBlocks.transportBlock, 1, 5), new Object[]{"XXX", "CYC", "CVC", 'X', BuildCraftTransport.pipePowerGold, 'C', "plankWood", 'V', new ItemStack(APIItems.circuits, 1, 1), 'Y', TinyItems.smallMJBattery});
+		PathProxy.addOreRecipe(new ItemStack(TinyBlocks.transportBlock, 1, 6), new Object[]{"XXX", "VCV", "VBV", 'X', BuildCraftTransport.pipePowerWood, 'V', "plankWood", 'C', new ItemStack(BuildCraftEnergy.engineBlock, 1, 2), 'B', new ItemStack(APIItems.circuits, 1, 1)});
+		
+		PathProxy.addOreRecipe(new ItemStack(TinyBlocks.machine, 1, 1), new Object[] {" X ", "YCY", " V ", 'X', BuildCraftTransport.pipeFluidsWood, 'V', BuildCraftTransport.pipeFluidsGold, 'Y', "gearCobble", 'C', BuildCraftFactory.tankBlock });
 		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 3), new Object[] {"XXX", "CVC", "XXX", 'X', Item.bucketWater, 'C', ItemGear.getGearFromType(GearType.Diamond), 'V', BuildCraftFactory.pumpBlock });
 		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 2), new Object[] {"GEG", "EFE", "GEG", 'G', ItemGear.getGearFromType(GearType.Redstone), 'E', new ItemStack(BuildCraftEnergy.engineBlock, 1, 0), 'F', new ItemStack(TinyBlocks.machine, 1, 1) });
 		try
@@ -134,6 +129,7 @@ public class BCRegistry
 		}
 		catch(Exception e)
 		{
+			
 		}
 		UncrafterRecipeList un = UncrafterRecipeList.getInstance();
 		un.addUncraftingRecipe(new ItemStack(BuildCraftEnergy.engineBlock), new RecipeOutput(Block.pistonBase, 80));
@@ -163,11 +159,6 @@ public class BCRegistry
 		ActionManager.registerTrigger(BCVariables.storedFluid[2]);
 		ActionManager.registerTrigger(BCVariables.pipeRequestPower);
 		ActionManager.registerTriggerProvider(new BCTriggerHelper());
-		if(Loader.isModLoaded("IC2"))
-		{
-			ActionManager.registerTrigger(BCVariables.energyFlows[0]);
-			ActionManager.registerTrigger(BCVariables.energyFlows[1]);
-		}
 	}
 	
 	static void loadActions()

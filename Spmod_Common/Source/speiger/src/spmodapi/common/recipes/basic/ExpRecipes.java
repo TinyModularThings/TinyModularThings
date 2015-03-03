@@ -25,7 +25,6 @@ public class ExpRecipes
 		pp.addRecipe(new ShapedOreRecipe(ExpBottle.getExpBottle(APIItems.expBottles.itemID, 3, true, false), "XYX", "X X", "XCX", 'X', "ingotSilver", 'Y', "logWood", 'C', Block.blockEmerald));
 		pp.addRecipe(new ShapedOreRecipe(ExpBottle.getExpBottle(APIItems.expBottles.itemID, 4, false, false), "XYX", "X X", "XCX", 'X', "glass", 'Y', "logWood", 'C', Block.dragonEgg));
 		pp.addRecipe(new ShapedOreRecipe(ExpBottle.getExpBottle(APIItems.expBottles.itemID, 4, true, false), "XYX", "X X", "XCX", 'X', "ingotSilver", 'Y', "logWood", 'C', Block.dragonEgg));
-		pp.addRecipe(new ItemStack(APIBlocks.blockUtils, 1, 0), new Object[] { "XX", "XX", 'X', Block.cobblestone });
 		pp.addRecipe(new ItemStack(APIBlocks.blockUtils, 1, 1), new Object[] { "XXX", "XYX", "XXX", 'X', Item.glassBottle, 'Y', Block.wood });
 		
 	}

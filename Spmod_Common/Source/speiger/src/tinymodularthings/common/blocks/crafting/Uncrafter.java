@@ -277,33 +277,17 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 	}
 	
 	@Override
-	public void onChunkUnload()
+	public void onLoad()
 	{
-		super.onChunkUnload();
-		if(!worldObj.isRemote)
-		{
-			ILaserTargetRegistry.removeTarget(this);
-		}
+		super.onLoad();
+		ILaserTargetRegistry.addTarget(this);
 	}
 
 	@Override
-	public void validate()
+	public void onUnload(boolean chunk)
 	{
-		super.validate();
-		if(!worldObj.isRemote)
-		{
-			ILaserTargetRegistry.addTarget(this);
-		}
-	}
-
-	@Override
-	public void invalidate()
-	{
-		super.invalidate();
-		if(!worldObj.isRemote)
-		{
-			ILaserTargetRegistry.removeTarget(this);
-		}
+		super.onUnload(chunk);
+		ILaserTargetRegistry.removeTarget(this);
 	}
 
 	@Override

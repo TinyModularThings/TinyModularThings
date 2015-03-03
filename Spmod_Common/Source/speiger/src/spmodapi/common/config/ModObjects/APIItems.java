@@ -13,6 +13,8 @@ public class APIItems
 	public static SpmodItem hemp;
 	public static SpmodItem compressedHemp;
 	public static SpmodItem hempResin;
+	public static SpmodItem hempCake;
+	public static SpmodItem hempOil;
 	
 	// Armor
 	public static Item hempHelmet;

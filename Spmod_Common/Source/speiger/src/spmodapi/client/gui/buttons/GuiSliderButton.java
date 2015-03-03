@@ -1,21 +1,23 @@
 package speiger.src.spmodapi.client.gui.buttons;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.gui.GuiButton;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
+
+import cpw.mods.fml.common.FMLLog;
 
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 
-public class GuiSliderButton extends GuiButton
+public class GuiSliderButton extends SpmodGuiButton
 {
 	public float sliderValue = 1.0F;
+	
+	private float weelEffect = 0.0F;
 	
 	public boolean dragging;
 	
 	public String originalName;
-	
-	GuiInventoryCore core;
 	
 	public GuiSliderButton(int par1, int par2, int par3, String par4, float par5, GuiInventoryCore par6)
 	{
@@ -24,6 +26,12 @@ public class GuiSliderButton extends GuiButton
 		originalName = par4;
 		core = par6;
 		core.onButtonUpdate(this);
+	}
+	
+	public GuiSliderButton setWeelEffect(float par1)
+	{
+		weelEffect = par1;
+		return this;
 	}
 	
 	protected int getHoverState(boolean par1)
@@ -100,6 +108,28 @@ public class GuiSliderButton extends GuiButton
 		}
 	}
 	
+	@Override
+	public void handleMouseInput(int x, int y)
+	{
+		int weel = Mouse.getEventDWheel();
+		if(weel != 0 && weelEffect > 0.0F)
+		{
+			weel = (weel / 120);
+			sliderValue += (weel * weelEffect);
+			if(this.sliderValue < 0.0F)
+			{
+				this.sliderValue = 0.0F;
+			}
+			
+			if(this.sliderValue > 1.0F)
+			{
+				this.sliderValue = 1.0F;
+			}
+			core.onButtonUpdate(this);
+			core.releaseButton(this);
+		}
+	}
+
 	public void mouseReleased(int par1, int par2)
 	{
 		this.dragging = false;

@@ -19,8 +19,6 @@ public class PipeRecipes
 			CraftingManager.getInstance().addRecipe(new ItemStack(output, 16), new Object[] { "XXX", "YCY", "XXX", 'X', slab.asItemStack(), 'C', Item.silk, 'Y', Block.glass });
 		}
 		upgradeRecipes();
-		
-		CraftingManager.getInstance().getRecipeList().add(new InterfaceRecipe());
 	}
 	
 	public static void upgradeRecipes()

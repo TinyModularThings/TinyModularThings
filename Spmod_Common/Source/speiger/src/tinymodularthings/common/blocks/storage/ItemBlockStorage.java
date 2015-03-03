@@ -49,7 +49,7 @@ public class ItemBlockStorage extends ItemBlockTinyChest
 			if(tile != null && tile instanceof TinyBarrel)
 			{
 				TinyBarrel tiny = (TinyBarrel)tile;
-				tiny.setMax((1 + meta) * 16);
+				tiny.setMax(meta);
 			}
 		}
 		return true;

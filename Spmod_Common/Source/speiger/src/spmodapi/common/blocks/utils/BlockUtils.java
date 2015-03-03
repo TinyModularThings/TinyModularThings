@@ -54,6 +54,10 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 		MinecraftForge.setBlockHarvestLevel(this, 2, "pickaxe", 1);
 		MinecraftForge.setBlockHarvestLevel(this, 3, "pickaxe", 1);
 		MinecraftForge.setBlockHarvestLevel(this, 4, "pickaxe", 1);
+		this.dissableDrops(1);
+		this.dissableDrops(2);
+		this.dissableDrops(4);
+		this.dissableDrops(5);
 	}
 	
 	

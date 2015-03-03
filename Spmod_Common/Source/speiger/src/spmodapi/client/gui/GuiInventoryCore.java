@@ -22,10 +22,12 @@ import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.FluidTank;
 
+import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
 import speiger.src.api.common.inventory.slot.TankSlot;
 import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.client.gui.buttons.SpmodGuiButton;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
@@ -394,6 +396,28 @@ public class GuiInventoryCore extends GuiContainer
 		super.keyTyped(par1, par2);
 	}
 	
+	
+	
+	@Override
+	public void handleMouseInput()
+	{
+		super.handleMouseInput();
+        int i = Mouse.getEventX() * this.width / this.mc.displayWidth;
+        int j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
+        for(int k = 0;k<this.buttonList.size();k++)
+        {
+        	GuiButton button = (GuiButton)this.buttonList.get(k);
+        	if(button != null && button instanceof SpmodGuiButton)
+        	{
+        		SpmodGuiButton spmodButton = (SpmodGuiButton)button;
+        		if(spmodButton.isMouseOverMe(i, j))
+        		{
+        			spmodButton.handleMouseInput(i, j);
+        		}
+        	}
+        }
+	}
+
 	protected boolean isMouseOverSlot(SpmodSlot par1, int x, int y)
 	{
 		return this.isPointInRegion(par1.xDisplayPosition, par1.yDisplayPosition, 16, 16, x, y);
@@ -404,10 +428,9 @@ public class GuiInventoryCore extends GuiContainer
 		return this.isPointInRegion(par1.getXCoord(), par1.getYCoord(), 18, 60, x, y);
 	}
 	
-	@Override
-	public void drawItemStackTooltip(ItemStack par1ItemStack, int par2, int par3)
+	public void drawItemStackTooltip(ItemStack par1, int x, int y)
 	{
-		super.drawItemStackTooltip(par1ItemStack, par2, par3);
+		super.drawItemStackTooltip(par1, x, y);
 	}
 	
 	@Override
@@ -474,7 +497,6 @@ public class GuiInventoryCore extends GuiContainer
 		return (this.height - this.ySize) / 2;
 	}
 	
-	
 	public FontRenderer getFontRenderer()
 	{
 		return this.fontRenderer;
@@ -509,7 +531,7 @@ public class GuiInventoryCore extends GuiContainer
 		return this.mc;
 	}
 	
-	public List getButtonsList()
+	public List<GuiButton> getButtonsList()
 	{
 		return this.buttonList;
 	}

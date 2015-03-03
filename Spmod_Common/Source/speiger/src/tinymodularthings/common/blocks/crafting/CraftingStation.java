@@ -315,7 +315,7 @@ public class CraftingStation extends AdvTile
 			{
 				if(i < results.size())
 				{
-					setInventorySlotContents(9+i, results.get(i).getCraftingResult(this));
+					setInventorySlotContents(9+i, ItemStack.copyItemStack(results.get(i).getCraftingResult(this)));
 				}
 				else
 				{

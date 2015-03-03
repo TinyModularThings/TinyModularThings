@@ -3,42 +3,52 @@ package speiger.src.tinymodularthings.common.recipes.recipeHelper;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.ShapedRecipes;
+import net.minecraftforge.oredict.ShapedOreRecipe;
 import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.tinymodularthings.common.blocks.storage.ItemBlockStorage;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 
-public class TinyBarrelRecipe extends ShapedRecipes
+public class TinyBarrelRecipe extends ShapedOreRecipe
 {
-
+	
 	public TinyBarrelRecipe()
 	{
-		super(3, 3, new ItemStack[]{GearType.Wood.getItem(), GearType.Wood.getItem(), GearType.Wood.getItem(),
-								   GearType.Wood.getItem(), new ItemStack(TinyBlocks.storageBlock, 1, 4), GearType.Wood.getItem(),
-								   GearType.Wood.getItem(), GearType.Wood.getItem(), GearType.Wood.getItem()}, new ItemStack(TinyBlocks.storageBlock, 1, 4));
+		super(new ItemStack(TinyBlocks.storageBlock, 1, 4), new Object[]{"XXX", "XYX", "XXX", 'X', "gearWood", 'Y', new ItemStack(TinyBlocks.storageBlock, 1, 4)});
 	}
-
+	
 	@Override
-	public ItemStack getCraftingResult(InventoryCrafting par1)
+	public ItemStack getCraftingResult(InventoryCrafting inv)
 	{
 		int meta = 0;
-		for(int i = 0;i<par1.getSizeInventory();i++)
+		boolean found = false;
+		for(int i = 0;i<inv.getSizeInventory();i++)
 		{
-			ItemStack stack = par1.getStackInSlot(i);
+			ItemStack stack = inv.getStackInSlot(i);
 			if(stack != null && stack.itemID == TinyBlocks.storageBlock.blockID && stack.getItemDamage() == 4)
 			{
 				meta = NBTHelper.getTag(stack, "BarrelMeta").getInteger("Metadata");
+				found = true;
 				break;
 			}
 		}
-		if(meta >= 9)
+		if(!found || meta >= 8)
 		{
 			return null;
 		}
-		ItemStack result = ItemBlockStorage.createTinyBarrel(meta+1);
-		return result;
+		return ItemBlockStorage.createTinyBarrel(meta + 1);
 	}
 	
+	@Override
+	public int getRecipeSize()
+	{
+		return 9;
+	}
 	
+	@Override
+	public ItemStack getRecipeOutput()
+	{
+		return ItemBlockStorage.createTinyBarrel(0);
+	}
 	
 }

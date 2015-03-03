@@ -48,6 +48,20 @@ public class RedstoneUtils
 		return false;
 	}
 	
+	public static int getPowerInput(TileEntity tile, int side)
+	{
+		return getPowerInput(tile.getWorldObj(), tile.xCoord, tile.yCoord, tile.zCoord, side);
+	}
+	
+	public static int getPowerInput(World world, int x, int y, int z, int side)
+	{
+		ForgeDirection face = ForgeDirection.getOrientation(side);
+		int xCoord = x + face.offsetX;
+		int yCoord = y + face.offsetY;
+		int zCoord = z + face.offsetZ;
+		return world.getIndirectPowerLevelTo(xCoord, yCoord, zCoord, side);
+	}
+	
 	public static int getRotationMatrixForHopper(int facing, int rotation)
 	{
 		switch (facing)

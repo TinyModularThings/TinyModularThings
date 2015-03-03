@@ -53,12 +53,7 @@ public class BCTriggerHelper implements ITriggerProvider
 				{
 					triggers.add(BCVariables.requestPower);
 				}
-				
-				if(tile instanceof TileEntityWindGenerator)
-				{
-					triggers.add(BCVariables.energyFlows[0]);
-					triggers.add(BCVariables.energyFlows[1]);
-				}
+
 			}
 			catch (Exception e)
 			{

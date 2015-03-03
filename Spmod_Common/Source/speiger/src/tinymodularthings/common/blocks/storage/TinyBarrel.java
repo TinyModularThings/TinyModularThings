@@ -17,10 +17,10 @@ import net.minecraft.util.Icon;
 import org.lwjgl.opengl.GL11;
 
 import powercrystals.minefactoryreloaded.api.IDeepStorageUnit;
+import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
@@ -33,6 +33,7 @@ public class TinyBarrel extends TileFacing implements IDeepStorageUnit,
 	
 	public int storedAmount;
 	public int maxStorage = 0;
+	public int metadata;
 	
 	public TinyBarrel()
 	{
@@ -51,6 +52,26 @@ public class TinyBarrel extends TileFacing implements IDeepStorageUnit,
 		return false;
 	}
 	
+	@Override
+	public int getSizeInventory()
+	{
+		return 1;
+	}
+	
+	
+
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
+	{
+		if(par3 == null || !NBTHelper.nbtCheck(par3, "BarrelMeta"))
+		{
+			return;
+		}
+		int meta = par3.getTagCompound().getCompoundTag("BarrelMeta").getInteger("Metadata");
+		par2.add("Stores: "+((1 + meta) * 16)+" Stacks");
+	}
+
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
@@ -83,7 +104,8 @@ public class TinyBarrel extends TileFacing implements IDeepStorageUnit,
 	
 	public void setMax(int i)
 	{
-		maxStorage = i;
+		metadata = i;
+		maxStorage = ((1 + i) * 16);
 	}
 	
 	@Override
@@ -103,8 +125,6 @@ public class TinyBarrel extends TileFacing implements IDeepStorageUnit,
 	{
 		if(!worldObj.isRemote)
 		{
-
-			
 			if(this.worldObj.getTotalWorldTime() - this.getClockTime() < 10L && hasItem())
 			{
 				for(Integer slot : allowedSlots(par1))
@@ -381,7 +401,7 @@ public class TinyBarrel extends TileFacing implements IDeepStorageUnit,
 	@Override
 	public boolean isItemValidForSlot(int i, ItemStack itemstack)
 	{
-		return false;
+		return true;
 	}
 	
 	@Override
@@ -597,8 +617,7 @@ public class TinyBarrel extends TileFacing implements IDeepStorageUnit,
 	{
 		ArrayList<ItemStack> drop = new ArrayList<ItemStack>();
 		NBTTagCompound data = new NBTTagCompound();
-		int amount = (maxStorage / 16) - 1;
-		data.setInteger("Metadata", amount);
+		data.setInteger("Metadata", metadata);
 		ItemStack stack = new ItemStack(TinyBlocks.storageBlock, 1, 4);
 		stack.setTagInfo("BarrelMeta", data);
 		drop.add(stack);

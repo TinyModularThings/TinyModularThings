@@ -222,6 +222,7 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 	@Override
 	public void addContainerSlots(AdvContainer par1)
 	{
+		par1.setOffset(-20, 10);
 		for(int i = 0;i<4;i++)
 		{
 			par1.addSpmodSlot(this, i, 150, 0+i*18).addUsage("Redstone Cable Slot");
@@ -267,9 +268,18 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 	@SideOnly(Side.CLIENT)
 	public int getInvNameYOffset()
 	{
-		return 55;
+		return 69;
 	}
 	
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public int getInvNameXOffset()
+	{
+		return -20;
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getNameYOffset()
@@ -372,7 +382,7 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 		par1.getButtonsList().clear();
 		
 		int lvl = (int)(((double)power / (double)2000D) * 100);
-		par1.getFontRenderer().drawString("Charge: "+lvl+"%", 116, 127, 0xffffff);
+		par1.getFontRenderer().drawString("Charge: "+lvl+"%", 110, 142, 0xffffff);
 		if(power <= 0)
 		{
 			return;
@@ -430,7 +440,7 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 				{
 					continue;
 				}
-				par1.renderItem(stack, -17, 28 + (20*i));
+				par1.renderItem(stack, -17, 22 + (20*i));
 			}
 		}
 	}

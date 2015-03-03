@@ -24,6 +24,7 @@ import net.minecraftforge.fluids.FluidRegistry;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.common.data.nbt.INBTReciver;
+import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
@@ -72,7 +73,7 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		par3List.add(createEmptyNetherCrystal(par1));
+		par3List.add(new ItemStack(par1, 1, 0));
 		NBTTagCompound nbt = new NBTTagCompound();
 		nbt.setInteger("Charges", 81 * 21 * 81);
 		ItemStack end = new ItemStack(par1, 1, 3);
@@ -465,17 +466,13 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 		}
 	}
 	
-	public static ItemStack createEmptyNetherCrystal(int itemID)
+	public void initData(ItemStack par1)
 	{
-		NBTTagCompound nbt = new NBTTagCompound();
+		NBTTagCompound nbt = NBTHelper.getTag(par1, "Lava");
 		nbt.setInteger("Charges", 0);
 		nbt.setIntArray("Pos", new int[3]);
 		nbt.setString("ID", "Time" + System.nanoTime());
-		ItemStack item = new ItemStack(itemID, 1, 0);
-		item.setTagInfo("Lava", nbt);
-		return item;
 	}
-	
 
 	
 	
@@ -552,7 +549,7 @@ public class ItemNetherCrystal extends TinyItem implements INBTReciver
 	{
 		if (!stack.hasTagCompound() || !stack.getTagCompound().hasKey("Lava"))
 		{
-			stack = createEmptyNetherCrystal(stack.itemID);
+			this.initData(stack);
 		}
 		
 		MovingObjectPosition move = this.getMovingObjectPositionFromPlayer(player.worldObj, player, true);

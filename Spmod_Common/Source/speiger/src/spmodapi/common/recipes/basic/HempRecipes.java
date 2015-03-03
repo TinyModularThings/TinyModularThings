@@ -1,12 +1,8 @@
 package speiger.src.spmodapi.common.recipes.basic;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import speiger.src.api.common.data.utils.BlockData;
 import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
@@ -15,9 +11,30 @@ import speiger.src.spmodapi.common.util.proxy.PathProxy;
 
 public class HempRecipes
 {
-	public static HashMap<BlockData, BlockData> slabRecipes = new HashMap<BlockData, BlockData>();
 	
 	public static void load(PathProxy pp)
+	{
+		loadHempRecipes(pp);
+		loadUtilityRecipes(pp);
+	}
+	
+	
+	private static void loadUtilityRecipes(PathProxy pp)
+	{
+		pp.addRecipe(new ItemStack(APIBlocks.hempStraw), new Object[] { "XXX", "XXX", "XXX", 'X', APIItems.hemp });
+		pp.addSRecipe(new ItemStack(APIItems.hemp, 9), new Object[] { new ItemStack(APIBlocks.hempStraw) });
+		pp.addSRecipe(new ItemStack(Item.silk), new Object[] { APIItems.hemp });
+		pp.addRecipe(new ItemStack(Item.paper, 3), new Object[] { "X X", " X ", "X X", 'X', APIItems.hemp });
+		pp.addRecipe(new ItemStack(APIItems.hempBoots), new Object[] { "X X", "X X", 'X', APIItems.hemp });
+		pp.addRecipe(new ItemStack(APIItems.hempHelmet), new Object[] { "XXX", "X X", 'X', APIItems.hemp });
+		pp.addRecipe(new ItemStack(APIItems.hempChestPlate), new Object[] { "X X", "XXX", "XXX", 'X', APIItems.hemp });
+		pp.addRecipe(new ItemStack(APIItems.hempLeggings), new Object[] { "XXX", "X X", "X X", 'X', APIItems.hemp });		
+		pp.addRecipe(new ItemStack(APIItems.hempResinBucket), new Object[] { "XBX", "XXX", "CVC", 'C', Block.stone, 'V', Item.bucketEmpty, 'B', Item.flint, 'X', APIBlocks.hempStraw });
+		pp.addRecipe(new ItemStack(APIItems.hempCake, 16), new Object[]{"XXX", "CVB", "YYY", 'Y', APIItems.hemp, 'X', APIItems.hempSeed, 'C', Item.egg, 'V', Item.bucketMilk, 'B', Item.sugar});
+		pp.addSRecipe(new ItemStack(APIItems.hempOil, 1, 1000), new Object[]{Item.glassBottle, APIItems.hempPlates[0]});
+	}
+	
+	private static void loadHempRecipes(PathProxy pp)
 	{
 		//Hemp Plates
 		pp.addRecipe(InventoryUtil.getItemWithStackSize(APIItems.hempPlates[0], 4), new Object[]{"XX", "XX", 'X', APIItems.hemp});
@@ -27,8 +44,9 @@ public class HempRecipes
 		{
 			addColorRecipe(pp, APIItems.multiPlate, 1, APIItems.hempPlates[i], EnumColor.values()[i-1]);
 			pp.addRecipe(new ItemStack(APIBlocks.hempBlock, 1, i-1), new Object[]{"XX", "XX", 'X', APIItems.hempPlates[i]});
+			pp.addSRecipe(new ItemStack(APIItems.hempOil, 1, 1000), new Object[]{Item.glassBottle, APIItems.hempPlates[i]});
 		}
-				
+		
 		//Hemp Blocks
 		pp.addSRecipe(new ItemStack(APIBlocks.hempBlockBase, 1, 2), new Object[]{new ItemStack(APIBlocks.hempBlockBase, 1, 0), APIItems.hempPlates[0]});
 		pp.addSRecipe(new ItemStack(APIBlocks.hempBlockBase, 1, 3), new Object[]{new ItemStack(APIBlocks.hempBlockBase, 1, 1), APIItems.hempPlates[0]});
@@ -53,12 +71,10 @@ public class HempRecipes
 		addHempRecipe(pp, APIBlocks.hempBlockBase, 6, new ItemStack(APIBlocks.hempBlockBase, 1, 2));
 		addHempRecipe(pp, APIBlocks.hempBlockBase, 7, new ItemStack(APIBlocks.hempBlockBase, 1, 3));
 		
-		
 		addStoneRecipe(pp, APIBlocks.hempBlock, APIBlocks.hempBrick);
 		addStoneRecipe(pp, APIBlocks.hempBlockPlated, APIBlocks.hempBrickPlated);
 		addStoneRecipe(pp, APIBlocks.savedHempBlock, APIBlocks.savedHempBrick);
 		addStoneRecipe(pp, APIBlocks.savedHempBlockPlated, APIBlocks.savedHempBrickPlated);
-		
 		
 		for(int i = 0;i<16;i++)
 		{
@@ -66,28 +82,6 @@ public class HempRecipes
 			pp.addSRecipe(new ItemStack(APIBlocks.hempBrickPlated, 1, i), new Object[]{new ItemStack(APIBlocks.hempBrick, 1, i), APIItems.hempPlates[i+1]});
 			pp.addSRecipe(new ItemStack(APIBlocks.savedHempBlockPlated, 1, i), new Object[]{new ItemStack(APIBlocks.savedHempBlock, 1, i), APIItems.hempPlates[i+1]});
 			pp.addSRecipe(new ItemStack(APIBlocks.savedHempBrickPlated, 1, i), new Object[]{new ItemStack(APIBlocks.savedHempBrick, 1, i), APIItems.hempPlates[i+1]});
-		}
-		
-		//Hemp Utils
-		pp.addRecipe(new ItemStack(APIBlocks.hempStraw), new Object[] { "XXX", "XXX", "XXX", 'X', APIItems.hemp });
-		pp.addSRecipe(new ItemStack(APIItems.hemp, 9), new Object[] { new ItemStack(APIBlocks.hempStraw) });
-		pp.addSRecipe(new ItemStack(Item.silk), new Object[] { APIItems.hemp });
-		pp.addRecipe(new ItemStack(Item.paper, 3), new Object[] { "X X", " X ", "X X", 'X', APIItems.hemp });
-		pp.addRecipe(new ItemStack(APIItems.hempBoots), new Object[] { "X X", "X X", 'X', APIItems.hemp });
-		pp.addRecipe(new ItemStack(APIItems.hempHelmet), new Object[] { "XXX", "X X", 'X', APIItems.hemp });
-		pp.addRecipe(new ItemStack(APIItems.hempChestPlate), new Object[] { "X X", "XXX", "XXX", 'X', APIItems.hemp });
-		pp.addRecipe(new ItemStack(APIItems.hempLeggings), new Object[] { "XXX", "X X", "X X", 'X', APIItems.hemp });		
-		pp.addRecipe(new ItemStack(APIItems.hempResinBucket), new Object[] { "XBX", "XXX", "CVC", 'C', Block.stone, 'V', Item.bucketEmpty, 'B', Item.flint, 'X', APIBlocks.hempStraw });
-		
-		
-		for(Entry<BlockData, BlockData> data : slabRecipes.entrySet())
-		{
-			ItemStack stack = data.getValue().getResult();
-			if(stack != null)
-			{
-				stack.stackSize = 6;
-				pp.addRecipe(stack, new Object[]{"XXX", 'X', data.getKey().getResult()});
-			}
 		}
 	}
 	

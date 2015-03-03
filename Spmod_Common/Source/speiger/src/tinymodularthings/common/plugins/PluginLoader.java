@@ -14,6 +14,7 @@ import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeLis
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.recipes.pressureFurnace.FurnaceRecipe;
+import speiger.src.tinymodularthings.common.recipes.recipeMaker.EnergyRecipes;
 
 
 public class PluginLoader
@@ -36,6 +37,8 @@ public class PluginLoader
 		{
 			list.addRecipe(new FurnaceRecipe(cu.getKey(), cu.getValue()));
 		}
+		EnergyRecipes.onPostInit();
+		
 	}
 	
 	

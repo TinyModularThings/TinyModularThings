@@ -50,6 +50,7 @@ public class SpmodAPIClient extends SpmodAPICore
 		engine.setCurrentMod(SpmodAPILib.ModID.toLowerCase());
 		engine.setCurrentPath("core");
 		engine.registerGuiTexture("BasicFrame", "BasicGuiFrame");
+		engine.registerGuiTexture("MediumFrame", "MediumGuiFrame");
 		engine.registerGuiTexture("BigFrame", "BigGuiFrame");
 		engine.registerGuiTexture("Clear", "ClearTexture");
 		engine.registerGuiTexture("Objects", "GuiObjects");

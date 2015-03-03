@@ -42,7 +42,13 @@ public abstract class ItemBlockSpmod extends ItemBlock
 			AdvTile tile = TileIconMaker.getIconMaker().getTileEntityFormBlockAndMetadata(stack.getBlock(), stack.getMeta());
 			if(tile != null)
 			{
-				tile.onItemInformation(par2EntityPlayer, par3List, par1ItemStack);
+				try
+				{
+					tile.onItemInformation(par2EntityPlayer, par3List, par1ItemStack);
+				}
+				catch(Exception e)
+				{
+				}
 			}
 		}
 	}

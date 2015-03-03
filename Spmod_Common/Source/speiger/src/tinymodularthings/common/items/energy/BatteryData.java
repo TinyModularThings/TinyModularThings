@@ -13,9 +13,9 @@ import speiger.src.spmodapi.client.gui.buttons.GuiSliderButton;
 import speiger.src.spmodapi.common.items.core.ItemInventory;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.items.energy.Batteries.BatterieType;
+import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-
 
 public class BatteryData extends ItemInventory implements IPacketReciver
 {
@@ -27,14 +27,17 @@ public class BatteryData extends ItemInventory implements IPacketReciver
 	//EnergyNet Functions
 	boolean sendRandom;
 	boolean sendToAll;
-	int sendMode;
+	float sendMode;
+	float tickRate;
+	ItemStack item;
 	
 	public BatteryData(EntityPlayer player, ItemStack provider)
 	{
 		super(player, provider, 0);
 		type = ((Batteries)provider.getItem()).getType();
+		item = provider;
 	}
-
+	
 	@Override
 	public String getInvName()
 	{
@@ -54,6 +57,18 @@ public class BatteryData extends ItemInventory implements IPacketReciver
 	}
 	
 	@Override
+	public void onItemTick()
+	{	
+		ItemEnergyNet.getEnergyNet().loadSettingsFromItem(item).sendEnergyToItems(item, player);
+	}
+	
+	@Override
+	public boolean stopTickingOnGuiOpen()
+	{
+		return true;
+	}
+	
+	@Override
 	@SideOnly(Side.CLIENT)
 	public void onGuiLoad(GuiInventoryCore par1, int guiX, int guiY)
 	{
@@ -61,18 +76,19 @@ public class BatteryData extends ItemInventory implements IPacketReciver
 		
 		if(!energyNet)
 		{
-			par1.getButtonsList().add(new GuiButton(0, guiX + 12, guiY + 20, 150, 20, "Auto Providing: "+autoProviding));
-			par1.getButtonsList().add(new GuiButton(1, guiX + 12, guiY + 50, 150, 20, "Accepting Energy: "+acceptingEnergy));
-			par1.getButtonsList().add(new GuiSliderButton(2, guiX + 12, guiY + 80, "Transferlimit: ", transferlimit, par1));
-			par1.getButtonsList().add(new GuiButton(3, guiX + 12, guiY + 110, 150, 20, "Energy Net Settings"));
+			par1.getButtonsList().add(new GuiButton(0, guiX + 12, guiY + 20, 150, 20, "Auto Providing: " + autoProviding));
+			par1.getButtonsList().add(new GuiButton(1, guiX + 12, guiY + 52, 150, 20, "Accepting Energy: " + acceptingEnergy));
+			par1.getButtonsList().add(new GuiSliderButton(2, guiX + 12, guiY + 84, "Transferlimit: ", transferlimit, par1).setWeelEffect(type.getWeelEffect()));
+			par1.getButtonsList().add(new GuiButton(3, guiX + 12, guiY + 116, 150, 20, "Energy Net Settings"));
 		}
 		else
 		{
-			String[] possibles = new String[]{"Only Machines", "Only Batteries", "Everything"};
+			String[] possibles = new String[] {"Only Machines", "Only Batteries", "Everything" };
 			par1.getButtonsList().add(new GuiButton(4, guiX + 55, guiY + 140, 60, 20, "Back"));
-			par1.getButtonsList().add(new GuiButton(5, guiX + 12, guiY + 20, 150, 20, sendRandom ? "Send in Order" :"Send Randomly"));
-			par1.getButtonsList().add(new GuiButton(6, guiX + 12, guiY + 50, 150, 20, sendToAll ? "Send To First Target" : "Send To All Targets"));
-			par1.getButtonsList().add(new GuiSliderButton(7, guiX + 12, guiY + 80, "Sending Mode: ", 1F, par1));
+			par1.getButtonsList().add(new GuiButton(5, guiX + 12, guiY + 20, 150, 20, sendRandom ? "Send in Order" : "Send Randomly"));
+			par1.getButtonsList().add(new GuiButton(6, guiX + 12, guiY + 45, 150, 20, sendToAll ? "Send To First Target" : "Send To All Targets"));
+			par1.getButtonsList().add(new GuiSliderButton(7, guiX + 12, guiY + 70, "Sending Mode: ", sendMode, par1).setWeelEffect(0.3F));
+			par1.getButtonsList().add(new GuiSliderButton(8, guiX + 12, guiY + 95, "Sending Tick Rate: ", tickRate, par1).setWeelEffect(0.001F));
 		}
 	}
 	
@@ -84,12 +100,20 @@ public class BatteryData extends ItemInventory implements IPacketReciver
 		if(id == 0)
 		{
 			autoProviding = !autoProviding;
-			par2.displayString = "Auto Providing: "+autoProviding;
+			par2.displayString = "Auto Providing: " + autoProviding;
+			if(autoProviding && acceptingEnergy)
+			{
+				onButtonClick(par1, par1.getButtonsList().get(1));
+			}
 		}
 		else if(id == 1)
 		{
 			acceptingEnergy = !acceptingEnergy;
-			par2.displayString = "Accepting Energy: "+acceptingEnergy;
+			par2.displayString = "Accepting Energy: " + acceptingEnergy;
+			if(autoProviding && acceptingEnergy)
+			{
+				onButtonClick(par1, par1.getButtonsList().get(0));
+			}
 		}
 		else if(id == 3)
 		{
@@ -111,13 +135,13 @@ public class BatteryData extends ItemInventory implements IPacketReciver
 			sendToAll = !sendToAll;
 			par2.displayString = sendToAll ? "Send To First Target" : "Send To All Targets";
 		}
-
-		if(id != 2 && id != 3 && id != 4 && id != 7)
+		
+		if(id != 2 && id != 3 && id != 4 && id != 7 && id != 8)
 		{
 			this.sendPacketToServer(SpmodPacketHelper.getHelper().createPlayerTilePacket(player, TinyModularThings.instance).InjectNumber(id).finishPacket());
 		}
 	}
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void onButtonUpdate(GuiInventoryCore par1, GuiButton par2)
@@ -127,14 +151,20 @@ public class BatteryData extends ItemInventory implements IPacketReciver
 		{
 			GuiSliderButton button = (GuiSliderButton)par2;
 			int newAmount = (int)(type.getTransferlimit() * button.sliderValue);
-			button.displayString = button.originalName+newAmount+" MJ";
+			button.displayString = button.originalName + newAmount + " MJ";
 		}
 		else if(id == 7)
 		{
-			String[] possibles = new String[]{"Only Machines", "Only Batteries", "Everything"};
+			String[] possibles = new String[] {"Only Machines", "Only Batteries", "Everything" };
 			GuiSliderButton button = (GuiSliderButton)par2;
 			int newAmount = (int)(2 * button.sliderValue);
-			button.displayString = "SendingMode: "+possibles[newAmount];
+			button.displayString = "SendingMode: " + possibles[newAmount];
+		}
+		else if(id == 8)
+		{
+			GuiSliderButton button = (GuiSliderButton)par2;
+			int newAmount = (int)(1000 * button.sliderValue);
+			button.displayString = "Sending Tick Rate: " + newAmount + (newAmount > 0 ? " Ticks" : " Tick");
 		}
 	}
 	
@@ -152,11 +182,17 @@ public class BatteryData extends ItemInventory implements IPacketReciver
 		else if(id == 7)
 		{
 			GuiSliderButton button = (GuiSliderButton)par2;
-			sendMode = (int)(2 * button.sliderValue);
+			sendMode = button.sliderValue;
 			this.sendPacketToServer(SpmodPacketHelper.getHelper().createPlayerTilePacket(player, TinyModularThings.instance).InjectNumbers(id, sendMode).finishPacket());
 		}
+		else if(id == 8)
+		{
+			GuiSliderButton button = (GuiSliderButton)par2;
+			tickRate = button.sliderValue;
+			this.sendPacketToServer(SpmodPacketHelper.getHelper().createPlayerTilePacket(player, TinyModularThings.instance).InjectNumbers(id, tickRate).finishPacket());
+		}
 	}
-
+	
 	@Override
 	public void recivePacket(DataInput par1)
 	{
@@ -185,49 +221,60 @@ public class BatteryData extends ItemInventory implements IPacketReciver
 			}
 			else if(id == 7)
 			{
-				sendMode = par1.readInt();
+				sendMode = par1.readFloat();
+			}
+			else if(id == 8)
+			{
+				tickRate = par1.readFloat();
 			}
 		}
 		catch(Exception e)
 		{
-			
 		}
 	}
-
+	
 	@Override
 	public String identifier()
 	{
 		return null;
 	}
-
+	
 	@Override
 	public void readFromNBT(NBTTagCompound par1)
 	{
 		super.readFromNBT(par1);
-		if(par1.hasKey("Limit")) transferlimit = par1.getFloat("Limit");
-		else transferlimit = 1F;
+		if(par1.hasKey("Limit"))
+			transferlimit = par1.getFloat("Limit");
+		else
+			transferlimit = 1F;
 		
-		if(par1.hasKey("Input")) acceptingEnergy = par1.getBoolean("Input");
-		else acceptingEnergy = true;
+		if(par1.hasKey("Input"))
+			acceptingEnergy = par1.getBoolean("Input");
+		else
+			acceptingEnergy = true;
 		
-		if(par1.hasKey("AutoSend")) autoProviding = par1.getBoolean("AutoSend");
-		else autoProviding = false;
+		if(par1.hasKey("AutoSend"))
+			autoProviding = par1.getBoolean("AutoSend");
+		else
+			autoProviding = false;
 		
 		if(par1.hasKey("EnergyNet"))
 		{
 			NBTTagCompound net = par1.getCompoundTag("EnergyNet");
 			sendRandom = net.getBoolean("Random");
 			sendToAll = net.getBoolean("Multi");
-			sendMode = net.getInteger("SendMode");
+			sendMode = net.getFloat("SendMode");
+			tickRate = net.getFloat("TickRate");
 		}
 		else
 		{
 			sendRandom = false;
 			sendToAll = false;
-			sendMode = 2;
+			sendMode = 1F;
+			tickRate = 0F;
 		}
 	}
-
+	
 	@Override
 	public void writeToNBT(NBTTagCompound par1)
 	{
@@ -238,9 +285,9 @@ public class BatteryData extends ItemInventory implements IPacketReciver
 		NBTTagCompound net = new NBTTagCompound();
 		net.setBoolean("Random", sendRandom);
 		net.setBoolean("Multi", sendToAll);
-		net.setInteger("SendMode", sendMode);
+		net.setFloat("SendMode", sendMode);
+		net.setFloat("TickRate", tickRate);
 		par1.setCompoundTag("EnergyNet", net);
 	}
-	
 	
 }

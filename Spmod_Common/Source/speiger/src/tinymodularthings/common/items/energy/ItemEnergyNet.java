@@ -58,7 +58,7 @@ public class ItemEnergyNet
 		}
 		if(data.hasKey("SendMode"))
 		{
-			int size = data.getInteger("SendMode");
+			int size = (int)(2 * data.getFloat("SendMode"));
 			SendingMode[] array = SendingMode.values();
 			if(size >= 0 && array.length > size)
 			{
@@ -67,7 +67,7 @@ public class ItemEnergyNet
 		}
 		if(data.hasKey("ReqMode"))
 		{
-			int size = data.getInteger("ReqMode");
+			int size = (int)(2 * data.getFloat("ReqMode"));
 			RequestingMode[] array = RequestingMode.values();
 			if(size >= 0 && array.length > size)
 			{
@@ -147,7 +147,6 @@ public class ItemEnergyNet
 				}
 			}
 		}
-		SpmodAPI.core.updatePlayerInf(par2);
 		resetSettings();
 	}
 	
@@ -204,7 +203,6 @@ public class ItemEnergyNet
 				}
 			}
 		}
-		SpmodAPI.core.updatePlayerInf(par2);
 		resetSettings();
 	}
 	

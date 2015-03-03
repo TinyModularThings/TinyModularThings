@@ -433,7 +433,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 						currentRecipe.runRecipe(inv[1], inv[2], inv[3], max);
 						ItemStack result = currentRecipe.getOutput().copy();
 						result.stackSize *= max;
-						storedExp += (double)(FurnaceRecipes.smelting().getExperience(result) * max);
+						storedExp += (double)(PressureRecipeList.getInstance().getExpFromResult(result) * max);
 						
 						for(int i = 1;i<4;i++)
 						{

@@ -9,6 +9,7 @@ import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import speiger.src.api.common.data.nbt.NBTHelper;
@@ -51,6 +52,21 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	}
 	
 	
+	
+	@Override
+	public void initExtraData(NBTTagCompound data)
+	{
+		data.setFloat("Limit", 1F);
+		data.setBoolean("Input", true);
+		data.setBoolean("AutoSend", false);
+		NBTTagCompound net = new NBTTagCompound();
+		net.setBoolean("Random", false);
+		net.setBoolean("Multi", false);
+		net.setFloat("SendMode", 1F);
+		net.setFloat("TickRate", 0F);
+		data.setCompoundTag("EnergyNet", net);
+	}
+
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1, World par2, EntityPlayer par3)
 	{
@@ -60,9 +76,17 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 		}
 		if(!par2.isRemote)
 		{
-			ItemEnergyNet.getEnergyNet().sendEnergyToItems(par1, par3);
+			ItemEnergyNet.getEnergyNet().loadSettingsFromItem(par1).sendEnergyToItems(par1, par3);
 		}
 		return par1;
+	}
+	
+	
+
+	@Override
+	public boolean sneakingStopTick(ItemStack par1)
+	{
+		return true;
 	}
 
 	@Override
@@ -158,21 +182,23 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	
 	public static enum BatterieType
 	{
-		Small(30000, 100, "Small"),
-		Medium(100000, 300, "Medium"),
-		Big(2500000, 1250, "Big"),
-		Huge(10000000, 3500, "Huge");
+		Small(30000, 100, 0.01F, "Small"),
+		Medium(100000, 300, 0.003F, "Medium"),
+		Big(2500000, 1250, 0.0007F, "Big"),
+		Huge(10000000, 3500, 0.00025F, "Huge");
 		
 		int maxStorage;
 		int transferlimit;
+		float weelEffect;
 		String texture;
 		Item data;
 		
-		private BatterieType(int par1, int par2, String par3)
+		private BatterieType(int par1, int par2, float par3, String par4)
 		{
 			maxStorage = par1;
 			transferlimit = par2;
-			texture = "BCBattery" + par3;
+			weelEffect = par3;
+			texture = "BCBattery" + par4;
 		}
 		
 		public void registerTexture(TextureEngine par1)
@@ -188,6 +214,11 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 		public int getMaxStorage()
 		{
 			return maxStorage;
+		}
+		
+		public float getWeelEffect()
+		{
+			return weelEffect;
 		}
 	}
 	
@@ -219,6 +250,26 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	{
 		return type;
 	}
+	
+	@Override
+	public boolean tickInventory(ItemStack par1)
+	{
+		return getItemData(par1).getBoolean("AutoSend") && getStoredMJ(par1) > 0;
+	}
+
+	@Override
+	public boolean hasTickRate(ItemStack par1)
+	{
+		return getTickRate(par1) > 0;
+	}
+	
+	
+
+	@Override
+	public int getTickRate(ItemStack par1)
+	{
+		return (int)(1000 * getItemData(par1).getCompoundTag("EnergyNet").getFloat("TickRate"));
+	}
 
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -234,9 +285,17 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	}
 
 	@Override
+	public boolean isDamaged(ItemStack stack)
+	{
+		return getDisplayDamage(stack) > 0;
+	}
+
+	@Override
 	public int getDisplayDamage(ItemStack stack)
 	{
 		int storage = (int)(((double)getStoredMJ(stack) / (double)getMaxMJStorage(stack)) * (double)100);
-		return storage;
+		return 100 - storage;
 	}
+	
+	
 }

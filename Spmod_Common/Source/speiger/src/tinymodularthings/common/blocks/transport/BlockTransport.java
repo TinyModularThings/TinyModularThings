@@ -9,7 +9,6 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.api.common.world.tiles.interfaces.HopperType;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.templates.BaseTemplate;
 import speiger.src.spmodapi.common.util.TextureEngine;
@@ -46,6 +45,8 @@ public class BlockTransport extends SpmodBlockContainerBase
 	{
 		par3.add(new ItemStack(par1, 1, 0));
 		par3.add(new ItemStack(par1, 1, 4));
+		par3.add(new ItemStack(par1, 1, 5));
+		par3.add(new ItemStack(par1, 1, 6));
 	}
 
 	@Override
@@ -64,13 +65,16 @@ public class BlockTransport extends SpmodBlockContainerBase
 			case 2: return new MultiStructureFluidInterface();
 			case 3: return new MultiStructureEnergyInterface();
 			case 4: return new AdvancedEnderChestReader();
-				
-			case 10: return new TinyHopper(HopperType.Items, false);
-			case 11: return new TinyHopper(HopperType.Items, true);
-			case 12: return new TinyHopper(HopperType.Fluids, false);
-			case 13: return new TinyHopper(HopperType.Fluids, true);
-			case 14: return new TinyHopper(HopperType.Energy, false);
-			case 15: return new TinyHopper(HopperType.Energy, true);
+			case 5: return new ChargingBench();
+			case 6: return new BatteryStation();
+			
+			
+//			case 10: return new TinyHopper(HopperType.Items, false);
+//			case 11: return new TinyHopper(HopperType.Items, true);
+//			case 12: return new TinyHopper(HopperType.Fluids, false);
+//			case 13: return new TinyHopper(HopperType.Fluids, true);
+//			case 14: return new TinyHopper(HopperType.Energy, false);
+//			case 15: return new TinyHopper(HopperType.Energy, true);
 			default: return null;
 		}
 	}

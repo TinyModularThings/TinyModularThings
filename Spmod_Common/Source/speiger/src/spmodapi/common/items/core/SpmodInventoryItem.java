@@ -142,6 +142,11 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 		return 0;
 	}
 	
+	public boolean sneakingStopTick(ItemStack par1)
+	{
+		return false;
+	}
+	
 	boolean tickRateReady(ItemStack par1)
 	{
 		String id = getInventoryID(par1);
@@ -182,6 +187,11 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 		if(par3 != null && par3 instanceof EntityPlayer)
 		{
 			EntityPlayer player = (EntityPlayer)par3;
+			boolean sneak = player.isSneaking();
+			if(sneakingStopTick(par1) && sneak)
+			{
+				return;
+			}
 			ItemInventory inv = createNewInventory(player, par1);
 			if(inv.stopTickingOnGuiOpen() && player.openContainer != null && player.openContainer instanceof AdvContainer && ((AdvContainer)player.openContainer).getInvName().equals(inv.getInvName()))
 			{

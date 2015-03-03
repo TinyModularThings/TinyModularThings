@@ -1,13 +1,8 @@
 package speiger.src.tinymodularthings.common.recipes.pressureFurnace;
 
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
@@ -25,10 +20,10 @@ public class PressureRecipes
 		
 		PressureRecipeList list = PressureRecipeList.getInstance();
 
-		list.addRecipe(new MetalMixing(new ItemStack(TinyItems.bauxitDust, 8), new ItemStack(Block.sand, 2), new ItemStack(Item.coal, 1, 0), new ItemStack(TinyItems.ingots, 2, EnumIngots.Aluminum.getIngotMeta())).setTime(350).setCombinerUse());
-		list.addRecipe(new MetalMixing(new ItemStack(TinyItems.bauxitDust, 8), new ItemStack(Block.sand, 2), new ItemStack(Item.coal, 1, 1), new ItemStack(TinyItems.ingots, 2, EnumIngots.Aluminum.getIngotMeta())).setTime(350).setCombinerUse());
-		list.addRecipe(new MetalMixing(new ItemStack(TinyBlocks.ores, 3, 0), new ItemStack(TinyBlocks.ores, 1, 1), (ItemStack) null, new ItemStack(TinyItems.ingots, 8, EnumIngots.Bronze.getIngotMeta())).setTime(150));
-		list.addRecipe(new MetalMixing(new ItemStack(TinyItems.ingots, 3, EnumIngots.Copper.getIngotMeta()), new ItemStack(TinyItems.ingots, 1, EnumIngots.Tin.getIngotMeta()), (ItemStack) null, new ItemStack(TinyItems.ingots, 4, EnumIngots.Bronze.getIngotMeta())));
+		list.addRecipe(new MetalMixingOre(new ItemStack(TinyItems.bauxitDust, 8), new ItemStack(Block.sand, 2), new ItemStack(Item.coal, 1, 0), new ItemStack(TinyItems.ingots, 2, EnumIngots.Aluminum.getIngotMeta())).setTime(350).setCombinerUse(), 1F);
+		list.addRecipe(new MetalMixingOre(new ItemStack(TinyItems.bauxitDust, 8), new ItemStack(Block.sand, 2), new ItemStack(Item.coal, 1, 1), new ItemStack(TinyItems.ingots, 2, EnumIngots.Aluminum.getIngotMeta())).setTime(350).setCombinerUse(), 1F);
+		list.addRecipe(new MetalMixingOre(new ItemStack(TinyBlocks.ores, 3, 0), new ItemStack(TinyBlocks.ores, 1, 1), (ItemStack) null, new ItemStack(TinyItems.ingots, 8, EnumIngots.Bronze.getIngotMeta())).setTime(150), 0.75F);
+		list.addRecipe(new MetalMixingOre(new ItemStack(TinyItems.ingots, 3, EnumIngots.Copper.getIngotMeta()), new ItemStack(TinyItems.ingots, 1, EnumIngots.Tin.getIngotMeta()), (ItemStack) null, new ItemStack(TinyItems.ingots, 4, EnumIngots.Bronze.getIngotMeta())), 0.75F);
 		list.addRecipe(new BackMelting(new ItemStack(Item.minecartEmpty), new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 5)));
 		list.addRecipe(new BackMelting(new ItemStack(Item.bucketEmpty), new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 3)));
 		list.addRecipe(new BackMelting(new ItemStack(Item.horseArmorIron), new ItemStack(Item.bucketLava), new ItemStack(Item.ingotIron, 7)));

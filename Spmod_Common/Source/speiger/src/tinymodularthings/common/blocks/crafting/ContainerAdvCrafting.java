@@ -85,7 +85,7 @@ public class ContainerAdvCrafting extends AdvContainer
 		{
 			if(i < results.size())
 			{
-				result[i].setInventorySlotContents(0, results.get(i).getCraftingResult(matrix));
+				result[i].setInventorySlotContents(0, ItemStack.copyItemStack(results.get(i).getCraftingResult(matrix)));
 			}
 			else
 			{

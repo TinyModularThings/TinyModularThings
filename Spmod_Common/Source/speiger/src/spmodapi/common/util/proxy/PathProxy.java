@@ -183,5 +183,14 @@ public class PathProxy
 	{
 		return FMLCommonHandler.instance().getEffectiveSide() == Side.CLIENT;
 	}
+
+	public static String getOreName(ItemStack input)
+	{
+		if(input == null)
+		{
+			return "";
+		}
+		return OreDictionary.getOreName(OreDictionary.getOreID(input));
+	}
 	
 }

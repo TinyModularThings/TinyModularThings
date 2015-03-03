@@ -12,23 +12,12 @@ import speiger.src.spmodapi.common.fluids.hemp.ItemHempResin;
 import speiger.src.spmodapi.common.items.armor.HempArmor;
 import speiger.src.spmodapi.common.items.core.BasicItem;
 import speiger.src.spmodapi.common.items.core.SpmodItem;
-import speiger.src.spmodapi.common.items.crafting.ItemBlueDye;
-import speiger.src.spmodapi.common.items.crafting.ItemCircuit;
-import speiger.src.spmodapi.common.items.crafting.ItemColorCard;
-import speiger.src.spmodapi.common.items.crafting.ItemDamageableCircuit;
-import speiger.src.spmodapi.common.items.crafting.ItemGear;
-import speiger.src.spmodapi.common.items.crafting.ItemMobMachineHelper;
-import speiger.src.spmodapi.common.items.crafting.RedstoneCable;
-import speiger.src.spmodapi.common.items.crafting.SpmodBone;
+import speiger.src.spmodapi.common.items.crafting.*;
 import speiger.src.spmodapi.common.items.debug.ItemAccessAdder;
 import speiger.src.spmodapi.common.items.exp.ExpBottle;
 import speiger.src.spmodapi.common.items.gas.ItemGasBucket;
 import speiger.src.spmodapi.common.items.gas.ItemGasCell;
-import speiger.src.spmodapi.common.items.hemp.ItemCompressedHemp;
-import speiger.src.spmodapi.common.items.hemp.ItemHemp;
-import speiger.src.spmodapi.common.items.hemp.ItemHempBucket;
-import speiger.src.spmodapi.common.items.hemp.ItemHempSeed;
-import speiger.src.spmodapi.common.items.hemp.ItemMultiPlate;
+import speiger.src.spmodapi.common.items.hemp.*;
 import speiger.src.spmodapi.common.items.trades.ItemRandomTrade;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.util.TextureEngine;
@@ -52,7 +41,7 @@ public class APIItemsConfig
 		engine.registerTexture(items.hempSeed, "HempSeeds");
 		config.itemIDs.updateToNextID();
 		
-		items.hemp = new ItemHemp(config.itemIDs.getCurrentID());
+		items.hemp = new BasicItem(config.itemIDs.getCurrentID(), "Hemp");
 		RegisterProxy.RegisterItem(items.hemp);
 		engine.registerTexture(items.hemp, "hempDrop");
 		config.itemIDs.updateToNextID();
@@ -77,7 +66,7 @@ public class APIItemsConfig
 		engine.registerTexture(items.hempHelmet, "hemp_helmet");
 		config.itemIDs.updateToNextID();
 		
-		items.compressedHemp = new ItemCompressedHemp(config.itemIDs.getCurrentID());
+		items.compressedHemp = new BasicItem(config.itemIDs.getCurrentID(), "Compressed Hemp");
 		RegisterProxy.RegisterItem(items.compressedHemp);
 		engine.registerTexture(items.compressedHemp, "compressedHemp");
 		config.itemIDs.updateToNextID();
@@ -190,10 +179,22 @@ public class APIItemsConfig
 		engine.registerTexture(items.tinyRedstoneDust, "TinyRedstonePowder");
 		config.itemIDs.updateToNextID();
 		
+		engine.setCurrentPath("circuits");
 		SpmodItem data;
 		items.damageableCircuits.put("StorageLogicDiamond", data = new ItemDamageableCircuit(config.itemIDs.getCurrentID(), "Logic Diamond", 100, Arrays.asList("Storage Logic")));
 		RegisterProxy.RegisterItem(data);
 		engine.registerTexture(data, "StorageLogicDiamond");
+		config.itemIDs.updateToNextID();
+		
+		engine.setCurrentPath("hemp");
+		items.hempCake = new ItemHempCake(config.itemIDs.getCurrentID());
+		RegisterProxy.RegisterItem(items.hempCake);
+		engine.registerTexture(items.hempCake, "hempCake");
+		config.itemIDs.updateToNextID();
+		
+		items.hempOil = new ItemHempOil(config.itemIDs.getCurrentID());
+		RegisterProxy.RegisterItem(items.hempOil);
+		engine.registerTexture(items.hempOil, "HempOil");
 		config.itemIDs.updateToNextID();
 		
 		initHempPlates();

@@ -266,16 +266,14 @@ public class MobMachineRecipes extends TemplateRecipeHandler
 		
 		public void onTick()
 		{
-			dropDelay--;
-			foodDelay--;
 			
-			if(MobMachineRecipes.this.cycleticks % 43 == 0 && foodDelay <= 0)
+			if(MobMachineRecipes.this.cycleticks % 43 == 0)
 			{
 				if(food.size() > 1)
 				{
 					food.add(food.remove(0));
 					lastFood = new PositionedStack(food.get(0), 7, 50);
-					foodDelay = 5;
+					MobMachineRecipes.this.cycleticks++;
 				}
 				
 				
@@ -290,7 +288,7 @@ public class MobMachineRecipes extends TemplateRecipeHandler
 					lastOutput[i] = new PositionedStack(drops.get(i), slot[0], slot[1]);
 				}
 			}
-			else if(requireCycle() && MobMachineRecipes.this.cycleticks % 20 == 0 && dropDelay <= 0)
+			else if(requireCycle() && MobMachineRecipes.this.cycleticks % 20 == 0)
 			{
 				this.drops.add(this.drops.remove(0));
 				int size = Math.min(18, drops.size());
@@ -300,7 +298,7 @@ public class MobMachineRecipes extends TemplateRecipeHandler
 					int[] slot = MobMachineRecipes.slots[i];
 					lastOutput[i] = new PositionedStack(drops.get(i), slot[0], slot[1]);
 				}
-				dropDelay = 5;
+				MobMachineRecipes.this.cycleticks++;
 			}
 		}
 		

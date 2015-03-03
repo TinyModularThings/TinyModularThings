@@ -4,6 +4,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.common.utils.InventoryUtil;
+import speiger.src.api.common.world.items.energy.IBCBattery;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInterfaceBlock;
 import cpw.mods.fml.common.ICraftingHandler;
@@ -29,15 +30,45 @@ public class TinyCraftingHandler implements ICraftingHandler
 				}
 			}
 		}
-		if(item != null && item.itemID == TinyItems.netherCrystal.itemID && item.getItemDamage() == 0)
+		if(item != null)
 		{
-			for(int i = 0;i<craftMatrix.getSizeInventory();i++)
+			if(item.itemID == TinyItems.netherCrystal.itemID && item.getItemDamage() == 0)
 			{
-				ItemStack stack = craftMatrix.getStackInSlot(i);
-				if(stack != null && stack.itemID == TinyItems.netherCrystal.itemID)
+				for(int i = 0;i<craftMatrix.getSizeInventory();i++)
 				{
-					craftMatrix.setInventorySlotContents(i, null);
-					craftMatrix.onInventoryChanged();
+					ItemStack stack = craftMatrix.getStackInSlot(i);
+					if(stack != null && stack.itemID == TinyItems.netherCrystal.itemID)
+					{
+						craftMatrix.setInventorySlotContents(i, null);
+						craftMatrix.onInventoryChanged();
+					}
+				}
+			}
+			else if(item.getItem() instanceof IBCBattery)
+			{
+				boolean stopped = false;
+				for(int i = 0;i<craftMatrix.getSizeInventory();i++)
+				{
+					ItemStack stack = craftMatrix.getStackInSlot(i);
+					if(stack != null && stack.getItem() instanceof IBCBattery)
+					{
+						IBCBattery battery = (IBCBattery)stack.getItem();
+						int charge = battery.getStoredMJ(stack);
+						while(!stopped && charge > 0)
+						{
+							int added = ((IBCBattery)item.getItem()).charge(item, charge, false);
+							if(added <= 0)
+							{
+								stopped = true;
+								break;
+							}
+							charge -= added;
+						}
+						if(stopped)
+						{
+							break;
+						}
+					}
 				}
 			}
 		}

@@ -204,10 +204,17 @@ public class SpmodAPICore implements IGuiHandler
 	
 	public void updatePlayerInf(EntityPlayer par1)
 	{
-		if(par1 != null && par1 instanceof EntityPlayerMP)
+		try
 		{
-			EntityPlayerMP mp = (EntityPlayerMP)par1;
-			mp.sendContainerToPlayer(par1.inventoryContainer);
+			if(par1 != null && par1 instanceof EntityPlayerMP)
+			{
+				EntityPlayerMP mp = (EntityPlayerMP)par1;
+				mp.sendContainerToPlayer(par1.inventoryContainer);
+			}
+		}
+		catch(Exception e)
+		{
+			e.printStackTrace();
 		}
 	}
 }

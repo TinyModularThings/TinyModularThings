@@ -36,6 +36,8 @@ public class ItemBlockTransport extends ItemBlockTinyChest
 			case 2: return "Fluid Multistructure Interface";
 			case 3: return "Energy Multistructure Interface";
 			case 4: return "Advanced EnderChest Proxy";
+			case 5: return "Charging Bench";
+			case 6: return "Battery Station";
 			
 			case 10: return "Tiny Hopper";
 			case 11: return "Advanced Tiny Hopper";

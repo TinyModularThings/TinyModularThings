@@ -64,6 +64,7 @@ public class EnergyProvider implements IEnergySubject
 			initBC((IPowerReceptor) tile);
 		}
 	}
+
 	
 	public EnergyProvider setPowerLoss(int promille)
 	{

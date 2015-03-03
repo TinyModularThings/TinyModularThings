@@ -1,5 +1,6 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
+import cpw.mods.fml.common.FMLLog;
 import net.minecraft.block.Block;
 import net.minecraft.inventory.InventoryEnderChest;
 import net.minecraft.tileentity.TileEntity;
@@ -49,7 +50,4 @@ public class AdvancedEnderChestReader extends EnderChestReader
 	{
 		par1.registerTexture(new BlockStack(par2, 4), "advEnderChestReader");
 	}
-	
-	
-	
 }

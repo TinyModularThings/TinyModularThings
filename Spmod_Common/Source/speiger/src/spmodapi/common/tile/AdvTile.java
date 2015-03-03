@@ -60,11 +60,13 @@ public abstract class AdvTile extends TileEntity
 {
 	public ArrayList<String> users = new ArrayList<String>();
 	public boolean init = false;
+	public boolean tileLoaded = false;
 	public Random rand = new Random();
 	String owner = "";
 	SafeTimeTracker tracker = new SafeTimeTracker();
 	private int clock = CodeProxy.getRandom().nextInt();
 	private int renderPass = 0;
+	private byte[] redstoneStrenght = new byte[6];
 	
 	//TODO Custom Functions
 	
@@ -132,7 +134,57 @@ public abstract class AdvTile extends TileEntity
 	
 	public boolean isPowered()
 	{
-		return RedstoneUtils.isBlockGettingPowered(this);
+		boolean flag = false;
+		for(int i = 0;i<6;i++)
+		{
+			flag = redstoneStrenght[i] > 0;
+			if(flag)
+			{
+				break;
+			}
+		}
+		return flag;
+	}
+	
+	public boolean isPowered(int side)
+	{
+		return redstoneStrenght[side] > 0;
+	}
+	
+	public int getPower(int side)
+	{
+		return redstoneStrenght[side];
+	}
+	
+	public int getGeneralPower()
+	{
+		int power = 0;
+		for(int i = 0;i<6;i++)
+		{
+			power+=redstoneStrenght[i];
+		}
+		power /= redstoneStrenght.length;
+		return power;
+	}
+	
+	public int getHighestPower()
+	{
+		int power = 0;
+		for(int i = 0;i<6;i++)
+		{
+			power = Math.max(power, redstoneStrenght[i]);
+		}
+		return power;
+	}
+	
+	public int getLowestPower()
+	{
+		int power = 15;
+		for(int i = 0;i<6;i++)
+		{
+			power = Math.min(power, redstoneStrenght[i]);
+		}
+		return power;
 	}
 	
 	public void updateBlock()
@@ -298,10 +350,10 @@ public abstract class AdvTile extends TileEntity
 	public void invalidate()
 	{
 		super.invalidate();
-		if(this instanceof ITemplateProvider)
+		if(tileLoaded)
 		{
-			ITemplateProvider provider = (ITemplateProvider)this;
-			provider.getTemplate().onUnload();
+			tileLoaded = false;
+			onUnload(false);
 		}
 	}
 
@@ -309,10 +361,10 @@ public abstract class AdvTile extends TileEntity
 	public void validate()
 	{
 		super.validate();
-		if(this instanceof ITemplateProvider)
+		if(!tileLoaded)
 		{
-			ITemplateProvider provider = (ITemplateProvider)this;
-			provider.initTemplate();
+			tileLoaded = true;
+			onLoad();
 		}
 	}
 
@@ -320,6 +372,24 @@ public abstract class AdvTile extends TileEntity
 	public void onChunkUnload()
 	{
 		super.onChunkUnload();
+		if(tileLoaded)
+		{
+			tileLoaded = false;
+			onUnload(true);
+		}
+	}
+	
+	public void onLoad()
+	{
+		if(this instanceof ITemplateProvider)
+		{
+			ITemplateProvider provider = (ITemplateProvider)this;
+			provider.initTemplate();
+		}
+	}
+	
+	public void onUnload(boolean chunk)
+	{
 		if(this instanceof ITemplateProvider)
 		{
 			ITemplateProvider provider = (ITemplateProvider)this;
@@ -525,7 +595,10 @@ public abstract class AdvTile extends TileEntity
 	
 	public void onBlockChange(Block par1, int par2)
 	{
-		
+		for(int i = 0;i<6;i++)
+		{
+			this.redstoneStrenght[i] = (byte)RedstoneUtils.getPowerInput(this, i);
+		}
 	}
 	
 	protected void notifyBlocksOfNeighborChange(ForgeDirection side)

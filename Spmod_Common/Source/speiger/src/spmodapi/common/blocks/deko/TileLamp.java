@@ -223,7 +223,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	@Override
 	public boolean hasContainer()
 	{
-		return true;
+		return false;
 	}
 
 	@Override

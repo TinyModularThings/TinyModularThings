@@ -57,6 +57,7 @@ public class BCAddon
 	static void loadRecipes()
 	{
 		OreDictionary.registerOre("gearCobble", BuildCraftCore.stoneGearItem);
+		FMLLog.getLogger().info("Test: "+OreDictionary.getOres("gearCobble"));
 		PathProxy.addFurnaceRecipe(new ItemStack(BuildCraftCore.stoneGearItem), GearType.Stone.getItem(), 0.1F);
 		PathProxy.addRecipe(new ItemStack(BuildCraftTransport.pipeWaterproof, 16), new Object[] { "XXX", "XYX", "XXX", 'X', APIItems.hemp, 'Y', Item.slimeBall });
 		PathProxy.removeRecipeS(new ItemStack(APIItems.colorCard, 1, EnumColor.GREEN.getAsDye()), BuildCraftTransport.pipeWaterproof);
