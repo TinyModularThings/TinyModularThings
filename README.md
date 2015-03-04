@@ -18,7 +18,7 @@ I hope they fix it. I took the mod over because I could not run it anymore on my
 Now to the mods which I plan to take over or bring back to live.
 
 1: BC&IC2CrossoverMod. 
-2: RockedScience.
+2: RocketScience.
 3: LaserMod (If I can.)
 4: Bacon Mod (Maybe I am not sure yet.)
 5: PowerCraft (That will sadly not happen because I am not good enough to code what they did. This mod is extremly powerful, but also extremely dead. If there is someone who can bring it back to life like it was before without the the bugs of the 1.4.7 version, I will try to help as much as I can.)
