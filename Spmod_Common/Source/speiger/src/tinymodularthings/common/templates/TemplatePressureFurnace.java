@@ -8,11 +8,10 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.templates.BaseTemplate;
-import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
-import cpw.mods.fml.common.FMLLog;
 
 public class TemplatePressureFurnace extends BaseTemplate
 {
@@ -25,7 +24,7 @@ public class TemplatePressureFurnace extends BaseTemplate
 	ForgeDirection dir;
 	PressureFurnace furnace;
 	
-	public TemplatePressureFurnace(AdvTile par1)
+	public TemplatePressureFurnace(IAdvTile par1)
 	{
 		super(par1);
 		furnace = (PressureFurnace)par1;

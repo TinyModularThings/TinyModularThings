@@ -28,7 +28,7 @@ import org.lwjgl.opengl.GL11;
 import speiger.src.api.common.inventory.slot.TankSlot;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.buttons.SpmodGuiButton;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.spmodapi.common.util.slot.PlayerSlot;
@@ -56,11 +56,11 @@ public class GuiInventoryCore extends GuiContainer
 	boolean autoDrawing = false;
 	public int x = 0;
 	public int y = 0;
-	AdvTile tile = null;
+	IAdvTile tile = null;
 	NBTTagCompound extraData;
 	GuiObject[] extraObjects = new GuiObject[0];
 	
-	public GuiInventoryCore(InventoryPlayer par1, AdvTile par2)
+	public GuiInventoryCore(InventoryPlayer par1, IAdvTile par2)
 	{
 		this(par2.getInventory(par1));
 	}
@@ -551,7 +551,7 @@ public class GuiInventoryCore extends GuiContainer
 		return this.mc.thePlayer;
 	}
 	
-	public AdvTile getTile()
+	public IAdvTile getTile()
 	{
 		return tile;
 	}

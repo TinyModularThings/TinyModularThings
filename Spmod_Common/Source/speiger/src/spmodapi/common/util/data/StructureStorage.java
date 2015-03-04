@@ -1,10 +1,6 @@
 package speiger.src.spmodapi.common.util.data;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.minecraft.nbt.NBTTagCompound;
@@ -20,7 +16,7 @@ import speiger.src.api.common.data.nbt.INBTReciver;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.spmodapi.SpmodAPI;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 
 public class StructureStorage implements INBTReciver
 {
@@ -100,9 +96,9 @@ public class StructureStorage implements INBTReciver
 				if (core != null && core.doesBlockExsist())
 				{
 					TileEntity tile = core.getTileEntity();
-					if (tile != null && tile instanceof AdvTile)
+					if (tile != null && tile instanceof IAdvTile)
 					{
-						if (!((AdvTile) tile).hasContainer())
+						if (!((IAdvTile) tile).hasContainer())
 						{
 							return;
 						}

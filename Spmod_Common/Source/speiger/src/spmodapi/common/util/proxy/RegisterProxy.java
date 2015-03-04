@@ -7,6 +7,7 @@ import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import cpw.mods.fml.common.registry.GameRegistry;
@@ -47,7 +48,7 @@ public class RegisterProxy
 			SpmodAPI.log.print(String.format("%s%n%s%n%s", "Failing by Reinstancing TileEntity.", "Crash can Happen.", "Reason why it could not Reinstance TileEntity: " + e.getLocalizedMessage()));
 			return;
 		}
-		if (block != null && tile != null && tile instanceof AdvTile)
+		if (block != null && tile != null && tile instanceof IAdvTile)
 		{
 			AdvTile regist = (AdvTile) tile;
 			TileIconMaker.getIconMaker().addTileEntity(block, meta, regist);

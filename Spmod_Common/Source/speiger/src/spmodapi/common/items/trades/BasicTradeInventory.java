@@ -13,8 +13,8 @@ import org.lwjgl.opengl.GL12;
 
 import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.tile.AdvInventory;
-import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.spmodapi.common.util.slot.SpmodSlot;
 import cpw.mods.fml.relauncher.Side;
@@ -179,9 +179,9 @@ public class BasicTradeInventory extends AdvInventory
 
 	public class TradeSlot extends SpmodSlot
 	{
-		public TradeSlot(AdvTile par1, int id, int x, int y)
+		public TradeSlot(IAdvTile par1, int id, int x, int y)
 		{
-			super(par1, id, x, y);
+			super((IInventory)par1.getTileEntity(), id, x, y);
 		}
 		
 		@Override

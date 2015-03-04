@@ -18,7 +18,7 @@ import speiger.src.api.client.render.IMetaItemRender;
 import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
@@ -215,7 +215,7 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 	public void onRender(ItemRenderType type, ItemStack item, int renderPass, float x, float y, float z, Object... data)
 	{
 		BlockStack stack = getBlockToPlace(item.getItemDamage());
-		AdvTile tile = TileIconMaker.getIconMaker().getTileEntityFormBlockAndMetadata(stack);
+		IAdvTile tile = TileIconMaker.getIconMaker().getTileEntityFormBlockAndMetadata(stack);
 		tile.setRenderPass(1);
 		stack.getBlock().setBlockBounds(0.35F, 0.35F, 0.35F, 0.65F, 0.65F, 0.65F);
 		BlockRenderHelper.renderInInv(stack, (RenderBlocks)data[0]);

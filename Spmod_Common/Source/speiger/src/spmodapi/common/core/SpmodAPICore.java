@@ -13,6 +13,7 @@ import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.commands.GuiCommands;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.ForgeRegister;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
@@ -62,9 +63,9 @@ public class SpmodAPICore implements IGuiHandler
 		else if (ID == EnumGuiIDs.Tiles.getID())
 		{
 			TileEntity tile = world.getBlockTileEntity(x, y, z);
-			if (tile != null && tile instanceof AdvTile)
+			if (tile != null && tile instanceof IAdvTile)
 			{
-				return ((AdvTile) tile).getInventory(player.inventory);
+				return ((IAdvTile) tile).getInventory(player.inventory);
 			}
 		}
 		else if (ID == EnumGuiIDs.Commands.getID())
@@ -138,9 +139,9 @@ public class SpmodAPICore implements IGuiHandler
 		else if (ID == EnumGuiIDs.Tiles.getID())
 		{
 			TileEntity tile = world.getBlockTileEntity(x, y, z);
-			if (tile != null && tile instanceof AdvTile)
+			if (tile != null && tile instanceof IAdvTile)
 			{
-				return ((AdvTile) tile).getGui(player.inventory);
+				return ((IAdvTile) tile).getGui(player.inventory);
 			}
 		}
 		else if (ID == EnumGuiIDs.Commands.getID())

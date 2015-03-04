@@ -15,7 +15,7 @@ import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.tiles.energy.IEnergyProvider;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import buildcraft.api.power.IPowerReceptor;
 
 public class WorldReading
@@ -160,24 +160,24 @@ public class WorldReading
 		return tile;
 	}
 	
-	public static AdvTile getAdvTile(IBlockAccess par1, int par2, int par3, int par4, ForgeDirection par5)
+	public static IAdvTile getAdvTile(IBlockAccess par1, int par2, int par3, int par4, ForgeDirection par5)
 	{
 		return getAdvTile(par1, par2+par5.offsetX, par3+par5.offsetY, par4+par5.offsetZ);
 	}
 	
-	public static AdvTile getAdvTile(IBlockAccess par1, int par2, int par3, int par4)
+	public static IAdvTile getAdvTile(IBlockAccess par1, int par2, int par3, int par4)
 	{
 		TileEntity tile = par1.getBlockTileEntity(par2, par3, par4);
 		if (tile == null)
 		{
 			return null;
 		}
-		if (!(tile instanceof AdvTile))
+		if (!(tile instanceof IAdvTile))
 		{
 			return null;
 		}
 		
-		return (AdvTile) tile;
+		return (IAdvTile) tile;
 	}
 	
 	public static boolean isBlockBlocked(World world, int xCoord, int yCoord, int zCoord, boolean optional)
@@ -274,18 +274,18 @@ public class WorldReading
 	public static void setupUser(World world, int x, int y, int z, EntityPlayer player)
 	{
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if(tile != null && tile instanceof AdvTile)
+		if(tile != null && tile instanceof IAdvTile)
 		{
-			((AdvTile)tile).setupUser(player);
+			((IAdvTile)tile).setupUser(player);
 		}
 	}
 
 	public static void setUpFacing(World world, int x, int y, int z, EntityPlayer player, int side)
 	{
 		TileEntity tile = world.getBlockTileEntity(x, y, z);
-		if(tile != null && tile instanceof AdvTile)
+		if(tile != null && tile instanceof IAdvTile)
 		{
-			AdvTile adv = (AdvTile)tile;
+			IAdvTile adv = (IAdvTile)tile;
 			int playerSide = getLookingDirectionFromEnitty(player);
 			adv.onAdvPlacing(side, playerSide);
 		}

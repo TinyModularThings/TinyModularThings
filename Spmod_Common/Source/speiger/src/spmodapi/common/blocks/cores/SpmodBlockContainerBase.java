@@ -22,7 +22,7 @@ import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.common.ForgeHooks;
 import net.minecraftforge.event.ForgeEventFactory;
 import speiger.src.api.common.world.blocks.BlockPosition;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import cpw.mods.fml.relauncher.Side;
@@ -48,7 +48,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
     @Override
 	public boolean isBlockNormalCube(World world, int x, int y, int z)
 	{
-		AdvTile tile = this.getAdvTile(world, x, y, z);
+		IAdvTile tile = this.getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.isNormalCube();
@@ -61,7 +61,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public boolean canBeReplacedByLeaves(World world, int x, int y, int z)
 	{
-		AdvTile tile = this.getAdvTile(world, x, y, z);
+		IAdvTile tile = this.getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.canBeReplaced();
@@ -73,7 +73,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@SideOnly(Side.CLIENT)
 	public boolean shouldSideBeRendered(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
 	{
-		AdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
+		IAdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
 		if(tile != null)
 		{
 			return tile.shouldSideBeRendered(par5);
@@ -86,7 +86,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public void onNeighborBlockChange(World par1World, int par2, int par3, int par4, int par5)
 	{
-		AdvTile tile = getAdvTile(par1World, par2, par3, par4);
+		IAdvTile tile = getAdvTile(par1World, par2, par3, par4);
 		if(tile != null)
 		{
 			tile.onBlockChange(this, par5);
@@ -96,7 +96,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public void setBlockBoundsBasedOnState(IBlockAccess par1iBlockAccess, int par2, int par3, int par4)
 	{
-		AdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
+		IAdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
 		if(tile != null)
 		{
 			tile.setBoundsOnState(this);
@@ -106,7 +106,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public void onBlockDestroyedByExplosion(World par1World, int par2, int par3, int par4, Explosion par5Explosion)
 	{
-		AdvTile tile = this.getAdvTile(par1World, par2, par3, par4);
+		IAdvTile tile = this.getAdvTile(par1World, par2, par3, par4);
 		if(tile != null)
 		{
 			tile.onDistroyedByExplosion(par5Explosion);
@@ -117,7 +117,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public void onEntityWalking(World par1World, int par2, int par3, int par4, Entity par5Entity)
 	{
-		AdvTile tile = this.getAdvTile(par1World, par2, par3, par4);
+		IAdvTile tile = this.getAdvTile(par1World, par2, par3, par4);
 		if(tile != null)
 		{
 			tile.onEntityWalk(par5Entity);
@@ -128,7 +128,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public int isProvidingWeakPower(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
 	{
-		AdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
+		IAdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
 		if(tile != null)
 		{
 			return tile.isIndirectlyPowering(par5);
@@ -139,7 +139,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public void onEntityCollidedWithBlock(World par1World, int par2, int par3, int par4, Entity par5Entity)
 	{
-		AdvTile tile = this.getAdvTile(par1World, par2, par3, par4);
+		IAdvTile tile = this.getAdvTile(par1World, par2, par3, par4);
 		if(tile != null)
 		{
 			tile.onColide(par5Entity);
@@ -150,7 +150,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public int isProvidingStrongPower(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
 	{
-		AdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
+		IAdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
 		if(tile != null)
 		{
 			return tile.isPowering(par5);
@@ -161,7 +161,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public void onFallenUpon(World par1World, int par2, int par3, int par4, Entity par5Entity, float par6)
 	{
-		AdvTile tile = this.getAdvTile(par1World, par2, par3, par4);
+		IAdvTile tile = this.getAdvTile(par1World, par2, par3, par4);
 		if(tile != null)
 		{
 			tile.onFallen(par5Entity);
@@ -172,7 +172,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public boolean isBlockReplaceable(World world, int x, int y, int z)
 	{
-		AdvTile tile = this.getAdvTile(world, x, y, z);
+		IAdvTile tile = this.getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.canBeReplaced();
@@ -184,7 +184,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@SideOnly(Side.CLIENT)
 	public Icon getBlockTexture(IBlockAccess par1iBlockAccess, int par2, int par3, int par4, int par5)
 	{
-		AdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
+		IAdvTile tile = this.getAdvTile(par1iBlockAccess, par2, par3, par4);
 		int meta = par1iBlockAccess.getBlockMetadata(par2, par3, par4);
 		if(tile != null)
 		{
@@ -207,7 +207,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public boolean canEntityDestroy(World world, int x, int y, int z, Entity entity)
 	{
-		AdvTile tile = this.getAdvTile(world, x, y, z);
+		IAdvTile tile = this.getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.canEntityDistroyMe(entity);
@@ -218,7 +218,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public void addCollisionBoxesToList(World par1World, int par2, int par3, int par4, AxisAlignedBB par5AxisAlignedBB, List par6List, Entity par7Entity)
 	{
-		AdvTile tile = getAdvTile(par1World, par2, par3, par4);
+		IAdvTile tile = getAdvTile(par1World, par2, par3, par4);
 		if(tile != null)
 		{
 			ArrayList<AxisAlignedBB> boxes = tile.getColidingBoxes(par7Entity);
@@ -242,7 +242,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public AxisAlignedBB getCollisionBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
 	{
-		AdvTile tile = getAdvTile(par1World, par2, par3, par4);
+		IAdvTile tile = getAdvTile(par1World, par2, par3, par4);
  		if(tile != null)
 		{
  			AxisAlignedBB bb = tile.getColidingBox();
@@ -258,7 +258,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@SideOnly(Side.CLIENT)
 	public AxisAlignedBB getSelectedBoundingBoxFromPool(World par1World, int par2, int par3, int par4)
 	{
-		AdvTile tile = getAdvTile(par1World, par2, par3, par4);
+		IAdvTile tile = getAdvTile(par1World, par2, par3, par4);
 		if(tile != null)
 		{
 			AxisAlignedBB aabb = tile.getSelectedBoxes();
@@ -273,7 +273,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public float getBlockHardness(World world, int x, int y, int z)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.getBlockHardness();
@@ -284,7 +284,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public float getExplosionResistance(Entity par1Entity, World world, int x, int y, int z, double explosionX, double explosionY, double explosionZ)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.getExplosionResistance(par1Entity);
@@ -295,7 +295,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public float getPlayerRelativeBlockHardness(EntityPlayer par1EntityPlayer, World par2World, int par3, int par4, int par5)
 	{
-		AdvTile tile = getAdvTile(par2World, par3, par4, par5);
+		IAdvTile tile = getAdvTile(par2World, par3, par4, par5);
 		if(tile != null)
 		{
 			if(tile.removeAbleByPlayer(par1EntityPlayer))
@@ -324,7 +324,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public int getLightValue(IBlockAccess world, int x, int y, int z)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.getBlockLightLevel();
@@ -335,7 +335,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public int getLightOpacity(World world, int x, int y, int z)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.getLightOpactiy();
@@ -346,7 +346,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public boolean shouldCheckWeakPower(World world, int x, int y, int z, int side)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.shouldCheckWeakPower(side);
@@ -357,7 +357,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public boolean isBlockSolidOnSide(World world, int x, int y, int z, ForgeDirection side)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.SolidOnSide(side);
@@ -373,7 +373,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		super.onBlockClicked(par1, par2, par3, par4, par5);
 		if(!par1.isRemote)
 		{
-			AdvTile tile = getAdvTile(par1, par2, par3, par4);
+			IAdvTile tile = getAdvTile(par1, par2, par3, par4);
 			if(tile != null)
 			{
 				tile.onLeftClick(par5);
@@ -390,7 +390,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 			return false;
 		}
 		
-		AdvTile tile = getAdvTile(par1, par2, par3, par4);
+		IAdvTile tile = getAdvTile(par1, par2, par3, par4);
 		if(tile != null)
 		{
 			if(tile.onClick(par5.isSneaking(), par5, this, par6))
@@ -409,7 +409,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public ItemStack getPickBlock(MovingObjectPosition target, World world, int x, int y, int z)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			ItemStack stack = tile.pickBlock(target);
@@ -425,7 +425,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@SideOnly(Side.CLIENT)
 	public int colorMultiplier(IBlockAccess par1iBlockAccess, int par2, int par3, int par4)
 	{
-		AdvTile tile = getAdvTile(par1iBlockAccess, par2, par3, par4);
+		IAdvTile tile = getAdvTile(par1iBlockAccess, par2, par3, par4);
 		if(tile != null)
 		{
 			return tile.getColor().getHex();
@@ -436,7 +436,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public boolean canConnectRedstone(IBlockAccess world, int x, int y, int z, int side)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.canConnectToWire(side);
@@ -447,7 +447,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public int getFireSpreadSpeed(World world, int x, int y, int z, int metadata, ForgeDirection face)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.getFireSpreadSpeed(face);
@@ -458,7 +458,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public int getFlammability(IBlockAccess world, int x, int y, int z, int metadata, ForgeDirection face)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.getFireBurnLenght(face);
@@ -469,7 +469,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public boolean isFireSource(World world, int x, int y, int z, int metadata, ForgeDirection side)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.isFireSource(side);
@@ -480,7 +480,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public boolean isAirBlock(World world, int x, int y, int z)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.isAir();
@@ -491,7 +491,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public boolean canPlaceBlockOnSide(World par1World, int par2, int par3, int par4, int par5)
 	{
-		AdvTile tile = getAdvTile(par1World, par2, par3, par4);
+		IAdvTile tile = getAdvTile(par1World, par2, par3, par4);
 		if(tile != null)
 		{
 			return tile.canPlacedOnSide(ForgeDirection.getOrientation(par5));
@@ -502,7 +502,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public boolean canCreatureSpawn(EnumCreatureType type, World world, int x, int y, int z)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.canMonsterSpawn(type);
@@ -513,7 +513,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public boolean canSilkHarvest(World world, EntityPlayer player, int x, int y, int z, int metadata)
 	{
-		AdvTile tile = getAdvTile(world, x, y, z);
+		IAdvTile tile = getAdvTile(world, x, y, z);
 		if(tile != null)
 		{
 			return tile.isSilkHarvestable(player);
@@ -525,7 +525,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@SideOnly(Side.CLIENT)
 	public void randomDisplayTick(World par1World, int par2, int par3, int par4, Random par5Random)
 	{
-		AdvTile tile = getAdvTile(par1World, par2, par3, par4);
+		IAdvTile tile = getAdvTile(par1World, par2, par3, par4);
 		if(tile != null)
 		{
 			tile.onClientTick();
@@ -539,7 +539,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
     
     public void breakBlock(World par1World, int par2, int par3, int par4, int par5, int par6)
     {
-    	AdvTile tile = getAdvTile(par1World, par2, par3, par4);
+    	IAdvTile tile = getAdvTile(par1World, par2, par3, par4);
     	int meta = par1World.getBlockMetadata(par2, par3, par4);
     	if(tile != null)
     	{
@@ -572,7 +572,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		}
 		else
 		{
-			AdvTile tile = getAdvTile(pos.getWorld(), pos.getXCoord(), pos.getYCoord(), pos.getZCoord());
+			IAdvTile tile = getAdvTile(pos.getWorld(), pos.getXCoord(), pos.getYCoord(), pos.getZCoord());
 			if(tile != null)
 			{
 				drops.addAll(tile.onDrop(0));
@@ -586,12 +586,12 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
     	return false;
     }
     
-    public AdvTile getAdvTile(IBlockAccess par1, int x, int y, int z)
+    public IAdvTile getAdvTile(IBlockAccess par1, int x, int y, int z)
     {
     	TileEntity tile = par1.getBlockTileEntity(x, y, z);
-    	if(tile != null && tile instanceof AdvTile)
+    	if(tile != null && tile instanceof IAdvTile)
     	{
-    		return (AdvTile)tile;
+    		return (IAdvTile)tile;
     	}
     	return null;
     }

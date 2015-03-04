@@ -3,14 +3,12 @@ package speiger.src.tinymodularthings.common.blocks.machine;
 import java.math.RoundingMode;
 import java.util.*;
 
-import mods.railcraft.common.items.firestone.ItemFirestoneRefined;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.inventory.ICrafting;
 import net.minecraft.item.ItemStack;
-import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
@@ -26,9 +24,9 @@ import speiger.src.api.common.world.tiles.interfaces.IAcceptor.AcceptorType;
 import speiger.src.api.common.world.tiles.interfaces.InterfaceAcceptor;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.blocks.utils.ExpStorage;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.templates.ITemplate;
 import speiger.src.spmodapi.common.templates.ITemplateProvider;
-import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.tile.FacedInventory;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
@@ -210,7 +208,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		{
 			try
 			{
-				return guiClass.getConstructor(InventoryPlayer.class, AdvTile.class).newInstance(par1, this).setAutoDrawing();
+				return guiClass.getConstructor(InventoryPlayer.class, IAdvTile.class).newInstance(par1, this).setAutoDrawing();
 			}
 			catch(Exception e)
 			{
@@ -388,7 +386,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 				fuelItem.stackSize--;
 				if (fuelItem.stackSize <= 0)
 				{
-					inv[0] = null;
+					inv[0] = inv[0].getItem().getContainerItemStack(inv[0]);
 				}
 			}
 			maxFuel = fuel;

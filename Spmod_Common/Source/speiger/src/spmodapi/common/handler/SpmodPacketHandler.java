@@ -15,7 +15,7 @@ import speiger.src.api.common.data.packets.SpmodPacketHelper.PacketType;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.registry.helpers.SpmodModRegistry;
 import speiger.src.spmodapi.SpmodAPI;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.network.IPacketHandler;
@@ -77,7 +77,7 @@ public class SpmodPacketHandler implements IPacketHandler
 					EntityPlayer player = world.getPlayerEntityByName(stream.readUTF());
 					if(player != null && player.openContainer instanceof AdvContainer)
 					{
-						AdvTile tile = ((AdvContainer)player.openContainer).getTile();
+						IAdvTile tile = ((AdvContainer)player.openContainer).getTile();
 						if(tile != null && tile instanceof IPacketReciver)
 						{
 							((IPacketReciver)tile).recivePacket(stream);
@@ -128,7 +128,7 @@ public class SpmodPacketHandler implements IPacketHandler
 					EntityPlayer player = world.getPlayerEntityByName(stream.readUTF());
 					if(player != null && player.openContainer instanceof AdvContainer)
 					{
-						AdvTile tile = ((AdvContainer)player.openContainer).getTile();
+						IAdvTile tile = ((AdvContainer)player.openContainer).getTile();
 						if(tile != null && tile instanceof IPacketReciver)
 						{
 							((IPacketReciver)tile).recivePacket(stream);

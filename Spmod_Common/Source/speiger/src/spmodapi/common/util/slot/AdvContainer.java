@@ -11,7 +11,7 @@ import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
 import speiger.src.api.common.inventory.container.IContainerProvider;
 import speiger.src.api.common.inventory.slot.TankSlot;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -22,7 +22,7 @@ public class AdvContainer extends Container
 	private ArrayList<SpmodSlot> fakeSlots = new ArrayList<SpmodSlot>();
 	private ArrayList<TankSlot> tanks = new ArrayList<TankSlot>();
 	private ArrayList<PlayerSlot> playerInv = new ArrayList<PlayerSlot>();
-	private AdvTile tile = null;
+	private IAdvTile tile = null;
 	private EntityPlayer player;
 	private int offsetX = 0;
 	private int offsetY = 0;
@@ -46,15 +46,15 @@ public class AdvContainer extends Container
 		return super.addSlotToContainer(par1Slot);
 	}
 	
-	public SpmodSlot addNormalSlot(AdvTile par1, int id, int x, int y)
+	public SpmodSlot addNormalSlot(IAdvTile par1, int id, int x, int y)
 	{
-		SpmodSlot slot = new SpmodSlot(par1, id, x, y);
+		SpmodSlot slot = new SpmodSlot((IInventory)par1.getTileEntity(), id, x, y);
 		slot.setAdvTile(getTile());
 		this.addSlotToContainer(slot);
 		return slot;
 	}
 
-	public AdvContainer(InventoryPlayer par1, AdvTile par2)
+	public AdvContainer(InventoryPlayer par1, IAdvTile par2)
 	{
 		this(par1);
 		this.setTile(par2);
@@ -67,7 +67,7 @@ public class AdvContainer extends Container
 		settedSize = par1;
 	}
 	
-	public AdvContainer setTile(AdvTile par1)
+	public AdvContainer setTile(IAdvTile par1)
 	{
 		tile = par1;
 		tile.onPlayerOpenContainer(player);
@@ -84,7 +84,7 @@ public class AdvContainer extends Container
 		return invName;
 	}
 	
-	public AdvTile getTile()
+	public IAdvTile getTile()
 	{
 		return tile;
 	}

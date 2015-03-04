@@ -26,9 +26,9 @@ import speiger.src.api.common.world.items.IExpBottle;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.interfaces.ITextureRequester;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
-import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.tile.FacedInventory;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
@@ -855,7 +855,7 @@ public class MobMachine extends FacedInventory implements ISidedInventory,
 		{
 			try
 			{
-				return guiClass.getConstructor(InventoryPlayer.class, AdvTile.class).newInstance(par1, this).setAutoDrawing();
+				return guiClass.getConstructor(InventoryPlayer.class, IAdvTile.class).newInstance(par1, this).setAutoDrawing();
 			}
 			catch(Exception e)
 			{

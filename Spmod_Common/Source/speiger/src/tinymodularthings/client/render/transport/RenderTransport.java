@@ -6,7 +6,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.IBlockAccess;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.tinymodularthings.client.core.TinyModularThingsClient;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 
@@ -33,7 +33,7 @@ public class RenderTransport implements ISimpleBlockRenderingHandler
 				TileEntity tile = world.getBlockTileEntity(x, y, z);
 				if (tile != null && tile instanceof IAcceptor)
 				{
-					AdvTile adv = (AdvTile) tile;
+					IAdvTile adv = (IAdvTile) tile;
 					renderAcceptor(adv, world, x, y, z, block, renderer);
 					
 				}
@@ -47,7 +47,7 @@ public class RenderTransport implements ISimpleBlockRenderingHandler
 		renderer.renderStandardBlock(block, x, y, z);
 	}
 	
-	public void renderAcceptor(AdvTile tile, IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer)
+	public void renderAcceptor(IAdvTile tile, IBlockAccess world, int x, int y, int z, Block block, RenderBlocks renderer)
 	{
 		int meta = world.getBlockMetadata(x, y, z);
 		SpmodBlockBase blocks = (SpmodBlockBase)block;

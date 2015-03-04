@@ -9,7 +9,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import cpw.mods.fml.relauncher.Side;
@@ -34,7 +34,7 @@ public abstract class SpmodPlacerItem extends SpmodItem
 		
 		if(stack != null)
 		{
-			AdvTile tile = TileIconMaker.getIconMaker().getTileEntityFormBlockAndMetadata(stack.getBlock(), stack.getMeta());
+			IAdvTile tile = TileIconMaker.getIconMaker().getTileEntityFormBlockAndMetadata(stack.getBlock(), stack.getMeta());
 			if(tile != null)
 			{
 				tile.onItemInformation(par2EntityPlayer, par3List, par1ItemStack);

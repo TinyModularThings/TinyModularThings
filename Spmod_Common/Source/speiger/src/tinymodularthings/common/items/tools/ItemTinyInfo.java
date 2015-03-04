@@ -8,6 +8,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.common.items.core.TinyItem;
@@ -28,9 +29,9 @@ public class ItemTinyInfo extends TinyItem
 		if(!world.isRemote)
 		{
 			TileEntity tile = world.getBlockTileEntity(x, y, z);
-			if(tile != null && tile instanceof AdvTile)
+			if(tile != null && tile instanceof IAdvTile)
 			{
-				AdvTile adv = (AdvTile)tile;
+				IAdvTile adv = (IAdvTile)tile;
 				List<String> data = new ArrayList<String>();
 				adv.loadInformation(data);
 				if(data.size() > 0)

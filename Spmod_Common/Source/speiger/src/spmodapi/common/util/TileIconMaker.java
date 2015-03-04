@@ -14,14 +14,15 @@ import speiger.src.api.common.data.packets.IPacketReciver;
 import speiger.src.api.common.data.packets.SpmodPacketHelper;
 import speiger.src.api.common.data.utils.BlockData;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.tile.AdvTile;
 
 public class TileIconMaker
 {
 	
-	private HashMap<Block, ArrayList<AdvTile>> allTiles = new HashMap<Block, ArrayList<AdvTile>>();
-	private HashMap<BlockData, Class<? extends AdvTile>> classes = new HashMap<BlockData, Class<? extends AdvTile>>();
-	private HashMap<Class<? extends AdvTile>, BlockData> ids = new HashMap<Class<? extends AdvTile>, BlockData>();
+	private HashMap<Block, ArrayList<IAdvTile>> allTiles = new HashMap<Block, ArrayList<IAdvTile>>();
+	private HashMap<BlockData, Class<? extends IAdvTile>> classes = new HashMap<BlockData, Class<? extends IAdvTile>>();
+	private HashMap<Class<? extends IAdvTile>, BlockData> ids = new HashMap<Class<? extends IAdvTile>, BlockData>();
 	private boolean init = false;
 	private static TileIconMaker instance = new TileIconMaker();
 	
@@ -32,16 +33,16 @@ public class TileIconMaker
 	
 	public static void registerIcon(Block block, TextureEngine par1)
 	{
-		ArrayList<AdvTile> tiles = instance.allTiles.get(block);
-		for (AdvTile tile : tiles)
+		ArrayList<IAdvTile> tiles = instance.allTiles.get(block);
+		for (IAdvTile tile : tiles)
 		{
 			tile.registerIcon(par1, block);
 		}
 	}
 	
-	public AdvTile getTileEntityFormBlockAndMetadata(Block par1, int meta)
+	public IAdvTile getTileEntityFormBlockAndMetadata(Block par1, int meta)
 	{
-		Class<? extends AdvTile> tile = classes.get(new BlockData(par1, meta));
+		Class<? extends IAdvTile> tile = classes.get(new BlockData(par1, meta));
 		if(tile != null)
 		{
 			return getTileEntityFromClass(par1, tile);
@@ -49,9 +50,9 @@ public class TileIconMaker
 		return null;
 	}
 	
-	public AdvTile getTileEntityFormBlockAndMetadata(BlockStack par1)
+	public IAdvTile getTileEntityFormBlockAndMetadata(BlockStack par1)
 	{
-		Class<? extends AdvTile> tile = classes.get(new BlockData(par1));
+		Class<? extends IAdvTile> tile = classes.get(new BlockData(par1));
 		if(tile != null)
 		{
 			return getTileEntityFromClass(par1.getBlock(), tile);
@@ -59,11 +60,11 @@ public class TileIconMaker
 		return null;
 	}
 	
-	public void addTileEntity(Block par1, int meta, AdvTile tile)
+	public void addTileEntity(Block par1, int meta, IAdvTile tile)
 	{
 		if (allTiles.get(par1) == null)
 		{
-			allTiles.put(par1, new ArrayList<AdvTile>());
+			allTiles.put(par1, new ArrayList<IAdvTile>());
 		}
 		allTiles.get(par1).add(tile);
 		tile.onIconMakerLoading();
@@ -72,7 +73,7 @@ public class TileIconMaker
 		ids.put(tile.getClass(), new BlockData(par1, meta));
 	}
 	
-	private void extraIniting(AdvTile par1)
+	private void extraIniting(IAdvTile par1)
 	{
 		if(par1.requireForgeRegistration())
 		{
@@ -95,10 +96,10 @@ public class TileIconMaker
 	
 	public <T> T getTileEntityFromClass(Block block, Class<T> tile)
 	{
-		ArrayList<AdvTile> tiles = new ArrayList<AdvTile>();
+		ArrayList<IAdvTile> tiles = new ArrayList<IAdvTile>();
 		if (block == null)
 		{
-			for (ArrayList<AdvTile> cuTile : allTiles.values())
+			for (ArrayList<IAdvTile> cuTile : allTiles.values())
 			{
 				tiles.addAll(cuTile);
 			}
@@ -108,7 +109,7 @@ public class TileIconMaker
 			tiles.addAll(allTiles.get(block));
 		}
 		
-		for (AdvTile list : tiles)
+		for (IAdvTile list : tiles)
 		{
 			if (list.getClass().getSimpleName().equalsIgnoreCase(tile.getSimpleName()))
 			{
@@ -119,7 +120,7 @@ public class TileIconMaker
 		return null;
 	}
 	
-	public ItemStack getStackFromTile(AdvTile tile)
+	public ItemStack getStackFromTile(IAdvTile tile)
 	{
 		BlockData result = ids.get(tile.getClass());
 		if(result != null)
@@ -132,23 +133,23 @@ public class TileIconMaker
 	/**
 	 * WhyEver this Should be needed
 	 */
-	public HashMap<Block, ArrayList<AdvTile>> getAllTiles()
+	public HashMap<Block, ArrayList<IAdvTile>> getAllTiles()
 	{
 		return allTiles;
 	}
 	
 	
-	public static Icon getIconFromTile(Block block, Class<? extends AdvTile> clz, int side)
+	public static Icon getIconFromTile(Block block, Class<? extends IAdvTile> clz, int side)
 	{
 		return TextureEngine.getTextures().getIconSafe(instance.getIconFromTileEntity(block, clz, side));
 	}
 	
-	public Icon getIconFromTileEntity(Block block, Class<? extends AdvTile> clz, int side)
+	public Icon getIconFromTileEntity(Block block, Class<? extends IAdvTile> clz, int side)
 	{
-		ArrayList<AdvTile> tiles = allTiles.get(block);
+		ArrayList<IAdvTile> tiles = allTiles.get(block);
 		try
 		{
-			for (AdvTile tile : tiles)
+			for (IAdvTile tile : tiles)
 			{
 				if (match(clz, tile))
 				{
@@ -167,7 +168,7 @@ public class TileIconMaker
 		return TextureEngine.getTextures().getIconSafe(getIconFromTileEntity(block, classes.get(new BlockData(block, meta)), side));
 	}
 	
-	public boolean match(Class<? extends AdvTile> tiles, AdvTile tile)
+	public boolean match(Class<? extends IAdvTile> tiles, IAdvTile tile)
 	{
 		if (tiles.getSimpleName().equalsIgnoreCase(tile.getClass().getSimpleName()))
 		{

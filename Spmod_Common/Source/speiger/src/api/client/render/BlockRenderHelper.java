@@ -7,7 +7,7 @@ import net.minecraft.client.renderer.Tessellator;
 import org.lwjgl.opengl.GL11;
 
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 
 public class BlockRenderHelper
@@ -117,7 +117,7 @@ public class BlockRenderHelper
 	    GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 	}
 	
-	public static void renderSide(AdvTile tile, int x, int y, int z, RenderBlocks par1, int side)
+	public static void renderSide(IAdvTile tile, int x, int y, int z, RenderBlocks par1, int side)
 	{
 		switch(side)
 		{

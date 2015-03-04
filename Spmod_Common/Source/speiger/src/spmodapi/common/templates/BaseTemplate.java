@@ -9,7 +9,7 @@ import net.minecraft.nbt.NBTTagIntArray;
 import net.minecraft.nbt.NBTTagList;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
-import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.util.data.StructureStorage;
 
 public abstract class BaseTemplate implements ITemplate
@@ -23,7 +23,7 @@ public abstract class BaseTemplate implements ITemplate
 	private ArrayList<BlockPosition> structure = new ArrayList<BlockPosition>();
 	
 	
-	public BaseTemplate(AdvTile par1)
+	public BaseTemplate(IAdvTile par1)
 	{
 		target = par1.getPosition();
 	}

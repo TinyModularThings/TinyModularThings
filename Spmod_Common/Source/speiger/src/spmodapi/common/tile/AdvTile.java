@@ -44,6 +44,7 @@ import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.templates.ITemplateProvider;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
@@ -56,7 +57,7 @@ import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class AdvTile extends TileEntity
+public abstract class AdvTile extends TileEntity implements IAdvTile
 {
 	public ArrayList<String> users = new ArrayList<String>();
 	public boolean init = false;
@@ -70,6 +71,8 @@ public abstract class AdvTile extends TileEntity
 	
 	//TODO Custom Functions
 	
+	
+	
 	public boolean clockCanTick()
 	{
 		if(getWorldObj() == null)
@@ -79,6 +82,18 @@ public abstract class AdvTile extends TileEntity
 		return tracker.markTimeIfDelay(getWorldObj(), 1);
 	}
 	
+	@Override
+	public boolean isAdvTile()
+	{
+		return true;
+	}
+
+	@Override
+	public TileEntity getTileEntity()
+	{
+		return this;
+	}
+
 	public int getClockTime()
 	{
 		return clock;

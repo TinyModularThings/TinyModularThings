@@ -4,23 +4,22 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import cpw.mods.fml.common.Loader;
-
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.Slot;
 import net.minecraft.item.ItemStack;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.tile.AdvTile;
 
 public class SpmodSlot extends Slot
 {
 	ArrayList<String> usage = new ArrayList<String>();
-	AdvTile tile;
+	IAdvTile tile;
 	int maxStackSize = 64;
 	boolean blocked = false;
 	boolean onlyPick = false;
 	
-	public SpmodSlot setAdvTile(AdvTile par1)
+	public SpmodSlot setAdvTile(IAdvTile par1)
 	{
 		tile = par1;
 		return this;
@@ -102,7 +101,7 @@ public class SpmodSlot extends Slot
 		return super.canTakeStack(par1EntityPlayer);
 	}
 
-	public AdvTile getTile()
+	public IAdvTile getTile()
 	{
 		return tile;
 	}

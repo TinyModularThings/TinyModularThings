@@ -7,6 +7,7 @@ import net.minecraft.world.IBlockAccess;
 import speiger.src.api.client.render.IBlockRender;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.client.core.RenderHelper;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
@@ -25,7 +26,7 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler
 		BlockStack stack = new BlockStack(block, metadata);
 		if(block != null)
 		{
-			AdvTile tile = maker.getTileEntityFormBlockAndMetadata(block, metadata);
+			IAdvTile tile = maker.getTileEntityFormBlockAndMetadata(block, metadata);
 			if(tile != null)
 			{
 				tile.onRenderInv(stack, renderer);
@@ -43,7 +44,7 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler
 	{
 		if(block != null)
 		{
-			AdvTile tile = getAdvTile(world, x, y, z);
+			IAdvTile tile = getAdvTile(world, x, y, z);
 			if(tile != null)
 			{
 				tile.onRenderWorld(block, renderer);
@@ -69,13 +70,13 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler
 		return RenderHelper.getGlobalRenderID();
 	}
 	
-	public AdvTile getAdvTile(IBlockAccess par1, int x, int y, int z)
+	public IAdvTile getAdvTile(IBlockAccess par1, int x, int y, int z)
 	{
 		TileEntity tile = par1.getBlockTileEntity(x, y, z);
-		if(tile == null || !(tile instanceof AdvTile))
+		if(tile == null || !(tile instanceof IAdvTile))
 		{
 			return null;
 		}
-		return (AdvTile)tile;
+		return (IAdvTile)tile;
 	}
 }

@@ -4,11 +4,13 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import ic2.api.info.IC2Classic;
 import ic2.api.item.Items;
+import ic2.core.IC2;
 import speiger.src.api.common.registry.recipes.output.RandomOutput;
 import speiger.src.api.common.registry.recipes.output.RecipeOutput;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
 import speiger.src.api.common.registry.recipes.uncrafter.UncrafterRecipeList;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.recipes.recipeMaker.EnergyRecipes;
 import cpw.mods.fml.common.Loader;
 
@@ -26,6 +28,12 @@ public class IC2Registry
 		}
 		loadRecipe();
 		loadUncrafting();
+		loadUtilities();
+	}
+	
+	private static void loadUtilities()
+	{
+		IC2.addValuableOre(TinyBlocks.bauxitOre.blockID, 2);
 	}
 	
 	private static void loadRecipe()

@@ -19,12 +19,12 @@ import speiger.src.api.common.utils.WorldReading;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.enums.EnumColor;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
+import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.plugins.BC.actions.ActionAdvLoop;
 import speiger.src.spmodapi.common.plugins.BC.actions.ActionChange;
 import speiger.src.spmodapi.common.plugins.BC.actions.ActionColorChangeAdv;
 import speiger.src.spmodapi.common.plugins.BC.actions.ActionRandomLoop;
-import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import buildcraft.BuildCraftCore;
@@ -527,7 +527,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 					{
 						continue;
 					}
-					AdvTile tile = WorldReading.getAdvTile(worldObj, xCoord, yCoord, zCoord, dir);
+					IAdvTile tile = WorldReading.getAdvTile(worldObj, xCoord, yCoord, zCoord, dir);
 					if(tile != null && tile instanceof TileLamp)
 					{
 						TileLamp lamp = (TileLamp)tile;
@@ -559,7 +559,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 			{
 				continue;
 			}
-			AdvTile adv = WorldReading.getAdvTile(getWorldObj(), xCoord, yCoord, zCoord, side);
+			IAdvTile adv = WorldReading.getAdvTile(getWorldObj(), xCoord, yCoord, zCoord, side);
 			if(adv != null && adv instanceof TileLamp)
 			{
 				TileLamp lamp = (TileLamp)adv;

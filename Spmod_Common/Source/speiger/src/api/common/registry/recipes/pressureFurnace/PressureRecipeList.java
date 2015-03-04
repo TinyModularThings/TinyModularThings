@@ -34,10 +34,23 @@ public class PressureRecipeList
 	
 	public float getExpFromResult(ItemStack par1)
 	{
+		if(par1 == null || par1.getItem() == null)
+		{
+			return 0.0F;
+		}
 		float value = FurnaceRecipes.smelting().getExperience(par1);
+		
 		if(value <= 0F)
 		{
-			value = expDrops.get(new ResultData(par1));
+			ResultData data = new ResultData(par1);
+			if(expDrops.containsKey(data))
+			{
+				value = expDrops.get(data);
+			}
+			else
+			{
+				return 0.0F;
+			}
 		}
 		if(value <= 0F)
 		{
