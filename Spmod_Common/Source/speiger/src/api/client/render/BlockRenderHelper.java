@@ -3,6 +3,7 @@ package speiger.src.api.client.render;
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
+import net.minecraft.tileentity.TileEntity;
 
 import org.lwjgl.opengl.GL11;
 
@@ -119,25 +120,26 @@ public class BlockRenderHelper
 	
 	public static void renderSide(IAdvTile tile, int x, int y, int z, RenderBlocks par1, int side)
 	{
+		TileEntity par2 = (TileEntity)tile;
 		switch(side)
 		{
 			case 0:
-				par1.renderFaceYNeg(tile.getBlockType(), x, y, z, tile.getEngine().getIconSafe(tile.getIconFromSideAndMetadata(side, tile.getRenderPass())));
+				par1.renderFaceYNeg(par2.getBlockType(), x, y, z, tile.getEngine().getIconSafe(tile.getIconFromSideAndMetadata(side, tile.getRenderPass())));
 				break;
 			case 1:
-				par1.renderFaceYPos(tile.getBlockType(), x, y, z, tile.getEngine().getIconSafe(tile.getIconFromSideAndMetadata(side, tile.getRenderPass())));
+				par1.renderFaceYPos(par2.getBlockType(), x, y, z, tile.getEngine().getIconSafe(tile.getIconFromSideAndMetadata(side, tile.getRenderPass())));
 				break;
 			case 2:
-				par1.renderFaceZNeg(tile.getBlockType(), x, y, z, tile.getEngine().getIconSafe(tile.getIconFromSideAndMetadata(side, tile.getRenderPass())));
+				par1.renderFaceZNeg(par2.getBlockType(), x, y, z, tile.getEngine().getIconSafe(tile.getIconFromSideAndMetadata(side, tile.getRenderPass())));
 				break;
 			case 3:
-				par1.renderFaceZPos(tile.getBlockType(), x, y, z, tile.getEngine().getIconSafe(tile.getIconFromSideAndMetadata(side, tile.getRenderPass())));
+				par1.renderFaceZPos(par2.getBlockType(), x, y, z, tile.getEngine().getIconSafe(tile.getIconFromSideAndMetadata(side, tile.getRenderPass())));
 				break;
 			case 4:
-				par1.renderFaceXNeg(tile.getBlockType(), x, y, z, tile.getEngine().getIconSafe(tile.getIconFromSideAndMetadata(side, tile.getRenderPass())));
+				par1.renderFaceXNeg(par2.getBlockType(), x, y, z, tile.getEngine().getIconSafe(tile.getIconFromSideAndMetadata(side, tile.getRenderPass())));
 				break;
 			case 5:
-				par1.renderFaceXPos(tile.getBlockType(), x, y, z, tile.getEngine().getIconSafe(tile.getIconFromSideAndMetadata(side, tile.getRenderPass())));
+				par1.renderFaceXPos(par2.getBlockType(), x, y, z, tile.getEngine().getIconSafe(tile.getIconFromSideAndMetadata(side, tile.getRenderPass())));
 				break;
 		}
 	}

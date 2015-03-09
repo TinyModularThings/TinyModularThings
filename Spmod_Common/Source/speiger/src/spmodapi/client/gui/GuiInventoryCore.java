@@ -31,6 +31,7 @@ import speiger.src.spmodapi.client.gui.buttons.SpmodGuiButton;
 import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
+import speiger.src.spmodapi.common.util.slot.EnergySlot;
 import speiger.src.spmodapi.common.util.slot.PlayerSlot;
 import speiger.src.spmodapi.common.util.slot.SpmodSlot;
 import cpw.mods.fml.relauncher.Side;
@@ -201,7 +202,7 @@ public class GuiInventoryCore extends GuiContainer
 					squaled = 0;
 				}
 				
-				drawTexturedModelRectFromIcon(k + tankX, l + tankY + 57 - z - start, texture, 16, 16 - (16 - z));
+				drawTexturedModelRectFromIcon(k + tankX, l + tankY + 58 - z - start, texture, 16, 16 - (16 - z));
 				start += 16;
 				
 				if((z == 0) || (squaled == 0))
@@ -289,9 +290,19 @@ public class GuiInventoryCore extends GuiContainer
 			TankSlot slot = tankSlots.get(i);
 			this.drawTankSlot(slot, x, y);
 		}
-		
+		ArrayList<EnergySlot> energySlots = ((AdvContainer)this.inventorySlots).getEnergyBuffers();
+		for(int i = 0;i<energySlots.size();i++)
+		{
+			EnergySlot slot = energySlots.get(i);
+			this.drawEnergySlot(slot, x, y);
+		}
 	}
 	
+	private void drawEnergySlot(EnergySlot slot, int x2, int y2)
+	{
+		
+	}
+
 	protected void drawSlotInfo(int x, int y)
 	{
 		List<SpmodSlot> slotToDraw = ((AdvContainer)this.inventorySlots).getAllSlots();
@@ -371,7 +382,9 @@ public class GuiInventoryCore extends GuiContainer
 		{
 			tile.drawFrontExtras(this, k, l, par1, par2);
 		}
+        GL11.glTranslatef((float)-k, (float)-l, 0.0F);
 		drawSlotInfo(par1, par2);
+		GL11.glTranslatef((float)k, (float)l, 0.0F);
 	}
 	
 	@Override

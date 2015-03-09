@@ -32,7 +32,7 @@ public class BlockMachine extends SpmodBlockContainerBase
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 7; i++)
 		{
 			par3.add(new ItemStack(par1, 1, i));
 		}
@@ -49,6 +49,7 @@ public class BlockMachine extends SpmodBlockContainerBase
 			case 3: return new WaterGenerator();
 			case 4: return new OilGenerator();
 			case 5: return new MachineWaterSpender();
+			case 6: return new IC2CropFarm();
 			default: return null;
 		}
 	}
@@ -77,6 +78,7 @@ public class BlockMachine extends SpmodBlockContainerBase
 		par1.registerTexture(new BlockStack(this, 2), "SelfPoweredBucketFiller_top", "SelfPoweredBucketFiller_bottom", "SelfPoweredBucketFiller_side");
 		par1.registerTexture(new BlockStack(this, 3), "waterGenerator_top", "waterGenerator_bottom", "waterGenerator_side");
 		par1.registerTexture(new BlockStack(this, 4), "oilGeneratorBottom", "oilGeneratorTop_off", "oilGeneratorTop_on", "oilGeneratorFront_off", "oilGeneratorFront_on");
+		par1.registerTexture(new BlockStack(this, 6), "CropFarm_Top", "CropFarm_Side");
 	}
 
 	@Override

@@ -35,6 +35,7 @@ public class ItemBlockMachine extends ItemBlockTinyChest
 			case 3: return "Water Generator";
 			case 4: return "Oil Generator";
 			case 5: return "Water Spender";
+			case 6: return "IC2 Crop Farm";
 		}
 		return null;
 	}

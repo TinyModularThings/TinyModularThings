@@ -47,8 +47,6 @@ public interface IAdvTile
 	 */
 	public boolean isAdvTile();
 	
-	public TileEntity getTileEntity();
-	
 	//TODO Item TileEntity Function
 	
 	public void loadInformation(List par1);
@@ -89,8 +87,8 @@ public interface IAdvTile
 	public ModularPacket createBasicPacket(SpmodMod mod);
 	
 	public void onIconMakerLoading();
-	
-	public Block getBlockType();
+		
+	public ItemStack getItemDrop();
 		
 	// Gui Functions
 	
@@ -279,9 +277,7 @@ public interface IAdvTile
 	public int getRenderPass();
 	
 	public void setRenderPass(int pass);
-	
-	public boolean dissableRenderer();
-	
+		
 	//Item Functions
 	
 	@SideOnly(Side.CLIENT)

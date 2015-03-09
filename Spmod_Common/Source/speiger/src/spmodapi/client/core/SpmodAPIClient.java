@@ -55,16 +55,18 @@ public class SpmodAPIClient extends SpmodAPICore
 		engine.registerGuiTexture("Clear", "ClearTexture");
 		engine.registerGuiTexture("Objects", "GuiObjects");
 		engine.registerGuiPos("Slot", 0, 0);
-		engine.registerGuiPos("Tank", 0, 19);
-		engine.registerGuiPos("TankOverlay", 18, 19);
-		engine.registerGuiPos("ProgBarH", 19, 0);
-		engine.registerGuiPos("ProgBarHOverlay", 44, 0);
-		engine.registerGuiPos("ProgBarV", 41, 19);
-		engine.registerGuiPos("ProgBarVOverlay", 48, 19);
+		engine.registerGuiPos("Tank", 0, 20);
+		engine.registerGuiPos("TankOverlay", 18, 20);
+		engine.registerGuiPos("ProgBarH", 20, 0);
+		engine.registerGuiPos("ProgBarHOverlay", 45, 0);
+		engine.registerGuiPos("ProgBarV", 41, 20);
+		engine.registerGuiPos("ProgBarVOverlay", 48, 20);
 		engine.registerGuiPos("ProgBarHV", 0, 82);
 		engine.registerGuiPos("ProgBarHVOverlay", 19, 82);
 		engine.registerGuiPos("Fire", 59, 19);
 		engine.registerGuiPos("FireOverlay", 59, 36);
+		engine.registerGuiPos("EnergySmall", 80, 0);
+		engine.registerGuiPos("EnergySmallOverlay", 80, 20);
 		engine.removePath();
 		engine.finishMod();
 	}

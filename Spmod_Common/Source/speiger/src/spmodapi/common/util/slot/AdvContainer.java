@@ -22,6 +22,7 @@ public class AdvContainer extends Container
 	private ArrayList<SpmodSlot> fakeSlots = new ArrayList<SpmodSlot>();
 	private ArrayList<TankSlot> tanks = new ArrayList<TankSlot>();
 	private ArrayList<PlayerSlot> playerInv = new ArrayList<PlayerSlot>();
+	private ArrayList<EnergySlot> energySlots = new ArrayList<EnergySlot>();
 	private IAdvTile tile = null;
 	private EntityPlayer player;
 	private int offsetX = 0;
@@ -48,7 +49,7 @@ public class AdvContainer extends Container
 	
 	public SpmodSlot addNormalSlot(IAdvTile par1, int id, int x, int y)
 	{
-		SpmodSlot slot = new SpmodSlot((IInventory)par1.getTileEntity(), id, x, y);
+		SpmodSlot slot = new SpmodSlot((IInventory)par1, id, x, y);
 		slot.setAdvTile(getTile());
 		this.addSlotToContainer(slot);
 		return slot;
@@ -161,6 +162,11 @@ public class AdvContainer extends Container
 		tanks.add(par1);
 	}
 	
+	public void addEnergyBuffer(EnergySlot par1)
+	{
+		energySlots.add(par1);
+	}
+	
 	public ArrayList<TankSlot> getTanks()
 	{
 		return tanks;
@@ -174,6 +180,11 @@ public class AdvContainer extends Container
 	public ArrayList<PlayerSlot> getPlayerSlots()
 	{
 		return playerInv;
+	}
+	
+	public ArrayList<EnergySlot> getEnergyBuffers()
+	{
+		return energySlots;
 	}
 	
 	public void addFakeSlot(SpmodSlot par1)

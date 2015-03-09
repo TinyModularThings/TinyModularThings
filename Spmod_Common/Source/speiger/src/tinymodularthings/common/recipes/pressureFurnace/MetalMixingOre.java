@@ -1,11 +1,11 @@
 package speiger.src.tinymodularthings.common.recipes.pressureFurnace;
 
-import com.google.common.base.Strings;
-
 import net.minecraft.item.ItemStack;
 import speiger.src.api.common.registry.recipes.pressureFurnace.IPressureFurnaceRecipe;
 import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
+
+import com.google.common.base.Strings;
 
 public class MetalMixingOre implements IPressureFurnaceRecipe
 {

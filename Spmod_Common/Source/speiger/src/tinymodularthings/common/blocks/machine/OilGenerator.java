@@ -1,27 +1,19 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.ISidedInventory;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTank;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 import speiger.src.api.common.data.nbt.INBTReciver;
+import speiger.src.api.common.data.utils.IStackInfo;
+import speiger.src.api.common.data.utils.ResultData;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.utils.MathUtils;
 import speiger.src.spmodapi.common.tile.AdvTile;
@@ -32,7 +24,6 @@ import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
-import forestry.api.core.ItemInterface;
 
 public class OilGenerator extends AdvTile implements ISidedInventory, INBTReciver, IFluidHandler
 {
@@ -41,7 +32,7 @@ public class OilGenerator extends AdvTile implements ISidedInventory, INBTRecive
 	public static int TotalTime = 1728000;
 	public long lastInjection = 0;
 	public float StoredOil = 0.0F;
-	
+	public static HashSet<IStackInfo> allowedItems = new HashSet<IStackInfo>();
 	public static HashMap<List<Integer>, ArrayList<OilEntry>> TodoList = new HashMap<List<Integer>, ArrayList<OilEntry>>();
 
 	@Override
@@ -203,20 +194,14 @@ public class OilGenerator extends AdvTile implements ISidedInventory, INBTRecive
 		
 		if(FluidRegistry.isFluidRegistered("oil"))
 		{
-			int itemID = itemstack.itemID;
-			if(itemID == Item.porkRaw.itemID || itemID == Item.beefRaw.itemID || itemID == Item.chickenRaw.itemID)
+			if(itemstack == null)
+			{
+				return false;
+			}
+			ResultData data = new ResultData(itemstack);
+			if(allowedItems.contains(data))
 			{
 				return true;
-			}
-			try
-			{
-				if(itemID == ItemInterface.getItem("beeDroneGE").itemID || itemID == ItemInterface.getItem("beeLarvaeGE").itemID || itemID == ItemInterface.getItem("beePrincessGE").itemID || itemID == ItemInterface.getItem("beeQueenGE").itemID)
-				{
-					return true;
-				}
-			}
-			catch(Exception e)
-			{
 			}
 		}
 		return false;

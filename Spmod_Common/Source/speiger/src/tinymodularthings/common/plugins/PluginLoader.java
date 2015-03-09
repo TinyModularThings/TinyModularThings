@@ -8,10 +8,8 @@ import java.util.Map.Entry;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraftforge.common.MinecraftForge;
-
 import speiger.src.api.common.registry.helpers.IPlugin;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
-import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.recipes.pressureFurnace.FurnaceRecipe;
 import speiger.src.tinymodularthings.common.recipes.recipeMaker.EnergyRecipes;
@@ -44,8 +42,15 @@ public class PluginLoader
 	
 	public void initPlugin(IPlugin plugin)
 	{
-		initPluginForge(plugin.getForgeClasses());
-		plugin.init();
+		try
+		{
+			initPluginForge(plugin.getForgeClasses());
+			plugin.init();
+		}
+		catch(Exception e)
+		{
+			TinyModularThings.instance.getLogger().print("Failed To Load Plugin: "+plugin.toString());
+		}
 	}
 	
 	public void initPluginForge(Object par1)

@@ -32,4 +32,7 @@ public class TinyBlocks
 	// Transport
 	public static SpmodBlockBase transportBlock;
 	
+	//Redstone
+	public static SpmodBlockBase redstoneBlock;
+	
 }

@@ -50,7 +50,7 @@ public class RegisterProxy
 		}
 		if (block != null && tile != null && tile instanceof IAdvTile)
 		{
-			AdvTile regist = (AdvTile) tile;
+			IAdvTile regist = (IAdvTile) tile;
 			TileIconMaker.getIconMaker().addTileEntity(block, meta, regist);
 		}
 	}

@@ -6,11 +6,13 @@ import java.util.Collection;
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import speiger.src.api.common.data.utils.ItemData;
 import speiger.src.api.common.registry.recipes.output.RecipeOutput;
 import speiger.src.api.common.registry.recipes.uncrafter.UncrafterRecipeList;
-import cpw.mods.fml.common.FMLLog;
+import speiger.src.tinymodularthings.common.blocks.machine.OilGenerator;
 import cpw.mods.fml.common.Loader;
 import forestry.api.circuits.ChipsetManager;
+import forestry.api.core.ItemInterface;
 import forestry.api.farming.Farmables;
 import forestry.api.farming.IFarmable;
 import forestry.core.circuits.Circuit;
@@ -25,8 +27,19 @@ public class ForestryRegistry
 		{
 			loadCrops();
 		}
-		loadForestryRecipes(UncrafterRecipeList.getInstance());
+		loadUncraftingRecipes(UncrafterRecipeList.getInstance());
+		loadMachineRecipes();
 	}
+	
+	
+	static void loadMachineRecipes()
+	{
+		OilGenerator.allowedItems.add(new ItemData(ItemInterface.getItem("beeDroneGE")));
+		OilGenerator.allowedItems.add(new ItemData(ItemInterface.getItem("beeLarvaeGE")));
+		OilGenerator.allowedItems.add(new ItemData(ItemInterface.getItem("beePrincessGE")));
+		OilGenerator.allowedItems.add(new ItemData(ItemInterface.getItem("beeQueenGE")));
+	}
+	
 	
 	static void loadCrops()
 	{
@@ -46,7 +59,7 @@ public class ForestryRegistry
 		}
 	}
 	
-	static void loadForestryRecipes(UncrafterRecipeList un)
+	static void loadUncraftingRecipes(UncrafterRecipeList un)
 	{
 		if(Loader.isModLoaded("Forestry"))
 		{

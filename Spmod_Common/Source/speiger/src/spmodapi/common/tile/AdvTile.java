@@ -68,6 +68,7 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 	private int clock = CodeProxy.getRandom().nextInt();
 	private int renderPass = 0;
 	private byte[] redstoneStrenght = new byte[6];
+	private byte[] sendingStrenght = new byte[6];
 	
 	//TODO Custom Functions
 	
@@ -86,12 +87,6 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 	public boolean isAdvTile()
 	{
 		return true;
-	}
-
-	@Override
-	public TileEntity getTileEntity()
-	{
-		return this;
 	}
 
 	public int getClockTime()
@@ -171,6 +166,16 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 		return redstoneStrenght[side];
 	}
 	
+	public int getTotalPower()
+	{
+		int totalPower = 0;
+		for(int i = 0;i<6;i++)
+		{
+			totalPower += getPower(i);
+		}
+		return totalPower;
+	}
+	
 	public int getGeneralPower()
 	{
 		int power = 0;
@@ -200,6 +205,43 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 			power = Math.min(power, redstoneStrenght[i]);
 		}
 		return power;
+	}
+	
+	public void onRedstonePulseApplied()
+	{
+		
+	}
+	
+	public void onRedstonePulseApplied(int side)
+	{
+		
+	}
+	
+	
+	public void setRedstoneSignal(int total)
+	{
+		boolean flag = false;
+		for(int i = 0;i<sendingStrenght.length;i++)
+		{
+			if(sendingStrenght[i] != total)
+			{
+				flag = true;
+				this.sendingStrenght[i] = (byte)total;
+			}
+		}
+		if(flag)
+		{
+			updateNeighbors(true);
+		}
+	}
+
+	public void setRedstoneSignal(int side, int total)
+	{
+		if(sendingStrenght[side] != total)
+		{
+			sendingStrenght[side] = (byte)total;
+			updateNeighbors(true);
+		}	
 	}
 	
 	public void updateBlock()
@@ -361,6 +403,14 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 		}
 	}
 	
+	
+	
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(worldObj.getBlockId(xCoord, yCoord, zCoord), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
+	}
+
 	@Override
 	public void invalidate()
 	{
@@ -610,9 +660,26 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 	
 	public void onBlockChange(Block par1, int par2)
 	{
+		byte[] lastRedstoneStrenght = this.redstoneStrenght;
+		int totalStrenght = getTotalPower();
 		for(int i = 0;i<6;i++)
 		{
 			this.redstoneStrenght[i] = (byte)RedstoneUtils.getPowerInput(this, i);
+		}
+		if(totalStrenght > 0)
+		{
+			totalStrenght = this.getTotalPower();
+			if(totalStrenght <= 0)
+			{
+				this.onRedstonePulseApplied();
+			}
+		}
+		for(int i = 0;i<6;i++)
+		{
+			if(lastRedstoneStrenght[i] > 0 && redstoneStrenght[i] <= 0)
+			{
+				this.onRedstonePulseApplied(i);
+			}
 		}
 	}
 	
@@ -783,7 +850,11 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 	
 	public int isPowering(int side)
 	{
-		return 0;
+		if(side >= 6)
+		{
+			return 0;
+		}
+		return this.sendingStrenght[side];
 	}
 	
 	public int isIndirectlyPowering(int side)
@@ -856,10 +927,14 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 		{
 			try
 			{
-				ItemStack result = TileIconMaker.getIconMaker().getStackFromTile(this);
+				ItemStack result = getItemDrop();
 				if(result == null)
 				{
-					result = new ItemStack(this.getBlockType(), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
+					result = TileIconMaker.getIconMaker().getStackFromTile(this);
+				}
+				if(result == null)
+				{
+					result = new ItemStack(worldObj.getBlockId(xCoord, yCoord, zCoord), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
 				}
 				drop.add(result);
 			}
@@ -895,11 +970,6 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 	public void setRenderPass(int pass)
 	{
 		renderPass = pass;
-	}
-	
-	public boolean dissableRenderer()
-	{
-		return false;
 	}
 	
 	//TODO Item Functions

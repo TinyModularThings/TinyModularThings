@@ -22,10 +22,7 @@ import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemTinyH
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemTinyHopper.HopperType;
 import speiger.src.tinymodularthings.common.items.minecarts.AdvTinyChestCart;
 import speiger.src.tinymodularthings.common.items.minecarts.TinyChestCart;
-import speiger.src.tinymodularthings.common.items.tools.ItemCell;
-import speiger.src.tinymodularthings.common.items.tools.ItemNetherCrystal;
-import speiger.src.tinymodularthings.common.items.tools.ItemPotionBag;
-import speiger.src.tinymodularthings.common.items.tools.ItemTinyInfo;
+import speiger.src.tinymodularthings.common.items.tools.*;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 
 public class TinyItemsConfig
@@ -147,6 +144,9 @@ public class TinyItemsConfig
 		RegisterItem(items.potionBag, "PotionBag");
 		engine.registerTexture(items.potionBag, "potionBag", "potionBag_noPotions", "potionBag_inactive");
 		config.item.updateToNextID();
+		
+		items.detectorModule = new DetectorModules(config.item.getCurrentID());
+		RegisterItem(items.detectorModule, "DetectorModule");
 		
 	}
 	

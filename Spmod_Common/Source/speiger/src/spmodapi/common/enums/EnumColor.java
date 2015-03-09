@@ -111,6 +111,11 @@ public enum EnumColor
 			blue = blue(hex);
 		}
 		
+		public SpmodColor(EnumColor par1)
+		{
+			this(par1.getAsHex());
+		}
+		
 		public SpmodColor(SpmodColor par1)
 		{
 			red = par1.red;
@@ -172,6 +177,11 @@ public enum EnumColor
 			green *= par0;
 			blue *= par0;
 			return this;
+		}
+		
+		public SpmodColor mixWith(EnumColor color)
+		{
+			return mixWith(new SpmodColor(color));
 		}
 		
 		public SpmodColor mixWith(SpmodColor color)

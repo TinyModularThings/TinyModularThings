@@ -139,6 +139,10 @@ public class BasicTradeInventory extends AdvInventory
 	@Override
 	public boolean onSlotClicked(AdvContainer par1, int slotID, int mouseButton, int modifier, EntityPlayer player)
 	{
+		if(slotID < 0)
+		{
+			return super.onSlotClicked(par1, slotID, mouseButton, modifier, player);
+		}
 		Slot slot = (Slot)par1.inventorySlots.get(slotID);
 		if(slot != null && slot.getHasStack())
 		{
@@ -174,14 +178,12 @@ public class BasicTradeInventory extends AdvInventory
 		super.onMatrixChanged(par1, par2);
 		
 	}
-
-
-
+	
 	public class TradeSlot extends SpmodSlot
 	{
 		public TradeSlot(IAdvTile par1, int id, int x, int y)
 		{
-			super((IInventory)par1.getTileEntity(), id, x, y);
+			super((IInventory)par1, id, x, y);
 		}
 		
 		@Override
@@ -207,6 +209,5 @@ public class BasicTradeInventory extends AdvInventory
 				}
 			}
 		}
-		
 	}
 }

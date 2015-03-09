@@ -4,6 +4,8 @@ import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
+import speiger.src.api.common.data.utils.ItemData;
+import speiger.src.tinymodularthings.common.blocks.machine.OilGenerator;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import cpw.mods.fml.common.IFuelHandler;
@@ -18,6 +20,9 @@ public class FuelHandler implements IFuelHandler
 		PressureFurnace.fuelMeta.put(Item.coal.itemID, 0);
 		PressureFurnace.fuelMeta.put(Item.coal.itemID, 1);
 		PressureFurnace.validFuels.add(Block.coalBlock.blockID);
+		OilGenerator.allowedItems.add(new ItemData(Item.porkRaw));
+		OilGenerator.allowedItems.add(new ItemData(Item.beefRaw));
+		OilGenerator.allowedItems.add(new ItemData(Item.chickenRaw));
 	}
 	
 	@Override

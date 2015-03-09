@@ -32,6 +32,7 @@ public class TinyItems
 	// Gates
 	public static Item gateItem;
 	
+	public static Item detectorModule;
 	
 	public static Item potionBag;
 	

@@ -106,7 +106,7 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1ItemStack, World par2World, EntityPlayer par3EntityPlayer)
 	{
-		if(!par2World.isRemote)
+		if(!par2World.isRemote && par1ItemStack.getItemDamage() < recipeList.size())
 		{
 			par3EntityPlayer.openGui(SpmodAPI.instance, EnumGuiIDs.Items.getID(), par2World, 0, 0, 0);
 		}
@@ -125,7 +125,7 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	
 	public static MerchantRecipe getRecipeFromItem(ItemStack par1)
 	{
-		if (par1.itemID == APIItems.trades.itemID)
+		if (par1.itemID == APIItems.trades.itemID && par1.getItemDamage() < recipeList.size())
 		{
 			return recipeList.get(par1.getItemDamage());
 		}
@@ -158,7 +158,7 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 			return;
 		}
 		
-		if(recipeList.size() > par1.getItemDamage())
+		if(recipeList.size() >= par1.getItemDamage())
 		{
 			MerchantRecipe trade = recipeList.get(par1.getItemDamage());
 			String text = "Trade: "+trade.getItemToBuy().stackSize+"x"+trade.getItemToBuy().getDisplayName();

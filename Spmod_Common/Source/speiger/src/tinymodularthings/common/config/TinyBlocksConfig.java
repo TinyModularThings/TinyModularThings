@@ -15,6 +15,9 @@ import speiger.src.tinymodularthings.common.blocks.ores.ItemBlockMultiMineOre;
 import speiger.src.tinymodularthings.common.blocks.ores.ItemBlockSpmodOre;
 import speiger.src.tinymodularthings.common.blocks.pipes.basic.BlockPipe;
 import speiger.src.tinymodularthings.common.blocks.pipes.basic.ItemBlockPipe;
+import speiger.src.tinymodularthings.common.blocks.redstone.BlockRedstone;
+import speiger.src.tinymodularthings.common.blocks.redstone.Detector;
+import speiger.src.tinymodularthings.common.blocks.redstone.ItemBlockRedstone;
 import speiger.src.tinymodularthings.common.blocks.storage.*;
 import speiger.src.tinymodularthings.common.blocks.transport.*;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
@@ -104,6 +107,7 @@ public class TinyBlocksConfig
 		RegisterProxy.RegisterTile(blocks.machine, 3, WaterGenerator.class, "WaterGen");
 		RegisterProxy.RegisterTile(blocks.machine, 4, OilGenerator.class, "OilGenerator");
 		RegisterProxy.RegisterTile(blocks.machine, 5, MachineWaterSpender.class, "WaterSpender");
+		RegisterProxy.RegisterTile(blocks.machine, 6, IC2CropFarm.class, "IC2CropFarm");
 		blocks.machine.registerTextures(engine);
 		config.block.updateToNextID();
 		
@@ -141,5 +145,10 @@ public class TinyBlocksConfig
 		blocks.craftingBlock.registerTextures(engine);
 		config.block.updateToNextID();
 		
+		blocks.redstoneBlock = new BlockRedstone(config.block.getCurrentID());
+		RegisterProxy.RegisterBlock(blocks.redstoneBlock, ItemBlockRedstone.class, "RedstoneLogicalBlock");
+		RegisterProxy.RegisterTile(blocks.redstoneBlock, 0, Detector.class, "TMT Detector");
+		blocks.redstoneBlock.registerTextures(engine);
+		config.block.updateToNextID();
 	}
 }

@@ -13,17 +13,12 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
 
 import com.google.common.math.DoubleMath;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -32,7 +27,7 @@ public class MachineWaterSpender extends AdvTile implements IFluidHandler
 	public TinyFluidTank tank = new TinyFluidTank("Water", 5000, this);
 	public float rotation = 0;
 	public float speed = 0.0F;
-	public String username = "None";
+
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
@@ -99,7 +94,6 @@ public class MachineWaterSpender extends AdvTile implements IFluidHandler
 	{
 		super.readFromNBT(par1);
 		tank.readFromNBT(par1);
-		username = par1.getString("Owner");
 	}
 
 
@@ -108,28 +102,7 @@ public class MachineWaterSpender extends AdvTile implements IFluidHandler
 	{
 		super.writeToNBT(par1);
 		tank.writeToNBT(par1);
-		par1.setString("Owner", username);
 	}
-
-	
-	
-	@Override
-	public void setupUser(EntityPlayer player)
-	{
-		username = player.username;
-	}
-
-
-	@Override
-	public void init()
-	{
-		super.init();
-		if(!username.equalsIgnoreCase("Speiger") && !username.equalsIgnoreCase("AlexZockerify"))
-		{
-			worldObj.setBlock(xCoord, yCoord, zCoord, 0);
-		}
-	}
-
 
 	public float onRotation()
 	{
@@ -160,16 +133,12 @@ public class MachineWaterSpender extends AdvTile implements IFluidHandler
 		{
 			return;
 		}
-		if(getClockTime() % 20 == 0)
-		{
-			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
-		}
 		onRotation();
 		if(getClockTime() % 100 == 0 && tank.getFluidAmount() > 10)
 		{
 			checkBlocks();
 		}
-		tank.drain(5, true);
+		tank.drain(1, true);
 		
 	}
 	
@@ -253,7 +222,6 @@ public class MachineWaterSpender extends AdvTile implements IFluidHandler
 		par2.add("Make Farmlend Wet. It has a Huge Rang (10 Block Radius is Max)");
 		par2.add("Require 5 mB per tick and do need To Speed Up. The range changes with the speed");
 		par2.add("Speed and Rotation resets on Leaving game");
-		par2.add("Dev Only. If you are not in the Dev Team then you can not place it or craft it.");
 	}
 
 

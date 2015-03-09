@@ -56,8 +56,11 @@ public class TextureEngine
 	HashMap<String, ResourceLocation> guiTextures = new HashMap<String, ResourceLocation>();
 	HashMap<String, int[]> guiPositions = new HashMap<String, int[]>();
 	
+	HashMap<String, ResourceLocation> renderTextures = new HashMap<String, ResourceLocation>();
+	
 	String currentMod = "";
 	String currentPath = "";
+	String texturePath = "";
 	
 	ArrayList<RequestData> requestLaterRegistration = new ArrayList<RequestData>();
 	
@@ -86,6 +89,20 @@ public class TextureEngine
 		currentPath = path+"/";
 	}
 	
+	public void setTexturePath(String path)
+	{
+		if(texturePath != "")
+		{
+			removeTexturePath();
+		}
+		texturePath = path+"/";
+	}
+	
+	public void removeTexturePath()
+	{
+		texturePath = "";
+	}
+	
 	public void removePath()
 	{
 		currentPath = "";
@@ -94,6 +111,16 @@ public class TextureEngine
 	public void registerGuiTexture(String key, String filename)
 	{
 		guiTextures.put(key, new ResourceLocation(currentMod+":textures/gui/"+currentPath+filename+".png"));
+	}
+	
+	public void registerTexture(String key, String filename)
+	{
+		renderTextures.put(key, new ResourceLocation(currentMod+":textures/"+texturePath+currentPath+filename+".png"));
+	}
+	
+	public ResourceLocation getRenderTexture(String key)
+	{
+		return renderTextures.get(key);
 	}
 	
 	public ResourceLocation getTexture(String key)

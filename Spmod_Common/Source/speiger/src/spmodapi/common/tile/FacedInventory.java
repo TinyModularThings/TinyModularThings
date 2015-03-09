@@ -3,7 +3,6 @@ package speiger.src.spmodapi.common.tile;
 import java.util.ArrayList;
 
 import net.minecraft.inventory.IInventory;
-import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -147,16 +146,7 @@ public abstract class FacedInventory extends TileFacing implements IInventory
 		return true;
 	}
 	
-	@Override
-	public boolean canMergeItem(ItemStack par1, int slotID)
-	{
-		if(this instanceof ISidedInventory)
-		{
-			return ((ISidedInventory)this).canInsertItem(slotID, par1, 0);
-		}
-		return super.canMergeItem(par1, slotID);
-	}
-	
+
 	@Override
 	public void readFromNBT(NBTTagCompound par1)
 	{

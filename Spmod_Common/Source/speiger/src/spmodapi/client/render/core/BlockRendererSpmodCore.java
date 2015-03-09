@@ -12,6 +12,7 @@ import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
+import cpw.mods.fml.common.FMLLog;
 
 public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler
 {	
@@ -27,6 +28,7 @@ public class BlockRendererSpmodCore implements ISimpleBlockRenderingHandler
 		if(block != null)
 		{
 			IAdvTile tile = maker.getTileEntityFormBlockAndMetadata(block, metadata);
+			
 			if(tile != null)
 			{
 				tile.onRenderInv(stack, renderer);

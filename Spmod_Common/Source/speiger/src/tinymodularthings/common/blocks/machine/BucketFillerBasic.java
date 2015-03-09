@@ -519,7 +519,7 @@ public class BucketFillerBasic extends AdvInventory implements ISidedInventory,
 		{
 			if(tank.getFluid() == null)
 			{
-				tank.setFluid(new FluidStack(key, val));
+				tank.setFluid(new FluidStack(val, 0));
 			}
 			else
 			{
