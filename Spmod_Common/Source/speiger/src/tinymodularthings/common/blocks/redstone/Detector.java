@@ -109,11 +109,12 @@ public class Detector extends FacedInventory implements IDetector
 	public List<Entity> getEntitiesInfront(Class par1)
 	{
 		BlockPosition pos = this.getPosition().add(ForgeDirection.getOrientation(getFacing()));
+		AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX()+1, pos.getY()+1, pos.getZ()+1);
 		if(par1 == null)
 		{
-			return worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getAABBPool().getAABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX()+1, pos.getY(), pos.getZ()+1));
+			return worldObj.getEntitiesWithinAABB(Entity.class, bb);
 		}
-		return worldObj.getEntitiesWithinAABB(par1, AxisAlignedBB.getAABBPool().getAABB(pos.getX(), pos.getY(), pos.getZ(), pos.getX()+1, pos.getY(), pos.getZ()+1));
+		return worldObj.getEntitiesWithinAABB(par1, bb);
 	}
 
 	@Override
