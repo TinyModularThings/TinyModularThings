@@ -15,9 +15,6 @@ import speiger.src.tinymodularthings.common.blocks.ores.ItemBlockMultiMineOre;
 import speiger.src.tinymodularthings.common.blocks.ores.ItemBlockSpmodOre;
 import speiger.src.tinymodularthings.common.blocks.pipes.basic.BlockPipe;
 import speiger.src.tinymodularthings.common.blocks.pipes.basic.ItemBlockPipe;
-import speiger.src.tinymodularthings.common.blocks.redstone.BlockRedstone;
-import speiger.src.tinymodularthings.common.blocks.redstone.Detector;
-import speiger.src.tinymodularthings.common.blocks.redstone.ItemBlockRedstone;
 import speiger.src.tinymodularthings.common.blocks.storage.*;
 import speiger.src.tinymodularthings.common.blocks.transport.*;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
@@ -143,12 +140,6 @@ public class TinyBlocksConfig
 		RegisterProxy.RegisterTile(blocks.craftingBlock, 2, CraftingStation.class, "SpmodCraftingStation");
 		RegisterProxy.RegisterTile(blocks.craftingBlock, 3, Uncrafter.class, "Deconstructor");
 		blocks.craftingBlock.registerTextures(engine);
-		config.block.updateToNextID();
-		
-		blocks.redstoneBlock = new BlockRedstone(config.block.getCurrentID());
-		RegisterProxy.RegisterBlock(blocks.redstoneBlock, ItemBlockRedstone.class, "RedstoneLogicalBlock");
-		RegisterProxy.RegisterTile(blocks.redstoneBlock, 0, Detector.class, "TMT Detector");
-		blocks.redstoneBlock.registerTextures(engine);
 		config.block.updateToNextID();
 	}
 }

@@ -65,7 +65,7 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 		
 	}
 
-	private void initData(ItemStack par1)
+	protected void initData(ItemStack par1)
 	{
 		NBTTagCompound data = new NBTTagCompound();
 		initExtraData(data);
@@ -240,7 +240,7 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 	@Override
 	public Icon getIcon(ItemStack stack, int pass)
 	{
-		return getTexture(stack);
+		return getEngine().getIconSafe(getTexture(stack));
 	}
 	
 	public abstract Icon getTexture(ItemStack stack);

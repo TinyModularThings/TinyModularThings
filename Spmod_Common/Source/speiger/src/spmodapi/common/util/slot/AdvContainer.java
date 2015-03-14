@@ -39,8 +39,6 @@ public class AdvContainer extends Container
 		this(par1.player);
 	}
 	
-	
-	
 	@Override
 	public Slot addSlotToContainer(Slot par1Slot)
 	{
@@ -352,6 +350,18 @@ public class AdvContainer extends Container
 		fakeSlots.clear();
 		slots.clear();
 		tanks.clear();
+		inventorySlots.clear();
+		inventoryItemStacks.clear();
+	}
+	
+	public void reloadInventory()
+	{
+		clearInventory();
+		if(tile != null)
+		{
+			tile.addContainerSlots(this);
+		}
+		setInventory(player.inventory);
 	}
 	
 	@Override
