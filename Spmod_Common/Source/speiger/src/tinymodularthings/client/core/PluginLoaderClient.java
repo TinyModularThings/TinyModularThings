@@ -12,7 +12,7 @@ public class PluginLoaderClient extends PluginLoader
 	public void loadPlugins()
 	{
 		super.loadPlugins();
-		List<IPlugin> plugins = getPlugins("Nei");
+		List<IPlugin> plugins = getPlugins("Nei", "Waila");
 		for(IPlugin plugin : plugins)
 		{
 			initPlugin(plugin);

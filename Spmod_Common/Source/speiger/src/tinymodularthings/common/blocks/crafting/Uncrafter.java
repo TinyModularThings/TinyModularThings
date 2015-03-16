@@ -28,13 +28,9 @@ import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
-import buildcraft.api.power.ILaserTarget;
-import buildcraft.api.power.ILaserTargetRegistry;
-import buildcraft.api.power.IPowerReceptor;
-import buildcraft.api.power.PowerHandler;
+import buildcraft.api.power.*;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
 import buildcraft.api.transport.IPipeTile;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -110,7 +106,16 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 		
 	}
 	
-
+	public ItemStack getCurrentItem()
+	{
+		return currentItem;
+	}
+	
+	public int getProgress()
+	{
+		return (int)(((double)progress / (double)maxprogress) * 100D);
+	}
+	
 	@Override
 	public void onPlaced(int facing)
 	{
@@ -422,4 +427,6 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 			renderer.renderStandardBlock(block, xCoord, yCoord, zCoord);
 		}
 	}
+
+
 }

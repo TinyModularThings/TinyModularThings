@@ -90,6 +90,16 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		
 	}
 	
+	public int getTotalFuel()
+	{
+		int totalFuel = fuel;
+		if (inv[0] != null)
+		{
+			totalFuel += (TileEntityFurnace.getItemBurnTime(inv[0]) * 4) * inv[0].stackSize;
+		}
+		return totalFuel;
+	}
+	
 	@Override
 	public boolean canMergeItem(ItemStack par1, int slotID)
 	{
@@ -253,12 +263,20 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 	
 	public void handleExp()
 	{
+		int exp = DoubleMath.roundToInt(storedExp, RoundingMode.DOWN);
 		if(worldObj.getWorldTime() % 40 != 0 || fluidInterface == null || storedExp < 1.0D)
 		{
+			if(fluidInterface == null && hasUsers() && this.getUserSize() == 1)
+			{
+				EntityPlayer player = this.worldObj.getPlayerEntityByName(this.users.get(0));
+				if(player != null)
+				{
+					player.addExperience(exp);
+					storedExp = 0;
+				}
+			}
 			return;
 		}
-		int exp = DoubleMath.roundToInt(storedExp, RoundingMode.DOWN);
-		
 		if(fluidInterface.isTilePressent(ExpStorage.class))
 		{
 			ExpStorage storage = fluidInterface.getTileEntity(ExpStorage.class);
