@@ -1,10 +1,10 @@
 package speiger.src.tinymodularthings.common.plugins.IC2.core;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import ic2.api.info.IC2Classic;
 import ic2.api.item.Items;
 import ic2.core.IC2;
+import net.minecraft.block.Block;
+import net.minecraft.item.Item;
 import speiger.src.api.common.registry.recipes.output.RandomOutput;
 import speiger.src.api.common.registry.recipes.output.RecipeOutput;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
@@ -38,6 +38,7 @@ public class IC2Registry
 	
 	private static void loadRecipe()
 	{
+		PressureRecipeList.getInstance().addRecipe(new IridiumRecipe());
 		EnergyRecipes.registerBatteries(0, Items.getItem("reBattery"));
 		EnergyRecipes.registerBatteries(1, Items.getItem("energyCrystal"));
 		EnergyRecipes.registerCable(0, Items.getItem("insulatedCopperCableItem"));

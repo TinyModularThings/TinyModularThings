@@ -14,17 +14,14 @@ import speiger.src.tinymodularthings.client.render.items.RendererItemCell;
 import speiger.src.tinymodularthings.client.render.machine.RenderWaterSpender;
 import speiger.src.tinymodularthings.client.render.storage.RenderStorageBlock;
 import speiger.src.tinymodularthings.client.render.transport.RenderTransport;
-import speiger.src.tinymodularthings.client.render.transport.renderTransportTile;
 import speiger.src.tinymodularthings.common.blocks.machine.MachineWaterSpender;
 import speiger.src.tinymodularthings.common.blocks.storage.*;
-import speiger.src.tinymodularthings.common.blocks.transport.TinyHopper;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.core.TinyModularThingsCore;
 import speiger.src.tinymodularthings.common.entity.minecarts.TCarts;
 import speiger.src.tinymodularthings.common.items.minecarts.AdvTinyChestCart;
 import speiger.src.tinymodularthings.common.items.minecarts.TinyChestCart;
 import speiger.src.tinymodularthings.common.pipes.*;
-import speiger.src.tinymodularthings.common.plugins.Nei.core.NeiRegistry;
 import buildcraft.transport.ItemPipe;
 import buildcraft.transport.Pipe;
 import buildcraft.transport.PipeToolTipManager;
@@ -50,7 +47,7 @@ public class TinyModularThingsClient extends TinyModularThingsCore
 		ClientRegistry.bindTileEntitySpecialRenderer(MachineWaterSpender.class, new RenderWaterSpender());
 		
 		// Transport Blocks
-		ClientRegistry.bindTileEntitySpecialRenderer(TinyHopper.class, new renderTransportTile());
+//		ClientRegistry.bindTileEntitySpecialRenderer(TinyHopper.class, new renderTransportTile());
 		RenderingRegistry.registerBlockHandler(MultiID, new RenderTransport());
 		
 		// Entities

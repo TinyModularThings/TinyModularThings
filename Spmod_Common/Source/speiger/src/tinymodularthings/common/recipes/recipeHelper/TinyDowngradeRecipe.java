@@ -26,7 +26,7 @@ public class TinyDowngradeRecipe extends ShapedOreRecipe
 	@Override
 	public ItemStack getCraftingResult(InventoryCrafting var1)
 	{
-		ItemStack slot = var1.getStackInSlot(5).copy();
+		ItemStack slot = var1.getStackInSlot(4).copy();
 		par1.handleDownGrade(slot, downgrade);
 		return slot;
 	}
@@ -35,7 +35,7 @@ public class TinyDowngradeRecipe extends ShapedOreRecipe
 	public boolean matches(InventoryCrafting inv, World world)
 	{
 		boolean matches = super.matches(inv, world);
-		ItemStack slot = inv.getStackInSlot(5);
+		ItemStack slot = inv.getStackInSlot(4);
 		return matches && slot != null && par1.canBeDowngraded(slot, downgrade);
 	}
 

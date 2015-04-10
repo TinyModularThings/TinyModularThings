@@ -213,6 +213,12 @@ public class BasicAnimalChunkLoader extends AdvTile
 	{
 		return true;
 	}
+
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(APIBlocks.animalUtils, 1, 0);
+	}
 	
 
 	

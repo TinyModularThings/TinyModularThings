@@ -65,6 +65,12 @@ public class EnderChestReader extends AdvTile implements IInventory
 	}
 	
 	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyBlocks.transportBlock, 1, 0);
+	}
+
+	@Override
 	public void registerIcon(TextureEngine par1, Block par2)
 	{
 		par1.registerTexture(par2, "enderChestReader");

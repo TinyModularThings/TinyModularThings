@@ -50,7 +50,7 @@ public class AdvTinyTank extends TinyTank
 	}
 
 	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
+	public ArrayList<ItemStack> getItemDrops(int fortune)
 	{
 		ArrayList<ItemStack> stack = new ArrayList<ItemStack>();
 		if (droped)

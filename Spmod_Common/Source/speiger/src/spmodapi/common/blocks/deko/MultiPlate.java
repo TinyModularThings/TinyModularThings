@@ -1,7 +1,5 @@
 package speiger.src.spmodapi.common.blocks.deko;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.entity.item.EntityItem;
 import net.minecraft.entity.player.EntityPlayer;
@@ -232,23 +230,6 @@ public class MultiPlate extends TileFacing
 		}
 		return block.isBlockSolidOnSide(getWorldObj(), xCoord, yCoord, zCoord, side);
 	}
-	
-	
-	
-	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
-	{
-		ArrayList<ItemStack> stack = new ArrayList<ItemStack>();
-		try
-		{
-			stack.add(PlateManager.plates.getInfoFromIdentity(getIdentity()).getItemStack());
-		}
-		catch(Exception e)
-		{
-		}
-		
-		return stack;
-	}
 
 	@Override
 	public boolean isNormalCube()
@@ -289,6 +270,12 @@ public class MultiPlate extends TileFacing
 	{
 		super.writeToNBT(nbt);
 		nbt.setString("ID", getIdentity());
+	}
+
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return PlateManager.plates.getInfoFromIdentity(getIdentity()).getItemStack();
 	}
 	
 	

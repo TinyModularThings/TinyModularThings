@@ -2,11 +2,7 @@ package speiger.src.spmodapi.common.recipes.helper;
 
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
@@ -19,6 +15,7 @@ import net.minecraft.item.crafting.ShapelessRecipes;
 import net.minecraftforge.oredict.OreDictionary;
 import net.minecraftforge.oredict.ShapedOreRecipe;
 import net.minecraftforge.oredict.ShapelessOreRecipe;
+import speiger.src.api.common.registry.recipes.IRecipeOverride.RecipeOverriderRegistry;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.items.crafting.ItemGear;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
@@ -96,6 +93,10 @@ public class RecipeOverrider
 		
 		for(Object obj : recipes)
 		{
+			if(!RecipeOverriderRegistry.instance.canOverride((IRecipe)obj))
+			{
+				continue;
+			}
 			if(obj instanceof ShapedRecipes)
 			{
 				ShapedRecipes recipe = (ShapedRecipes)obj;

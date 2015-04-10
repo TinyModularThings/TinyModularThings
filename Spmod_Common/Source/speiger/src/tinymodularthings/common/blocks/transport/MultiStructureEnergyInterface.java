@@ -1,7 +1,5 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.item.ItemStack;
@@ -69,16 +67,14 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 		return stack;
 	}
 	
-	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
-	{
-		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
-		ItemStack stack = new ItemStack(TinyItems.interfaceBlock, 1, 2);
-		ItemInterfaceBlock.addBlockToInterface(stack, new BlockStack(blockID, metadata));
-		drops.add(stack);
-		return drops;
-	}
 	
+	
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return 	ItemInterfaceBlock.addBlockToInterface(new ItemStack(TinyItems.interfaceBlock, 1, 2), new BlockStack(blockID, metadata));
+	}
+
 	@Override
 	public EnergyProvider getEnergyProvider(ForgeDirection side)
 	{

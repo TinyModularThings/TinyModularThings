@@ -163,9 +163,9 @@ public abstract class AdvInventory extends AdvTile implements IInventory, IConta
 	}
 
 	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
+	public ArrayList<ItemStack> getItemDrops(int fortune)
 	{
-		ArrayList<ItemStack> drops = super.onDrop(fortune);
+		ArrayList<ItemStack> drops = super.getItemDrops(fortune);
 		for(int i = 0;i<inv.length;i++)
 		{
 			ItemStack stack = inv[i];

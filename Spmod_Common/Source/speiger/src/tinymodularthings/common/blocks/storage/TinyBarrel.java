@@ -613,7 +613,13 @@ public class TinyBarrel extends TileFacing implements IDeepStorageUnit,
 	}
 	
 	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
+	public ItemStack getItemDrop()
+	{
+		return null;
+	}
+
+	@Override
+	public ArrayList<ItemStack> getItemDrops(int fortune)
 	{
 		ArrayList<ItemStack> drop = new ArrayList<ItemStack>();
 		NBTTagCompound data = new NBTTagCompound();

@@ -103,6 +103,12 @@ public class CobbleChest extends FacedInventory
 	{
 		return true;
 	}
+
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(APIBlocks.blockUtils, 1, 5);
+	}
 	
 	
 	

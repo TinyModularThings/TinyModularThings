@@ -56,9 +56,12 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	public int meta = 0;
 	
 	
-	
-	
-	
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(APIBlocks.hempLamp);
+	}
+
 	@Override
 	public void onTick()
 	{
@@ -350,7 +353,7 @@ public class TileLamp extends TileFacing implements IActionReceptor
 	}
 
 	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
+	public ArrayList<ItemStack> getItemDrops(int fortune)
 	{
 		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
 		if(isNoneColored)

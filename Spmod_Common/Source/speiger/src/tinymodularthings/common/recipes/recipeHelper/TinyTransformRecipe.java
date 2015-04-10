@@ -3,9 +3,10 @@ package speiger.src.tinymodularthings.common.recipes.recipeHelper;
 import net.minecraft.inventory.InventoryCrafting;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.oredict.ShapedOreRecipe;
+import speiger.src.api.common.registry.recipes.IRecipeOverride;
 import speiger.src.tinymodularthings.common.interfaces.IUpgradeRecipeHelper;
 
-public class TinyTransformRecipe extends ShapedOreRecipe
+public class TinyTransformRecipe extends ShapedOreRecipe implements IRecipeOverride
 {
 	int slotID;
 	IUpgradeRecipeHelper helper;
@@ -24,6 +25,10 @@ public class TinyTransformRecipe extends ShapedOreRecipe
 		helper.handleResult(result, input);
 		return result;
 	}
-	
-	
+
+	@Override
+	public boolean preventOverriding()
+	{
+		return true;
+	}
 }

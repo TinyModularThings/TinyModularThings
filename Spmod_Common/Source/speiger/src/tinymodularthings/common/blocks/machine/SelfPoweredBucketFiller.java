@@ -60,6 +60,10 @@ public class SelfPoweredBucketFiller extends BucketFillerBasic
 		return "SelfPowered Bucket Filler";
 	}
 	
-	
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyBlocks.machine, 1, 2);
+	}
 	
 }

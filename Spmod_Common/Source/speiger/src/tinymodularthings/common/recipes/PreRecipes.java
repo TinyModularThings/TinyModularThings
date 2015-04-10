@@ -12,9 +12,7 @@ import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.enums.EnumIngots;
-import speiger.src.tinymodularthings.common.items.tools.ItemNetherCrystal;
 import speiger.src.tinymodularthings.common.recipes.recipeHelper.InterfaceRecipe;
-import speiger.src.tinymodularthings.common.recipes.recipeHelper.TinyBarrelRecipe;
 import cpw.mods.fml.common.registry.GameRegistry;
 
 public class PreRecipes
@@ -36,7 +34,6 @@ public class PreRecipes
 		PathProxy.addSRecipe(new ItemStack(TinyBlocks.craftingBlock, 1, 2), new Object[] {TinyBlocks.craftingBlock, Block.enderChest});
 		PathProxy.addRecipe(new ItemStack(TinyBlocks.machine, 1, 5), new Object[]{"X X", "XYX", " X ", 'Y', new ItemStack(TinyItems.tinyTank, 1, 2), 'X', Block.stone});
 		PathProxy.addRecipe(new ItemStack(TinyItems.potionBag), new Object[]{"XYX", "CVC", "BNB", 'C', Block.chest, 'V', new ItemStack(TinyItems.cell, 1, 0), 'B', Block.pistonStickyBase, 'X', Item.leather, 'Y', Item.silk, 'N', new ItemStack(TinyItems.advTinyChest, 1, 8)});
-		PathProxy.addRecipe(new TinyBarrelRecipe());
 		PathProxy.addRecipe(new ItemStack(TinyItems.interfaceBlock, 1, 1), new Object[]{"XYX", "CVC", "XZX", 'V', new ItemStack(TinyItems.interfaceBlock, 1, 0), 'X', EnumIngots.Aluminum.getIngot(), 'C', new ItemStack(TinyItems.tinyTank), 'Y', new ItemStack(Block.hopperBlock), 'Z', TinyBlocks.bigPipe});		
 		PathProxy.addRecipe(new InterfaceRecipe());
 		

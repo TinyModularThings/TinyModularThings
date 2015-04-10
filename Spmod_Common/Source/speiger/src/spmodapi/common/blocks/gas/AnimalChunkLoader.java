@@ -1,11 +1,7 @@
 package speiger.src.spmodapi.common.blocks.gas;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.UUID;
 
 import net.minecraft.block.Block;
 import net.minecraft.entity.EntityAgeable;
@@ -24,7 +20,6 @@ import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
-import speiger.src.spmodapi.common.sound.SoundRegistry;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.data.EntityProcessor;
 import speiger.src.spmodapi.common.util.data.Infection;
@@ -303,6 +298,12 @@ public class AnimalChunkLoader extends AdvTile implements INBTReciver
 	public double getMedic(Infection par1)
 	{
 		return 0;
+	}
+
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return null;
 	}
 	
 }

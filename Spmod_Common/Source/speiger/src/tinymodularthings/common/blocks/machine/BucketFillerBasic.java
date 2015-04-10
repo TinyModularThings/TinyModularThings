@@ -14,15 +14,9 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.event.ForgeSubscribe;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
+import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerRegisterEvent;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidContainerItem;
-import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.common.data.packets.IPacketReciver;
 import speiger.src.api.common.data.packets.SpmodPacketHelper;
 import speiger.src.api.common.data.utils.IStackInfo;
@@ -594,7 +588,7 @@ public class BucketFillerBasic extends AdvInventory implements ISidedInventory,
 	{
 		for(FluidContainerData data : FluidContainerRegistry.getRegisteredFluidContainerData())
 		{
-			if(data.filledContainer != null && data.emptyContainer != null)
+			if(data.filledContainer != null && data.emptyContainer != null && data.filledContainer.itemID != TinyItems.netherCrystal.itemID)
 			{
 				fillList.put(new FluidItemData(new ItemData(data.emptyContainer), data.fluid), data);
 				drainList.put(new ItemData(data.filledContainer), data);
@@ -637,5 +631,11 @@ public class BucketFillerBasic extends AdvInventory implements ISidedInventory,
 		{
 			return data.hashCode() + (fluid != null ? fluid.hashCode() : 0);
 		}
+	}
+
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyBlocks.machine, 1, 1);
 	}
 }

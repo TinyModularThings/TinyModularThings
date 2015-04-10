@@ -2,7 +2,6 @@ package speiger.src.tinymodularthings.common.recipes.recipeHelper;
 
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.interfaces.IUpgradeRecipeHelper;
@@ -83,10 +82,10 @@ public class TinyRecipeHelper implements IUpgradeRecipeHelper
 			{
 				result.setItemDamage(inputMeta);
 			}
-			else if(result.itemID == TinyBlocks.storageBlock.blockID && result.getItemDamage() == 4)
+			else if(id == TinyBlocks.storageBlock.blockID && result.getItemDamage() == 4)
 			{
 				NBTTagCompound nbt = new NBTTagCompound();
-				nbt.setInteger("Metadata", input.getItemDamage());
+				nbt.setInteger("Metadata", inputMeta);
 				result.setTagInfo("BarrelMeta", nbt);
 			}
 		}

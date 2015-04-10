@@ -294,7 +294,11 @@ public class OilGenerator extends AdvTile implements ISidedInventory, INBTRecive
 		}
 	}
 	
-	
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyBlocks.machine, 1, 4);
+	}
 	
 	@Override
 	public void onBreaking()

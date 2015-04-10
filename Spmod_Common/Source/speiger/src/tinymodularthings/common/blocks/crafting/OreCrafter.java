@@ -44,7 +44,11 @@ public class OreCrafter extends FacedInventory implements IPacketReciver, ISided
 		return false;
 	}
 	
-	
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyBlocks.craftingBlock, 1, 1);
+	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -82,9 +86,9 @@ public class OreCrafter extends FacedInventory implements IPacketReciver, ISided
 	}
 
 	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
+	public ArrayList<ItemStack> getItemDrops(int fortune)
 	{
-		ArrayList<ItemStack> stack = super.onDrop(fortune);
+		ArrayList<ItemStack> stack = super.getItemDrops(fortune);
 		for(int i = 10;i<inv.length;i++)
 		{
 			ItemStack data = getStackInSlot(i);

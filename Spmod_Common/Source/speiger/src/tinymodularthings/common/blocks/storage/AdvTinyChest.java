@@ -1,6 +1,5 @@
 package speiger.src.tinymodularthings.common.blocks.storage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import net.minecraft.block.Block;
@@ -164,14 +163,6 @@ public class AdvTinyChest extends FacedInventory
 	}
 	
 	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
-	{
-		ArrayList<ItemStack> drops = super.onDrop(fortune);
-		drops.add(new ItemStack(TinyItems.advTinyChest, 1, mode - 1));
-		return drops;
-	}
-	
-	@Override
 	public void onTick()
 	{
 		super.onTick();
@@ -294,6 +285,12 @@ public class AdvTinyChest extends FacedInventory
 	@Override
 	public void onRenderWorld(Block block, RenderBlocks renderer)
 	{
+	}
+
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyItems.advTinyChest, 1, mode - 1);
 	}
 	
 }

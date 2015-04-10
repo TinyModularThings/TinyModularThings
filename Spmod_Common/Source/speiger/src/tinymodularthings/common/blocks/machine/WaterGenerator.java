@@ -9,11 +9,7 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.tiles.energy.EnergyProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergyProvider;
@@ -207,6 +203,12 @@ public class WaterGenerator extends AdvTile implements IFluidHandler,
 		super.writeToNBT(par1nbtTagCompound);
 		this.tank.writeToNBT(par1nbtTagCompound);
 		this.provider.writeToNBT(par1nbtTagCompound);
+	}
+	
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyBlocks.machine, 1, 3);
 	}
 	
 }

@@ -18,8 +18,6 @@ import speiger.src.tinymodularthings.common.items.itemblocks.storage.ItemAdvTiny
 import speiger.src.tinymodularthings.common.items.itemblocks.storage.ItemTinyChest;
 import speiger.src.tinymodularthings.common.items.itemblocks.storage.ItemTinyTank;
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInterfaceBlock;
-import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemTinyHopper;
-import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemTinyHopper.HopperType;
 import speiger.src.tinymodularthings.common.items.minecarts.AdvTinyChestCart;
 import speiger.src.tinymodularthings.common.items.minecarts.TinyChestCart;
 import speiger.src.tinymodularthings.common.items.tools.ItemCell;
@@ -85,8 +83,8 @@ public class TinyItemsConfig
 		RegisterItem(items.interfaceBlock, "InterfaceBlock");
 		config.item.updateToNextID();
 		
-		TinyItems.tinyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.Items);
-		RegisterItem(items.tinyHopper, "TinyHopper");
+//		TinyItems.tinyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.Items);
+//		RegisterItem(items.tinyHopper, "TinyHopper");
 		config.item.updateToNextID();
 		
 		engine.setCurrentPath("tools");
@@ -117,24 +115,24 @@ public class TinyItemsConfig
 		items.hugeMJBattery.registerTexture(engine);
 		config.item.updateToNextID();
 
-		items.advTinyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvItems);
-		RegisterItem(items.advTinyHopper, "AdvancedTinyHopper");
+//		items.advTinyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvItems);
+//		RegisterItem(items.advTinyHopper, "AdvancedTinyHopper");
 		config.item.updateToNextID();
 
-		items.fluidHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.Fluids);
-		RegisterItem(items.fluidHopper, "FluidHopper");
+//		items.fluidHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.Fluids);
+//		RegisterItem(items.fluidHopper, "FluidHopper");
 		config.item.updateToNextID();
 
-		items.advFluidHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvFluids);
-		RegisterItem(items.advFluidHopper, "AdvancedFluidHopper");
+//		items.advFluidHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvFluids);
+//		RegisterItem(items.advFluidHopper, "AdvancedFluidHopper");
 		config.item.updateToNextID();
 		
-		items.energyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.Energy);
-		RegisterItem(items.energyHopper, "EnergyHopper");
+//		items.energyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.Energy);
+//		RegisterItem(items.energyHopper, "EnergyHopper");
 		config.item.updateToNextID();
 		
-		items.advEnergyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvancedEnergy);
-		RegisterItem(items.advEnergyHopper, "AdvancedEnergyHopper");
+//		items.advEnergyHopper = new ItemTinyHopper(config.item.getCurrentID(), HopperType.AdvancedEnergy);
+//		RegisterItem(items.advEnergyHopper, "AdvancedEnergyHopper");
 		config.item.updateToNextID();
 		
 		engine.setCurrentPath("tools");

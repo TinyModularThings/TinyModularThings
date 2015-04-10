@@ -47,7 +47,6 @@ import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.templates.ITemplateProvider;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.spmodapi.common.util.TileIconMaker;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import buildcraft.api.core.SafeTimeTracker;
@@ -69,7 +68,6 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 	private int renderPass = 0;
 	private byte[] redstoneStrenght = new byte[6];
 	private byte[] sendingStrenght = new byte[6];
-	
 	//TODO Custom Functions
 	
 	
@@ -401,14 +399,6 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 			provider.getTemplate().writeToNBT(nbt);
 			par1.setCompoundTag("Template", nbt);
 		}
-	}
-	
-	
-	
-	@Override
-	public ItemStack getItemDrop()
-	{
-		return new ItemStack(worldObj.getBlockId(xCoord, yCoord, zCoord), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
 	}
 
 	@Override
@@ -920,27 +910,12 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 		return new ItemStack(worldObj.getBlockId(xCoord, yCoord, zCoord), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
 	}
 	
-	public ArrayList<ItemStack> onDrop(int fortune)
+	public ArrayList<ItemStack> getItemDrops(int fortune)
 	{
 		ArrayList<ItemStack> drop = new ArrayList<ItemStack>();
 		if(dropNormalBlock())
 		{
-			try
-			{
-				ItemStack result = getItemDrop();
-				if(result == null)
-				{
-					result = TileIconMaker.getIconMaker().getStackFromTile(this);
-				}
-				if(result == null)
-				{
-					result = new ItemStack(worldObj.getBlockId(xCoord, yCoord, zCoord), 1, worldObj.getBlockMetadata(xCoord, yCoord, zCoord));
-				}
-				drop.add(result);
-			}
-			catch(Exception e)
-			{
-			}
+			drop.add(getItemDrop());
 		}
 		return drop;
 	}

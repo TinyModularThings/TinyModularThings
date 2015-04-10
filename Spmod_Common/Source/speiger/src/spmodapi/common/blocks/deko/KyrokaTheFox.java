@@ -3,10 +3,12 @@ package speiger.src.spmodapi.common.blocks.deko;
 import java.util.HashMap;
 
 import net.minecraft.block.Block;
+import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
+import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
 import speiger.src.spmodapi.common.tile.TileFacing;
 import speiger.src.spmodapi.common.util.TextureEngine;
@@ -95,5 +97,11 @@ public class KyrokaTheFox extends TileFacing
 	public boolean canUpdate()
 	{
 		return false;
+	}
+
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(APIBlocks.statues);
 	}
 }

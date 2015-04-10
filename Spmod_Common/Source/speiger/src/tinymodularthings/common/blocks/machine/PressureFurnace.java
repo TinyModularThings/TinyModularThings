@@ -1,7 +1,10 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
 import java.math.RoundingMode;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
@@ -156,7 +159,11 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 			else
 			{
 				int max = Math.max(100, currentRecipe.getRequiredCookTime());
-				int prog = (int)(((double)progress / (double)max) * 100);
+				String prog = ""+(((double)progress / (double)max) * 100);
+				if(prog.length() > 5)
+				{
+					prog = prog.substring(0, 5);
+				}
 				par1.getFontRenderer().drawString("Progress: "+prog+"%", 80, 68, 4210752);
 			}
 		}
@@ -228,6 +235,12 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		return super.getGui(par1);
 	}
 
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyBlocks.machine, 1, 0);
+	}
+	
 	@Override
 	public void onTick()
 	{
@@ -622,20 +635,6 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		par2.sendProgressBarUpdate(par1, 6, maxFuel >> 16);
 	}
 	
-	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
-	{
-		ArrayList<ItemStack> drop = super.onDrop(fortune);
-		for(ItemStack stack : inv)
-		{
-			if(stack != null)
-			{
-				drop.add(stack);
-			}
-		}
-		return drop;
-	}
-
 	@Override
 	public void onClientTick()
 	{

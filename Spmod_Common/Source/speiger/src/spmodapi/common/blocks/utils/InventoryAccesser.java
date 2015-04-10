@@ -52,6 +52,15 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 	public ArrayList<List<Integer>> canBeOpened = new ArrayList<List<Integer>>();
 	public double power = 0;
 	
+	public static ForgeDirection[][][] directions = new ForgeDirection[][][]{
+		{{ForgeDirection.DOWN},{ForgeDirection.DOWN, ForgeDirection.NORTH}, {ForgeDirection.DOWN, ForgeDirection.SOUTH}, {ForgeDirection.DOWN, ForgeDirection.EAST}, {ForgeDirection.DOWN, ForgeDirection.WEST}},
+		{{ForgeDirection.UP},{ForgeDirection.UP, ForgeDirection.NORTH}, {ForgeDirection.UP, ForgeDirection.SOUTH}, {ForgeDirection.UP, ForgeDirection.EAST}, {ForgeDirection.UP, ForgeDirection.WEST}},
+		{{ForgeDirection.NORTH}, {ForgeDirection.NORTH, ForgeDirection.UP}, {ForgeDirection.NORTH, ForgeDirection.DOWN}, {ForgeDirection.NORTH, ForgeDirection.EAST}, {ForgeDirection.NORTH, ForgeDirection.WEST}},
+		{{ForgeDirection.SOUTH}, {ForgeDirection.SOUTH, ForgeDirection.UP}, {ForgeDirection.SOUTH, ForgeDirection.DOWN}, {ForgeDirection.SOUTH, ForgeDirection.EAST}, {ForgeDirection.SOUTH, ForgeDirection.WEST}},
+		{{ForgeDirection.WEST}, {ForgeDirection.WEST, ForgeDirection.UP}, {ForgeDirection.WEST, ForgeDirection.DOWN}, {ForgeDirection.WEST, ForgeDirection.NORTH}, {ForgeDirection.WEST, ForgeDirection.SOUTH}},
+		{{ForgeDirection.EAST}, {ForgeDirection.EAST, ForgeDirection.UP}, {ForgeDirection.EAST, ForgeDirection.DOWN}, {ForgeDirection.EAST, ForgeDirection.NORTH}, {ForgeDirection.EAST, ForgeDirection.SOUTH}},
+	};
+	
 
 	public InventoryAccesser()
 	{
@@ -182,7 +191,7 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 	@Override
 	public boolean onActivated(EntityPlayer par1)
 	{
-		if(!worldObj.isRemote)
+		if(!worldObj.isRemote && !hasUsers())
 		{
 			reloadData();
 		}
@@ -308,7 +317,7 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 		if(data.getBoolean("TextInited"))
 		{
 			par1.getGuiObject(0).getObject(GuiTextField.class).textboxKeyTyped(par2, par3);
-			if(par2 == Character.valueOf('E') || par2 == Character.valueOf('c'))
+			if(par2 == Character.valueOf('E') || par2 == Character.valueOf('e') || par2 == Character.valueOf('C') || par2 == Character.valueOf('c'))
 			{
 				return true;
 			}
@@ -446,6 +455,11 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 	}
 	
 	
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(APIBlocks.blockUtils, 1, 4);
+	}
 
 	public void reloadData()
 	{
@@ -459,49 +473,25 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 				size += stack.stackSize;
 			}
 		}
+		if(size <= 0)
+		{
+			this.sendPacketToClient(getDescriptionPacket(), 20);
+			return;
+		}
 		LinkedList<List<Integer>> possebilities = new LinkedList<List<Integer>>();
 		LinkedList<List<Integer>> added = new LinkedList<List<Integer>>();
 		BlockPosition pos = this.getPosition();
-		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
-		{		
-			BlockPosition newPos = pos.add(dir);
-			if(newPos.doesBlockExsist())
-			{
-				boolean par1 = false;
-				if(newPos.isThisBlock(new BlockStack(Block.workbench), false))
-				{
-					par1 = true;
-				}
-				else if(newPos.isThisBlock(new BlockStack(Block.anvil), false))
-				{
-					par1 = true;
-				}
-				else if(newPos.hasTileEntity())
-				{
-					TileEntity tile = newPos.getTileEntity();
-					if(allowedClasses.contains(tile.getClass().getSimpleName()))
-					{
-						par1 = true;
-					}
-				}
-				
-				if(par1)
-				{
-					possebilities.add(newPos.getAsList());
-					added.add(newPos.getAsList());
-				}
-			}
-		}
-		for(;!possebilities.isEmpty();)
+		boolean endReached = false;
+		for(ForgeDirection[][] dir : directions)
 		{
-			BlockPosition lastTarget = new BlockPosition(possebilities.removeFirst());
-			for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
+			if(endReached)
 			{
-				BlockPosition newPos = lastTarget.add(dir);
-				if(newPos.isThisPosition(pos))
-				{
-					continue;
-				}
+				break;
+			}
+			for(int i = 0;i<dir.length;i++)
+			{
+				BlockPosition newPos = pos.add(dir[i]);
+				
 				if(added.contains(newPos.getAsList()))
 				{
 					continue;
@@ -526,11 +516,74 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 							par1 = true;
 						}
 					}
-					
-					if(par1)
+					if(par1 && added.size() < size)
 					{
 						possebilities.add(newPos.getAsList());
 						added.add(newPos.getAsList());
+						if(added.size() >= size)
+						{
+							endReached = true;
+							break;
+						}
+					}
+				}
+			}
+		}
+		if(endReached)
+		{
+			canBeOpened.addAll(added);
+			this.sendPacketToClient(getDescriptionPacket(), 20);
+			return;
+		}
+		for(;possebilities.size() > 0 && !endReached;)
+		{
+			BlockPosition currentTarget = new BlockPosition(possebilities.removeFirst());
+			for(ForgeDirection[][] dir : directions)
+			{
+				if(endReached)
+				{
+					break;
+				}
+				for(int i = 0;i<dir.length;i++)
+				{
+					BlockPosition newPos = currentTarget.add(dir[i]);
+					if(newPos.isThisPosition(pos))
+					{
+						continue;
+					}
+					if(added.contains(newPos.getAsList()))
+					{
+						continue;
+					}
+					if(newPos.doesBlockExsist())
+					{
+						boolean par1 = false;
+						if(newPos.isThisBlock(new BlockStack(Block.workbench), false))
+						{
+							par1 = true;
+						}
+						else if(newPos.isThisBlock(new BlockStack(Block.anvil), false))
+						{
+							par1 = true;
+						}
+						else if(newPos.hasTileEntity())
+						{
+							TileEntity tile = newPos.getTileEntity();
+							if(allowedClasses.contains(tile.getClass().getSimpleName()))
+							{
+								par1 = true;
+							}
+						}
+						if(par1 && added.size() < size)
+						{
+							possebilities.add(newPos.getAsList());
+							added.add(newPos.getAsList());
+							if(added.size() >= size)
+							{
+								endReached = true;
+								break;
+							}
+						}
 					}
 				}
 			}

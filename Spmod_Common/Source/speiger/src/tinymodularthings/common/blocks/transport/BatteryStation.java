@@ -468,5 +468,11 @@ public class BatteryStation extends AdvInventory implements IPacketReciver, IPow
 	{
 		return i == 18;
 	}
+
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyBlocks.transportBlock, 1, 6);
+	}
 	
 }

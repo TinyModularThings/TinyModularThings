@@ -210,4 +210,10 @@ public class BasicTradeInventory extends AdvInventory
 			}
 		}
 	}
+
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return null;
+	}
 }

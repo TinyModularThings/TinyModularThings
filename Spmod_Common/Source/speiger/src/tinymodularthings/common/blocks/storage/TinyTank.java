@@ -13,11 +13,7 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.ForgeDirection;
-import net.minecraftforge.fluids.Fluid;
-import net.minecraftforge.fluids.FluidContainerRegistry;
-import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.FluidTankInfo;
-import net.minecraftforge.fluids.IFluidHandler;
+import net.minecraftforge.fluids.*;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.tile.AdvTile;
@@ -629,8 +625,16 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	public boolean wrench = false;
 	public boolean droped = false;
 	
+	
+	
 	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
+	public ItemStack getItemDrop()
+	{
+		return null;
+	}
+
+	@Override
+	public ArrayList<ItemStack> getItemDrops(int fortune)
 	{
 		ArrayList<ItemStack> stack = new ArrayList<ItemStack>();
 		if (droped)
@@ -811,7 +815,7 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	{
 		this.wrench = true;
 		this.droped = false;
-		ItemStack drop = this.onDrop(0).get(0);
+		ItemStack drop = this.getItemDrops(0).get(0);
 		this.droped = true;
 		return drop;
 	}

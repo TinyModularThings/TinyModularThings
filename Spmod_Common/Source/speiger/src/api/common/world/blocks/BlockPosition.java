@@ -294,6 +294,16 @@ public class BlockPosition implements IBlockSource
 	{
 		return add(dir.offsetX, dir.offsetY, dir.offsetZ);
 	}
+	
+	public BlockPosition add(ForgeDirection...par1)
+	{
+		BlockPosition pos = copy();
+		for(ForgeDirection dir : par1)
+		{
+			pos = pos.add(dir);
+		}
+		return pos;
+	}
 
 	@Override
 	public double getX()

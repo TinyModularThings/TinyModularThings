@@ -168,4 +168,10 @@ public class IC2CropFarm extends AdvTile
 		return false;
 	}
 	
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyBlocks.machine, 1, 6);
+	}
+	
 }

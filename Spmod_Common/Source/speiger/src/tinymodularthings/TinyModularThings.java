@@ -14,7 +14,6 @@ import speiger.src.tinymodularthings.common.core.TinyModularThingsCore;
 import speiger.src.tinymodularthings.common.entity.EntityRegister;
 import speiger.src.tinymodularthings.common.plugins.PluginLoader;
 import speiger.src.tinymodularthings.common.recipes.RecipesCore;
-import speiger.src.tinymodularthings.common.utils.HopperBackupSystem;
 import speiger.src.tinymodularthings.common.world.WorldRegister;
 import cpw.mods.fml.common.Mod;
 import cpw.mods.fml.common.Mod.EventHandler;
@@ -25,7 +24,6 @@ import cpw.mods.fml.common.event.FMLPostInitializationEvent;
 import cpw.mods.fml.common.event.FMLPreInitializationEvent;
 import cpw.mods.fml.common.event.FMLServerStoppedEvent;
 import cpw.mods.fml.common.network.NetworkMod;
-import cpw.mods.fml.common.network.NetworkRegistry;
 
 @Mod(modid = ModID, name = Name, version = Version, dependencies = "after:BuildCraft|Core")
 @NetworkMod(clientSideRequired = true, serverSideRequired = false)
@@ -61,7 +59,6 @@ public class TinyModularThings implements SpmodMod
 		core.registerRenderer();
 		core.registerServer();
 		EntityRegister.getInstance().registerEntities();
-		HopperBackupSystem.getSystem();
 		Ticks.registerTickReciver(TickHelper.getInstance());
 	}
 	

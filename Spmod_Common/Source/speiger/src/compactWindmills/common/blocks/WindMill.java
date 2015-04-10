@@ -4,6 +4,7 @@ import ic2.api.energy.event.EnergyTileLoadEvent;
 import ic2.api.energy.event.EnergyTileUnloadEvent;
 import ic2.api.energy.tile.IEnergySource;
 import ic2.api.energy.tile.IEnergySourceInfo;
+import ic2.api.info.IC2Classic;
 import ic2.api.network.INetworkDataProvider;
 import ic2.api.network.INetworkUpdateListener;
 import ic2.api.tile.IWrenchable;
@@ -32,7 +33,6 @@ import speiger.src.compactWindmills.common.utils.WindmillType;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.tile.FacedInventory;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -394,7 +394,6 @@ public class WindMill extends FacedInventory implements IInventory,
 	
 	public void updateWindSpeed()
 	{
-		IC2.windStrength = 20;
 		this.requestedSpeed = getWindSpeed();
 	}
 	
@@ -643,10 +642,17 @@ public class WindMill extends FacedInventory implements IInventory,
 	@Override
 	public float getWindSpeed()
 	{
-		float speed = ((float)IC2.windStrength * 4.8F) / 100F;
+		float wind = IC2Classic.enabledCustoWindNetwork() ? IC2Classic.getWindNetwork().getWindStrenght(worldObj) : IC2.windStrength;
+		float speed = (wind * 4.8F) / 100F;
 		speed *= (((float)15625F - (float)getNoneAirBlocks()) / (float)15625F);
 		speed *= getWeather();
 		return speed;
+	}
+	
+	public float getHeightEffect()
+	{
+		int bestHeight = IC2.getSeaLevel(worldObj) + 20;
+		return Math.min(((float)yCoord / (float)bestHeight), 1.5F);
 	}
 
 	@Override
@@ -655,5 +661,12 @@ public class WindMill extends FacedInventory implements IInventory,
 		return speed;
 	}
 
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(CompactWindmills.windmill, 1, 0);
+	}
 
+	
+	
 }

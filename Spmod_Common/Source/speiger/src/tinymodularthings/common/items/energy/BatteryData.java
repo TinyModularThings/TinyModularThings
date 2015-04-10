@@ -13,7 +13,6 @@ import speiger.src.spmodapi.client.gui.buttons.GuiSliderButton;
 import speiger.src.spmodapi.common.items.core.ItemInventory;
 import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.items.energy.Batteries.BatterieType;
-import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -288,6 +287,12 @@ public class BatteryData extends ItemInventory implements IPacketReciver
 		net.setFloat("SendMode", sendMode);
 		net.setFloat("TickRate", tickRate);
 		par1.setCompoundTag("EnergyNet", net);
+	}
+
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return null;
 	}
 	
 }

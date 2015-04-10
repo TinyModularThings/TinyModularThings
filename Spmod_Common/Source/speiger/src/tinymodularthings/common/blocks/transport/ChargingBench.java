@@ -430,5 +430,11 @@ public class ChargingBench extends AdvInventory implements IPacketReciver, IEner
 	{
 		return i == 18;
 	}
+
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyBlocks.transportBlock, 1, 5);
+	}
 	
 }

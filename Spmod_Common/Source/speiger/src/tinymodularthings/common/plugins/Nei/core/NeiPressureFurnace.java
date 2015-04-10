@@ -5,9 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-import mods.railcraft.common.plugins.forge.ItemRegistry;
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.tileentity.TileEntityFurnace;
 
@@ -18,14 +15,12 @@ import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeLis
 import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.api.common.utils.MathUtils;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
-import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
 import codechicken.core.gui.GuiDraw;
 import codechicken.nei.NEIServerUtils;
 import codechicken.nei.PositionedStack;
 import codechicken.nei.recipe.TemplateRecipeHandler;
-import cpw.mods.fml.common.Loader;
 
 public class NeiPressureFurnace extends TemplateRecipeHandler
 {
@@ -101,6 +96,8 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 						GuiDraw.fontRenderer.drawString("Combiner Not Used", 50, 54, 4210752);
 					}
 				}
+				GuiDraw.fontRenderer.drawString("Cook Time: ", 115, -1, 4210752);
+				GuiDraw.fontRenderer.drawString(Math.max(end.par1.getRequiredCookTime(), 100)+" Ticks", 115, 9, 4210752);
 			}
 			else
 			{

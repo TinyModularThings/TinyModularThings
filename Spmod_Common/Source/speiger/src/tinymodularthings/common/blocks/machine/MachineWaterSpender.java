@@ -15,6 +15,7 @@ import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
 import speiger.src.spmodapi.common.tile.AdvTile;
+import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.utils.fluids.TinyFluidTank;
 
 import com.google.common.math.DoubleMath;
@@ -231,7 +232,11 @@ public class MachineWaterSpender extends AdvTile implements IFluidHandler
 	}
 
 
-
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyBlocks.machine, 1, 5);
+	}
 	
 	
 	

@@ -16,7 +16,6 @@ import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.network.packet.Packet;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
@@ -264,7 +263,7 @@ public interface IAdvTile
 	
 	public ItemStack pickBlock(MovingObjectPosition target);
 	
-	public ArrayList<ItemStack> onDrop(int fortune);
+	public ArrayList<ItemStack> getItemDrops(int fortune);
 	
 	public void onClientTick();
 	

@@ -1,10 +1,10 @@
 package speiger.src.spmodapi.common.handler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
 
+import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.entity.EntityPlayerSP;
 import net.minecraft.client.gui.ScaledResolution;
@@ -19,22 +19,24 @@ import net.minecraft.entity.monster.EntityMob;
 import net.minecraft.entity.passive.*;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
-import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.FoodStats;
 import net.minecraftforge.client.GuiIngameForge;
 import net.minecraftforge.client.event.FOVUpdateEvent;
 import net.minecraftforge.client.event.RenderGameOverlayEvent;
+import net.minecraftforge.event.EventPriority;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.EntityEvent.EntityConstructing;
 import net.minecraftforge.event.entity.living.*;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingJumpEvent;
 import net.minecraftforge.event.entity.living.LivingEvent.LivingUpdateEvent;
+import net.minecraftforge.event.world.BlockEvent.BreakEvent;
 import speiger.src.api.common.registry.animalgas.AnimalGasRegistry;
 import speiger.src.api.common.registry.animalgas.parts.IEntityGasInfo;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.tiles.interfaces.IExpProvider;
 import speiger.src.spmodapi.client.core.RenderHelper;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
 import speiger.src.spmodapi.common.blocks.gas.AnimalChunkLoader;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
@@ -307,6 +309,21 @@ public class LivingHandler
 		if (evt.entityLiving instanceof EntityOverridenEnderman)
 		{
 			evt.setCanceled(true);
+		}
+	}
+	
+	@ForgeSubscribe(priority = EventPriority.LOWEST)
+	public void onPlayerBreak(BreakEvent evt)
+	{
+		if(evt.isCanceled())
+		{
+			return;
+		}
+		Block block = evt.block;
+		if(block != null && block instanceof SpmodBlockContainerBase)
+		{
+			SpmodBlockContainerBase base = (SpmodBlockContainerBase)block;
+			base.breaker.set(evt.getPlayer());
 		}
 	}
 	

@@ -58,6 +58,15 @@ public class BlockSpmodOre extends SpmodBlockBase
 	@Override
 	public int quantityDropped(int meta, int fortune, Random random)
 	{
+		if(meta == 5)
+		{
+			int j = random.nextInt(fortune + 2) - 1;
+			if(j < 0)
+			{
+				j = 0;
+			}
+			return 1 + j;
+		}
 		return 1;
 	}
 	

@@ -485,11 +485,18 @@ public class MobMachine extends FacedInventory implements ISidedInventory,
 	}
 	
 	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
+	public ArrayList<ItemStack> getItemDrops(int fortune)
 	{
-		ArrayList<ItemStack> stack = super.onDrop(fortune);
+		ArrayList<ItemStack> stack = super.getItemDrops(fortune);
 		stack.add(new ItemStack(APIItems.mobMachineHelper, 1, type));
 		return stack;
+	}
+	
+	
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(APIBlocks.blockUtils, 1, 2);
 	}
 	
 	@Override

@@ -5,7 +5,6 @@ import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
-import speiger.src.tinymodularthings.common.blocks.storage.ItemBlockStorage;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.recipes.recipeHelper.TinyDowngradeRecipe;
@@ -48,10 +47,10 @@ public class TinyRecipes
 		pp.addRecipe(new TinyDowngradeRecipe(new ItemStack(TinyItems.advTinyTank, 1, PathProxy.getRecipeBlankValue()), "gearStone", helper, 1));
 		pp.addRecipe(new TinyDowngradeRecipe(new ItemStack(TinyItems.advTinyTank, 1, PathProxy.getRecipeBlankValue()), "gearIron", helper, 2));
 		
-		pp.addRecipe(new TinyTransformRecipe(new ItemStack(TinyItems.advTinyChest), helper, 5, new Object[]{"XYX", "XCX", "XYX", 'Y', Block.chest, 'X', GearType.Wood.getItem(), 'C', new ItemStack(TinyItems.tinyChest, 1, PathProxy.getRecipeBlankValue())}));
-		pp.addRecipe(new TinyTransformRecipe(new ItemStack(TinyItems.advTinyStorageCart), helper, 5, new Object[]{ "XYX", "CVC", "XBX", 'X', GearType.Redstone.getItem(), 'C', Block.torchRedstoneActive, 'Y', Block.stoneButton, 'B', Block.pressurePlateStone, 'V', new ItemStack(TinyItems.tinyStorageCart, 1, PathProxy.getRecipeBlankValue())}));
-		pp.addRecipe(new TinyTransformRecipe(new ItemStack(TinyItems.advTinyTank, 1), helper, 5, new Object[]{"XYX", "XCX", "XYX", 'Y', Block.chest, 'X', GearType.Wood.getItem(), 'C', new ItemStack(TinyItems.tinyTank, 1, PathProxy.getRecipeBlankValue())}));
-		pp.addRecipe(new TinyTransformRecipe(new ItemStack(TinyBlocks.storageBlock, 1, 4), helper, 5, new Object[]{"XYX", "XCX", "XYX", 'Y', Block.chest, 'X', GearType.Wood.getItem(), 'C', new ItemStack(TinyItems.tinyChest, 1, PathProxy.getRecipeBlankValue())}));
+		pp.addRecipe(new TinyTransformRecipe(new ItemStack(TinyItems.advTinyChest), helper, 4, new Object[]{"XYX", "XCX", "XBX", 'Y', Block.stoneButton, 'B', Block.pressurePlateStone, 'X', "gearWood", 'C', new ItemStack(TinyItems.tinyChest, 1, PathProxy.getRecipeBlankValue())}));
+		pp.addRecipe(new TinyTransformRecipe(new ItemStack(TinyItems.advTinyStorageCart), helper, 4, new Object[]{ "XYX", "CVC", "XBX", 'X', GearType.Redstone.getItem(), 'C', Block.torchRedstoneActive, 'Y', Block.stoneButton, 'B', Block.pressurePlateStone, 'V', new ItemStack(TinyItems.tinyStorageCart, 1, PathProxy.getRecipeBlankValue())}));
+		pp.addRecipe(new TinyTransformRecipe(new ItemStack(TinyItems.advTinyTank, 1), helper, 4, new Object[]{"XYX", "XCX", "XYX", 'Y', Block.chest, 'X', "gearWood", 'C', new ItemStack(TinyItems.tinyTank, 1, PathProxy.getRecipeBlankValue())}));
+		pp.addRecipe(new TinyTransformRecipe(new ItemStack(TinyBlocks.storageBlock, 1, 4), helper, 4, new Object[]{"XYX", "XCX", "XYX", 'Y', Block.chest, 'X', "gearWood", 'C', new ItemStack(TinyItems.tinyChest, 1, PathProxy.getRecipeBlankValue())}));
 		
 		for (int i = 0; i < 9; i++)
 		{

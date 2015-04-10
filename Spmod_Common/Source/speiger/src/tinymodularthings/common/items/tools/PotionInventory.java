@@ -249,6 +249,14 @@ public class PotionInventory extends ItemInventory
 		return false;
 	}
 	
+	
+	
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return null;
+	}
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void onGuiConstructed(GuiInventoryCore par1)

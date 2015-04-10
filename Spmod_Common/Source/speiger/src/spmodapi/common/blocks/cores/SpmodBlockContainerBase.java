@@ -7,6 +7,7 @@ import java.util.Random;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EnumCreatureType;
 import net.minecraft.entity.player.EntityPlayer;
@@ -31,7 +32,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEntityProvider
 {
 	public static HashMap<List<Integer>, ArrayList<ItemStack>> tileDrops = new HashMap<List<Integer>, ArrayList<ItemStack>>();
-	
+	public ThreadLocal<EntityPlayer> breaker = new ThreadLocal<EntityPlayer>();
 	
 	public SpmodBlockContainerBase(int par1, Material par2Material)
 	{
@@ -546,8 +547,14 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
     		tile.onBreaking();
     		if(hasTileDrops(meta))
     		{
-    			tileDrops.put(tile.getPosition().getAsList(), tile.onDrop(0));
-    		}
+    			int fortune = 0;
+    			EntityPlayer player = breaker.get();
+    			if(player == null)
+    			{
+    				fortune = EnchantmentHelper.getFortuneModifier(player);
+    			}
+    			tileDrops.put(tile.getPosition().getAsList(), tile.getItemDrops(fortune));
+       		}
     	}
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
         par1World.removeBlockTileEntity(par2, par3, par4);
@@ -575,7 +582,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 			IAdvTile tile = getAdvTile(pos.getWorld(), pos.getXCoord(), pos.getYCoord(), pos.getZCoord());
 			if(tile != null)
 			{
-				drops.addAll(tile.onDrop(0));
+				drops.addAll(tile.getItemDrops(fortune));
 			}
 		}
 		return drops;

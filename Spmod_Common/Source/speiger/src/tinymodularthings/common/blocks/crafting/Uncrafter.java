@@ -78,7 +78,11 @@ public class Uncrafter extends TileFacing implements IPowerReceptor, IEnergyProv
 		return provider;
 	}
 	
-	
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyBlocks.craftingBlock, 1, 3);
+	}
 
 	@Override
 	public void registerIcon(TextureEngine par1, Block par2)

@@ -23,6 +23,8 @@ import speiger.src.tinymodularthings.client.gui.entity.GuiTinyChestCart;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.entity.minecarts.TCarts;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class EntityTinyChestCart extends TCarts implements
 		IItemTransfer
@@ -332,6 +334,7 @@ public class EntityTinyChestCart extends TCarts implements
 	}
 
 	@Override
+	@SideOnly(Side.CLIENT)
 	public GuiContainer getGui(InventoryPlayer par0)
 	{
 		return new GuiTinyChestCart(getInventory(par0), this);

@@ -1,7 +1,5 @@
 package speiger.src.tinymodularthings.common.blocks.storage;
 
-import java.util.ArrayList;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
@@ -26,8 +24,6 @@ public class TinyChest extends FacedInventory
 	{
 		super(0);
 	}
-	
-	
 	
 	@Override
 	public boolean canMergeItem(ItemStack par1, int slotID)
@@ -107,11 +103,9 @@ public class TinyChest extends FacedInventory
 	}
 	
 	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
+	public ItemStack getItemDrop()
 	{
-		ArrayList<ItemStack> drops = super.onDrop(fortune);
-		drops.add(new ItemStack(TinyItems.tinyChest, 1, mode - 1));
-		return drops;
+		return new ItemStack(TinyItems.tinyChest, 1, mode - 1);
 	}
 	
 	@Override

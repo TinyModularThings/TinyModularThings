@@ -61,7 +61,7 @@ public class InventoryHandler implements IFuelHandler, ICraftingHandler
 	public static boolean delay = false;
 	
 	@ForgeSubscribe
-	public void onDrop(ItemTossEvent evt)
+	public void getItemDrops(ItemTossEvent evt)
 	{
 		if(delay)
 		{

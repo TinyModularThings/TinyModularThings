@@ -58,6 +58,12 @@ public class ExpStorage extends AdvInventory implements IFluidHandler, IExpProvi
 	
 	
 	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(APIBlocks.blockUtils, 1, 1);
+	}
+
+	@Override
 	public void addContainerSlots(AdvContainer par1)
 	{
 		par1.addSpmodSlot(this, 0, 43, 45).addUsage("Import Exp");
@@ -181,9 +187,9 @@ public class ExpStorage extends AdvInventory implements IFluidHandler, IExpProvi
 	
 	
 	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
+	public ArrayList<ItemStack> getItemDrops(int fortune)
 	{
-		ArrayList<ItemStack> stack = super.onDrop(fortune);
+		ArrayList<ItemStack> stack = super.getItemDrops(fortune);
 		if(this.canAbsorbDeath)
 		{
 			stack.add(new ItemStack(Item.diamond));

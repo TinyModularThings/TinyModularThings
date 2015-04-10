@@ -1,10 +1,6 @@
 package speiger.src.tinymodularthings.common.blocks.crafting;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
 
 import net.minecraft.block.Block;
@@ -201,9 +197,9 @@ public class CraftingStation extends AdvTile
 	}
 	
 	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
+	public ArrayList<ItemStack> getItemDrops(int fortune)
 	{
-		ArrayList<ItemStack> stack = super.onDrop(fortune);
+		ArrayList<ItemStack> stack = super.getItemDrops(fortune);
 		for(CraftingInventory inv : iinv.values())
 		{
 			for(int i = 0;i<inv.inv.length;i++)
@@ -477,6 +473,12 @@ public class CraftingStation extends AdvTile
 	        nbt.setTag("Items", nbttaglist);
 		}
 		
+	}
+
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return new ItemStack(TinyBlocks.craftingBlock, 1, 2);
 	}
 	
 }

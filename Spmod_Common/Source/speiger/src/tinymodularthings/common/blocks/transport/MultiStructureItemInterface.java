@@ -2,7 +2,6 @@ package speiger.src.tinymodularthings.common.blocks.transport;
 
 import java.io.DataInput;
 import java.io.IOException;
-import java.util.ArrayList;
 
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
@@ -159,11 +158,9 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	}
 	
 	@Override
-	public ArrayList<ItemStack> onDrop(int fortune)
+	public ItemStack getItemDrop()
 	{
-		ArrayList<ItemStack> drop = new ArrayList<ItemStack>();
-		drop.add(ItemInterfaceBlock.addBlockToInterface(new ItemStack(TinyItems.interfaceBlock, 1, 0), this.getBlock()));
-		return drop;
+		return ItemInterfaceBlock.addBlockToInterface(new ItemStack(TinyItems.interfaceBlock, 1, 0), this.getBlock());
 	}
 
 	public void updateInventory()
