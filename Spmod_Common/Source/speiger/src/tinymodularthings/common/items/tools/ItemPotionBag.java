@@ -1,7 +1,5 @@
 package speiger.src.tinymodularthings.common.items.tools;
 
-import java.util.List;
-
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
@@ -13,9 +11,6 @@ import speiger.src.spmodapi.common.handler.InventoryHandler;
 import speiger.src.spmodapi.common.items.core.ItemInventory;
 import speiger.src.spmodapi.common.items.core.SpmodInventoryItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemPotionBag extends SpmodInventoryItem
 {
@@ -30,19 +25,19 @@ public class ItemPotionBag extends SpmodInventoryItem
 	}
 
 	@Override
-	public boolean tickInventory(ItemStack par1)
+	public boolean canTick(ItemStack par1, ItemTickType par2)
 	{
 		NBTTagCompound data = this.getItemData(par1);
 		return data.getBoolean("Active");
 	}
 	@Override
-	public boolean hasTickRate(ItemStack par1)
+	public boolean hasTickRate(ItemStack par1, ItemTickType par2)
 	{
 		return true;
 	}
 
 	@Override
-	public int getTickRate(ItemStack par1)
+	public int getTickRate(ItemStack par1, ItemTickType par2)
 	{
 		NBTTagCompound data = this.getItemData(par1);
 		if(data.getBoolean("Delay"))
@@ -67,6 +62,13 @@ public class ItemPotionBag extends SpmodInventoryItem
 		return super.onItemRightClick(par1, par2, par3);
 	}
 	
+	
+
+	@Override
+	public void onTick(ItemStack par1, World par2, EntityPlayer par3, ItemTickType par4, boolean par5)
+	{
+		this.tickInventory(par1, par3);
+	}
 
 	@Override
 	public String getName(ItemStack par1)
@@ -81,7 +83,7 @@ public class ItemPotionBag extends SpmodInventoryItem
 	}
 
 	@Override
-	public String createNewInventoryID()
+	public String createNewInventoryID(int meta)
 	{
 		return "BagID:"+System.currentTimeMillis();
 	}

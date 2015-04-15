@@ -5,8 +5,6 @@ import net.minecraft.client.Minecraft;
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.GL11;
 
-import cpw.mods.fml.common.FMLLog;
-
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 
 public class GuiSliderButton extends SpmodGuiButton
@@ -21,10 +19,15 @@ public class GuiSliderButton extends SpmodGuiButton
 	
 	public GuiSliderButton(int par1, int par2, int par3, String par4, float par5, GuiInventoryCore par6)
 	{
-		super(par1, par2, par3, 150, 20, par4);
-		this.sliderValue = par5;
-		originalName = par4;
-		core = par6;
+		this(par1, par2, par3, 150, 20, par4, par5, par6);
+	}
+	
+	public GuiSliderButton(int par1, int par2, int par3, int par4, int par5, String par6, float par7, GuiInventoryCore par8)
+	{
+		super(par1, par2, par3, par4, par5, par6);
+		this.sliderValue = par7;
+		originalName = par6;
+		core = par8;
 		core.onButtonUpdate(this);
 	}
 	

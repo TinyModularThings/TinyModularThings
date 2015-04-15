@@ -53,6 +53,7 @@ public class GuiInventoryCore extends GuiContainer
 {
 	public static TextureEngine engine = TextureEngine.getTextures();
 	private GuiButton currentButton;
+	private boolean screenChanges;
 	boolean defined = false;
 	boolean autoDrawing = false;
 	public int x = 0;
@@ -414,6 +415,11 @@ public class GuiInventoryCore extends GuiContainer
 	@Override
 	public void handleMouseInput()
 	{
+		if(this.screenChanges)
+		{
+			this.screenChanges = false;
+			return;
+		}
 		super.handleMouseInput();
         int i = Mouse.getEventX() * this.width / this.mc.displayWidth;
         int j = this.height - Mouse.getEventY() * this.height / this.mc.displayHeight - 1;
@@ -455,6 +461,11 @@ public class GuiInventoryCore extends GuiContainer
 	@Override
 	public void actionPerformed(GuiButton par1GuiButton)
 	{
+		if(this.screenChanges)
+		{
+			this.screenChanges = false;
+			return;
+		}
 		currentButton = par1GuiButton;
 		if(tile != null)
 		{
@@ -474,6 +485,11 @@ public class GuiInventoryCore extends GuiContainer
 	@Override
 	protected void mouseMovedOrUp(int par1, int par2, int par3)
 	{
+		if(this.screenChanges)
+		{
+			this.screenChanges = false;
+			return;
+		}
 		super.mouseMovedOrUp(par1, par2, par3);
         if (this.currentButton != null && par3 == 0)
         {
@@ -520,6 +536,18 @@ public class GuiInventoryCore extends GuiContainer
 		return this.itemRenderer;
 	}
 	
+	public GuiButton getButtonFromID(int i)
+	{
+		for(GuiButton button : getButtonsList())
+		{
+			if(button != null && button.id == i)
+			{
+				return button;
+			}
+		}
+		throw new RuntimeException("Called button which not exsist. A case that should never happen");
+	}
+	
 	public void setTexture(ResourceLocation par1)
 	{
 		if(par1 == null)
@@ -537,6 +565,14 @@ public class GuiInventoryCore extends GuiContainer
 	public void setY(int y)
 	{
 		this.ySize = y;
+	}
+	
+	/**
+	 * This function prevent every further button Clicking so that you do not change gui Options after clicking.
+	 */
+	public void setScreenChanges()
+	{
+		this.screenChanges = true;
 	}
 	
 	public Minecraft getMC()

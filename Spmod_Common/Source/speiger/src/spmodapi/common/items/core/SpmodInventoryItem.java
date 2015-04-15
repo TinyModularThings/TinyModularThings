@@ -23,7 +23,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 {
-	static HashMap<String, EntityCounter> tickCounters = new HashMap<String, EntityCounter>();
+	protected static HashMap<String, EntityCounter> tickCounters = new HashMap<String, EntityCounter>();
 	
 	public SpmodInventoryItem(int par1)
 	{
@@ -58,7 +58,7 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 		return NBTHelper.getTag(par1, "Data").getString("ID");
 	}
 	
-	public abstract String createNewInventoryID();
+	public abstract String createNewInventoryID(int meta);
 	
 	public void initExtraData(NBTTagCompound data)
 	{
@@ -68,8 +68,9 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 	protected void initData(ItemStack par1)
 	{
 		NBTTagCompound data = new NBTTagCompound();
+		data.setInteger("ItemMetaData", par1.getItemDamage());
 		initExtraData(data);
-		data.setString("ID", createNewInventoryID());
+		data.setString("ID", createNewInventoryID(par1.getItemDamage()));
 		par1.setTagInfo("Data", data);
 	}
 	
@@ -122,32 +123,22 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 		return par1;
 	}
 
-	public boolean tickInventory(ItemStack par1)
+	public boolean canTick(ItemStack par1, ItemTickType par2)
 	{
 		return false;
 	}
 	
-	public boolean tickArmor(ItemStack par1)
+	public boolean hasTickRate(ItemStack par1, ItemTickType par2)
 	{
-		return false;
+		return getTickRate(par1, par2) > 0;
 	}
 	
-	public boolean hasTickRate(ItemStack par1)
-	{
-		return false;
-	}
-	
-	public int getTickRate(ItemStack par1)
+	public int getTickRate(ItemStack par1, ItemTickType par2)
 	{
 		return 0;
 	}
 	
-	public boolean sneakingStopTick(ItemStack par1)
-	{
-		return false;
-	}
-	
-	boolean tickRateReady(ItemStack par1)
+	boolean tickRateReady(ItemStack par1, ItemTickType par2)
 	{
 		String id = getInventoryID(par1);
 		EntityCounter counter = null;
@@ -161,7 +152,7 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 			counter = tickCounters.get(id);
 		}
 		counter.updateToNextID();
-		if(counter.getCurrentID() >= getTickRate(par1))
+		if(counter.getCurrentID() >= getTickRate(par1, par2))
 		{
 			counter.resetCounter();
 			tickCounters.put(id, counter);
@@ -174,7 +165,9 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 	@Override
 	public void onUpdate(ItemStack par1, World par2, Entity par3, int par4, boolean par5)
 	{
-		if(par2.isRemote || !tickInventory(par1) || (hasTickRate(par1) && !tickRateReady(par1)) || !getItemData(par1).hasKey("Inited"))
+		ItemTickType type = ItemTickType.Inventory;
+		type.setSlot(par4);
+		if(!(par3 instanceof EntityPlayer) || !canTick(par1, type) || hasTickRate(par1, type) && !tickRateReady(par1, type) || !getItemData(par1).hasKey("Inited"))
 		{
 			if(!getItemData(par1).hasKey("Inited"))
 			{
@@ -183,39 +176,42 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 			}
 			return;
 		}
-		
-		if(par3 != null && par3 instanceof EntityPlayer)
+		onTick(par1, par2, (EntityPlayer)par3, type, par5);
+	}
+
+	@Override
+	public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack item)
+	{
+		ItemTickType type = ItemTickType.Inventory;
+		if(!canTick(item, type) || hasTickRate(item, type) && !tickRateReady(item, type) || !getItemData(item).hasKey("Inited"))
 		{
-			EntityPlayer player = (EntityPlayer)par3;
-			boolean sneak = player.isSneaking();
-			if(sneakingStopTick(par1) && sneak)
+			if(!getItemData(item).hasKey("Inited"))
 			{
-				return;
+				initData(item);
+				getItemData(item).setBoolean("Inited", true);
 			}
-			ItemInventory inv = createNewInventory(player, par1);
-			if(inv.stopTickingOnGuiOpen() && player.openContainer != null && player.openContainer instanceof AdvContainer && ((AdvContainer)player.openContainer).getInvName().equals(inv.getInvName()))
+			return;
+		}
+		onTick(item, world, player, type, false);
+	}
+	
+	public void onTick(ItemStack par1, World par2, EntityPlayer par3, ItemTickType par4, boolean par5)
+	{
+		
+	}
+	
+	public void tickInventory(ItemStack par1, EntityPlayer par2)
+	{
+		ItemInventory inv = createNewInventory(par2, par1);
+		if(inv != null)
+		{
+			if(inv.stopTickingOnGuiOpen() && par2.openContainer != null && par2.openContainer instanceof AdvContainer && ((AdvContainer)par2.openContainer).getInvName().equals(inv.getInvName()))
 			{
 				return;
 			}
 			inv.onTick();
 			inv.onInventoryChanged();
 		}
-	}
-
-	@Override
-	public void onArmorTickUpdate(World world, EntityPlayer player, ItemStack itemStack)
-	{
-		if(world.isRemote || !tickArmor(itemStack) || (hasTickRate(itemStack) && !tickRateReady(itemStack)))
-		{
-			return;
-		}
-		ItemInventory inv = createNewInventory(player, itemStack);
-		if(inv.stopTickingOnGuiOpen() && player.openContainer != null && player.openContainer instanceof AdvContainer && ((AdvContainer)player.openContainer).getInvName().equals(inv.getInvName()))
-		{
-			return;
-		}
-		inv.onTick();
-		inv.onInventoryChanged();
 	}
 	
 	@Override
@@ -240,6 +236,12 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 	@Override
 	public Icon getIcon(ItemStack stack, int pass)
 	{
+		if(!getItemData(stack).hasKey("Inited"))
+		{
+			initData(stack);
+			getItemData(stack).setBoolean("Inited", true);
+		}
+		
 		return getEngine().getIconSafe(getTexture(stack));
 	}
 	
@@ -248,6 +250,25 @@ public abstract class SpmodInventoryItem extends SpmodItem implements IItemGui
 	public NBTTagCompound getItemData(ItemStack par1)
 	{
 		return NBTHelper.getTag(par1, "Data");
+	}
+	
+	public static enum ItemTickType
+	{
+		Inventory,
+		Armor;
+		
+		int slotID;
+		
+		public void setSlot(int id)
+		{
+			slotID = id;
+		}
+		
+		public int getSlot()
+		{
+			return slotID;
+		}
+		
 	}
 	
 }

@@ -171,4 +171,10 @@ public abstract class ItemInventory extends AdvInventory
 	
 	}
 	
+	@Override
+	public ItemStack getItemDrop()
+	{
+		return null;
+	}
+	
 }

@@ -2,9 +2,6 @@ package speiger.src.tinymodularthings.common.items.energy;
 
 import java.util.List;
 
-import cpw.mods.fml.common.FMLLog;
-import cpw.mods.fml.relauncher.Side;
-import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -14,10 +11,13 @@ import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import speiger.src.api.common.data.nbt.NBTHelper;
 import speiger.src.api.common.world.items.energy.IBCBattery;
+import speiger.src.api.common.world.items.energy.ItemEnergyNet;
 import speiger.src.spmodapi.common.items.core.ItemInventory;
 import speiger.src.spmodapi.common.items.core.SpmodInventoryItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.tinymodularthings.common.items.energy.Batteries.BatterieType;
+import speiger.src.spmodapi.common.util.proxy.LangProxy;
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 
 public class Batteries extends SpmodInventoryItem implements IBCBattery
 {
@@ -51,44 +51,97 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 		}
 	}
 	
-	
+	public NBTTagCompound getBatteryData(ItemStack par1)
+	{
+		return getItemData(par1).getCompoundTag("BatteryData");
+	}
 	
 	@Override
 	public void initExtraData(NBTTagCompound data)
 	{
-		data.setFloat("Limit", 1F);
-		data.setBoolean("Input", true);
-		data.setBoolean("AutoSend", false);
+		data.setInteger("Mode", 0);
 		NBTTagCompound net = new NBTTagCompound();
 		net.setBoolean("Random", false);
 		net.setBoolean("Multi", false);
 		net.setFloat("SendMode", 1F);
-		net.setFloat("TickRate", 0F);
+		net.setFloat("ReqMode", 1F);
 		data.setCompoundTag("EnergyNet", net);
+		NBTTagCompound battery = new NBTTagCompound();
+		battery.setFloat("TickRate", 0F);
+		battery.setFloat("Transferlimit", 1F);
+		battery.setFloat("MaxIn", 1F);
+		battery.setFloat("MaxOut", 1F);
+		battery.setBoolean("AutoOut", false);
+		battery.setBoolean("AutoIn", false);
+		battery.setBoolean("AllowIn", true);
+		battery.setBoolean("AllowOut", true);
+		data.setCompoundTag("BatteryData", battery);
 	}
 
 	@Override
 	public ItemStack onItemRightClick(ItemStack par1, World par2, EntityPlayer par3)
 	{
-		if(par3.isSneaking())
-		{
-			return super.onItemRightClick(par1, par2, par3);
-		}
 		if(!par2.isRemote)
 		{
-			ItemEnergyNet.getEnergyNet().loadSettingsFromItem(par1).sendEnergyToItems(par1, par3);
+			int mode = getItemData(par1).getInteger("Mode");
+			if(par3.isSneaking())
+			{
+				
+				mode++;
+				if(mode > 2)
+				{
+					mode = 0;
+				}
+				getItemData(par1).setInteger("Mode", mode);
+				par3.sendChatToPlayer(LangProxy.getText("Mode: "+getMode(mode)));
+				return par1;
+			}
+			else
+			{
+				if(mode == 0)
+				{
+					if(getBatteryData(par1).getBoolean("AutoOut"))
+					{
+						getBatteryData(par1).setBoolean("AutoOut", false);
+						par3.sendChatToPlayer(LangProxy.getText("Deactivated Auto Sending, Click again to Open Gui"));
+						return par1;
+					}
+					return super.onItemRightClick(par1, par2, par3);
+				}
+				if(mode == 1)
+				{
+					boolean auto = !getBatteryData(par1).getBoolean("AutoOut");
+					getBatteryData(par1).setBoolean("AutoOut", auto);
+					par3.sendChatToPlayer(LangProxy.getText(auto ? "Activating Auto Exporting" : "Deactivating Auto Exporting"));
+					if(auto && getBatteryData(par1).getBoolean("AllowIn"))
+					{
+						getBatteryData(par1).setBoolean("AllowIn", false);
+						par3.sendChatToPlayer(LangProxy.getText("Dissabling Power Accepting."));
+					}
+					return par1;
+				}
+				if(mode == 2)
+				{
+					ItemEnergyNet.getEnergyNet().loadSettingsFromItem(par1).sendEnergyToItems(par1, par3);
+					par3.inventoryContainer.detectAndSendChanges();
+					return par1;
+				}
+			}
 		}
 		return par1;
 	}
 	
-	
-
-	@Override
-	public boolean sneakingStopTick(ItemStack par1)
+	public String getMode(int mode)
 	{
-		return true;
+		switch(mode)
+		{
+			case 0: return "Options";
+			case 1: return "Automate Control";
+			case 2: return "Manual Control";
+			default: return "Nothing";
+		}
 	}
-
+	
 	@Override
 	public int getStoredMJ(ItemStack par1)
 	{
@@ -110,25 +163,25 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	@Override
 	public boolean requestEnergy(ItemStack par1)
 	{
-		return getItemData(par1).getBoolean("Input");
+		return getBatteryData(par1).getBoolean("AllowIn");
 	}
 
 	@Override
 	public int getRequestedAmount(ItemStack par1)
 	{
-		return getMaxMJStorage(par1) - getStoredMJ(par1);
+		return Math.min(getMaxMJStorage(par1) - getStoredMJ(par1), (int)((float)this.type.getTransferlimit() * getBatteryData(par1).getFloat("MaxIn")));
 	}
 
 	@Override
 	public boolean wantToSendEnergy(ItemStack par1)
 	{
-		return energyToSend(par1) > 0;
+		return getBatteryData(par1).getBoolean("AllowOut");
 	}
 
 	@Override
 	public int energyToSend(ItemStack par1)
 	{
-		return getStoredMJ(par1);
+		return Math.min(10000, (int)((float)this.type.getTransferlimit() * getBatteryData(par1).getFloat("MaxOut")));
 	}
 
 	@Override
@@ -172,11 +225,17 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	@Override
 	public int getTransferlimit(ItemStack par1)
 	{
-		if(!getItemData(par1).hasKey("Limit"))
+		if(!getBatteryData(par1).hasKey("Transferlimit"))
 		{
 			return type.getTransferlimit();
 		}
-		return (int)(this.getItemData(par1).getFloat("Limit") * type.getTransferlimit());
+		return (int)(this.getBatteryData(par1).getFloat("Transferlimit") * type.getTransferlimit());
+	}
+	
+	@Override
+	public int getMaxTransferlimt(ItemStack par1)
+	{
+		return type.getTransferlimit();
 	}
 	
 	
@@ -235,7 +294,7 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	}
 
 	@Override
-	public String createNewInventoryID()
+	public String createNewInventoryID(int meta)
 	{
 		return "Battery:"+System.nanoTime();
 	}
@@ -252,23 +311,15 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	}
 	
 	@Override
-	public boolean tickInventory(ItemStack par1)
+	public boolean canTick(ItemStack par1, ItemTickType par2)
 	{
-		return getItemData(par1).getBoolean("AutoSend") && getStoredMJ(par1) > 0;
-	}
-
-	@Override
-	public boolean hasTickRate(ItemStack par1)
-	{
-		return getTickRate(par1) > 0;
+		return getBatteryData(par1).getBoolean("AutoOut") && getStoredMJ(par1) > 0;
 	}
 	
-	
-
 	@Override
-	public int getTickRate(ItemStack par1)
+	public int getTickRate(ItemStack par1, ItemTickType par2)
 	{
-		return (int)(1000 * getItemData(par1).getCompoundTag("EnergyNet").getFloat("TickRate"));
+		return (int)(1000 * getBatteryData(par1).getFloat("TickRate"));
 	}
 
 	@Override
@@ -296,6 +347,10 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 		int storage = (int)(((double)getStoredMJ(stack) / (double)getMaxMJStorage(stack)) * (double)100);
 		return 100 - storage;
 	}
-	
-	
+
+	@Override
+	public void onTick(ItemStack par1, World par2, EntityPlayer par3, ItemTickType par4, boolean par5)
+	{
+		ItemEnergyNet.getEnergyNet().loadSettingsFromItem(par1).sendEnergyToItems(par1, par3);
+	}
 }
