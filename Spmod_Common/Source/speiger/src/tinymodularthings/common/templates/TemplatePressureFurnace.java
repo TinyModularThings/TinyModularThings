@@ -1,22 +1,19 @@
 package speiger.src.tinymodularthings.common.templates;
 
-import java.util.ArrayList;
-import java.util.List;
-
-import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
+import speiger.src.api.common.world.tiles.interfaces.IAcceptor.AcceptorType;
 import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import speiger.src.spmodapi.common.templates.BaseTemplate;
+import speiger.src.spmodapi.common.templates.TemplateBox;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 
 public class TemplatePressureFurnace extends BaseTemplate
 {
-
-
 	World world;
 	int xCoord;
 	int yCoord;
@@ -29,7 +26,6 @@ public class TemplatePressureFurnace extends BaseTemplate
 		super(par1);
 		furnace = (PressureFurnace)par1;
 	}
-	
 	
 	@Override
 	public void setup(World world, int x, int y, int z, int facing)
@@ -45,86 +41,78 @@ public class TemplatePressureFurnace extends BaseTemplate
 	public void setupFacing(int facing)
 	{
 		dir = ForgeDirection.getOrientation(facing);
+		BlockPosition pos = new BlockPosition(world, xCoord, yCoord, zCoord).add(dir.getOpposite());
+		this.addStructure(new TemplateBox(furnace, new BlockPosition(world, pos.getXCoord() - 1, pos.getYCoord() - 1, pos.getZCoord() - 1), new BlockPosition(world, pos.getXCoord() + 1, pos.getYCoord() + 1, pos.getZCoord() + 1)));
 	}
 	
 	@Override
 	public boolean match()
 	{
-		boolean flag = this.getTotalPatternSize() == 27 ? true : false;
-		ForgeDirection of = dir.getOpposite();
-		BlockPosition start = new BlockPosition(xCoord+of.offsetX, yCoord+of.offsetY-1, zCoord+of.offsetZ);
-		List<BlockPosition> match = new ArrayList<BlockPosition>();
-		List<BlockPosition> inner = new ArrayList<BlockPosition>();
-		
-		for(int posX = -1;posX<2;posX++)
+		ForgeDirection op = dir.getOpposite();
+		int offsetX = op.offsetX;
+		int offsetZ = op.offsetZ;
+		int fluidInter = 0;
+		int itemInter = 0;
+		for(int x = -1;x<2;x++)
 		{
-			for(int posY = 0;posY<3;posY++)
+			for(int y = -1;y<2;y++)
 			{
-				for(int posZ = -1;posZ<2;posZ++)
+				for(int z = -1;z<2;z++)
 				{
-					int x = start.getXCoord() + posX;
-					int y = start.getYCoord() + posY;
-					int z = start.getZCoord() + posZ;
-					BlockStack compare = getBlockFromPos(posX, posY, posZ);
-					BlockPosition block = new BlockPosition(world, x, y, z);
-					BlockStack realBlock = new BlockStack(world, x, y, z, true);
-					if(compare.match(realBlock) || isInterface(realBlock))
+					BlockPosition pos = new BlockPosition(world, xCoord + x + offsetX, yCoord + y, zCoord + z + offsetZ);
+					if(x == 0 && y == 0 && z == 0)
 					{
-						if(isInterface(realBlock))
+						if(!pos.isAirBlock())
 						{
-							inner.add(block);
+							return false;
 						}
-						match.add(block);
 					}
-					else if(realBlock.getBlock() != null && compare.getBlockID() == Block.cobblestone.blockID)
+					else if(y == 0 && pos.getXCoord() == xCoord && pos.getZCoord() == zCoord)
 					{
-						if(isValidBlockName(realBlock.getHiddenName()) && realBlock.getBlock().isBlockNormalCube(world, x, y, z) && realBlock.getBlock().isBlockSolidOnSide(world, x, y, z, ForgeDirection.WEST))
+						if(!pos.isThisBlock(new BlockStack(TinyBlocks.machine, 0), true))
 						{
-							match.add(block);
+							return false;
+						}
+					}
+					else
+					{
+						if((!isValidBlockName(pos.getAsBlockStack().getHiddenName()) && !this.isInterface(pos.getAsBlockStack())) || !pos.getBlock().isBlockNormalCube(world, pos.getXCoord(), pos.getYCoord(), pos.getZCoord()) || !pos.getBlock().isBlockSolidOnSide(world, pos.getXCoord(), pos.getYCoord(), pos.getZCoord(), ForgeDirection.WEST))
+						{
+							return false;
+						}
+						BlockStack stack = pos.getAsBlockStack();
+						if(this.isInterface(stack))
+						{
+							if(this.isEnergyInterface(stack))
+							{
+								return false;
+							}
+							else if(this.isFluidInterface(stack))
+							{
+								fluidInter++;
+							}
+							else if(this.isItemInterface(stack))
+							{
+								itemInter++;
+							}
+							
 						}
 					}
 				}
 			}
 		}
-		
-		if(inner.size() > 4)
+		if(!this.isInterfaceAmountOk(AcceptorType.Items, itemInter) || !this.isInterfaceAmountOk(AcceptorType.Fluids, fluidInter))
 		{
-			match.removeAll(inner);
+			return false;
 		}
-		if(flag)
+		if(!colideCheck())
 		{
-			match.retainAll(this.getStructure());
+			return false;
 		}
-		
-		if(match.size() == 27)
-		{
-			if(this.checkStorage(match))
-			{
-				this.addToStorage(match);
-			}
-			return true;
-		}
-		else
-		{
-			this.removeFromStorage(match);
-		}
-		return false;
+		return true;
 	}
 	
-	public BlockStack getBlockFromPos(int x, int y, int z)
-	{
-		if(x == 0 && y == 1 && z == 0)
-		{
-			return new BlockStack();
-		}
-		if(x == dir.offsetX && y == 1 && z == dir.offsetZ)
-		{
-			return new BlockStack(TinyBlocks.machine, 0);
-		}
-		return new BlockStack(Block.cobblestone);
-	}
-	
-	public boolean isValidBlockName(String par1)
+	private boolean isValidBlockName(String par1)
 	{
 		boolean ore = par1.contains("Ore") || par1.contains("ore");
 		if ((!ore && (par1.contains("cobble") || par1.contains("sandStone") || par1.contains("brick") || par1.contains("stone"))))
@@ -133,4 +121,50 @@ public class TemplatePressureFurnace extends BaseTemplate
 		}
 		return false;
 	}
+
+	@Override
+	public IAcceptor[] getInterfaces(AcceptorType par1, int size)
+	{
+		IAcceptor[] list = new IAcceptor[size];
+		int current = 0;
+		ForgeDirection op = dir.getOpposite();
+		int xOFF = op.offsetX;
+		int zOFF = op.offsetZ;
+		for(int x = -1;x<2;x++)
+		{
+			if(current == size)
+			{
+				break;
+			}
+			for(int y = -1;y<2;y++)
+			{
+				if(current == size)
+				{
+					break;
+				}
+				for(int z = -1;z<2;z++)
+				{
+					if(current == size)
+					{
+						break;
+					}
+					BlockPosition pos = new BlockPosition(world, xCoord + x + xOFF, yCoord + y, zCoord + z + zOFF);
+					if(pos.doesBlockExsist() && this.isInterface(pos.getAsBlockStack()))
+					{
+						IAcceptor tile = (IAcceptor)pos.getTileEntity();
+						if(tile.getType() == par1 && !tile.hasMaster())
+						{
+							tile.setMaster(furnace);
+							list[current] = tile;
+							current++;
+						}
+					}
+				}
+			}
+		}
+		return list;
+	}
+
+
+	
 }

@@ -838,6 +838,13 @@ public class MobMachine extends FacedInventory implements ISidedInventory,
 				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 40, worldObj.provider.dimensionId, getDescriptionPacket());
 				return true;
 			}
+			else if(current.itemID == Block.mobSpawner.blockID)
+			{
+				worldObj.setBlockToAir(xCoord, yCoord, zCoord);
+				worldObj.setBlock(xCoord, yCoord, zCoord, APIBlocks.blockUtils.blockID, 6, 3);
+				par1.sendChatToPlayer(LangProxy.getText("Initing Mob Spawner Mode"));
+				return true;
+			}
 			else
 			{
 				par1.sendChatToPlayer(LangProxy.getText("Not Valid Initing Item", EnumChatFormatting.RED));

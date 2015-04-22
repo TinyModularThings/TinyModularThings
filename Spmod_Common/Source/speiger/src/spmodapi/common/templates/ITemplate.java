@@ -3,6 +3,8 @@ package speiger.src.spmodapi.common.templates;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
 import speiger.src.api.common.world.blocks.BlockPosition;
+import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
+import speiger.src.api.common.world.tiles.interfaces.IAcceptor.AcceptorType;
 
 public interface ITemplate
 {
@@ -10,15 +12,17 @@ public interface ITemplate
 	
 	public void setupFacing(int facing);
 	
+	public void setMaxInterfaces(AcceptorType par1, int size);
+	
 	public boolean match();
-	
-	public int getTotalPatternSize();
-	
+		
 	public BlockPosition getCore();
 	
 	public void onBreaking();
 	
 	public void onUnload();
+	
+	public IAcceptor[] getInterfaces(AcceptorType par1, int size);
 		
 	public void readFromNBT(NBTTagCompound nbt);
 	

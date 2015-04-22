@@ -1,7 +1,7 @@
 package speiger.src.spmodapi.common.util;
 
-import java.util.ArrayList;
-import java.util.Collection;
+import java.util.*;
+import java.util.Map.Entry;
 
 import net.minecraft.entity.passive.EntityVillager;
 import net.minecraft.entity.player.EntityPlayer;
@@ -13,8 +13,10 @@ import net.minecraftforge.common.FakePlayerFactory;
 import speiger.src.api.common.data.nbt.DataStorage;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.registry.helpers.Ticks.ITickReader;
-import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
+import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
+import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase.DropEntry;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine;
 import speiger.src.spmodapi.common.blocks.utils.MobMachine.DropType;
 import speiger.src.spmodapi.common.config.SpmodConfig;
@@ -73,6 +75,28 @@ public class TickHelper implements ITickReader
 		{
 			cDelay -= 40;
 			DataStorage.write(FMLCommonHandler.instance().getMinecraftServerInstance(), false);
+		}
+		if(!SpmodBlockContainerBase.tileDrops.isEmpty())
+		{
+			for(Entry<List<Integer>, DropEntry> entry : new WeakHashMap<List<Integer>, DropEntry>(SpmodBlockContainerBase.tileDrops).entrySet())
+			{
+				try
+				{
+					BlockPosition pos = new BlockPosition(entry.getKey());
+					DropEntry value = entry.getValue();
+					if(pos.getWorld() != null)
+					{
+						if(pos.getWorld().getTotalWorldTime() - value.getTimeAdded() > 6000)
+						{
+							SpmodBlockContainerBase.tileDrops.remove(entry.getKey());
+						}
+					}
+				}
+				catch(Exception e)
+				{
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	

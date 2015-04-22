@@ -1,7 +1,6 @@
 package speiger.src.spmodapi.common.handler;
 
 import java.util.HashMap;
-import java.util.List;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
@@ -11,7 +10,6 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import speiger.src.api.common.world.items.energy.IBCBattery;
-import speiger.src.api.common.world.items.energy.ItemEnergyNet.BatteryContainer;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
@@ -117,23 +115,11 @@ public class InventoryHandler implements IFuelHandler, ICraftingHandler
 	public void onItemToolTipp(ItemTooltipEvent evt)
 	{
 		ItemStack stack = evt.itemStack;
-		List<String> data = evt.toolTip;
-		try
+		if(stack != null && stack.getItem() instanceof IBCBattery)
 		{
-			if(stack != null && stack.getItem() instanceof IBCBattery)
-			{
-				BatteryContainer container = new BatteryContainer(stack);
-				data.add("Battery Type: "+container.getType());
-				data.add("Transferlimit: In: "+container.requestedEnergy()+"MJ, Out: "+container.getEnergyToSend()+" MJ, Auto: "+container.getTransferlimit()+" MJ");
-//				data.add("In: "+container.requestedEnergy()+" MJ");
-//				data.add("Out: "+container.getEnergyToSend()+" MJ");
-//				data.add("Auto: "+container.getTransferlimit()+" MJ");
-				data.add("Stored Energy: "+container.getStoredEnergy()+" / "+container.getMaxStorage()+" MJ");
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
+			IBCBattery battery = (IBCBattery)stack.getItem();
+			evt.toolTip.add("Transferlimit: "+battery.getTransferlimit(stack)+" MJ");
+			evt.toolTip.add("Stored Energy: "+battery.getStoredMJ(stack)+" / "+battery.getMaxMJStorage(stack)+" MJ");
 		}
 	}
 }

@@ -28,5 +28,12 @@ public class EntityCounter
 	{
 		ID = 0;
 	}
+
+	public int getAndUpdateID()
+	{
+		int id = getCurrentID();
+		updateToNextID();
+		return id;
+	}
 	
 }

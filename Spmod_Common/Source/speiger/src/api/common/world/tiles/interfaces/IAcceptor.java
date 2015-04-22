@@ -22,9 +22,6 @@ public interface IAcceptor
 	// Can be null!
 	BlockStack getBlock();
 	
-	// Leaving the Multistructure.
-	void targetLeave(TileEntity tile);
-	
 	BlockPosition getPosition();
 	
 	boolean isBlockPresent(BlockStack par1);
@@ -36,5 +33,11 @@ public interface IAcceptor
 	public <T> T getTileEntity(Class<T> par1);
 	
 	public int getSideFromTile(Class par1);
+	
+	public boolean hasMaster();
+	
+	public void setMaster(TileEntity par1);
+	
+	public void removeMaster();
 	
 }

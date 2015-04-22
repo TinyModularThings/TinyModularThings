@@ -57,6 +57,11 @@ public class Registry
 		GameRegistry.registerFuelHandler(InventoryHandler.instance);
 		GameRegistry.registerCraftingHandler(InventoryHandler.instance);
 		GasHandler.init();
+		handleSpawner();
+	}
+	
+	static void handleSpawner()
+	{
 	}
 	
 	void registerText()

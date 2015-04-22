@@ -71,6 +71,11 @@ public class RetroGenTickHandler implements ITickHandler
 		int cuDelay = 0;
 		BlockPosition pos;
 		
+		public OreReplacer()
+		{
+			
+		}
+		
 		public OreReplacer(BlockStack block, int delay, BlockPosition pos)
 		{
 			this.block = block;

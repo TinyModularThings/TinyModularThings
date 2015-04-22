@@ -107,6 +107,7 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 			case 2: return new MobMachine();
 			case 4: return new InventoryAccesser();
 			case 5: return new CobbleChest();
+			case 6: return new MobMachineSpawner();
 		}
 		return null;
 	}

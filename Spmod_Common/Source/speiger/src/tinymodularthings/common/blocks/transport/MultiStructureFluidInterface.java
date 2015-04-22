@@ -15,14 +15,11 @@ import net.minecraftforge.fluids.IFluidHandler;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
-import speiger.src.api.common.world.tiles.interfaces.InterfaceAcceptor;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.spmodapi.common.util.data.StructureStorage;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInterfaceBlock;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -33,113 +30,8 @@ public class MultiStructureFluidInterface extends AdvTile implements
 	public int blockID = -1;
 	public int metadata = -1;
 	
-	public int x = 0;
-	public int y = 0;
-	public int z = 0;
-	
 	IFluidHandler target = null;
 	
-	private boolean textureUpdate = false;
-	
-	public void removeTarget()
-	{
-		target = null;
-		x = 0;
-		y = 0;
-		z = 0;
-	}
-	
-	public void findInventory()
-	{
-		if (x == 0 && y == 0 && z == 0)
-		{
-			BlockPosition pos = StructureStorage.instance.getCorePosition(getPosition());
-			if (pos != null)
-			{
-				TileEntity tile = pos.getTileEntity();
-				if (tile != null && tile instanceof InterfaceAcceptor)
-				{
-					InterfaceAcceptor inter = (InterfaceAcceptor) tile;
-					if (inter.acceptFluids(this) && inter.addAcceptor(this))
-					{
-						target = (IFluidHandler) tile;
-						x = tile.xCoord;
-						y = tile.yCoord;
-						z = tile.zCoord;
-						worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
-					}
-				}
-			}
-		}
-		else
-		{
-			BlockPosition pos = new BlockPosition(worldObj, x, y, z);
-			if (pos != null && pos.doesBlockExsist() && pos.hasTileEntity())
-			{
-				TileEntity tile = pos.getTileEntity();
-				if (tile instanceof InterfaceAcceptor)
-				{
-					InterfaceAcceptor inter = (InterfaceAcceptor) tile;
-					if (inter.acceptFluids(this) && inter.addAcceptor(this))
-					{
-						target = (IFluidHandler) tile;
-						worldObj.notifyBlocksOfNeighborChange(xCoord, yCoord, zCoord, getBlockType().blockID);
-					}
-				}
-				
-			}
-		}
-	}
-	
-	public boolean doesExsist()
-	{
-		if (x == 0 && y == 0 && z == 0)
-		{
-			return StructureStorage.instance.isRegistered(getPosition());
-		}
-		else
-		{
-			BlockPosition pos = new BlockPosition(worldObj, x, y, z);
-			return pos.doesBlockExsist() && pos.hasTileEntity() && pos.getTileEntity() instanceof InterfaceAcceptor;
-		}
-	}
-	
-	public void updateData()
-	{
-		if ((x == 0 && y == 0 && z == 0) || !doesExsist() || (doesExsist() && target == null))
-		{
-			if (!doesExsist())
-			{
-				if (target == null)
-				{
-					return;
-				}
-				removeTarget();
-				return;
-			}
-			findInventory();
-		}
-	}
-	
-	@Override
-	public void onTick()
-	{
-		if (worldObj.isRemote || worldObj.getWorldTime() % 20 == 0)
-		{
-			return;
-		}
-		
-		if (!worldObj.isRemote)
-		{
-			updateData();
-		}
-		if ((!worldObj.isRemote && textureUpdate) || (!worldObj.isRemote && worldObj.getWorldTime() % 200 == 0))
-		{
-			textureUpdate = false;
-			PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
-		}
-		
-	}
 	
 	@Override
 	public ItemStack pickBlock(MovingObjectPosition target)
@@ -234,7 +126,7 @@ public class MultiStructureFluidInterface extends AdvTile implements
 	{
 		blockID = par1.getBlockID();
 		metadata = par1.getMeta();
-		textureUpdate = true;
+		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
 	@Override
@@ -246,22 +138,7 @@ public class MultiStructureFluidInterface extends AdvTile implements
 		}
 		return null;
 	}
-	
-	@Override
-	public void targetLeave(TileEntity tile)
-	{
-		if (tile != null)
-		{
-			if (tile.worldObj.provider.dimensionId == worldObj.provider.dimensionId && tile.xCoord == x && tile.yCoord == y && tile.zCoord == z)
-			{
-				target = null;
-				x = 0;
-				y = 0;
-				z = 0;
-			}
-		}
-	}
-	
+		
 	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
@@ -287,13 +164,6 @@ public class MultiStructureFluidInterface extends AdvTile implements
 			blockID = array[0];
 			metadata = array[1];
 		}
-		array = par1.getIntArray("Coords");
-		if (array != null && array.length == 3)
-		{
-			x = array[0];
-			y = array[1];
-			z = array[2];
-		}
 	}
 	
 	@Override
@@ -301,7 +171,6 @@ public class MultiStructureFluidInterface extends AdvTile implements
 	{
 		super.writeToNBT(par1);
 		par1.setIntArray("BlockStack", new int[] { blockID, metadata });
-		par1.setIntArray("Coords", new int[] { x, y, z });
 	}
 	
 	@Override
@@ -397,5 +266,29 @@ public class MultiStructureFluidInterface extends AdvTile implements
 			}
 		}
 		return side;
+	}
+
+
+
+	@Override
+	public boolean hasMaster()
+	{
+		return target != null;
+	}
+
+
+
+	@Override
+	public void setMaster(TileEntity par1)
+	{
+		target = (IFluidHandler)par1;
+	}
+
+
+
+	@Override
+	public void removeMaster()
+	{
+		target = null;
 	}
 }

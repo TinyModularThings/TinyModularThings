@@ -9,6 +9,8 @@ import speiger.src.spmodapi.common.creativeTabs.TabCrafting;
 import speiger.src.spmodapi.common.creativeTabs.TabGas;
 import speiger.src.spmodapi.common.creativeTabs.TabHemp;
 import speiger.src.spmodapi.common.creativeTabs.TabHempDeko;
+import speiger.src.spmodapi.common.enchantment.EnchantmentOreFortune;
+import speiger.src.spmodapi.common.enchantment.EnchantmentOreSilk;
 import speiger.src.spmodapi.common.fluids.gas.FluidAnimalGas;
 import speiger.src.spmodapi.common.fluids.hemp.FluidHempResin;
 import speiger.src.spmodapi.common.material.GasMaterial;
@@ -16,6 +18,7 @@ import speiger.src.spmodapi.common.material.GasMaterial;
 public class APIUtilsConfig
 {
 	private static APIUtils utils;
+	private static SpmodConfig config;
 	
 	public static void register()
 	{
@@ -28,7 +31,8 @@ public class APIUtilsConfig
 		utils.gasMaterial = new GasMaterial();
 		utils.animalGas = new FluidAnimalGas();
 		utils.tabGas = new TabGas();
-		
+		utils.oreSilk = new EnchantmentOreSilk(config.enchIDs.getAndUpdateID());
+		utils.oreFortune = new EnchantmentOreFortune(config.enchIDs.getAndUpdateID());
 		
 		OreDictionary.registerOre("bone", Item.bone);
 		OreDictionary.registerOre("ingotIron", Item.ingotIron);

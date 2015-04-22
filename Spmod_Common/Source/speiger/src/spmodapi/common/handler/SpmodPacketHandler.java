@@ -109,20 +109,23 @@ public class SpmodPacketHandler implements IPacketHandler
 			PacketType type = PacketType.values()[stream.readByte()];
 			if (type == type.TileEntity)
 			{
-				World world = DimensionManager.getWorld(stream.readInt());
-				int x = stream.readInt();
-				int y = stream.readInt();
-				int z = stream.readInt();
-				
-				TileEntity tile = world.getBlockTileEntity(x, y, z);
-				if (tile != null && tile instanceof IPacketReciver)
+				World world = SpmodAPI.core.getClientWorld(stream.readInt());
+				if(world != null)
 				{
-					((IPacketReciver) tile).recivePacket(stream);
+					int x = stream.readInt();
+					int y = stream.readInt();
+					int z = stream.readInt();
+					
+					TileEntity tile = world.getBlockTileEntity(x, y, z);
+					if (tile != null && tile instanceof IPacketReciver)
+					{
+						((IPacketReciver) tile).recivePacket(stream);
+					}
 				}
 			}
 			else if(type == type.ItemInventoryGui)
 			{
-				World world = DimensionManager.getWorld(stream.readInt());
+				World world = SpmodAPI.core.getClientWorld(stream.readInt());
 				if(world != null)
 				{
 					EntityPlayer player = world.getPlayerEntityByName(stream.readUTF());

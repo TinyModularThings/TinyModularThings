@@ -24,7 +24,6 @@ import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor.AcceptorType;
-import speiger.src.api.common.world.tiles.interfaces.InterfaceAcceptor;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.blocks.utils.ExpStorage;
 import speiger.src.spmodapi.common.interfaces.IAdvTile;
@@ -46,11 +45,10 @@ import buildcraft.api.gates.ITrigger;
 
 import com.google.common.math.DoubleMath;
 
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class PressureFurnace extends FacedInventory implements IFluidHandler, InterfaceAcceptor, IOverrideDefaultTriggers, IActionReceptor, ITemplateProvider
+public class PressureFurnace extends FacedInventory implements IFluidHandler, IOverrideDefaultTriggers, IActionReceptor, ITemplateProvider
 {
 	public boolean update = true;
 	public boolean valid = false;
@@ -65,7 +63,6 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 	public IAcceptor fluidInterface = null;
 	public IAcceptor[] itemInterfaces = new IAcceptor[3];
 	public boolean paused = false;
-	public int matches = 0;
 	public double storedExp = 0;
 	ITemplate temp = null;
 	public static Class<? extends GuiInventoryCore> guiClass = null;
@@ -247,30 +244,18 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		super.onTick();
 		if (!worldObj.isRemote)
 		{
-			handleTemplate();
 			if (valid)
 			{
 				handleFuel();
 				handleExp();
 				doWork();
 			}
-			
-			if (update)
-			{
-				onInventoryChanged();
-				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 30, worldObj.provider.dimensionId, getDescriptionPacket());
-				updateBlock();
-				update = false;
-			}
 		}
-		else
+		if(update)
 		{
-			if(valid)
-			{
-				doWork();
-			}
+			update = false;
+			this.updateNeighbors(true);
 		}
-		
 
 	}
 	
@@ -331,25 +316,6 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 					player.addExperience(exp);
 					storedExp = 0;
 				}
-			}
-		}
-	}
-	
-	public void handleTemplate()
-	{
-		if ((firstTime && worldObj.getWorldTime() % 5 == 0) || (!firstTime && worldObj.getWorldTime() % 50 == 0))
-		{
-			boolean old = valid;
-			valid = temp.match();
-			if(old != valid)
-			{
-				update = true;
-			}
-			matches = temp.getTotalPatternSize();
-			updateBlock();
-			if (firstTime)
-			{
-				firstTime = false;
 			}
 		}
 	}
@@ -564,7 +530,6 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		nbt.setInteger("Fuel", fuel);
 		nbt.setInteger("Heat", heat);
 		nbt.setInteger("Progress", progress);
-		nbt.setInteger("Matches", matches);
 		nbt.setBoolean("Paused", paused);
 		nbt.setDouble("Exp", storedExp);
 	}
@@ -577,7 +542,6 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		fuel = nbt.getInteger("Fuel");
 		heat = nbt.getInteger("Heat");
 		progress = nbt.getInteger("Progress");
-		matches = nbt.getInteger("Matches");
 		paused = nbt.getBoolean("Paused");
 		storedExp = nbt.getDouble("Exp");
 	}
@@ -671,90 +635,6 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 	}
 	
 	@Override
-	public boolean acceptItems(IAcceptor par1)
-	{
-		if (par1.getBlock() == null)
-		{
-			return false;
-		}
-		String name = par1.getBlock().getHiddenName();
-		boolean ore = name.contains("Ore") || name.contains("ore");
-		if ((!ore && (name.contains("cobble") || name.contains("sandStone") || name.contains("brick") || name.contains("stone"))))
-		{
-			return par1.getType() == AcceptorType.Items;
-		}
-		return false;
-	}
-	
-	@Override
-	public boolean acceptFluids(IAcceptor par1)
-	{
-		return fluidInterface == null;
-	}
-	
-	@Override
-	public boolean acceptEnergy(IAcceptor par1)
-	{
-		return false;
-	}
-	
-	@Override
-	public boolean addAcceptor(IAcceptor par1)
-	{
-		if(par1.getType() == AcceptorType.Fluids)
-		{
-			if(fluidInterface == null)
-			{
-				fluidInterface = par1;
-				return true;
-			}
-		}
-		else if(par1.getType() == AcceptorType.Items)
-		{
-			boolean flag = false;
-			for(int i = 0;i<itemInterfaces.length;i++)
-			{
-				if(itemInterfaces[i] == null)
-				{
-					itemInterfaces[i] = par1;
-					flag = true;
-					break;
-				}
-			}
-			return flag;
-		}
-		return false;
-	}
-	
-	@Override
-	public boolean removeAcceptor(IAcceptor par1)
-	{
-		if(par1.getType() == AcceptorType.Fluids)
-		{
-			if(fluidInterface != null)
-			{
-				fluidInterface = null;
-				return true;
-			}
-		}
-		else if(par1.getType() == AcceptorType.Items)
-		{
-			boolean flag = false;
-			for(int i = 0;i<itemInterfaces.length;i++)
-			{
-				IAcceptor accept = itemInterfaces[i];
-				if(accept != null && accept.getPosition().match(par1.getPosition().getAsList()))
-				{
-					flag = true;
-					itemInterfaces[i] = null;
-					break;
-				}
-			}
-		}
-		return false;
-	}
-	
-	@Override
 	public LinkedList<ITrigger> getTriggers()
 	{
 		LinkedList<ITrigger> trigger = new LinkedList<ITrigger>();
@@ -799,18 +679,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 				par1.add("The Core Block is not a Air Block: "+pos.getAsBlockStack().getHiddenName());
 				par1.add("Real Block Name: "+pos.getAsBlockStack().getBlockDisplayName());
 			}
-			if(matches == 26 && !pos.isAirBlock())
-			{
-				
-			}
-			else if(matches != 27)
-			{
-				par1.add("Structure is not valid: out of 27 blocks only "+matches+" match");
-			}
-			
-
 		}
-		
 	}
 
 	@Override
@@ -840,6 +709,9 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 			temp = new TemplatePressureFurnace(this);
 		}
 		temp.setup(worldObj, xCoord, yCoord, zCoord, getFacing());
+		temp.setMaxInterfaces(AcceptorType.Items, 3);
+		temp.setMaxInterfaces(AcceptorType.Fluids, 1);
+		loadInterfaces();
 	}
 
 	@Override
@@ -897,5 +769,61 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, In
 		}
 		return true;
 	}
+
+	@Override
+	public void onStructureChange()
+	{
+		unloadInterfaces();
+		boolean test = temp.match();
+		if(valid != test)
+		{
+			valid = test;
+			if(valid)
+			{
+				loadInterfaces();
+			}
+			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			this.updateNeighbors(true);
+			this.update = true;
+		}
+	}
+	
+	public void loadInterfaces()
+	{
+		this.itemInterfaces = temp.getInterfaces(AcceptorType.Items, 3);
+		this.fluidInterface = temp.getInterfaces(AcceptorType.Fluids, 1)[0];
+	}
+	
+	public void unloadInterfaces()
+	{
+		if(this.fluidInterface != null)
+		{
+			this.fluidInterface.removeMaster();
+			this.fluidInterface = null;
+		}
+		for(int i = 0;i<this.itemInterfaces.length;i++)
+		{
+			IAcceptor accept = this.itemInterfaces[i];
+			if(accept != null)
+			{
+				accept.removeMaster();
+			}
+		}
+		this.itemInterfaces = new IAcceptor[3];
+	}
+
+	@Override
+	public void onInteraction(EntityPlayer par1)
+	{
+		onActivated(par1);
+	}
+
+	@Override
+	public boolean hasValidTemplate()
+	{
+		return valid;
+	}
+	
+	
 	
 }

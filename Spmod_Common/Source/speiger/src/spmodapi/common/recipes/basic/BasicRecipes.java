@@ -13,6 +13,7 @@ import speiger.src.spmodapi.common.items.crafting.ItemGear.GearType;
 import speiger.src.spmodapi.common.recipes.advanced.ColorCardCleaning;
 import speiger.src.spmodapi.common.recipes.advanced.ColorCardRecipe;
 import speiger.src.spmodapi.common.recipes.advanced.ShapedColorCardRecipe;
+import speiger.src.spmodapi.common.recipes.advanced.SpawnerRecipe;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 
 public class BasicRecipes
@@ -43,7 +44,7 @@ public class BasicRecipes
 		pp.addRecipe(new ItemStack(APIBlocks.blockUtils, 1, 3), new Object[] {"XYX", "CVC", "XYX", 'X', Block.glass, 'C', Block.ice, 'V', Item.porkRaw, 'Y', new ItemStack(Item.dyePowder, 1, EnumColor.BLACK.getAsDye()) });
 		pp.addRecipe(new ItemStack(APIBlocks.blockUtils, 1, 4), new Object[] {"XYX", "CVC", "BNB", 'X', GearType.StoneRing.getItem(), 'Y', Block.bookShelf, 'C', Block.tripWireSource, 'V', Block.redstoneLampIdle, 'B', Item.eyeOfEnder, 'N', Block.stoneButton });
 		pp.addRecipe(new ItemStack(APIBlocks.blockUtils, 1, 5), new Object[] {"XYX", "X X", "XXX", 'X', Block.cobblestone, 'Y', new ItemStack(Block.stoneSingleSlab, 1, 3) });
-		
+		pp.addRecipe(new SpawnerRecipe());
 	}
 	
 	private static void loadElectronicsRecipes(PathProxy pp)

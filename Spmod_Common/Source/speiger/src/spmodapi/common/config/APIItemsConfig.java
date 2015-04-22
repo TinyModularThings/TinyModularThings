@@ -11,6 +11,7 @@ import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 import speiger.src.spmodapi.common.fluids.hemp.ItemHempResin;
 import speiger.src.spmodapi.common.items.armor.HempArmor;
 import speiger.src.spmodapi.common.items.core.BasicItem;
+import speiger.src.spmodapi.common.items.core.ItemSpawnerBlock;
 import speiger.src.spmodapi.common.items.core.SpmodItem;
 import speiger.src.spmodapi.common.items.crafting.*;
 import speiger.src.spmodapi.common.items.debug.ItemAccessAdder;
@@ -34,6 +35,9 @@ public class APIItemsConfig
 		
 		Item.enderPearl.setMaxStackSize(64);
 		Item.egg.setMaxStackSize(64);
+		
+		Item.itemsList[52] = null;
+		new ItemSpawnerBlock();
 		
 		items.hempSeed = new ItemHempSeed(config.itemIDs.getCurrentID());
 		RegisterProxy.RegisterItem(items.hempSeed);

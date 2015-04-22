@@ -283,7 +283,10 @@ public class GuiInventoryCore extends GuiContainer
 		for(int i = 0;i < playerSlot.size();i++)
 		{
 			PlayerSlot slot = playerSlot.get(i);
-			this.drawSlot(slot);
+			if(!slot.isFake())
+			{
+				this.drawSlot(slot);
+			}
 		}
 		ArrayList<TankSlot> tankSlots = ((AdvContainer)this.inventorySlots).getTanks();
 		for(int i = 0;i < tankSlots.size();i++)

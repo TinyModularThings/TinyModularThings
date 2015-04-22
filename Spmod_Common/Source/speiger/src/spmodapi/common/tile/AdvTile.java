@@ -68,6 +68,8 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 	private int renderPass = 0;
 	private byte[] redstoneStrenght = new byte[6];
 	private byte[] sendingStrenght = new byte[6];
+	private TileDataBuffer[] tiles = null;
+	NBTTagCompound templateNBT = null;
 	//TODO Custom Functions
 	
 	
@@ -100,6 +102,15 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 	protected void setClockTime(int time)
 	{
 		clock = time;
+	}
+	
+	public TileDataBuffer getBuffer(int side)
+	{
+		if(tiles == null)
+		{
+			tiles = TileDataBuffer.makeBuffer(worldObj, xCoord, yCoord, zCoord, false);
+		}
+		return tiles[side];
 	}
 	
 	public void loadInformation(List par1)
@@ -376,8 +387,7 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 		if(this instanceof ITemplateProvider)
 		{
 			ITemplateProvider provider = (ITemplateProvider)this;
-			NBTTagCompound nbt = par1.getCompoundTag("Template");
-			provider.getTemplate().readFromNBT(nbt);
+			templateNBT = par1.getCompoundTag("Template");
 		}
 	}
 
@@ -440,6 +450,11 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 		{
 			ITemplateProvider provider = (ITemplateProvider)this;
 			provider.initTemplate();
+			if(templateNBT != null)
+			{
+				provider.getTemplate().readFromNBT(templateNBT);
+				templateNBT = null;
+			}
 		}
 	}
 	

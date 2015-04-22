@@ -1,9 +1,9 @@
 package speiger.src.spmodapi.common.blocks.cores;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
+import java.util.WeakHashMap;
 
 import net.minecraft.block.ITileEntityProvider;
 import net.minecraft.block.material.Material;
@@ -31,7 +31,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEntityProvider
 {
-	public static HashMap<List<Integer>, ArrayList<ItemStack>> tileDrops = new HashMap<List<Integer>, ArrayList<ItemStack>>();
+	public static WeakHashMap<List<Integer>, DropEntry> tileDrops = new WeakHashMap<List<Integer>, DropEntry>();
 	public ThreadLocal<EntityPlayer> breaker = new ThreadLocal<EntityPlayer>();
 	
 	public SpmodBlockContainerBase(int par1, Material par2Material)
@@ -549,11 +549,11 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
     		{
     			int fortune = 0;
     			EntityPlayer player = breaker.get();
-    			if(player == null)
+    			if(player != null)
     			{
     				fortune = EnchantmentHelper.getFortuneModifier(player);
     			}
-    			tileDrops.put(tile.getPosition().getAsList(), tile.getItemDrops(fortune));
+    			tileDrops.put(tile.getPosition().getAsList(), new DropEntry(tile.getItemDrops(fortune), par1World.getTotalWorldTime()));
        		}
     	}
         super.breakBlock(par1World, par2, par3, par4, par5, par6);
@@ -575,7 +575,7 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 		
 		if(tileDrops.containsKey(pos.getAsList()))
 		{
-			drops.addAll(tileDrops.remove(pos.getAsList()));
+			drops.addAll(tileDrops.get(pos.getAsList()).getDrops());
 		}
 		else
 		{
@@ -606,6 +606,27 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
     public Icon getTexture(TextureEngine par1, int meta, int side)
     {
     	return par1.getIconSafe();
+    }
+    
+    public static class DropEntry
+    {
+    	final List<ItemStack> drops;
+    	final long timeAdded;
+    	public DropEntry(List<ItemStack> par1, long par2)
+		{
+    		drops = par1;
+    		timeAdded = par2;
+		}
+    	
+    	public List<ItemStack> getDrops()
+		{
+			return drops;
+		}
+    	
+    	public long getTimeAdded()
+		{
+			return timeAdded;
+		}
     }
     
 }

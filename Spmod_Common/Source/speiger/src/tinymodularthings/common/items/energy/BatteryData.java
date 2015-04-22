@@ -26,19 +26,20 @@ public class BatteryData extends BatteryInventory implements IPacketReciver
 		return "Battery Data";
 	}
 	
+	
+	
 	@Override
 	public boolean renderInnerInv()
 	{
 		return false;
 	}
-	
+
 	@Override
 	public boolean renderOuterInv()
 	{
 		return false;
 	}
-	
-	
+
 	@Override
 	@SideOnly(Side.CLIENT)
 	public void onGuiLoad(GuiInventoryCore par1, int guiX, int guiY)
@@ -89,4 +90,6 @@ public class BatteryData extends BatteryInventory implements IPacketReciver
 	{
 		super.writeToNBT(par1);
 	}
+	
+	
 }

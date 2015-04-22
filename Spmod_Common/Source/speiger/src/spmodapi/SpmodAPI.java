@@ -62,6 +62,7 @@ public class SpmodAPI implements SpmodMod
 		NetworkRegistry.instance().registerChannel(new SpmodPacketHandler(), "Spmod");
 		instance = this;
 		NetworkRegistry.instance().registerGuiHandler(instance, core);
+
 	}
 	
 	@EventHandler

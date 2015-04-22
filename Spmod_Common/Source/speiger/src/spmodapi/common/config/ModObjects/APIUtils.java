@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.config.ModObjects;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.ai.attributes.Attribute;
 import net.minecraft.item.EnumArmorMaterial;
 import net.minecraftforge.fluids.Fluid;
@@ -26,5 +27,9 @@ public class APIUtils
 	public static CreativeTabs tabHempDeko;
 	public static CreativeTabs tabCrafing;
 	public static CreativeTabs tabGas;
+	
+	//Enchantments
+	public static Enchantment oreFortune;
+	public static Enchantment oreSilk;
 	
 }

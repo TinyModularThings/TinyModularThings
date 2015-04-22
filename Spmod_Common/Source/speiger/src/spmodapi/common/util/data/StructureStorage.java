@@ -1,197 +1,408 @@
 package speiger.src.spmodapi.common.util.data;
 
-import java.util.*;
-import java.util.Map.Entry;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.WeakHashMap;
 
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
-import net.minecraft.tileentity.TileEntity;
+import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.event.Event.Result;
+import net.minecraftforge.event.EventPriority;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent;
 import net.minecraftforge.event.entity.player.PlayerInteractEvent.Action;
-import speiger.src.api.common.data.nbt.DataStorage;
-import speiger.src.api.common.data.nbt.INBTReciver;
+import net.minecraftforge.event.world.BlockEvent;
+import speiger.src.api.common.event.BlockPlacedEvent;
 import speiger.src.api.common.registry.helpers.SpmodMod;
-import speiger.src.api.common.world.blocks.BlockPosition;
+import speiger.src.api.common.registry.helpers.Ticks;
+import speiger.src.api.common.registry.helpers.Ticks.ITickReader;
+import speiger.src.api.common.world.utils.IStructureBox;
 import speiger.src.spmodapi.SpmodAPI;
-import speiger.src.spmodapi.common.interfaces.IAdvTile;
+import cpw.mods.fml.relauncher.Side;
 
-public class StructureStorage implements INBTReciver
+/**
+ * 
+ * @author Speiger
+ *
+ * This class is for Block MultiStructures Not TileEntity MultiStructures
+ * The Difference between Block & TileEntity Multistructures is that a
+ * TileEntity Multistructure is only build out of TileEntities there are no basic blocks.
+ * The Block MultiStructure has only 1 core and the rest is made out of basic blocks like cobble.
+ * There is the case that other interaction TileEntity blocks are joining with it.
+ * But you can Compare that with XYCraft MultiTanks... I never saw Soyrans Code. (Just for note)s
+ *
+ */
+public class StructureStorage implements ITickReader
 {
 	public static StructureStorage instance = new StructureStorage();
 	
-	private HashMap<List<Integer>, List<Integer>> structures = new HashMap<List<Integer>, List<Integer>>();
-	private HashMap<List<Integer>, ArrayList<List<Integer>>> cores = new HashMap<List<Integer>, ArrayList<List<Integer>>>();
+	private WeakHashMap<World, BoxList> updateBoxes = new WeakHashMap<World, BoxList>();
+	private WeakHashMap<World, BoxList> interactionBoxes = new WeakHashMap<World, BoxList>();
+	//Needed because else they would not notify that the block broke..
+	private List<IStructureBox> breakNotifies = new ArrayList<IStructureBox>();
 	
-	public void registerStorage(BlockPosition core, BlockPosition pos)
+	
+	public boolean isAnyUpdateBoxColiding(World world, IStructureBox...par1)
 	{
-		structures.put(pos.getAsList(), core.getAsList());
-		if (cores.get(core.getAsList()) == null)
+		boolean flag = false;
+		for(IStructureBox box : par1)
 		{
-			ArrayList<List<Integer>> lists = new ArrayList<List<Integer>>();
-			lists.add(pos.getAsList());
-			cores.put(core.getAsList(), lists);
-			return;
+			flag = isUpdateBoxColiding(world, box);
+			if(flag)
+			{
+				break;
+			}
 		}
-		cores.get(core.getAsList()).add(pos.getAsList());
+		return flag;
 	}
 	
-	public boolean isRegistered(BlockPosition pos)
+	/**
+	 * function if coliding with other boxes
+	 * return false = nope
+	 */
+	public boolean isUpdateBoxColiding(World world, IStructureBox par1)
 	{
-		return structures.get(pos.getAsList()) != null;
-	}
-	
-	public boolean isRegisteredToMe(BlockPosition core, BlockPosition pos)
-	{
-		List<Integer> list = structures.get(pos);
-		if (list == null)
+		BoxList list = getUpdateBoxList(world);
+		if(list == null)
 		{
 			return false;
 		}
-		
-		BlockPosition end = new BlockPosition(list.get(0), list.get(1), list.get(2), list.get(3));
-		
-		return end.worldID == core.worldID && end.xCoord == core.xCoord && end.yCoord == core.yCoord && end.zCoord == core.zCoord;
+		return list.isColidingWithother(par1);
 	}
 	
-	public BlockPosition getCorePosition(BlockPosition pos)
+	
+	/**
+	 * Multi Check function. nothing Special
+	 */
+	public boolean isAnyInteractionBoxColiding(World world, IStructureBox...par1)
 	{
-		List<Integer> list = structures.get(pos.getAsList());
-		
-		if (list == null)
+		boolean flag = false;
+		for(IStructureBox box : par1)
 		{
-			return null;
+			flag = isInteractionBoxColiding(world, box);
+			if(flag)
+			{
+				break;
+			}
 		}
-		
-		return new BlockPosition(list.get(0), list.get(1), list.get(2), list.get(3));
+		return flag;
 	}
 	
-	public void removePosition(BlockPosition pos)
+	/**
+	 * function if Coliding with other Boxes.
+	 * return false = nope. 
+	 */
+	public boolean isInteractionBoxColiding(World world, IStructureBox par1)
 	{
-		structures.remove(pos.getAsList());
+		BoxList list = getInteractionBoxList(world);
+		if(list == null)
+		{
+			return false;
+		}
+		return list.isColidingWithother(par1);
 	}
 	
-	public void removeStorage(BlockPosition pos, BlockPosition core)
+	/**
+	 * removes the Player Interaction Box from the World.
+	 */
+	public void removeInteractionBox(World world, IStructureBox...par1)
 	{
-		structures.remove(pos.getAsList());
-		cores.remove(core.getAsList());
+		BoxList list = getInteractionBoxList(world);
+		if(list == null)
+		{
+			return;
+		}
+		for(IStructureBox box : par1)
+		{
+			list.remove(box);
+		}
 	}
 	
-	public void removeCore(BlockPosition target)
+	/**
+	 * removes the the Update box from the World
+	 */
+	public void removeUpdateBoxes(World world, IStructureBox...par1)
 	{
-		cores.remove(target.getAsList());
+		BoxList list = getUpdateBoxList(world);
+		if(list == null)
+		{
+			return;
+		}
+		for(IStructureBox box : par1)
+		{
+			list.remove(box);
+		}
+		notifyUpdateBoxes(world);
 	}
 	
-	@ForgeSubscribe
+	private void notifyUpdateBoxes(World world)
+	{
+		BoxList list = getUpdateBoxList(world);
+		if(list == null)
+		{
+			return;
+		}
+		for(IStructureBox box : list)
+		{
+			box.onBlockChange();
+		}
+	}
+	
+	
+	/**
+	 * Same as the registerInteractionBoxes. But these are for blockEvents
+	 * like block Placed and Block Broken. You do not require these but they will be simply fired
+	 * anyways and that reduces the amount of TileEntity ticks that you have to use since it will be handed
+	 * by events. So the Event sender gets the lag. I will maybe even make a system catch so that
+	 * blocks only fire events but the load of it will be handled at the end of a tick..
+	 * 
+	 * @return if the boxes colide with any other boxes.
+	 */
+	public boolean registerUpdateBoxes(World world, IStructureBox...par1)
+	{
+		BoxList list = getUpdateBoxList(world);
+		if(list == null)
+		{
+			//World == null = List == null. You get what you give.
+			return false;
+		}
+		boolean flag = true;
+		for(IStructureBox box : par1)
+		{
+			if(list.isColidingWithother(box))
+			{
+				flag = false;
+			}
+			list.add(box);
+		}
+		return flag;
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Here you register the PlayerInteraction MultiStructure Boxes.
+	 * You can register multible if you want to have multibe results.
+	 * May Change and the Information of the possition will be sended with the interaction.
+	 * But here you register your boxes.
+	 * World is required because differend dimensions and co with support. You know :D
+	 * @return false if any boxes colide withsomething else.
+	 * 
+	 */
+	public boolean registerInteractionBoxes(World world, IStructureBox...par1)
+	{
+		BoxList list = getInteractionBoxList(world);
+		if(list == null)
+		{
+			//World == null = List == null. You get what you give.
+			return false;
+		}
+		boolean flag = true;
+		for(IStructureBox box : par1)
+		{
+			if(list.isColidingWithother(box))
+			{
+				flag = false;
+			}
+			list.add(box);
+		}
+		return false;
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/*	New Multi Structure Logic. Its way more clean then the old one.
+	 *  Instead of having every position stored in data and reloaded i allow structures
+	 * 	now to register their Bounding Boxes. Which is for interaction and Updates really usefull
+	 *  That also prevent that people need to update the Structure Check every tick (every 20 ticks or what they setted up)
+	 *  Because as soon something in their structure box (that is used for the structure itself) changes the structures get an information
+	 *  and also what kind of change it is. So the Lag increases and Decreases by the amount of interactions it makes...
+	 *	
+	 *	There are now Two Boxs list. 1 For player interaction if they allow that you can click on them then they will get a notify when
+	 *	a player want a interaction with the structure.
+	 *	The Other list is for every kind of WorldUpdate. as BlockPlaced/BlockBreaked events. So updates happens differend...
+	 */
+	
+	@ForgeSubscribe(priority = EventPriority.LOWEST)
 	public void onClickBlock(PlayerInteractEvent evt)
 	{
-		if (!evt.entity.worldObj.isRemote && evt.action == Action.RIGHT_CLICK_BLOCK && !evt.entityPlayer.isSneaking())
+		if (!evt.entity.worldObj.isRemote && !evt.isCanceled() && evt.action == Action.RIGHT_CLICK_BLOCK && !evt.entityPlayer.isSneaking())
 		{
-			BlockPosition pos = new BlockPosition(evt.entityPlayer.worldObj, evt.x, evt.y, evt.z);
-			if (isRegistered(pos))
+			BoxList list = getInteractionBoxList(evt.entityPlayer.worldObj);
+			if(list != null && list.size() > 0)
 			{
-				BlockPosition core = getCorePosition(pos);
-				if (core != null && core.doesBlockExsist())
+				IStructureBox box = list.getBoxFromCoords(evt.x, evt.y, evt.z);
+				if(box != null && box.isBoxActive())
 				{
-					TileEntity tile = core.getTileEntity();
-					if (tile != null && tile instanceof IAdvTile)
-					{
-						if (!((IAdvTile) tile).hasContainer())
-						{
-							return;
-						}
-					}
-					
-					if (core.getAsBlockStack().getBlock().onBlockActivated(evt.entity.worldObj, core.xCoord, core.yCoord, core.zCoord, evt.entityPlayer, 0, 0, 0, 0))
-					{
-						evt.useItem = Result.DENY;
-					}
+					box.onInteract(evt.entityPlayer);
+					evt.useItem = Result.DENY;
 				}
 			}
 		}
 	}
 	
+	@ForgeSubscribe(priority = EventPriority.LOWEST)
+	public void onBlockBreak(BlockEvent.BreakEvent evt)
+	{
+		if(!evt.world.isRemote && !evt.isCanceled())
+		{
+			BoxList list = getUpdateBoxList(evt.world);
+			if(list != null && list.size() > 0)
+			{
+				IStructureBox box = list.getBoxFromCoords(evt.x, evt.y, evt.z);
+				if(box != null && box.isBoxActive())
+				{
+					this.breakNotifies.add(box);
+				}
+			}
+		}
+	}
+	
+	@ForgeSubscribe(priority = EventPriority.LOWEST)
+	public void onBlockPlaced(BlockPlacedEvent event)
+	{
+		if(!event.world.isRemote)
+		{
+			BoxList list = getUpdateBoxList(event.world);
+			if(list != null && list.size() > 0)
+			{
+				IStructureBox box = list.getBoxFromCoords(event.x, event.y, event.z);
+				//Here it always get called since the update happends here.
+				//At all other it needs a check.
+				if(box != null)
+				{
+					box.onBlockChange();
+				}
+			}
+		}
+	}
+	
+	public BoxList getUpdateBoxList(World world)
+	{
+		if(world == null)
+		{
+			return null;
+		}
+		if(!updateBoxes.containsKey(world))
+		{
+			updateBoxes.put(world, new BoxList());
+		}
+		return updateBoxes.get(world);
+	}
+	
+	public BoxList getInteractionBoxList(World world)
+	{
+		if(world == null)
+		{
+			return null;
+		}
+		if(!interactionBoxes.containsKey(world))
+		{
+			interactionBoxes.put(world, new BoxList());
+		}
+		return interactionBoxes.get(world);
+	}
+	
+	
 	// Loading and Writing to data
 	public static void registerForgeEvent()
 	{
 		MinecraftForge.EVENT_BUS.register(instance);
-		DataStorage.registerNBTReciver(instance);
+		Ticks.registerTickReciver(instance);
 	}
 	
-	private void addStructure(List<Integer> key, List<Integer> val)
-	{
-		if (key != null && val != null && key.size() == 4 && val.size() == 4)
-		{
-			structures.put(val, key);
-			if (cores.get(key) == null)
-			{
-				ArrayList<List<Integer>> lists = new ArrayList<List<Integer>>();
-				lists.add(val);
-				cores.put(key, lists);
-				return;
-			}
-			cores.get(key).add(val);
-		}
-	}
+
 	
-	@Override
-	public void loadFromNBT(NBTTagCompound par1)
+
+	
+	public static class BoxList extends ArrayList<IStructureBox>
 	{
-		structures.clear();
-		cores.clear();
-		
-		NBTTagList list = par1.getTagList("Structures");
-		
-		for (int i = 0; i < list.tagCount(); i++)
+		public boolean isColidingWithother(IStructureBox par1)
 		{
-			NBTTagCompound tag = (NBTTagCompound) list.tagAt(i);
-			int[] key = tag.getIntArray("Key");
-			int[] value = tag.getIntArray("Value");
+			int minXCheck = par1.getMinX();
+			int minYCheck = par1.getMinY();
+			int minZCheck = par1.getMinZ();
+			int maxXCheck = par1.getMaxX();
+			int maxYCheck = par1.getMaxY();
+			int maxZCheck = par1.getMaxZ();
 			
-			addStructure(Arrays.asList(key[0], key[1], key[2], key[3]), Arrays.asList(value[0], value[1], value[2], value[3]));
+			for(int i = 0;i<this.size();i++)
+			{
+				IStructureBox box = this.get(i);
+				int minX = box.getMinX();
+				int minY = box.getMinY();
+				int minZ = box.getMinZ();
+				int maxX = box.getMaxX();
+				int maxY = box.getMaxY();
+				int maxZ = box.getMaxZ();
+				
+				boolean same = minXCheck == minX && minYCheck == minY && minZCheck == minZ && maxXCheck == maxX && maxYCheck == maxY && maxZCheck == maxZ;
+				if(same)
+				{
+					continue;
+				}
+				
+				boolean XColide = (minX >= minXCheck && minX <= maxXCheck) || (maxX >= minXCheck && maxX <= maxXCheck);
+				boolean YColide = (minY >= minYCheck && minY <= maxYCheck) || (maxY >= minYCheck && maxY <= maxYCheck);
+				boolean ZColide = (minZ >= minZCheck && minZ <= maxZCheck) || (maxZ >= minZCheck && maxZ <= maxZCheck);
+				if(XColide && YColide && ZColide)
+				{
+					return true;
+				}
+				
+			}
+			return false;
 		}
-	}
-	
-	@Override
-	public void saveToNBT(NBTTagCompound nbt)
-	{
-		Iterator<Entry<List<Integer>, List<Integer>>> keys = structures.entrySet().iterator();
-		NBTTagList tags = new NBTTagList();
-		while (keys.hasNext())
+		
+		public IStructureBox getBoxFromCoords(int x, int y, int z)
 		{
-			Entry<List<Integer>, List<Integer>> cu = keys.next();
-			NBTTagCompound cuNBT = new NBTTagCompound();
-			// Switching around because of the reading is the same. Shouldnt be
-			// happening but who cares!
-			int[] key = new int[] { cu.getValue().get(0), cu.getValue().get(1), cu.getValue().get(2), cu.getValue().get(3) };
-			int[] val = new int[] { cu.getKey().get(0), cu.getKey().get(1), cu.getKey().get(2), cu.getKey().get(3) };
-			cuNBT.setIntArray("Key", key);
-			cuNBT.setIntArray("Value", val);
-			tags.appendTag(cuNBT);
+			for(int i = 0;i<this.size();i++)
+			{
+				IStructureBox box = this.get(i);
+				if(box.contains(x, y, z))
+				{
+					return box;
+				}
+			}
+			return null;
 		}
-		nbt.setTag("Structures", tags);
+		
 	}
-	
+
+
+
+
+
+	@Override
+	public void onTick(SpmodMod sender, Side side)
+	{
+		if(side == Side.CLIENT)
+		{
+			return;
+		}
+		for(IStructureBox box : this.breakNotifies)
+		{
+			box.onBlockBreak();
+		}
+		this.breakNotifies.clear();
+	}
+
+	@Override
+	public boolean needTick()
+	{
+		return this.breakNotifies.size() > 0;
+	}
+
 	@Override
 	public SpmodMod getOwner()
 	{
 		return SpmodAPI.instance;
 	}
-	
-	@Override
-	public String getID()
-	{
-		return "Structure.Storage";
-	}
-	
-	@Override
-	public void finishLoading()
-	{
-		
-	}
-
-
-	
 }

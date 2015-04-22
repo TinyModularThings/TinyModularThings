@@ -29,6 +29,8 @@ public class AdvContainer extends Container
 	private int offsetY = 0;
 	private int settedSize = 0;
 	private String invName = "";
+	private boolean requireFakeSlots = false;
+	
 	public AdvContainer(EntityPlayer par1)
 	{
 		player = par1;
@@ -59,6 +61,12 @@ public class AdvContainer extends Container
 		this.setTile(par2);
 		par2.addContainerSlots(this);
 		setInventory(par1);
+	}
+	
+	public AdvContainer setRequireFakeInv()
+	{
+		this.requireFakeSlots = true;
+		return this;
 	}
 	
 	public void setSizedInventory(int par1)
@@ -100,21 +108,31 @@ public class AdvContainer extends Container
 		int var3;
 		if(tile != null)
 		{
-			if(tile.renderInnerInv())
+			if(tile.renderInnerInv() || this.requireFakeSlots)
 			{
 				for(var3 = 0;var3 < 3;++var3)
 				{
 					for(int var4 = 0;var4 < 9;++var4)
 					{
-						addPlayerSlot(new PlayerSlot(par1, var4 + var3 * 9 + 9, 8 + offsetX + var4 * 18, 84 + offsetY + var3 * 18));
+						PlayerSlot slot = new PlayerSlot(par1, var4 + var3 * 9 + 9, 8 + offsetX + var4 * 18, 84 + offsetY + var3 * 18);
+						if(requireFakeSlots)
+						{
+							slot.setFake();
+						}
+						addPlayerSlot(slot);
 					}
 				}
 			}
-			if(tile.renderOuterInv())
+			if(tile.renderOuterInv() || this.requireFakeSlots)
 			{
 				for(var3 = 0;var3 < 9;++var3)
 				{
-					addPlayerSlot(new PlayerSlot(par1, var3, 8 + offsetX + var3 * 18, 142 + offsetY));
+					PlayerSlot slot = new PlayerSlot(par1, var3, 8 + offsetX + var3 * 18, 142 + offsetY);
+					if(requireFakeSlots)
+					{
+						slot.setFake();
+					}
+					addPlayerSlot(slot);
 				}
 			}
 		}
@@ -144,10 +162,48 @@ public class AdvContainer extends Container
 	
 	public void addPlayerSlot(PlayerSlot par1)
 	{
+		if(!this.requireFakeSlots)
+		{
+			addSlotToContainer(par1);
+		}
+		else
+		{
+			par1.slotNumber = this.playerInv.size();
+		}
 		playerInv.add(par1);
-		addSlotToContainer(par1);
 	}
 	
+	
+	
+	@Override
+	public Slot getSlotFromInventory(IInventory par1IInventory, int par2)
+	{
+		if(requireFakeSlots)
+		{
+	        for (int j = 0; j < this.playerInv.size(); ++j)
+	        {
+	            Slot slot = (Slot)this.playerInv.get(j);
+
+	            if (slot.isSlotInInventory(par1IInventory, par2))
+	            {
+	                return slot;
+	            }
+	        }
+	        return null;
+		}
+		return super.getSlotFromInventory(par1IInventory, par2);
+	}
+
+	@Override
+	public Slot getSlot(int par1)
+	{
+		if(requireFakeSlots)
+		{
+			return playerInv.get(par1);
+		}
+		return super.getSlot(par1);
+	}
+
 	public SpmodSlot addSpmodSlot(IInventory par1, int id, int x, int y)
 	{
 		SpmodSlot slot = new SpmodSlot(par1, id, x, y);

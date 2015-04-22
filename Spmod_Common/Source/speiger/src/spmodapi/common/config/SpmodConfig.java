@@ -6,6 +6,7 @@ import java.util.HashMap;
 import net.minecraftforge.common.Configuration;
 import net.minecraftforge.common.Property;
 import speiger.src.api.common.utils.config.ConfigBoolean;
+import speiger.src.api.common.utils.config.EntityCounter;
 import speiger.src.api.common.utils.config.IConfigHelper;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.configType.ConfigBlock;
@@ -30,6 +31,7 @@ public class SpmodConfig implements IConfigHelper
 	
 	public static ConfigBlock blockIDs;
 	public static ConfigItem itemIDs;
+	public static EntityCounter enchIDs;
 	
 	private static SpmodConfig init = new SpmodConfig();
 	
@@ -81,6 +83,8 @@ public class SpmodConfig implements IConfigHelper
 			
 			blockIDs = new ConfigBlock(ConfigBlock.getConfig(config, blocks, 950));
 			itemIDs = new ConfigItem(ConfigItem.getConfig(config, items, 15000));
+			enchIDs = new EntityCounter(Integer.parseInt(config.get(general, "Enchantment StartID", 100, "This id sets the ID Start for all my Enchantments. If there is a missmatch then just change it").getString()));
+			
 			
 			TextureEngine.getTextures().setCurrentMod(SpmodAPILib.ModID.toLowerCase());
 			SpmodAPI.log.print("Load Utils");

@@ -407,7 +407,8 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 				data.setInteger("TargetID", 0);
 				return;
 			}
-			BlockPosition pos = getTarget(data.getInteger("TargetID"));
+			List<Integer> list = canBeOpened.get(data.getInteger("TargetID"));
+			BlockPosition pos = new BlockPosition(par1.getMC().theWorld, list.get(1), list.get(2), list.get(3));
 			ItemStack stack = pos.getAsBlockStack().getPicketBlock(getPosition(), getSideFromPlayer(par1.getMC().thePlayer.username));
 			par1.renderItem(stack, 60, 20);
 			
@@ -435,7 +436,9 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 				{
 					return;
 				}
-				BlockPosition pos = getTarget((data.getInteger("Page") * 6) + i);
+				
+				List<Integer> list = canBeOpened.get((data.getInteger("Page") * 6) + i);
+				BlockPosition pos = new BlockPosition(par1.getMC().theWorld, list.get(1), list.get(2), list.get(3));
 				String name = pos.getAsBlockStack().getPickedBlockDisplayName(pos, getSideFromPlayer(par1.getMC().thePlayer.username));
 				
 				if(hasCustomName(pos.getAsList()))

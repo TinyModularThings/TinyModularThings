@@ -4,6 +4,7 @@ import java.util.List;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -16,6 +17,7 @@ import speiger.src.spmodapi.common.items.core.ItemInventory;
 import speiger.src.spmodapi.common.items.core.SpmodInventoryItem;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
+import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -100,12 +102,6 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 			{
 				if(mode == 0)
 				{
-					if(getBatteryData(par1).getBoolean("AutoOut"))
-					{
-						getBatteryData(par1).setBoolean("AutoOut", false);
-						par3.sendChatToPlayer(LangProxy.getText("Deactivated Auto Sending, Click again to Open Gui"));
-						return par1;
-					}
 					return super.onItemRightClick(par1, par2, par3);
 				}
 				if(mode == 1)
@@ -353,4 +349,12 @@ public class Batteries extends SpmodInventoryItem implements IBCBattery
 	{
 		ItemEnergyNet.getEnergyNet().loadSettingsFromItem(par1).sendEnergyToItems(par1, par3);
 	}
+
+	@Override
+	public AdvContainer getContainer(InventoryPlayer par1, ItemStack par2)
+	{
+		return new AdvContainer(par1).setTile(this.createNewInventory(par1.player, par2)).setRequireFakeInv().setInventory(par1);
+	}
+	
+	
 }

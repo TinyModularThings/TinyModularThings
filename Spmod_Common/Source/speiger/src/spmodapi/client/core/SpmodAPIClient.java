@@ -1,6 +1,8 @@
 package speiger.src.spmodapi.client.core;
 
+import net.minecraft.client.Minecraft;
 import net.minecraft.item.Item;
+import net.minecraft.world.World;
 import net.minecraftforge.client.MinecraftForgeClient;
 import speiger.src.api.client.render.IMetaItemRender;
 import speiger.src.spmodapi.client.render.core.BlockRendererSpmodCore;
@@ -87,6 +89,18 @@ public class SpmodAPIClient extends SpmodAPICore
 	{
 		return RenderHelper.getGlobalRenderID();
 	}
+
+	@Override
+	public World getClientWorld(int dimID)
+	{
+		World world = Minecraft.getMinecraft().theWorld;
+		if(world.provider.dimensionId != dimID)
+		{
+			return null;
+		}
+		return world;
+	}
+	
 	
 	
 }

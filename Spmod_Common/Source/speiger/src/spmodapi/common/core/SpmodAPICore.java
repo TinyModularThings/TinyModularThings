@@ -14,7 +14,6 @@ import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.commands.GuiCommands;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.interfaces.IAdvTile;
-import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.ForgeRegister;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import speiger.src.tinymodularthings.common.interfaces.IEntityGuiProvider;
@@ -39,6 +38,11 @@ public class SpmodAPICore implements IGuiHandler
 	
 	public void clientSide()
 	{
+	}
+	
+	public World getClientWorld(int dimID)
+	{
+		return null;
 	}
 	
 	public int getArmorTypeFromName(String type)

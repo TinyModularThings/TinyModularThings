@@ -41,7 +41,7 @@ public class BCActionHelper implements IActionProvider
 			if (tile instanceof MultiStructureItemInterface)
 			{
 				MultiStructureItemInterface multi = (MultiStructureItemInterface) tile;
-				if (multi.hasTarget() && multi.target.getSizeInventory() > 1)
+				if (multi.hasMaster() && multi.target.getSizeInventory() > 1)
 				{
 					int size = multi.target.getSizeInventory();
 					for (int i = 0; i < size; i++)

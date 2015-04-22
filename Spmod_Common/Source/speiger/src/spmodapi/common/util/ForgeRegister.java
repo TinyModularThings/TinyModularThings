@@ -3,6 +3,7 @@ package speiger.src.spmodapi.common.util;
 import net.minecraftforge.common.MinecraftForge;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.config.SpmodConfig;
+import speiger.src.spmodapi.common.handler.BlockHandler;
 import speiger.src.spmodapi.common.handler.BucketHandler;
 import speiger.src.spmodapi.common.handler.InventoryHandler;
 import speiger.src.spmodapi.common.handler.LivingHandler;
@@ -31,6 +32,7 @@ public class ForgeRegister
 		StructureStorage.registerForgeEvent();
 		TickRegistry.registerTickHandler(new ServerTick(), Side.SERVER);
 		regist(InventoryHandler.instance);
+		regist(BlockHandler.getInstance());
 		if (SpmodConfig.booleanInfos.get("Retrogen"))
 		{
 			TickRegistry.registerTickHandler(RetroGenTickHandler.getTicks(), Side.SERVER);

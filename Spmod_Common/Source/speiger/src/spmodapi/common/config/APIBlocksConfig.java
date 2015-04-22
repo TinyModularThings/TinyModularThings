@@ -1,31 +1,9 @@
 package speiger.src.spmodapi.common.config;
 
-import net.minecraft.block.Block;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockBase;
-import speiger.src.spmodapi.common.blocks.deko.BlockBlueFlower;
-import speiger.src.spmodapi.common.blocks.deko.BlockKyrokaTheFox;
-import speiger.src.spmodapi.common.blocks.deko.BlockLightDeko;
-import speiger.src.spmodapi.common.blocks.deko.BlockMutliPlate;
-import speiger.src.spmodapi.common.blocks.deko.ItemBlockFlower;
-import speiger.src.spmodapi.common.blocks.deko.ItemBlockKyrokaTheFox;
-import speiger.src.spmodapi.common.blocks.deko.ItemBlockLightDekoBlock;
-import speiger.src.spmodapi.common.blocks.deko.ItemBlockMultiPlate;
-import speiger.src.spmodapi.common.blocks.deko.KyrokaTheFox;
-import speiger.src.spmodapi.common.blocks.deko.MultiPlate;
-import speiger.src.spmodapi.common.blocks.deko.TileLamp;
-import speiger.src.spmodapi.common.blocks.gas.BasicAnimalChunkLoader;
-import speiger.src.spmodapi.common.blocks.gas.BlockAnimalGas;
-import speiger.src.spmodapi.common.blocks.gas.BlockAnimalUtils;
-import speiger.src.spmodapi.common.blocks.gas.ItemBlockAnimalGas;
-import speiger.src.spmodapi.common.blocks.gas.ItemBlockAnimalUtils;
-import speiger.src.spmodapi.common.blocks.hemp.BlockHempCrop;
-import speiger.src.spmodapi.common.blocks.hemp.BlockHempDeko;
-import speiger.src.spmodapi.common.blocks.hemp.BlockHempDekoBase;
-import speiger.src.spmodapi.common.blocks.hemp.BlockHempStraw;
-import speiger.src.spmodapi.common.blocks.hemp.ItemBlockHempCrop;
-import speiger.src.spmodapi.common.blocks.hemp.ItemBlockHempDeko;
-import speiger.src.spmodapi.common.blocks.hemp.ItemBlockHempDekoBase;
-import speiger.src.spmodapi.common.blocks.hemp.ItemBlockHempStraw;
+import speiger.src.spmodapi.common.blocks.deko.*;
+import speiger.src.spmodapi.common.blocks.gas.*;
+import speiger.src.spmodapi.common.blocks.hemp.*;
 import speiger.src.spmodapi.common.blocks.utils.*;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
@@ -127,6 +105,7 @@ public class APIBlocksConfig
 		RegisterProxy.RegisterTile(blocks.blockUtils, 2, MobMachine.class, "MobMachine");
 		RegisterProxy.RegisterTile(blocks.blockUtils, 4, InventoryAccesser.class, "InventoryAccesser");
 		RegisterProxy.RegisterTile(blocks.blockUtils, 5, CobbleChest.class, "CobbleStorageChest");
+		RegisterProxy.RegisterTile(blocks.blockUtils, 6, MobMachineSpawner.class, "MobMachineSpawner");
 		((SpmodBlockBase)blocks.blockUtils).registerTextures(engine);
 		config.blockIDs.updateToNextID();
 		
