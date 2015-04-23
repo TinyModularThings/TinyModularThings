@@ -9,7 +9,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.util.EnumChatFormatting;
 import net.minecraft.util.Icon;
 import net.minecraft.world.World;
 import net.minecraftforge.client.IItemRenderer.ItemRenderType;
@@ -27,7 +26,8 @@ import speiger.src.tinymodularthings.common.items.core.TinyPlacerItem;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRender
+public class ItemInterfaceBlock extends TinyPlacerItem implements
+		IMetaItemRender
 {
 	
 	public ItemInterfaceBlock(int par1)
@@ -36,7 +36,6 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 		setHasSubtypes(true);
 		setCreativeTab(CreativeTabs.tabFood);
 	}
-	
 	
 	public static ItemStack getBlockFromInterface(ItemStack par1)
 	{
@@ -47,7 +46,7 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 	public static boolean isValidBlock(ItemStack par1)
 	{
 		NBTTagCompound nbt = par1.getTagCompound().getCompoundTag("Interface");
-		if (Block.blocksList[nbt.getInteger("ID")] != null)
+		if(Block.blocksList[nbt.getInteger("ID")] != null)
 		{
 			return true;
 		}
@@ -56,7 +55,7 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 	
 	public static ItemStack addBlockToInterface(ItemStack par1, BlockStack stack)
 	{
-		if (!par1.hasTagCompound())
+		if(!par1.hasTagCompound())
 		{
 			par1.setTagInfo("Interface", new NBTTagCompound());
 		}
@@ -70,7 +69,7 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
-		for (int i = 0; i < 3; i++)
+		for(int i = 0;i < 3;i++)
 		{
 			par3.add(createInterface(par1, i));
 		}
@@ -93,10 +92,8 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 	@SideOnly(Side.CLIENT)
 	public Icon getIconFromDamage(int par1)
 	{
-		return TextureEngine.getTextures().getTexture(new BlockStack(TinyBlocks.transportBlock, par1+1), par1);
+		return TextureEngine.getTextures().getTexture(new BlockStack(TinyBlocks.transportBlock, par1 + 1), par1);
 	}
-	
-	
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -110,7 +107,7 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 			if(id > 0)
 			{
 				BlockStack stack = new BlockStack(id, meta);
-				par3.add("Stored Block: "+stack.getBlockDisplayName());
+				par3.add("Stored Block: " + stack.getBlockDisplayName());
 			}
 			else
 			{
@@ -118,8 +115,7 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 			}
 		}
 	}
-
-
+	
 	@Override
 	@SideOnly(Side.CLIENT)
 	public int getSpriteNumber()
@@ -136,7 +132,7 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 	@Override
 	public BlockStack getBlockToPlace(int meta)
 	{
-		return new BlockStack(TinyBlocks.transportBlock, meta+1);
+		return new BlockStack(TinyBlocks.transportBlock, meta + 1);
 	}
 	
 	@Override
@@ -144,9 +140,12 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 	{
 		switch(par1.getItemDamage())
 		{
-			case 0: return "Item Interface";
-			case 1: return "Fluid Interface";
-			case 2: return "Energy Interface";
+			case 0:
+				return "Item Interface";
+			case 1:
+				return "Fluid Interface";
+			case 2:
+				return "Energy Interface";
 		}
 		return null;
 	}
@@ -158,59 +157,61 @@ public class ItemInterfaceBlock extends TinyPlacerItem implements IMetaItemRende
 		if(tile != null && tile instanceof IAcceptor)
 		{
 			IAcceptor accept = (IAcceptor)tile;
-			boolean flag = false;
 			
 			if(NBTHelper.nbtCheck(item, "Interface"))
 			{
-				flag = true;
 				NBTTagCompound nbt = NBTHelper.getTag(item, "Interface");
-				if(nbt.getInteger("ID") == 0)
-				{
-					flag = false;
-					player.sendChatToPlayer(LangProxy.getText("Need Internal Block", EnumChatFormatting.RED));
-				}
-				if(flag)
-				{
-					accept.setBlock(new BlockStack(nbt.getInteger("ID"), nbt.getInteger("Meta")));
-					return true;
-				}
-				world.setBlockToAir(x, y, z);
+				accept.setBlock(new BlockStack(nbt.getInteger("ID"), nbt.getInteger("Meta")));
+				return true;
 			}
 			
 		}
 		return false;
 	}
-
+	
+	
+	
+	@Override
+	public boolean canPlaceBlock(World world, int x, int y, int z, BlockStack block, int side, ItemStack par1)
+	{
+		boolean flag = this.isValidBlock(par1);
+		if(!flag && clickingPlayer.get() != null)
+		{
+			clickingPlayer.get().sendChatToPlayer(LangProxy.getText("You need a block Inside the interface"));
+		}
+		return flag;
+	}
 
 	@Override
 	public boolean doRender()
 	{
 		return true;
 	}
-
-
+	
 	@Override
 	public boolean doRenderCustom(int meta)
 	{
 		return true;
 	}
-
-
+	
 	@Override
 	public float[] getXYZ(ItemRenderType type, int meta)
 	{
 		switch(type)
 		{
-			case ENTITY: return new float[]{-0.5F, -0.5F, -0.5F};
-			case EQUIPPED: return new float[]{-0.4F, 0.50F, 0.35F};
-			case EQUIPPED_FIRST_PERSON: return new float[]{-0.4F, 0.50F, 0.35F};
-			case INVENTORY: return new float[]{-0.5F, -0.5F, -0.5F};
-			default: return null;
+			case ENTITY:
+				return new float[] {-0.5F, -0.5F, -0.5F };
+			case EQUIPPED:
+				return new float[] {-0.4F, 0.50F, 0.35F };
+			case EQUIPPED_FIRST_PERSON:
+				return new float[] {-0.4F, 0.50F, 0.35F };
+			case INVENTORY:
+				return new float[] {-0.5F, -0.5F, -0.5F };
+			default:
+				return null;
 		}
 	}
-
-
-
+	
 	@Override
 	public void onRender(ItemRenderType type, ItemStack item, int renderPass, float x, float y, float z, Object... data)
 	{

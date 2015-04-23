@@ -50,12 +50,6 @@ public class TinyChest extends FacedInventory
 	}
 	
 	@Override
-	public boolean dropNormalBlock()
-	{
-		return false;
-	}
-	
-	@Override
 	public boolean SolidOnSide(ForgeDirection side)
 	{
 		if(side == ForgeDirection.DOWN)

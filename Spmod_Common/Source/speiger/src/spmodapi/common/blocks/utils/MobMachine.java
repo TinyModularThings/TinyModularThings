@@ -488,7 +488,10 @@ public class MobMachine extends FacedInventory implements ISidedInventory,
 	public ArrayList<ItemStack> getItemDrops(int fortune)
 	{
 		ArrayList<ItemStack> stack = super.getItemDrops(fortune);
-		stack.add(new ItemStack(APIItems.mobMachineHelper, 1, type));
+		if(type > 0)
+		{
+			stack.add(new ItemStack(APIItems.mobMachineHelper, 1, type));
+		}
 		return stack;
 	}
 	
@@ -497,12 +500,6 @@ public class MobMachine extends FacedInventory implements ISidedInventory,
 	public ItemStack getItemDrop()
 	{
 		return new ItemStack(APIBlocks.blockUtils, 1, 2);
-	}
-	
-	@Override
-	public boolean dropNormalBlock()
-	{
-		return false;
 	}
 	
 	public void tryHandleExp()
@@ -719,7 +716,7 @@ public class MobMachine extends FacedInventory implements ISidedInventory,
 		par1.defineSlot("ProgBarHOverlay");
 		if (eP >= 0)
 		{
-			int max = eP / 260;
+			int max = eP / 540;
 			par1.drawSlotPros(83, 30, max, 16);
 		}
 	}

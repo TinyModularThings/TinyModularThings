@@ -65,12 +65,6 @@ public class AdvTinyChest extends FacedInventory
 		}
 	}
 
-	@Override
-	public boolean dropNormalBlock()
-	{
-		return false;
-	}
-
 	public boolean isValidMode()
 	{
 		return mode != -1;

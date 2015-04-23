@@ -175,6 +175,7 @@ public class StructureStorage implements ITickReader
 			}
 			list.add(box);
 		}
+		notifyUpdateBoxes(world);
 		return flag;
 	}
 	
@@ -257,7 +258,7 @@ public class StructureStorage implements ITickReader
 			if(list != null && list.size() > 0)
 			{
 				IStructureBox box = list.getBoxFromCoords(evt.x, evt.y, evt.z);
-				if(box != null && box.isBoxActive())
+				if(box != null)
 				{
 					this.breakNotifies.add(box);
 				}

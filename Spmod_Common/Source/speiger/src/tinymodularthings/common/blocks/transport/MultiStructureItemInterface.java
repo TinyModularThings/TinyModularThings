@@ -45,6 +45,7 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	public int choosenSlot = 0;
 	public boolean changed = false;
 	public boolean active = false;
+	public boolean exsist = true;
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -77,6 +78,13 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 		{
 			par1.getFontRenderer().drawString("No Target", 60, 35, 4210752);
 		}
+	}
+	
+	@Override
+	public void onBreaking()
+	{
+		super.onBreaking();
+		exsist = false;
 	}
 	
 	@Override
@@ -137,7 +145,10 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	public void removeMaster()
 	{
 		target = null;
-		updateInfo();
+		if(this.exsist)
+		{
+			updateInfo();
+		}
 	}
 
 	public void updateInfo()

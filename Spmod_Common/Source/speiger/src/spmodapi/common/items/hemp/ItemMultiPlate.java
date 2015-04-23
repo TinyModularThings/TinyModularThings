@@ -99,7 +99,7 @@ public class ItemMultiPlate extends SpmodPlacerItem
 	
 
 	@Override
-	public boolean canPlaceBlock(World world, int x, int y, int z, BlockStack block, int side)
+	public boolean canPlaceBlock(World world, int x, int y, int z, BlockStack block, int side, ItemStack par1)
 	{
 		return block.getBlock().isBlockSolidOnSide(world, x, y, z, ForgeDirection.getOrientation(side));
 	}

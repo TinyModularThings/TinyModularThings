@@ -17,7 +17,7 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public abstract class SpmodPlacerItem extends SpmodItem
 {
-
+	public ThreadLocal<EntityPlayer> clickingPlayer = new ThreadLocal<EntityPlayer>();
 	public SpmodPlacerItem(int par1)
 	{
 		super(par1);
@@ -91,7 +91,7 @@ public abstract class SpmodPlacerItem extends SpmodItem
         {
         	return false;
         }
-        
+        clickingPlayer.set(player);
         if (item.stackSize == 0)
         {
             return false;
@@ -107,8 +107,8 @@ public abstract class SpmodPlacerItem extends SpmodItem
         else if(world.getBlockId(x, y, z) != 0 && (!Block.blocksList[world.getBlockId(x, y, z)].isAirBlock(world, x, y, z) || !Block.blocksList[world.getBlockId(x, y, z)].isBlockReplaceable(world, x, y, z)))
         {
         	return false;
-        }	
-        else if(getBlockToPlace(item.getItemDamage()) != null && canPlaceBlock(world, xCoord, yCoord, zCoord, new BlockStack(blockID, metadata), side))
+        }
+        else if(getBlockToPlace(item.getItemDamage()) != null && canPlaceBlock(world, xCoord, yCoord, zCoord, new BlockStack(blockID, metadata), side, item))
         {
         	BlockStack stack = getBlockToPlace(item.getItemDamage());
         	if(world.setBlock(x, y, z, stack.getBlockID(), stack.getMeta(), 3))
@@ -131,7 +131,7 @@ public abstract class SpmodPlacerItem extends SpmodItem
     
     public abstract BlockStack getBlockToPlace(int meta);
 	
-    public boolean canPlaceBlock(World world, int x, int y, int z, BlockStack block, int side)
+    public boolean canPlaceBlock(World world, int x, int y, int z, BlockStack block, int side, ItemStack item)
     {
     	return true;
     }

@@ -470,11 +470,6 @@ public class ExpStorage extends AdvInventory implements IFluidHandler, IExpProvi
 			}
 		}
 	}
-	@Override
-	public boolean dropNormalBlock()
-	{
-		return false;
-	}
 	
 	@Override
 	public int getExpStored()

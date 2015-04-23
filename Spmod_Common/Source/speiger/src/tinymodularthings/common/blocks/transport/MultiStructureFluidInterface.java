@@ -32,7 +32,6 @@ public class MultiStructureFluidInterface extends AdvTile implements
 	
 	IFluidHandler target = null;
 	
-	
 	@Override
 	public ItemStack pickBlock(MovingObjectPosition target)
 	{

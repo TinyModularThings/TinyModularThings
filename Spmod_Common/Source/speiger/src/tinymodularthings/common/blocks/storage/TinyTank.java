@@ -49,12 +49,6 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	}
 	
 	@Override
-	public boolean dropNormalBlock()
-	{
-		return false;
-	}
-	
-	@Override
 	public Icon getIconFromSideAndMetadata(int side, int renderPass)
 	{
 		return TextureEngine.getTextures().getTexture(getBlockType());
