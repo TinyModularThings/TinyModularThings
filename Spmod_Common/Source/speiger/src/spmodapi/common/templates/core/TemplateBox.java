@@ -1,4 +1,4 @@
-package speiger.src.spmodapi.common.templates;
+package speiger.src.spmodapi.common.templates.core;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.tileentity.TileEntity;

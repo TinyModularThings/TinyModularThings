@@ -209,7 +209,7 @@ public class StructureStorage implements ITickReader
 			}
 			list.add(box);
 		}
-		return false;
+		return flag;
 	}
 	
 	
@@ -258,7 +258,7 @@ public class StructureStorage implements ITickReader
 			if(list != null && list.size() > 0)
 			{
 				IStructureBox box = list.getBoxFromCoords(evt.x, evt.y, evt.z);
-				if(box != null)
+				if(box != null && box.isBoxActive())
 				{
 					this.breakNotifies.add(box);
 				}
@@ -319,9 +319,7 @@ public class StructureStorage implements ITickReader
 		Ticks.registerTickReciver(instance);
 	}
 	
-
 	
-
 	
 	public static class BoxList extends ArrayList<IStructureBox>
 	{

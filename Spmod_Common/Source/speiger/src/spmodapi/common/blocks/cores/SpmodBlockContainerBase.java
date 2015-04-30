@@ -570,9 +570,12 @@ public class SpmodBlockContainerBase extends SpmodBlockBase implements ITileEnti
 	@Override
 	public ArrayList<ItemStack> getBlockDropped(World world, int x, int y, int z, int metadata, int fortune)
 	{
-		ArrayList<ItemStack> drops = super.getBlockDropped(world, x, y, z, metadata, fortune);
+		ArrayList<ItemStack> drops = new ArrayList<ItemStack>();
 		BlockPosition pos = new BlockPosition(world, x, y, z);
-		
+		if(!hasTileDrops(metadata))
+		{
+			drops.addAll(super.getBlockDropped(world, x, y, z, metadata, fortune));
+		}
 		if(tileDrops.containsKey(pos.getAsList()))
 		{
 			drops.addAll(tileDrops.get(pos.getAsList()).getDrops());

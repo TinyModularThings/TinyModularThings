@@ -1,4 +1,4 @@
-package speiger.src.spmodapi.common.templates;
+package speiger.src.spmodapi.common.templates.core;
 
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.world.World;
@@ -14,9 +14,13 @@ public interface ITemplate
 	
 	public void setMaxInterfaces(AcceptorType par1, int size);
 	
+	public void setMaxInterfaces(int size);
+	
 	public boolean match();
 		
 	public BlockPosition getCore();
+	
+	public void init();
 	
 	public void onBreaking();
 	

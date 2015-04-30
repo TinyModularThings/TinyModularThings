@@ -8,8 +8,6 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.village.MerchantRecipe;
 import net.minecraft.village.MerchantRecipeList;
 import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
-import net.minecraftforge.common.FakePlayerFactory;
 import speiger.src.api.common.data.nbt.DataStorage;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.registry.helpers.Ticks.ITickReader;
@@ -50,7 +48,7 @@ public class TickHelper implements ITickReader
 		if(!recipesLoaded)
 		{
 			recipesLoaded = true;
-			loadRecipes(FakePlayerFactory.getMinecraft(DimensionManager.getWorld(0)));
+//			loadRecipes(FakePlayerFactory.getMinecraft(DimensionManager.getWorld(0)));
 			MobMachine.addDrops(22, DropType.Common, ItemRandomTrade.getAllTrades());
 			AccessConfig config = new AccessConfig(SpmodConfig.getInstance());
 			config.loadLaterData();

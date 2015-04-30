@@ -121,7 +121,7 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 	@Override
 	public void loadUsageRecipes(ItemStack ingredient)
 	{
-		for (IPressureFurnaceRecipe cu : PressureRecipeList.getInstance().getRecipeList())
+		for (IPressureFurnaceRecipe cu : PressureRecipeList.getInstance().getBlankRecipeList())
 		{
 			if(InventoryUtil.isItemEqual(ingredient, cu.getInput()) || InventoryUtil.isItemEqual(ingredient, cu.getSecondInput()) || InventoryUtil.isItemEqual(ingredient, cu.getCombiner()))
 			{
@@ -138,7 +138,7 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 	public void loadCraftingRecipes(ItemStack result)
 	{
 		
-		for (IPressureFurnaceRecipe cu : PressureRecipeList.getInstance().getRecipeList())
+		for (IPressureFurnaceRecipe cu : PressureRecipeList.getInstance().getBlankRecipeList())
 		{
 			if (NEIServerUtils.areStacksSameTypeCrafting(result, cu.getOutput()))
 			{
@@ -154,7 +154,7 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 		{
 			if(((Boolean)results[0]))
 			{
-				for (IPressureFurnaceRecipe cu : PressureRecipeList.getInstance().getRecipeList())
+				for (IPressureFurnaceRecipe cu : PressureRecipeList.getInstance().getBlankRecipeList())
 				{
 					arecipes.add(new ChancedIOPressureRecipe(cu));
 				}
@@ -188,7 +188,10 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 			{
 				if(PressureFurnace.fuelMeta.containsKey(ids))
 				{
-					fuels.add(new PositionedStack(new ItemStack(ids, 1, PressureFurnace.fuelMeta.get(ids)), 8, 31));
+					for(Integer id : PressureFurnace.fuelMeta.get(ids))
+					{
+						fuels.add(new PositionedStack(new ItemStack(ids, 1, id), 8, 31));
+					}
 				}
 				else
 				{
@@ -201,7 +204,7 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 		{
 			flag = false;
 			fuels.add(new PositionedStack(fuel, 8, 31));
-			recipeList.addAll((Collection<? extends IPressureFurnaceRecipe>)PressureRecipeList.getInstance().getRecipeList().clone());
+			recipeList.addAll((Collection<? extends IPressureFurnaceRecipe>)PressureRecipeList.getInstance().getBlankRecipeList().clone());
 			onTick();
 		}
 		
@@ -212,14 +215,17 @@ public class NeiPressureFurnace extends TemplateRecipeHandler
 			{
 				if(PressureFurnace.fuelMeta.containsKey(ids))
 				{
-					fuels.add(new PositionedStack(new ItemStack(ids, 1, PressureFurnace.fuelMeta.get(ids)), 8, 31));
+					for(Integer id : PressureFurnace.fuelMeta.get(ids))
+					{
+						fuels.add(new PositionedStack(new ItemStack(ids, 1, id), 8, 31));
+					}
 				}
 				else
 				{
 					fuels.add(new PositionedStack(new ItemStack(ids, 1, 0), 8, 31));
 				}
 			}
-			recipeList.addAll((Collection<? extends IPressureFurnaceRecipe>)PressureRecipeList.getInstance().getRecipeList().clone());
+			recipeList.addAll((Collection<? extends IPressureFurnaceRecipe>)PressureRecipeList.getInstance().getBlankRecipeList().clone());
 			onTick();
 		}
 		

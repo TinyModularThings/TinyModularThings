@@ -2,8 +2,7 @@ package speiger.src.tinymodularthings.common.plugins.Railcraft.core;
 
 import ic2.api.item.Items;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Arrays;
 
 import mods.railcraft.common.blocks.RailcraftBlocks;
 import mods.railcraft.common.blocks.aesthetics.cube.EnumCube;
@@ -47,7 +46,7 @@ public class RailcraftRegistry
 			if(stack != null)
 			{
 				PressureFurnace.validFuels.add(stack.itemID);
-				PressureFurnace.fuelMeta.put(stack.itemID, stack.getItemDamage());
+				PressureFurnace.fuelMeta.put(stack.itemID, Arrays.asList(stack.getItemDamage()));
 			}
 			
 			

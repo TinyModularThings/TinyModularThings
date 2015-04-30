@@ -1,4 +1,4 @@
-package speiger.src.spmodapi.common.templates;
+package speiger.src.spmodapi.common.templates.core;
 
 import java.util.ArrayList;
 
@@ -77,6 +77,23 @@ public abstract class BaseTemplate implements ITemplate
 		return toCompare.match(getEnergyInterface());
 	}
 	
+	public int getInterfaceType(BlockStack toCompare)
+	{
+		if(this.isItemInterface(toCompare))
+		{
+			return AcceptorType.Items.ordinal();
+		}
+		if(this.isFluidInterface(toCompare))
+		{
+			return AcceptorType.Fluids.ordinal();
+		}
+		if(this.isEnergyInterface(toCompare))
+		{
+			return AcceptorType.Energy.ordinal();
+		}
+		return -1;
+	}
+	
 	public boolean colideCheck()
 	{
 		boolean first = !storage.isAnyInteractionBoxColiding(target.getWorld(), structure.toArray(new IStructureBox[structure.size()]));
@@ -133,6 +150,15 @@ public abstract class BaseTemplate implements ITemplate
 	public void setMaxInterfaces(AcceptorType par1, int size)
 	{
 		this.maxInterfaces[par1.ordinal()] = size;
+	}
+	
+	@Override
+	public void setMaxInterfaces(int size)
+	{
+		for(AcceptorType type : AcceptorType.values())
+		{
+			this.setMaxInterfaces(type, size);
+		}
 	}
 	
 	public boolean isInterfaceAmountOk(AcceptorType par1, int size)

@@ -41,6 +41,8 @@ public class BatteryStation extends AdvInventory implements IPacketReciver, IPow
 	public boolean noBatteries = true;
 	public boolean noCharge;
 	public boolean discharging;
+	public boolean[] dischargingAmount = new boolean[20];
+	public byte state = 0;
 	
 	
 	public BatteryStation()
@@ -82,7 +84,7 @@ public class BatteryStation extends AdvInventory implements IPacketReciver, IPow
 		return slotID < 10 && par1 != null && par1.getItem() instanceof IBCBattery && ((IBCBattery)par1.getItem()).wantToSendEnergy(par1);
 	}
 	
-	public void transferItems()
+	public boolean transferItems()
 	{
 		boolean flag = false;
 		flag = transferItem(0, 1) || flag;
@@ -123,10 +125,11 @@ public class BatteryStation extends AdvInventory implements IPacketReciver, IPow
 		flag = transferItem(15, 16) || flag;
 		flag = transferItem(16, 17) || flag;
 		flag = transferItem(17, 18) || flag;
-		if(flag)
+		if(flag && !transferItems())
 		{
 			this.onInventoryChanged();
 		}
+		return flag;
 	}
 	
 	public boolean transferItem(int slotX, int slotY)
@@ -153,13 +156,27 @@ public class BatteryStation extends AdvInventory implements IPacketReciver, IPow
 		{
 			transferItems();
 		}
-		boolean old = this.discharging;
 		handleItems();
 		handleEnergyOutput();
-		if(old != discharging)
+		state++;
+		if(state >= 20)
 		{
-			onInventoryChanged();
+			state = 0;
+			if(discharging != isDischarging())
+			{
+				onInventoryChanged();
+			}
 		}
+	}
+	
+	public boolean isDischarging()
+	{
+		boolean flag = false;
+		for(int i = 0;i<20;i++)
+		{
+			flag = flag || this.dischargingAmount[i];
+		}
+		return flag;
 	}
 	
 	public void handleEnergyOutput()
@@ -229,23 +246,23 @@ public class BatteryStation extends AdvInventory implements IPacketReciver, IPow
 				int send = Math.min(battery.energyToSend(inv[9]), Math.min(battery.getTransferlimit(inv[9]), battery.getTransferlimit(inv[9])));
 				if(send <= 0)
 				{
-					this.discharging = false;
+					this.dischargingAmount[state] = false;
 					return;
 				}
 				int provided = battery.discharge(inv[9], send, true);
 				if(provided <= 0)
 				{
-					this.discharging = false;
+					this.dischargingAmount[state] = false;
 					return;
 				}
 				int added = energy.addEnergy(provided, false);
 				if(added <= 0)
 				{
-					this.discharging = false;
+					this.dischargingAmount[state] = false;
 					return;
 				}
 				battery.discharge(inv[9], added, false);
-				this.discharging = true;
+				this.dischargingAmount[state] = true;
 			}
 		}
 	}

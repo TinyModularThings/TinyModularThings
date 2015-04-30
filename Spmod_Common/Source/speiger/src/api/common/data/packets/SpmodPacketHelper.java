@@ -45,21 +45,25 @@ public class SpmodPacketHelper
 		return null;
 	}
 	
+	@Deprecated
 	public ModularPacket createPlayerTilePacket(EntityPlayer player, SpmodMod mod)
 	{
 		return new ModularPacket(mod, player);
 	}
 	
+	@Deprecated
 	public ModularPacket createNBTPacket(TileEntity tile, SpmodMod mod)
 	{
 		return this.createNBTPacket(tile.worldObj, tile.xCoord, tile.yCoord, tile.zCoord, mod);
 	}
 	
+	@Deprecated
 	public ModularPacket createNBTPacket(int dimID, int x, int y, int z, SpmodMod mod)
 	{
 		return this.createNBTPacket(DimensionManager.getWorld(dimID), x, y, z, mod);
 	}
 	
+	@Deprecated
 	public ModularPacket createNBTPacket(World world, int x, int y, int z, SpmodMod mod)
 	{
 		if (world.getBlockTileEntity(x, y, z) == null || !(world.getBlockTileEntity(x, y, z) instanceof IPacketReciver) || !SpmodModRegistry.isModRegistered(mod))
@@ -70,6 +74,7 @@ public class SpmodPacketHelper
 		
 	}
 	
+	@Deprecated
 	public static enum PacketType
 	{
 		TileEntity, 
@@ -77,6 +82,7 @@ public class SpmodPacketHelper
 		Custom;
 	}
 	
+	@Deprecated
 	public static class ModularPacket
 	{
 		DataOutputStream stream;

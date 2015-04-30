@@ -27,6 +27,7 @@ public class TinyDowngradeRecipe extends ShapedOreRecipe
 	public ItemStack getCraftingResult(InventoryCrafting var1)
 	{
 		ItemStack slot = var1.getStackInSlot(4).copy();
+		slot.stackSize = 1;
 		par1.handleDownGrade(slot, downgrade);
 		return slot;
 	}

@@ -7,8 +7,8 @@ import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor.AcceptorType;
 import speiger.src.spmodapi.common.interfaces.IAdvTile;
-import speiger.src.spmodapi.common.templates.BaseTemplate;
-import speiger.src.spmodapi.common.templates.TemplateBox;
+import speiger.src.spmodapi.common.templates.core.BaseTemplate;
+import speiger.src.spmodapi.common.templates.core.TemplateBox;
 import speiger.src.tinymodularthings.common.blocks.machine.PressureFurnace;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 
@@ -41,10 +41,17 @@ public class TemplatePressureFurnace extends BaseTemplate
 	public void setupFacing(int facing)
 	{
 		dir = ForgeDirection.getOrientation(facing);
-		BlockPosition pos = new BlockPosition(world, xCoord, yCoord, zCoord).add(dir.getOpposite());
-		this.addStructure(new TemplateBox(furnace, new BlockPosition(world, pos.getXCoord() - 1, pos.getYCoord() - 1, pos.getZCoord() - 1), new BlockPosition(world, pos.getXCoord() + 1, pos.getYCoord() + 1, pos.getZCoord() + 1)));
 	}
 	
+	
+	
+	@Override
+	public void init()
+	{
+		BlockPosition pos = new BlockPosition(world, xCoord, yCoord, zCoord).add(dir.getOpposite());
+		this.addStructure(new TemplateBox(furnace, new BlockPosition(world, pos.getXCoord() - 1, pos.getYCoord() - 1, pos.getZCoord() - 1), new BlockPosition(world, pos.getXCoord() + 1, pos.getYCoord() + 1, pos.getZCoord() + 1)));	
+	}
+
 	@Override
 	public boolean match()
 	{

@@ -7,7 +7,7 @@ import java.util.Map.Entry;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
-import speiger.src.spmodapi.common.templates.ITemplateProvider;
+import speiger.src.spmodapi.common.templates.core.ITemplateProvider;
 import speiger.src.spmodapi.common.util.FacingUtil;
 
 public abstract class TileFacing extends AdvTile

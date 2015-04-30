@@ -131,7 +131,15 @@ public class BasicTradeInventory extends AdvInventory
 	public void onPlayerOpenContainer(EntityPlayer par1)
 	{
 		super.onPlayerOpenContainer(par1);
-		currentRecipe = new MerchantRecipe(ItemRandomTrade.getRecipeFromItem(par1.getCurrentEquippedItem()).writeToTags());
+		MerchantRecipe recipe = ItemRandomTrade.getRecipeFromItem(par1.getCurrentEquippedItem());
+		if(recipe != null)
+		{
+			currentRecipe = new MerchantRecipe(recipe.writeToTags());
+		}
+		else
+		{
+			currentRecipe = new MerchantRecipe((ItemStack)null, (ItemStack)null);
+		}
 	}
 	
 	
@@ -144,7 +152,7 @@ public class BasicTradeInventory extends AdvInventory
 			return super.onSlotClicked(par1, slotID, mouseButton, modifier, player);
 		}
 		Slot slot = (Slot)par1.inventorySlots.get(slotID);
-		if(slot != null && slot.getHasStack())
+		if(slot != null && slot.getHasStack() && player.getCurrentEquippedItem() != null)
 		{
 			if(slot.getStack().isItemEqual(player.getCurrentEquippedItem()))
 			{

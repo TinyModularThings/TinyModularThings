@@ -45,7 +45,8 @@ import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.enums.EnumColor.SpmodColor;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.interfaces.IAdvTile;
-import speiger.src.spmodapi.common.templates.ITemplateProvider;
+import speiger.src.spmodapi.common.templates.core.ITemplate;
+import speiger.src.spmodapi.common.templates.core.ITemplateProvider;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
@@ -317,11 +318,20 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 		return packet;
 	}
 	
+	public void sendAllAround(int range)
+	{
+		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, range, worldObj.provider.dimensionId, getDescriptionPacket());
+	}
+	
 	//TODO TileEntity functions
 	
 	public void init()
 	{
-		
+		if(this instanceof ITemplateProvider)
+		{
+			ITemplate template = ((ITemplateProvider)this).getTemplate();
+			template.init();
+		}
 	}
 	
 	@Override
@@ -378,6 +388,11 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 		users.clear();
 		super.readFromNBT(par1);
 		owner = par1.getString("Owner");
+		redstoneStrenght = par1.getByteArray("Receiving");
+		sendingStrenght = par1.getByteArray("Sending");
+		if(redstoneStrenght.length != 6) redstoneStrenght = new byte[6];
+		if(sendingStrenght.length != 6) sendingStrenght = new byte[6];
+		
 		NBTTagList list = par1.getTagList("Users");
 		for(int i = 0;i<list.tagCount();i++)
 		{
@@ -396,6 +411,8 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 	{
 		super.writeToNBT(par1);
 		par1.setString("Owner", owner);
+		par1.setByteArray("Receiving", redstoneStrenght);
+		par1.setByteArray("Sending", sendingStrenght);
 		NBTTagList list = new NBTTagList();
 		for(String user : users)
 		{
@@ -409,6 +426,7 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 			provider.getTemplate().writeToNBT(nbt);
 			par1.setCompoundTag("Template", nbt);
 		}
+		
 	}
 
 	@Override

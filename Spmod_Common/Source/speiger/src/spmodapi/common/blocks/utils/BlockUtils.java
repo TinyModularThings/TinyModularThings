@@ -108,6 +108,7 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 			case 4: return new InventoryAccesser();
 			case 5: return new CobbleChest();
 			case 6: return new MobMachineSpawner();
+			case 7: return new EntityCage();
 		}
 		return null;
 	}
@@ -187,8 +188,12 @@ public class BlockUtils extends SpmodBlockContainerBase implements IBlockGui
 	@SideOnly(Side.CLIENT)
 	public void getSubBlocks(int par1, CreativeTabs par2CreativeTabs, List par3List)
 	{
-		for (int i = 0; i < 6; i++)
+		for (int i = 0; i < 8; i++)
 		{
+			if(i == 6 || i == 7)
+			{
+				continue;
+			}
 			par3List.add(new ItemStack(par1, 1, i));
 		}
 	}

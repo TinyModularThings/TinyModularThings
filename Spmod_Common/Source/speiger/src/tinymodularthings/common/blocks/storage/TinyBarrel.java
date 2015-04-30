@@ -395,7 +395,8 @@ public class TinyBarrel extends TileFacing implements IDeepStorageUnit,
 	@Override
 	public int getInventoryStackLimit()
 	{
-		return 64;
+		int count = templateItem == null ? 64 : (maxStorage * templateItem.getMaxStackSize()) - storedAmount;
+		return Math.min(64, count);
 	}
 	
 	@Override
@@ -484,20 +485,7 @@ public class TinyBarrel extends TileFacing implements IDeepStorageUnit,
 	
 	private ItemStack getStackFromSlot(int slotID)
 	{
-		if(slotID == 0)
-		{
-			if(hasItem())
-			{
-				int amount = (maxStorage * getItem().getMaxStackSize()) - storedAmount;
-				if(amount < 64)
-				{
-					ItemStack result = getItem().copy();
-					result.stackSize = amount;
-					return result;
-				}
-			}
-		}
-		else if(slotID == 1)
+		if(slotID == 1)
 		{
 			if(hasItem())
 			{

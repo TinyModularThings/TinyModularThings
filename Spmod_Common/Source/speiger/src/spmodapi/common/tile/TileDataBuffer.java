@@ -10,6 +10,7 @@ public class TileDataBuffer
 {
 	
 	private int blockID = 0;
+	private int meta = 0;
 	private TileEntity tile;
 	private final SafeTimeTracker tracker = new SafeTimeTracker();
 	private final World world;
@@ -36,57 +37,61 @@ public class TileDataBuffer
 			return;
 		}
 		blockID = world.getBlockId(this.x, this.y, this.z);
+		meta = world.getBlockMetadata(this.x, this.y, this.z);
 		
 		Block block = Block.blocksList[blockID];
-		if(block != null && block.hasTileEntity(world.getBlockMetadata(this.x, this.y, this.z)))
+		if(block != null && block.hasTileEntity(meta))
 		{
 			tile = world.getBlockTileEntity(this.x, this.y, this.z);
 		}
 	}
 	
-	public void set(int blockID, TileEntity tile)
+	public void set(int blockID, int meta, TileEntity tile)
 	{
 		this.blockID = blockID;
 		this.tile = tile;
+		this.meta = meta;
 		tracker.markTime(world);
 	}
 	
 	public int getBlockID()
 	{
-		if(tile != null && !tile.isInvalid())
-			return blockID;
-		
 		if(tracker.markTimeIfDelay(world, 20))
 		{
 			refresh();
-			
-			if(tile != null && !tile.isInvalid())
-				return blockID;
 		}
-		
-		return 0;
+		return blockID;
+	}
+	
+	public int getMeta()
+	{
+		if(tracker.markTimeIfDelay(world, 20))
+		{
+			refresh();
+		}
+		return meta;
 	}
 	
 	public TileEntity getTile()
 	{
-		if(tile != null && !tile.isInvalid())
-			return tile;
-		
 		if(tracker.markTimeIfDelay(world, 20))
 		{
 			refresh();
-			
-			if(tile != null && !tile.isInvalid())
-				return tile;
 		}
 		
+		if(tile != null && !tile.isInvalid())
+		{
+			return tile;
+		}
 		return null;
 	}
 	
 	public boolean exists()
 	{
 		if(tile != null && !tile.isInvalid())
+		{
 			return true;
+		}
 		return world.blockExists(x, y, z);
 	}
 	

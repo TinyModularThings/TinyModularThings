@@ -18,7 +18,6 @@ import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.items.core.SpmodItem;
-import speiger.src.spmodapi.common.util.TickHelper;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import cpw.mods.fml.relauncher.Side;
@@ -26,14 +25,14 @@ import cpw.mods.fml.relauncher.SideOnly;
 
 public class ItemRandomTrade extends SpmodItem implements IItemGui
 {
-	static ArrayList<MerchantRecipe> recipeList = new ArrayList<MerchantRecipe>();
+	static ArrayList<Trade> recipeList = new ArrayList<Trade>();
 	static boolean secondTry = false;
 	
 	public ItemRandomTrade(int par1)
 	{
 		super(par1);
 		this.setHasSubtypes(true);
-//		this.setCreativeTab(APIUtils.tabHemp);
+		TradePacket.instance.identifier();
 	}
 	
 	@Override
@@ -47,10 +46,9 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	@SideOnly(Side.CLIENT)
 	public void getSubItems(int par1, CreativeTabs par2CreativeTabs, List par3)
 	{
-		par3.add(new ItemStack(par1, 1, 0));
-		for (int i = 1; i < recipeList.size(); i++)
+		for(Trade trade : recipeList)
 		{
-			par3.add(new ItemStack(par1, 1, i));
+			par3.add(new ItemStack(par1, 1, trade.getMetadata()));
 		}
 	}
 	
@@ -84,20 +82,21 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 		for (int i = 0; i < par1.size(); i++)
 		{
 			MerchantRecipe recipe = par1.get(i);
-			if (!recipeList.contains(recipe))
+			Trade trade = new Trade(recipe, recipeList.size());
+			if (!recipeList.contains(trade))
 			{
-				recipeList.add(recipe);
+				recipeList.add(trade);
 			}
 			
 		}
 		for (int i = 0; i < recipeList.size(); i++)
 		{
-			NBTTagCompound nbt = recipeList.get(i).writeToTags();
+			NBTTagCompound nbt = recipeList.get(i).getTrade().writeToTags();
 			/**
 			 * @Note Need to find a balance of the Max Trades.
 			 */
 			nbt.setInteger("maxUses", 3);
-			recipeList.get(i).readFromTags(nbt);
+			recipeList.get(i).getTrade().readFromTags(nbt);
 		}
 	}
 	
@@ -127,9 +126,23 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	{
 		if (par1.itemID == APIItems.trades.itemID && par1.getItemDamage() < recipeList.size())
 		{
-			return recipeList.get(par1.getItemDamage());
+			Trade trade = recipeList.get(par1.getItemDamage());
+			if(trade.getMetadata() == par1.getItemDamage())
+			{
+				return trade.getTrade();
+			}
+			else
+			{
+				for(Trade cuTrade : recipeList)
+				{
+					if(cuTrade.getMetadata() == par1.getItemDamage())
+					{
+						return cuTrade.getTrade();
+					}
+				}
+			}
 		}
-		return new MerchantRecipe((ItemStack) null, (ItemStack) null);
+		return null;
 	}
 
 	public static ItemStack getRandomTrade()
@@ -149,18 +162,13 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	{
 		if(recipeList.isEmpty())
 		{
-			if(!secondTry)
-			{
-				secondTry = true;
-				TickHelper.loadRecipes(par2);
-			}
 			par3.add("No Trades Aviable");
 			return;
 		}
 		
 		if(recipeList.size() >= par1.getItemDamage())
 		{
-			MerchantRecipe trade = recipeList.get(par1.getItemDamage());
+			MerchantRecipe trade = recipeList.get(par1.getItemDamage()).getTrade();
 			String text = "Trade: "+trade.getItemToBuy().stackSize+"x"+trade.getItemToBuy().getDisplayName();
 			
 			if(trade.hasSecondItemToBuy())
@@ -170,7 +178,32 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 			text = text+" = "+trade.getItemToSell().stackSize+"x"+trade.getItemToSell().getDisplayName();
 			par3.add(text);
 		}
+		if(par4)
+		{
+			par3.add("Total Trades Aviable: "+recipeList.size());
+		}
 	}
 	
+	public static class Trade
+	{
+		MerchantRecipe trade;
+		int metadata;
+		
+		public Trade(MerchantRecipe par1, int par2)
+		{
+			trade = par1;
+			metadata = par2;
+		}
+		
+		public int getMetadata()
+		{
+			return metadata;
+		}
+		
+		public MerchantRecipe getTrade()
+		{
+			return trade;
+		}
+	}
 	
 }

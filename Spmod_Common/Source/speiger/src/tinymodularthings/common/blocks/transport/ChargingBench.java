@@ -159,7 +159,7 @@ public class ChargingBench extends AdvInventory implements IPacketReciver, IEner
 		}
 	}
 	
-	public void transferItems()
+	public boolean transferItems()
 	{
 		boolean flag = false;
 		flag = transferItem(0, 1) || flag;
@@ -200,10 +200,11 @@ public class ChargingBench extends AdvInventory implements IPacketReciver, IEner
 		flag = transferItem(15, 16) || flag;
 		flag = transferItem(16, 17) || flag;
 		flag = transferItem(17, 18) || flag;
-		if(flag)
+		if(flag && !transferItems())
 		{
 			this.onInventoryChanged();
 		}
+		return flag;
 	}
 	
 	public boolean transferItem(int slotX, int slotY)

@@ -17,10 +17,10 @@ public class ItemDamageableCircuit extends SpmodItem
 	public ItemDamageableCircuit(int par1, String name, int max, List<String> data)
 	{
 		super(par1);
-		this.setHasSubtypes(true);
 		this.setMaxDamage(max);
 		this.setMaxStackSize(1);
 		this.setCreativeTab(APIUtils.tabCrafing);
+		this.setContainerItem(this);
 		this.name = name;
 		info = data;
 	}
@@ -43,6 +43,18 @@ public class ItemDamageableCircuit extends SpmodItem
 	public Icon getIconFromDamage(int par1)
 	{
 		return super.getIconFromDamage(0);
+	}
+
+	@Override
+	public ItemStack getContainerItemStack(ItemStack itemStack)
+	{
+		ItemStack result = ItemStack.copyItemStack(itemStack);
+		result.setItemDamage(result.getItemDamage()+1);
+		if(result.getItemDamage() > result.getMaxDamage())
+		{
+			result = null;
+		}
+		return result;
 	}
 	
 	

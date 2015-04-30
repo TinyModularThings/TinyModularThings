@@ -1,5 +1,7 @@
 package speiger.src.tinymodularthings.common.handler;
 
+import java.util.Arrays;
+
 import net.minecraft.block.Block;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
@@ -17,8 +19,7 @@ public class FuelHandler implements IFuelHandler
 	{
 		GameRegistry.registerFuelHandler(new FuelHandler());
 		PressureFurnace.validFuels.add(Item.coal.itemID);
-		PressureFurnace.fuelMeta.put(Item.coal.itemID, 0);
-		PressureFurnace.fuelMeta.put(Item.coal.itemID, 1);
+		PressureFurnace.fuelMeta.put(Item.coal.itemID, Arrays.asList(0, 1));
 		PressureFurnace.validFuels.add(Block.coalBlock.blockID);
 		OilGenerator.allowedItems.add(new ItemData(Item.porkRaw));
 		OilGenerator.allowedItems.add(new ItemData(Item.beefRaw));

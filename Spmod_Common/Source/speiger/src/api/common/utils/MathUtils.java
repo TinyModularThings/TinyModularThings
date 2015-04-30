@@ -33,6 +33,11 @@ public class MathUtils
 	{
 		int TotalTime = ticks / 20;
 		
+		if(TotalTime <= 0)
+		{
+			return "0";
+		}
+		
 		String Sekunde = ""+TotalTime % 60;
 		String Minute = ""+(TotalTime / 60) % 60;
 		String Stunde = ""+((TotalTime / 60) / 60) % 24;

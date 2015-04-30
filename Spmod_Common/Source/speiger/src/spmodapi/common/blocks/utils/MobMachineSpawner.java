@@ -1,6 +1,9 @@
 package speiger.src.spmodapi.common.blocks.utils;
 
+import java.util.List;
+
 import net.minecraft.entity.*;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
@@ -53,6 +56,11 @@ public class MobMachineSpawner extends AdvTile
 	@Override
 	public void onTick()
 	{
+		if(!isPowered())
+		{
+			return;
+		}
+		
 		for(ForgeDirection dir : ForgeDirection.VALID_DIRECTIONS)
 		{
 			if(getClockTime() % 20 == 0)
@@ -152,6 +160,17 @@ public class MobMachineSpawner extends AdvTile
 		par1.setTag("SpawnerLogic", list);
 	}
 	
+	
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onItemInformation(EntityPlayer par1, List par2, ItemStack par3)
+	{
+		par2.add("Power it with Redstone To activate");
+	}
+
+
+
 	public static class MobMachineSpawnerLogic
 	{
 		TileEntityMobSpawner spawner;
@@ -411,6 +430,10 @@ public class MobMachineSpawner extends AdvTile
 		
 		public World getSpawnerWorld()
 		{
+			if(spawner == null)
+			{
+				return null;
+			}
 			return this.spawner.getWorldObj();
 		}
 		

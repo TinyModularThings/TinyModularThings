@@ -25,6 +25,7 @@ public class ItemBlockAnimalUtils extends ItemBlockSpmod
 		switch(par1.getItemDamage())
 		{
 			case 0: return "Basic AnimalChunkLoader";
+			case 1: return "Ventil";
 		}
 		return null;
 	}

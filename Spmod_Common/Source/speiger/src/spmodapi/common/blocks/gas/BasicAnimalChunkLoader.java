@@ -1,19 +1,19 @@
 package speiger.src.spmodapi.common.blocks.gas;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
+import java.util.Map.Entry;
 
 import net.minecraft.client.gui.GuiScreen;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityAgeable;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.Icon;
 import speiger.src.api.common.registry.animalgas.AnimalGasRegistry;
-import speiger.src.api.common.utils.RedstoneUtils;
+import speiger.src.api.common.registry.animalgas.parts.IEntityGasInfo;
 import speiger.src.api.common.utils.config.EntityCounter;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
@@ -27,7 +27,7 @@ public class BasicAnimalChunkLoader extends AdvTile
 {
 	static int maxRange = 1;
 	ArrayList<EntityAgeable> storedEntities = new ArrayList<EntityAgeable>();
-	HashMap<EntityAgeable, EntityCounter> poops = new HashMap<EntityAgeable, EntityCounter>();
+	WeakHashMap<UUID, EntityCounter> poops = new WeakHashMap<UUID, EntityCounter>();
 	Icon[] textures = null;
 	boolean rotate = false;
 	
@@ -135,13 +135,15 @@ public class BasicAnimalChunkLoader extends AdvTile
 		{
 			return;
 		}
-		boolean powered = RedstoneUtils.isBlockGettingPowered(this);
-		addEntities();
+		boolean powered = this.isPowered();
+		if(getClockTime() % 20 == 0)
+		{
+			addEntities();
+		}
 		if(powered)
 		{
 			handleEntities();
 		}
-		
 	}
 	
 	public void addEntities()
@@ -163,30 +165,41 @@ public class BasicAnimalChunkLoader extends AdvTile
 				i--;
 			}
 		}
+		WeakHashMap<UUID, EntityCounter> counter = new WeakHashMap<UUID, EntityCounter>();
+		for(Entry<UUID, EntityCounter> entry : poops.entrySet())
+		{
+			UUID key = entry.getKey();
+			EntityCounter value = entry.getValue();
+			counter.put(key, value);
+		}
+		poops.clear();
+		poops.putAll(counter);
 	}
 	
 	public void handleEntities()
 	{
-		for(EntityAgeable target : storedEntities)
+		for(EntityAgeable target : new ArrayList<EntityAgeable>(storedEntities))
 		{
 			if(target.isDead)
 			{
 				this.removeEntity(target);
 				return;
 			}
-			
+//			FMLLog.getLogger().info("Rate: "+getCounter(target).getCurrentID());
 			if(worldObj.rand.nextInt(20) == 0)
 			{
-				poops.get(target).updateToNextID();
+				getCounter(target).updateToNextID();
 				continue;
 			}
-			if(poops.get(target).getCurrentID() >= 300 && worldObj.rand.nextBoolean())
+			if(getCounter(target).getCurrentID() >= 150 && worldObj.rand.nextBoolean())
 			{
-				poops.get(target).resetCounter();
+				getCounter(target).resetCounter();
 				int x = (int) target.posX;
 				int y = (int) (target.posY+1);
 				int z = (int) target.posZ;
-				int amount = Math.max(1, AnimalGasRegistry.getInstance().getGasInfo(target.getClass()).getMinProducingGas(target));
+				IEntityGasInfo gasData = AnimalGasRegistry.getInstance().getGasInfo(target.getClass());
+				int min = Math.min(10, gasData.getMinProducingGas(target));
+				int amount = Math.min(min, min + rand.nextInt(gasData.getMaxProducingGas(target)));
 				if(worldObj.getBlockId(x, y, z) == 0)
 				{
 					worldObj.setBlock(x, y, z, APIBlocks.animalGas.blockID, amount, 3);
@@ -196,16 +209,27 @@ public class BasicAnimalChunkLoader extends AdvTile
 		}
 	}
 	
+	private EntityCounter getCounter(EntityAgeable par1)
+	{
+		return poops.get(par1.getUniqueID());
+	}
+	
 	public void removeEntity(EntityAgeable par1)
 	{
 		storedEntities.remove(par1);
-		poops.remove(par1);
+		poops.remove(par1.getUniqueID());
 	}
 	
 	public void addEntity(EntityAgeable par1)
 	{
 		storedEntities.add(par1);
-		poops.put(par1, new EntityCounter(0));
+		poops.put(par1.getUniqueID(), new EntityCounter(0));
+	}
+	
+	public void addEntity(EntityAgeable par1, EntityCounter par2)
+	{
+		storedEntities.add(par1);
+		poops.put(par1.getUniqueID(), par2);
 	}
 
 	@Override
@@ -218,6 +242,45 @@ public class BasicAnimalChunkLoader extends AdvTile
 	public ItemStack getItemDrop()
 	{
 		return new ItemStack(APIBlocks.animalUtils, 1, 0);
+	}
+
+	@Override
+	public void readFromNBT(NBTTagCompound par1)
+	{
+		super.readFromNBT(par1);
+		NBTTagList list = par1.getTagList("PoopData");
+		for(int i = 0;i<list.tagCount();i++)
+		{
+			NBTTagCompound data = (NBTTagCompound)list.tagAt(i);
+			UUID ids = new UUID(data.getLong("MostUU"), data.getLong("LeastUU"));
+			poops.put(ids, new EntityCounter(data.getInteger("Count")));
+		}
+	}
+
+	@Override
+	public void writeToNBT(NBTTagCompound par1)
+	{
+		super.writeToNBT(par1);
+		NBTTagList list = new NBTTagList();
+		for(int i = 0;i<storedEntities.size();i++)
+		{
+			EntityAgeable living = this.storedEntities.get(i);
+			if(living.isDead)
+			{
+				continue;
+			}
+			UUID id = living.getUniqueID();
+			if(!poops.containsKey(id))
+			{
+				continue;
+			}
+			NBTTagCompound data = new NBTTagCompound();
+			data.setLong("MostUU", id.getMostSignificantBits());
+			data.setLong("LeastUU", id.getLeastSignificantBits());
+			data.setInteger("Count", poops.get(id).getCurrentID());
+			list.appendTag(data);
+		}
+		par1.setTag("PoopData", list);
 	}
 	
 

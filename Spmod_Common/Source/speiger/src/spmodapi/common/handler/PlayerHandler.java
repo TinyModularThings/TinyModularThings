@@ -13,6 +13,7 @@ import speiger.src.api.common.data.nbt.INBTReciver;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.entity.SpmodFoodStats;
+import speiger.src.spmodapi.common.items.trades.TradePacket;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
 import cpw.mods.fml.common.FMLCommonHandler;
@@ -52,6 +53,7 @@ public class PlayerHandler implements IPlayerTracker, INBTReciver
 		{
 			player.sendChatToPlayer(LangProxy.getText("You have Inventory Tweaks installed, That means that you can not use Shiftlicking Items into a Inventory in any of the mods that require SpmodAPI!", EnumChatFormatting.RED));
 		}
+		TradePacket.instance.sendPacketToClient(player);
 	}
 	
 	@Override

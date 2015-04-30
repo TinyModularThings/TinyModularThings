@@ -23,7 +23,16 @@ import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.data.EntityProcessor;
 import speiger.src.spmodapi.common.util.data.Infection;
-
+/**
+ * 
+ * @author Speiger
+ *
+ * Big project which will be made sooner or later...
+ * Anyway when i make this then it will effect a lot of the game. When you use it...
+ * I just readed that code after 5 months again and now thinking of that is a cool project.
+ * But stupid thinking of it...
+ *
+ */
 public class AnimalChunkLoader extends AdvTile implements INBTReciver
 {
 	public List<EntityAgeable> storedEntities = new ArrayList<EntityAgeable>();

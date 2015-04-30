@@ -20,6 +20,7 @@ import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.common.BiomeDictionary;
 import net.minecraftforge.common.BiomeDictionary.Type;
+import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.Fluid;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidBlock;
@@ -191,7 +192,7 @@ public class BlockAnimalGas extends SpmodBlockBase implements IFluidBlock
 	@Override
 	public int tickRate(World par0)
 	{
-		return 20;
+		return 5;
 	}
 	
 	public void notifyNeighbors(World world, int i, int j, int k)
@@ -205,6 +206,15 @@ public class BlockAnimalGas extends SpmodBlockBase implements IFluidBlock
         world.notifyBlocksOfNeighborChange(i, j, k + 1, blockID);
 	}
 	
+	
+	
+	@Override
+	public void onNeighborBlockChange(World world, int x, int y, int z, int par5)
+	{
+		world.scheduleBlockUpdate(x, y, z, blockID, tickRate(world));
+		super.onNeighborBlockChange(world, x, y, z, par5);
+	}
+
 	@Override
 	public boolean renderAsNormalBlock()
 	{
@@ -239,14 +249,14 @@ public class BlockAnimalGas extends SpmodBlockBase implements IFluidBlock
 		FlowingState up = canFlowUp(world, x, y, z);
 		if(meta == 1 && up == FlowingState.Nothing)
 		{
-			
 			if(rand.nextInt(5) == 0)
 			{
 				for(int i = 2;i<6;i++)
 				{
 					if(rand.nextInt(5)+2 == i)
 					{
-						if(WorldReading.getBlockId(world, x, y, z, i) == 0)
+						ForgeDirection dir = ForgeDirection.getOrientation(i);
+						if(world.isAirBlock(x + dir.offsetX, y + dir.offsetY, z + dir.offsetZ))
 						{
 							WorldReading.setBlockToSide(world, x, y, z, i, this.blockID, world.getBlockMetadata(x, y, z), 3);
 							world.setBlockToAir(x, y, z);
@@ -256,7 +266,6 @@ public class BlockAnimalGas extends SpmodBlockBase implements IFluidBlock
 				}
 			}
 		}
-		
 		if(rand.nextInt(5) == 0)
 		{
 			Type[] types = BiomeDictionary.getTypesForBiome(world.getBiomeGenForCoords(x, z));
@@ -279,15 +288,18 @@ public class BlockAnimalGas extends SpmodBlockBase implements IFluidBlock
 				{
 					world.setBlockToAir(x, y, z);
 					world.newExplosion(null, x, y, z, 5-(4/meta), true, true);
-					
 					return;
 				}
 			}
 		}
-		
 		if(y >= 150)
 		{
 			if(world.getRainStrength(1.0F) > 0.2D)
+			{
+				world.setBlockToAir(x, y, z);
+				return;
+			}
+			else if(rand.nextInt(150) == 0)
 			{
 				world.setBlockToAir(x, y, z);
 				return;
@@ -300,14 +312,14 @@ public class BlockAnimalGas extends SpmodBlockBase implements IFluidBlock
 			return;
 		}
 		
-		
 		if(up == FlowingState.Full || up == FlowingState.Partly)
 		{
 			flowUp(world, x, y, z, up);
 		}
 		else
 		{
-			if(canFlowToSide(world, x, y, z))
+			boolean flag = canFlowToSide(world, x, y, z);
+			if(flag)
 			{
 				flowToSide(world, x, y, z);
 			}

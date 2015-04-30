@@ -17,8 +17,8 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
-import speiger.src.api.common.registry.recipes.pressureFurnace.IPressureFurnaceRecipe;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
+import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList.PressureRecipeStorage;
 import speiger.src.api.common.utils.FluidUtils;
 import speiger.src.api.common.utils.InventoryUtil;
 import speiger.src.api.common.world.blocks.BlockPosition;
@@ -27,8 +27,8 @@ import speiger.src.api.common.world.tiles.interfaces.IAcceptor.AcceptorType;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.blocks.utils.ExpStorage;
 import speiger.src.spmodapi.common.interfaces.IAdvTile;
-import speiger.src.spmodapi.common.templates.ITemplate;
-import speiger.src.spmodapi.common.templates.ITemplateProvider;
+import speiger.src.spmodapi.common.templates.core.ITemplate;
+import speiger.src.spmodapi.common.templates.core.ITemplateProvider;
 import speiger.src.spmodapi.common.tile.FacedInventory;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
@@ -59,7 +59,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 	public int fuel = 0;
 	public int maxFuel = 0;
 	public int progress = 0;
-	public IPressureFurnaceRecipe currentRecipe = null;
+	public PressureRecipeStorage currentRecipe = null;
 	public IAcceptor fluidInterface = null;
 	public IAcceptor[] itemInterfaces = new IAcceptor[3];
 	public boolean paused = false;
@@ -67,7 +67,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 	ITemplate temp = null;
 	public static Class<? extends GuiInventoryCore> guiClass = null;
 	public static HashSet<Integer> validFuels = new HashSet<Integer>();
-	public static HashMap<Integer, Integer> fuelMeta = new HashMap<Integer, Integer>();
+	public static HashMap<Integer, List<Integer>> fuelMeta = new HashMap<Integer, List<Integer>>();
 	public static HashMap<Integer, Integer> bonusHeat = new HashMap<Integer, Integer>();
 	
 	public PressureFurnace()
@@ -155,7 +155,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 			}
 			else
 			{
-				int max = Math.max(100, currentRecipe.getRequiredCookTime());
+				int max = Math.max(100, currentRecipe.getRecipe().getRequiredCookTime());
 				String prog = ""+(((double)progress / (double)max) * 100);
 				if(prog.length() > 5)
 				{
@@ -199,7 +199,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 			par1.drawSlotPros(104, 49, 12, 16);
 			par1.drawSlotPros(116, 49, 12, 16);
 			par1.drawSlotPros(122, 49, 20, 16);
-			if(currentRecipe.getCombiner() != null)
+			if(currentRecipe.getRecipe().getCombiner() != null)
 			{
 				par1.defineSlot("ProgBarHVOverlay", 0, 1);
 				par1.drawSlotPros(101, 42, 20, 13);
@@ -255,10 +255,12 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 		{
 			update = false;
 			this.updateNeighbors(true);
+			
 		}
-
 	}
 	
+
+
 	public void handleExp()
 	{
 		int exp = DoubleMath.roundToInt(storedExp, RoundingMode.DOWN);
@@ -364,8 +366,8 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 			}
 			if(fuelMeta.containsKey(fuelID))
 			{
-				int meta = fuelMeta.get(fuelID);
-				if(meta != fuelItem.getItemDamage())
+				List<Integer> meta = fuelMeta.get(fuelID);
+				if(!meta.contains(fuelItem.getItemDamage()))
 				{
 					return;
 				}
@@ -395,7 +397,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 		if (heat >= MaxHeat)
 		{
 			PressureRecipeList list = PressureRecipeList.getInstance();
-			if(currentRecipe != null && !currentRecipe.recipeMatches(inv[1], inv[2], inv[3], 1))
+			if(currentRecipe != null && !currentRecipe.getRecipe().recipeMatches(inv[1], inv[2], inv[3], 1))
 			{
 				currentRecipe = null;
 			}
@@ -415,18 +417,18 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 				{
 					progress++;
 					fuel--;
-					int maxProgress = Math.max(currentRecipe.getRequiredCookTime(), 100);
+					int maxProgress = Math.max(currentRecipe.getRecipe().getRequiredCookTime(), 100);
 					if(progress >= maxProgress)
 					{
 						progress = 0;
-						int max = currentRecipe.isMultiRecipe() ? 5 : 1;
+						int max = currentRecipe.getRecipe().isMultiRecipe() ? 5 : 1;
 
-						for(;max > 1 && (!currentRecipe.recipeMatches(inv[1], inv[2], inv[3], max) || (inv[4] != null && inv[4].stackSize + (currentRecipe.getOutput().stackSize * max) > inv[4].getMaxStackSize()));)
+						for(;max > 1 && (!currentRecipe.getRecipe().recipeMatches(inv[1], inv[2], inv[3], max) || (inv[4] != null && inv[4].stackSize + (currentRecipe.getRecipe().getOutput().stackSize * max) > inv[4].getMaxStackSize()));)
 						{
 							max--;
 						}
-						currentRecipe.runRecipe(inv[1], inv[2], inv[3], max);
-						ItemStack result = currentRecipe.getOutput().copy();
+						currentRecipe.getRecipe().runRecipe(inv[1], inv[2], inv[3], max);
+						ItemStack result = currentRecipe.getRecipe().getOutput().copy();
 						result.stackSize *= max;
 						storedExp += (double)(PressureRecipeList.getInstance().getExpFromResult(result) * max);
 						
@@ -468,7 +470,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 		{
 			return true;
 		}
-		ItemStack result = currentRecipe.getOutput();
+		ItemStack result = currentRecipe.getRecipe().getOutput();
 		if(!InventoryUtil.isItemEqual(inv[4], result))
 		{
 			return false;
@@ -585,6 +587,17 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 		{
 			maxFuel = (helper | val << 16);
 		}
+		if(key == 7)
+		{
+			if(val == -1)
+			{
+				currentRecipe = null;
+			}
+			else
+			{
+				currentRecipe = PressureRecipeList.getInstance().getRecipeFromID(val);
+			}
+		}
 	}
 	
 	@Override
@@ -597,6 +610,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 		par2.sendProgressBarUpdate(par1, 4, fuel >> 16);
 		par2.sendProgressBarUpdate(par1, 5, maxFuel);
 		par2.sendProgressBarUpdate(par1, 6, maxFuel >> 16);
+		par2.sendProgressBarUpdate(par1, 7, this.currentRecipe != null ? currentRecipe.getRecipeID() : -1);
 	}
 	
 	@Override
@@ -762,7 +776,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 		}
 		if(fuelMeta.containsKey(ingredient.itemID))
 		{
-			if(fuelMeta.get(ingredient.itemID) != ingredient.getItemDamage())
+			if(!fuelMeta.get(ingredient.itemID).contains(ingredient.getItemDamage()))
 			{
 				return false;
 			}
@@ -784,7 +798,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 			}
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			this.updateNeighbors(true);
-			this.update = true;
+			this.sendAllAround(20);
 		}
 	}
 	

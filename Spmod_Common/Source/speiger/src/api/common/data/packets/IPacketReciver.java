@@ -4,6 +4,7 @@ import java.io.DataInput;
 
 public interface IPacketReciver
 {
+	@Deprecated
 	void recivePacket(DataInput par1);
 	
 	/**

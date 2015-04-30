@@ -10,7 +10,7 @@ import net.minecraft.world.World;
 import net.minecraftforge.common.MinecraftForge;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.blocks.cores.SpmodBlockContainerBase;
-import speiger.src.spmodapi.common.templates.BaseTemplate;
+import speiger.src.spmodapi.common.templates.core.BaseTemplate;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.TileIconMaker;
 import cpw.mods.fml.relauncher.Side;
