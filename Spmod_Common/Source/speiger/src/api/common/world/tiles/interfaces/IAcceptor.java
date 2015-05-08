@@ -36,6 +36,8 @@ public interface IAcceptor
 	
 	public boolean hasMaster();
 	
+	public boolean ImMaster(TileEntity par1);
+	
 	public void setMaster(TileEntity par1);
 	
 	public void removeMaster();

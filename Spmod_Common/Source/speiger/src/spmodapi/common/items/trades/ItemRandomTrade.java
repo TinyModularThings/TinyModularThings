@@ -18,8 +18,11 @@ import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.items.core.SpmodItem;
+import speiger.src.spmodapi.common.util.TickHelper;
 import speiger.src.spmodapi.common.util.proxy.CodeProxy;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
+import cpw.mods.fml.common.network.PacketDispatcher;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
@@ -32,7 +35,6 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 	{
 		super(par1);
 		this.setHasSubtypes(true);
-		TradePacket.instance.identifier();
 	}
 	
 	@Override
@@ -203,6 +205,29 @@ public class ItemRandomTrade extends SpmodItem implements IItemGui
 		public MerchantRecipe getTrade()
 		{
 			return trade;
+		}
+	}
+	
+	public static void onPlayerLoggedIn(EntityPlayer par1)
+	{
+		if(!secondTry)
+		{
+			secondTry = true;
+			TickHelper.loadRecipes(par1);
+		}
+		boolean first = true;
+		Trade[] trades = new Trade[10];
+		int count = 0;
+		for(int i = 0;i<recipeList.size();i++)
+		{
+			trades[count] = recipeList.get(i);
+			count++;
+			if(count >= 10)
+			{
+				count = 0;
+				PacketDispatcher.sendPacketToPlayer(SpmodAPI.handler.createFinishPacket(new TradePacket(first, trades)), (Player)par1);
+				first = false;
+			}
 		}
 	}
 	

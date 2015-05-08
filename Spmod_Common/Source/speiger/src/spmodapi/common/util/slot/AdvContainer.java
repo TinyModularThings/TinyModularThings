@@ -15,6 +15,7 @@ import speiger.src.spmodapi.common.interfaces.IAdvTile;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
+
 public class AdvContainer extends Container
 {
 	
@@ -94,6 +95,11 @@ public class AdvContainer extends Container
 	public IAdvTile getTile()
 	{
 		return tile;
+	}
+	
+	public <T> T getTile(Class<T> par1)
+	{
+		return (T)tile;
 	}
 	
 	public AdvContainer setOffset(int x, int y)

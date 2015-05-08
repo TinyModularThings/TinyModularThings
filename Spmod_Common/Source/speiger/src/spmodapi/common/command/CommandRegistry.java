@@ -3,7 +3,6 @@ package speiger.src.spmodapi.common.command;
 import java.util.ArrayList;
 
 import net.minecraft.command.ICommandSender;
-import speiger.src.api.common.data.packets.SpmodPacketHelper;
 import speiger.src.spmodapi.common.command.commands.*;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 
@@ -54,7 +53,6 @@ public class CommandRegistry
 	
 	public static void init()
 	{
-		SpmodPacketHelper.getHelper().registerPacketReciver(new CommandExecuter());
 		CommandRegistry reg = getInstance();
 		reg.registerCommand(new ClearItems());
 		reg.registerCommand(new TimerCommand());

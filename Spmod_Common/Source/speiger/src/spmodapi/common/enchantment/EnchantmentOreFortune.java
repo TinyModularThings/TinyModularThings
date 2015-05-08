@@ -2,6 +2,7 @@ package speiger.src.spmodapi.common.enchantment;
 
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.enchantment.EnumEnchantmentType;
+import speiger.src.spmodapi.common.config.ModObjects.APIUtils;
 
 public class EnchantmentOreFortune extends Enchantment
 {
@@ -33,6 +34,22 @@ public class EnchantmentOreFortune extends Enchantment
 		return "Ore Fortune";
 	}
   
-    
+	@Override
+	public boolean canApplyTogether(Enchantment par1)
+	{
+		if(par1.effectId == Enchantment.fortune.effectId)
+		{
+			return false;
+		}
+		if(par1.effectId == Enchantment.silkTouch.effectId)
+		{
+			return false;
+		}
+		if(par1.effectId == APIUtils.oreSilk.effectId)
+		{
+			return false;
+		}
+		return true;
+	}
 	
 }

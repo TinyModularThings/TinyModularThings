@@ -7,9 +7,6 @@ import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.nbt.NBTTagList;
 import net.minecraft.util.Icon;
 import speiger.src.api.common.data.nbt.NBTHelper;
-import speiger.src.api.common.data.packets.SpmodPacketHelper;
-import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
-import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.tile.AdvInventory;
 
@@ -107,11 +104,6 @@ public abstract class ItemInventory extends AdvInventory
 	public void onItemTick()
 	{
 		
-	}
-	
-	public ModularPacket createItemPacket(SpmodMod par1)
-	{
-		return SpmodPacketHelper.getHelper().createPlayerTilePacket(player, par1);
 	}
 
 	@Override

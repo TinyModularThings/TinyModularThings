@@ -1,6 +1,5 @@
 package speiger.src.tinymodularthings.common.blocks.crafting;
 
-import java.io.DataInput;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -13,22 +12,23 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.oredict.OreDictionary;
-import speiger.src.api.common.data.packets.IPacketReciver;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.SpmodPacket;
 import speiger.src.api.common.world.blocks.BlockStack;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.tile.FacedInventory;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.proxy.PathProxy;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.TinyConfig;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
+import speiger.src.tinymodularthings.common.network.packets.client.SlotClickPacket;
 import cpw.mods.fml.common.FMLLog;
 import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class OreCrafter extends FacedInventory implements IPacketReciver, ISidedInventory
+public class OreCrafter extends FacedInventory implements ISidedInventory
 {
 	public OreCrafter()
 	{
@@ -290,19 +290,6 @@ public class OreCrafter extends FacedInventory implements IPacketReciver, ISided
 			}
 		}
 	}
-
-	@Override
-	public void recivePacket(DataInput par1)
-	{
-		try
-		{
-			int slot = par1.readInt();
-			this.slotClick(slot);
-		}
-		catch(Exception e)
-		{
-		}
-	}
 	
 	public void slotClick(int slot)
 	{
@@ -319,9 +306,12 @@ public class OreCrafter extends FacedInventory implements IPacketReciver, ISided
 	}
 	
 	@Override
-	public String identifier()
+	public void onSpmodPacket(SpmodPacket par1)
 	{
-		return null;
+		if(par1.getPacket() instanceof SlotClickPacket)
+		{
+			slotClick(((SlotClickPacket)par1.getPacket()).getSlot());
+		}
 	}
 	
 	@Override
@@ -395,7 +385,7 @@ public class OreCrafter extends FacedInventory implements IPacketReciver, ISided
 		if(slotID >= 0 && slotID < 10)
 		{
 			this.slotClick(slotID);
-			sendPacketToServer(createBasicPacket(TinyModularThings.instance).InjectNumber(slotID).finishPacket());
+			sendPacketToServer(SpmodAPI.handler.createFinishPacket(new SlotClickPacket(this, slotID)));
 			return true;
 		}
 		return super.onSlotClicked(par1, slotID, mouseButton, modifier, player);

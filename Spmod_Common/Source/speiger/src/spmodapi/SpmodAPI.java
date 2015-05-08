@@ -5,6 +5,7 @@ import static speiger.src.spmodapi.common.lib.SpmodAPILib.*;
 import java.io.File;
 
 import speiger.src.api.common.data.nbt.DataStorage;
+import speiger.src.api.common.data.packets.SpmodPacketHelper;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.registry.helpers.SpmodModRegistry;
 import speiger.src.api.common.registry.helpers.Ticks;
@@ -13,7 +14,7 @@ import speiger.src.spmodapi.common.command.CommandRegistry;
 import speiger.src.spmodapi.common.command.commands.CommandServerTimer;
 import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.core.SpmodAPICore;
-import speiger.src.spmodapi.common.handler.SpmodPacketHandler;
+import speiger.src.spmodapi.common.network.SpmodPacketHandler;
 import speiger.src.spmodapi.common.plugins.PluginLoader;
 import speiger.src.spmodapi.common.sound.SoundRegistry;
 import speiger.src.spmodapi.common.util.TextureEngine;
@@ -51,6 +52,8 @@ public class SpmodAPI implements SpmodMod
 	public static SpmodAPI instance;
 	
 	public static LogProxy log;
+	
+	public static SpmodPacketHandler handler;
 		
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent evt)
@@ -59,7 +62,9 @@ public class SpmodAPI implements SpmodMod
 		log = new LogProxy(this);
 		TextureEngine.getTextures();
 		SpmodConfig.getInstance().loadSpmodCondig(new File(evt.getModConfigurationDirectory().getAbsolutePath() + "/Spmod/SpmodAPIBeta.cfg"));
-		NetworkRegistry.instance().registerChannel(new SpmodPacketHandler(), "Spmod");
+		handler = new SpmodPacketHandler();
+		NetworkRegistry.instance().registerChannel(handler, "Spmod");
+		SpmodPacketHelper.handler = handler;
 		instance = this;
 		NetworkRegistry.instance().registerGuiHandler(instance, core);
 

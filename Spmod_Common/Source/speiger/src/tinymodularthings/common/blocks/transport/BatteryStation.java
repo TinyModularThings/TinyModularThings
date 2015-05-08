@@ -1,7 +1,5 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
-import java.io.DataInput;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.inventory.Container;
@@ -13,18 +11,19 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.common.data.packets.IPacketReciver;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.SpmodPacket;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.api.common.world.items.energy.IBCBattery;
 import speiger.src.api.common.world.tiles.energy.EnergyProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergyProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergySubject;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.client.gui.buttons.GuiSliderButton;
+import speiger.src.spmodapi.common.network.packets.base.TileNBTPacket;
 import speiger.src.spmodapi.common.tile.AdvInventory;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import buildcraft.api.power.IPowerEmitter;
 import buildcraft.api.power.IPowerReceptor;
@@ -33,7 +32,7 @@ import buildcraft.api.power.PowerHandler.Type;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class BatteryStation extends AdvInventory implements IPacketReciver, IPowerEmitter, ISidedInventory
+public class BatteryStation extends AdvInventory implements IPowerEmitter, ISidedInventory
 {
 	
 	public float transferlimit = 0.01F;
@@ -224,7 +223,12 @@ public class BatteryStation extends AdvInventory implements IPacketReciver, IPow
 		super.onInventoryChanged();
 		this.noBatteries = this.noBatteries();
 		this.noCharge = this.noCharge();
-		sendPacketToClient(this.createBasicPacket(TinyModularThings.instance).InjectNumber(1).InjectBooleans(this.discharging, this.noBatteries, this.noCharge).finishPacket(), 20);
+		TileNBTPacket packet = new TileNBTPacket(this);
+		NBTTagCompound nbt = packet.getData();
+		nbt.setBoolean("NoBatteries", noBatteries);
+		nbt.setBoolean("NoCharge", noCharge);
+		nbt.setBoolean("Discharging", discharging);
+		sendPacketToClient(SpmodAPI.handler.createFinishPacket(packet), 20);
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 	
@@ -237,13 +241,13 @@ public class BatteryStation extends AdvInventory implements IPacketReciver, IPow
 	}
 
 	public void handleItems()
-	{
+	{	
 		if(inv[9] != null && inv[9].getItem() instanceof IBCBattery)
 		{
 			IBCBattery battery = (IBCBattery)inv[9].getItem();
 			if(!battery.isEmpty(inv[9]) && battery.wantToSendEnergy(inv[9]))
 			{
-				int send = Math.min(battery.energyToSend(inv[9]), Math.min(battery.getTransferlimit(inv[9]), battery.getTransferlimit(inv[9])));
+				int send = Math.min(battery.energyToSend(inv[9]), battery.getTransferlimit(inv[9]));
 				if(send <= 0)
 				{
 					this.dischargingAmount[state] = false;
@@ -333,7 +337,9 @@ public class BatteryStation extends AdvInventory implements IPacketReciver, IPow
 		{
 			GuiSliderButton button = (GuiSliderButton)par2;
 			transferlimit = button.sliderValue;
-			this.sendPacketToServer(this.createBasicPacket(TinyModularThings.instance).InjectNumbers(0, transferlimit).finishPacket());
+			TileNBTPacket packet = new TileNBTPacket(this);
+			packet.getData().setFloat("Limit", transferlimit);
+			this.sendPacketToServer(SpmodAPI.handler.createFinishPacket(packet));
 		}
 	}
 	
@@ -376,33 +382,30 @@ public class BatteryStation extends AdvInventory implements IPacketReciver, IPow
 	}
 	
 	@Override
-	public void recivePacket(DataInput par1)
+	public void onSpmodPacket(SpmodPacket par1)
 	{
-		try
+		if(par1.getPacket() instanceof TileNBTPacket)
 		{
-			int id = par1.readInt();
-			if(id == 0)
+			TileNBTPacket packet = (TileNBTPacket)par1.getPacket();
+			NBTTagCompound nbt = packet.getData();
+			if(nbt.hasKey("NoBatteries"))
 			{
-				transferlimit = par1.readFloat();
+				noBatteries = nbt.getBoolean("NoBatteries");
+			}
+			if(nbt.hasKey("NoCharge"))
+			{
+				noCharge = nbt.getBoolean("NoCharge");
+			}
+			if(nbt.hasKey("Discharging"))
+			{
+				discharging = nbt.getBoolean("Discharging");
+			}
+			if(nbt.hasKey("Limit"))
+			{
+				this.transferlimit = nbt.getFloat("Limit");
 				energy.setTransferlimtit((int)(5000 * transferlimit));
 			}
-			else if(id == 1)
-			{
-				discharging = par1.readBoolean();
-				noBatteries = par1.readBoolean();
-				noCharge = par1.readBoolean();
-				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-			}
 		}
-		catch(Exception e)
-		{
-		}
-	}
-
-	@Override
-	public String identifier()
-	{
-		return null;
 	}
 
 	@Override

@@ -33,9 +33,7 @@ import net.minecraft.world.Explosion;
 import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.client.render.BlockRenderHelper;
-import speiger.src.api.common.data.packets.SpmodPacketHelper;
-import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
-import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.SpmodPacket;
 import speiger.src.api.common.utils.RedstoneUtils;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
@@ -297,6 +295,8 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 		owner = player.username;
 	}
 	
+	//TODO Packet Functions
+	
 	public void sendPacketToServer(Packet par1)
 	{
 		PacketDispatcher.sendPacketToServer(par1);
@@ -312,15 +312,15 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 		PacketDispatcher.sendPacketToPlayer(par1, (Player)par2);
 	}
 	
-	public ModularPacket createBasicPacket(SpmodMod mod)
-	{
-		ModularPacket packet = SpmodPacketHelper.getHelper().createNBTPacket(this, mod);
-		return packet;
-	}
-	
 	public void sendAllAround(int range)
 	{
 		PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, range, worldObj.provider.dimensionId, getDescriptionPacket());
+	}
+	
+	@Override
+	public void onSpmodPacket(SpmodPacket par1)
+	{
+		
 	}
 	
 	//TODO TileEntity functions

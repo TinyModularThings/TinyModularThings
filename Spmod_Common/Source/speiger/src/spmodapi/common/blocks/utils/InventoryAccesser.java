@@ -3,7 +3,6 @@ package speiger.src.spmodapi.common.blocks.utils;
 import ic2.api.item.ElectricItem;
 import ic2.api.item.IElectricItem;
 
-import java.io.DataInput;
 import java.util.*;
 import java.util.Map.Entry;
 
@@ -26,8 +25,7 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.ForgeDirection;
 import speiger.src.api.common.data.nbt.INBTReciver;
-import speiger.src.api.common.data.packets.IPacketReciver;
-import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.SpmodPacket;
 import speiger.src.api.common.registry.helpers.SpmodMod;
 import speiger.src.api.common.utils.MathUtils;
 import speiger.src.api.common.world.blocks.BlockPosition;
@@ -37,6 +35,7 @@ import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.config.ModObjects.APIBlocks;
 import speiger.src.spmodapi.common.config.ModObjects.APIItems;
+import speiger.src.spmodapi.common.network.packets.client.AccesserPacket;
 import speiger.src.spmodapi.common.tile.FacedInventory;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
@@ -44,7 +43,7 @@ import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class InventoryAccesser extends FacedInventory implements ISidedInventory, INBTReciver, IPacketReciver
+public class InventoryAccesser extends FacedInventory implements ISidedInventory, INBTReciver
 {
 
 	public static ArrayList<String> allowedClasses = new ArrayList<String>();
@@ -356,10 +355,9 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 		}
 		else if(id == 9)
 		{
-			ModularPacket packet = createBasicPacket(SpmodAPI.instance);
-			packet.InjectNumbers(0, nbt.getInteger("TargetID"));
-			packet.injectString(par1.getGuiObject(0).getObject(GuiTextField.class).getText());
-			this.sendPacketToServer(packet.finishPacket());
+			AccesserPacket packet = new AccesserPacket(this);
+			packet.setNameTask(nbt.getInteger("TargetID"), par1.getGuiObject(0).getObject(GuiTextField.class).getText());
+			this.sendPacketToServer(SpmodAPI.handler.createFinishPacket(packet));
 			nbt.setBoolean("Name", false);
 			nbt.setBoolean("TextInited", false);
 			nbt.setInteger("TargetID", 0);
@@ -372,15 +370,12 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 			{
 				nbt.setInteger("Page", 0);
 				nbt.setBoolean("Name", true);
+				return;
 			}
-			else if(par1.isCtrlKeyDown())
-			{
-				this.sendPacketToServer(createBasicPacket(SpmodAPI.instance).InjectNumbers(4, nbt.getInteger("TargetID")).finishPacket());
-			}
-			else
-			{
-				this.sendPacketToServer(createBasicPacket(SpmodAPI.instance).InjectNumbers(1, nbt.getInteger("TargetID")).injectString(par1.getMC().thePlayer.username).finishPacket());
-			}
+			AccesserPacket packet = new AccesserPacket(this);
+			if(par1.isCtrlKeyDown()) packet.removeNameTask(nbt.getInteger("TargetID"));
+			else packet.openTask(id);
+			sendPacketToServer(SpmodAPI.handler.createFinishPacket(packet));
 		}
 	}
 
@@ -705,79 +700,6 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 	}
 
 	@Override
-	public void recivePacket(DataInput par1)
-	{
-		if(!worldObj.isRemote)
-		{
-			try
-			{
-				int task = par1.readInt();
-				if(task == 0)
-				{
-					int number = par1.readInt();
-					String name = par1.readUTF();
-					if(this.isInRange(number))
-					{
-						BlockPosition pos = this.getTarget(number);
-						if(pos != null)
-						{
-							this.customNames.put(pos.getAsList(), name);
-							PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, this.getDescriptionPacket());
-						}
-					}
-				}
-				else if(task == 1)
-				{
-					int number = par1.readInt();
-					String name = par1.readUTF();
-					int side = this.getSideFromPlayer(name);
-					if(side != -1 && this.isInRange(number))
-					{
-						BlockPosition pos = this.getTarget(number);
-						if(pos != null)
-						{
-							pos.getAsBlockStack().getBlock().onBlockActivated(pos.getWorld(), pos.getXCoord(), pos.getYCoord(), pos.getZCoord(), worldObj.getPlayerEntityByName(name), side, 0.5F, 0.5F, 0.5F);
-						}
-					}
-				}
-				else if(task == 2)
-				{
-					allowedClasses.add(par1.readUTF());
-				}
-				else if(task == 3)
-				{
-					allowedClasses.remove(par1.readUTF());
-				}
-				else if(task == 4)
-				{
-					int number = par1.readInt();
-					if(this.isInRange(number))
-					{
-						BlockPosition pos = this.getTarget(number);
-						if(pos != null)
-						{
-							this.customNames.remove(pos.getAsList());
-							PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, this.getDescriptionPacket());
-						}
-					}
-				}
-
-
-			}
-			catch(Exception e)
-			{
-			}
-		}
-		
-	}
-
-	@Override
-	public String identifier()
-	{
-		return "Accesser";
-	}
-
-	@Override
 	public void loadFromNBT(NBTTagCompound par1)
 	{
 		NBTTagList list = par1.getTagList("Data");
@@ -817,5 +739,53 @@ public class InventoryAccesser extends FacedInventory implements ISidedInventory
 	public String getID()
 	{
 		return "AccessTile";
+	}
+
+	@Override
+	public void onSpmodPacket(SpmodPacket par1)
+	{
+		if(par1.getPacket() instanceof AccesserPacket)
+		{
+			AccesserPacket packet = (AccesserPacket)par1.getPacket();
+			int task = packet.getTask();
+			int targetID = packet.getTarget();
+			String text = packet.getText();
+			if(task == 0)
+			{
+				if(this.isInRange(targetID))
+				{
+					BlockPosition pos = this.getTarget(targetID);
+					if(pos != null)
+					{
+						this.customNames.put(pos.getAsList(), text);
+						PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, this.getDescriptionPacket());
+					}
+				}
+			}
+			else if(task == 1)
+			{
+				if(this.isInRange(targetID))
+				{
+					BlockPosition pos = this.getTarget(targetID);
+					if(pos != null)
+					{
+						this.customNames.put(pos.getAsList(), text);
+						PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, this.getDescriptionPacket());
+					}
+				}
+			}
+			else if(task == 2)
+			{
+				int side = this.getSideFromPlayer(text);
+				if(side != -1 && this.isInRange(targetID))
+				{
+					BlockPosition pos = this.getTarget(targetID);
+					if(pos != null)
+					{
+						pos.getAsBlockStack().getBlock().onBlockActivated(pos.getWorld(), pos.getXCoord(), pos.getYCoord(), pos.getZCoord(), par1.getPlayer(), side, 0.5F, 0.5F, 0.5F);
+					}
+				}
+			}
+		}
 	}
 }

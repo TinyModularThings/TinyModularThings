@@ -159,7 +159,7 @@ public class TemplatePressureFurnace extends BaseTemplate
 					if(pos.doesBlockExsist() && this.isInterface(pos.getAsBlockStack()))
 					{
 						IAcceptor tile = (IAcceptor)pos.getTileEntity();
-						if(tile.getType() == par1 && !tile.hasMaster())
+						if(tile.getType() == par1 && (!tile.hasMaster() || tile.ImMaster(furnace)))
 						{
 							tile.setMaster(furnace);
 							list[current] = tile;

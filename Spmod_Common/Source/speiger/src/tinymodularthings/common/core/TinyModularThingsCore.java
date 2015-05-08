@@ -4,7 +4,6 @@ import net.minecraft.block.Block;
 import net.minecraft.world.World;
 import speiger.src.api.common.data.nbt.DataStorage;
 import speiger.src.spmodapi.common.util.ForgeRegister;
-import speiger.src.tinymodularthings.common.commands.RenderCommand;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.handler.FuelHandler;
 import speiger.src.tinymodularthings.common.handler.TinyCraftingHandler;
@@ -32,7 +31,6 @@ public class TinyModularThingsCore
 		GameRegistry.registerCraftingHandler(new TinyCraftingHandler());
 		FuelHandler.init();
 		DataStorage.registerNBTReciver((ItemNetherCrystal) TinyItems.netherCrystal);
-		new RenderCommand();
 		initHopperUpgrades();
 		ForgeRegister.regist(new WorldCrafter());
 	}

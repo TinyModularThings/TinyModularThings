@@ -1,93 +1,70 @@
 package speiger.src.spmodapi.common.items.trades;
 
 import java.io.DataInput;
-import java.util.List;
+import java.io.DataOutput;
 
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTBase;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.nbt.NBTTagList;
 import net.minecraft.village.MerchantRecipe;
-import speiger.src.api.common.data.packets.IPacketReciver;
-import speiger.src.api.common.data.packets.SpmodPacketHelper;
-import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
-import speiger.src.api.common.data.packets.SpmodPacketHelper.PacketType;
-import speiger.src.spmodapi.SpmodAPI;
+import speiger.src.api.common.data.packets.ISpmodPacket;
 import speiger.src.spmodapi.common.items.trades.ItemRandomTrade.Trade;
-import speiger.src.spmodapi.common.util.TickHelper;
-import cpw.mods.fml.common.network.PacketDispatcher;
-import cpw.mods.fml.common.network.Player;
+import cpw.mods.fml.relauncher.Side;
 
-public class TradePacket implements IPacketReciver
+public class TradePacket implements ISpmodPacket
 {
-	public static TradePacket instance = new TradePacket();
+	Trade[] trades;
+	boolean first;
 	
 	public TradePacket()
 	{
-		SpmodPacketHelper.getHelper().registerPacketReciver(this);
-	}
-
-	@Override
-	public void recivePacket(DataInput par1)
-	{
-		try
-		{
-			ItemRandomTrade.recipeList.clear();
-			NBTTagCompound nbt = (NBTTagCompound)NBTBase.func_130104_b(par1, 0);
-			NBTTagList list = nbt.getTagList("TradeList");
-			for(int i = 0;i<list.tagCount();i++)
-			{
-				NBTTagCompound data = (NBTTagCompound)list.tagAt(i);
-				int id = data.getInteger("TradeID");
-				MerchantRecipe recipe = new MerchantRecipe(data.getCompoundTag("Trade"));
-				ItemRandomTrade.recipeList.add(new Trade(recipe, id));
-			}
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
-		}
-	}
-
-	@Override
-	public String identifier()
-	{
-		return "Trade Packet";
+		
 	}
 	
-	public void sendPacketToClient(EntityPlayer par1)
+	public TradePacket(boolean par1, Trade...par2)
 	{
-		if(!ItemRandomTrade.secondTry)
+		first = par1;
+		trades = par2;
+	}
+	
+	@Override
+	public void readData(DataInput par1) throws Exception
+	{
+		first = par1.readBoolean();
+		int size = par1.readInt();
+		trades = new Trade[size];
+		for(int i = 0;i<size;i++)
 		{
-			ItemRandomTrade.secondTry = true;
-			TickHelper.loadRecipes(par1);
+			int meta = par1.readInt();
+			trades[i] = new Trade(new MerchantRecipe((NBTTagCompound)NBTBase.readNamedTag(par1)), meta);
 		}
-		List<Trade> trades = ItemRandomTrade.recipeList;
-		NBTTagList list = new NBTTagList();
-		for(int i = 0;i<trades.size();i++)
-		{
-			NBTTagCompound nbt = new NBTTagCompound();
-			Trade trade = trades.get(i);
-			nbt.setInteger("TradeID", trade.getMetadata());
-			nbt.setCompoundTag("Trade", trade.getTrade().writeToTags());
-			list.appendTag(nbt);
-			if(list.tagCount() > 50)
-			{
-				NBTTagCompound data = new NBTTagCompound();
-				data.setTag("TradeList", list);
-				list = new NBTTagList();
-				ModularPacket packet = new ModularPacket(SpmodAPI.instance, PacketType.Custom, identifier());
-				packet.InjectNBT(data);
-				PacketDispatcher.sendPacketToPlayer(packet.finishPacket(), (Player)par1);
-			}
-		}
-		
-		NBTTagCompound data = new NBTTagCompound();
-		data.setTag("TradeList", list);
-		ModularPacket packet = new ModularPacket(SpmodAPI.instance, PacketType.Custom, identifier());
-		packet.InjectNBT(data);
-		PacketDispatcher.sendPacketToPlayer(packet.finishPacket(), (Player)par1);
 	}
 
+	@Override
+	public void writeData(DataOutput par1) throws Exception
+	{
+		par1.writeBoolean(first);
+		par1.writeInt(trades.length);
+		for(Trade trade : trades)
+		{
+			par1.writeInt(trade.getMetadata());
+			NBTTagCompound data = trade.getTrade().writeToTags();
+			data.writeNamedTag(data, par1);
+		}
+	}
+
+	@Override
+	public void handlePacket(EntityPlayer par1, Side par2)
+	{
+		if(first)
+		{
+			ItemRandomTrade.recipeList.clear();
+		}
+		for(Trade trade : trades)
+		{
+			ItemRandomTrade.recipeList.add(trade);
+		}
+	}
+	
 	
 }

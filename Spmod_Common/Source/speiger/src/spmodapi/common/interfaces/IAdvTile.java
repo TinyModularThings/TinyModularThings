@@ -22,8 +22,7 @@ import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.Explosion;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
-import speiger.src.api.common.registry.helpers.SpmodMod;
+import speiger.src.api.common.data.packets.receivers.ITilePacketAcceptor;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
@@ -38,7 +37,7 @@ import cpw.mods.fml.relauncher.SideOnly;
  * @author Speiger
  * Reference is at the AdvTile.class look there what every function does.
  */
-public interface IAdvTile
+public interface IAdvTile extends ITilePacketAcceptor
 {
 	/**
 	 * if this class contains the AdvTileClass then it returns true.
@@ -82,8 +81,6 @@ public interface IAdvTile
 	public void sendPacketToClient(Packet par1, int range);
 	
 	public void sendPacketToPlayer(Packet par1, EntityPlayer par2);
-	
-	public ModularPacket createBasicPacket(SpmodMod mod);
 	
 	public void onIconMakerLoading();
 		

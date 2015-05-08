@@ -206,7 +206,6 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	{
 		super.onTick();
 		
-		updateBlock();
 		if (!worldObj.isRemote)
 		{
 			if (worldObj.getWorldTime() % 80 == 0)
@@ -823,29 +822,29 @@ public class TinyTank extends AdvTile implements IFluidHandler, IWrenchable
 	@Override
 	public void onRenderWorld(Block block, RenderBlocks render)
 	{
-		if(tank.getFluidAmount() > 0)
-		{
-			FluidStack stack = tank.getFluid();
-			if(stack != null && stack.getFluid() != null && renderLiquid() && !renderTank())
-			{
-				Fluid fluid = stack.getFluid();
-				Icon icon = fluid.getIcon(stack);
-				double amount = ((double)stack.amount / (double)tank.getCapacity()) * 75;
-				amount /= 100;
-				
-				render.setRenderBounds(0.125, 0.125, 0.125, 0.875, 0.125+amount, 0.875);
-				render.setOverrideBlockTexture(icon);
-				render.renderAllFaces = true;
-				render.renderStandardBlock(block, xCoord, yCoord, zCoord);
-				render.clearOverrideBlockTexture();
-				render.renderAllFaces = false;
-			}
-			
-			if(renderTank())
-			{
-				render.renderStandardBlock(block, xCoord, yCoord, zCoord);
-			}
-		}
+//		if(tank.getFluidAmount() > 0)
+//		{
+//			FluidStack stack = tank.getFluid();
+//			if(stack != null && stack.getFluid() != null && renderLiquid() && !renderTank())
+//			{
+//				Fluid fluid = stack.getFluid();
+//				Icon icon = fluid.getIcon(stack);
+//				double amount = ((double)stack.amount / (double)tank.getCapacity()) * 75;
+//				amount /= 100;
+//				
+//				render.setRenderBounds(0.125, 0.125, 0.125, 0.875, 0.125+amount, 0.875);
+//				render.setOverrideBlockTexture(icon);
+//				render.renderAllFaces = true;
+//				render.renderStandardBlock(block, xCoord, yCoord, zCoord);
+//				render.clearOverrideBlockTexture();
+//				render.renderAllFaces = false;
+//			}
+//			
+//			if(renderTank())
+//			{
+//				render.renderStandardBlock(block, xCoord, yCoord, zCoord);
+//			}
+//		}
 	}
 	
 	

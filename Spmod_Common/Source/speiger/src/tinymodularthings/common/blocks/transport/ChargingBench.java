@@ -1,7 +1,5 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
-import java.io.DataInput;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.inventory.Container;
@@ -13,17 +11,18 @@ import net.minecraft.util.Icon;
 import net.minecraft.util.ResourceLocation;
 import net.minecraft.world.World;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.common.data.packets.IPacketReciver;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.SpmodPacket;
 import speiger.src.api.common.world.items.energy.IBCBattery;
 import speiger.src.api.common.world.tiles.energy.EnergyProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergyProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergySubject;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.client.gui.buttons.GuiSliderButton;
+import speiger.src.spmodapi.common.network.packets.base.TileNBTPacket;
 import speiger.src.spmodapi.common.tile.AdvInventory;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
@@ -31,7 +30,7 @@ import buildcraft.api.power.PowerHandler.PowerReceiver;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class ChargingBench extends AdvInventory implements IPacketReciver, IEnergyProvider,
+public class ChargingBench extends AdvInventory implements IEnergyProvider,
 	IPowerReceptor, ISidedInventory
 {
 
@@ -77,6 +76,7 @@ public class ChargingBench extends AdvInventory implements IPacketReciver, IEner
 		NBTTagCompound energyData = par1.getCompoundTag("EnergyData");
 		energy.readFromNBT(energyData);
 		transferlimit = par1.getFloat("Transferlimit");
+		energy.setTransferlimtit((int)(5000 * transferlimit));
 		empty = par1.getBoolean("Empty");
 		charged = par1.getBoolean("Full");
 	}
@@ -93,36 +93,38 @@ public class ChargingBench extends AdvInventory implements IPacketReciver, IEner
 		par1.setBoolean("Full", charged);
 	}
 
+	
 	@Override
-	public void recivePacket(DataInput par1)
+	public void onSpmodPacket(SpmodPacket par1)
 	{
-		try
+		if(par1.getPacket() instanceof TileNBTPacket)
 		{
-			int id = par1.readInt();
-			if(id == 0)
+			TileNBTPacket packet = (TileNBTPacket)par1.getPacket();
+			NBTTagCompound nbt = packet.getData();
+			boolean update = false;
+			if(nbt.hasKey("Empty"))
 			{
-				transferlimit = par1.readFloat();
+				empty = nbt.getBoolean("Empty");
+				update = true;
+			}
+			if(nbt.hasKey("Full"))
+			{
+				charged = nbt.getBoolean("Full");
+				update = true;
+			}
+			if(nbt.hasKey("Limit"))
+			{
+				this.transferlimit = nbt.getFloat("Limit");
 				energy.setTransferlimtit((int)(5000 * transferlimit));
 			}
-			else if(id == 1)
+			if(update)
 			{
-				empty = par1.readBoolean();
-				charged = par1.readBoolean();
 				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 				worldObj.notifyBlockOfNeighborChange(xCoord, yCoord, zCoord, 0);
 			}
 		}
-		catch(Exception e)
-		{
-		}
 	}
-
-	@Override
-	public String identifier()
-	{
-		return null;
-	}
-
+	
 	@Override
 	public void onTick()
 	{
@@ -224,15 +226,17 @@ public class ChargingBench extends AdvInventory implements IPacketReciver, IEner
 		return true;
 	}
 	
-	
-
 	@Override
 	public void onInventoryChanged()
 	{
 		super.onInventoryChanged();
 		this.empty = this.isEmpty();
 		this.charged = this.allBatteriesCharged();
-		this.sendPacketToClient(this.createBasicPacket(TinyModularThings.instance).InjectNumbers(1).InjectBooleans(empty, charged).finishPacket(), 20);
+		TileNBTPacket packet = new TileNBTPacket(this);
+		NBTTagCompound nbt = packet.getData();
+		nbt.setBoolean("Empty", empty);
+		nbt.setBoolean("Full", charged);
+		this.sendPacketToClient(SpmodAPI.handler.createFinishPacket(packet), 20);
 		this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 	}
 
@@ -308,7 +312,9 @@ public class ChargingBench extends AdvInventory implements IPacketReciver, IEner
 		{
 			GuiSliderButton button = (GuiSliderButton)par2;
 			transferlimit = button.sliderValue;
-			this.sendPacketToServer(this.createBasicPacket(TinyModularThings.instance).InjectNumbers(0, transferlimit).finishPacket());
+			TileNBTPacket packet = new TileNBTPacket(this);
+			NBTTagCompound nbt = packet.getData();
+			nbt.setFloat("Limit", transferlimit);
 		}
 	}
 

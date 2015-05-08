@@ -1,6 +1,5 @@
 package speiger.src.tinymodularthings.common.items.energy;
 
-import java.io.DataInput;
 import java.util.List;
 
 import net.minecraft.client.gui.GuiButton;
@@ -8,19 +7,18 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.util.ResourceLocation;
-import speiger.src.api.common.data.packets.IPacketReciver;
-import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.SpmodPacket;
 import speiger.src.api.common.world.items.energy.IBCBattery.BatteryType;
 import speiger.src.api.common.world.items.energy.ItemEnergyNet.BatteryContainer;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.client.gui.buttons.GuiSliderButton;
 import speiger.src.spmodapi.common.items.core.ItemInventory;
+import speiger.src.tinymodularthings.common.network.packets.client.BatteryPacket;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public abstract class BatteryInventory extends ItemInventory implements
-		IPacketReciver
+public abstract class BatteryInventory extends ItemInventory
 {
 	public static final String[] sendingModes = new String[] {"Only Machines", "Only Batteries", "Everything" };
 	public static final String[] drawingModes = new String[] {"Only Generators", "Only Batteries", "Everything" };
@@ -81,83 +79,80 @@ public abstract class BatteryInventory extends ItemInventory implements
 		return true;
 	}
 	
+	
+	
 	@Override
-	public void recivePacket(DataInput par1)
+	public void onSpmodPacket(SpmodPacket par1)
 	{
-		try
+		super.onSpmodPacket(par1);
+		if(par1.getPacket() instanceof BatteryPacket)
 		{
-			int id = par1.readInt();
-			BatteryType type = container.getType();
-			if(id == 250)
-				randomMode = !randomMode;
-			if(id == 251)
-				multiMode = !multiMode;
-			if(id == 252)
-			{
-				if(type == BatteryType.Generator || type == BatteryType.Storage)
-				{
-					sendingMode = par1.readFloat();
-				}
-				else
-				{
-					drawingMode = par1.readFloat();
-				}
-			}
-			switch(type)
-			{
-				case Generator:
-					if(id == 261)
-						acceptingPowerDraw = !acceptingPowerDraw;
-					if(id == 262)
-						transferlimitOut = par1.readFloat();
-					if(id == 263)
-						autoSending = !autoSending;
-					if(id == 264)
-						mastertransferlimit = par1.readFloat();
-					if(id == 265)
-						tickRate = par1.readFloat();
-					break;
-				case Machine:
-					if(id == 261)
-						acceptingPower = !acceptingPower;
-					if(id == 262)
-						transferlimitIn = par1.readFloat();
-					if(id == 263)
-						autoDrawing = !autoDrawing;
-					if(id == 264)
-						mastertransferlimit = par1.readFloat();
-					if(id == 265)
-						tickRate = par1.readFloat();
-					break;
-				case Storage:
-					if(id == 261)
-						acceptingPower = !acceptingPower;
-					if(id == 262)
-						transferlimitIn = par1.readFloat();
-					if(id == 263)
-						acceptingPowerDraw = !acceptingPowerDraw;
-					if(id == 264)
-						transferlimitOut = par1.readFloat();
-					if(id == 265)
-						autoSending = !autoSending;
-					if(id == 266)
-						mastertransferlimit = par1.readFloat();
-					if(id == 267)
-						tickRate = par1.readFloat();
-					break;
-			}
-			
-		}
-		catch(Exception e)
-		{
-			e.printStackTrace();
+			BatteryPacket packet = (BatteryPacket)par1.getPacket();
+			onPacketData(packet.key, packet.value);
 		}
 	}
 	
-	@Override
-	public String identifier()
+	private void onPacketData(int id, float value)
 	{
-		return null;
+		BatteryType type = container.getType();
+		if(id == 250)
+			randomMode = !randomMode;
+		if(id == 251)
+			multiMode = !multiMode;
+		if(id == 252)
+		{
+			if(type == BatteryType.Generator || type == BatteryType.Storage)
+			{
+				sendingMode = value;
+			}
+			else
+			{
+				drawingMode = value;
+			}
+		}
+		switch(type)
+		{
+			case Generator:
+				if(id == 261)
+					acceptingPowerDraw = !acceptingPowerDraw;
+				if(id == 262)
+					transferlimitOut = value;
+				if(id == 263)
+					autoSending = !autoSending;
+				if(id == 264)
+					mastertransferlimit = value;
+				if(id == 265)
+					tickRate = value;
+				break;
+			case Machine:
+				if(id == 261)
+					acceptingPower = !acceptingPower;
+				if(id == 262)
+					transferlimitIn = value;
+				if(id == 263)
+					autoDrawing = !autoDrawing;
+				if(id == 264)
+					mastertransferlimit = value;
+				if(id == 265)
+					tickRate = value;
+				break;
+			case Storage:
+				if(id == 261)
+					acceptingPower = !acceptingPower;
+				if(id == 262)
+					transferlimitIn = value;
+				if(id == 263)
+					acceptingPowerDraw = !acceptingPowerDraw;
+				if(id == 264)
+					transferlimitOut = value;
+				if(id == 265)
+					autoSending = !autoSending;
+				if(id == 266)
+					mastertransferlimit = value;
+				if(id == 267)
+					tickRate = value;
+				break;
+		}
 	}
 	
 	@Override
@@ -283,9 +278,12 @@ public abstract class BatteryInventory extends ItemInventory implements
 			}
 			
 		}
+
 		if(sendPacket)
 		{
-			this.sendPacketToServer(this.createItemPacket(SpmodAPI.instance).InjectNumber(id).finishPacket());
+			BatteryPacket packet = new BatteryPacket(this);
+			packet.setData(id);
+			this.sendPacketToServer(SpmodAPI.handler.createFinishPacket(packet));
 		}
 	}
 	
@@ -472,7 +470,8 @@ public abstract class BatteryInventory extends ItemInventory implements
 		int id = par2.id;
 		boolean sendPacket = false;
 		BatteryType type = container.getType();
-		ModularPacket packet = this.createItemPacket(SpmodAPI.instance).InjectNumber(id);
+		BatteryPacket packet = new BatteryPacket(this);
+		packet.setData(id);
 		if(energyNetActive)
 		{
 			if(id == 252)
@@ -480,13 +479,13 @@ public abstract class BatteryInventory extends ItemInventory implements
 				if(type == BatteryType.Generator || type == BatteryType.Storage)
 				{
 					this.sendingMode = ((GuiSliderButton)par2).sliderValue;
-					packet.InjectNumber(sendingMode);
+					packet.setValue(sendingMode);
 					sendPacket = true;
 				}
 				else
 				{
 					this.drawingMode = ((GuiSliderButton)par2).sliderValue;
-					packet.InjectNumber(drawingMode);
+					packet.setValue(drawingMode);
 					sendPacket = true;
 				}
 				
@@ -499,17 +498,17 @@ public abstract class BatteryInventory extends ItemInventory implements
 				if(id == 262)
 				{
 					this.transferlimitOut = ((GuiSliderButton)par2).sliderValue;
-					packet.InjectNumber(transferlimitOut);
+					packet.setValue(transferlimitOut);
 				}
 				if(id == 264)
 				{
 					this.mastertransferlimit = ((GuiSliderButton)par2).sliderValue;
-					packet.InjectNumber(mastertransferlimit);
+					packet.setValue(mastertransferlimit);
 				}
 				if(id == 265)
 				{
 					tickRate = ((GuiSliderButton)par2).sliderValue;
-					packet.InjectNumber(tickRate);
+					packet.setValue(tickRate);
 				}
 			}
 			else if(type == BatteryType.Machine)
@@ -517,17 +516,17 @@ public abstract class BatteryInventory extends ItemInventory implements
 				if(id == 262)
 				{
 					this.transferlimitIn = ((GuiSliderButton)par2).sliderValue;
-					packet.InjectNumber(transferlimitIn);
+					packet.setValue(transferlimitIn);
 				}
 				if(id == 264)
 				{
 					this.mastertransferlimit = ((GuiSliderButton)par2).sliderValue;
-					packet.InjectNumber(mastertransferlimit);
+					packet.setValue(mastertransferlimit);
 				}
 				if(id == 265)
 				{
 					tickRate = ((GuiSliderButton)par2).sliderValue;
-					packet.InjectNumber(tickRate);
+					packet.setValue(tickRate);
 				}
 			}
 			else
@@ -535,22 +534,22 @@ public abstract class BatteryInventory extends ItemInventory implements
 				if(id == 262)
 				{
 					transferlimitIn = ((GuiSliderButton)par2).sliderValue;
-					packet.InjectNumber(transferlimitIn);
+					packet.setValue(transferlimitIn);
 				}
 				if(id == 264)
 				{
 					transferlimitOut = ((GuiSliderButton)par2).sliderValue;
-					packet.InjectNumber(transferlimitOut);
+					packet.setValue(transferlimitOut);
 				}
 				if(id == 266)
 				{
 					mastertransferlimit = ((GuiSliderButton)par2).sliderValue;
-					packet.InjectNumber(mastertransferlimit);
+					packet.setValue(mastertransferlimit);
 				}
 				if(id == 267)
 				{
 					tickRate = ((GuiSliderButton)par2).sliderValue;
-					packet.InjectNumber(tickRate);
+					packet.setValue(tickRate);
 				}
 			}
 			sendPacket = true;
@@ -558,7 +557,7 @@ public abstract class BatteryInventory extends ItemInventory implements
 		
 		if(sendPacket)
 		{
-			this.sendPacketToServer(packet.finishPacket());
+			this.sendPacketToServer(SpmodAPI.handler.createFinishPacket(packet));
 		}
 	}
 	

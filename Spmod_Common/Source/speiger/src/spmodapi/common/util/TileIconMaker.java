@@ -10,12 +10,9 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.util.Icon;
 import speiger.src.api.common.data.nbt.DataStorage;
 import speiger.src.api.common.data.nbt.INBTReciver;
-import speiger.src.api.common.data.packets.IPacketReciver;
-import speiger.src.api.common.data.packets.SpmodPacketHelper;
 import speiger.src.api.common.data.utils.BlockData;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.spmodapi.common.interfaces.IAdvTile;
-import speiger.src.spmodapi.common.tile.AdvTile;
 
 public class TileIconMaker
 {
@@ -78,10 +75,6 @@ public class TileIconMaker
 		if(par1.requireForgeRegistration())
 		{
 			ForgeRegister.regist(par1);
-		}
-		if(par1 instanceof IPacketReciver)
-		{
-			SpmodPacketHelper.getHelper().registerPacketReciver((IPacketReciver)par1);
 		}
 		if(par1 instanceof INBTReciver)
 		{

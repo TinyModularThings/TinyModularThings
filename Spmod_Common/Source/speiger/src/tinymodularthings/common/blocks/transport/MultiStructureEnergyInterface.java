@@ -263,4 +263,19 @@ public class MultiStructureEnergyInterface extends AdvTile implements
 	{
 		target = null;
 	}
+	
+	@Override
+	public boolean ImMaster(TileEntity par1)
+	{
+		TileEntity tile = (TileEntity)target;
+		if(tile == null && par1 == null)
+		{
+			return true;
+		}
+		if(tile != null && par1 != null)
+		{
+			return tile.worldObj.provider.dimensionId == par1.worldObj.provider.dimensionId && tile.xCoord == par1.xCoord && tile.yCoord == par1.yCoord && tile.zCoord == par1.zCoord;
+		}
+		return false;
+	}
 }

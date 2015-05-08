@@ -1,28 +1,20 @@
 package speiger.src.tinymodularthings.common.pipes;
 
-import java.io.DataInput;
-
 import net.minecraft.client.gui.inventory.GuiContainer;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.entity.player.InventoryPlayer;
 import net.minecraft.inventory.Container;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.world.World;
-import net.minecraftforge.common.DimensionManager;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.fluids.IFluidHandler;
-import speiger.src.api.common.data.packets.IPacketReciver;
-import speiger.src.api.common.data.packets.SpmodPacketHelper;
 import speiger.src.api.common.utils.RedstoneUtils;
 import speiger.src.api.common.utils.WorldReading;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.enums.EnumGuiIDs;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.client.gui.pipes.GuiAluPipe;
-import speiger.src.tinymodularthings.common.enums.EnumIDs;
 import speiger.src.tinymodularthings.common.handler.PipeIconHandler;
 import speiger.src.tinymodularthings.common.interfaces.IPipeGuiProvider;
 import buildcraft.api.core.IIconProvider;
@@ -32,7 +24,6 @@ import buildcraft.core.network.TileNetworkData;
 import buildcraft.transport.Pipe;
 import buildcraft.transport.PipeConnectionBans;
 import buildcraft.transport.PipeTransportFluids;
-import buildcraft.transport.TileGenericPipe;
 import buildcraft.transport.pipes.PipeFluidsEmerald;
 import buildcraft.transport.pipes.PipeFluidsWood;
 import buildcraft.transport.pipes.PipeLogicWood;
@@ -40,7 +31,7 @@ import buildcraft.transport.pipes.PipePowerWood;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
-public class AluFluidExtractionPipe extends Pipe<PipeTransportFluids> implements IPacketReciver, IPipeGuiProvider
+public class AluFluidExtractionPipe extends Pipe<PipeTransportFluids> implements IPipeGuiProvider
 {
 	@TileNetworkData
 	public boolean continueless = false;
@@ -105,7 +96,6 @@ public class AluFluidExtractionPipe extends Pipe<PipeTransportFluids> implements
 	
 	public static void init(int id)
 	{
-		SpmodPacketHelper.getHelper().registerPacketReciver(new AluFluidExtractionPipe(id));
 		PipeConnectionBans.banConnection(PipeEmeraldExtractionPower.class);
 		PipeConnectionBans.banConnection(PipeEmeraldExtractionPower.class, PipePowerWood.class);
 		PipeConnectionBans.banConnection(AluFluidExtractionPipe.class);
@@ -124,46 +114,6 @@ public class AluFluidExtractionPipe extends Pipe<PipeTransportFluids> implements
 				return 7;
 			else
 				return 6;
-		}
-	}
-	@Override
-	public void recivePacket(DataInput par1)
-	{
-		try
-		{
-			World world = DimensionManager.getWorld(par1.readInt());
-			int x = par1.readInt();
-			int y = par1.readInt();
-			int z = par1.readInt();
-			
-			boolean cont = par1.readBoolean();
-			int amount = par1.readInt();
-			
-			if(world != null && !world.isRemote)
-			{
-				TileEntity tile = world.getBlockTileEntity(x, y, z);
-				if(tile != null && tile instanceof TileGenericPipe)
-				{
-					TileGenericPipe pipeProvider = (TileGenericPipe)tile;
-					if(pipeProvider.pipe != null && pipeProvider.pipe instanceof AluFluidExtractionPipe)
-					{
-						AluFluidExtractionPipe bronze = (AluFluidExtractionPipe)pipeProvider.pipe;
-						bronze.continueless = cont;
-						bronze.FluidSetup = amount;
-						bronze.todos = 0;
-						if(cont)
-						{
-							bronze.delay = 20;
-						}
-						bronze.updateNeighbors(true);
-					}
-				}
-			}
-			
-		}
-		catch(Exception e)
-		{
-			
 		}
 	}
 	
@@ -276,12 +226,6 @@ public class AluFluidExtractionPipe extends Pipe<PipeTransportFluids> implements
 		}
 		
 		return true;
-	}
-	
-	@Override
-	public String identifier()
-	{
-		return "TMTAluExtractionPipe";
 	}
 	
 	@Override

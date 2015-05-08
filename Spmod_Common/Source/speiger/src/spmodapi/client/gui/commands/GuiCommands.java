@@ -14,13 +14,12 @@ import net.minecraft.util.ResourceLocation;
 
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
-import speiger.src.api.common.data.packets.SpmodPacketHelper.PacketType;
 import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.command.CommandRegistry;
 import speiger.src.spmodapi.common.command.ISpmodCommand;
 import speiger.src.spmodapi.common.command.ISubCommand;
 import speiger.src.spmodapi.common.lib.SpmodAPILib;
+import speiger.src.spmodapi.common.network.packets.client.CommandPacket;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
@@ -316,18 +315,8 @@ public class GuiCommands extends GuiContainer
 		else if (id == 7)
 		{
 			String[] string = text.getText().split(" ");
-			int length = string.length;
-			if (text.getText().length() == 0)
-			{
-				length = 0;
-			}
-			ModularPacket packet = new ModularPacket(SpmodAPI.instance, PacketType.Custom, "Command.Reciver");
-			packet.InjectNumber(sender.worldObj.provider.dimensionId);
-			packet.injectString(sender.username);
-			packet.InjectNumbers(this.subCommand == null ? (byte) 0 : (byte) 1, (int) pCommand.indexOf(commands[this.choosenCom]), subCommand == null ? (int) 0 : (int) sub.get(subCommand).indexOf(subCommands[this.choosenSubCom]));
-			packet.InjectNumber((Integer) length);
-			packet.InjectStrings(string);
-			PacketDispatcher.sendPacketToServer(packet.finishPacket());
+			CommandPacket packet = new CommandPacket(subCommand != null, pCommand.indexOf(pCommand.indexOf(commands[this.choosenCom])), subCommand == null ? 0 : sub.get(subCommand).indexOf(subCommands[this.choosenSubCom]), string);
+			PacketDispatcher.sendPacketToServer(SpmodAPI.handler.createFinishPacket(packet));
 			super.keyTyped('0', 1);
 		}
 		else

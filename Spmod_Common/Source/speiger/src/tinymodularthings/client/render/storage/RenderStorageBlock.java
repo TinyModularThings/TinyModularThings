@@ -62,7 +62,7 @@ public class RenderStorageBlock extends TileEntitySpecialRenderer
 			tile.applySize(8F, 65D, 75D, -0.001D);
 			
 			Minecraft mc = FMLClientHandler.instance().getClient();
-			if(!ForgeHooksClient.renderInventoryItem(RenderHelper.getBlockRenderer(), mc.getTextureManager(), tile.getItem(), true, 0.0F, 0.0F, 0.0F))
+			if(!ForgeHooksClient.renderInventoryItem(RenderHelper.getBlockRenderer(tile.worldObj), mc.getTextureManager(), tile.getItem(), true, 0.0F, 0.0F, 0.0F))
 			{
 				RenderHelper.getItemRenderer().renderItemIntoGUI(mc.fontRenderer, mc.getTextureManager(), tile.getItem(), 0, 0);
 			}
@@ -100,19 +100,57 @@ public class RenderStorageBlock extends TileEntitySpecialRenderer
 			if(win)
 			{
 				bindTexture(advTCClosedTexture);
+				GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
+				tinytank.render(0.0625F, tile instanceof AdvTinyTank);
+				GL11.glPopMatrix();
+				return;
 			}
 			else
 			{
 				bindTexture(advTCOpenTexture);
 			}
+			
 		}
 		else
 		{
 			bindTexture(basicTCTexture);
 		}
+		GL11.glTranslatef(0F, -1F, 0F);
+		renderFluidInTank(tile, x, y, z);
+		GL11.glTranslatef(0F, 1F, 0F);
 		GL11.glRotatef(180F, 0.0F, 0.0F, 1.0F);
 		tinytank.render(0.0625F, tile instanceof AdvTinyTank);
 		GL11.glPopMatrix();
+	}
+	
+	private void renderFluidInTank(TinyTank par1, double x, double y, double z)
+	{
+//		RenderBlocks blocks = RenderHelper.getBlockRenderer(par1.worldObj);
+//		FluidTank tank = par1.tank;
+//		if(tank.getFluidAmount() > 0)
+//		{
+//			FluidStack stack = tank.getFluid();
+//			if(stack != null && stack.getFluid() != null && par1.renderLiquid() && !par1.renderTank())
+//			{
+//				Fluid fluid = stack.getFluid();
+//				Icon icon = fluid.getIcon(stack);
+//				double amount = ((double)stack.amount / (double)tank.getCapacity()) * 75;
+//				amount /= 100;
+//				Block block = TinyBlocks.storageBlock;
+//				block.setBlockBounds((float)0.125, (float)0.125, (float)0.125, (float)0.875, (float)((float)0.125+amount), (float)0.875);
+//				blocks.renderAllFaces = true;
+//				blocks.setOverrideBlockTexture(icon);
+//				blocks.renderBlockAllFaces(Block.stone, par1.xCoord, par1.yCoord, par1.zCoord);
+//				blocks.clearOverrideBlockTexture();
+//				block.setBlockBounds(0, 0, 0, 1, 1, 1);
+//				blocks.renderAllFaces = false;
+//			}
+//			
+//			if(par1.renderTank())
+//			{
+//				blocks.renderStandardBlock(TinyBlocks.storageBlock, par1.xCoord, par1.yCoord, par1.zCoord);
+//			}
+//		}
 	}
 	
 	public void renderTinyChest(TinyChest par1, double x, double y, double z)

@@ -5,6 +5,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.util.ResourceLocation;
+import net.minecraft.world.IBlockAccess;
 
 import org.lwjgl.opengl.GL11;
 
@@ -43,8 +44,9 @@ public class RenderHelper
 		return itemRenderer;
 	}
 	
-	public static RenderBlocks getBlockRenderer()
+	public static RenderBlocks getBlockRenderer(IBlockAccess par1)
 	{
+		blockRender.blockAccess = par1;
 		return blockRender;
 	}
 	

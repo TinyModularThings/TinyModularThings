@@ -17,6 +17,8 @@ import net.minecraft.tileentity.TileEntityFurnace;
 import net.minecraft.util.Icon;
 import net.minecraftforge.common.ForgeDirection;
 import net.minecraftforge.fluids.*;
+import speiger.src.api.common.data.packets.SpmodPacketHelper;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.SpmodPacket;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList;
 import speiger.src.api.common.registry.recipes.pressureFurnace.PressureRecipeList.PressureRecipeStorage;
 import speiger.src.api.common.utils.FluidUtils;
@@ -27,6 +29,7 @@ import speiger.src.api.common.world.tiles.interfaces.IAcceptor.AcceptorType;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.blocks.utils.ExpStorage;
 import speiger.src.spmodapi.common.interfaces.IAdvTile;
+import speiger.src.spmodapi.common.network.packets.base.TileNBTPacket;
 import speiger.src.spmodapi.common.templates.core.ITemplate;
 import speiger.src.spmodapi.common.templates.core.ITemplateProvider;
 import speiger.src.spmodapi.common.tile.FacedInventory;
@@ -324,6 +327,9 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 	
 	public void handleFuel()
 	{
+		boolean sendPacket = false;
+		TileNBTPacket packet = new TileNBTPacket(this);
+		NBTTagCompound nbt = packet.getData();
 		if(maxFuel <= 0)
 		{
 			maxFuel = fuel;
@@ -338,6 +344,8 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 			if (worldObj.getWorldTime() % 5 == 0)
 			{
 				heat--;
+				sendPacket = true;
+				nbt.setInteger("Heat", heat);
 			}
 		}
 		if(fuel > 0)
@@ -349,8 +357,14 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 				if (worldObj.getWorldTime() % 5 == 0)
 				{
 					heat += 1;
+					sendPacket = true;
+					nbt.setInteger("Heat", heat);
 				}
 			}
+		}
+		if(sendPacket)
+		{
+			this.sendPacketToClient(SpmodPacketHelper.handler.createFinishPacket(packet), 20);
 		}
 	}
 	
@@ -494,6 +508,7 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 		return engine.getTexture(TinyBlocks.machine, 0);
 	}
 	
+	
 	@Override
 	public boolean hasContainer()
 	{
@@ -600,6 +615,27 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 		}
 	}
 	
+	
+	
+	@Override
+	public void onSpmodPacket(SpmodPacket par1)
+	{
+		super.onSpmodPacket(par1);
+		if(par1.getPacket() instanceof TileNBTPacket)
+		{
+			NBTTagCompound nbt = ((TileNBTPacket)par1.getPacket()).getData();
+			if(nbt.hasKey("Valid"))
+			{
+				valid = nbt.getBoolean("Valid");
+				this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+			}
+			if(nbt.hasKey("Heat"))
+			{
+				heat = nbt.getInteger("Heat");
+			}
+		}
+	}
+
 	@Override
 	public void onSendingGuiInfo(Container par1, ICrafting par2)
 	{
@@ -796,9 +832,12 @@ public class PressureFurnace extends FacedInventory implements IFluidHandler, IO
 			{
 				loadInterfaces();
 			}
+			TileNBTPacket packet = new TileNBTPacket(this);
+			NBTTagCompound nbt = packet.getData();
+			nbt.setBoolean("Valid", valid);
+			this.sendPacketToClient(SpmodPacketHelper.handler.createFinishPacket(packet), 20);
 			worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 			this.updateNeighbors(true);
-			this.sendAllAround(20);
 		}
 	}
 	

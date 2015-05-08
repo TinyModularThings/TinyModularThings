@@ -4,6 +4,7 @@ import net.minecraft.block.Block;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.tileentity.TileEntity;
+import net.minecraft.util.Icon;
 
 import org.lwjgl.opengl.GL11;
 
@@ -20,6 +21,49 @@ public class BlockRenderHelper
 		Block block = par1.getBlock();
 		block.setBlockBoundsForItemRender();
 		renderInv(par1, par2);
+	}
+	
+	public static void renderFluidBlock(Icon par1, RenderBlocks par2, int x, int y, int z, Block par3)
+	{
+		Block block = par3;
+		Tessellator tessler = Tessellator.instance;
+
+	    par2.setRenderBoundsFromBlock(block);
+
+	    GL11.glRotatef(90.0F, 0.0F, 1.0F, 0.0F);
+	    GL11.glTranslatef(-0.5F, -0.5F, -0.5F);
+
+	    tessler.startDrawingQuads();
+	    tessler.setNormal(0.0F, -1.0F, 0.0F);
+	    par2.renderFaceYNeg(block, 0.0D, 0.0D, 0.0D, engine.getIconSafe(par1));
+	    tessler.draw();
+
+	    tessler.startDrawingQuads();
+	    tessler.setNormal(0.0F, 1.0F, 0.0F);
+	    par2.renderFaceYPos(block, 0.0D, 0.0D, 0.0D, engine.getIconSafe(par1));
+	    tessler.draw();
+
+	    tessler.startDrawingQuads();
+	    tessler.setNormal(0.0F, 0.0F, -1.0F);
+	    par2.renderFaceZNeg(block, 0.0D, 0.0D, 0.0D, engine.getIconSafe(par1));
+	    tessler.draw();
+
+	    tessler.startDrawingQuads();
+	    tessler.setNormal(0.0F, 0.0F, 1.0F);
+	    par2.renderFaceZPos(block, 0.0D, 0.0D, 0.0D, engine.getIconSafe(par1));
+	    tessler.draw();
+
+	    tessler.startDrawingQuads();
+	    tessler.setNormal(-1.0F, 0.0F, 0.0F);
+	    par2.renderFaceXNeg(block, 0.0D, 0.0D, 0.0D, engine.getIconSafe(par1));
+	    tessler.draw();
+
+	    tessler.startDrawingQuads();
+	    tessler.setNormal(1.0F, 0.0F, 0.0F);
+	    par2.renderFaceXPos(block, 0.0D, 0.0D, 0.0D, engine.getIconSafe(par1));
+	    tessler.draw();
+
+	    GL11.glTranslatef(0.5F, 0.5F, 0.5F);
 	}
 	
 	public static void renderInv(BlockStack par1, RenderBlocks par2)

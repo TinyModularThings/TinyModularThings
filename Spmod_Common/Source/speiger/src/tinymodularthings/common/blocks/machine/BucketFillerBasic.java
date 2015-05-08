@@ -1,6 +1,5 @@
 package speiger.src.tinymodularthings.common.blocks.machine;
 
-import java.io.DataInput;
 import java.util.HashMap;
 
 import net.minecraft.client.gui.GuiButton;
@@ -17,33 +16,32 @@ import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.fluids.*;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerData;
 import net.minecraftforge.fluids.FluidContainerRegistry.FluidContainerRegisterEvent;
-import speiger.src.api.common.data.packets.IPacketReciver;
-import speiger.src.api.common.data.packets.SpmodPacketHelper;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.SpmodPacket;
 import speiger.src.api.common.data.utils.IStackInfo;
 import speiger.src.api.common.data.utils.ItemData;
 import speiger.src.api.common.inventory.slot.TankSlot;
 import speiger.src.api.common.world.tiles.energy.EnergyProvider;
 import speiger.src.api.common.world.tiles.energy.IEnergyProvider;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
 import speiger.src.spmodapi.common.tile.AdvInventory;
 import speiger.src.spmodapi.common.tile.AdvancedFluidTank;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.slot.AdvContainer;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
+import speiger.src.tinymodularthings.common.network.packets.client.SlotClickPacket;
 import speiger.src.tinymodularthings.common.plugins.BC.actions.BucketFillerAction;
 import buildcraft.api.gates.IAction;
 import buildcraft.api.gates.IActionReceptor;
 import buildcraft.api.power.IPowerReceptor;
 import buildcraft.api.power.PowerHandler;
 import buildcraft.api.power.PowerHandler.PowerReceiver;
-import cpw.mods.fml.common.network.PacketDispatcher;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class BucketFillerBasic extends AdvInventory implements ISidedInventory,
-		IEnergyProvider, IFluidHandler, IPacketReciver, IPowerReceptor,
+		IEnergyProvider, IFluidHandler, IPowerReceptor,
 		IActionReceptor
 {
 	
@@ -338,11 +336,12 @@ public class BucketFillerBasic extends AdvInventory implements ISidedInventory,
 	@SideOnly(Side.CLIENT)
 	public void onButtonClick(GuiInventoryCore par1, GuiButton par2)
 	{
-		String change = !drain ? "Drain" : "Fill";
+		drain = !drain;
+		String change = drain ? "Drain" : "Fill";
 		if(par2.id == 0)
 		{
 			par2.displayString = change;
-			this.sendPacketToServer(SpmodPacketHelper.getHelper().createNBTPacket(this, TinyModularThings.instance).InjectNumber(!drain ? 0 : 1).finishPacket());
+			this.sendPacketToServer(SpmodAPI.handler.createFinishPacket(new SlotClickPacket(this, drain ? 1 : 0)));
 		}
 	}
 
@@ -424,23 +423,7 @@ public class BucketFillerBasic extends AdvInventory implements ISidedInventory,
 		return provider;
 	}
 	
-	@Override
-	public void recivePacket(DataInput par1)
-	{
-		try
-		{
-			if(!worldObj.isRemote)
-			{
-				this.drain = par1.readInt() == 1 ? false : true;
-				PacketDispatcher.sendPacketToAllAround(xCoord, yCoord, zCoord, 20, worldObj.provider.dimensionId, getDescriptionPacket());
-				
-			}
-		}
-		catch(Exception e)
-		{
-		}
-		
-	}
+	
 	
 	@Override
 	public PowerReceiver getPowerReceiver(ForgeDirection side)
@@ -452,6 +435,16 @@ public class BucketFillerBasic extends AdvInventory implements ISidedInventory,
 	public void doWork(PowerHandler workProvider)
 	{
 		
+	}
+	
+	@Override
+	public void onSpmodPacket(SpmodPacket par1)
+	{
+		if(par1.getPacket() instanceof SlotClickPacket)
+		{
+			int id = ((SlotClickPacket)par1.getPacket()).getSlot();
+			drain = id == 1;
+		}
 	}
 	
 	@Override
@@ -543,12 +536,6 @@ public class BucketFillerBasic extends AdvInventory implements ISidedInventory,
 		par2.sendProgressBarUpdate(par1, 0, tank.getFluid() != null ? tank.getFluid().fluidID : 0);
 		par2.sendProgressBarUpdate(par1, 1, tank.getFluid() != null ? tank.getFluid().amount : 0);
 		par2.sendProgressBarUpdate(par1, 2, progress);
-	}
-	
-	@Override
-	public String identifier()
-	{
-		return null;
 	}
 	
 	@Override

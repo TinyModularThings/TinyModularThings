@@ -10,11 +10,10 @@ import net.minecraft.util.ResourceLocation;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.opengl.GL11;
 
-import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
-import speiger.src.api.common.data.packets.SpmodPacketHelper.PacketType;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.common.util.proxy.LangProxy;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.lib.TinyModularThingsLib;
+import speiger.src.tinymodularthings.common.network.packets.client.AluPipePacket;
 import speiger.src.tinymodularthings.common.pipes.AluFluidExtractionPipe;
 import cpw.mods.fml.common.network.PacketDispatcher;
 
@@ -137,12 +136,8 @@ public class GuiAluPipe extends GuiContainer
 	
 	public void finishPacket()
 	{
-		ModularPacket modul = new ModularPacket(TinyModularThings.instance, PacketType.Custom, "TMTAluExtractionPipe");
-		modul.InjectNumbers(pipe.getWorld().provider.dimensionId, pipe.getContainer().xCoord, pipe.getContainer().yCoord, pipe.getContainer().zCoord);
-		modul.injectBoolean(loop);
-		modul.InjectNumber(Integer.parseInt(text.getText()));
-		
-		PacketDispatcher.sendPacketToServer(modul.finishPacket());
+		AluPipePacket packet = new AluPipePacket(pipe.getContainer(), Integer.parseInt(text.getText()), loop);
+		PacketDispatcher.sendPacketToServer(SpmodAPI.handler.createFinishPacket(packet));
 		this.mc.thePlayer.sendChatToPlayer(LangProxy.getText("Setted up extracting: "+Integer.parseInt(text.getText())+"mB "));
 		this.mc.thePlayer.sendChatToPlayer(LangProxy.getText(loop ? "AutoLoop Active" : "AutoLoop Deactive"));
 		this.mc.thePlayer.closeScreen();

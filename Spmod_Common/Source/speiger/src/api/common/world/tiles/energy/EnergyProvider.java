@@ -113,7 +113,9 @@ public class EnergyProvider implements IEnergySubject
 		nbt.setInteger("PowerLoss", powerloss);
 		nbt.setInteger("MaxStorage", maxStorage);
 		nbt.setInteger("Stored", storedEnergy);
+		nbt.setInteger("Transferlimit", transferlimit);
 		nbt.setBoolean("lossEnabled", powerLoss);
+		nbt.setBoolean("Transfer", forceTransferlimit);
 	}
 	
 	public void readFromNBT(NBTTagCompound nbt)
@@ -126,7 +128,9 @@ public class EnergyProvider implements IEnergySubject
 		powerloss = nbt.getInteger("PowerLoss");
 		maxStorage = nbt.getInteger("MaxStorage");
 		storedEnergy = nbt.getInteger("Stored");
+		transferlimit = nbt.getInteger("Transferlimit");
 		powerLoss = nbt.getBoolean("lossEnabled");
+		forceTransferlimit = nbt.getBoolean("Transfer");
 	}
 	
 	public int getMaxStorage()
@@ -296,6 +300,11 @@ public class EnergyProvider implements IEnergySubject
 	public int getStoredEnergy()
 	{
 		return storedEnergy;
+	}
+	
+	public int getTransferlimit()
+	{
+		return transferlimit;
 	}
 	
 }

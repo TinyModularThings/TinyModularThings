@@ -1,12 +1,11 @@
 package speiger.src.tinymodularthings.common.blocks.transport;
 
-import java.io.DataInput;
-import java.io.IOException;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.gui.GuiButton;
 import net.minecraft.client.renderer.RenderBlocks;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.inventory.Container;
+import net.minecraft.inventory.ICrafting;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
@@ -14,15 +13,15 @@ import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.Icon;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraftforge.common.ForgeDirection;
-import speiger.src.api.common.data.packets.IPacketReciver;
-import speiger.src.api.common.data.packets.SpmodPacketHelper.ModularPacket;
+import speiger.src.api.common.data.packets.SpmodPacketHelper.SpmodPacket;
 import speiger.src.api.common.world.blocks.BlockPosition;
 import speiger.src.api.common.world.blocks.BlockStack;
 import speiger.src.api.common.world.tiles.interfaces.IAcceptor;
+import speiger.src.spmodapi.SpmodAPI;
 import speiger.src.spmodapi.client.gui.GuiInventoryCore;
+import speiger.src.spmodapi.common.network.packets.base.TileNBTPacket;
 import speiger.src.spmodapi.common.tile.AdvTile;
 import speiger.src.spmodapi.common.util.TextureEngine;
-import speiger.src.tinymodularthings.TinyModularThings;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyBlocks;
 import speiger.src.tinymodularthings.common.config.ModObjects.TinyItems;
 import speiger.src.tinymodularthings.common.items.itemblocks.transport.ItemInterfaceBlock;
@@ -34,7 +33,7 @@ import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 
 public class MultiStructureItemInterface extends AdvTile implements IInventory,
-		IAcceptor, IPacketReciver, IActionReceptor
+		IAcceptor, IActionReceptor
 {
 	
 	public int blockID = -1;
@@ -94,14 +93,16 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 		if(target != null)
 		{
 			int id = par2.id;
-			if(id == 0)
+			if(id != 0 && id != 1)
 			{
-				sendPacketToServer(createBasicPacket(TinyModularThings.instance).injectBoolean(false).InjectNumber(0).injectBoolean(false).finishPacket());
+				return;
 			}
-			else if(id == 1)
-			{
-				sendPacketToServer(createBasicPacket(TinyModularThings.instance).injectBoolean(false).InjectNumber(0).injectBoolean(true).finishPacket());
-			}
+			
+			TileNBTPacket packet = new TileNBTPacket(this);
+			NBTTagCompound nbt = packet.getData();
+			//1 = Up & 0 = Down
+			nbt.setBoolean("SlotChange", id == 1);
+			this.sendPacketToServer(SpmodAPI.handler.createFinishPacket(packet));
 		}
 	}
 	
@@ -153,15 +154,17 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 
 	public void updateInfo()
 	{
-		boolean exist = hasMaster();
-		ModularPacket packet = this.createBasicPacket(TinyModularThings.instance);
-		packet.injectBoolean(true).InjectNumber(1).injectBoolean(exist);
-		if(exist)
+		boolean exsist = hasMaster();
+		TileNBTPacket packet = new TileNBTPacket(this);
+		NBTTagCompound nbt = packet.getData();
+		nbt.setBoolean("Master", exsist);
+		if(exsist)
 		{
-			TileEntity tile = (TileEntity)target;
-			packet.InjectNumbers(tile.xCoord, tile.yCoord, tile.zCoord);
+			TileEntity master = (TileEntity)target;
+			int[] coords = new int[]{master.xCoord, master.yCoord, master.zCoord};
+			nbt.setIntArray("Pos", coords);
 		}
-		this.sendPacketToClient(packet.finishPacket(), 20);
+		this.sendPacketToClient(SpmodAPI.handler.createFinishPacket(packet), 20);
 	}
 	
 	@Override
@@ -312,67 +315,34 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	}
 	
 	@Override
-	public void recivePacket(DataInput par1)
+	public void onSpmodPacket(SpmodPacket par1)
 	{
-
-		try
+		if(par1.getPacket() instanceof TileNBTPacket)
 		{
-			boolean client = par1.readBoolean();
-			if(!client)
+			TileNBTPacket packet = (TileNBTPacket)par1.getPacket();
+			NBTTagCompound nbt = packet.getData();
+			if(nbt.hasKey("Master"))
 			{
-				if(!worldObj.isRemote)
+				if(nbt.getBoolean("Master"))
 				{
-					int eventID = par1.readInt();
-					if(eventID == 0 && target != null)
+					int[] pos = nbt.getIntArray("Pos");
+					if(pos.length != 3)
 					{
-						boolean plus = par1.readBoolean();
-						if(plus)
-						{
-							if(choosenSlot + 1 < target.getSizeInventory())
-							{
-								choosenSlot++;
-							}
-						}
-						else
-						{
-							if(choosenSlot > 0)
-							{
-								choosenSlot--;
-							}
-						}
-						this.worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+						return;
 					}
+					target = (IInventory)worldObj.getBlockTileEntity(pos[0], pos[1], pos[2]);
+				}
+				else
+				{
+					target = null;
 				}
 			}
-			else
+			if(nbt.hasKey("SlotChange"))
 			{
-				int eventID = par1.readInt();
-				if(eventID == 0)
-				{
-					this.choosenSlot = par1.readInt();
-				}
-				else if(eventID == 1)
-				{
-					boolean exist = par1.readBoolean();
-					if(exist)
-					{
-						int x = par1.readInt();
-						int y = par1.readInt();
-						int z = par1.readInt();
-						target = (IInventory)worldObj.getBlockTileEntity(x, y, z);
-					}
-					else
-					{
-						target = null;
-					}
-				}
+				boolean plus = nbt.getBoolean("SlotChange");
+				choosenSlot += plus ? 1 : -1;
 			}
 		}
-		catch(IOException e)
-		{
-			return;
-		}
-		
 	}
 	
 	@Override
@@ -380,7 +350,6 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 	{
 		if(action != null)
 		{
-			boolean sendPacket = false;
 			if(action instanceof GateChangeToSlot)
 			{
 				GateChangeToSlot change = (GateChangeToSlot)action;
@@ -396,7 +365,6 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 						{
 							choosenSlot++;
 						}
-						sendPacket = true;
 					}
 				}
 			}
@@ -429,25 +397,10 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 							break;
 					}
 					changed = true;
-					sendPacket = true;
 				}
 				active = true;
 			}
-			if(sendPacket)
-			{
-				ModularPacket packet = this.createBasicPacket(TinyModularThings.instance);
-				packet.injectBoolean(false);
-				packet.InjectNumber(0);
-				packet.InjectNumber(choosenSlot);
-				this.sendPacketToClient(packet.finishPacket(), 10);
-			}
 		}
-	}
-	
-	@Override
-	public String identifier()
-	{
-		return null;
 	}
 	
 	@Override
@@ -543,5 +496,37 @@ public class MultiStructureItemInterface extends AdvTile implements IInventory,
 			}
 		}
 		return side;
+	}
+
+	@Override
+	public void onReciveGuiInfo(int key, int val)
+	{
+		super.onReciveGuiInfo(key, val);
+		if(key == 200)
+		{
+			choosenSlot = val;
+		}
+	}
+
+	@Override
+	public void onSendingGuiInfo(Container par1, ICrafting par2)
+	{
+		super.onSendingGuiInfo(par1, par2);
+		par2.sendProgressBarUpdate(par1, 200, choosenSlot);
+	}
+	
+	@Override
+	public boolean ImMaster(TileEntity par1)
+	{
+		TileEntity tile = (TileEntity)target;
+		if(tile == null && par1 == null)
+		{
+			return true;
+		}
+		if(tile != null && par1 != null)
+		{
+			return tile.worldObj.provider.dimensionId == par1.worldObj.provider.dimensionId && tile.xCoord == par1.xCoord && tile.yCoord == par1.yCoord && tile.zCoord == par1.zCoord;
+		}
+		return false;
 	}
 }

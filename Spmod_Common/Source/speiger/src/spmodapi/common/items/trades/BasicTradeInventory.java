@@ -166,7 +166,12 @@ public class BasicTradeInventory extends AdvInventory
 	public void onPlayerCloseContainer(EntityPlayer par1)
 	{
 		super.onPlayerCloseContainer(par1);
-		par1.getCurrentEquippedItem().stackSize--;
+		ItemStack item = par1.getCurrentEquippedItem();
+		item.stackSize--;
+		if(item.stackSize <= 0)
+		{
+			par1.inventory.setInventorySlotContents(par1.inventory.currentItem, null);
+		}
 	}
 
 	@Override
