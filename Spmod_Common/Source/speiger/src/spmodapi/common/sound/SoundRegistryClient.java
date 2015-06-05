@@ -1,5 +1,6 @@
 package speiger.src.spmodapi.common.sound;
 
+import java.net.URL;
 import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.List;
@@ -65,6 +66,18 @@ public class SoundRegistryClient extends SoundRegistry implements ITickHandler
 	{
 		SoundPoolEntry sound = new SoundPoolEntry(path, SoundRegistry.class.getClassLoader().getResource(path));
 		if (sound != null && sound.getSoundName().equals(path) && sound.getSoundUrl() != null)
+		{
+			sounds.put(name, sound);
+			return;
+		}
+		System.exit(0);
+	}
+	
+	@Override
+	public void registerSound(String name, String soundName, URL path)
+	{
+		SoundPoolEntry sound = new SoundPoolEntry(soundName, path);
+		if (sound != null && sound.getSoundName().equals(soundName) && sound.getSoundUrl() != null)
 		{
 			sounds.put(name, sound);
 			return;

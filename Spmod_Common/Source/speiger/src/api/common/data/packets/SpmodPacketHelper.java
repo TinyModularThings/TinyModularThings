@@ -1,6 +1,7 @@
 package speiger.src.api.common.data.packets;
 
 import net.minecraft.entity.player.EntityPlayer;
+import cpw.mods.fml.common.network.Player;
 import cpw.mods.fml.relauncher.Side;
 
 
@@ -35,6 +36,11 @@ public class SpmodPacketHelper
 		public EntityPlayer getPlayer()
 		{
 			return player;
+		}
+		
+		public Player getFMLPlayer()
+		{
+			return (Player)player;
 		}
 		
 		public Side getSide()

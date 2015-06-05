@@ -6,6 +6,7 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.inventory.IInventory;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NBTTagCompound;
 import net.minecraftforge.event.ForgeSubscribe;
 import net.minecraftforge.event.entity.item.ItemTossEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
@@ -115,11 +116,25 @@ public class InventoryHandler implements IFuelHandler, ICraftingHandler
 	public void onItemToolTipp(ItemTooltipEvent evt)
 	{
 		ItemStack stack = evt.itemStack;
-		if(stack != null && stack.getItem() instanceof IBCBattery)
+		if(stack != null)
 		{
-			IBCBattery battery = (IBCBattery)stack.getItem();
-			evt.toolTip.add("Transferlimit: "+battery.getTransferlimit(stack)+" MJ");
-			evt.toolTip.add("Stored Energy: "+battery.getStoredMJ(stack)+" / "+battery.getMaxMJStorage(stack)+" MJ");
+			if(stack.getItem() instanceof IBCBattery)
+			{
+				IBCBattery battery = (IBCBattery)stack.getItem();
+				evt.toolTip.add("Transferlimit: "+battery.getTransferlimit(stack)+" MJ");
+				evt.toolTip.add("Stored Energy: "+battery.getStoredMJ(stack)+" / "+battery.getMaxMJStorage(stack)+" MJ");
+			}
+			if(stack.getItem().itemID == Item.record11.itemID)
+			{
+				NBTTagCompound nbt = stack.getTagCompound();
+				if(nbt != null && nbt.hasKey("Radio"))
+				{
+					String text = evt.toolTip.get(0);
+					evt.toolTip.clear();
+					evt.toolTip.add(text);
+				}
+			}
 		}
+		
 	}
 }

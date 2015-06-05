@@ -7,7 +7,8 @@ public enum EnumGuiIDs
 	Commands(12),
 	Items(13),
 	Pipes(14),
-	Entities(15);
+	Entities(15),
+	Sound(16);
 	
 	int id;
 	

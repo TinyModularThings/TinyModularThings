@@ -295,6 +295,11 @@ public abstract class AdvTile extends TileEntity implements IAdvTile
 		owner = player.username;
 	}
 	
+	public String getBlockOwner()
+	{
+		return owner;
+	}
+	
 	//TODO Packet Functions
 	
 	public void sendPacketToServer(Packet par1)

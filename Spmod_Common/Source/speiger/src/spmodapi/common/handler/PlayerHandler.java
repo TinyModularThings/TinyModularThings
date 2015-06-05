@@ -54,6 +54,7 @@ public class PlayerHandler implements IPlayerTracker, INBTReciver
 			player.sendChatToPlayer(LangProxy.getText("You have Inventory Tweaks installed, That means that you can not use Shiftlicking Items into a Inventory in any of the mods that require SpmodAPI!", EnumChatFormatting.RED));
 		}
 		ItemRandomTrade.onPlayerLoggedIn(player);
+		SpmodAPI.manager.onPlayerLogin(player);
 	}
 	
 	@Override
@@ -292,7 +293,7 @@ public class PlayerHandler implements IPlayerTracker, INBTReciver
 				NBTTagCompound valueData = (NBTTagCompound)valueList.tagAt(i);
 				flag.put(valueData.getString("Key"), valueData.getBoolean("Value"));
 			}
-			flags.put(data.getString("Value"), flag);
+			flags.put(data.getString("Key"), flag);
 		}
 	}
 

@@ -23,6 +23,11 @@ public abstract class PositionPacket implements ISpmodPacket
 		
 	}
 	
+	public PositionPacket(TileEntity par1)
+	{
+		this(par1.worldObj, par1.xCoord, par1.yCoord, par1.zCoord);
+	}
+	
 	public PositionPacket(World par1, int par2, int par3, int par4)
 	{
 		this(par1.provider.dimensionId, par2, par3, par4);

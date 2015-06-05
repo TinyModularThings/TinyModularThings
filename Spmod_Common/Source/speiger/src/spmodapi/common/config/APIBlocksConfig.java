@@ -106,7 +106,7 @@ public class APIBlocksConfig
 		RegisterProxy.RegisterTile(blocks.blockUtils, 4, InventoryAccesser.class, "InventoryAccesser");
 		RegisterProxy.RegisterTile(blocks.blockUtils, 5, CobbleChest.class, "CobbleStorageChest");
 		RegisterProxy.RegisterTile(blocks.blockUtils, 6, MobMachineSpawner.class, "MobMachineSpawner");
-		RegisterProxy.RegisterTile(blocks.blockUtils, 7, EntityCage.class, "EntitySpmodCage");
+		RegisterProxy.RegisterTile(blocks.blockUtils, 7, Radio.class, "SpmodRadio");
 		((SpmodBlockBase)blocks.blockUtils).registerTextures(engine);
 		config.blockIDs.updateToNextID();
 		

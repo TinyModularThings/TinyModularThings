@@ -1,5 +1,7 @@
 package speiger.src.spmodapi.common.sound;
 
+import java.net.URL;
+
 import net.minecraft.world.World;
 
 public class SoundRegistry
@@ -65,6 +67,11 @@ public class SoundRegistry
 	}
 
 	public void restartSound(World world, int x, int y, int z, float newLoudness, float newPitch)
+	{
+		
+	}
+
+	public void registerSound(String name, String soundName, URL path)
 	{
 		
 	}

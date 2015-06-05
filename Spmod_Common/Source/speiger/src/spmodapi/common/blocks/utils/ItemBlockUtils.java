@@ -49,7 +49,7 @@ public class ItemBlockUtils extends ItemBlockSpmod
 			case 4: return "Inventory Accesser";
 			case 5: return "Cobble Storage";
 			case 6: return "Mob Machine Spawner Mode";
-			case 7: return "Entity Cage";
+			case 7: return "Radio";
 			default: return "No Name";
 		}
 	}

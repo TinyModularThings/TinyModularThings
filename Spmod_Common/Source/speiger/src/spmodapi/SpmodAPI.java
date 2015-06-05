@@ -16,6 +16,7 @@ import speiger.src.spmodapi.common.config.SpmodConfig;
 import speiger.src.spmodapi.common.core.SpmodAPICore;
 import speiger.src.spmodapi.common.network.SpmodPacketHandler;
 import speiger.src.spmodapi.common.plugins.PluginLoader;
+import speiger.src.spmodapi.common.sound.SoundManager;
 import speiger.src.spmodapi.common.sound.SoundRegistry;
 import speiger.src.spmodapi.common.util.TextureEngine;
 import speiger.src.spmodapi.common.util.data.ClassStorage;
@@ -48,6 +49,9 @@ public class SpmodAPI implements SpmodMod
 	@SidedProxy(clientSide = ClientSounds, serverSide = CoreSounds)
 	public static SoundRegistry soundEngine;
 	
+	@SidedProxy(clientSide = soundManagerClient, serverSide = soundManagerCore)
+	public static SoundManager manager;
+	
 	@Instance(ModID)
 	public static SpmodAPI instance;
 	
@@ -75,7 +79,9 @@ public class SpmodAPI implements SpmodMod
 	{
 		core.clientSide();
 		core.serverSide();
-		Ticks.registerTickReciver(new CommandServerTimer());
+		Ticks.registerTickReciver(new CommandServerTimer());	
+		manager.init();
+
 	}
 	
 	@EventHandler

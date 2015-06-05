@@ -123,6 +123,10 @@ public class SpmodAPICore implements IGuiHandler
 				}
 			}
 		}
+		else if(ID == EnumGuiIDs.Sound.getID())
+		{
+			
+		}
 		return null;
 	}
 	
@@ -194,6 +198,10 @@ public class SpmodAPICore implements IGuiHandler
 					}
 				}
 			}
+		}
+		else if(ID == EnumGuiIDs.Sound.getID())
+		{
+			
 		}
 		return null;
 	}

@@ -60,6 +60,7 @@ public class SpmodConfig implements IConfigHelper
 			booleanInfos.put("LoadTileEntities", getBoolean(general, "LoadTileEntites", true).setComment("If you get crashes with my Blocks then just set this to false and load the game. My Block are frozen and do nothing in this time").getResult(config));
 			booleanInfos.put("MobMachineEggs", getBoolean(general, "MobMachine Spawn Eggs", true).setComment("Enable that MobMachine drops Spawneggs").getResult(config));
 			booleanInfos.put("ForestrySeedOil", getBoolean(general, "Forestry Seed Oil in Fermenter", true).setComment("Enable the usage of SeedOil in a fermenter").getResult(config));
+			booleanInfos.put("ShareSounds", getBoolean(general, "Share Music Sounds", true).setComment("Allow to other People to download your Music files that are loaded in MC (Client Only Config even when its shown in Server)").getResult(config));
 			
 			Property tick = config.get(general, "Round Roubin Speed", "1:2:5:10:20:50", "Every number will be math as number * 5 ticks and please write it as the default with a : ");
 			String[] result = tick.getString().split(":");
