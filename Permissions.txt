@@ -2,11 +2,11 @@ You are allowed to use these sources to make it better and/or cleaner, or help y
 If you copy any code from me, you have to give credit towards me.
 You are not allowed to use the textures for your mods. These textures are ONLY for Speiger's mods. Or request permissions from Redled72 on Youtube.
 You are not allowed to make your own versions of TinyModularThings or SpmodAPI.
-Modpacks have to request before they add the Mod. Edit on that.
-Every help is allowed and requested because 1 person allone can not do this! (Me, Speiger)
+Modpack makers should ask for public modpack permission. If they do not want to ask link simply to my downloadpage and let the user download the mod.
+Every help is allowed and requested because 1 person alone can not do this! (Me, Speiger)
 You are not allowed to use the Ideas from Github i post. These Ideas are only for those mods here...
 You can request if you want to copy an idea.
 
 Every other option what is not clear defined have to be asked before.
 
-You can find me here on GitHub, Youtube, and my page, Speiger.jimdo.com to request permissions or something.
+You can find me here on GitHub, Youtube, and #IC2-Classic in IRC to request permissions or something.

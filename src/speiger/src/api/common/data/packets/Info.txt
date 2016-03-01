@@ -1,0 +1,6 @@
+Here is a little explaining how that works.
+
+The folder name says from where the packet starts.
+The Receiving is always the opposite.
+Most Interfaces are for TileEntities only.
+Except their name says something different.
