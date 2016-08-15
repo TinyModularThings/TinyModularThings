@@ -2,8 +2,10 @@ TinyModularThings
 =================
 
 Because some files got deleted (why Ever) of Quantum pack...
-Here you can find the 1.6.4 downloads:
-https://www.mediafire.com/folder/8ewollyq6orqh/Quantum%20Pack
+Here you can find the 1.6.4 downloads:     
+https://www.mediafire.com/folder/8ewollyq6orqh/Quantum%20Pack     
+And here is SpmodAPI:     
+https://www.mediafire.com/folder/2npkdr621p6z0/SpmodAPI
 
 The TinyModularThings Minecraft Mod
 
