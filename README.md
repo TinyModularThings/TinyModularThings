@@ -1,6 +1,10 @@
 TinyModularThings
 =================
 
+Because some files got deleted (why Ever) of Quantum pack...
+Here you can find the 1.6.4 downloads:
+https://www.mediafire.com/folder/8ewollyq6orqh/Quantum%20Pack
+
 The TinyModularThings Minecraft Mod
 
 The TinyModularThings mod is a mod that is based on other mods.
